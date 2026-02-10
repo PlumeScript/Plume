@@ -115,27 +115,32 @@ return function (plume)
         ------------
         -- common --
         ------------
+        local function K(x) -- keyword
+            return P(x) * (-R("az", "AZ")-P"_")
+        end
+
         local s  = S" \t"^1
         local os = S" \t"^0
         local lt = (os * S"\n")^1 * os -- linestart
         local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
         -- strict identifier
         local idns = C("IDENTIFIER", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0)
-        local idn = C("TRUE", P"true")   * -idns
-        		  + C("FALSE", P"false") * -idns
-        		  + C("EMPTY", P"empty") * -idns
+        local idn = C("TRUE", K"true")   * -idns
+        		  + C("FALSE", K"false") * -idns
+        		  + C("EMPTY", K"empty") * -idns
         		  + idns
         local escaped = P"\\s" * Cc("TEXT", " ")
                       + P"\\t" * Cc("TEXT", "\t")
                       + P"\\n" * Cc("TEXT", "\n")
                       + P"\\"*C("TEXT", P(1))
+        
 
         ---------------------------
         -- compilation directive --
         ---------------------------
         local libname = Ct("USE_DIRECTIVE", P"#" * idns * (P"-" * C("USE_OPTION", NOT(s + "\n" + "," + "-")^1))^0)
          + C("USE_LIB", NOT(s + "\n" + ",")^1)
-        local use = P"use" * s * libname * (os*P","*os*libname)^0
+        local use = K"use" * s * libname * (os*P","*os*libname)^0
 
         ----------
         -- eval --
@@ -261,17 +266,17 @@ return function (plume)
         -- commands --
         --------------
         -- common
-        local iterator  = s * (P"in") * s * Ct("ITERATOR", expr)
+        local iterator  = s * (K"in") * s * Ct("ITERATOR", expr)
                         + E(plume.error.missingIteratorError)
         
         local condition = s * Ct("CONDITION", expr) + E(plume.error.missingConditionError)
         local body      = Ct("BODY", V"statement"^0)
-        local _end      = lt * P"end" + E(plume.error.missingEndError)
+        local _end      = lt * K"end" + E(plume.error.missingEndError)
 
         -- if/elseif/else
-        local _else   = Ct("ELSE", lt*P"else" * body)
-        local _elseif = Ct("ELSEIF", lt*P"elseif" * condition * body)
-        local _if     = Ct("IF", P"if" * condition * body * _elseif^0 * _else^-1 * _end)
+        local _else   = Ct("ELSE", lt*K"else" * body)
+        local _elseif = Ct("ELSEIF", lt*K"elseif" * condition * body)
+        local _if     = Ct("IF", K"if" * condition * body * _elseif^0 * _else^-1 * _end)
 
         
 
@@ -288,7 +293,7 @@ return function (plume)
                 * P")"
             )
         local paramlistM = paramlist + E(plume.error.missingParamListError)
-        local macro      = Ct("MACRO", P"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
+        local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
 
         local arg       = Ct("HASH_ITEM", os * (idn + eval) * os * P":" * os * Ct("BODY", V"textic"^-1))	
         				+ sugarFlagCall(Ct("FLAG", os *"?"*idn))
@@ -300,19 +305,19 @@ return function (plume)
         local block = Ct("EVAL", P"@" * idn * (index + directindex)^0 * os
         					* Ct("BLOCK_CALL", call^-1 * body)
         				* _end)
-        local leave     = C("LEAVE", P"leave")
+        local leave     = C("LEAVE", K"leave")
 
         -- affectations
         local lbody    = Ct("BODY", V"firstStatement")
         local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
                        + C("MUL", P"*") + C("DIV", P"/"))
-        local statconst = (s * C("STATIC", P"static"))^-1 * (s * C("CONST", P"const"))^-1 * (s * C("PARAM", P"param"))^-1
+        local statconst = (s * C("STATIC", K"static"))^-1 * (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1
 
         --- Common identifier
         local _letsetdefaut = P":" * os * Ct("VALUE", (P"(" * V"textnp" * ")" + V"textns")^-1)
         local letsetvar = (
-            Ct("ALIAS_DEFAULT", idn * os * P"as" * os * idn * os * _letsetdefaut)
-            + Ct("ALIAS", idn * os * P"as" * os * idn)
+            Ct("ALIAS_DEFAULT", idn * os * K"as" * os * idn * os * _letsetdefaut)
+            + Ct("ALIAS", idn * os * K"as" * os * idn)
             + Ct("DEFAULT", idn * os * _letsetdefaut)
             + idn
         )
@@ -325,32 +330,32 @@ return function (plume)
         local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar)^0)
         local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar)^0)
         
-        local let = Ct("LET", P"let" * statconst * s * letvarlist * (
+        local let = Ct("LET", K"let" * statconst * s * letvarlist * (
                                   os * P"=" * lbody
-                                + s  * C("FROM", P"from") * s * lbody
+                                + s  * C("FROM", K"from") * s * lbody
                             )^-1)
 
-        local set = Ct("SET", P"set" * s * setvarlist * (
+        local set = Ct("SET", K"set" * s * setvarlist * (
                       os * compound^-1 * P"=" * lbody
-                    + s * C("FROM", P"from") * s * lbody
+                    + s * C("FROM", K"from") * s * lbody
                     ))
         
         --- loops
         local forInd = letvarlist + E(plume.error.missingLoopIndentifierError)
-        local _while = Ct("WHILE", P"while" * condition * body * _end)
-        local _for   = Ct("FOR", P"for" * s * forInd * iterator * body * _end)
+        local _while = Ct("WHILE", K"while" * condition * body * _end)
+        local _for   = Ct("FOR", K"for" * s * forInd * iterator * body * _end)
 
-        local _break   = C("BREAK", P"break")
-        local continue = C("CONTINUE", P"continue")
+        local _break   = C("BREAK", K"break")
+        local continue = C("CONTINUE", K"continue")
 
         -- table
         local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatement") 
-        local hashitem = Ct("HASH_ITEM", (Ct("META", P"meta"*s))^-1 * (idn + eval) * P":" *  os *lbody)
-                        + Ct("HASH_ITEM", Ct("REF", P"ref"*s) * idn * (s * P"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os *lbody)
-                        + Ct("EMPTY_REF", Ct("REF", P"ref"*s) * idn * (s * P"as" * s * Ct("ALIAS", idn))^-1)
+        local hashitem = Ct("HASH_ITEM", (Ct("META", K"meta"*s))^-1 * (idn + eval) * P":" *  os *lbody)
+                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os *lbody)
+                        + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1)
         local expand   = Ct("EXPAND", P"..." * evalBase) 
 
-        local _do = Ct("DO", os * P"do" * body * _end)
+        local _do = Ct("DO", os * K"do" * body * _end)
 
         local inlinetable = Ct("INLINE_TABLE", os * P"(" * arg * (P"," * os * arg)^1 * P")")
 
@@ -361,11 +366,11 @@ return function (plume)
             "program",
             program = V"firstStatement"^-1 * V"statement"^0,
 
-            statementTerminator = P"elseif" + P"else" + P"end",
+            statementTerminator = K"elseif" + K"else" + K"end",
             firstStatement = os * (-V"statementTerminator")
                                 * (
                                       V"command"
-                                    + Ct("RUN", P"run" * s * V"firstStatement")
+                                    + Ct("RUN", K"run" * s * V"firstStatement")
                                     + V"invalid"^-1 * V"text"
                                 )
                                 ,
@@ -384,7 +389,7 @@ return function (plume)
             rawtextnp = C("TEXT", NOT(S"$\n)\\"+ P"//")^1),
             rawtextic = C("TEXT", NOT(S"$\n,)\\"+ P"//")^1),
 
-            invalid = E(plume.error.emptySetError, P"set"),
+            invalid = E(plume.error.emptySetError, K"set"),
             evalOpperator = call + index + directindex,
 
             inlinetable= inlinetable
