@@ -119,7 +119,7 @@ end
 
 local function makeDispatchBinary()
 	-- Set to the nearest  2^n
-	local totalCount = 2^(math.floor(0.5+math.log(#op_namesTable, 2)))
+	local totalCount = 2^(math.floor(1.5+math.log(#op_namesTable, 2)))
 	handleChoice(0, totalCount)
 end
 
