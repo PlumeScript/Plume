@@ -97,7 +97,7 @@ local function handleChoice(limDown, limUp, indent)
 			if  uselabelGoto or op_namesTable[middlePoint-1] == "END" then
 				table.insert(dispatch, string.format(indent.."\tgoto %s\n", op_namesTable[middlePoint-1]))
 			else
-				table.insert(dispatch,string.format("%s(vm, arg1, arg2)\n", op_namesTable[middlePoint-1]))
+				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\t%s(vm, arg1, arg2)\n", op_namesTable[middlePoint-1]))
 			end
 		end
 	end
@@ -110,7 +110,7 @@ local function handleChoice(limDown, limUp, indent)
 			if uselabelGoto or op_namesTable[middlePoint] == "END" then
 				table.insert(dispatch, string.format(indent.."\tgoto %s\n", op_namesTable[middlePoint]))
 			else
-				table.insert(dispatch,string.format("%s(vm, arg1, arg2)\n", op_namesTable[middlePoint]))
+				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\t%s(vm, arg1, arg2)\n", op_namesTable[middlePoint]))
 			end
 		end
 	end
