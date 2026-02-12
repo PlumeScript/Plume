@@ -1,0 +1,39 @@
+/// Test Capture "global"
+let value = 5
+macro Wing()
+  $value
+end
+$Wing()
+/// Output
+5
+/// End
+
+/// Test Capture inside macro
+macro makeClosure()
+   let a = 10
+   let b = 20
+   macro ()
+      $a$b
+   end
+end
+let f = $makeClosure()
+$f()
+/// Output
+1020
+/// End
+
+/// Test Mutation
+macro makeCounter()
+  let count = 0
+  macro()
+    set count += 1
+    $count
+  end
+end
+
+let counter = $makeCounter()
+$counter()
+$counter()
+/// Output
+12
+/// End

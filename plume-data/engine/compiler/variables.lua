@@ -31,23 +31,83 @@ return function (plume, context)
 			return scope[name].source
 		end
 	end
+
+	--- Give a macro information about a variable to capture
+	--- @param name string
+	--- @param variableOffset number
+	--- @param closureDistance number
+	--- @param scope table
+	function context.registerUpvalue(name, variableOffset, scopeOffset, scope)
+		local macro = context.getLast "macros"
+
+		if not macro.upvalueMap[name] then
+			table.insert(macro.upvalues, {
+				offset = #macro.upvalues+1,
+				localOffset = variableOffset, -- local offset to capture the variable
+				scopeOffset = scopeOffset, -- in which scope get the variable
+				isUpvalue = true
+			})
+
+			macro.upvalueMap[name] = macro.upvalues[#macro.upvalues]
+			local scopeUp = context.scopesUp[scope]
+			local found
+			for _, offset in ipairs(scopeUp) do
+				if offset == variableOffset then
+					found = true
+					break
+				end
+			end
+			if not found then
+				table.insert(scopeUp, variableOffset)
+			end
+		end
+		return macro.upvalueMap[name]
+	end
+
+	--- Open upvalue at scope start,
+	--- close it at scope end
+	--- @param upvalues table
+	function context.manageUpvalues(upvalues)
+		for _, offset in ipairs(upvalues) do
+			context.registerOP(paramNode, plume.ops.OPEN_UPVALUE, 0, offset, "scope_begin_" .. upvalues.uid)
+		end
+		for _, offset in ipairs(upvalues) do
+			context.registerOP(paramNode, plume.ops.CLOSE_UPVALUE, 0, offset)
+		end
+	end
 	
 	--- Get informations about a variable by it's name.
 	--- Return nil if the variable hasn't be registered
 	--- @param name string The name of the variable
+	--- @param strict bool Shouldn't check in outer scopes
 	--- @return table|nil {frameOffset?, offset, isConst, isStatic}
-	function context.getVariable(name)
-		for i=#context.scopes, context.roots[#context.roots], -1 do
+	function context.getVariable(name, strict)
+		local closureDistance = 0
+		for i=#context.scopes, 1, -1 do
+			if i == context.roots[#context.roots - closureDistance]-1 then
+				closureDistance = closureDistance + 1
+			end
+
+			if strict and closureDistance > 0 then
+				break
+			end
+			
 			local current = context.scopes[i]
 			if current[name] then
 				local variable = current[name]
-				local result = {
-					frameOffset = #context.scopes-i,
-					offset   = variable.offset,
-					isConst  = variable.isConst,
-					isRef    = variable.isRef,
-					ref      = variable.ref
-				}
+				local result
+				
+				if closureDistance > 0 then
+					return context.registerUpvalue(name, variable.offset, closureDistance, i)
+				else
+					result = {
+						frameOffset = #context.scopes-i,
+						offset   = variable.offset,
+						isConst  = variable.isConst,
+						isRef    = variable.isRef,
+						ref      = variable.ref
+					}
+				end
 
 				if variable.isRef then
 					result.frameOffset = context.accBlockDeep - variable.blockOffset

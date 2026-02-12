@@ -14,6 +14,20 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
+	local function insert(runtime)
+		local offset = 0
+		while offset < #runtime.instructions do
+			offset = offset + 1
+			instr = runtime.instructions[offset]
+			local insert = runtime.insert[instr.label]
+			if instr.label and insert then
+				for _, newInstr in ipairs(insert) do
+					offset = offset + 1
+					table.insert(runtime.instructions, offset, newInstr)
+				end
+			end
+		end
+	end
 
 	local function link(runtime)
 		local bytecodeSize = runtime.bytecode and #runtime.bytecode or 0
@@ -78,6 +92,8 @@ return function (plume)
 	end
 
 	function plume.finalize(runtime)
+		-- Proceed all insertion
+		insert(runtime)
 		-- replaces labels/goto by jumps
 		-- compute real macro offsets
 		-- Add "end" byte

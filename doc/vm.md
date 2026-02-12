@@ -179,6 +179,25 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### RETURN
 
 
+### vm/closures.lua
+
+#### OPEN_UPVALUE
+
+- **arg2** *(local)*: offset
+
+#### CLOSE_UPVALUE
+
+
+#### LOAD_UPVALUE
+
+- **arg2** *(local)*: offset
+
+#### STORE_UPVALUE
+
+
+#### CLOSURE
+
+
 ### vm/iter.lua
 
 #### GET_ITER

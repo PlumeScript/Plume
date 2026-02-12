@@ -64,13 +64,13 @@ return function(plume)
 		context.constants = runtime.constants
 		
 		context.scopes    = {}
+		context.scopesUp  = {}
 		context.concats   = {}
 		context.roots     = {}
 		context.loops     = {}
 		context.macros    = {}
 
 		context.accBlockDeep = 0
-		
 
 		require 'plume-data/engine/compiler/labels'    (plume, context)
 		require 'plume-data/engine/compiler/wrappers'  (plume, context)

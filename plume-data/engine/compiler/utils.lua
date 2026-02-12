@@ -50,10 +50,19 @@ return function (plume, context)
 	--- @param op number opcode constant, should be plume.op.SOMETHING
 	--- @param arg1 number|nil First argument to give to the opcode. Default to 0.
 	--- @param arg2 number|nil Second argument to give to the opcode. Default to 0.
-	function context.registerOP(node, op, arg1, arg2)
+	--- @param label string
+	function context.registerOP(node, op, arg1, arg2, label)
 		assert(op) -- Guard against opcode typo
 		local current = context.runtime.instructions
-		table.insert(current, {op, arg1 or 0, arg2 or 0, mapsto=node})
+		local instr   = {op, arg1 or 0, arg2 or 0, mapsto=node}
+		if label then
+			if not context.runtime.insert[label] then
+				context.runtime.insert[label] = {}
+			end
+			table.insert(context.runtime.insert[label], instr)
+		else
+			table.insert(current, instr)
+		end
 	end
 
 	--- Return the last scope of context.scopes

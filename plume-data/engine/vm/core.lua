@@ -67,6 +67,10 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.variableStack.frames         = table.new(2^8, 0)
     vm.variableStack.pointer        = 0
     vm.variableStack.frames.pointer = 0
+    vm.upvalueMap                 = table.new(2^10, 0)
+
+    vm.closureStack                 = table.new(2^8, 0)
+    vm.closureStack.pointer         = 0
 
     vm.fileStack = table.new(2^8, 0)
     vm.fileStack[1] = chunk.fileID

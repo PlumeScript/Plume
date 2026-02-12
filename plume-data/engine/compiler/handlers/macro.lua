@@ -43,7 +43,12 @@ return function (plume, context, nodeHandlerTable)
 
 		local macroObj     = plume.obj.macro(debugMacroName, context.chunk)
 		local macroOffset  = context.registerConstant(macroObj)
+		macroObj.uid = uid
+		macroObj.upvalueMap = {}
+		table.insert(context.macros, macroObj)
+
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
+		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
 
 		if macroName then
 			local variable = context.registerVariable(
@@ -61,14 +66,11 @@ return function (plume, context, nodeHandlerTable)
 		-- Skip macro body
 		context.registerGoto(node, "macro_declaration_end_" .. uid)
 
-		table.insert(context.macros, uid)
-
 		-- Anchor point to find macro beginings
 		context.registerLabel(node, "macro_begin_" .. uid, macroOffset)
 
 		context.file(function ()
-			-- Each macro open a scope, but it is handled by plume.run
-			table.insert(context.scopes, {})
+			context.enterScope(nil)
 			table.insert(context.loops, {})
 
 			-------------------------------------------------------------
@@ -109,7 +111,7 @@ return function (plume, context, nodeHandlerTable)
 			-- If the macro is called as a table field, `self`
 			-- is a reference to this table.
 			-- Else is empty
-			if not context.getVariable("self") then
+			if not context.getVariable("self", true) then
 				local param = context.registerVariable("self")
 				macroObj.namedParamCount = macroObj.namedParamCount+1
 				macroObj.namedParamOffset.self = param.offset
@@ -118,17 +120,22 @@ return function (plume, context, nodeHandlerTable)
 			context.accBlock()(body, "macro_body_end_" .. uid) -- Handle the macro body
 			
 			macroObj.localsCount = #context.getCurrentScope()
-			table.remove(context.scopes)
+
+			context.leaveScope(nil)
 			
 		end) ()
 		context.registerOP(node, plume.ops.RETURN, 0, 0)
 
 		context.registerLabel(node, "macro_declaration_end_" .. uid)
 		table.remove(context.macros)
+		-- Not used by the runtime
+		macroObj.uid = nil
+		macroObj.upvalueMap = nil
 	end
 
 	nodeHandlerTable.LEAVE = function(node)
-		local uid = context.getLast "macros"
+		local macro = context.getLast "macros"
+		local uid = macro and macro.uid
 		if uid then
 			context.registerGoto(node, "macro_body_end_" .. uid)
 		else

@@ -16,20 +16,22 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume, context, nodeHandlerTable)  
   
 	--- Check if variable exists, and load it from appropriate scope  
-	--- @param node table The current AST node  
-	nodeHandlerTable.IDENTIFIER = function(node)  
+	--- @param node table The current AST node
+	nodeHandlerTable.IDENTIFIER = function(node)
 		local varName = node.content  
-		local var = context.getVariable(varName)  
+		local var = context.getVariable(varName)
 		if not var then  
-			plume.error.useUnknowVariableError(node, varName)  
+			plume.error.useUnknowVariableError(node, varName)
 		end  
 		if var.isStatic then  
 			context.registerOP(node, plume.ops.LOAD_STATIC, 0, var.offset)
 		elseif var.isRef then
-			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))  
-			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)  
+			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
+			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
+		elseif var.isUpvalue then
+			context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
 		else  
-			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)  
+			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
 		end  
 	end  
   
@@ -217,11 +219,13 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(node, plume.ops.TABLE_SET, 0, 0)  
 			else  
 				if var.isStatic then  
-					context.registerOP(var.ref, plume.ops.STORE_STATIC, 0, var.offset)  
+					context.registerOP(var.ref, plume.ops.STORE_STATIC, 0, var.offset)
+				elseif var.isUpvalue then
+					context.registerOP(node, plume.ops.STORE_UPVALUE, 0, var.offset)
 				elseif not isLet and var.frameOffset > 0 then  
-					context.registerOP(var.ref, plume.ops.STORE_LOCAL, var.frameOffset, var.offset)  
+					context.registerOP(var.ref, plume.ops.STORE_LOCAL, var.frameOffset, var.offset)
 				else  
-					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)  
+					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
 				end  
 			end  
   
