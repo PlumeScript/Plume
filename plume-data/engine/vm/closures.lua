@@ -13,11 +13,16 @@ You should have received a copy of the GNU General Public License along with Plu
 If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+--! inline
+function _UPVALUE_OFFSET(vm, localoffset, scopeoffset)
+	return _STACK_GET_OFFSET(vm.variableStack.frames, (scopeoffset or 1)-1) + localoffset - 1
+end
+
 --- @opcode
 --- @param arg2 local offset
 --! inline
 function OPEN_UPVALUE (vm, arg1, arg2)
-	local offset  = _STACK_GET_OFFSET(vm.variableStack.frames, 0) + arg2 - 1
+	local offset  = _UPVALUE_OFFSET(vm, arg2)
 	vm.upvalueMap[offset] = {
 		reference = vm.variableStack,
 		offset    = offset
@@ -27,7 +32,7 @@ end
 --- @opcode
 --! inline
 function CLOSE_UPVALUE (vm, arg1, arg2)
-	local offset  = _STACK_GET_OFFSET(vm.variableStack.frames, 0) + arg2 - 1
+	local offset  = _UPVALUE_OFFSET(vm, arg2)
 	local upvalue = vm.upvalueMap[offset]
 	upvalue[1] = upvalue.reference[upvalue.offset]
 
@@ -64,7 +69,7 @@ function CLOSURE (vm, arg1, arg2)
 		}
 		_STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), macroClosure)
 		for _, upvalueInfos in ipairs(macro.upvalues) do
-			local upvalue = vm.upvalueMap[_STACK_GET_OFFSET(vm.variableStack.frames, upvalueInfos.scopeOffset-1) + upvalueInfos.localOffset - 1]
+			local upvalue = vm.upvalueMap[_UPVALUE_OFFSET(vm, upvalueInfos.localOffset, upvalueInfos.scopeOffset)]
 			macroClosure.upvalues[upvalueInfos.offset] = upvalue
 		end
 	end
