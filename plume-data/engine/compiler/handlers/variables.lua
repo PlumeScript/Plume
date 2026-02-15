@@ -23,9 +23,7 @@ return function (plume, context, nodeHandlerTable)
 		if not var then  
 			plume.error.useUnknowVariableError(node, varName, isRef)
 		end  
-		if var.isStatic then  
-			context.registerOP(node, plume.ops.LOAD_STATIC, 0, var.offset)
-		elseif var.isRef then
+		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
 			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
 		elseif var.isUpvalue then
@@ -87,11 +85,7 @@ return function (plume, context, nodeHandlerTable)
 			if isLet then  
 				rvar = context.registerVariable(name, isConst, isParam)  
 				if not rvar then  
-					if isStatic then  
-						plume.error.letExistingStaticVariableError(node, name, source)  
-					else  
-						plume.error.letExistingVariableError(node, name, source)  
-					end  
+					plume.error.letExistingVariableError(node, name, source)
 				end  
 			else  
 				rvar, isRef = context.getVariable(name)  
@@ -220,9 +214,7 @@ return function (plume, context, nodeHandlerTable)
 				var.getKey()  
 				context.registerOP(node, plume.ops.TABLE_SET, 0, 0)  
 			else  
-				if var.isStatic then  
-					context.registerOP(var.ref, plume.ops.STORE_STATIC, 0, var.offset)
-				elseif var.isUpvalue then
+				if var.isUpvalue then
 					context.registerOP(node, plume.ops.STORE_UPVALUE, 0, var.offset)
 				elseif not isLet and var.frameOffset > 0 then  
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, var.frameOffset, var.offset)
@@ -281,12 +273,8 @@ return function (plume, context, nodeHandlerTable)
 		if isParam then  
 			if isConst then  
 				plume.error.cannotUseParamAndConst(node)  
-			end  
-			if isStatic then  
-				plume.error.cannotUseParamAndStatic(node)  
-			end  
-			isConst = true  
-			isStatic = true  
+			end
+			isConst = true 
 		end  
   
 		local isFrom    = plume.ast.get(node, "FROM")

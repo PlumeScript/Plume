@@ -20,12 +20,7 @@ return function (plume, context)
 	--- @param isStatic bool
 	--- @return string|nil
 	function context.getNameSource(name, isStatic)
-		local scope
-		if isStatic then
-			scope = context.static
-		else
-			scope = context.getCurrentScope()
-		end
+		local scope = context.getCurrentScope()
 
 		if scope[name] then
 			return scope[name].source
@@ -198,20 +193,11 @@ return function (plume, context)
 	--- @return table|nil Returns the variable metadata {offset, isStatic, isConst, isRef, source}, or nil on name collision.
 	function context.registerVariable(name, isConst, isParam, staticValue, source, isRef, ref)
 		local scope
-		if isStatic then
-			scope = context.static
-			table.insert(context.chunk.static, staticValue or plume.obj.empty)
-		else
-			scope = context.getCurrentScope()
-		end
+		scope = context.getCurrentScope()
 
 		-- To avoid conflicts between static variables
 		-- and non-static variables declared at the root
-		if isStatic then
-			if #context.scopes > 0 and context.scopes[1][name] then
-				return nil
-			end
-		elseif #context.scopes == 1 then
+		if #context.scopes == 1 then
 			if context.static[name] then
 				return nil
 			end
