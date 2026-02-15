@@ -97,7 +97,7 @@ return function (plume)
 	--- @param runtime table current execution context
 	--- @param ip number instruction pointer identifying the call site
 	--- @param issues table Identifier for the issue (e.g., GitHub issue number).
-	function plume.warning.deprecated(version, description, help, runtime, ip, issues)
+	function plume.warning.deprecatedRuntime(version, description, help, runtime, ip, issues)
 	    help = "  "..help:gsub('\n', '\n  ')
 	    local issueLabel = ""
 	    if #issues > 1 then
@@ -121,9 +121,9 @@ return function (plume)
     --- @param issues table Identifier for the issue (e.g., GitHub issue number).
     --- @param f function The original function to be wrapped.
     --- @return function A new function that executes `f` after emitting the deprecation warning.
-	function plume.warning.deprecatedFunction(version, description, help, issues, f)
+	function plume.warning.deprecatedFunctionRuntime(version, description, help, issues, f)
 		return function (args, runtime, _, ip)
-			plume.warning.deprecated(version, description, help, runtime, ip, issues)
+			plume.warning.deprecatedRuntime(version, description, help, runtime, ip, issues)
 			return f(args, runtime, _, ip)
 		end
 	end

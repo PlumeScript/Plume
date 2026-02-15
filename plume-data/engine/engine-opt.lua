@@ -3675,7 +3675,7 @@ return function (plume)
                                             _ret358 = mainStack[mainStackPointer + 1]
                                             local args = _ret358.table
                                             if args.legacy then
-                                                plume.warning.deprecated ("1.0", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key -> x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey -> value\nend\n```", runtime, ip, {228, 230})
+                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key -> x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey -> value\nend\n```", runtime, ip, {228, 230})
                                             end
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named, legacy = args.legacy}
@@ -3687,7 +3687,7 @@ return function (plume)
                                             _ret359 = mainStack[mainStackPointer + 1]
                                             local args = _ret359.table
                                             if args.legacy then
-                                                plume.warning.deprecated ("1.0", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index -> x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex -> value\nend\n```", runtime, ip, {228, 230})
+                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index -> x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex -> value\nend\n```", runtime, ip, {228, 230})
                                             end
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS, legacy = args.legacy}
@@ -3713,7 +3713,7 @@ return function (plume)
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
                                             if args.legacy then
-                                                plume.warning.deprecated ("1.0", "`?lua` flag for macro import", "Instead of \n`$import(<path>, ?lua)`, use `lua.require(<path>)`", runtime, ip, {235, 230})
+                                                plume.warning.deprecatedRuntime ("1.0", "`?lua` flag for macro import", "Instead of \n`$import(<path>, ?lua)`, use `lua.require(<path>)`", runtime, ip, {235, 230})
                                             end
                                             local filename, searchPaths = plume.getFilenameFromPath (args.table[1], args.table.lua, runtime, firstFilename, lastFilename)
                                             if filename then
