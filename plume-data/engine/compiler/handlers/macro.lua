@@ -53,7 +53,7 @@ return function (plume, context, nodeHandlerTable)
 		if macroName then
 			local variable = context.registerVariable(macroName)
 			if not variable then
-				plume.error.letExistingStaticVariableError(node, macroName, context.getNameSource(macroName))
+				plume.error.letExistingVariableError(node, macroName, context.getNameSource(macroName))
 			end
 			
 			context.registerOP(macroIdentifier, plume.ops.STORE_LOCAL, 0, variable.offset)
