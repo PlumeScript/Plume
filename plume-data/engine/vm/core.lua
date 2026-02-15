@@ -51,7 +51,6 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.runtime   = runtime
     vm.bytecode  = runtime.bytecode
     vm.constants = runtime.constants
-    vm.static    = runtime.static
 
     -- instruction pointer
     vm.ip      = chunk.offset - 1

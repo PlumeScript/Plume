@@ -311,7 +311,15 @@ return function (plume)
         local lbody    = Ct("BODY", V"firstStatement")
         local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
                        + C("MUL", P"*") + C("DIV", P"/"))
-        local statconst = (s * C("STATIC", K"static"))^-1 * (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1
+        local statconst = (s *
+            -----------------------------------------
+            -- WILL BE REMOVED IN 1.0 (#230, #332)
+            -----------------------------------------
+            C("STATIC", K"static"))^-1 *
+            -----------------------------------------
+            (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param")
+        )^-1
+        
 
         --- Common identifier
         local _letsetdefaut = P":" * os * Ct("VALUE", (P"(" * V"textnp" * ")" + V"textns")^-1)

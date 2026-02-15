@@ -17,8 +17,8 @@ return function (plume)
 	-- OPP
 	plume.ops_names = [[
 		LOAD_CONSTANT LOAD_TRUE LOAD_FALSE LOAD_EMPTY
-		LOAD_LOCAL LOAD_STATIC LOAD_REF LOAD_UPVALUE
-		STORE_LOCAL STORE_STATIC STORE_VOID STORE_UPVALUE
+		LOAD_LOCAL LOAD_REF LOAD_UPVALUE
+		STORE_LOCAL STORE_VOID STORE_UPVALUE
 
 		OPEN_UPVALUE CLOSE_UPVALUE CLOSURE
 
@@ -249,7 +249,7 @@ return function (plume)
 	end
 
 	function plume.checkIdentifier(identifier)
-		for kw in ('if then elseif else while for do macro let set const static param use'):gmatch('%S+') do
+		for kw in ('if then elseif else while for do macro let set const param use'):gmatch('%S+') do
 			if identifier == kw then
 				return false
 			end
