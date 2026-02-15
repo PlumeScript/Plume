@@ -36,16 +36,10 @@ return function (plume, context, nodeHandlerTable)
         end
 
         for _, key in ipairs(result.keys) do
-        	local var = context.registerVariable(
-        		key,                -- name
-        		true,               -- isConst,
-        		false,              -- isParam
-        		result.table[key],  -- staticValue
-        		path                -- source
-        	)
-			if not var then
+			if context.scopes[#context.scopes][key] then
 				plume.error.useExistingStaticVariableError(node, key, path)
 			end
+			context.importedVariables[key] = result.table[key]
         end
 
         return result

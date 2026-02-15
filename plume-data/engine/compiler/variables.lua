@@ -160,11 +160,12 @@ return function (plume, context)
 			}
 		end
 
-		-- Cannot found variable ; check if it is a std one
-		if plume.std[name] then
+		-- Cannot found variable ; check if it is a std/imported one
+		local value = plume.std[name] or context.importedVariables[name]
+		if value then
 			return {
 				isStd = true,
-				offset = context.registerConstant(plume.std[name])
+				offset = context.registerConstant(value)
 			}
 		end
 	end

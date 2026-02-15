@@ -98,732 +98,97 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">344 passed and <span class="fail-count">6</span> failed out of 350 tests</span></h1>
-<div class="progress-bar"><div class="progress-success" style="width: 98.29%"></div><div class="progress-fail" style="width: 1.71%"></div></div>
-<h2>variables: <span style="font-weight: normal;">14 passed and <span class="fail-count">3</span> failed out of 17 tests</span></h2>
-<div class="progress-bar"><div class="progress-success" style="width: 82.35%"></div><div class="progress-fail" style="width: 17.65%"></div></div>
+<h1>Global: <span style="font-weight: normal;">347 passed and <span class="fail-count">2</span> failed out of 349 tests</span></h1>
+<div class="progress-bar"><div class="progress-success" style="width: 99.43%"></div><div class="progress-fail" style="width: 0.57%"></div></div>
+<h2>module: <span style="font-weight: normal;">1 passed and <span class="fail-count">1</span> failed out of 2 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 50.00%"></div><div class="progress-fail" style="width: 50.00%"></div></div>
 <details open>
 <summary>
-<span class="status-icon status-fail">✗</span> already exists 2 <em style='font-weight: normal'></em>
+<span class="status-icon status-fail">✗</span> params 2 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-use tests/plume/toimport/lib
-let nib
+$import(tests/plume/toimport/param, x: 5)
 
 </code></pre>
 </div>
 <div>
 <h4>Bytecode</h4>
 <pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param, x: 5)</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; tests/plume/toimport/param</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; x: 5</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x: 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; import</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param, x: 5)</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_STATIC     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; let param x = 10</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">JUMP_IF_PEEK    </span> <span class="bc-arg">0 17</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 19</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <div class="comparison-grid">
 <h4>Expected</h4>
 <h4>Obtained</h4>
-<div><div class="result-type-header">Error</div><pre><code><span class="diff-match">Compilation error: Cannot define </span><span class="diff-expected">static variable &#39;nib&#39;, it already exists in the current file scope (imported from &#39;tests/plume/toimport/lib&#39;).
-File &#39;already exists 2&#39;, line 2: let nib
-                                 ^^^^^^^</span></code></pre></div>
-<div><div class="result-type-header">Error</div><pre><code><span class="diff-match">Compilation error: Cannot define </span><span class="diff-obtained">variable &#39;nib&#39;, it already exists in the current scope (imported from &#39;tests/plume/toimport/lib&#39;).
-File &#39;already exists 2&#39;, line 2: let nib
-                                 ^^^^^^^</span></code></pre></div>
+<div><div class="result-type-header">Output</div><pre><code><span class="diff-expected">5</span></code></pre></div>
+<div><div class="result-type-header">Output</div><pre><code></code></pre></div>
 </div>
 </div>
 </details>
-<details open>
+<details>
 <summary>
-<span class="status-icon status-fail">✗</span> use 1 <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> params 1 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-use tests/plume/toimport/lib
-$nib
+$import(tests/plume/toimport/param)
 
 </code></pre>
 </div>
 <div>
 <h4>Bytecode</h4>
 <pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<div class="comparison-grid">
-<h4>Expected</h4>
-<h4>Obtained</h4>
-<div><div class="result-type-header">Output</div><pre><code><span class="diff-expected">quill</span></code></pre></div>
-<div><div class="result-type-header">Output</div><pre><code><span class="diff-obtained">nil</span></code></pre></div>
-</div>
-</div>
-</details>
-<details open>
-<summary>
-<span class="status-icon status-fail">✗</span> use 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-use tests/plume/toimport/lib, tests/plume/toimport/lib2
-$nib\n
-$wing()
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; blue</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; infos</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 25</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; infos</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; infos</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">;  </span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 2</span> <span class="bc-info">; info2</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">023</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">024</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; wing: macro()[...]</span>
-<span class="bc-line-num">026</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: macro()[...]</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">029</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">030</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">031</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">032</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">033</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">034</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
-<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">036</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span>
-<span class="bc-line-num">038</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing()</span>
-<span class="bc-line-num">039</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">040</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing()</span>
-<span class="bc-line-num">041</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing()</span>
-<span class="bc-line-num">042</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">043</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<div class="comparison-grid">
-<h4>Expected</h4>
-<h4>Obtained</h4>
-<div><div class="result-type-header result-type-mismatch">Output</div><pre><code><span class="diff-expected">quill
-blue quill</span></code></pre></div>
-<div><div class="result-type-header result-type-mismatch">Error</div><pre><code><span class="diff-obtained">Runtime error: Cannot concat a &#39;nil&#39; value.
-
-Traceback (most recent call first):
-  File &#39;use 2&#39;, line 2: $nib\n
-                         ^^^</span></code></pre></div>
-</div>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> already exists 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let nib
-use tests/plume/toimport/lib
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-Compilation error: Cannot define static variable &#39;nib&#39; from lib &#39;tests/plume/toimport/lib&#39;, it already exists in the current file scope.
-File &#39;already exists 1&#39;, line 2: use tests/plume/toimport/lib
-                                     ^^^^^^^^^^^^^^^^^^^^^^^^
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> block capture: if 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let _write = if 1==1
-	5
-else
-	3
-end
-$_write
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 8</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param)</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; tests/plume/toimport/param</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; import</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param)</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_STATIC     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; let param x = 10</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">JUMP_IF_PEEK    </span> <span class="bc-arg">0 14</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 16</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
 <pre><code>
-5
+10
 </code></pre>
 </div>
 </details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> block capture: if 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let _write = if 1==2
-	5
-else
-	3
-end
-$_write
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==2</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 8</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 3</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-3
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> block capture: while <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let i = 0
-let _write = while i&lt;5
-	$i
-	set i = $(i+1)
-end
-$_write
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">;  while i&lt;5[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i&lt;5</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 16</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i+1</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 5</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-01234
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> lexical offset 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let x = 0
-@join
-	let y=0
-	$(x+y)
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; y</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">1 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; y</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+y</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-0
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> lexical offset 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let x = 0
-@join
-	let y=0
-	@join
-		let z=0
-		$(x+y+z)
-	end
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; y</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; z</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">2 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">1 1</span> <span class="bc-info">; y</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+y</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; z</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+y+z</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
-<span class="bc-line-num">023</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-0
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> not shadowing <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let _write = 1
-if 1==1
-	set _write = 2
-end
-$_write
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==1</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 11</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 11</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-2
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> shadowing <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let _write = 1
-if 1==1
-	let _write = 2
-end
-$_write
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==1</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 13</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-1
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> simple affectation <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let _write = quill
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> simple affectation and eval <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let _write = quill
-$_write
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-quill
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> unknow use <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-use idontexists
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-Compilation error: Cannot open &#39;idontexists&#39;.
-Paths tried:
-	main/idontexists.plume
-	main/idontexists/init.plume
-	idontexists.plume
-	idontexists/init.plume
-File &#39;unknow use&#39;, line 1: use idontexists
-                               ^^^^^^^^^^^
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> use crash <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-use tests/plume/toimport/badlib
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-Compilation error: Error when executing &#39;tests/plume/toimport/badlib&#39;:
-Runtime error: Cannot convert the string value to a number.
-
-Traceback (most recent call first):
-  File &#39;tests/plume/toimport/badlib.plume&#39;, line 2: set x += a
-                                                        ^
-File &#39;use crash&#39;, line 1: use tests/plume/toimport/badlib
-                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> use not a table <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-use tests/plume/toimport/text
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wings</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-Compilation error: To be used, &#39;tests/plume/toimport/text&#39; must return a table. Currently, it returns a string.
-File &#39;use not a table&#39;, line 1: use tests/plume/toimport/text
-                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> wrong indentifier <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let if = 5
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-Syntax error: Cannot use &#39;if&#39; as identifier.
-File &#39;wrong indentifier&#39;, line 1: let if = 5
-                                      ^^
-</code></pre>
-</div>
-</details>
-<h2>z_issues: <span style="font-weight: normal;">42 passed and <span class="fail-count">2</span> failed out of 44 tests</span></h2>
-<div class="progress-bar"><div class="progress-success" style="width: 95.45%"></div><div class="progress-fail" style="width: 4.55%"></div></div>
-<details open>
-<summary>
-<span class="status-icon status-fail">✗</span> #329 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-use tests/plume/toimport/touse
-$nib()
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; m</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro wing()[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 15</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro nib()[...]</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; wing: $wing</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: $wing</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib: $nib</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: $nib</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">023</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">024</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
-<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">026</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<div class="comparison-grid">
-<h4>Expected</h4>
-<h4>Obtained</h4>
-<div><div class="result-type-header result-type-mismatch">Output</div><pre><code><span class="diff-expected">nib</span></code></pre></div>
-<div><div class="result-type-header result-type-mismatch">Error</div><pre><code><span class="diff-obtained">Runtime error: Cannot call a &#39;nil&#39; value.
-
-Traceback (most recent call first):
-  File &#39;#329&#39;, line 2: $nib()
-                        ^^^^^</span></code></pre></div>
-</div>
-</div>
-</details>
+<h2>z_issues: <span style="font-weight: normal;">43 passed and <span class="fail-count">1</span> failed out of 44 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 97.73%"></div><div class="progress-fail" style="width: 2.27%"></div></div>
 <details open>
 <summary>
 <span class="status-icon status-fail">✗</span> #358 <em style='font-weight: normal'></em>
@@ -2509,6 +1874,57 @@ false
 </details>
 <details>
 <summary>
+<span class="status-icon status-pass">✓</span> #329 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use tests/plume/toimport/touse
+$nib()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; m</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro wing()[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 15</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro nib()[...]</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; wing: $wing</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: $wing</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib: $nib</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: $nib</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+nib
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
 <span class="status-icon status-pass">✓</span> #330-1 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
@@ -2905,93 +2321,6 @@ end
 <h4>Output</h4>
 <pre><code>
 
-</code></pre>
-</div>
-</details>
-<h2>module: <span style="font-weight: normal;">1 passed and <span class="fail-count">1</span> failed out of 2 tests</span></h2>
-<div class="progress-bar"><div class="progress-success" style="width: 50.00%"></div><div class="progress-fail" style="width: 50.00%"></div></div>
-<details open>
-<summary>
-<span class="status-icon status-fail">✗</span> params 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-$import(tests/plume/toimport/param, x: 5)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param, x: 5)</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; tests/plume/toimport/param</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; x: 5</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x: 5</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; import</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param, x: 5)</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 10</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_STATIC     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; let param x = 10</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">JUMP_IF_PEEK    </span> <span class="bc-arg">0 17</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 19</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<div class="comparison-grid">
-<h4>Expected</h4>
-<h4>Obtained</h4>
-<div><div class="result-type-header">Output</div><pre><code><span class="diff-expected">5</span></code></pre></div>
-<div><div class="result-type-header">Output</div><pre><code></code></pre></div>
-</div>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> params 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-$import(tests/plume/toimport/param)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param)</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; tests/plume/toimport/param</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; import</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/param)</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 10</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_STATIC     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; let param x = 10</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">JUMP_IF_PEEK    </span> <span class="bc-arg">0 14</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 16</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-10
 </code></pre>
 </div>
 </details>
@@ -15989,6 +15318,626 @@ quill  mark
 <h4>Output</h4>
 <pre><code>
 quill  mark
+</code></pre>
+</div>
+</details>
+<h2>variables: <span style="font-weight: normal;">16 passed out of 16 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> already exists 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let nib
+use tests/plume/toimport/lib
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Compilation error: Cannot define static variable &#39;nib&#39; from lib &#39;tests/plume/toimport/lib&#39;, it already exists in the current file scope.
+File &#39;already exists 1&#39;, line 2: use tests/plume/toimport/lib
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> block capture: if 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let _write = if 1==1
+	5
+else
+	3
+end
+$_write
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 8</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+5
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> block capture: if 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let _write = if 1==2
+	5
+else
+	3
+end
+$_write
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==2</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 8</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 10</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+3
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> block capture: while <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let i = 0
+let _write = while i&lt;5
+	$i
+	set i = $(i+1)
+end
+$_write
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">;  while i&lt;5[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i&lt;5</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 16</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i+1</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 5</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+01234
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> lexical offset 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let x = 0
+@join
+	let y=0
+	$(x+y)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">1 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+y</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+0
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> lexical offset 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let x = 0
+@join
+	let y=0
+	@join
+		let z=0
+		$(x+y+z)
+	end
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">2 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">1 1</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+y</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+y+z</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @join[...]</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+0
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> not shadowing <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let _write = 1
+if 1==1
+	set _write = 2
+end
+$_write
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==1</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+2
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> shadowing <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let _write = 1
+if 1==1
+	let _write = 2
+end
+$_write
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 1==1</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+1
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> simple affectation <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let _write = quill
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> simple affectation and eval <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let _write = quill
+$_write
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; _write</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+quill
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> unknow use <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use idontexists
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Compilation error: Cannot open &#39;idontexists&#39;.
+Paths tried:
+	main/idontexists.plume
+	main/idontexists/init.plume
+	idontexists.plume
+	idontexists/init.plume
+File &#39;unknow use&#39;, line 1: use idontexists
+                               ^^^^^^^^^^^
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use tests/plume/toimport/lib
+$nib
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+quill
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use tests/plume/toimport/lib, tests/plume/toimport/lib2
+$nib\n
+$wing()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; n</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; blue</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; infos</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 25</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; infos</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; infos</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">;  </span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 2</span> <span class="bc-info">; info2</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; wing: macro()[...]</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: macro()[...]</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing()</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing()</span>
+<span class="bc-line-num">041</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing()</span>
+<span class="bc-line-num">042</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">043</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+quill
+blue quill
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use crash <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use tests/plume/toimport/badlib
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Compilation error: Error when executing &#39;tests/plume/toimport/badlib&#39;:
+Runtime error: Cannot convert the string value to a number.
+
+Traceback (most recent call first):
+  File &#39;tests/plume/toimport/badlib.plume&#39;, line 2: set x += a
+                                                        ^
+File &#39;use crash&#39;, line 1: use tests/plume/toimport/badlib
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use not a table <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use tests/plume/toimport/text
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wings</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Compilation error: To be used, &#39;tests/plume/toimport/text&#39; must return a table. Currently, it returns a string.
+File &#39;use not a table&#39;, line 1: use tests/plume/toimport/text
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> wrong indentifier <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let if = 5
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Syntax error: Cannot use &#39;if&#39; as identifier.
+File &#39;wrong indentifier&#39;, line 1: let if = 5
+                                      ^^
 </code></pre>
 </div>
 </details>
