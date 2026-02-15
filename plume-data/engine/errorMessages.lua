@@ -51,13 +51,21 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.useUnknowVariableError(node, varName)
-		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.", varName)
+	function plume.error.useUnknowVariableError(node, varName, isRef)
+		local refHint = ""
+		if isRef then
+			refHint = string.format(" '%s' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.", varName)
+		end
+		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.%s", varName, refHint)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setUnknowVariableError(node, varName)
-		local message = string.format("Cannot set variable '%s', it isn't defined in the current scope.", varName)
+	function plume.error.setUnknowVariableError(node, varName, isRef)
+		local refHint = ""
+		if isRef then
+			refHint = string.format(" '%s' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.", varName)
+		end
+		local message = string.format("Cannot set variable '%s', it isn't defined in the current scope.%s", varName, refHint)
 		throwCompilationError(node, message)
 	end
 

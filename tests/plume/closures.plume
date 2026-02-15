@@ -147,3 +147,29 @@ $f(2)
 /// Output
 12
 /// End
+
+/// Test Cannot capture ref 1
+let t = do
+   ref x: 5
+   y: macro()
+      $x
+   end
+end
+/// Error
+Compilation error: Cannot use variable 'x', it isn't defined in the current scope. 'x' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
+File 'Cannot capture ref 1', line 4: $x
+                                      ^
+/// End
+
+/// Test Cannot capture ref 2
+let t = do
+   ref x: 5
+   y: macro()
+      set x = 1
+   end
+end
+/// Error
+Compilation error: Cannot set variable 'x', it isn't defined in the current scope. 'x' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
+File 'Cannot capture ref 2', line 4: set x = 1
+                                     ^^^^^^^^^
+/// End

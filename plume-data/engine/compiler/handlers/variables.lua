@@ -19,9 +19,9 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node table The current AST node
 	nodeHandlerTable.IDENTIFIER = function(node)
 		local varName = node.content  
-		local var = context.getVariable(varName)
+		local var, isRef = context.getVariable(varName)
 		if not var then  
-			plume.error.useUnknowVariableError(node, varName)
+			plume.error.useUnknowVariableError(node, varName, isRef)
 		end  
 		if var.isStatic then  
 			context.registerOP(node, plume.ops.LOAD_STATIC, 0, var.offset)
@@ -45,7 +45,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isFrom boolean If using object destructuring  
 	--- @return table rvar The resolved variable object containing scope information and metadata  
 	local function resolveAssignmentTarget(node, varNode, isLet, isStatic, isConst, isParam, isFrom)  
-		local rvar  
+		local rvar, isRef
 		  
 		----------------------------------------------------------
 		--- Case 1: Variable assignment
@@ -92,9 +92,9 @@ return function (plume, context, nodeHandlerTable)
 					end  
 				end  
 			else  
-				rvar = context.getVariable(name)  
+				rvar, isRef = context.getVariable(name)  
 				if not rvar then  
-					plume.error.setUnknowVariableError(node, name)  
+					plume.error.setUnknowVariableError(node, name, isRef)  
 				elseif rvar.isConst then  
 					plume.error.setConstantVariableError(node, name, source)  
 				end  

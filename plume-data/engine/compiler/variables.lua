@@ -129,7 +129,11 @@ return function (plume, context)
 				local result
 				
 				if scopeDepth > 0 then
-					return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1)
+					if variable.isRef then
+						return nil, true
+					else
+						return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1)
+					end
 				else
 					result = {
 						frameOffset = #context.scopes-i,

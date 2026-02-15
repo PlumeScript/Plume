@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">349 passed out of 349 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">351 passed out of 351 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -2090,8 +2090,70 @@ end
 </code></pre>
 </div>
 </details>
-<h2>closures: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
+<h2>closures: <span style="font-weight: normal;">11 passed out of 11 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Cannot capture ref 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = do
+   ref x: 5
+   y: macro()
+      $x
+   end
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Compilation error: Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39; exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
+File &#39;Cannot capture ref 1&#39;, line 4: $x
+                                      ^
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Cannot capture ref 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = do
+   ref x: 5
+   y: macro()
+      set x = 1
+   end
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Compilation error: Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39; exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
+File &#39;Cannot capture ref 2&#39;, line 4: set x = 1
+                                     ^^^^^^^^^
+</code></pre>
+</div>
+</details>
 <details>
 <summary>
 <span class="status-icon status-pass">✓</span> Capture &quot;global&quot; <em style='font-weight: normal'></em>
