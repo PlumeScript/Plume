@@ -15,7 +15,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 return function (plume, context, nodeHandlerTable)
 	--- `use` directive execute a file that must return a table,
-	--- and load all keys as constants into the current file static table.
+	--- and load all keys as constants into the current file scope
 	nodeHandlerTable.USE_LIB = function(node)
 		local path = node.content
 

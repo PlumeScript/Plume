@@ -17,7 +17,6 @@ return function (plume, context)
 	--- Return the source filename, if exists and differents from processing one, of an imported variable. 
 	--- Used when name conflict between file variables and variables imported via `use`.
 	--- @param name string Name of the variable
-	--- @param isStatic bool
 	--- @return string|nil
 	function context.getNameSource(name)
 		local scope = context.getCurrentScope()
@@ -103,7 +102,7 @@ return function (plume, context)
 	--- Return nil if the variable hasn't be registered
 	--- @param name string The name of the variable
 	--- @param strict bool Shouldn't check in outer scopes
-	--- @return table|nil {frameOffset?, offset, isConst, isStatic}
+	--- @return table|nil {frameOffset?, offset, isConst}
 	function context.getVariable(name, strict)
 		local scopeDepth = 0
 		local relativeScopeOffset
@@ -146,14 +145,6 @@ return function (plume, context)
 				return result
 			end
 		end
-		if context.static[name] then
-			local variable = context.static[name]
-			return {
-				offset   = variable.offset,
-				isConst  = variable.isConst,
-				isStatic = variable.isStatic
-			}
-		end
 
 		-- Cannot found variable ; check if it is a std/imported one
 		local value = plume.std[name] or context.importedVariables[name]
@@ -182,26 +173,18 @@ return function (plume, context)
 		return context.constants[key]
 	end
 
-	--- Register a variable by its name in the local or static scope.
+	--- Register a variable by its name in the local scope
 	--- @param name string The name of the variable.
 	--- @param isConst boolean Flag to prevent future edits.
 	--- @param isParam boolean True if it should be initialized by the calling script.
-	--- @param staticValue any Initial value for static vars (compilation time, default to empty).
 	--- @param source string|nil The path to the file if imported via `use`.
 	--- @param isRef boolean True if it is a reference to a table field
 	--- @param ref string If isRef, name of the key ref
-	--- @return table|nil Returns the variable metadata {offset, isStatic, isConst, isRef, source}, or nil on name collision.
-	function context.registerVariable(name, isConst, isParam, staticValue, source, isRef, ref)
+	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
+	function context.registerVariable(name, isConst, isParam, source, isRef, ref)
 		local scope
 		scope = context.getCurrentScope()
 
-		-- To avoid conflicts between static variables
-		-- and non-static variables declared at the root
-		if #context.scopes == 1 then
-			if context.static[name] then
-				return nil
-			end
-		end 
 		if scope[name] then
 			return nil
 		end
@@ -212,7 +195,6 @@ return function (plume, context)
 
 		scope[name] = {
 			offset = #scope, -- Used by opcodes GET_LOCAL / SET_LOCAL to use the correct frame
-			isStatic = isStatic,
 			isConst = isConst,
 			isRef = isRef,
 			source = source,

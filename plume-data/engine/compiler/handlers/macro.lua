@@ -20,8 +20,8 @@ return function (plume, context, nodeHandlerTable)
 		local paramList       = plume.ast.get(node, "PARAMLIST") or {children={}}
 		local uid = context.getUID()
 
-		-- If the macro is named, save them in a static variable:
-		-- `macro wing()` is a sugar for `let static wing = macro()`
+		-- If the macro is named, save them in the local scope
+		-- `macro wing()` is a sugar for `let wing = macro()`
 		local macroName = macroIdentifier and macroIdentifier.content
 		-- node.label is a debug informations for macro declared as table field
 		local debugMacroName = macroName or node.label

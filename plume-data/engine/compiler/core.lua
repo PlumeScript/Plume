@@ -18,7 +18,7 @@ return function(plume)
 	--- @param code string The sourcecode
 	--- @param filename string Unique name associated with the source code
 	--- @param chunk chunk The table to store all sourcecode informations
-	--- (bytecode, static table, parameters names and number...)
+	--- (bytecode, parameters names and number...)
 	--- @return nil (instructions are writted directly into the chunk)
 	function plume.compileFile(code, filename, chunk, runtime)
 		local context = plume.newCompilationContext(chunk, runtime)
@@ -58,7 +58,6 @@ return function(plume)
 		context.chunk = chunk
 		context.runtime = runtime
 
-		context.static    = {}
 		context.constants = runtime.constants
 		
 		context.scopes    = {}
