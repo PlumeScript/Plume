@@ -63,7 +63,6 @@ return function (plume, context)
 			})
 
 			macro.upvalueMap[name] = macro.upvalues[#macro.upvalues]
-			plume.debug.print(macro.upvalues[#macro.upvalues])
 			local scopeUp = context.scopesUp[currentScopeIndex]
 			local found
 			for _, offset in ipairs(scopeUp) do
