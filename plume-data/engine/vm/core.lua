@@ -84,6 +84,8 @@ function _VM_INIT_VARS(vm, runtime, chunk)
 
     vm.tagStack = table.new(2^14, 0)
 
+    vm.fileParams = nil
+
     -- easier debuging than setting vm.ip
     vm.jump    = 0
 

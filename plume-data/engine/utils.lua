@@ -46,7 +46,7 @@ return function (plume)
 		
 		DUPLICATE SWITCH
 
-		RETURN RETURN_FILE
+		RETURN RETURN_FILE FILE_INIT_PARAMS
 
 		END
 ]]

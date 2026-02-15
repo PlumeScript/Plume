@@ -290,6 +290,9 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### RETURN_FILE
 
 
+#### FILE_INIT_PARAMS
+
+
 ### vm/std.lua
 
 #### STD_LEN

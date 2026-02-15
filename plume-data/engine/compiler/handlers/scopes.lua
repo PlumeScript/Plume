@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.FILE = context.file(function(node)
 		local lets = context.countLocals(node)
-		context.enterScope(lets)
+		context.enterScope(lets, true)
 		context.accBlock()(node, "macro_end")
 		context.leaveScope()
 	end)

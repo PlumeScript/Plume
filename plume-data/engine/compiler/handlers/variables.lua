@@ -163,7 +163,7 @@ return function (plume, context, nodeHandlerTable)
 			
 			-- Handle optional parameters (skip storage if value is provided/peeked)
 			if isParam then
-				context.registerOP(node, plume.ops.LOAD_STATIC, 0, var.offset)
+				context.registerOP(node, plume.ops.LOAD_LOCAL, 0, var.offset)
 				context.registerGoto(node, "param_end_"..uid, "JUMP_IF_PEEK")
 				context.registerOP(nil, plume.ops.STORE_VOID)
 			end

@@ -47,6 +47,7 @@ return function (plume)
         local injectionStack = table.new (64, 0)
         local injectionStackPointer = 0
         local tagStack = table.new (2 ^ 14, 0)
+        local fileParams = nil
         local jump = 0
         local empty = plume.obj.empty
         local flag = {}
@@ -3614,13 +3615,32 @@ return function (plume)
                                     end
                                 else
                                     if op < 59 then
-                                        goto END
-                                    else
                                         do
-                                            local _ret354
+                                            local params = fileParams
+                                            if params then
+                                                for _, paramInfos in ipairs (params)
+                                                 do
+                                                    do
+                                                        local _ret354
+                                                        _ret354 = variableStackFrames[variableStackFramesPointer or 0]
+                                                        variableStack[_ret354 + (paramInfos.offset - 1 or 0)] = paramInfos.value
+                                                    end
+                                                end
+                                                fileParams = nil
+                                            end
+                                        end
+                                    else
+                                        goto END
+                                    end
+                                end
+                            else
+                                if op < 62 then
+                                    if op < 61 then
+                                        do
+                                            local _ret355
                                             mainStackPointer = mainStackPointer - 1
-                                            _ret354 = mainStack[mainStackPointer + 1]
-                                            local t = _ret354.table[1]
+                                            _ret355 = mainStack[mainStackPointer + 1]
+                                            local t = _ret355.table[1]
                                             local tt = type (t)
                                             local result
                                             if tt == "table" then
@@ -3633,27 +3653,25 @@ return function (plume)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = result
                                         end
-                                    end
-                                end
-                            else
-                                if op < 62 then
-                                    if op < 61 then
-                                        do
-                                            local _ret355
-                                            mainStackPointer = mainStackPointer - 1
-                                            _ret355 = mainStack[mainStackPointer + 1]
-                                            local t = _ret355.table[1]
-                                            local _ret356
-                                            _ret356 = type (t) == "table" and (t == empty or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                            mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret356
-                                        end
                                     else
                                         do
-                                            local _ret357
+                                            local _ret356
                                             mainStackPointer = mainStackPointer - 1
-                                            _ret357 = mainStack[mainStackPointer + 1]
-                                            local args = _ret357.table
+                                            _ret356 = mainStack[mainStackPointer + 1]
+                                            local t = _ret356.table[1]
+                                            local _ret357
+                                            _ret357 = type (t) == "table" and (t == empty or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = _ret357
+                                        end
+                                    end
+                                else
+                                    if op < 63 then
+                                        do
+                                            local _ret358
+                                            mainStackPointer = mainStackPointer - 1
+                                            _ret358 = mainStack[mainStackPointer + 1]
+                                            local args = _ret358.table
                                             local start = args[1]
                                             local stop = args[2]
                                             local step = args[3] or 1
@@ -3666,20 +3684,6 @@ return function (plume)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", start = start - step, stop = stop, step = step, flag = ITER_SEQ}
                                         end
-                                    end
-                                else
-                                    if op < 63 then
-                                        do
-                                            local _ret358
-                                            mainStackPointer = mainStackPointer - 1
-                                            _ret358 = mainStack[mainStackPointer + 1]
-                                            local args = _ret358.table
-                                            if args.legacy then
-                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key -> x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey -> value\nend\n```", runtime, ip, {228, 230})
-                                            end
-                                            mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named, legacy = args.legacy}
-                                        end
                                     else
                                         do
                                             local _ret359
@@ -3687,10 +3691,10 @@ return function (plume)
                                             _ret359 = mainStack[mainStackPointer + 1]
                                             local args = _ret359.table
                                             if args.legacy then
-                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index -> x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex -> value\nend\n```", runtime, ip, {228, 230})
+                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key -> x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey -> value\nend\n```", runtime, ip, {228, 230})
                                             end
                                             mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS, legacy = args.legacy}
+                                            mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named, legacy = args.legacy}
                                         end
                                     end
                                 end
@@ -3709,7 +3713,19 @@ return function (plume)
                                             local _ret360
                                             mainStackPointer = mainStackPointer - 1
                                             _ret360 = mainStack[mainStackPointer + 1]
-                                            local args = _ret360
+                                            local args = _ret360.table
+                                            if args.legacy then
+                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index -> x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex -> value\nend\n```", runtime, ip, {228, 230})
+                                            end
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS, legacy = args.legacy}
+                                        end
+                                    else
+                                        do
+                                            local _ret361
+                                            mainStackPointer = mainStackPointer - 1
+                                            _ret361 = mainStack[mainStackPointer + 1]
+                                            local args = _ret361
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
                                             if args.legacy then
@@ -3735,11 +3751,12 @@ return function (plume)
                                                         runtime.files[filename] = chunk
                                                     end
                                                     if success then
+                                                        fileParams = {}
                                                         for _, key in ipairs (args.keys)
                                                          do
                                                             local offset = chunk.namedParamOffset[key]
                                                             if offset then
-                                                                chunk.static[offset] = args.table[key]
+                                                                table.insert (fileParams, {offset = offset, value = args.table[key]})
                                                             end
                                                         end
                                                         fileStackPointer = fileStackPointer + 1
@@ -3753,10 +3770,10 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = chunk.offset
-                                                            local _ret361
-                                                            _ret361 = macroStackPointer
+                                                            local _ret362
+                                                            _ret362 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = _ret361
+                                                            injectionStack[injectionStackPointer] = _ret362
                                                         end
                                                     else
                                                         vmerr = err
@@ -3775,8 +3792,8 @@ return function (plume)
             end
             goto DISPATCH
         ::END::
-        local _ret362
-        _ret362 = mainStack[mainStackPointer]
-        return true, _ret362
+        local _ret363
+        _ret363 = mainStack[mainStackPointer]
+        return true, _ret363
     end
 end

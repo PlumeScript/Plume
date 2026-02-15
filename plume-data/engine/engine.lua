@@ -282,23 +282,23 @@ return function (plume)
 									end
 								else
 									if op < 59 then
-										goto END
+										FILE_INIT_PARAMS(vm, arg1, arg2)
 									else
-										STD_LEN(vm, arg1, arg2)
+										goto END
 									end
 								end
 							else
 								if op < 62 then
 									if op < 61 then
-										STD_TYPE(vm, arg1, arg2)
+										STD_LEN(vm, arg1, arg2)
 									else
-										STD_SEQ(vm, arg1, arg2)
+										STD_TYPE(vm, arg1, arg2)
 									end
 								else
 									if op < 63 then
-										STD_ITEMS(vm, arg1, arg2)
+										STD_SEQ(vm, arg1, arg2)
 									else
-										STD_ENUMERATE(vm, arg1, arg2)
+										STD_ITEMS(vm, arg1, arg2)
 									end
 								end
 							end
@@ -312,6 +312,8 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
+										STD_ENUMERATE(vm, arg1, arg2)
+									else
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

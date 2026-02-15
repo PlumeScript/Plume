@@ -177,11 +177,13 @@ function STD_IMPORT(vm, arg1, arg2)
                 vm.runtime.files[filename] = chunk
             end
             if success then
-                -- Add params to static
+                -- Save params for FILE_INIT_PARAMS
+                vm.fileParams = {}
+
                 for _, key in ipairs(args.keys) do
                     local offset = chunk.namedParamOffset[key]
                     if offset then
-                        chunk.static[offset] = args.table[key]
+                        table.insert(vm.fileParams, {offset=offset, value=args.table[key]})
                     end
                 end
 

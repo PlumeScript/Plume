@@ -77,12 +77,18 @@ return function (plume, context)
     --- Enter a new scope, optionally registering local variable declarations.
     --- Generates a unique ID and registers a label for upvalue management.
     --- @param lets number|nil Number of local variables to declare in this scope (0 if nil)
-    function context.enterScope(lets)
+    --- @param isFile boolean It is the file scope? Used to load params
+    function context.enterScope(lets, isFile)
         if lets then
             context.registerOP(nil, plume.ops.ENTER_SCOPE, 0, lets)
         else
             -- Each macro open a scope, but it is handled by plume.run
         end
+
+        if isFile then
+            context.registerOP(nil, plume.ops.FILE_INIT_PARAMS)
+        end
+
         local uid = context.getUID()
         -- Used to open upvalues
         context.registerLabel(node, "scope_begin_" .. uid)
