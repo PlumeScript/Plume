@@ -266,8 +266,15 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isLet boolean True if the operation is a declaration
 	local function SETLET(node, isLet)
 		local isConst     = plume.ast.get(node, "CONST")
-		local isStatic    = plume.ast.get(node, "STATIC")
 		local isParam     = plume.ast.get(node, "PARAM")
+
+		---------------------------------------
+		-- WILL BE REMOVED IN 1.0 (#230, #332)
+		---------------------------------------
+		if plume.ast.get(node, "STATIC") then
+			plume.warning.deprecatedCompilationTime(node, "1.0", "Keyword `static`", "Instead of `let static x`, put `let x` at the file root.", {230, 332})
+		end
+		---------------------------------------
 
 		if isParam then
 			if isConst then
