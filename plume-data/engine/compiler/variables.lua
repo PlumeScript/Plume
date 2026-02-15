@@ -188,7 +188,6 @@ return function (plume, context)
 
 	--- Register a variable by its name in the local or static scope.
 	--- @param name string The name of the variable.
-	--- @param isStatic boolean Store in the static scope.
 	--- @param isConst boolean Flag to prevent future edits.
 	--- @param isParam boolean True if it should be initialized by the calling script.
 	--- @param staticValue any Initial value for static vars (compilation time, default to empty).
@@ -196,7 +195,7 @@ return function (plume, context)
 	--- @param isRef boolean True if it is a reference to a table field
 	--- @param ref string If isRef, name of the key ref
 	--- @return table|nil Returns the variable metadata {offset, isStatic, isConst, isRef, source}, or nil on name collision.
-	function context.registerVariable(name, isStatic, isConst, isParam, staticValue, source, isRef, ref)
+	function context.registerVariable(name, isConst, isParam, staticValue, source, isRef, ref)
 		local scope
 		if isStatic then
 			scope = context.static

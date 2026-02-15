@@ -73,8 +73,8 @@ return function (plume, context)
     --- @param node node
     --- @return number
     function context.countLocals(node)
-    	local lets = plume.ast.getAll(node, "LET")
-    	local count = 0
+    	local lets = plume.ast.getAll(node, "LET") 
+    	local count = #plume.ast.getAll(node, "MACRO")
     	for _, let in ipairs(lets) do
     		count = count + #plume.ast.get(let, "VARLIST").children
     	end

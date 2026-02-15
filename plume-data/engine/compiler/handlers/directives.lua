@@ -38,7 +38,6 @@ return function (plume, context, nodeHandlerTable)
         for _, key in ipairs(result.keys) do
         	local var = context.registerVariable(
         		key,                -- name
-        		true,               -- isStatic,
         		true,               -- isConst,
         		false,              -- isParam
         		result.table[key],  -- staticValue

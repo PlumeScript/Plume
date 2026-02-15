@@ -85,7 +85,7 @@ return function (plume, context, nodeHandlerTable)
   
 			-- Handle declaration (LET) or affectation (SET)  
 			if isLet then  
-				rvar = context.registerVariable(name, isStatic, isConst, isParam)  
+				rvar = context.registerVariable(name, isConst, isParam)  
 				if not rvar then  
 					if isStatic then  
 						plume.error.letExistingStaticVariableError(node, name, source)  

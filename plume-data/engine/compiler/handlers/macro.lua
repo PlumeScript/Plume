@@ -51,15 +51,12 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
 
 		if macroName then
-			local variable = context.registerVariable(
-				macroName,
-				true -- static
-			)
+			local variable = context.registerVariable(macroName)
 			if not variable then
 				plume.error.letExistingStaticVariableError(node, macroName, context.getNameSource(macroName))
 			end
 			
-			context.registerOP(macroIdentifier, plume.ops.STORE_STATIC, 0, variable.offset)
+			context.registerOP(macroIdentifier, plume.ops.STORE_LOCAL, 0, variable.offset)
 		end
 
 
