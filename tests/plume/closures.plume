@@ -108,3 +108,42 @@ $f()()()
 /// Output
 GP
 /// End
+
+/// Test Setter getter
+macro createBox()
+  let value = 0
+  _set: macro(v)
+    set value = $v
+  end
+  _get: macro()
+    $value
+  end
+end
+
+let box = $createBox()
+$box._set(42)
+$box._get()
+/// Output
+42
+/// End
+
+/// Test rec
+macro rec(n)
+   if n==0
+      macro(x)
+         $x
+      end
+   else
+      let f_rec = $rec($(n-1))
+      macro(x)
+         run $(print(x))
+         $(n * f_rec(x))
+      end
+   end
+end
+
+let f = $rec(3)
+$f(2)
+/// Output
+12
+/// End
