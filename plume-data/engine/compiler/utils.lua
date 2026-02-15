@@ -29,22 +29,6 @@ return function (plume, context)
 		return uid
 	end
 
-	--- Load all std function and store them as static variable
-	--- Don't check for registerVariable returning "nil" (mean: variable already exists)
-	--- But loadSTD is called first.
-	--- @return nil
-	function context.loadSTD()
-		local keys = {}
-		for key, f in pairs(plume.std) do
-			table.insert(keys, key)
-		end
-		table.sort(keys)
-
-		for _, key in ipairs(keys) do
-			context.registerVariable(key, true, false, false, plume.std[key])
-		end
-	end
-
 	--- Register an opcode in the current chunk
 	--- @param node node The source node to link the op with
 	--- @param op number opcode constant, should be plume.op.SOMETHING

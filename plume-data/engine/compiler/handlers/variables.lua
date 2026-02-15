@@ -30,6 +30,8 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
 		elseif var.isUpvalue then
 			context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
+		elseif var.isStd then
+			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, var.offset)
 		else  
 			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
 		end  
@@ -95,7 +97,7 @@ return function (plume, context, nodeHandlerTable)
 				rvar, isRef = context.getVariable(name)  
 				if not rvar then  
 					plume.error.setUnknowVariableError(node, name, isRef)  
-				elseif rvar.isConst then  
+				elseif rvar.isConst or rvar.isStd then  
 					plume.error.setConstantVariableError(node, name, source)  
 				end  
 			end  

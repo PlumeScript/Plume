@@ -159,13 +159,26 @@ return function (plume, context)
 				isStatic = variable.isStatic
 			}
 		end
+
+		-- Cannot found variable ; check if it is a std one
+		if plume.std[name] then
+			return {
+				isStd = true,
+				offset = context.registerConstant(plume.std[name])
+			}
+		end
 	end
 
 	--- Add a constant (raw strings or number found in the sourcecode) to the constant table.
 	--- @param value any The value to register.
 	--- @return number Offset of the constant, used by the opcode LOAD_CONSTANT
 	function context.registerConstant(value)
-		local key = tostring(value) -- for numeric keys
+		local key
+		if tonumber(value) then
+			key = tostring(value)
+		else
+			key = value
+		end
 		if not context.constants[key] then
 			table.insert(context.constants, value)
 			context.constants[key] = #context.constants

@@ -30,8 +30,6 @@ return function(plume)
 
 		-- Cache system disabled
 		-- if not plume.copyExecutableChunckFromCache(filename, chunk) then
-			-- Add std function to the chunck static table
-			context.loadSTD() 
 			-- Make the ast from source code
 			local ast = plume.parse(code, filename) 
 			-- Call, for each ast node, a function to emit bytecode

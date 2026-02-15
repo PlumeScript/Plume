@@ -123,7 +123,7 @@ File 'continue cutted from loops by macro', line 3: continue
 /// End
 
 /// Test iterator (next)
-set seq = macro(a, b)
+macro seq(a, b)
   state: $a
   stop: $b
   meta next: macro()
