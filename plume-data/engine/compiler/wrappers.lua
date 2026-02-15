@@ -95,13 +95,15 @@ return function (plume, context)
     --- Removes the top scope from the stack and manages associated upvalues.
     --- @param includeOP boolean|nil If true, registers the LEAVE_SCOPE operation
     function context.leaveScope(includeOP)
+        context.manageUpvalues(table.remove(context.scopesUp))
+        table.remove(context.scopes)
+        
         if includeOP then
             context.registerOP(nil, plume.ops.LEAVE_SCOPE, 0, 0)
         else
             -- For macro, LEAVE_SCOPE is handled by RETURN
         end
-        context.manageUpvalues(table.remove(context.scopesUp))
-        table.remove(context.scopes)
+        
     end
 
     --- Wrapper for scope.

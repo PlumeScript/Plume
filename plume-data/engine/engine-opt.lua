@@ -297,7 +297,7 @@ return function (plume)
                                             local _ret34
                                             do
                                                 local _ret35
-                                                _ret35 = variableStackFrames[variableStackFramesPointer + 1 - 1]
+                                                _ret35 = variableStackFrames[variableStackFramesPointer + -0]
                                                 _ret34 = _ret35 + arg2 - 1
                                                 goto _inline_end57
                                             end
@@ -312,7 +312,7 @@ return function (plume)
                                             local _ret36
                                             do
                                                 local _ret37
-                                                _ret37 = variableStackFrames[variableStackFramesPointer + 1 - 1]
+                                                _ret37 = variableStackFrames[variableStackFramesPointer + -0]
                                                 _ret36 = _ret37 + arg2 - 1
                                                 goto _inline_end60
                                             end
@@ -339,12 +339,13 @@ return function (plume)
                                                     local _ret40
                                                     do
                                                         local _ret41
-                                                        _ret41 = variableStackFrames[variableStackFramesPointer + (upvalueInfos.scopeOffset or 1) - 1]
+                                                        _ret41 = variableStackFrames[variableStackFramesPointer + -(upvalueInfos.scopeOffset or 0)]
                                                         _ret40 = _ret41 + upvalueInfos.localOffset - 1
                                                         goto _inline_end66
                                                     end
                                                     ::_inline_end66::
-                                                    local upvalue = upvalueMap[_ret40]
+                                                    local offset = _ret40
+                                                    local upvalue = upvalueMap[offset]
                                                     macroClosure.upvalues[upvalueInfos.offset] = upvalue
                                                 end
                                             end

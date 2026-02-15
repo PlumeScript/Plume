@@ -37,14 +37,14 @@ return function (plume, context)
 	--- @param variableOffset number
 	--- @param closureDistance number
 	--- @param scope table
-	function context.registerUpvalue(name, variableOffset, scopeOffset, scope)
+	function context.registerUpvalue(name, variableOffset, _, scope, scopeDelta)
 		local macro = context.getLast "macros"
 
 		if not macro.upvalueMap[name] then
 			table.insert(macro.upvalues, {
 				offset = #macro.upvalues+1,
 				localOffset = variableOffset, -- local offset to capture the variable
-				scopeOffset = scopeOffset, -- in which scope get the variable
+				scopeOffset = scopeDelta-1, -- in which scope get the variable
 				isUpvalue = true
 			})
 
@@ -98,7 +98,7 @@ return function (plume, context)
 				local result
 				
 				if closureDistance > 0 then
-					return context.registerUpvalue(name, variable.offset, closureDistance, i)
+					return context.registerUpvalue(name, variable.offset, closureDistance, i, #context.scopes-i)
 				else
 					result = {
 						frameOffset = #context.scopes-i,

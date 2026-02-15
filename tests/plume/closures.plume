@@ -22,6 +22,41 @@ $f()
 1020
 /// End
 
+
+/// Test Capture nested scopes 1
+macro makeClosure()
+   let a = 10
+
+   if true
+      let b = 20
+      macro ()
+         $a$b
+      end
+   end
+end
+let f = $makeClosure()
+$f()
+/// Output
+1020
+/// End
+
+/// Test Capture nested scopes 2
+macro makeClosure()
+   let a = 10
+   let b = 20
+   macro ()
+      if true
+         $a$b
+      end
+   end
+end
+let f = $makeClosure()
+$f()
+/// Output
+1020
+/// End
+
+
 /// Test Mutation
 macro makeCounter()
   let count = 0

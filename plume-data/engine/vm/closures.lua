@@ -15,7 +15,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 --! inline
 function _UPVALUE_OFFSET(vm, localoffset, scopeoffset)
-	return _STACK_GET_OFFSET(vm.variableStack.frames, (scopeoffset or 1)-1) + localoffset - 1
+	return _STACK_GET_OFFSET(vm.variableStack.frames, -(scopeoffset or 0)) + localoffset - 1
 end
 
 --- @opcode
@@ -69,7 +69,8 @@ function CLOSURE (vm, arg1, arg2)
 		}
 		_STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), macroClosure)
 		for _, upvalueInfos in ipairs(macro.upvalues) do
-			local upvalue = vm.upvalueMap[_UPVALUE_OFFSET(vm, upvalueInfos.localOffset, upvalueInfos.scopeOffset)]
+			local offset = _UPVALUE_OFFSET(vm, upvalueInfos.localOffset, upvalueInfos.scopeOffset)
+			local upvalue = vm.upvalueMap[offset]
 			macroClosure.upvalues[upvalueInfos.offset] = upvalue
 		end
 	end
