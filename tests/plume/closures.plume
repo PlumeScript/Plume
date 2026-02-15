@@ -1,0 +1,175 @@
+/// Test Capture "global"
+let value = 5
+macro Wing()
+  $value
+end
+$Wing()
+/// Output
+5
+/// End
+
+/// Test Capture inside macro
+macro makeClosure()
+   let a = 10
+   let b = 20
+   macro ()
+      $a$b
+   end
+end
+let f = $makeClosure()
+$f()
+/// Output
+1020
+/// End
+
+
+/// Test Capture nested scopes 1
+macro makeClosure()
+   let a = 10
+
+   if true
+      let b = 20
+      macro ()
+         $a$b
+      end
+   end
+end
+let f = $makeClosure()
+$f()
+/// Output
+1020
+/// End
+
+/// Test Capture nested scopes 2
+macro makeClosure()
+   let a = 10
+   let b = 20
+   macro ()
+      if true
+         $a$b
+      end
+   end
+end
+let f = $makeClosure()
+$f()
+/// Output
+1020
+/// End
+
+
+/// Test Mutation
+macro makeCounter()
+  let count = 0
+  macro()
+    set count += 1
+    $count
+  end
+end
+
+let counter = $makeCounter()
+$counter()
+$counter()
+/// Output
+12
+/// End
+
+/// Test Nested Macros 1
+macro grandPa()
+  let secret = GP
+  
+  macro()
+    macro()
+      $secret
+    end
+  end
+end
+
+let f = $grandPa()
+$f()()
+/// Output
+GP
+/// End
+
+/// Test Nested Macros 2
+macro grandPa()
+  let secret = GP
+  
+  macro()
+    macro()
+      macro()
+         $secret
+      end
+    end
+  end
+end
+
+let f = $grandPa()
+$f()()()
+/// Output
+GP
+/// End
+
+/// Test Setter getter
+macro createBox()
+  let value = 0
+  _set: macro(v)
+    set value = $v
+  end
+  _get: macro()
+    $value
+  end
+end
+
+let box = $createBox()
+$box._set(42)
+$box._get()
+/// Output
+42
+/// End
+
+/// Test rec
+macro rec(n)
+   if n==0
+      macro(x)
+         $x
+      end
+   else
+      let f_rec = $rec($(n-1))
+      macro(x)
+         run $(print(x))
+         $(n * f_rec(x))
+      end
+   end
+end
+
+let f = $rec(3)
+$f(2)
+/// Output
+12
+/// End
+
+/// Test Cannot capture ref 1
+let t = do
+   ref x: 5
+   y: macro()
+      $x
+   end
+end
+/// Error
+Compilation error: Cannot use variable 'x', it isn't defined in the current scope. 'x' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
+File 'Cannot capture ref 1', line 4: $x
+                                      ^
+/// End
+
+/// Test Cannot capture ref 2
+let t = do
+   ref x: 5
+   y: macro()
+      set x = 1
+   end
+end
+/// Error
+Compilation error: Cannot set variable 'x', it isn't defined in the current scope. 'x' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
+File 'Cannot capture ref 2', line 4: set x = 1
+                                     ^^^^^^^^^
+/// End

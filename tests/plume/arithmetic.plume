@@ -169,7 +169,7 @@ true
 /// End
 
 /// Test lazy or 1
-let static x = 0
+let x = 0
 macro inc()
   set x += 1
 end
@@ -180,7 +180,7 @@ $x
 /// End
 
 /// Test lazy or 2
-let static x = 0
+let x = 0
 macro inc()
   set x += 1
 end
@@ -191,7 +191,7 @@ $x
 /// End
 
 /// Test lazy and 1
-let static x = 0
+let x = 0
 macro inc()
   set x += 1
 end
@@ -202,7 +202,7 @@ $x
 /// End
 
 /// Test lazy and 2
-let static x = 0
+let x = 0
 macro inc()
   set x += 1
 end

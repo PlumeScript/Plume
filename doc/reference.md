@@ -220,7 +220,9 @@ A macro signature can include positional parameters, named parameters with defau
     *   Named arguments are added as named items (e.g., `key: "value"`).
     *   The order of items in the table respects the order in which they were provided in the call.
 
-Macros are nearly pure: they cannot access variables from their parent scope, but they can access `static` variables defined at the file's root. The statement `macro name ...` is syntactic sugar for `let static name = macro ...`.
+Macros support **closures**: they can access variables from their parent scopes, capturing the values at the point of definition. This allows macros to reference outer variables, parameters, and other macros defined in enclosing scopes. The only exception to this rule is that macros **cannot capture** variables declared with the `ref` keyword; attempting to do so will result in a compilation error.
+
+The statement `macro name ...` is syntactic sugar for `let name = macro ...`.
 
 **Calls:**
 Given the following macro:
@@ -285,13 +287,13 @@ Declares new variables in the **current scope**.
 
 ```plume
 // 1. Multiple Declaration
-let [static] [const] name1, name2, ...
+let [const] name1, name2, ...
 
 // 2. Positional Destructuring
-let [static] [const] name1, name2, ... = expression
+let [const] name1, name2, ... = expression
 
 // 3. Named Destructuring (from)
-let [static] [const] key1, sourceKey as alias, key: default, ... from expression
+let [const] key1, sourceKey as alias, key: default, ... from expression
 
 // 4. Parameter Declaration
 let param name [= value]
@@ -359,7 +361,7 @@ let id, role as group, name: Anonymous from $user
 ```
 
 **4. Parameters declaration**
-Variables can be declared as module parameters using the `param` keyword. A `param` variable is automatically `static` and `const`.
+Variables can be declared as module parameters using the `param` keyword. A `param` variable is automatically `const`.
 
 ```plume
 let param varname [= defaultValue]
@@ -368,11 +370,11 @@ These variables are intended to be populated by the caller during an `import`. I
 
 
 **Common Rules:**
-*   **Modifiers:** `static` and `const` apply to all variables declared in the statement.
+*   **Modifiers:** `const` apply to all variables declared in the statement.
 *   **Validation:** An error is raised if a variable with the same name already exists in the current scope, or if a `const` variable is declared without a value (in the standard declaration form).
 
 #### `set`
-Assigns new values to **existing** variables. `set` searches for each variable first in the current scope, then in parent scopes, and finally in the static scope.
+Assigns new values to **existing** variables. `set` searches for each variable first in the current scope, then in parent scopes.
 
 ```plume
 // 1. Single Assignment
@@ -622,7 +624,7 @@ Using `run` allows for imperative-style procedure calls within Plume's expressio
 
 ### Context Injection (`use <path>`)
 
-The `use` directive allows injecting the keys of a table returned by a module directly into the current file’s scope as `static const` variables.
+The `use` directive allows injecting the keys of a table returned by a module directly into the current file’s scope as `const` variables.
 
 **Syntax:**
 ```plume
@@ -652,7 +654,7 @@ While both mechanisms allow code reuse, they serve different purposes:
 | :--- | :--- | :--- |
 | **Execution** | Runtime | Compilation time |
 | **Flexibility** | High (dynamic paths, parameters) | Low (literal paths only) |
-| **Scope** | User choice | static const |
+| **Scope** | User choice | const |
 | **Namespace** | Clean (returns a value) | Polluted (injects all keys) |
 | **Type** | Macro | Compiler Directive |
 
@@ -674,7 +676,7 @@ use html
     - $span(Hello World)
 end
 ```
-**Note:** since div is static const, it cannot be overwritten.
+**Note:** since div is const, it cannot be overwritten.
 This is intentional behavior. If you want to monkey-patch a library, you must create a new file:
 
 ```
@@ -885,7 +887,7 @@ Unlike `import`, the following functions do not use the `plume_path` resolution 
 
 ### Lua Integration
 
-Plume provides a `lua` static variable that acts as a bridge to the underlying Lua environment. This variable contains wrappers for essential Lua functions and libraries, allowing for advanced operations not covered by the Plume standard library.
+Plume provides a `lua` variable that acts as a bridge to the underlying Lua environment. This variable contains wrappers for essential Lua functions and libraries, allowing for advanced operations not covered by the Plume standard library.
 
 The `lua` table includes:
 *   **Module Loading**: `lua.require(path)` (used to load Lua modules, use same Path resolution as `import`).

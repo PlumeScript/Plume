@@ -25,7 +25,6 @@ return function(plume)
 			instructions         = {},
 			linkedInstructions   = {},
 			bytecode             = {},
-			static               = {},
 			constants            = {},
 			mapping              = {},
 			positionalParamCount = 0,
@@ -60,7 +59,6 @@ return function(plume)
 		chunk.instructions         = source.instructions
 		chunk.linkedInstructions   = source.linkedInstructions
 		chunk.bytecode             = source.bytecode
-		chunk.static               = source.static
 		chunk.constants            = source.constants
 		chunk.mapping              = source.mapping
 		chunk.positionalParamCount = source.positionalParamCount
@@ -76,7 +74,6 @@ return function(plume)
 			instructions         = chunk.instructions,
 			linkedInstructions   = chunk.linkedInstructions,
 			bytecode             = chunk.bytecode,
-			static               = chunk.static, -- Source of errors
 			constants            = chunk.constants,
 			mapping              = chunk.mapping,
 			positionalParamCount = chunk.positionalParamCount,

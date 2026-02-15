@@ -51,13 +51,21 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.useUnknowVariableError(node, varName)
-		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.", varName)
+	function plume.error.useUnknowVariableError(node, varName, isRef)
+		local refHint = ""
+		if isRef then
+			refHint = string.format(" '%s' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.", varName)
+		end
+		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.%s", varName, refHint)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setUnknowVariableError(node, varName)
-		local message = string.format("Cannot set variable '%s', it isn't defined in the current scope.", varName)
+	function plume.error.setUnknowVariableError(node, varName, isRef)
+		local refHint = ""
+		if isRef then
+			refHint = string.format(" '%s' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.", varName)
+		end
+		local message = string.format("Cannot set variable '%s', it isn't defined in the current scope.%s", varName, refHint)
 		throwCompilationError(node, message)
 	end
 
@@ -86,28 +94,13 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.letExistingStaticVariableError(node, varName, source)
-		if source then
-			source = string.format(" (imported from '%s')", source)
-		else
-			source = ""
-		end
-		local message = string.format("Cannot define static variable '%s', it already exists in the current file scope%s.", varName, source)
-		throwCompilationError(node, message)
-	end
-
 	function plume.error.cannotUseParamAndConst(node)
 		local message = "Cannot use 'const' and 'param' together (parameter variable are by default constant)."
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.cannotUseParamAndStatic(node)
-		local message = "Cannot use 'static' and 'param' together (parameter variable are by default static)."
-		throwCompilationError(node, message)
-	end
-
-	function plume.error.useExistingStaticVariableError(node, varName, use)
-		local message = string.format("Cannot define static variable '%s' from lib '%s', it already exists in the current file scope.", varName, use)
+	function plume.error.useExistingVariableError(node, varName, use)
+		local message = string.format("Cannot define variable '%s' from lib '%s', it already exists in the current file scope.", varName, use)
 		throwCompilationError(node, message)
 	end
 

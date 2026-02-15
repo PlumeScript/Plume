@@ -33,12 +33,21 @@ function CONCAT_CALL (vm, arg1, arg2)
     end
 
     -- Macro
-    if t == "macro" then
+    if t == "macro"  then
         if self then
             _PUSH_SELF(vm, self)
         end
 
         _CALL_MACRO(vm, tocall)
+
+    elseif t == "closure" then
+        if self then
+            _PUSH_SELF(vm, self)
+        end
+
+
+        _CALL_MACRO(vm, tocall.macro)
+        _STACK_PUSH(vm.closureStack, tocall.upvalues)
 
     -- Std functions defined in lua or user lua functions
     elseif t == "luaFunction" then

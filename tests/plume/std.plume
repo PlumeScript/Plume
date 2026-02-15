@@ -157,7 +157,7 @@ quill
 /// End
 
 /// Test import lib 2
-let static infos = bird
+let infos = bird
 let lib = $import(tests/plume/toimport/lib2)
 $lib.wing() $infos
 /// Output

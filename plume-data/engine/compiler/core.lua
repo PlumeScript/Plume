@@ -18,7 +18,7 @@ return function(plume)
 	--- @param code string The sourcecode
 	--- @param filename string Unique name associated with the source code
 	--- @param chunk chunk The table to store all sourcecode informations
-	--- (bytecode, static table, parameters names and number...)
+	--- (bytecode, parameters names and number...)
 	--- @return nil (instructions are writted directly into the chunk)
 	function plume.compileFile(code, filename, chunk, runtime)
 		local context = plume.newCompilationContext(chunk, runtime)
@@ -30,8 +30,6 @@ return function(plume)
 
 		-- Cache system disabled
 		-- if not plume.copyExecutableChunckFromCache(filename, chunk) then
-			-- Add std function to the chunck static table
-			context.loadSTD() 
 			-- Make the ast from source code
 			local ast = plume.parse(code, filename) 
 			-- Call, for each ast node, a function to emit bytecode
@@ -60,17 +58,18 @@ return function(plume)
 		context.chunk = chunk
 		context.runtime = runtime
 
-		context.static    = {}
 		context.constants = runtime.constants
 		
 		context.scopes    = {}
+		context.scopesUp  = {}
 		context.concats   = {}
 		context.roots     = {}
 		context.loops     = {}
 		context.macros    = {}
 
+		context.importedVariables = {}
+
 		context.accBlockDeep = 0
-		
 
 		require 'plume-data/engine/compiler/labels'    (plume, context)
 		require 'plume-data/engine/compiler/wrappers'  (plume, context)

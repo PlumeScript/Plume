@@ -179,6 +179,25 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### RETURN
 
 
+### vm/closures.lua
+
+#### OPEN_UPVALUE
+
+- **arg2** *(local)*: offset
+
+#### CLOSE_UPVALUE
+
+
+#### LOAD_UPVALUE
+
+- **arg2** *(local)*: offset
+
+#### STORE_UPVALUE
+
+
+#### CLOSURE
+
+
 ### vm/iter.lua
 
 #### GET_ITER
@@ -237,10 +256,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 <br>Unstack 1, key <br>Stack 1, key value in target accumulator 
 - **arg1** *(Scope)*: offset
 
-#### LOAD_STATIC
-<br>Stack 1 from the static table 
-- **arg2** *(static)*: offset
-
 #### LOAD_TRUE
 <br>Stack 1, `true` 
 
@@ -271,6 +286,9 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### RETURN_FILE
 
 
+#### FILE_INIT_PARAMS
+
+
 ### vm/std.lua
 
 #### STD_LEN
@@ -292,10 +310,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 
 
 ### vm/store.lua
-
-#### STORE_STATIC
-<br>Set a value in the static table <br>Unstack 1, the value to set 
-- **arg2** *(variable)*: offset
 
 #### STORE_LOCAL
 <br>Set a local value <br>Unstack 1, the value to set 

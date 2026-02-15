@@ -51,7 +51,6 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.runtime   = runtime
     vm.bytecode  = runtime.bytecode
     vm.constants = runtime.constants
-    vm.static    = runtime.static
 
     -- instruction pointer
     vm.ip      = chunk.offset - 1
@@ -67,6 +66,10 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.variableStack.frames         = table.new(2^8, 0)
     vm.variableStack.pointer        = 0
     vm.variableStack.frames.pointer = 0
+    vm.upvalueMap                 = table.new(2^10, 0)
+
+    vm.closureStack                 = table.new(2^8, 0)
+    vm.closureStack.pointer         = 0
 
     vm.fileStack = table.new(2^8, 0)
     vm.fileStack[1] = chunk.fileID
@@ -79,6 +82,8 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.injectionStack.pointer = 0
 
     vm.tagStack = table.new(2^14, 0)
+
+    vm.fileParams = nil
 
     -- easier debuging than setting vm.ip
     vm.jump    = 0

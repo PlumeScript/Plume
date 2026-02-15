@@ -106,7 +106,7 @@ end
 macro wings()
 end
 /// Error
-Compilation error: Cannot define static variable 'wings', it already exists in the current file scope.
+Compilation error: Cannot define variable 'wings', it already exists in the current scope.
 File '#138', line 3: macro wings()
                      ^^^^^^^^^^^^^
 /// End
@@ -319,11 +319,11 @@ a
 
 /// Test #239
 let x = 5
-let static x = 5
+let x = 5
 /// Error
-Compilation error: Cannot define static variable 'x', it already exists in the current file scope.
-File '#239', line 2: let static x = 5
-                     ^^^^^^^^^^^^^^^^
+Compilation error: Cannot define variable 'x', it already exists in the current scope.
+File '#239', line 2: let x = 5
+                     ^^^^^^^^^
 /// End
 
 /// Test #288-1

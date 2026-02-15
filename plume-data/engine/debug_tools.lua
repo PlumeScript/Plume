@@ -201,7 +201,7 @@ return function (plume)
 
 		if ("LOAD_CONSTANT"):match(name) then
 			value = constInfos.value
-		elseif ("CALL OPP_CONCAT LOAD_STATIC STORE_STATIC ESCAPE EVAL_SHORT STORE_LOCAL LOAD_LOCAL JUMP_IF ACC_CALL JUMP_IF_NOT_EMPTY JUMP ENTER_FILE"):match(name) then
+		elseif ("CALL OPP_CONCAT ESCAPE EVAL_SHORT STORE_LOCAL LOAD_LOCAL JUMP_IF ACC_CALL JUMP_IF_NOT_EMPTY JUMP ENTER_FILE"):match(name) then
 			-- value = arg2
 		elseif ("LOAD_LEXICAL STORE_LEXICAL ENTER_SCOPE"):match(name) then
 			-- value = arg1 .. " " .. arg2

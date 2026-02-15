@@ -14,16 +14,6 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 --- @opcode
---- Set a value in the static table
---- Unstack 1, the value to set
---- @param arg2 variable offset
---! inline
-function STORE_STATIC (vm, arg1, arg2)
-    local currentStatic = _GET_STATIC(vm)
-    currentStatic[arg2] = _STACK_POP(vm.mainStack)
-end
-
---- @opcode
 --- Set a local value
 --- Unstack 1, the value to set
 --- @param arg1 frame offset

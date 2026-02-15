@@ -48,3 +48,15 @@ function RETURN_FILE(vm, arg1, arg2)
         JUMP(vm, 0, _STACK_POP(vm.macroStack)) -- return in the previous position
     end
 end
+
+--- @opcode
+--! inline
+function FILE_INIT_PARAMS(vm, arg1, arg2)
+    local params = vm.fileParams
+    if params then
+        for _, paramInfos in ipairs(params) do
+            _STACK_SET_FRAMED(vm.variableStack, paramInfos.offset-1, 0, paramInfos.value)
+        end
+        vm.fileParams = nil
+    end
+end

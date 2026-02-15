@@ -29,31 +29,24 @@ return function (plume, context)
 		return uid
 	end
 
-	--- Load all std function and store them as static variable
-	--- Don't check for registerVariable returning "nil" (mean: variable already exists)
-	--- But loadSTD is called first.
-	--- @return nil
-	function context.loadSTD()
-		local keys = {}
-		for key, f in pairs(plume.std) do
-			table.insert(keys, key)
-		end
-		table.sort(keys)
-
-		for _, key in ipairs(keys) do
-			context.registerVariable(key, true, false, false, plume.std[key])
-		end
-	end
-
 	--- Register an opcode in the current chunk
 	--- @param node node The source node to link the op with
 	--- @param op number opcode constant, should be plume.op.SOMETHING
 	--- @param arg1 number|nil First argument to give to the opcode. Default to 0.
 	--- @param arg2 number|nil Second argument to give to the opcode. Default to 0.
-	function context.registerOP(node, op, arg1, arg2)
+	--- @param label string
+	function context.registerOP(node, op, arg1, arg2, label)
 		assert(op) -- Guard against opcode typo
 		local current = context.runtime.instructions
-		table.insert(current, {op, arg1 or 0, arg2 or 0, mapsto=node})
+		local instr   = {op, arg1 or 0, arg2 or 0, mapsto=node}
+		if label then
+			if not context.runtime.insert[label] then
+				context.runtime.insert[label] = {}
+			end
+			table.insert(context.runtime.insert[label], instr)
+		else
+			table.insert(current, instr)
+		end
 	end
 
 	--- Return the last scope of context.scopes
@@ -80,8 +73,8 @@ return function (plume, context)
     --- @param node node
     --- @return number
     function context.countLocals(node)
-    	local lets = plume.ast.getAll(node, "LET")
-    	local count = 0
+    	local lets = plume.ast.getAll(node, "LET") 
+    	local count = #plume.ast.getAll(node, "MACRO")
     	for _, let in ipairs(lets) do
     		count = count + #plume.ast.get(let, "VARLIST").children
     	end

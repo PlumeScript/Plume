@@ -52,8 +52,7 @@ return function (plume, context, nodeHandlerTable)
 
 		-------------------------------------------------------
 		-- why don't use the wrapper context.scope()?
-		context.registerOP(nil, plume.ops.ENTER_SCOPE, 0, 3) -- iterator, state and flag
-		table.insert(context.scopes, {}) 
+		context.enterScope(3) -- iterator, state and flag
 		-------------------------------------------------------
 
 			context.registerOP(node, plume.ops.STORE_LOCAL, 0, 1) -- Save the iterator
@@ -68,7 +67,6 @@ return function (plume, context, nodeHandlerTable)
 					nil,   -- body
 					true,  -- isLet
 					false, -- isConst
-					false, -- isStatic
 					false, -- isParam
 					false, -- isFrom 
 					nil,   -- compound
@@ -90,8 +88,7 @@ return function (plume, context, nodeHandlerTable)
 		
 		-------------------------------------------------------
 		-- why don't use the wrapper context.scope()?
-		table.remove(context.scopes)
-		context.registerOP(node, plume.ops.LEAVE_SCOPE)
+		context.leaveScope(true)
 		-------------------------------------------------------	
 	end
 

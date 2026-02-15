@@ -46,7 +46,7 @@ end
 macro wings()
 end
 /// Error
-Compilation error: Cannot define static variable 'wings', it already exists in the current file scope.
+Compilation error: Cannot define variable 'wings', it already exists in the current scope.
 File 'define macro twice', line 3: macro wings()
                                    ^^^^^^^^^^^^^
 /// End

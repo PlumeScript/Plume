@@ -69,18 +69,6 @@ function LOAD_REF (vm, arg1, arg2)
 end
 
 --- @opcode
---- Stack 1 from the static table
---- @param arg2 static offset
---! inline
-function LOAD_STATIC (vm, arg1, arg2)
-    local currentStatic = _GET_STATIC(vm)
-    _STACK_PUSH(
-        vm.mainStack,
-        currentStatic[arg2]
-    )
-end
-
---- @opcode
 --- Stack 1, `true`
 --! inline
 function LOAD_TRUE (vm, arg1, arg2)
