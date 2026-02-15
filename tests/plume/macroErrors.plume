@@ -97,8 +97,8 @@ Traceback (most recent call first):
 /// End
 
 /// Test stack overflow
-let static quill
-let static mark
+let quill, mark
+
 
 set quill = macro()
   $mark()

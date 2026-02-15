@@ -258,7 +258,7 @@ nib
 /// End
 
 /// Test setindex 1
-let static side = 0
+let side = 0
 let t = @table
   meta setindex: macro(name, value)
     set side = 1
@@ -272,7 +272,7 @@ $side
 /// End
 
 /// Test setindex 2
-let static side = 0
+let side = 0
 let t = @table
   meta setindex: macro(name, value)
     set side = 1

@@ -145,7 +145,7 @@ File 'use not a table', line 1: use tests/plume/toimport/text
 /// End
 
 /// Test already exists 1
-let static nib
+let nib
 use tests/plume/toimport/lib
 /// Error
 Compilation error: Cannot define static variable 'nib' from lib 'tests/plume/toimport/lib', it already exists in the current file scope.
@@ -155,9 +155,9 @@ File 'already exists 1', line 2: use tests/plume/toimport/lib
 
 /// Test already exists 2
 use tests/plume/toimport/lib
-let static nib
+let nib
 /// Error
 Compilation error: Cannot define static variable 'nib', it already exists in the current file scope (imported from 'tests/plume/toimport/lib').
-File 'already exists 2', line 2: let static nib
-                                 ^^^^^^^^^^^^^^
+File 'already exists 2', line 2: let nib
+                                 ^^^^^^^
 /// End
