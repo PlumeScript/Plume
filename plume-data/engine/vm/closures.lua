@@ -22,6 +22,7 @@ end
 --- @param arg2 local offset
 --! inline
 function OPEN_UPVALUE (vm, arg1, arg2)
+
 	local offset  = _UPVALUE_OFFSET(vm, arg2)
 	vm.upvalueMap[offset] = {
 		reference = vm.variableStack,
@@ -69,8 +70,13 @@ function CLOSURE (vm, arg1, arg2)
 		}
 		_STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), macroClosure)
 		for _, upvalueInfos in ipairs(macro.upvalues) do
-			local offset = _UPVALUE_OFFSET(vm, upvalueInfos.localOffset, upvalueInfos.scopeOffset)
-			local upvalue = vm.upvalueMap[offset]
+			local upvalue
+			if upvalueInfos.parentOffset then
+				upvalue = _STACK_GET(vm.closureStack)[upvalueInfos.parentOffset]
+			else
+				local offset = _UPVALUE_OFFSET(vm, upvalueInfos.localOffset, upvalueInfos.scopeOffset)
+				upvalue = vm.upvalueMap[offset]	
+			end
 			macroClosure.upvalues[upvalueInfos.offset] = upvalue
 		end
 	end

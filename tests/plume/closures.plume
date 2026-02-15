@@ -72,3 +72,39 @@ $counter()
 /// Output
 12
 /// End
+
+/// Test Nested Macros 1
+macro grandPa()
+  let secret = GP
+  
+  macro()
+    macro()
+      $secret
+    end
+  end
+end
+
+let f = $grandPa()
+$f()()
+/// Output
+GP
+/// End
+
+/// Test Nested Macros 2
+macro grandPa()
+  let secret = GP
+  
+  macro()
+    macro()
+      macro()
+         $secret
+      end
+    end
+  end
+end
+
+let f = $grandPa()
+$f()()()
+/// Output
+GP
+/// End

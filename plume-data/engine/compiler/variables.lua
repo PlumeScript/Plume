@@ -32,24 +32,39 @@ return function (plume, context)
 		end
 	end
 
-	--- Give a macro information about a variable to capture
-	--- @param name string
-	--- @param variableOffset number
-	--- @param closureDistance number
-	--- @param scope table
-	function context.registerUpvalue(name, variableOffset, _, scope, scopeDelta)
-		local macro = context.getLast "macros"
+	--- Registers a variable from an outer scope as an upvalue for closure capture.
+	--- 
+	--- When a macro references a variable defined in an enclosing scope, this function
+	--- establishes the upvalue chain across nested macro boundaries. It creates:
+	--- 1. A primary upvalue entry in the outermost macro (the one defining the variable),
+	---    capturing the local variable at its stack offset
+	--- 2. Proxy upvalue entries in all intermediate nested macros, linking them to the
+	---    parent's upvalue slot rather than the original variable
+	---
+	--- This ensures proper closure semantics where inner macros maintain references to
+	--- outer variables even when the outer scope has exited.
+	---
+	--- @param name string The identifier of the variable to capture
+	--- @param variableOffset number Stack offset of the variable within its defining scope
+	--- @param scopeDepth number Number of macro boundaries between current position and the variable's defining scope (≥1)
+	--- @param currentScopeIndex number Index in context.scopes where the variable is defined
+	--- @param relativeScopeOffset number Frame offset between current scope and variable's scope (used to locate the correct scope frame)
+	--- @return table upvalueInfo Metadata for the upvalue
+	function context.registerUpvalue(name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset)
+		-- First macro inside the scope will capture upvalue
+		local macro = context.macros[#context.macros - scopeDepth + 1]
 
 		if not macro.upvalueMap[name] then
 			table.insert(macro.upvalues, {
 				offset = #macro.upvalues+1,
 				localOffset = variableOffset, -- local offset to capture the variable
-				scopeOffset = scopeDelta-1, -- in which scope get the variable
+				scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
 				isUpvalue = true
 			})
 
 			macro.upvalueMap[name] = macro.upvalues[#macro.upvalues]
-			local scopeUp = context.scopesUp[scope]
+			plume.debug.print(macro.upvalues[#macro.upvalues])
+			local scopeUp = context.scopesUp[currentScopeIndex]
 			local found
 			for _, offset in ipairs(scopeUp) do
 				if offset == variableOffset then
@@ -61,6 +76,20 @@ return function (plume, context)
 				table.insert(scopeUp, variableOffset)
 			end
 		end
+
+		-- All nested macro will load upvalue from previous first macro
+		for i=scopeDepth-1, 1, -1 do
+			local childMacro = context.macros[#context.macros - i + 1]
+			if not childMacro.upvalueMap[name] then
+				table.insert(childMacro.upvalues, {
+					offset = #childMacro.upvalues+1,
+					parentOffset = #macro.upvalues,
+					isUpvalue = true
+				})
+				childMacro.upvalueMap[name] = childMacro.upvalues[#childMacro.upvalues]
+			end
+		end
+
 		return macro.upvalueMap[name]
 	end
 
@@ -82,13 +111,16 @@ return function (plume, context)
 	--- @param strict bool Shouldn't check in outer scopes
 	--- @return table|nil {frameOffset?, offset, isConst, isStatic}
 	function context.getVariable(name, strict)
-		local closureDistance = 0
+		local scopeDepth = 0
+		local relativeScopeOffset
 		for i=#context.scopes, 1, -1 do
-			if i == context.roots[#context.roots - closureDistance]-1 then
-				closureDistance = closureDistance + 1
+
+			if i == context.roots[#context.roots - scopeDepth]-1 then
+				scopeDepth = scopeDepth + 1
+				relativeScopeOffset = i
 			end
 
-			if strict and closureDistance > 0 then
+			if strict and scopeDepth > 0 then
 				break
 			end
 			
@@ -97,8 +129,8 @@ return function (plume, context)
 				local variable = current[name]
 				local result
 				
-				if closureDistance > 0 then
-					return context.registerUpvalue(name, variable.offset, closureDistance, i, #context.scopes-i)
+				if scopeDepth > 0 then
+					return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1)
 				else
 					result = {
 						frameOffset = #context.scopes-i,
