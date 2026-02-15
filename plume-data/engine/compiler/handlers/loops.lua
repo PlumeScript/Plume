@@ -67,7 +67,6 @@ return function (plume, context, nodeHandlerTable)
 					nil,   -- body
 					true,  -- isLet
 					false, -- isConst
-					false, -- isStatic
 					false, -- isParam
 					false, -- isFrom 
 					nil,   -- compound

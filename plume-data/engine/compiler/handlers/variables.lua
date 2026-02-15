@@ -247,13 +247,12 @@ return function (plume, context, nodeHandlerTable)
 	--- @param nodevarlist table The list of variable nodes from the AST  
 	--- @param body table The RHS expression node  
 	--- @param isLet boolean True if it's a declaration  
-	--- @param isConst boolean True if it's a constant  
-	--- @param isStatic boolean True if it's a static variable  
+	--- @param isConst boolean True if it's a constant   
 	--- @param isParam boolean True if it's a parameter  
 	--- @param isFrom boolean True if using object destructuring  
 	--- @param compound table Compound operator node  
 	--- @param isBodyStacked boolean True if value is already on stack  
-	function context.affectation(node, nodevarlist, body, isLet, isConst, isStatic, isParam, isFrom, compound, isBodyStacked)  
+	function context.affectation(node, nodevarlist, body, isLet, isConst, isParam, isFrom, compound, isBodyStacked)  
 		local varlist = {}  
 		  
 		-- Phase 1: Preparation  
@@ -296,7 +295,7 @@ return function (plume, context, nodeHandlerTable)
 		local nodevarlist = plume.ast.get(node, "VARLIST")
 		local body        = plume.ast.get(node, "BODY")
 
-		context.affectation(node, nodevarlist, body, isLet, isConst, isStatic, isParam, isFrom, compound)
+		context.affectation(node, nodevarlist, body, isLet, isConst, isParam, isFrom, compound)
 	end  
   
 	--- Entry point for declarations (LET)  
