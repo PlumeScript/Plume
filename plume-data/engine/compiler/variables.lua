@@ -19,7 +19,7 @@ return function (plume, context)
 	--- @param name string Name of the variable
 	--- @param isStatic bool
 	--- @return string|nil
-	function context.getNameSource(name, isStatic)
+	function context.getNameSource(name)
 		local scope = context.getCurrentScope()
 
 		if scope[name] then

@@ -38,13 +38,12 @@ return function (plume, context, nodeHandlerTable)
 	--- Analyzes a target node (variable or index) and prepares its internal structure  
 	--- @param node node The main statement node  
 	--- @param varNode node The specific node representing the target being assigned  
-	--- @param isLet boolean    If it's a declaration  
-	--- @param isStatic boolean
+	--- @param isLet boolean    If it's a declaration
 	--- @param isConst boolean
 	--- @param isParam boolean
 	--- @param isFrom boolean If using object destructuring  
 	--- @return table rvar The resolved variable object containing scope information and metadata  
-	local function resolveAssignmentTarget(node, varNode, isLet, isStatic, isConst, isParam, isFrom)  
+	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom)  
 		local rvar, isRef
 		  
 		----------------------------------------------------------
@@ -79,7 +78,7 @@ return function (plume, context, nodeHandlerTable)
 				plume.error.cannotUseDefaultValueWithoutFrom(varNode)  
 			end  
   
-			local source = context.getNameSource(name, isStatic)  
+			local source = context.getNameSource(name)  
   
 			-- Handle declaration (LET) or affectation (SET)  
 			if isLet then  
@@ -249,7 +248,7 @@ return function (plume, context, nodeHandlerTable)
 		  
 		-- Phase 1: Preparation  
 		for _, varNode in ipairs(nodevarlist.children) do  
-			local rvar = resolveAssignmentTarget(node, varNode, isLet, isStatic, isConst, isParam, isFrom)  
+			local rvar = resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom)  
 			table.insert(varlist, rvar)  
 		end  
   
