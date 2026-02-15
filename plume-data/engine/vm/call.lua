@@ -41,6 +41,10 @@ function CONCAT_CALL (vm, arg1, arg2)
         _CALL_MACRO(vm, tocall)
 
     elseif t == "closure" then
+        if self then
+            _PUSH_SELF(vm, self)
+        end
+
 
         _CALL_MACRO(vm, tocall.macro)
         _STACK_PUSH(vm.closureStack, tocall.upvalues)
