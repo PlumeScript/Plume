@@ -23,6 +23,8 @@ function _META_CHECK (name, macro)
 	local binopps = "eq lt"
 	local unopps = "minus"
 
+	macro = macro.macro or macro -- in case of closure
+
 	local expectedParamCount
 	for opp in comopps:gmatch('%S+') do
 		if name == opp then

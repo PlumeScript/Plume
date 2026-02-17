@@ -738,6 +738,7 @@ return function (plume)
                                                                         local comopps = "add mul div sub mod pow"
                                                                         local binopps = "eq lt"
                                                                         local unopps = "minus"
+                                                                        value = value.macro or value
                                                                         local expectedParamCount
                                                                         for opp in comopps:gmatch ("%S+")
                                                                          do
@@ -955,6 +956,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
+                                                                                value = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1147,6 +1149,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
+                                                                                value = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1314,6 +1317,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
+                                                                                value = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1478,6 +1482,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
+                                                                                value = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1641,6 +1646,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
+                                                                                value = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
