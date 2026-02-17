@@ -389,13 +389,13 @@ return function (plume)
             text =   (escaped + eval + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + V"comment" + V"rawtextns")^1,
             textnp = (escaped + eval + V"comment" + V"rawtextnp")^1,
-            textic = (escaped + eval + V"comment" + V"rawtextic")^1,
+            textic = (escaped + eval + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
 
             comment   = os * P"//" * C("COMMENT", NOT(S"\n")^0),
             rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * P"//")^1),
             rawtextns = C("TEXT", NOT(S"$\n\\" + P"//" + s)^1),
             rawtextnp = C("TEXT", NOT(S"$\n)\\"+ P"//")^1),
-            rawtextic = C("TEXT", NOT(S"$\n,)\\"+ P"//")^1),
+            rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//")^1),
 
             invalid = E(plume.error.emptySetError, K"set"),
             evalOpperator = call + index + directindex,

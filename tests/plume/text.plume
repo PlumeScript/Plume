@@ -78,3 +78,43 @@ a\F
 /// Output
 aF
 /// End
+
+/// Test Braces are paired 1
+macro wing(x)
+    $x$x
+end
+
+$wing(())
+/// Output
+()()
+/// End
+
+/// Test Braces are paired 2
+macro wing(x)
+    $x$x
+end
+
+$wing((x))
+/// Output
+(x)(x)
+/// End
+
+/// Test Braces are paired 3
+macro wing(x, y)
+    $y$x
+end
+
+$wing((x), ((y)))
+/// Output
+((y))(x)
+/// End
+
+/// Test Braces are paired 4
+macro wing(x)
+    $len($x)
+end
+
+$wing((x,y))
+/// Output
+2
+/// End
