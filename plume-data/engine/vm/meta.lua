@@ -16,14 +16,14 @@ If not, see <https://www.gnu.org/licenses/>.
 --- Check for meta-macro args count.
 --- Should certainly be handled by the compilator, no?
 --- @param name string Operator's name
---- @param macro macro
+--- @param obj macro or closure
 --! inline
-function _META_CHECK (name, macro)
+function _META_CHECK (name, obj)
 	local comopps = "add mul div sub mod pow"
 	local binopps = "eq lt"
 	local unopps = "minus"
 
-	macro = macro.macro or macro -- in case of closure
+	local macro = obj.macro or obj -- in case of closure
 
 	local expectedParamCount
 	for opp in comopps:gmatch('%S+') do

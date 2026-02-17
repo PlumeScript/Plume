@@ -169,6 +169,20 @@ $f(2)
 12
 /// End
 
+/// Test meta
+let x = 5
+
+let t = do
+    meta call: macro()
+        $x
+    end
+end
+
+$t()
+/// Output
+5
+/// End
+
 /// Test Cannot capture ref 1
 let t = do
    ref x: 5

@@ -738,7 +738,7 @@ return function (plume)
                                                                         local comopps = "add mul div sub mod pow"
                                                                         local binopps = "eq lt"
                                                                         local unopps = "minus"
-                                                                        value = value.macro or value
+                                                                        local macro = value.macro or value
                                                                         local expectedParamCount
                                                                         for opp in comopps:gmatch ("%S+")
                                                                          do
@@ -762,11 +762,11 @@ return function (plume)
                                                                             end
                                                                         end
                                                                         if expectedParamCount then
-                                                                            if value.positionalParamCount ~= expectedParamCount then
-                                                                                _ret82, _ret83 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. value.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                            if macro.positionalParamCount ~= expectedParamCount then
+                                                                                _ret82, _ret83 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                 goto _inline_end180
                                                                             end
-                                                                            if value.namedParamCount > 1 then
+                                                                            if macro.namedParamCount > 1 then
                                                                                 _ret82, _ret83 = false, "Meta-macro '" .. key .. "' dont support named parameters."
                                                                                 goto _inline_end180
                                                                             end
@@ -956,7 +956,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
-                                                                                value = value.macro or value
+                                                                                local macro = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -980,11 +980,11 @@ return function (plume)
                                                                                     end
                                                                                 end
                                                                                 if expectedParamCount then
-                                                                                    if value.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret103, _ret104 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. value.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                    if macro.positionalParamCount ~= expectedParamCount then
+                                                                                        _ret103, _ret104 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end220
                                                                                     end
-                                                                                    if value.namedParamCount > 1 then
+                                                                                    if macro.namedParamCount > 1 then
                                                                                         _ret103, _ret104 = false, "Meta-macro '" .. key .. "' dont support named parameters."
                                                                                         goto _inline_end220
                                                                                     end
@@ -1149,7 +1149,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
-                                                                                value = value.macro or value
+                                                                                local macro = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1173,11 +1173,11 @@ return function (plume)
                                                                                     end
                                                                                 end
                                                                                 if expectedParamCount then
-                                                                                    if value.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret167, _ret168 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. value.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                    if macro.positionalParamCount ~= expectedParamCount then
+                                                                                        _ret167, _ret168 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end336
                                                                                     end
-                                                                                    if value.namedParamCount > 1 then
+                                                                                    if macro.namedParamCount > 1 then
                                                                                         _ret167, _ret168 = false, "Meta-macro '" .. key .. "' dont support named parameters."
                                                                                         goto _inline_end336
                                                                                     end
@@ -1317,7 +1317,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
-                                                                                value = value.macro or value
+                                                                                local macro = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1341,11 +1341,11 @@ return function (plume)
                                                                                     end
                                                                                 end
                                                                                 if expectedParamCount then
-                                                                                    if value.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret150, _ret151 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. value.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                    if macro.positionalParamCount ~= expectedParamCount then
+                                                                                        _ret150, _ret151 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end304
                                                                                     end
-                                                                                    if value.namedParamCount > 1 then
+                                                                                    if macro.namedParamCount > 1 then
                                                                                         _ret150, _ret151 = false, "Meta-macro '" .. key .. "' dont support named parameters."
                                                                                         goto _inline_end304
                                                                                     end
@@ -1482,7 +1482,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
-                                                                                value = value.macro or value
+                                                                                local macro = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1506,11 +1506,11 @@ return function (plume)
                                                                                     end
                                                                                 end
                                                                                 if expectedParamCount then
-                                                                                    if value.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret135, _ret136 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. value.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                    if macro.positionalParamCount ~= expectedParamCount then
+                                                                                        _ret135, _ret136 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end278
                                                                                     end
-                                                                                    if value.namedParamCount > 1 then
+                                                                                    if macro.namedParamCount > 1 then
                                                                                         _ret135, _ret136 = false, "Meta-macro '" .. key .. "' dont support named parameters."
                                                                                         goto _inline_end278
                                                                                     end
@@ -1646,7 +1646,7 @@ return function (plume)
                                                                                 local comopps = "add mul div sub mod pow"
                                                                                 local binopps = "eq lt"
                                                                                 local unopps = "minus"
-                                                                                value = value.macro or value
+                                                                                local macro = value.macro or value
                                                                                 local expectedParamCount
                                                                                 for opp in comopps:gmatch ("%S+")
                                                                                  do
@@ -1670,11 +1670,11 @@ return function (plume)
                                                                                     end
                                                                                 end
                                                                                 if expectedParamCount then
-                                                                                    if value.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret121, _ret122 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. value.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                    if macro.positionalParamCount ~= expectedParamCount then
+                                                                                        _ret121, _ret122 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end259
                                                                                     end
-                                                                                    if value.namedParamCount > 1 then
+                                                                                    if macro.namedParamCount > 1 then
                                                                                         _ret121, _ret122 = false, "Meta-macro '" .. key .. "' dont support named parameters."
                                                                                         goto _inline_end259
                                                                                     end
