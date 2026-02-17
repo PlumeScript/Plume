@@ -58,6 +58,18 @@ return function (plume)
             end
         end
 
+        local function W(warning, issues)
+            return Cp() * P(0) * Cp() / function (bpos, epos)
+                return {
+                    name = "NULL",
+                    issues = issues,
+                    bpos = bpos,
+                    epos  = epos-1,
+                    warning = warning
+                }
+            end
+        end
+
         local function Ct(name, pattern)
             return Cp() * lpeg.Ct(pattern) * Cp() / function(bpos, children, epos)
                 return {
@@ -429,6 +441,8 @@ return function (plume)
         plume.ast.browse(ast, function (node)
             if node.error then
                 node.error(node)
+            elseif node.warning then
+                plume.warning.throwWarning(node.warning, nil, node, node.issues)
             end
 
             if node.name == "IDENTIFIER" then

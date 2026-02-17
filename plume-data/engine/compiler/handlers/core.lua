@@ -47,4 +47,7 @@ return function (plume, context, nodeHandlerTable)
 			context.toggleConcatPop()
 		end
 	end
+
+	nodeHandlerTable.NULL = function(node)
+	end
 end
