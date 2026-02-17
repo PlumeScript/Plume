@@ -229,4 +229,51 @@ return function(plume)
 
 		return message
 	end
+
+	function plume.error.vmCrashHandler(err)
+		local msg = "Unexpected internal error. Please report it at https://github.com/PlumeScript/Plume."
+
+		msg = msg .. "\n\nLua error message:\n\t".. err
+		msg = msg .. "\n"..debug.traceback("", 2)
+
+		local ip
+		-- Search for local variable "ip"
+		local level = 2
+		local found
+        while not found do
+            local info = debug.getinfo(level, "nSl")
+            if not info then break end
+             local i = 1
+            while true do
+                local name, value = debug.getlocal(level, i)
+                if not name then break end
+				
+				if name == "vm" then
+					name = "ip"
+					value = value.ip
+				end
+
+                if name == "ip" then
+                    found = true
+                    ip = value
+                    break
+                end
+                i = i + 1
+            end
+            level = level + 1
+        end
+		return {msg=msg, ip=ip}
+	end
+
+	function plume.safeRun(run, runtime, chunk)
+		local novmcrash, success, result, ip = xpcall(run, plume.error.vmCrashHandler, runtime, chunk)
+		
+		if not novmcrash then
+			result = success.msg
+			ip = success.ip
+			success = false
+		end
+
+		return success, result, ip
+	end
 end

@@ -42,11 +42,14 @@ function plume.run(runtime, chunk)
 		plume.runStatDeep = plume.runStatDeep or 1
 	end
 
+	local run
 	if plume.runDevFlag then
-		return plume._run_dev(runtime, chunk)
+		run = plume._run_dev
 	else
-		return plume._run(runtime, chunk)
+		run = plume._run
 	end
+
+	return plume.safeRun(run, runtime, chunk)
 end
 
 function plume.execute(code, filename, chunk, runtime)
