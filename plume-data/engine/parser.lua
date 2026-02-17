@@ -144,6 +144,11 @@ return function (plume)
         local escaped = P"\\s" * Cc("TEXT", " ")
                       + P"\\t" * Cc("TEXT", "\t")
                       + P"\\n" * Cc("TEXT", "\n")
+                      --------------------------------------
+                      -- WILL BE REMOVED IN 1.0 (#230, #273)
+                      --------------------------------------
+                      + P"\\"*C("TEXT", P"(" + P")") * W("Starting with version 1.0.beta.5, it is no longer necessary to escape braces within a call, as long as they are paired (issue #273). This new behavior may disrupt existing code.", {230, 273})
+                      --------------------------------------
                       + P"\\"*C("TEXT", P(1))
         
 
