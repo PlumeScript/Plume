@@ -291,7 +291,7 @@ false
 /// Test repr 5
 $repr($repr)
 /// Output
-stdMacro<repr>
+luaMacro<repr>
 /// End
 
 /// Test repr 6
