@@ -34,11 +34,10 @@ return function (plume)
         print = function(args, chunk)
             local result = {}
             for _, x in ipairs(args.table) do
-                if x == plume.obj.empty then
-                elseif type(x) == "table" and x.type == "table" and x.meta.table.tostring then
+                if type(x) == "table" and x.type == "table" and x.meta.table.tostring then
                     table.insert(result, callPlumeMacro(x.meta.table.tostring, {x}, chunk))
                 else
-                    table.insert(result, tostring(x))
+                    table.insert(result, plume.repr(x))
                 end
             end
             print(table.unpack(result))
