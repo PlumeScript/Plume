@@ -56,6 +56,27 @@ $f()
 1020
 /// End
 
+/// Test Chained closures
+macro A()
+end
+
+macro B()
+    $A()
+end
+
+macro C()
+end
+
+macro D()
+    $B()
+    $C()
+end
+
+$D()
+/// Output
+
+/// End
+
 
 /// Test Mutation
 macro makeCounter()

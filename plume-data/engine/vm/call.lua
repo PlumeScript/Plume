@@ -39,6 +39,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
 
         _CALL_MACRO(vm, tocall)
+        _STACK_PUSH(vm.closureStack, {})
 
     elseif t == "closure" then
         if self then
@@ -146,6 +147,7 @@ end
 --! inline
 function RETURN(vm, arg1, arg2)
     LEAVE_SCOPE(vm, 0, 0) -- close macro scope
+    _STACK_POP(vm.closureStack)
     table.remove(vm.runtime.callstack)
     JUMP(vm, 0, _STACK_POP(vm.macroStack)) -- return in the previous position
 end
