@@ -264,6 +264,119 @@ $join(...table.finds($t, nib))
 wingwrite
 /// End
 
+/// Test repr 1
+$repr(5)
+/// Output
+5
+/// End
+
+/// Test repr 2
+$repr(wing)
+/// Output
+wing
+/// End
+
+/// Test repr 3
+$repr($empty)
+/// Output
+empty
+/// End
+
+/// Test repr 4
+$repr($false)
+/// Output
+false
+/// End
+
+/// Test repr 5
+$repr($repr)
+/// Output
+stdMacro<repr>
+/// End
+
+/// Test repr 6
+macro Wing()
+end
+
+$repr($Wing)
+/// Output
+macro<Wing>
+/// End
+
+/// Test repr 7
+@repr
+  macro()
+  end
+end
+/// Output
+macro<???>
+/// End
+
+/// Test repr 8
+let t = do
+  Wing: macro()
+  end
+end
+$repr($t.Wing)
+/// Output
+macro<Wing>
+/// End
+
+/// Test repr 9
+let t = do
+  - wing
+  - nib
+  color: blue
+  - quill
+end
+$repr($t)
+/// Output
+$table(wing, nib, color: blue, quill)
+/// End
+
+/// Test repr 10
+let t = do
+  - $empty
+  color: macro()
+  end
+end
+$repr($t)
+/// Output
+$table(empty, color: macro<color>)
+/// End
+
+/// Test repr 11
+let t = $table()
+macro Wing()
+end
+
+set t[Wing] = 5
+$repr($t)
+/// Output
+$table(macro<Wing>: 5)
+/// End
+
+/// Test repr 12
+let t = do
+  - wing
+  sub: do
+    - quill
+    - nib
+  end
+end
+$repr($t)
+/// Output
+$table(wing, sub: $table(quill, nib))
+/// End
+
+/// Test repr 13
+let t = $table()
+set t[1] = $t
+$repr($t)
+/// Output
+$table($table(...))
+/// End
+
 /// Test count
 let t = $table(wing: nib, write, nib)
 

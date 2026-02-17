@@ -825,6 +825,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `type(x)`: Returns the type of `x` as a string: `"empty"`, `"table"`, `"number"`, or `"string"`.
 *   `tostring(x)`: Converts the value `x` to its string representation.
 *   `len(table)`: Returns the number of items in a table.
+*   `repr(x)`: Give a string representation of any object.
 
 ### Table Manipulation
 

@@ -30,8 +30,6 @@ return function (plume)
         return callResult
     end
 
-    
-
     plume.stdLua = {
         print = function(args, chunk)
             local result = {}
@@ -107,6 +105,11 @@ return function (plume)
                 table.insert(obj.keys, key)
             end
             obj.table[key] = value
+        end,
+
+        repr = function(args)
+            local obj = args.table[1]
+            return plume.repr(obj)
         end
     }
 end

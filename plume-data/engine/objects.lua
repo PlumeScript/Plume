@@ -78,4 +78,47 @@ return function(plume)
 		}
 	end
 
+	local function reprTable(t, acc)
+		acc[t] = true
+		local result = {}
+		for _, key in ipairs(t.keys) do
+			local value = plume.repr(t.table[key], acc)
+
+			if tonumber(key) then
+				table.insert(result, value)
+			else
+				local key = plume.repr(key, acc)
+				table.insert(result, string.format("%s: %s", key, value))
+			end
+		end
+
+		return string.format("$table(%s)", table.concat(result, ", "))
+	end
+
+	function plume.repr(obj, acc)
+		acc = acc or {}
+		if type(obj) ~= "table" then
+			return tostring(obj)
+		end
+
+		local t = obj.type
+		if t == "empty" then
+			return "empty"
+		elseif t == "luaFunction" then
+			return "luaMacro<" .. obj.name .. ">"
+		elseif t == "luaStdFunction" then
+			return "stdMacro<" .. obj.name .. ">"
+		elseif t == "macro" then
+			return "macro<" .. obj.name .. ">"
+		elseif t == "table" then
+			if acc[obj] then
+				return "$table(...)"
+			else
+				return reprTable(obj, acc)
+			end
+		else
+			return t.."Obj<"..(t.name or "???")..">"
+		end
+	end
+
 end
