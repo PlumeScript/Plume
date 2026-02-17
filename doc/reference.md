@@ -14,7 +14,7 @@ This is a valid Plume program.
 
 To distinguish control flow and logic from text, Plume recognizes a set of **statements**. A line is treated as a statement if it begins (after any leading whitespace) with one of the following keywords:
 
-*   `if`, `elseif`, `else`, `for`, `while`, `macro`, `end`, `run`, `leave`, `break`, `continue`, `do`
+*   `if`, `elseif`, `else`, `for`, `while`, `macro`, `end`, `run`, `leave`, `break`, `continue`, `do`, `raw`
 *   `let`, `set`, `use`
 *   `meta` (defines a metatable field within a table block)
 *   `-` (initiates a table item)
@@ -165,6 +165,50 @@ while evaluation
     ...
 end
 ```
+
+#### `raw`
+Creates a block where content is treated as literal text and injected directly without Plume parsing. This is useful for outputting code examples or text containing Plume syntax that should not be interpreted.
+
+**Standard Syntax:**
+```plume
+raw
+    ...
+end
+```
+The content is appended to the current accumulation block as literal, escaped text. No statement recognition, variable interpolation, or expression evaluation occurs within the block.
+
+**Delimited Syntax:**
+To include the literal word `end` within the block without terminating it, use the bracketed form:
+
+```plume
+raw[
+    ...
+]end
+```
+The delimiters `raw[` and `]end` must match exactly. This form allows the literal text to contain the sequence `end` without closing the block.
+
+**Example:**
+```plume
+// Standard form - useful for code examples
+raw
+    // This comment and if-statement are treated as literal text
+    if user.isActive()
+        renderDashboard()
+    end
+end
+
+// Delimited form - required when content contains 'end'
+raw[
+    Configuration example:
+    backend: enable
+    backend_end_point: /api  // Contains 'end'
+]end
+```
+
+**Behavior Notes:**
+*   The block respects standard indentation rules; the body must be indented relative to the `raw` keyword.
+*   The content is added to the accumulation context as a string, similar to text lines, but without any processing of `$`, `@`, or statement keywords.
+*   Escape sequences (e.g., `\n`, `\t`) are treated as literal backslash characters.
 
 #### `break` and `continue`
 The `break` and `continue` statements provide fine-grained control over the execution of `for` and `while` loops. They only affect the innermost loop in which they are placed.
@@ -804,6 +848,8 @@ Any character can be escaped with a backslash (`\`) to be treated as a literal. 
 *   `\n`: Newline
 *   `\t`: Tab
 *   `\s`: Space
+
+For large blocks of literal text that should not be parsed, consider using the [`raw`](#raw) block statement instead of escaping individual characters.
 
 ### Whitespace Handling
 

@@ -118,3 +118,49 @@ $wing((x,y))
 /// Output
 2
 /// End
+
+/// Test raw 1
+Raw\:\n
+raw
+    aaa
+    aaa
+end
+/// Output
+Raw:
+    aaa
+    aaa
+/// End
+
+/// Test raw 2
+Raw\:\n
+raw
+    if $(1+1)
+end
+/// Output
+Raw:
+    if $(1+1)
+/// End
+
+/// Test raw 3
+Raw\:\n
+raw[
+    raw
+    end
+]end
+/// Output
+Raw:
+    raw
+    end
+/// End
+
+/// Test raw 4
+Raw\:\n
+    raw[
+        raw
+        end
+    ]end
+/// Output
+Raw:
+    raw
+    end
+/// End

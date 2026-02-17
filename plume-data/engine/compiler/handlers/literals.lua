@@ -38,6 +38,19 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
 	end
 
+	nodeHandlerTable.RAW = function(node)
+		local content = (node.children[1] or {}).content or "" -- RAW shouldn't have more than 1 child
+
+		local lastIndent = content:match('\n(%s*)$')
+		-- Indent should be relative to the block
+		content = content:gsub("\n"..lastIndent, "\n")
+		-- Remove first and last newline
+		content = content:sub(2, -2)
+
+		local offset = context.registerConstant(content)
+		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
+	end
+
 	--- String are converted to number
 	nodeHandlerTable.NUMBER = function(node)
 		local offset = context.registerConstant(tonumber(node.content))
@@ -50,5 +63,4 @@ return function (plume, context, nodeHandlerTable)
 		local offset = context.registerConstant(content)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
 	end
-
 end

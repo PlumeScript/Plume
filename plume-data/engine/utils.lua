@@ -200,6 +200,7 @@ return function (plume)
 		or node.name == "EXPAND" then
 			return "TABLE"
 		elseif node.name == "TEXT"
+			or node.name == "RAW"
 			or node.name == "EVAL"
 			or node.name == "BLOCK"
 			or node.name == "NUMBER" 
@@ -249,7 +250,7 @@ return function (plume)
 	end
 
 	function plume.checkIdentifier(identifier)
-		for kw in ('if then elseif else while for do macro let set const param use'):gmatch('%S+') do
+		for kw in ('if then elseif else while for do macro let set const param use raw run'):gmatch('%S+') do
 			if identifier == kw then
 				return false
 			end
