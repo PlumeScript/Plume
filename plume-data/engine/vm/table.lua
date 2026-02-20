@@ -80,6 +80,18 @@ function TABLE_INDEX (vm, arg1, arg2)
         end
     else
         local tt = _GET_TYPE (vm, t)
+
+        if not tonumber(key) then
+            if tt == "string" then
+                t = vm.plume.std.String
+                tt = "table"
+            end
+            if tt == "number" then
+                t = vm.plume.std.Number
+                tt = "table"
+            end
+        end
+
         if tt ~= "table" then
             if arg1 == 1 then
                 LOAD_EMPTY(vm)

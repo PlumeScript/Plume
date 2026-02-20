@@ -18,8 +18,8 @@ return function (plume)
 
 	Number.table.keys = {"floor"}
 	Number.table.floor = plume.obj.luaFunction("floor", function (args)
-		local x = args.table[1]
-		local digit = args.table.digit
+		local x = tonumber(args.table[1] or args.table.self)
+		local digit = tonumber(args.table.digit)
 		return math.floor(x, digit)
 	end)
 

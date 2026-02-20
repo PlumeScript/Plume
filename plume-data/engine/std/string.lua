@@ -17,7 +17,7 @@ return function (plume)
 	local String = plume.obj.table (0, 2)
 	String.table.keys = {"upper"}
 	String.table.upper = plume.obj.luaFunction("upper", function (args)
-		local x = args.table[1]
+		local x = args.table[1] or args.table.self
 		return string.upper(x)
 	end)
 

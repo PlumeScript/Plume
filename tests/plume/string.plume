@@ -1,0 +1,18 @@
+/// Test index string 1
+$("abc").upper()
+/// Output
+ABC
+/// End
+
+/// Test index string 2
+let x = abc
+$x.upper()
+/// Output
+ABC
+/// End
+
+/// Test index string 3
+$String.upper(abc)
+/// Output
+ABC
+/// End

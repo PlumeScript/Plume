@@ -453,6 +453,17 @@ return function (plume)
                                                 goto _inline_end125
                                                 ::_inline_end125::
                                                 local tt = _ret53
+                                                if not tonumber (key)
+                                                 then
+                                                    if tt == "string" then
+                                                        t = plume.std.String
+                                                        tt = "table"
+                                                    end
+                                                    if tt == "number" then
+                                                        t = plume.std.Number
+                                                        tt = "table"
+                                                    end
+                                                end
                                                 if tt ~= "table" then
                                                     if arg1 == 1 then
                                                         mainStackPointer = mainStackPointer + 1

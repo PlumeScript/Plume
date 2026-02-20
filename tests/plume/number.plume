@@ -1,0 +1,18 @@
+/// Test index number 1
+$(1.5).floor()
+/// Output
+1
+/// End
+
+/// Test index number 2
+let x = 1.5
+$x.floor()
+/// Output
+1
+/// End
+
+/// Test index number 3
+$Number.floor(1.5)
+/// Output
+1
+/// End
