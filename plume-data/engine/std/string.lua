@@ -19,54 +19,65 @@ return function (plume)
 		"upper", "lower", "replace",
 		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent"
 	}
+
+	local function unpackArgs(args)
+		local self = args.table.self
+		if self == String then -- called with `String.method(string)` instead of `string.method()`
+			return unpack(args.table)
+		else
+			table.insert(args.table, 1, self)
+			return unpack(args.table)
+		end
+	end
 	
 	-- Manipulation
 	String.table.upper = plume.obj.luaFunction("upper", function (args)
-		local x = args.table[1] or args.table.self
-		return string.upper(x)
+		local s = unpackArgs(args)
+		return string.upper(s)
 	end)
 	String.table.lower = plume.obj.luaFunction("lower", function (args)
-		local x = args.table[1] or args.table.self
-		return string.lower(x)
+		local s = unpackArgs(args)
+		return string.lower(s)
 	end)
 	String.table.replace = plume.obj.luaFunction("replace", function (args)
-		local x       = args.table.self or args.table[1]
-		local pattern = tostring((args.table.self and args.table[1]) or args.table[2])
-		local sub     = tostring((args.table.self and args.table[2]) or args.table[3])
+		local s, pattern, sub  = unpackArgs(args)
+		local pattern = tostring(pattern)
+		local sub     = tostring(sub)
 
 		if not args.table.rich then
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
   			sub     = sub:gsub("%%", "%%%%")
 		end
-		return x:gsub(pattern, sub)
+
+		return s:gsub(pattern, sub)
 	end)
 
 	-- Normalization
 	String.table.trim = plume.obj.luaFunction("trim", function (args)
-		local x = args.table[1] or args.table.self
-		return x:gsub('^%s*', ''):gsub('%s*$', '')
+		local s = unpackArgs(args)
+		return s:gsub('^%s*', ''):gsub('%s*$', '')
 	end)
 	String.table.rtrim = plume.obj.luaFunction("rtrim", function (args)
-		local x = args.table[1] or args.table.self
-		return x:gsub('^%s*', '')
+		local s = unpackArgs(args)
+		return s:gsub('^%s*', '')
 	end)
 	String.table.ltrim = plume.obj.luaFunction("ltrim", function (args)
-		local x = args.table[1] or args.table.self
-		return x:gsub('%s*$', '')
+		local s = unpackArgs(args)
+		return s:gsub('%s*$', '')
 	end)
 	String.table.collapse = plume.obj.luaFunction("collapse", function (args)
-		local x = args.table[1] or args.table.self
-		return x:gsub('%s+', ' ')
+		local s = unpackArgs(args)
+		return s:gsub('%s+', ' ')
 	end)
 	String.table.dedent = plume.obj.luaFunction("dedent", function (args)
-		local x = args.table[1] or args.table.self
-		local firstIndent = x:match('^%s+')
-		return x:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
+		local s = unpackArgs(args)
+		local firstIndent = s:match('^%s+')
+		return s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
 	end)
 	String.table.indent = plume.obj.luaFunction("indent", function (args)
-		local x   = args.table[1] or args.table.self
+		local s = unpackArgs(args)
 		local sep = args.table.sep or "\t"
-		return sep..x:gsub('\n', '\n'..sep)
+		return sep..s:gsub('\n', '\n'..sep)
 	end)
 
 	plume.std.String = String
