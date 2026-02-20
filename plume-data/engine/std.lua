@@ -58,7 +58,12 @@ return function (plume)
     require 'plume-data/engine/std/table' (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
+
+    ---------------------------------
+    -- WILL BE REMOVED IN 1.0 (#230, #414)
+    ---------------------------------
     plume.std.tostring = {} -- hardcoded
+    ---------------------------------
 
     local function importLuaFunction(name, f)
         return plume.obj.luaFunction(name, function(args)
