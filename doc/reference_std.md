@@ -32,20 +32,29 @@ Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is t
 Use `$table` specifically when creating empty tables or tables with a single element.
 
 ### String manipulation
-*   **`String`** _`$String.method(string)` and `$string.method()` are both valids._
-    *  `trim(s)`: Removes leading and trailing whitespace from the string.
-    *  `ltrim(s)`: Removes leading whitespace from the beginning of the string.
-    *  `rtrim(s)`: Removes trailing whitespace from the end of the string.
-    *  `indent(s, sep:\t)`: Prepends the specified separator (default: tab) to each line of the string.
-    *  `dedent(s)`: Removes first line leading whitespace from all lines in a multi-line string.
-    *  `collapse(s)`: Replaces consecutive whitespace characters (including newlines) with single spaces.
-    *  `lower(s)`: Converts all characters in the string to lowercase.
-    *  `upper(s)`: Converts all characters in the string to uppercase.
-    *  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. If the rich flag is set, pattern is interpreted as a Lua pattern; otherwise, exact string matching is used.
-    * `split(s, sep:\s, ?rich)`: Splits the string into a slice of substrings separated by the specified delimiter (default: whitespace). Uses Lua patterns if rich is true.
-    * `lines(s)`: Splits the string into a slice of individual lines.
-    * `findAll(s,pattern, ?rich)`: Returns a slice of all non-overlapping matches of the pattern found in the string.
-    * `partition(s,pattern, ?rich)`: Splits the string into three parts around the first occurrence of the pattern: the text before the match, the match itself, and the text after.
+
+`$String.method($s)` and `$s.method()` are both valids way to call `method` on a string named `s`.
+
+For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern, when no `?rich` flag match the exact string.
+
+#### Normalization
+*  `trim(s)`: Removes leading and trailing whitespace from the string.
+*  `ltrim(s)`: Removes leading whitespace from the beginning of the string.
+*  `rtrim(s)`: Removes trailing whitespace from the end of the string.
+*  `indent(s, sep:\t)`: Prepends the specified separator (default: tab) to each line of the string.
+*  `dedent(s)`: Removes first line leading whitespace from all lines in a multi-line string.
+*  `collapse(s)`: Replaces consecutive whitespace characters (including newlines) with single spaces.
+
+#### Manipulation
+*  `lower(s)`: Converts all characters in the string to lowercase.
+*  `upper(s)`: Converts all characters in the string to uppercase.
+*  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. If the rich flag is set, pattern is interpreted as a Lua pattern; otherwise, exact string matching is used.
+
+#### Tables related
+* `split(s, sep:\s, ?rich)`: Splits the string into a slice of substrings separated by the specified delimiter (default: whitespace).
+* `lines(s)`: Splits the string into a slice of individual lines.
+* `findAll(s, pattern, ?rich)`: Returns a slice of all non-overlapping matches of the pattern found in the string.
+* `partition(s, pattern, ?rich)`: Splits the string into three parts around the first occurrence of the pattern: the text before the match, the match itself, and the text after.
 
 ### Iterators
 
