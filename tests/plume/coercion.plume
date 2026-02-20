@@ -1,13 +1,13 @@
 /// Test string+string
-let _write = 1 // string
-let paint = 1 // string
+let _write = $tostring(1)
+let paint = $tostring(1)
 $(_write+paint)
 /// Output
 2
 /// End
 
 /// Test string+number
-let _write = 1 // string
+let _write = $tostring(1)
 $(_write+1) // 1 is a number
 /// Output
 2
@@ -45,4 +45,17 @@ if bool
 end
 /// Output
 Result: true
+/// End
+
+/// Test number conversion 1
+let x = 1
+$type($x)
+/// Output
+number
+/// End
+
+/// Test number conversion 2
+$type(1)
+/// Output
+number
 /// End
