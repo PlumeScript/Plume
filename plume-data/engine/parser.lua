@@ -58,6 +58,18 @@ return function (plume)
             end
         end
 
+        local function W(warning, issues)
+            return Cp() * P(0) * Cp() / function (bpos, epos)
+                return {
+                    name = "NULL",
+                    issues = issues,
+                    bpos = bpos,
+                    epos  = epos-1,
+                    warning = warning
+                }
+            end
+        end
+
         local function Ct(name, pattern)
             return Cp() * lpeg.Ct(pattern) * Cp() / function(bpos, children, epos)
                 return {
@@ -132,6 +144,11 @@ return function (plume)
         local escaped = P"\\s" * Cc("TEXT", " ")
                       + P"\\t" * Cc("TEXT", "\t")
                       + P"\\n" * Cc("TEXT", "\n")
+                      --------------------------------------
+                      -- WILL BE REMOVED IN 1.0 (#230, #273)
+                      --------------------------------------
+                      + P"\\"*C("TEXT", P"(" + P")") * W("Starting with version 1.0.beta.5, it is no longer necessary to escape braces within a call, as long as they are paired (issue #273). This new behavior may disrupt existing code.", {230, 273})
+                      --------------------------------------
                       + P"\\"*C("TEXT", P(1))
         
 
@@ -367,6 +384,14 @@ return function (plume)
 
         local inlinetable = Ct("INLINE_TABLE", os * P"(" * arg * (P"," * os * arg)^1 * P")")
 
+        -- Deepness 0, 1 and 2 hardcoded.
+        -- Should handle more case (#401)
+        local raw = Ct("RAW", os * K"raw[[" *  C("TEXT", P"\n" * (P(1)-P"]]end")^0) * P"]]end")
+                  + Ct("RAW", os * K"raw["  *  C("TEXT", P"\n" * (P(1)-P"]end")^0)  * P"]end")
+                  + Ct("RAW", os * K"raw"   *  C("TEXT", P"\n" * (P(1)-P"end")^0)   * P"end")
+
+        local _local = Ct("LOCAL", K"local" * (s * idn )^-1 * body * _end)
+
         ----------
         -- main --
         ----------
@@ -384,18 +409,18 @@ return function (plume)
                                 ,
             statement    = lt * V"firstStatement",
 
-            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use,
+            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + _local,
 
             text =   (escaped + eval + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + V"comment" + V"rawtextns")^1,
             textnp = (escaped + eval + V"comment" + V"rawtextnp")^1,
-            textic = (escaped + eval + V"comment" + V"rawtextic")^1,
+            textic = (escaped + eval + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
 
             comment   = os * P"//" * C("COMMENT", NOT(S"\n")^0),
             rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * P"//")^1),
             rawtextns = C("TEXT", NOT(S"$\n\\" + P"//" + s)^1),
             rawtextnp = C("TEXT", NOT(S"$\n)\\"+ P"//")^1),
-            rawtextic = C("TEXT", NOT(S"$\n,)\\"+ P"//")^1),
+            rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//")^1),
 
             invalid = E(plume.error.emptySetError, K"set"),
             evalOpperator = call + index + directindex,
@@ -429,6 +454,8 @@ return function (plume)
         plume.ast.browse(ast, function (node)
             if node.error then
                 node.error(node)
+            elseif node.warning then
+                plume.warning.throwWarning(node.warning, nil, node, node.issues)
             end
 
             if node.name == "IDENTIFIER" then

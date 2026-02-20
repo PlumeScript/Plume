@@ -30,31 +30,24 @@ return function (plume)
         return callResult
     end
 
-    
-
     plume.stdLua = {
         print = function(args, chunk)
             local result = {}
             for _, x in ipairs(args.table) do
-                if x == plume.obj.empty then
-                elseif type(x) == "table" and x.type == "table" and x.meta.table.tostring then
+                if type(x) == "table" and x.type == "table" and x.meta.table.tostring then
                     table.insert(result, callPlumeMacro(x.meta.table.tostring, {x}, chunk))
                 else
-                    table.insert(result, tostring(x))
+                    table.insert(result, plume.repr(x))
                 end
             end
             print(table.unpack(result))
         end,
 
-        join = function(args)
-            local sep = args.table.sep
-            if sep == plume.obj.empty then
-                sep = ""
-            end
-            return table.concat(args.table, sep)
-        end,
+        --------------------------------------
+        -- WILL BE REMOVED IN 1.0 (#230, #414)
+        --------------------------------------
+        tonumber = plume.warning.deprecatedFunctionRuntime("1.0", "`tonumber` standard macro", "Use `Number` instead", {230, 414}, function(args, chunk)
 
-        tonumber = function(args, chunk)
             local x = args.table[1]
             if x == plume.obj.empty then
                 error("Cannot convert empty into number", 0)
@@ -64,7 +57,8 @@ return function (plume)
                error(string.format("Cannot convert %s into number", type(x)), 0)
             end
             return table.concat(result)
-        end,
+        end),
+        --------------------------------------
 
         -- path
         setPlumePath = function(args, runtime)
@@ -107,6 +101,11 @@ return function (plume)
                 table.insert(obj.keys, key)
             end
             obj.table[key] = value
+        end,
+
+        repr = function(args)
+            local obj = args.table[1]
+            return plume.repr(obj)
         end
     }
 end

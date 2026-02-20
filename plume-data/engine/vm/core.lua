@@ -91,6 +91,10 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     -- local variables
     vm.empty = vm.plume.obj.empty
 
+    -- global states
+    vm.runtime.localStack         = table.new(2^8, 0)
+    vm.runtime.localStack.pointer = 0
+
     -- flag
     vm.flag = {}
     vm.flag.ITER_TABLE = 0

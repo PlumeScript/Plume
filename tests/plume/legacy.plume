@@ -1,6 +1,6 @@
 /// Test enumerate
 let t = $table(quill, wing, bird)
-@join(sep:\n)
+@table.join(sep:\n)
   for item in enumerate(t, legacy: true)
     - Item $item.index is $item.value.
   end
@@ -13,7 +13,7 @@ Item 3 is bird.
 
 /// Test items
 let t = $table(first: quill, second: wing, bonus: bird)
-@join(sep:\n)
+@table.join(sep:\n)
   for item in items(t, legacy: true)
     - Item "$item.key" is _($item.value)_.
   end

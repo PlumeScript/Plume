@@ -30,13 +30,22 @@ return function (plume)
         return table.remove(t.table, index)
     end
 
+    local function join (args)
+        local sep = args.table.sep
+        if sep == plume.obj.empty then
+            sep = ""
+        end
+        return table.concat(args.table, sep)
+    end
+
     plume.std = {}
     require 'plume-data/engine/std/lua' (plume)
     ---------------------------------
-    -- WILL BE REMOVED IN 1.0 (#175, #230)
+    -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
     ---------------------------------
     plume.stdLua.remove = plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, remove)
     plume.stdLua.append = plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, append)
+    plume.stdLua.join = plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, join)
     ---------------------------------
     for name, f in pairs(plume.stdLua) do
         plume.std[name] = plume.obj.luaFunction(name, f)
@@ -47,6 +56,8 @@ return function (plume)
     end
 
     require 'plume-data/engine/std/table' (plume)
+    require 'plume-data/engine/std/string' (plume)
+    require 'plume-data/engine/std/number' (plume)
     plume.std.tostring = {} -- hardcoded
 
     local function importLuaFunction(name, f)

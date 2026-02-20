@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-1.0.beta.4-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Version](https://img.shields.io/badge/version-1.0.beta.5-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -17,8 +17,6 @@ Plume is a textual programming language for complex content generation, built on
 *   **Expressive DSLs via Unified Syntax:** Any function (a *macro*) can be invoked inline (`$macro(...)`) or as a block (`@macro ... end`). This duality is the foundation for creating natural and readable Domain-Specific Languages.
 
 *   **Context-Aware Logic:** Blocks accumulate content contextually. A `for` loop will naturally generate text lines inside a string-building macro, but will produce list items when nested inside a list-building macro.
-
-*   **Strict Scoping:** Each block creates a new, isolated scope. Variables are local by default and macros do not capture their closure, ensuring predictable behavior and preventing side-effects. A mechanism for explicitly defining file-level state is available for shared constants or helpers.
 
 *   **Flexible Tables & Metaprogramming:** A unified data structure for lists and key-value maps. Built on a powerful object model inspired by Lua, it supports metaprogramming to create dynamic and intelligent data structures.
 

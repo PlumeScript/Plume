@@ -1,0 +1,262 @@
+/// Test index string 1
+$("abc").upper()
+/// Output
+ABC
+/// End
+
+/// Test index string 2
+let x = abc
+$x.upper()
+/// Output
+ABC
+/// End
+
+/// Test index string 3
+$String.upper(abc)
+/// Output
+ABC
+/// End
+
+/// Test trim
+---
+$(" a ").trim()
+---
+/// Output
+---a---
+/// End
+
+/// Test rtrim
+---
+$(" a ").rtrim()
+---
+/// Output
+---a ---
+/// End
+
+/// Test ltrim
+---
+$(" a ").ltrim()
+---
+/// Output
+--- a---
+/// End
+
+/// Test dedent
+let x = raw[
+	if true
+		if false
+			run $nothing()
+		end
+	end
+]end
+---\n
+$x.dedent()\n
+---
+/// Output
+---
+if true
+	if false
+		run $nothing()
+	end
+end
+---
+/// End
+
+/// Test indent 1
+let x = raw[
+if true
+	if false
+		run $nothing()
+	end
+end
+]end
+---\n
+$x.indent()\n
+---
+/// Output
+---
+	if true
+		if false
+			run $nothing()
+		end
+	end
+---
+/// End
+
+/// Test indent 2
+let x = raw[
+if true
+	if false
+		run $nothing()
+	end
+end
+]end
+---\n
+$x.indent(sep:>)\n
+---
+/// Output
+---
+>if true
+>	if false
+>		run $nothing()
+>	end
+>end
+---
+/// End
+
+/// Test collapse
+---
+$("a  a  	  a").collapse()
+---
+/// Output
+---a a a---
+/// End
+
+/// Test upper
+$("az5AB").upper()
+/// Output
+AZ5AB
+/// End
+
+/// Test lower
+$("az5AB").lower()
+/// Output
+az5ab
+/// End
+
+/// Test replace 1
+$("aza5").replace(a, 5)
+/// Output
+5z55
+/// End
+
+/// Test replace 2
+$("aza5").replace(%w, 5, ?rich)
+/// Output
+5555
+/// End
+
+/// Test split 1
+let s = a aa aaa
+for x in s.split()
+	<$x>
+end
+/// Output
+<a><aa><aaa>
+/// End
+
+/// Test split 2
+let s = abaabaaabb
+for x in s.split(sep: "b")
+	<$x>
+end
+/// Output
+<a><aa><aaa><>
+/// End
+
+/// Test split 3
+let s = 5b55ag5
+for x in s.split(sep: "[a-z]", ?rich)
+	<$x>
+end
+/// Output
+<5><55><><5>
+/// End
+
+/// Test lines
+let text = raw
+	A first line
+	A second one
+end
+
+for line in text.lines()
+	<$line>
+end
+/// Output
+<	A first line><	A second one>
+/// End
+
+/// Test findAll 1
+let text = a52zazz
+
+for x in text.findAll("z")
+	<$x>
+end
+/// Output
+<z><z><z>
+/// End
+
+/// Test findAll 2
+let text = a52zazz
+
+for x in text.findAll("[0-9]", ?rich)
+	<$x>
+end
+/// Output
+<5><2>
+/// End
+
+/// Test partition 1
+let text = a52zazz
+$repr($text.partition(z))
+/// Output
+$table(a52, z, azz)
+/// End
+
+/// Test partition 2
+let text = a52zazz
+$repr($text.partition([0-9]+, ?rich))
+/// Output
+$table(a, 52, zazz)
+/// End
+
+/// Test find
+let text = a52zazz
+$text.find([0-9]+, ?rich)
+/// Output
+52
+/// End
+
+/// Test contains
+let text = a52zazz
+$text.contains(x)\n
+$text.contains(%w, ?rich)\n
+/// Output
+false
+true
+/// End
+
+/// Test count
+let text = a52zazz
+$text.count(a)\n
+$text.count([a-z], ?rich)\n
+/// Output
+2
+5
+/// End
+
+/// Test startsWith
+let text = a52zazz
+$text.startsWidth(a)\n
+$text.startsWidth([a-z], ?rich)\n
+/// Output
+true
+true
+/// End
+
+/// Test endsWith
+let text = a52zazz
+$text.endsWidth(a)\n
+$text.endsWidth([a-z], ?rich)\n
+/// Output
+false
+true
+/// End
+
+/// Test isNumber
+$("aa").isNumber()\n
+$("542").isNumber()
+/// Output
+false
+true
+/// End

@@ -32,7 +32,7 @@ local function main()
 	local plume = require "plume-data/engine/init"
 	
 	local _, result = plume.executeFile(filename)
-	print(result)
+	print(plume.repr(result))
 end
 
 main()

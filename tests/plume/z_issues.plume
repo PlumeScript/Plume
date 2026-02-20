@@ -407,7 +407,7 @@ end
 /// Test #354
 let t1 = $table(a, b, c)
 let t2 = $(table(...t1))
-$join(...t2)
+$table.join(...t2)
 /// Output
 abc
 /// End

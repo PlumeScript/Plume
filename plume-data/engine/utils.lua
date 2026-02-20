@@ -48,6 +48,8 @@ return function (plume)
 
 		RETURN RETURN_FILE FILE_INIT_PARAMS
 
+		PUSH_LOCAL POP_LOCAL
+
 		END
 ]]
 	local function makeNames(names)
@@ -188,7 +190,7 @@ return function (plume)
 		end
 
 		-- For / While cannot produce VALUE
-		if node.name == "FOR" or node.name == "WHILE" then
+		if node.name == "FOR" or node.name == "WHILE" or node.name == "LOCAL" then
 			if node.type == "VALUE" then
 				node.type = "TEXT"
 			end
@@ -200,6 +202,7 @@ return function (plume)
 		or node.name == "EXPAND" then
 			return "TABLE"
 		elseif node.name == "TEXT"
+			or node.name == "RAW"
 			or node.name == "EVAL"
 			or node.name == "BLOCK"
 			or node.name == "NUMBER" 
@@ -212,6 +215,7 @@ return function (plume)
 			or node.name == "IF"
 			or node.name == "ELSE"
 			or node.name == "ELSEIF"
+			or node.name == "LOCAL"
 			or node.name == "BODY" then
 			return node.type
 		elseif node.name == "MACRO" then
@@ -249,7 +253,7 @@ return function (plume)
 	end
 
 	function plume.checkIdentifier(identifier)
-		for kw in ('if then elseif else while for do macro let set const param use'):gmatch('%S+') do
+		for kw in ('if then elseif else while for do macro let set const param use raw run'):gmatch('%S+') do
 			if identifier == kw then
 				return false
 			end
@@ -337,4 +341,14 @@ return function (plume)
         
         return nil, searchPaths
     end
+
+    function plume.shiftArgs(cls, args)
+		local self = args.table.self
+		if self == cls then -- called with `cls.method(string)` instead of `cls.method()`
+			return unpack(args.table)
+		else
+			table.insert(args.table, 1, self)
+			return unpack(args.table)
+		end
+	end
 end

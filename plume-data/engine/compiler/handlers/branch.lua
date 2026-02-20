@@ -72,7 +72,9 @@ return function (plume, context, nodeHandlerTable)
 				context.scope()(body)
 			end
 			if specialValueMode and body.type == "EMPTY" then
-				context.registerOP(node, plume.ops.LOAD_EMPTY)
+				if not context.checkIfCanConcat() then
+					context.registerOP(node, plume.ops.LOAD_EMPTY)
+				end
 			end
 
 			context.registerGoto(node, "branch_"..finalBranch.."_"..uid)
