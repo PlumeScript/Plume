@@ -41,6 +41,10 @@ Use `$table` specifically when creating empty tables or tables with a single ele
     *  `lower(s)`: Converts all characters in the string to lowercase.
     *  `upper(s)`: Converts all characters in the string to uppercase.
     *  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. If the rich flag is set, pattern is interpreted as a Lua pattern; otherwise, exact string matching is used.
+    * `split(s, sep:\s, ?rich)`: Splits the string into a slice of substrings separated by the specified delimiter (default: whitespace). Uses Lua patterns if rich is true.
+    * `lines(s)`: Splits the string into a slice of individual lines.
+    * `findAll(s,pattern, ?rich)`: Returns a slice of all non-overlapping matches of the pattern found in the string.
+    * `partition(s,pattern, ?rich)`: Splits the string into three parts around the first occurrence of the pattern: the text before the match, the match itself, and the text after.
 
 ### Iterators
 

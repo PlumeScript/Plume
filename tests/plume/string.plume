@@ -135,3 +135,77 @@ $("aza5").replace(%w, 5, ?rich)
 /// Output
 5555
 /// End
+
+/// Test split 1
+let s = a aa aaa
+for x in s.split()
+	<$x>
+end
+/// Output
+<a><aa><aaa>
+/// End
+
+/// Test split 2
+let s = abaabaaabb
+for x in s.split(sep: "b")
+	<$x>
+end
+/// Output
+<a><aa><aaa><>
+/// End
+
+/// Test split 3
+let s = 5b55ag5
+for x in s.split(sep: "[a-z]", ?rich)
+	<$x>
+end
+/// Output
+<5><55><><5>
+/// End
+
+/// Test lines
+let text = raw
+	A first line
+	A second one
+end
+
+for line in text.lines()
+	<$line>
+end
+/// Output
+<	A first line><	A second one>
+/// End
+
+/// Test findAll 1
+let text = a52zazz
+
+for x in text.findAll("z")
+	<$x>
+end
+/// Output
+<z><z><z>
+/// End
+
+/// Test findAll 2
+let text = a52zazz
+
+for x in text.findAll("[0-9]", ?rich)
+	<$x>
+end
+/// Output
+<5><2>
+/// End
+
+/// Test partition 1
+let text = a52zazz
+$repr($text.partition(z))
+/// Output
+$table(a52, z, azz)
+/// End
+
+/// Test partition 2
+let text = a52zazz
+$repr($text.partition([0-9]+, ?rich))
+/// Output
+$table(a, 52, zazz)
+/// End

@@ -14,10 +14,11 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local String = plume.obj.table (0, 9)
+	local String = plume.obj.table (0, 13)
 	String.table.keys = {
 		"upper", "lower", "replace",
-		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent"
+		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent",
+		"split", "lines", "findAll", "partition"
 	}
 
 	local function unpackArgs(args)
@@ -46,7 +47,7 @@ return function (plume)
 
 		if not args.table.rich then
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-  			sub     = sub:gsub("%%", "%%%%")
+			sub     = sub:gsub("%%", "%%%%")
 		end
 
 		return s:gsub(pattern, sub)
@@ -78,6 +79,81 @@ return function (plume)
 		local s = unpackArgs(args)
 		local sep = args.table.sep or "\t"
 		return sep..s:gsub('\n', '\n'..sep)
+	end)
+
+	-- table making
+	String.table.split = plume.obj.luaFunction("split", function (args)
+		local s = unpackArgs(args)
+		local sep = args.table.sep or " "
+		local t = plume.obj.table(0, 0)
+
+		if not args.table.rich then
+			sep = sep:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		local pos = 1
+		for sub, _sep in s:gmatch('(.-)('..sep..")") do
+			table.insert(t.table, sub)
+			table.insert(t.keys, #t.table)
+			pos = pos + #sub + #_sep
+		end
+
+		if pos <= #s then
+			table.insert(t.table, s:sub(pos, -1))
+			table.insert(t.keys, #t.table)
+		end
+
+		return t
+	end)
+	String.table.lines = plume.obj.luaFunction("lines", function (args)
+		local s = unpackArgs(args)
+		local t = plume.obj.table(0, 0)
+
+		local pos = 1
+		for sub in s:gmatch('(.-)\n') do
+			table.insert(t.table, sub)
+			table.insert(t.keys, #t.table)
+			pos = pos + #sub + 1
+		end
+
+		if pos <= #s then
+			table.insert(t.table, s:sub(pos, -1))
+			table.insert(t.keys, #t.table)
+		end
+
+		return t
+	end)
+	String.table.findAll = plume.obj.luaFunction("findAll", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+		local sub     = tostring(sub)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		local t = plume.obj.table(0, 0)
+
+		for sub in s:gmatch(pattern) do
+			table.insert(t.table, sub)
+			table.insert(t.keys, #t.table)
+		end
+
+		return t
+	end)
+	String.table.partition = plume.obj.luaFunction("partition", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		local t = plume.obj.table(3, 0)
+		t.keys = {1, 2, 3}
+		t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
+
+		return t
 	end)
 
 	plume.std.String = String

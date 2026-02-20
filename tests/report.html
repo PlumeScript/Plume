@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">391 passed out of 391 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">399 passed out of 399 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -11722,7 +11722,7 @@ Traceback (most recent call first):
 </code></pre>
 </div>
 </details>
-<h2>string: <span style="font-weight: normal;">14 passed out of 14 tests</span></h2>
+<h2>string: <span style="font-weight: normal;">22 passed out of 22 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -11815,6 +11815,121 @@ if true
 	end
 end
 ---
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> findAll 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let text = a52zazz
+
+for x in text.findAll(&quot;z&quot;)
+	&lt;$x&gt;
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a52zazz</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.findAll(&quot;z&quot;)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; findAll</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.findAll(&quot;z&quot;)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for x in text.findAll(&quot;z&quot;)[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for x in text.findAll(&quot;z&quot;)[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for x in text.findAll(&quot;z&quot;)[...]</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for x in text.findAll(&quot;z&quot;)[...]</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 27</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; &lt;</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; &gt;</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 18</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+&lt;z&gt;&lt;z&gt;&lt;z&gt;
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> findAll 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let text = a52zazz
+
+for x in text.findAll(&quot;[0-9]&quot;, ?rich)
+	&lt;$x&gt;
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a52zazz</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.findAll(&quot;[0-9]&quot;, ?rich)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; [0-9]</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; findAll</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.findAll(&quot;[0-9]&quot;, ?rich)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for x in text.findAll(&quot;[0-9]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for x in text.findAll(&quot;[0-9]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for x in text.findAll(&quot;[0-9]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for x in text.findAll(&quot;[0-9]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 30</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; &lt;</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; &gt;</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 21</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+&lt;5&gt;&lt;2&gt;
 </code></pre>
 </div>
 </details>
@@ -12035,6 +12150,64 @@ ABC
 </details>
 <details>
 <summary>
+<span class="status-icon status-pass">✓</span> lines <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let text = raw
+	A first line
+	A second one
+end
+
+for line in text.lines()
+	&lt;$line&gt;
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; raw[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.lines()</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; lines</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .lines</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .lines</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.lines()</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for line in text.lines()[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for line in text.lines()[...]</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for line in text.lines()[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for line in text.lines()[...]</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 26</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; line</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; &lt;</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; line</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; line</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; &gt;</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 17</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+&lt;	A first line&gt;&lt;	A second one&gt;
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
 <span class="status-icon status-pass">✓</span> lower <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
@@ -12100,6 +12273,87 @@ $(&quot; a &quot;).ltrim()
 <h4>Output</h4>
 <pre><code>
 --- a---
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> partition 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let text = a52zazz
+$repr($text.partition(z))
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a52zazz</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($text.partition(z))</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.partition(z)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; partition</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .partition</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .partition</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.partition(z)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($text.partition(z))</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+$table(a52, z, azz)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> partition 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let text = a52zazz
+$repr($text.partition([0-9]+, ?rich))
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a52zazz</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($text.partition([0-9]+, ?rich))</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.partition([0-9]+, ?rich)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; [0-9]+</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; partition</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; text</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .partition</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .partition</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; text.partition([0-9]+, ?rich)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($text.partition([0-9]+, ?rich))</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+$table(a, 52, zazz)
 </code></pre>
 </div>
 </details>
@@ -12209,6 +12463,177 @@ $(&quot; a &quot;).rtrim()
 <h4>Output</h4>
 <pre><code>
 ---a ---
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> split 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let s = a aa aaa
+for x in s.split()
+	&lt;$x&gt;
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a aa aaa</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; s</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; s.split()</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; split</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; s</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .split</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .split</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; s.split()</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for x in s.split()[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for x in s.split()[...]</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for x in s.split()[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for x in s.split()[...]</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 26</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; &lt;</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; &gt;</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 17</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+&lt;a&gt;&lt;aa&gt;&lt;aaa&gt;
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> split 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let s = abaabaaabb
+for x in s.split(sep: &quot;b&quot;)
+	&lt;$x&gt;
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; abaabaaabb</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; s</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; s.split(sep: &quot;b&quot;)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; sep: &quot;b&quot;</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; sep: &quot;b&quot;</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; split</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; s</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .split</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .split</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; s.split(sep: &quot;b&quot;)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for x in s.split(sep: &quot;b&quot;)[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for x in s.split(sep: &quot;b&quot;)[...]</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for x in s.split(sep: &quot;b&quot;)[...]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for x in s.split(sep: &quot;b&quot;)[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 29</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; &lt;</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; &gt;</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 20</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+&lt;a&gt;&lt;aa&gt;&lt;aaa&gt;&lt;&gt;
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> split 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let s = 5b55ag5
+for x in s.split(sep: &quot;[a-z]&quot;, ?rich)
+	&lt;$x&gt;
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5b55ag5</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; s</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; s.split(sep: &quot;[a-z]&quot;, ?rich)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; [a-z]</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; sep: &quot;[a-z]&quot;</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; sep: &quot;[a-z]&quot;</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?rich</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; split</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; s</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .split</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .split</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; s.split(sep: &quot;[a-z]&quot;, ?rich)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for x in s.split(sep: &quot;[a-z]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for x in s.split(sep: &quot;[a-z]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for x in s.split(sep: &quot;[a-z]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for x in s.split(sep: &quot;[a-z]&quot;, ?rich)[...]</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 32</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; &lt;</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; &gt;</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 23</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+&lt;5&gt;&lt;55&gt;&lt;&gt;&lt;5&gt;
 </code></pre>
 </div>
 </details>
