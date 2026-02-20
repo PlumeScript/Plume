@@ -115,8 +115,6 @@ use idontexists
 /// Error
 Compilation error: Cannot open 'idontexists'.
 Paths tried:
-	plume-data/std/idontexists.plume
-	plume-data/std/idontexists/init.plume
 	main/idontexists.plume
 	main/idontexists/init.plume
 	idontexists.plume
