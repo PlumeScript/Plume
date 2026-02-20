@@ -45,5 +45,18 @@ return function (plume)
 		return string.format(format, x)
 	end)
 
+	Number.meta.table.call = plume.obj.luaFunction("Number", function(args)
+		local x = args.table[1]
+		if x == plume.obj.empty then
+			error("Cannot convert empty into number", 0)
+		elseif type(x) == "number" then
+			return x
+		elseif tonumber(x) then
+			return tonumber(x)
+		else
+		   error(string.format("Cannot convert %s into number", type(x)), 0)
+		end
+	end)
+	
 	plume.std.Number = Number
 end

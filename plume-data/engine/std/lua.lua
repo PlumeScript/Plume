@@ -43,7 +43,11 @@ return function (plume)
             print(table.unpack(result))
         end,
 
-        tonumber = function(args, chunk)
+        --------------------------------------
+        -- WILL BE REMOVED IN 1.0 (#230, #414)
+        --------------------------------------
+        tonumber = plume.warning.deprecatedFunctionRuntime("1.0", "`tonumber` standard macro", "Use `Number` instead", {230, 414}, function(args, chunk)
+
             local x = args.table[1]
             if x == plume.obj.empty then
                 error("Cannot convert empty into number", 0)
@@ -53,7 +57,8 @@ return function (plume)
                error(string.format("Cannot convert %s into number", type(x)), 0)
             end
             return table.concat(result)
-        end,
+        end),
+        --------------------------------------
 
         -- path
         setPlumePath = function(args, runtime)
