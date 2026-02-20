@@ -18,6 +18,7 @@ return function (plume)
 	String.table.keys = {
 		"upper", "lower", "replace",
 		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent",
+		"find", "count", "startsWith", "endsWith", "contains",
 		"split", "lines", "findAll", "partition"
 	}
 
@@ -79,6 +80,75 @@ return function (plume)
 		local s = unpackArgs(args)
 		local sep = args.table.sep or "\t"
 		return sep..s:gsub('\n', '\n'..sep)
+	end)
+
+	-- search
+	String.table.find = plume.obj.luaFunction("find", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		return s:match(pattern) or plume.empty
+	end)
+	String.table.contains = plume.obj.luaFunction("contains", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		if s:match(pattern) then
+			return true
+		else
+			return false
+		end
+	end)
+	String.table.startsWidth = plume.obj.luaFunction("startsWidth", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		if s:match("^"..pattern) then
+			return true
+		else
+			return false
+		end
+	end)
+	String.table.endsWidth = plume.obj.luaFunction("endsWidth", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		if s:match(pattern.."$") then
+			return true
+		else
+			return false
+		end
+	end)
+	String.table.count = plume.obj.luaFunction("count", function (args)
+		local s, pattern  = unpackArgs(args)
+		local pattern = tostring(pattern)
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+		end
+
+		local count = 0
+		for x in s:gmatch(pattern) do
+			count = count + 1
+		end
+
+		return count
 	end)
 
 	-- table making

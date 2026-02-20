@@ -209,3 +209,46 @@ $repr($text.partition([0-9]+, ?rich))
 /// Output
 $table(a, 52, zazz)
 /// End
+
+/// Test find
+let text = a52zazz
+$text.find([0-9]+, ?rich)
+/// Output
+52
+/// End
+
+/// Test contains
+let text = a52zazz
+$text.contains(x)\n
+$text.contains(%w, ?rich)\n
+/// Output
+false
+true
+/// End
+
+/// Test count
+let text = a52zazz
+$text.count(a)\n
+$text.count([a-z], ?rich)\n
+/// Output
+2
+5
+/// End
+
+/// Test startsWith
+let text = a52zazz
+$text.startsWidth(a)\n
+$text.startsWidth([a-z], ?rich)\n
+/// Output
+true
+true
+/// End
+
+/// Test endsWith
+let text = a52zazz
+$text.endsWidth(a)\n
+$text.endsWidth([a-z], ?rich)\n
+/// Output
+false
+true
+/// End

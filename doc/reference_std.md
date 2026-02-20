@@ -48,7 +48,14 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 #### Manipulation
 *  `lower(s)`: Converts all characters in the string to lowercase.
 *  `upper(s)`: Converts all characters in the string to uppercase.
-*  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. If the rich flag is set, pattern is interpreted as a Lua pattern; otherwise, exact string matching is used.
+*  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub.
+
+#### Search
+* `find(s, pattern, ?rich)`: Returns tthe first match, or empty if not found.
+* `contains(s, pattern, ?rich)`: Returns true if the pattern is found within the string.
+* `startsWith(s, pattern, ?rich)`: Returns true if the string begins with the pattern.
+* `endsWith(s, pattern, ?rich)`: Returns true if the string ends with the pattern.
+* `count(s, pattern, ?rich)`: Returns the number of non-overlapping occurrences of the pattern.
 
 #### Tables related
 * `split(s, sep:\s, ?rich)`: Splits the string into a slice of substrings separated by the specified delimiter (default: whitespace).
