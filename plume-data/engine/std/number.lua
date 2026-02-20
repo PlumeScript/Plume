@@ -43,7 +43,49 @@ return function (plume)
 	end)
 	Number.table.format = plume.obj.luaFunction("format", function (args)
 		local x, format = plume.shiftArgs(Number, args)
-		return string.format(format, x)
+		local result = string.format(format, x)
+
+		local _loc = args.table["local"]
+		if _loc then
+			local int, dec
+			if result:gmatch('%.') then
+				int = result:match('^[^%.]+')
+				dec = result:match('%.([^%.]+)')
+			else
+				int = result
+			end
+
+			local int_sep, sep, dec_sep
+			if _loc == "en" or _loc == "us" then
+				int_sep = ","
+				sep = "."
+			elseif _loc == "fr" then
+				int_sep = " "
+				sep = ","
+				dec_sep = " "
+			else
+				error("Unknow localization format '" .. _loc .. "'.")
+			end
+
+			int = int:gsub("(.)(...)$", "%1"..int_sep.."%2")
+			for i=1, #int do
+				int = int:gsub("([0-9])([0-9][0-9][0-9])[%"..int_sep.."]", "%1"..int_sep.."%2"..int_sep)
+			end
+			result = int
+
+			if dec then
+				if dec_sep then
+					dec = dec:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..dec_sep.."%2")
+					for i=1, #int do
+						dec = dec:gsub("[%"..dec_sep.."]([0-9][0-9][0-9])([0-9])", "%1"..dec_sep.."%2"..dec_sep)
+					end
+				end
+
+				result = int ..sep .. dec
+			end
+		end
+
+		return result
 	end)
 
 	-- Test

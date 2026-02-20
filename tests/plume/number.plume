@@ -86,3 +86,21 @@ $(0).sign()\n
 1
 0
 /// End
+
+/// Test local 1
+$(5423.55).format(%s)
+/// Output
+5423.55
+/// End
+
+/// Test local 2
+$(5325423.55875).format(%s, local: en)
+/// Output
+5,325,423.55875
+/// End
+
+/// Test local 3
+$(5325423.55875).format(%s, local: fr)
+/// Output
+5 325 423,558 75
+/// End

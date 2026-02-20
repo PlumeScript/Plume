@@ -71,7 +71,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 `$Number.method($n)` and `$n.method()` are both valids way to call `method` on a number named `n`.
 
 #### Manipulation
-* `format(n, format)`: Formats the number according to the specified format string (uses Lua `string.format`).
+* `format(n, format, local:)`: Formats the number according to the specified format string (uses Lua `string.format`). `local` can be `empty` (1055.2 -> 1055.2), `en` or `us` (1055.2 -> 1,055.2) or `fr` (1055.2 -> 1 055,2).
 * `floor(n, digit: 0)`: Rounds the number down to the nearest integer or to the specified number of decimal places.
 * `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places.
 * `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
