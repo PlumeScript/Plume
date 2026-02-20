@@ -14,9 +14,10 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local String = plume.obj.table (0, 13)
+	local String = plume.obj.table (0, 14)
 	String.table.keys = {
 		"upper", "lower", "replace",
+		"isNumber",
 		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent",
 		"find", "count", "startsWith", "endsWith", "contains",
 		"split", "lines", "findAll", "partition"
@@ -42,6 +43,16 @@ return function (plume)
 		end
 
 		return s:gsub(pattern, sub)
+	end)
+
+	-- Tests
+	String.table.isNumber = plume.obj.luaFunction("isNumber", function (args)
+		local s = plume.shiftArgs(String, args)
+		if tonumber(s) then
+			return true
+		else
+			return false
+		end
 	end)
 
 	-- Normalization

@@ -57,6 +57,9 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 * `endsWith(s, pattern, ?rich)`: Returns true if the string ends with the pattern.
 * `count(s, pattern, ?rich)`: Returns the number of non-overlapping occurrences of the pattern.
 
+#### tests
+* `isNumber(s)`: Return true if s can be converted to a number.
+
 #### Tables related
 * `split(s, sep:\s, ?rich)`: Splits the string into a slice of substrings separated by the specified delimiter (default: whitespace).
 * `lines(s)`: Splits the string into a slice of individual lines.
@@ -73,6 +76,9 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 * `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places.
 * `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
 * `clamp(n, min, max)`: Restricts the number to lie within the inclusive range [min, max].
+
+#### Test
+* `sign(n)`: Return `1`, `-1` or `0` depending of `n` sign.
 
 ### Iterators
 

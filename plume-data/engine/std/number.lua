@@ -14,10 +14,11 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local Number = plume.obj.table (0, 1)
+	local Number = plume.obj.table (0, 6)
 
 	Number.table.keys = {
-		"floor", "ceil", "round", "clamp", "format"
+		"floor", "ceil", "round", "clamp", "format",
+		"sign"
 	}
 
 	-- Manipulations
@@ -43,6 +44,18 @@ return function (plume)
 	Number.table.format = plume.obj.luaFunction("format", function (args)
 		local x, format = plume.shiftArgs(Number, args)
 		return string.format(format, x)
+	end)
+
+	-- Test
+	Number.table.sign = plume.obj.luaFunction("sign", function (args)
+		local x = plume.shiftArgs(Number, args)
+		if x>0 then
+			return 1
+		elseif x<0 then
+			return -1
+		else
+			return 0
+		end
 	end)
 
 	Number.meta.table.call = plume.obj.luaFunction("Number", function(args)

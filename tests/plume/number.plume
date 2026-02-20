@@ -76,3 +76,13 @@ $(12).format(%05d)
 /// Output
 00012
 /// End
+
+/// Test sign
+$(-5).sign()\n
+$(7).sign()\n
+$(0).sign()\n
+/// Output
+-1
+1
+0
+/// End

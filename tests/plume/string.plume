@@ -252,3 +252,11 @@ $text.endsWidth([a-z], ?rich)\n
 false
 true
 /// End
+
+/// Test isNumber
+$("aa").isNumber()\n
+$("542").isNumber()
+/// Output
+false
+true
+/// End
