@@ -63,6 +63,17 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 * `findAll(s, pattern, ?rich)`: Returns a slice of all non-overlapping matches of the pattern found in the string.
 * `partition(s, pattern, ?rich)`: Splits the string into three parts around the first occurrence of the pattern: the text before the match, the match itself, and the text after.
 
+### Number manipulation
+
+`$Number.method($n)` and `$n.method()` are both valids way to call `method` on a number named `n`.
+
+#### Manipulation
+* `format(n, format)`: Formats the number according to the specified format string (uses Lua `string.format`).
+* `floor(n, digit: 0)`: Rounds the number down to the nearest integer or to the specified number of decimal places.
+* `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places.
+* `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
+* `clamp(n, min, max)`: Restricts the number to lie within the inclusive range [min, max].
+
 ### Iterators
 
 *   `seq(start, stop)` or `seq(stop)`: Returns an inclusive iterator from `start` to `stop`. If only one argument is provided, `start` defaults to `1`.

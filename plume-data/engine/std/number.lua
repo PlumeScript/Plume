@@ -16,11 +16,33 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume)
 	local Number = plume.obj.table (0, 1)
 
-	Number.table.keys = {"floor"}
+	Number.table.keys = {
+		"floor", "ceil", "round", "clamp", "format"
+	}
+
+	-- Manipulations
 	Number.table.floor = plume.obj.luaFunction("floor", function (args)
-		local x = tonumber(args.table[1] or args.table.self)
-		local digit = tonumber(args.table.digit)
-		return math.floor(x, digit)
+		local x = plume.shiftArgs(Number, args)
+		local digit = tonumber(args.table.digit or 0)
+		return math.floor(x*10^digit)*10^-digit
+	end)
+	Number.table.ceil = plume.obj.luaFunction("ceil", function (args)
+		local x = plume.shiftArgs(Number, args)
+		local digit = tonumber(args.table.digit or 0)
+		return math.ceil(x*10^digit)*10^-digit
+	end)
+	Number.table.round = plume.obj.luaFunction("round", function (args)
+		local x = plume.shiftArgs(Number, args)
+		local digit = tonumber(args.table.digit or 0)
+		return math.floor(x*10^digit + 0.5)*10^-digit
+	end)
+	Number.table.clamp = plume.obj.luaFunction("clamp", function (args)
+		local x, min, max = plume.shiftArgs(Number, args)
+		return math.min(max, math.max(min, x))
+	end)
+	Number.table.format = plume.obj.luaFunction("format", function (args)
+		local x, format = plume.shiftArgs(Number, args)
+		return string.format(format, x)
 	end)
 
 	plume.std.Number = Number
