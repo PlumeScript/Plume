@@ -19,7 +19,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied.
     *   `table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.
     *   `table.find(table, v)`: Search for a `k` such that `table[k] = v` and return the first found. Return `empty` if not found.
-    *   `table.finds(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.
+    *   `table.findAll(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.
     *   `table.count(table, ?named)`: Total number of elements (all keys or named keys only).
     *   `table.entry(table, index)`: Returns the key and value at the given position in insertion order.
     *   `table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
