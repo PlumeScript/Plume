@@ -18,8 +18,6 @@ Plume is a textual programming language for complex content generation, built on
 
 *   **Context-Aware Logic:** Blocks accumulate content contextually. A `for` loop will naturally generate text lines inside a string-building macro, but will produce list items when nested inside a list-building macro.
 
-*   **Strict Scoping:** Each block creates a new, isolated scope. Variables are local by default and macros do not capture their closure, ensuring predictable behavior and preventing side-effects. A mechanism for explicitly defining file-level state is available for shared constants or helpers.
-
 *   **Flexible Tables & Metaprogramming:** A unified data structure for lists and key-value maps. Built on a powerful object model inspired by Lua, it supports metaprogramming to create dynamic and intelligent data structures.
 
 *   **Lightweight & Optimized VM:** Implemented as a virtual machine in Lua, with core operations optimized for efficient string and list construction, beneficing from LuaJIT performances.
