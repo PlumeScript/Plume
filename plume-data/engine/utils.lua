@@ -338,4 +338,14 @@ return function (plume)
         
         return nil, searchPaths
     end
+
+    function plume.shiftArgs(cls, args)
+		local self = args.table.self
+		if self == cls then -- called with `cls.method(string)` instead of `cls.method()`
+			return unpack(args.table)
+		else
+			table.insert(args.table, 1, self)
+			return unpack(args.table)
+		end
+	end
 end
