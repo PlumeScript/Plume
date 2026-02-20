@@ -22,13 +22,7 @@ return function (plume, context, nodeHandlerTable)
 		if not handler then
 			error("NYI tokenhandler " .. node.name) -- Guard against typo errors in parser
 		end
-		if node.type == "EMPTY" then
-			context.toggleConcatOff()
-		end
 		handler(node)
-		if node.type == "EMPTY" then
-			context.toggleConcatPop()
-		end
 	end
 
 	--- Handle all node children.
@@ -37,14 +31,8 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node node
 	--- @return nil
 	function context.childrenHandler(node)
-		if node.type == "EMPTY" then
-			context.toggleConcatOff()
-		end
 		for _, child in ipairs(node.children or {}) do
 			context.nodeHandler(child)
-		end
-		if node.type == "EMPTY" then
-			context.toggleConcatPop()
 		end
 	end
 
