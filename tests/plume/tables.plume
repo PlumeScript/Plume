@@ -20,7 +20,7 @@ let t2 = @table
 	...t1
 end
 
-@join(sep: \s)
+@table.join(sep: \s)
 	...t2
 end
 /// Output
@@ -36,7 +36,7 @@ let t2 = @table
 	- quill
 end
 
-@join(sep: \s)
+@table.join(sep: \s)
 	...t2
 end
 /// Output
@@ -212,7 +212,7 @@ $t.y
 /// Test ref 5
 let t = @table
 	ref x: 1
-	y: @join
+	y: @table.join
 		a$x\aaa
 	end
 end
@@ -245,7 +245,7 @@ $t.y
 /// Test ref alias
 let t = @table
 	ref x as z: 1
-	y: @join
+	y: @table.join
 		a$z\aaa
 	end
 end

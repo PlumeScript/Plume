@@ -43,14 +43,6 @@ return function (plume)
             print(table.unpack(result))
         end,
 
-        join = function(args)
-            local sep = args.table.sep
-            if sep == plume.obj.empty then
-                sep = ""
-            end
-            return table.concat(args.table, sep)
-        end,
-
         tonumber = function(args, chunk)
             local x = args.table[1]
             if x == plume.obj.empty then

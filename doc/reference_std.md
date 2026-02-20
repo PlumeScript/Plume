@@ -22,9 +22,10 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `table.finds(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.
     *   `table.count(table, ?named)`: Total number of elements (all keys or named keys only).
     *   `table.entry(table, index)`: Returns the key and value at the given position in insertion order.
+    *   `table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
     *   **Edge Cases:** Use this function specifically when creating empty tables (`table()`) or tables with a single element.
 *   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
-*   `join(sep: "", ...items)`: Returns a string produced by concatenating `items`, optionally separated by `sep`.
+
 
 Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$table(a, b, ...)` and evaluates to the same result.
 

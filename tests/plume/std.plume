@@ -1,5 +1,5 @@
 /// Test join
-@join
+@table.join
   quill
   mark
 end
@@ -8,7 +8,7 @@ quillmark
 /// End
 
 /// Test join with sep
-@join(sep: \n)
+@table.join(sep: \n)
   - quill
   - mark
 end
@@ -64,7 +64,7 @@ end
 
 /// Test enumerate
 let t = $table(quill, wing, bird)
-@join(sep:\n)
+@table.join(sep:\n)
   for index, value in enumerate(t)
     - Item $index is $value.
   end
@@ -77,7 +77,7 @@ Item 3 is bird.
 
 /// Test items
 let t = $table(first: quill, second: wing, bonus: bird)
-@join(sep:\n)
+@table.join(sep:\n)
   for key, value in items(t)
     - Item "$key" is _($value)_.
   end
@@ -259,7 +259,7 @@ wing
 /// Test finds
 let t = $table(wing: nib, write: nib)
 
-$join(...table.finds($t, nib))
+$table.join(...table.finds($t, nib))
 /// Output
 wingwrite
 /// End
@@ -402,11 +402,11 @@ let t = @table
   end
 end
 
-$join($t)
+$table.join($t)
 /// Error
 Runtime error: invalid value (table) at index 1 in table for 'concat'
 
 Traceback (most recent call first):
-  File 'Error', line 6: $join($t)
-                         ^^^^^^^^
+  File 'Error', line 6: $table.join($t)
+                         ^^^^^^^^^^^^^^
 /// End

@@ -84,7 +84,7 @@ This is quite long, i think.
 macro write(...args)
   Positionnals args: $join(...args, sep:\,\s)\n
   Named args:\s
-  @join(sep:\,\s)
+  @table.join(sep:\,\s)
     for key, value in items(args, ?named)
       - $key\=$value
     end
