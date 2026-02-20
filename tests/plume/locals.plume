@@ -1,0 +1,35 @@
+/// Test simple local
+local fr
+  Voici un nombre: $(6543.56)
+end
+/// Output
+Voici un nombre: 6 543,56
+/// End
+
+/// Test nested local
+local fr
+  local en
+    Here is a number: $(6543.56)
+  end
+end
+/// Output
+Here is a number: 6,543.56
+/// End
+
+/// Test default local
+local fr
+  local none
+    Voici un nombre: $(6543.56)
+  end
+end
+/// Output
+Voici un nombre: 6543.56
+/// End
+
+/// Test local from file
+local fr
+  $import(tests/plume/toimport/numbers)
+end
+/// Output
+x = 654 237,458 9
+/// End

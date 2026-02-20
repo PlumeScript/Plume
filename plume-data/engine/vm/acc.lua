@@ -158,7 +158,12 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
 
     if value == vm.empty then
         _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), "")
-    elseif t ~= "number" and t ~= "string" and value ~= vm.empty then
+    elseif t == "number" then
+        local _local = _STACK_GET(vm.runtime.localStack)
+        if _local and _local ~= "none" then
+            _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), vm.plume.formatNumber(value, "%s", _local))
+        end
+    elseif t ~= "string" then
         local meta = t == "table" and value.meta.table.tostring
         if  meta then
             _STACK_POP(vm.mainStack)

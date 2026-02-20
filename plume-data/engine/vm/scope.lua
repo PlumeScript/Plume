@@ -60,3 +60,15 @@ function FILE_INIT_PARAMS(vm, arg1, arg2)
         vm.fileParams = nil
     end
 end
+
+--- @opcode
+--! inline
+function PUSH_LOCAL(vm, arg1, arg2)
+    _STACK_PUSH(vm.runtime.localStack, vm.constants[arg2])
+end
+
+--- @opcode
+--! inline
+function POP_LOCAL(vm, arg1, arg2)
+    _STACK_POP(vm.runtime.localStack)
+end
