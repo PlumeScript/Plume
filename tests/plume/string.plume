@@ -111,3 +111,27 @@ $("a  a  	  a").collapse()
 /// Output
 ---a a a---
 /// End
+
+/// Test upper
+$("az5AB").upper()
+/// Output
+AZ5AB
+/// End
+
+/// Test lower
+$("az5AB").lower()
+/// Output
+az5ab
+/// End
+
+/// Test replace 1
+$("aza5").replace(a, 5)
+/// Output
+5z55
+/// End
+
+/// Test replace 2
+$("aza5").replace(%w, 5, ?rich)
+/// Output
+5555
+/// End

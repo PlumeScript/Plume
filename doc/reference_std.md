@@ -36,8 +36,11 @@ Use `$table` specifically when creating empty tables or tables with a single ele
     *  `ltrim(s)`: Removes leading whitespace from the beginning of the string.
     *  `rtrim(s)`: Removes trailing whitespace from the end of the string.
     *  `indent(s, sep:\t)`: Prepends the specified separator (default: tab) to each line of the string.
-    *  `dedent()`: Removes first line leading whitespace from all lines in a multi-line string.
-    *  `collapse()`: Replaces consecutive whitespace characters (including newlines) with single spaces.
+    *  `dedent(s)`: Removes first line leading whitespace from all lines in a multi-line string.
+    *  `collapse(s)`: Replaces consecutive whitespace characters (including newlines) with single spaces.
+    *  `lower(s)`: Converts all characters in the string to lowercase.
+    *  `upper(s)`: Converts all characters in the string to uppercase.
+    *  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. If the rich flag is set, pattern is interpreted as a Lua pattern; otherwise, exact string matching is used.
 
 ### Iterators
 

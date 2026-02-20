@@ -14,11 +14,31 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local String = plume.obj.table (0, 2)
-	String.table.keys = {"upper", "trim", "rtrim", "ltrim", "dedent", "collapse", "indent"}
+	local String = plume.obj.table (0, 9)
+	String.table.keys = {
+		"upper", "lower", "replace",
+		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent"
+	}
+	
+	-- Manipulation
 	String.table.upper = plume.obj.luaFunction("upper", function (args)
 		local x = args.table[1] or args.table.self
 		return string.upper(x)
+	end)
+	String.table.lower = plume.obj.luaFunction("lower", function (args)
+		local x = args.table[1] or args.table.self
+		return string.lower(x)
+	end)
+	String.table.replace = plume.obj.luaFunction("replace", function (args)
+		local x       = args.table.self or args.table[1]
+		local pattern = tostring((args.table.self and args.table[1]) or args.table[2])
+		local sub     = tostring((args.table.self and args.table[2]) or args.table[3])
+
+		if not args.table.rich then
+			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+  			sub     = sub:gsub("%%", "%%%%")
+		end
+		return x:gsub(pattern, sub)
 	end)
 
 	-- Normalization
