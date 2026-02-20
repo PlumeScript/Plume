@@ -104,3 +104,9 @@ $(5325423.55875).format(%s, local: fr)
 /// Output
 5 325 423,558 75
 /// End
+
+/// Test localize
+$(5325423.55875).localize(fr)
+/// Output
+5 325 423,558 75
+/// End

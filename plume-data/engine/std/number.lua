@@ -14,10 +14,10 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local Number = plume.obj.table (0, 6)
+	local Number = plume.obj.table (0, 7)
 
 	Number.table.keys = {
-		"floor", "ceil", "round", "clamp", "format",
+		"floor", "ceil", "round", "clamp", "format", "localize",
 		"sign"
 	}
 
@@ -41,12 +41,10 @@ return function (plume)
 		local x, min, max = plume.shiftArgs(Number, args)
 		return math.min(max, math.max(min, x))
 	end)
-	Number.table.format = plume.obj.luaFunction("format", function (args)
-		local x, format = plume.shiftArgs(Number, args)
-		local result = string.format(format, x)
 
-		local _loc = args.table["local"]
-		if _loc then
+	plume.formatNumber = function(x, format, _local)
+		local result = string.format(format, x)
+		if _local then
 			local int, dec
 			if result:gmatch('%.') then
 				int = result:match('^[^%.]+')
@@ -56,15 +54,15 @@ return function (plume)
 			end
 
 			local int_sep, sep, dec_sep
-			if _loc == "en" or _loc == "us" then
+			if _local == "en" or _local == "us" then
 				int_sep = ","
 				sep = "."
-			elseif _loc == "fr" then
+			elseif _local == "fr" then
 				int_sep = " "
 				sep = ","
 				dec_sep = " "
 			else
-				error("Unknow localization format '" .. _loc .. "'.")
+				error("Unknow localization format '" .. _local .. "'.")
 			end
 
 			int = int:gsub("(.)(...)$", "%1"..int_sep.."%2")
@@ -84,8 +82,20 @@ return function (plume)
 				result = int ..sep .. dec
 			end
 		end
-
 		return result
+	end
+
+	Number.table.format = plume.obj.luaFunction("format", function (args)
+		local x, format = plume.shiftArgs(Number, args)
+		local _local = args.table["local"]
+
+		return plume.formatNumber(x, format, _local)
+	end)
+
+	Number.table.localize = plume.obj.luaFunction("localize", function (args)
+		local x, _local = plume.shiftArgs(Number, args)
+
+		return plume.formatNumber(x, "%s", _local)
 	end)
 
 	-- Test
