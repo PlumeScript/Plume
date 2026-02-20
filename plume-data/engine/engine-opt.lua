@@ -1723,7 +1723,7 @@ return function (plume)
                                                     goto _inline_end245
                                                 end
                                                 ::_inline_end245::
-                                            elseif tocall == plume.std.tostring then
+                                            elseif tocall == plume.std.tostring or tocall == plume.std.String then
                                                 local _ret107
                                                 mainStackPointer = mainStackPointer - 1
                                                 _ret107 = mainStack[mainStackPointer + 1]
@@ -1747,6 +1747,9 @@ return function (plume)
                                                     _ret109 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret109
+                                                end
+                                                if tocall == plume.std.tostring then
+                                                    plume.warning.deprecatedRuntime ("1.0", "macro `tostring`", "Use `String` instead", runtime, ip, {230, 414})
                                                 end
                                             else
                                                 vmerr = plume.error.cannotCallValue (t)

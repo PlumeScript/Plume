@@ -224,7 +224,7 @@ let t = @table
   end
 end
 
-$(tostring(t))
+$(String(t))
 /// Output
 I'm a table
 /// End
