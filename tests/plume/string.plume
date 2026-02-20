@@ -16,3 +16,98 @@ $String.upper(abc)
 /// Output
 ABC
 /// End
+
+/// Test trim
+---
+$(" a ").trim()
+---
+/// Output
+---a---
+/// End
+
+/// Test rtrim
+---
+$(" a ").rtrim()
+---
+/// Output
+---a ---
+/// End
+
+/// Test ltrim
+---
+$(" a ").ltrim()
+---
+/// Output
+--- a---
+/// End
+
+/// Test dedent
+let x = raw[
+	if true
+		if false
+			run $nothing()
+		end
+	end
+]end
+---\n
+$x.dedent()\n
+---
+/// Output
+---
+if true
+	if false
+		run $nothing()
+	end
+end
+---
+/// End
+
+/// Test indent 1
+let x = raw[
+if true
+	if false
+		run $nothing()
+	end
+end
+]end
+---\n
+$x.indent()\n
+---
+/// Output
+---
+	if true
+		if false
+			run $nothing()
+		end
+	end
+---
+/// End
+
+/// Test indent 2
+let x = raw[
+if true
+	if false
+		run $nothing()
+	end
+end
+]end
+---\n
+$x.indent(sep:>)\n
+---
+/// Output
+---
+>if true
+>	if false
+>		run $nothing()
+>	end
+>end
+---
+/// End
+
+/// Test collapse
+---
+$("a  a  	  a").collapse()
+---
+/// Output
+---a a a---
+/// End

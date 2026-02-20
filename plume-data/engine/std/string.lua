@@ -15,10 +15,38 @@ If not, see <https://www.gnu.org/licenses/>.
 
 return function (plume)
 	local String = plume.obj.table (0, 2)
-	String.table.keys = {"upper"}
+	String.table.keys = {"upper", "trim", "rtrim", "ltrim", "dedent", "collapse", "indent"}
 	String.table.upper = plume.obj.luaFunction("upper", function (args)
 		local x = args.table[1] or args.table.self
 		return string.upper(x)
+	end)
+
+	-- Normalization
+	String.table.trim = plume.obj.luaFunction("trim", function (args)
+		local x = args.table[1] or args.table.self
+		return x:gsub('^%s*', ''):gsub('%s*$', '')
+	end)
+	String.table.rtrim = plume.obj.luaFunction("rtrim", function (args)
+		local x = args.table[1] or args.table.self
+		return x:gsub('^%s*', '')
+	end)
+	String.table.ltrim = plume.obj.luaFunction("ltrim", function (args)
+		local x = args.table[1] or args.table.self
+		return x:gsub('%s*$', '')
+	end)
+	String.table.collapse = plume.obj.luaFunction("collapse", function (args)
+		local x = args.table[1] or args.table.self
+		return x:gsub('%s+', ' ')
+	end)
+	String.table.dedent = plume.obj.luaFunction("dedent", function (args)
+		local x = args.table[1] or args.table.self
+		local firstIndent = x:match('^%s+')
+		return x:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
+	end)
+	String.table.indent = plume.obj.luaFunction("indent", function (args)
+		local x   = args.table[1] or args.table.self
+		local sep = args.table.sep or "\t"
+		return sep..x:gsub('\n', '\n'..sep)
 	end)
 
 	plume.std.String = String

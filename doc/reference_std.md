@@ -30,6 +30,15 @@ Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is t
 
 Use `$table` specifically when creating empty tables or tables with a single element.
 
+### String manipulation
+*   **`String`** _`$String.method(string)` and `$string.method()` are both valids._
+    *  `trim(s)`: Removes leading and trailing whitespace from the string.
+    *  `ltrim(s)`: Removes leading whitespace from the beginning of the string.
+    *  `rtrim(s)`: Removes trailing whitespace from the end of the string.
+    *  `indent(s, sep:\t)`: Prepends the specified separator (default: tab) to each line of the string.
+    *  `dedent()`: Removes first line leading whitespace from all lines in a multi-line string.
+    *  `collapse()`: Replaces consecutive whitespace characters (including newlines) with single spaces.
+
 ### Iterators
 
 *   `seq(start, stop)` or `seq(stop)`: Returns an inclusive iterator from `start` to `stop`. If only one argument is provided, `start` defaults to `1`.
