@@ -125,6 +125,8 @@ return function (plume, context)
 				if scopeDepth > 0 then
 					if variable.isRef then
 						return nil, true
+					elseif variable.isContext then
+						return {isContext = true}
 					else
 						return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1)
 					end

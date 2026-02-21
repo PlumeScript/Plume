@@ -58,6 +58,17 @@ en
 fr
 /// End
 
+/// Test context & closure
+use #context(local: fr)
+let context local
+macro Wing()
+  $local
+end
+$Wing()
+/// Output
+fr
+/// End
+
 /// Test cannot use context with const
 let const context local
 /// Error
