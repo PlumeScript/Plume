@@ -21,7 +21,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (runtime, chunk)
+	function plume._run_dev (runtime, chunk, initFileParams)
 		require "plume-data/engine/vm/acc"
 		require "plume-data/engine/vm/alu"
 		require "plume-data/engine/vm/call"
@@ -39,10 +39,9 @@ return function (plume)
 		require "plume-data/engine/vm/store"
 		require "plume-data/engine/vm/table"
 		require "plume-data/engine/vm/utils"
-	
 		-- Creates stacks, handle arguments
 		local vm =  --! to-remove
-			_VM_INIT(plume, runtime, chunk)
+			_VM_INIT(plume, runtime, chunk, initFileParams)
 		
 		local op, arg1, arg2, vmerr, vmserr
 		::DISPATCH::
@@ -278,27 +277,27 @@ return function (plume)
 									if op < 57 then
 										FILE_INIT_PARAMS(vm, arg1, arg2)
 									else
-										PUSH_LOCAL(vm, arg1, arg2)
+										PUSH_CONTEXT(vm, arg1, arg2)
 									end
 								else
 									if op < 59 then
-										POP_LOCAL(vm, arg1, arg2)
+										POP_CONTEXT(vm, arg1, arg2)
 									else
-										goto END
+										LOAD_CONTEXT(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 62 then
 									if op < 61 then
-										STD_LEN(vm, arg1, arg2)
+										goto END
 									else
-										STD_TYPE(vm, arg1, arg2)
+										STD_LEN(vm, arg1, arg2)
 									end
 								else
 									if op < 63 then
-										STD_SEQ(vm, arg1, arg2)
+										STD_TYPE(vm, arg1, arg2)
 									else
-										STD_ITEMS(vm, arg1, arg2)
+										STD_SEQ(vm, arg1, arg2)
 									end
 								end
 							end
@@ -312,8 +311,12 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
-										STD_ENUMERATE(vm, arg1, arg2)
+										STD_ITEMS(vm, arg1, arg2)
 									else
+										STD_ENUMERATE(vm, arg1, arg2)
+									end
+								else
+									if op < 67 then
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

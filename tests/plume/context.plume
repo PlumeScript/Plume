@@ -1,0 +1,95 @@
+/// Test simple context
+with locale: fr
+  Voici un nombre: $(6543.56)
+end
+/// Output
+Voici un nombre: 6 543,56
+/// End
+
+/// Test nested context
+with locale: fr
+  with locale: en
+    Here is a number: $(6543.56)
+  end
+end
+/// Output
+Here is a number: 6,543.56
+/// End
+
+/// Test default context
+with locale: fr
+  with locale: none
+    Voici un nombre: $(6543.56)
+  end
+end
+/// Output
+Voici un nombre: 6543.56
+/// End
+
+/// Test context from file
+with locale: fr
+  $import(tests/plume/toimport/numbers)
+end
+/// Output
+x = 654 237,458 9
+/// End
+
+/// Test context from directive
+use #context(locale: fr)
+Voici un nombre: $(6543.56)
+/// Output
+Voici un nombre: 6 543,56
+/// End
+
+
+/// Test read context
+let context locale
+$locale\n
+with locale: fr
+  $locale\n
+  with locale: en
+    $locale\n
+  end
+  $locale
+end
+/// Output
+fr
+en
+fr
+/// End
+
+/// Test context & closure
+use #context(locale: fr)
+let context locale
+macro Wing()
+  $locale
+end
+$Wing()
+/// Output
+fr
+/// End
+
+/// Test cannot use context with const
+let const context locale
+/// Error
+Compilation error: Variable cannot be both const and context
+File 'cannot use context with const', line 1: let const context locale
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+/// End
+
+/// Test cannot use context with param
+let param context locale
+/// Error
+Compilation error: Variable cannot be both const and context
+File 'cannot use context with param', line 1: let param context locale
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+/// End
+
+/// Test cannot set context
+let context locale
+set locale = 5
+/// Error
+Compilation error: Cannot set variable 'locale', it is a context variable. Use `with locale: value` instead.
+File 'cannot set context', line 2: set locale = 5
+                                   ^^^^^^^^^^^^^^
+/// End

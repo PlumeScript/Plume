@@ -79,6 +79,21 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotMixContextConstError(node)
+		local message = "Variable cannot be both const and context"
+		throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotMixContextParamError(node)
+		local message = "Variable cannot be both param and context"
+		throwCompilationError(node, message)
+	end
+
+	function plume.error.setContextVariableError(node, varName)
+		local message = string.format("Cannot set variable '%s', it is a context variable. Use `with %s: value` instead.", varName, varName)
+		throwCompilationError(node, message)
+	end
+
 	function plume.error.letEmptyConstantError(node)
 		local message = string.format("Cannot define an empty constant variable.")
 		throwCompilationError(node, message)

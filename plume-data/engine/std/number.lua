@@ -42,44 +42,61 @@ return function (plume)
 		return math.min(max, math.max(min, x))
 	end)
 
-	plume.formatNumber = function(x, format, _local)
+	plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator)
+		if thousandsSeparator == plume.obj.empty then
+			thousandsSeparator = nil
+		end
+		if thousandthsSeparator == plume.obj.empty then
+			thousandthsSeparator = nil
+		end
+		if not format or format == plume.obj.empty then
+			format = "%s"
+		end
+
 		local result = string.format(format, x)
-		if _local then
-			local int, dec
+		if locale then
+			local integerPart, decimalPart
 			if result:gmatch('%.') then
-				int = result:match('^[^%.]+')
-				dec = result:match('%.([^%.]+)')
+				integerPart = result:match('^[^%.]+')
+				decimalPart = result:match('%.([^%.]+)')
 			else
-				int = result
+				integerPart = result
 			end
 
-			local int_sep, sep, dec_sep
-			if _local == "en" or _local == "us" then
-				int_sep = ","
-				sep = "."
-			elseif _local == "fr" then
-				int_sep = " "
-				sep = ","
-				dec_sep = " "
-			else
-				error("Unknow localization format '" .. _local .. "'.")
+			if locale == "en" or locale == "us" then
+				thousandsSeparator = ","
+				decimalSeparator  = "."
+			elseif locale == "fr" then
+				thousandsSeparator    = " "
+				decimalSeparator     = ","
+				thousandthsSeparator = " "
+			elseif locale == "custom" then
+				thousandsSeparator    = thousandsSeparator or nil
+				decimalSeparator     = decimalSeparator or "."
+				thousandthsSeparator = thousandthsSeparator or nil
+			elseif locale then
+				error("Unknow localization format '" .. locale .. "'.")
 			end
 
-			int = int:gsub("(.)(...)$", "%1"..int_sep.."%2")
-			for i=1, #int do
-				int = int:gsub("([0-9])([0-9][0-9][0-9])[%"..int_sep.."]", "%1"..int_sep.."%2"..int_sep)
+			if thousandsSeparator then
+				thousandsSeparator = thousandsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+				integerPart = integerPart:gsub("(.)(...)$", "%1"..thousandsSeparator.."%2")
+				for i=1, #integerPart do
+					integerPart = integerPart:gsub("([0-9])([0-9][0-9][0-9])"..thousandsSeparator, "%1"..thousandsSeparator.."%2"..thousandsSeparator)
+				end
 			end
-			result = int
+			result = integerPart
 
-			if dec then
-				if dec_sep then
-					dec = dec:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..dec_sep.."%2")
-					for i=1, #int do
-						dec = dec:gsub("[%"..dec_sep.."]([0-9][0-9][0-9])([0-9])", "%1"..dec_sep.."%2"..dec_sep)
+			if decimalPart then
+				if thousandthsSeparator then
+					thousandthsSeparator = thousandthsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+					decimalPart = decimalPart:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2")
+					for i=1, #integerPart do
+						decimalPart = decimalPart:gsub(thousandthsSeparator.."([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2"..thousandthsSeparator)
 					end
 				end
 
-				result = int ..sep .. dec
+				result = result .. decimalSeparator .. decimalPart
 			end
 		end
 		return result
@@ -87,15 +104,18 @@ return function (plume)
 
 	Number.table.format = plume.obj.luaFunction("format", function (args)
 		local x, format = plume.shiftArgs(Number, args)
-		local _local = args.table["local"]
+		local localTag             = args.table["locale"]
+		local thousandsSeparator    = args.table["thousandsSeparator"]
+		local decimalSeparator     = args.table["decimalSeparator"]
+		local thousandthsSeparator = args.table["thousandthsSeparator"]
 
-		return plume.formatNumber(x, format, _local)
+		return plume.formatNumber(x, format, localTag, thousandsSeparator, decimalSeparator, thousandthsSeparator)
 	end)
 
 	Number.table.localize = plume.obj.luaFunction("localize", function (args)
-		local x, _local = plume.shiftArgs(Number, args)
+		local x, localTag = plume.shiftArgs(Number, args)
 
-		return plume.formatNumber(x, "%s", _local)
+		return plume.formatNumber(x, "%s", localTag)
 	end)
 
 	-- Test

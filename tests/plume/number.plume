@@ -94,15 +94,37 @@ $(5423.55).format(%s)
 /// End
 
 /// Test local 2
-$(5325423.55875).format(%s, local: en)
+$(5325423.55875).format(%s, locale: en)
 /// Output
 5,325,423.55875
 /// End
 
 /// Test local 3
-$(5325423.55875).format(%s, local: fr)
+$(5325423.55875).format(%s, locale: fr)
 /// Output
 5 325 423,558 75
+/// End
+
+/// Test local 4
+$(5325423.55875).format(%s, locale: custom, decimalSeparator: ??, thousandsSeparator:--)
+/// Output
+5--325--423??55875
+/// End
+
+/// Test local context 1
+with locale: custom, localeDecimalSeparator: ??, localeThousandsSeparator:--
+  Here is a number: $(5325423.55875)
+end
+/// Output
+Here is a number: 5--325--423??55875
+/// End
+
+/// Test local context 2
+with locale: custom, localeNumberFormat: <%020d>
+  Here is a number: $(5325423.55875)
+end
+/// Output
+Here is a number: <00000000000005325423>
 /// End
 
 /// Test localize
@@ -110,3 +132,4 @@ $(5325423.55875).localize(fr)
 /// Output
 5 325 423,558 75
 /// End
+

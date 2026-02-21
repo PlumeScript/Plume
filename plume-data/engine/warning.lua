@@ -67,7 +67,7 @@ return function (plume)
 	    	plume.error.customError (node, msg)
 	    else
 	    	if plume.warning.first then
-	    		msg = msg .. "\nAdd `use #warning-ignore[-global][-related issues]` in your file to ignore warnings.\n"
+	    		msg = msg .. "\nAdd `use #warning(mode: ignore, issues:[related issues])` in your file to ignore warnings.\n"
 	    		plume.warning.first = false
 	    	end
 	    	print(msg)

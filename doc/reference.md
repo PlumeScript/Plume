@@ -1,5 +1,7 @@
 # Plume Technical Documentation
 
+_For version 1.0.beta.6_
+
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
 ## Core Principles
@@ -341,6 +343,27 @@ let [const] key1, sourceKey as alias, key: default, ... from expression
 
 // 4. Parameter Declaration
 let param name [= value]
+
+// 5. Context Variable Declaration
+let context name
+// Declares a variable that acts as an immutable proxy to a context variable. The variable reflects the current value from the context stack at the point of access.
+// Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`.
+```
+
+```plume
+macro greet()
+    let context locale
+    Message in $locale.
+end
+
+with locale: en
+    $greet()  // Output: Message in en.
+end
+```
+
+**Rules:**
+*   The `context` keyword creates an immutable binding. The variable cannot be reassigned with `set`.
+*   The value is resolved at access time, not at declaration time.
 ```
 
 **1. Multiple Declaration**
@@ -666,6 +689,102 @@ end
 
 Using `run` allows for imperative-style procedure calls within Plume's expression-oriented architecture, providing a clear and safe way to manage side-effects.
 
+### Context Variables and `with` Statement
+
+Context variables provide a mechanism for passing implicit parameters through nested scopes, similar to a scoped global variable stack. They are useful for reducing boilerplate when a configuration value needs to be accessed deep in a call chain.
+
+#### Declaration
+
+A context variable is declared using the `let context` syntax:
+
+```plume
+let context name
+```
+
+This creates an immutable proxy that reads from the context stack. The value is resolved at each access, reflecting the most recently pushed value.
+
+#### Setting Context: `with` Statement
+
+The `with` statement pushes one or more values onto the context stack for the duration of a block:
+
+```plume
+with name1: value1, name2: value2, ...
+    ...
+end
+```
+
+**Example:**
+
+```plume
+macro greet()
+    let context locale
+    Message in $locale.
+end
+
+with locale: en
+    $greet()       // Output: Message in en.
+    
+    with locale: fr
+        $greet()   // Output: Message in fr.
+    end
+    
+    $greet()       // Output: Message in en.
+end
+
+$greet()           // Output: Message in .
+```
+
+#### Behavior
+
+*   **Stack Semantics:** Context values are pushed onto a stack. Nested `with` blocks shadow outer values, and the stack is restored when exiting a block.
+*   **Scope Independence:** A macro can read a context variable even if it was not passed as an argument, provided it declares the context binding.
+*   **Immutability:** The `let context` binding cannot be reassigned. The variable always reflects the current stack value.
+*   **Default Value:** If no `with` statement has pushed a value for a context variable, it evaluates to `empty`.
+
+#### Use Cases and Cautions
+
+Context variables should be used sparingly. They are appropriate for:
+
+*   Configuration values that permeate multiple layers of abstraction (e.g., locale, formatting preferences).
+*   Implicit parameters in Domain Specific Languages.
+
+**Trade-off:** While context variables reduce parameter passing overhead, they can make data flow less explicit. Use them judiciously.
+
+#### Built-in Context Variable: `locale`
+
+Plume defines a built-in context variable named `locael` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `locale` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
+
+```plume
+with locale: fr
+    The value is $(1000.5).
+end
+// Output: The value is 1 000,5.
+
+with locale: en
+    The value is $(1000.5).
+end
+// Output: The value is 1,000.5.
+```
+
+If `locale` is not set, is `none` or is `empty`, numbers are concatenated without formatting.
+
+**Disabling Formatting:**
+
+To prevent automatic formatting in contexts where raw numbers are required (e.g., generating SVG coordinates, JSON output), set `locale` to `none`:
+
+```plume
+// SVG library - coordinates must remain unformatted
+use #context(locale: none)
+
+macro circle(x, y, r)
+    <circle cx="$(x)" cy="$(y)" r="$(r)" />
+end
+
+$circle(1000, 2000, 50)// Output: <circle cx="1000" cy="2000" r="50" />
+```
+
+This pattern is essential for library authors who need to isolate their code from the caller's localization context.
+
 ### Context Injection (`use <path>`)
 
 The `use` directive allows injecting the keys of a table returned by a module directly into the current file’s scope as `const` variables.
@@ -739,18 +858,35 @@ use mylib
 
 
 ### Directives (`use #name`)
-`use #directive[-option1][-option2]` is executed during compilation and allows specific behaviors to be enabled/disabled.
+`use #directive(...params)` is executed during compilation and allows specific behaviors to be enabled/disabled.
 
 **Existing directives**:
 *   **warning**
     *   **Options**
-        *   `-strict`: the first warning encountered raises an error
-        *   `-ignore`: does not display warnings
-        *   `-[n]`: applies the directive only to warnings related to issue n
+        *   `mode: strict`: the first warning encountered raises an error
+        *   `mode: ignore`: does not display warnings
+        *   `issues: n1 n2 n3`: applies the directive only to warnings related to issue `n1`, `n2` or `n3`
     *   **Exemples**
-        *   `use #warning-ignore` suppresses all warnings
-        *   `use #warning-strict-75-76` raises an error at the first warning related to issues #75 or #76
-
+        *   `use #warning(mode: ignore)` suppresses all warnings
+        *   `use #warning(mode: strict, issues: 75 76)` raises an error at the first warning related to issues #75 or #76
+*   **context**
+    Pushes context variables onto the stack for the entire file scope. This is syntactic sugar for a `with` block wrapping the whole file.
+    
+    **Syntax:**
+    ```plume
+    use #context(name1: value1, name2: value2, ...)
+    ```
+    
+    **Example:**
+    ```plume
+    // svg-utils.plume
+    // Prevent automatic number formatting in this library
+    use #context(local: none)
+    
+    macro circle(x, y, r)
+        <circle cx="$(x)" cy="$(y)" r="$(r)" />
+    end
+    ```
 ### Metatables
 
 #### Metatables and Operator Overloading

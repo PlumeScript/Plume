@@ -289,10 +289,13 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### FILE_INIT_PARAMS
 
 
-#### PUSH_LOCAL
+#### PUSH_CONTEXT
 
 
-#### POP_LOCAL
+#### LOAD_CONTEXT
+
+
+#### POP_CONTEXT
 
 
 ### vm/std.lua

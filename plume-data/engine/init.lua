@@ -1,5 +1,5 @@
 --[[
-Plume🪶 1.0.beta.5
+Plume🪶 1.0.beta.6
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
@@ -36,7 +36,7 @@ require 'plume-data/engine/pec'           (plume)
 require 'plume-data/engine/config'        (plume)
 require 'plume-data/engine/profiler'      (plume)
 
-function plume.run(runtime, chunk)
+function plume.run(runtime, chunk, fileParams)
 	if plume.runStatFlag then
 		plume.runDevFlag = true
 		plume.runStatDeep = plume.runStatDeep or 1
@@ -48,16 +48,15 @@ function plume.run(runtime, chunk)
 	else
 		run = plume._run
 	end
-
-	return plume.safeRun(run, runtime, chunk)
+	return plume.safeRun(run, runtime, chunk, fileParams)
 end
 
-function plume.execute(code, filename, chunk, runtime)
+function plume.execute(code, filename, chunk, runtime, fileParams)
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
 
 	if success then
-		success, result, ip = plume.run(runtime, chunk)
+		success, result, ip = plume.run(runtime, chunk, fileParams)
 	else
 		return false, result
 	end
@@ -72,7 +71,7 @@ function plume.execute(code, filename, chunk, runtime)
 	end
 end
 
-function plume.executeFile(filename, runtime)
+function plume.executeFile(filename, runtime, fileParams)
 	local runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 
@@ -84,7 +83,7 @@ function plume.executeFile(filename, runtime)
 		local code = f:read("*a")
 	f:close()
 
-	return plume.execute(code, filename, chunk, runtime)
+	return plume.execute(code, filename, chunk, runtime, fileParams)
 end
 
 plume.hook = nil -- A function call at each step of the vm

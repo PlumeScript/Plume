@@ -34,6 +34,12 @@ return function(plume)
 			local ast = plume.parse(code, filename) 
 			-- Call, for each ast node, a function to emit bytecode
 			context.nodeHandler(ast) 
+
+			-- Close context
+			for i=1, context.contextVariableToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+
 			-- Save file offset
 			chunk.offset = (runtime.bytecode and #runtime.bytecode or 0) + 1
 			-- Encode OP, compute goto offsets
@@ -70,6 +76,8 @@ return function(plume)
 		context.importedVariables = {}
 
 		context.accBlockDeep = 0
+
+		context.contextVariableToClose = 0
 
 		require 'plume-data/engine/compiler/labels'    (plume, context)
 		require 'plume-data/engine/compiler/wrappers'  (plume, context)
