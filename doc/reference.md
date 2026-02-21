@@ -741,17 +741,17 @@ use mylib
 
 
 ### Directives (`use #name`)
-`use #directive[-option1][-option2]` is executed during compilation and allows specific behaviors to be enabled/disabled.
+`use #directive(...params)` is executed during compilation and allows specific behaviors to be enabled/disabled.
 
 **Existing directives**:
 *   **warning**
     *   **Options**
-        *   `-strict`: the first warning encountered raises an error
-        *   `-ignore`: does not display warnings
-        *   `-[n]`: applies the directive only to warnings related to issue n
+        *   `mode: strict`: the first warning encountered raises an error
+        *   `mode: ignore`: does not display warnings
+        *   `issues: n1 n2 n3`: applies the directive only to warnings related to issue `n1`, `n2` or `n3`
     *   **Exemples**
-        *   `use #warning-ignore` suppresses all warnings
-        *   `use #warning-strict-75-76` raises an error at the first warning related to issues #75 or #76
+        *   `use #warning(mode: ignore)` suppresses all warnings
+        *   `use #warning(mode: strict, issues: 75 76)` raises an error at the first warning related to issues #75 or #76
 
 ### Metatables
 

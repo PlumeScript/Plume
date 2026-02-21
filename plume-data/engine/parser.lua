@@ -155,8 +155,10 @@ return function (plume)
         ---------------------------
         -- compilation directive --
         ---------------------------
-        local libname = Ct("USE_DIRECTIVE", P"#" * idns * (P"-" * C("USE_OPTION", NOT(s + "\n" + "," + "-")^1))^0)
-         + C("USE_LIB", NOT(s + "\n" + ",")^1)
+        local libidn = (P(1)-S",\n():")^0
+        local libparam = Ct("USE_OPTION", (C("KEY", libidn) * os * ":")^-1 * os * C("VALUE", libidn))
+        local libparamlist = os * (P"("*P")" + P"(" * os * libparam * os * (P"," * os * libparam)^0 * os * ")")^-1
+        local libname = Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * libparamlist) + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
         local use = K"use" * s * libname * (os*P","*os*libname)^0
 
         ----------

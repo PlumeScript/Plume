@@ -17,27 +17,28 @@ return function (plume, context, nodeHandlerTable)
 	--- `use` directive execute a file that must return a table,
 	--- and load all keys as constants into the current file scope
 	nodeHandlerTable.USE_LIB = function(node)
-		local path = node.content
+		local pathNode = plume.ast.get(node, "NAME")
+		local path = pathNode.content
 
 		-- Same path resolver as `import`
 		local filename, searchPaths = plume.getFilenameFromPath(path, false, context.runtime, context.chunk.name, context.chunk.name )
 		if not filename then
-            plume.error.compilationCannotOpenFile(node, path, searchPaths)
+            plume.error.compilationCannotOpenFile(pathNode, path, searchPaths)
 		end
 
 		local success, result = plume.executeFile(filename, context.runtime)
         if not success then
-            plume.error.cannotExecuteFile(node, path, result)
+            plume.error.cannotExecuteFile(pathNode, path, result)
         end
 
         local t = type(result) == "table" and result.type or type(result)
         if t ~= "table" then
-        	plume.error.fileMustReturnATable(node, path, t)
+        	plume.error.fileMustReturnATable(pathNode, path, t)
         end
 
         for _, key in ipairs(result.keys) do
 			if context.scopes[#context.scopes][key] then
-				plume.error.useExistingVariableError(node, key, path)
+				plume.error.useExistingVariableError(pathNode, key, path)
 			end
 			context.importedVariables[key] = result.table[key]
         end
@@ -46,15 +47,13 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	local directivesHandler = {
-		warning = function (...)
-			local mode = "normal"
+		warning = function (args)
+			local mode = args.mode or "normal"
 			local filters = {}
 
-			for _, x in ipairs({...}) do
-				if x == "strict" or x == "ignore" or x == "normal" then
-					mode = x
-				else
-					table.insert(filters, x)
+			if args.issues then
+				for issue in args.issues:gmatch('[0-9]+') do
+					table.insert(filters, issue)
 				end
 			end
 
@@ -70,17 +69,26 @@ return function (plume, context, nodeHandlerTable)
 
 	--- `use #name-optn-optn`
 	nodeHandlerTable.USE_DIRECTIVE = function(node)
-		local directiveNameNode = plume.ast.get(node, "IDENTIFIER")
+		local directiveNameNode = plume.ast.get(node, "NAME")
 		local directiveName = directiveNameNode.content
 		local options = {}
 		for _, option in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
-			table.insert(options, option.content)
+			local keyNode = plume.ast.get(option, "KEY")
+			local valueNode = plume.ast.get(option, "VALUE")
+			local key = keyNode and keyNode.content
+			local value = valueNode.content
+
+			if key then
+				options[key] = value
+			else
+				table.insert(option, value)
+			end
 		end
 		
 		local handler = directivesHandler[directiveName]
 		if not handler then
 			plume.error.unknowDirective(directiveNameNode, directiveName)
 		end
-		handler(unpack(options))
+		handler(options)
 	end
 end
