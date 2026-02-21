@@ -34,6 +34,13 @@ end
 x = 654 237,458 9
 /// End
 
+/// Test context from directive
+use #context(local: fr)
+Voici un nombre: $(6543.56)
+/// Output
+Voici un nombre: 6 543,56
+/// End
+
 
 /// Test read context
 let context local

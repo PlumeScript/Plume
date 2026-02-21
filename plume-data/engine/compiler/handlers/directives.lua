@@ -64,6 +64,15 @@ return function (plume, context, nodeHandlerTable)
 					plume.warning.mode[x] = mode
 				end
 			end
+		end,
+
+		context = function(args)
+			for name, value in pairs(args) do
+				context.contextVariableToClose = context.contextVariableToClose + 1
+				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
+				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(value))
+				context.registerOP(node, plume.ops.PUSH_CONTEXT)
+			end
 		end
 	}
 
