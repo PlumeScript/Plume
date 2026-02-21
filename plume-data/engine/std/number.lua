@@ -42,7 +42,7 @@ return function (plume)
 		return math.min(max, math.max(min, x))
 	end)
 
-	plume.formatNumber = function(x, format, localTag, thousandsSeparator, decimalSeparator, thousandthsSeparator)
+	plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator)
 		if thousandsSeparator == plume.obj.empty then
 			thousandsSeparator = nil
 		end
@@ -54,7 +54,7 @@ return function (plume)
 		end
 
 		local result = string.format(format, x)
-		if localTag then
+		if locale then
 			local integerPart, decimalPart
 			if result:gmatch('%.') then
 				integerPart = result:match('^[^%.]+')
@@ -63,19 +63,19 @@ return function (plume)
 				integerPart = result
 			end
 
-			if localTag == "en" or localTag == "us" then
+			if locale == "en" or locale == "us" then
 				thousandsSeparator = ","
 				decimalSeparator  = "."
-			elseif localTag == "fr" then
+			elseif locale == "fr" then
 				thousandsSeparator    = " "
 				decimalSeparator     = ","
 				thousandthsSeparator = " "
-			elseif localTag == "custom" then
+			elseif locale == "custom" then
 				thousandsSeparator    = thousandsSeparator or nil
 				decimalSeparator     = decimalSeparator or "."
 				thousandthsSeparator = thousandthsSeparator or nil
-			elseif localTag then
-				error("Unknow localization format '" .. localTag .. "'.")
+			elseif locale then
+				error("Unknow localization format '" .. locale .. "'.")
 			end
 
 			if thousandsSeparator then
@@ -104,7 +104,7 @@ return function (plume)
 
 	Number.table.format = plume.obj.luaFunction("format", function (args)
 		local x, format = plume.shiftArgs(Number, args)
-		local localTag             = args.table["local"]
+		local localTag             = args.table["locale"]
 		local thousandsSeparator    = args.table["thousandsSeparator"]
 		local decimalSeparator     = args.table["decimalSeparator"]
 		local thousandthsSeparator = args.table["thousandthsSeparator"]

@@ -1783,7 +1783,7 @@ return function (plume)
                                                         local _ret180
                                                         _ret180 = contextStack[i or contextStackPointer]
                                                         local frame = _ret180
-                                                        if frame.name == "local" then
+                                                        if frame.name == "locale" then
                                                             _ret178 = frame.value
                                                             goto _inline_end374
                                                         end
@@ -1792,8 +1792,8 @@ return function (plume)
                                                     goto _inline_end374
                                                 end
                                                 ::_inline_end374::
-                                                local _local = _ret178
-                                                if _local ~= empty and _local ~= "none" then
+                                                local locale = _ret178
+                                                if locale ~= empty and locale ~= "none" then
                                                     local _ret181
                                                     do
                                                         local _ret182
@@ -1803,7 +1803,7 @@ return function (plume)
                                                             local _ret183
                                                             _ret183 = contextStack[i or contextStackPointer]
                                                             local frame = _ret183
-                                                            if frame.name == "localThousandthsSeparator" then
+                                                            if frame.name == "localeThousandthsSeparator" then
                                                                 _ret181 = frame.value
                                                                 goto _inline_end377
                                                             end
@@ -1821,7 +1821,7 @@ return function (plume)
                                                             local _ret186
                                                             _ret186 = contextStack[i or contextStackPointer]
                                                             local frame = _ret186
-                                                            if frame.name == "localDecimalSeparator" then
+                                                            if frame.name == "localeDecimalSeparator" then
                                                                 _ret184 = frame.value
                                                                 goto _inline_end380
                                                             end
@@ -1839,7 +1839,7 @@ return function (plume)
                                                             local _ret189
                                                             _ret189 = contextStack[i or contextStackPointer]
                                                             local frame = _ret189
-                                                            if frame.name == "localThousandsSeparator" then
+                                                            if frame.name == "localeThousandsSeparator" then
                                                                 _ret187 = frame.value
                                                                 goto _inline_end383
                                                             end
@@ -1857,7 +1857,7 @@ return function (plume)
                                                             local _ret192
                                                             _ret192 = contextStack[i or contextStackPointer]
                                                             local frame = _ret192
-                                                            if frame.name == "localNumberFormat" then
+                                                            if frame.name == "localeNumberFormat" then
                                                                 _ret190 = frame.value
                                                                 goto _inline_end386
                                                             end
@@ -1868,7 +1868,7 @@ return function (plume)
                                                     ::_inline_end386::
                                                     local _ret193
                                                     _ret193 = mainStackPointer
-                                                    mainStack[_ret193] = plume.formatNumber (value, _ret190, _local, _ret187, _ret184, _ret181)
+                                                    mainStack[_ret193] = plume.formatNumber (value, _ret190, locale, _ret187, _ret184, _ret181)
                                                 end
                                             elseif t ~= "string" then
                                                 local meta = t == "table" and value.meta.table.tostring

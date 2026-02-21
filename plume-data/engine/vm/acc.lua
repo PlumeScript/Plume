@@ -159,15 +159,15 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
     if value == vm.empty then
         _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), "")
     elseif t == "number" then
-        local _local = _LOAD_CONTEXT(vm, "local")
+        local locale = _LOAD_CONTEXT(vm, "locale")
 
-        if _local ~= vm.empty and _local ~= "none" then
+        if locale ~= vm.empty and locale ~= "none" then
             _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), vm.plume.formatNumber(value, 
-                _LOAD_CONTEXT(vm, "localNumberFormat"),
-                _local,
-                _LOAD_CONTEXT(vm, "localThousandsSeparator"),
-                _LOAD_CONTEXT(vm, "localDecimalSeparator"),
-                _LOAD_CONTEXT(vm, "localThousandthsSeparator")
+                _LOAD_CONTEXT(vm, "localeNumberFormat"),
+                locale,
+                _LOAD_CONTEXT(vm, "localeThousandsSeparator"),
+                _LOAD_CONTEXT(vm, "localeDecimalSeparator"),
+                _LOAD_CONTEXT(vm, "localeThousandthsSeparator")
             ))
         end
     elseif t ~= "string" then

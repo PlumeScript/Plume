@@ -750,31 +750,31 @@ Context variables should be used sparingly. They are appropriate for:
 
 **Trade-off:** While context variables reduce parameter passing overhead, they can make data flow less explicit. Use them judiciously.
 
-#### Built-in Context Variable: `local`
+#### Built-in Context Variable: `locale`
 
-Plume defines a built-in context variable named `local` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `local` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
+Plume defines a built-in context variable named `locael` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `locale` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
 
 ```plume
-with local: fr
+with locale: fr
     The value is $(1000.5).
 end
 // Output: The value is 1 000,5.
 
-with local: en
+with locale: en
     The value is $(1000.5).
 end
 // Output: The value is 1,000.5.
 ```
 
-If `local` is not set, is `none` or is `empty`, numbers are concatenated without formatting.
+If `locale` is not set, is `none` or is `empty`, numbers are concatenated without formatting.
 
 **Disabling Formatting:**
 
-To prevent automatic formatting in contexts where raw numbers are required (e.g., generating SVG coordinates, JSON output), set `local` to `none`:
+To prevent automatic formatting in contexts where raw numbers are required (e.g., generating SVG coordinates, JSON output), set `locale` to `none`:
 
 ```plume
 // SVG library - coordinates must remain unformatted
-use #context(local: none)
+use #context(locale: none)
 
 macro circle(x, y, r)
     <circle cx="$(x)" cy="$(y)" r="$(r)" />
