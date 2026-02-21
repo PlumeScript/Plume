@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">427 passed out of 427 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">430 passed out of 430 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -9562,7 +9562,7 @@ $import(tests/plume/toimport/param, x: 5)
 </code></pre>
 </div>
 </details>
-<h2>number: <span style="font-weight: normal;">17 passed out of 17 tests</span></h2>
+<h2>number: <span style="font-weight: normal;">20 passed out of 20 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -10027,6 +10027,134 @@ $(5325423.55875).format(%s, local: fr)
 <h4>Output</h4>
 <pre><code>
 5 325 423,558 75
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> local 4 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(5325423.55875).format(%s, local: custom, decimalSeparator: ??, thousandsSeparator:--)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (5325423.55875).format(%s, local: custom, decimalSeparator: ??, thousandsSeparator:--)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; %s</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; custom</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; local: custom</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; local: custom</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; ??</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; decimalSeparator: ??</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; decimalSeparator: ??</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; --</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; thousandsSeparator:--</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; thousandsSeparator:--</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; format</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; 5325423.55875</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .format</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .format</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (5325423.55875).format(%s, local: custom, decimalSeparator: ??, thousandsSeparator:--)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+5--325--423??55875
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> local context 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--
+  Here is a number: $(5325423.55875)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; custom</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; ??</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; --</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Here is a number: </span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; 5325423.55875</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (5325423.55875)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localDecimalSeparator: ??, localThousandsSeparator:--[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+Here is a number: 5--325--423??55875
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> local context 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+with local: custom, localNumberFormat: &lt;%020d&gt;
+  Here is a number: $(5325423.55875)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with local: custom, localNumberFormat: &lt;%020d&gt;[...]</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; custom</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localNumberFormat: &lt;%020d&gt;[...]</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; with local: custom, localNumberFormat: &lt;%020d&gt;[...]</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; &lt;%020d&gt;</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localNumberFormat: &lt;%020d&gt;[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Here is a number: </span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; 5325423.55875</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (5325423.55875)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localNumberFormat: &lt;%020d&gt;[...]</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with local: custom, localNumberFormat: &lt;%020d&gt;[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+Here is a number: &lt;00000000000005325423&gt;
 </code></pre>
 </div>
 </details>

@@ -162,7 +162,13 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
         local _local = _LOAD_CONTEXT(vm, "local")
 
         if _local ~= vm.empty and _local ~= "none" then
-            _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), vm.plume.formatNumber(value, "%s", _local))
+            _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), vm.plume.formatNumber(value, 
+                _LOAD_CONTEXT(vm, "localNumberFormat"),
+                _local,
+                _LOAD_CONTEXT(vm, "localThousandsSeparator"),
+                _LOAD_CONTEXT(vm, "localDecimalSeparator"),
+                _LOAD_CONTEXT(vm, "localThousandthsSeparator")
+            ))
         end
     elseif t ~= "string" then
         local meta = t == "table" and value.meta.table.tostring
