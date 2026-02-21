@@ -50,6 +50,8 @@ return function (plume)
 
 		PUSH_LOCAL POP_LOCAL
 
+		PUSH_CONTEXT POP_CONTEXT GET_CONTEXT
+
 		END
 ]]
 	local function makeNames(names)
@@ -190,7 +192,7 @@ return function (plume)
 		end
 
 		-- For / While cannot produce VALUE
-		if node.name == "FOR" or node.name == "WHILE" or node.name == "LOCAL" then
+		if node.name == "FOR" or node.name == "WHILE" or node.name == "LOCAL" or node.name == "WITH" then
 			if node.type == "VALUE" then
 				node.type = "TEXT"
 			end
@@ -216,6 +218,7 @@ return function (plume)
 			or node.name == "ELSE"
 			or node.name == "ELSEIF"
 			or node.name == "LOCAL"
+			or node.name == "WITH"
 			or node.name == "BODY" then
 			return node.type
 		elseif node.name == "MACRO" then

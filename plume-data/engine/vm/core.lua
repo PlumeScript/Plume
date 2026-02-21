@@ -46,6 +46,7 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     --! index-to-inline fileStack.*
     --! index-to-inline macroStack.*
     --! index-to-inline injectionStack.*
+    --! index-to-inline contextStack.*
     --! index-to-inline flag.* *
 
     vm.runtime   = runtime
@@ -91,9 +92,11 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     -- local variables
     vm.empty = vm.plume.obj.empty
 
-    -- global states
+    -- Context
     vm.runtime.localStack         = table.new(2^8, 0)
     vm.runtime.localStack.pointer = 0
+    vm.contextStack         = table.new(2^8, 0)
+    vm.contextStack.pointer = 0
 
     -- flag
     vm.flag = {}

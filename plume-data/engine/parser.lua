@@ -391,6 +391,8 @@ return function (plume)
                   + Ct("RAW", os * K"raw"   *  C("TEXT", P"\n" * (P(1)-P"end")^0)   * P"end")
 
         local _local = Ct("LOCAL", K"local" * (s * idn )^-1 * body * _end)
+        local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
+        local with = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
 
         ----------
         -- main --
@@ -409,16 +411,18 @@ return function (plume)
                                 ,
             statement    = lt * V"firstStatement",
 
-            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + _local,
+            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + _local + with,
 
             text =   (escaped + eval + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + V"comment" + V"rawtextns")^1,
+            textnc = (escaped + eval + V"comment" + V"rawtextnc")^1,
             textnp = (escaped + eval + V"comment" + V"rawtextnp")^1,
             textic = (escaped + eval + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
 
             comment   = os * P"//" * C("COMMENT", NOT(S"\n")^0),
             rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * P"//")^1),
             rawtextns = C("TEXT", NOT(S"$\n\\" + P"//" + s)^1),
+            rawtextnc = C("TEXT", NOT(S"$\n,\\" + P"//" + s)^1),
             rawtextnp = C("TEXT", NOT(S"$\n)\\"+ P"//")^1),
             rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//")^1),
 

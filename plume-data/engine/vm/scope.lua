@@ -72,3 +72,36 @@ end
 function POP_LOCAL(vm, arg1, arg2)
     _STACK_POP(vm.runtime.localStack)
 end
+
+--- @opcode
+--! inline
+function PUSH_CONTEXT(vm, arg1, arg2)
+    local value = _STACK_POP(vm.mainStack)
+    local name  = _STACK_POP(vm.mainStack)
+    _STACK_PUSH(vm.contextStack, {name=name, value=value})
+end
+
+--! inline
+function _GET_CONTEXT(vm, name)
+    local top = _STACK_POS(vm.contextStack)
+    for i = top, 1, -1 do
+        local frame = _STACK_GET(vm.contextStack, i)
+        if frame.name == name then
+            return frame.value
+        end
+    end
+    return vm.empty
+end
+
+--- @opcode
+--! inline
+function GET_CONTEXT(vm, arg1, arg2)
+    local name  = _STACK_POP(vm.mainStack)
+    _STACK_PUSH(vm.mainSTACK, _GET_CONTEXT(vm, name))
+end
+
+--- @opcode
+--! inline
+function POP_CONTEXT(vm, arg1, arg2)
+    _STACK_POP(vm.contextStack)
+end

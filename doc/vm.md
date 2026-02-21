@@ -295,6 +295,15 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### POP_LOCAL
 
 
+#### PUSH_CONTEXT
+
+
+#### GET_CONTEXT
+
+
+#### POP_CONTEXT
+
+
 ### vm/std.lua
 
 #### STD_LEN
