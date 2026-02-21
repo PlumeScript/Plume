@@ -127,7 +127,7 @@ File 'unknow use', line 1: use idontexists
 use tests/plume/toimport/badlib
 /// Error
 Compilation error: Error when executing 'tests/plume/toimport/badlib':
-Runtime error: Cannot convert the string value to a number.
+Runtime error: Cannot convert the string value 'a' to a number.
 
 Traceback (most recent call first):
   File 'tests/plume/toimport/badlib.plume', line 2: set x += a

@@ -55,7 +55,7 @@ File 'define macro twice', line 3: macro wings()
 let x = Wings
 $(x+1)
 /// Error
-Runtime error: Cannot convert the string value to a number.
+Runtime error: Cannot convert the string value 'Wings' to a number.
 
 Traceback (most recent call first):
   File 'Add string', line 2: $(x+1)
@@ -66,7 +66,7 @@ Traceback (most recent call first):
 let x = $table()
 $(x+1)
 /// Error
-Runtime error: Cannot do comparison or arithmetic with table value.
+Runtime error: Cannot do comparison or arithmetic with a table value.
 
 Traceback (most recent call first):
   File 'Add table', line 2: $(x+1)
