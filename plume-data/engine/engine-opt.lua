@@ -3688,8 +3688,8 @@ return function (plume)
                                                 goto _inline_end791
                                             end
                                             ::_inline_end791::
-                                            mainSTACK.pointer = mainSTACK.pointer + 1
-                                            mainSTACK[mainSTACK.pointer] = _ret361
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = _ret361
                                         end
                                     end
                                 end

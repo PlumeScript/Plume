@@ -284,7 +284,7 @@ return function (plume)
 									if op < 59 then
 										POP_CONTEXT(vm, arg1, arg2)
 									else
-										GET_CONTEXT(vm, arg1, arg2)
+										LOAD_CONTEXT(vm, arg1, arg2)
 									end
 								end
 							else

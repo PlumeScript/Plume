@@ -159,7 +159,7 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
     if value == vm.empty then
         _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), "")
     elseif t == "number" then
-        local _local = _GET_CONTEXT(vm, "local")
+        local _local = _LOAD_CONTEXT(vm, "local")
 
         if _local ~= vm.empty and _local ~= "none" then
             _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), vm.plume.formatNumber(value, "%s", _local))

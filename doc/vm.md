@@ -292,7 +292,7 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### PUSH_CONTEXT
 
 
-#### GET_CONTEXT
+#### LOAD_CONTEXT
 
 
 #### POP_CONTEXT

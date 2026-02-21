@@ -70,7 +70,7 @@ function PUSH_CONTEXT(vm, arg1, arg2)
 end
 
 --! inline
-function _GET_CONTEXT(vm, name)
+function _LOAD_CONTEXT(vm, name)
     local top = _STACK_POS(vm.contextStack)
     for i = top, 1, -1 do
         local frame = _STACK_GET(vm.contextStack, i)
@@ -83,9 +83,9 @@ end
 
 --- @opcode
 --! inline
-function GET_CONTEXT(vm, arg1, arg2)
+function LOAD_CONTEXT(vm, arg1, arg2)
     local name  = _STACK_POP(vm.mainStack)
-    _STACK_PUSH(vm.mainSTACK, _GET_CONTEXT(vm, name))
+    _STACK_PUSH(vm.mainStack, _LOAD_CONTEXT(vm, name))
 end
 
 --- @opcode

@@ -33,3 +33,46 @@ end
 /// Output
 x = 654 237,458 9
 /// End
+
+
+/// Test read context
+let context local
+$local\n
+with local: fr
+  $local\n
+  with local: en
+    $local\n
+  end
+  $local
+end
+/// Output
+fr
+en
+fr
+/// End
+
+/// Test cannot use context with const
+let const context local
+/// Error
+Compilation error: Variable cannot be both const and context
+File 'cannot use context with const', line 1: let const context local
+                                              ^^^^^^^^^^^^^^^^^^^^^^^
+/// End
+
+/// Test cannot use context with param
+let param context local
+/// Error
+Compilation error: Variable cannot be both const and context
+File 'cannot use context with param', line 1: let param context local
+                                              ^^^^^^^^^^^^^^^^^^^^^^^
+/// End
+
+
+/// Test cannot set context
+let context local
+set local = 5
+/// Error
+Compilation error: Cannot set variable 'local', it is a context variable. Use `with local: value` instead.
+File 'cannot set context', line 2: set local = 5
+                                   ^^^^^^^^^^^^^
+/// End

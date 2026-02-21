@@ -334,8 +334,7 @@ return function (plume)
             -----------------------------------------
             C("STATIC", K"static"))^-1 *
             -----------------------------------------
-            (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param")
-        )^-1
+            (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1 * (s * C("CONTEXT", K"context"))^-1
         
 
         --- Common identifier
