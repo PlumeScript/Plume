@@ -19,7 +19,7 @@ If not, see <https://www.gnu.org/licenses/>.
 --- Initiialize the VM
 --- @param runtime runtime The runtime to execute
 --! inline-nodo
-function _VM_INIT (plume, runtime, ip)
+function _VM_INIT (plume, runtime, chunk, initFileParams)
     require("table.new")
 
     local vm = {} --! to-remove
@@ -27,7 +27,18 @@ function _VM_INIT (plume, runtime, ip)
     -- to avoid context injection
     vm.plume = plume --! to-remove
 
-    _VM_INIT_VARS(vm, runtime, ip)
+    _VM_INIT_VARS(vm, runtime, chunk)
+
+    -- Inject file params
+    if initFileParams then
+        vm.fileParams = {}
+        for key, value in pairs(initFileParams) do
+            local offset = chunk.namedParamOffset[key]
+            if offset then
+                table.insert(vm.fileParams, {offset=offset, value=value})
+            end
+        end
+    end
 
     return vm --! to-remove
 end

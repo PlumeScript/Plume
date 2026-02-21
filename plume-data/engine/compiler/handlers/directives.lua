@@ -20,13 +20,25 @@ return function (plume, context, nodeHandlerTable)
 		local pathNode = plume.ast.get(node, "NAME")
 		local path = pathNode.content
 
+		local fileParams = {}
+		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
+			local keyNode = plume.ast.get(param, "KEY")
+			local valueNode = plume.ast.get(param, "VALUE")
+			local key = keyNode and keyNode.content
+			local value = valueNode.content
+
+			if key then
+				fileParams[key] = value
+			end
+		end
+
 		-- Same path resolver as `import`
 		local filename, searchPaths = plume.getFilenameFromPath(path, false, context.runtime, context.chunk.name, context.chunk.name )
 		if not filename then
             plume.error.compilationCannotOpenFile(pathNode, path, searchPaths)
 		end
 
-		local success, result = plume.executeFile(filename, context.runtime)
+		local success, result = plume.executeFile(filename, context.runtime, fileParams)
         if not success then
             plume.error.cannotExecuteFile(pathNode, path, result)
         end

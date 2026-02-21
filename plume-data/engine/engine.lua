@@ -21,7 +21,7 @@ If not, see <https://www.gnu.org/licenses/>.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (runtime, chunk)
+	function plume._run_dev (runtime, chunk, initFileParams)
 		require "plume-data/engine/vm/acc"
 		require "plume-data/engine/vm/alu"
 		require "plume-data/engine/vm/call"
@@ -39,10 +39,9 @@ return function (plume)
 		require "plume-data/engine/vm/store"
 		require "plume-data/engine/vm/table"
 		require "plume-data/engine/vm/utils"
-	
 		-- Creates stacks, handle arguments
 		local vm =  --! to-remove
-			_VM_INIT(plume, runtime, chunk)
+			_VM_INIT(plume, runtime, chunk, initFileParams)
 		
 		local op, arg1, arg2, vmerr, vmserr
 		::DISPATCH::
