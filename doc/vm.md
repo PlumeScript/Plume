@@ -289,12 +289,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### FILE_INIT_PARAMS
 
 
-#### PUSH_LOCAL
-
-
-#### POP_LOCAL
-
-
 #### PUSH_CONTEXT
 
 

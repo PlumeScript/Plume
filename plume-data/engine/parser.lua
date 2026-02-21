@@ -390,7 +390,6 @@ return function (plume)
                   + Ct("RAW", os * K"raw["  *  C("TEXT", P"\n" * (P(1)-P"]end")^0)  * P"]end")
                   + Ct("RAW", os * K"raw"   *  C("TEXT", P"\n" * (P(1)-P"end")^0)   * P"end")
 
-        local _local = Ct("LOCAL", K"local" * (s * idn )^-1 * body * _end)
         local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
         local with = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
 
@@ -411,7 +410,7 @@ return function (plume)
                                 ,
             statement    = lt * V"firstStatement",
 
-            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + _local + with,
+            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + with,
 
             text =   (escaped + eval + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + V"comment" + V"rawtextns")^1,

@@ -1,14 +1,14 @@
-/// Test simple local
-local fr
+/// Test simple context
+with local: fr
   Voici un nombre: $(6543.56)
 end
 /// Output
 Voici un nombre: 6 543,56
 /// End
 
-/// Test nested local
-local fr
-  local en
+/// Test nested context
+with local: fr
+  with local: en
     Here is a number: $(6543.56)
   end
 end
@@ -16,9 +16,9 @@ end
 Here is a number: 6,543.56
 /// End
 
-/// Test default local
-local fr
-  local none
+/// Test default context
+with local: fr
+  with local: none
     Voici un nombre: $(6543.56)
   end
 end
@@ -26,8 +26,8 @@ end
 Voici un nombre: 6543.56
 /// End
 
-/// Test local from file
-local fr
+/// Test context from file
+with local: fr
   $import(tests/plume/toimport/numbers)
 end
 /// Output

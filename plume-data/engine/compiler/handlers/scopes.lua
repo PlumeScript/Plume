@@ -35,15 +35,6 @@ return function (plume, context, nodeHandlerTable)
 		end)(body)
 	end
 
-	nodeHandlerTable.LOCAL = function(node)
-		local body = plume.ast.get(node, "BODY")
-		local mode = plume.ast.get(node, "IDENTIFIER").content
-		
-		context.registerOP(node, plume.ops.PUSH_LOCAL, 0, context.registerConstant(mode))
-		context.accBlock()(body)
-		context.registerOP(node, plume.ops.POP_LOCAL)
-	end
-
 	nodeHandlerTable.WITH = function(node)
 		local body   = plume.ast.get(node, "BODY")
 		local params = plume.ast.get(node, "PARAMLIST")

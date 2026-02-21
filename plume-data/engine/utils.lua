@@ -48,8 +48,6 @@ return function (plume)
 
 		RETURN RETURN_FILE FILE_INIT_PARAMS
 
-		PUSH_LOCAL POP_LOCAL
-
 		PUSH_CONTEXT POP_CONTEXT GET_CONTEXT
 
 		END
@@ -192,7 +190,7 @@ return function (plume)
 		end
 
 		-- For / While cannot produce VALUE
-		if node.name == "FOR" or node.name == "WHILE" or node.name == "LOCAL" or node.name == "WITH" then
+		if node.name == "FOR" or node.name == "WHILE" or node.name == "WITH" then
 			if node.type == "VALUE" then
 				node.type = "TEXT"
 			end
@@ -217,7 +215,6 @@ return function (plume)
 			or node.name == "IF"
 			or node.name == "ELSE"
 			or node.name == "ELSEIF"
-			or node.name == "LOCAL"
 			or node.name == "WITH"
 			or node.name == "BODY" then
 			return node.type
