@@ -1,5 +1,5 @@
 --[[
-Plume🪶 1.0.beta.6
+Plume🪶 1.0.beta.7
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
