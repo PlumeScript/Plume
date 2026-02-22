@@ -463,7 +463,7 @@ return function (plume)
                                                 end
                                             else
                                                 local _ret53
-                                                _ret53 = type (t) == "table" and (t == empty or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                                _ret53 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                                 goto _inline_end125
                                                 ::_inline_end125::
                                                 local tt = _ret53
@@ -590,7 +590,7 @@ return function (plume)
                                             _ret62 = mainStack[mainStackPointer + 1]
                                             local t = _ret62
                                             local _ret63
-                                            _ret63 = type (t) == "table" and (t == empty or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            _ret63 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             local tt = _ret63
                                             if tt == "table" then
                                                 for _, item in ipairs (t.table)
@@ -864,7 +864,7 @@ return function (plume)
                                             _ret89 = mainStack[mainStackPointer + 1]
                                             local tocall = _ret89
                                             local _ret90
-                                            _ret90 = type (tocall) == "table" and (tocall == empty or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
+                                            _ret90 = type (tocall) == "table" and (tocall == empty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
                                             local t = _ret90
                                             local self
                                             if t == "table" then
@@ -1777,7 +1777,7 @@ return function (plume)
                                             _ret171 = mainStack[mainStackPointer]
                                             local value = _ret171
                                             local _ret172
-                                            _ret172 = type (value) == "table" and (value == empty or value.type) or (type (value) == "cdata" and value.type) or type (value)
+                                            _ret172 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
                                             local t = _ret172
                                             if value == empty then
                                                 local _ret173
@@ -2043,7 +2043,7 @@ return function (plume)
                                             _ret206 = mainStack[mainStackPointer + 1]
                                             local obj = _ret206
                                             local _ret207
-                                            _ret207 = type (obj) == "table" and (obj == empty or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
+                                            _ret207 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
                                             local tobj = _ret207
                                             local iter, value, flag, macrocall
                                             local start = 0
@@ -2285,7 +2285,7 @@ return function (plume)
                                                 local _ret235, _ret236
                                                 do
                                                     local _ret237
-                                                    _ret237 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret237 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret237
                                                     local nx
                                                     if tx == "string" then
@@ -2314,7 +2314,7 @@ return function (plume)
                                                 local _ret232, _ret233
                                                 do
                                                     local _ret234
-                                                    _ret234 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret234 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret234
                                                     local nx
                                                     if tx == "string" then
@@ -2345,10 +2345,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret227
-                                                        _ret227 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret227 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret227
                                                         local _ret228
-                                                        _ret228 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret228 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret228
                                                         if tleft == "table" and left.meta and left.meta.table.addr then
                                                             meta = left.meta.table.addr
@@ -2445,7 +2445,7 @@ return function (plume)
                                                 local _ret250, _ret251
                                                 do
                                                     local _ret252
-                                                    _ret252 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret252 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret252
                                                     local nx
                                                     if tx == "string" then
@@ -2474,7 +2474,7 @@ return function (plume)
                                                 local _ret247, _ret248
                                                 do
                                                     local _ret249
-                                                    _ret249 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret249 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret249
                                                     local nx
                                                     if tx == "string" then
@@ -2505,10 +2505,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret242
-                                                        _ret242 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret242 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret242
                                                         local _ret243
-                                                        _ret243 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret243 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret243
                                                         if tleft == "table" and left.meta and left.meta.table.mulr then
                                                             meta = left.meta.table.mulr
@@ -2607,7 +2607,7 @@ return function (plume)
                                                 local _ret265, _ret266
                                                 do
                                                     local _ret267
-                                                    _ret267 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret267 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret267
                                                     local nx
                                                     if tx == "string" then
@@ -2636,7 +2636,7 @@ return function (plume)
                                                 local _ret262, _ret263
                                                 do
                                                     local _ret264
-                                                    _ret264 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret264 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret264
                                                     local nx
                                                     if tx == "string" then
@@ -2667,10 +2667,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret257
-                                                        _ret257 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret257 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret257
                                                         local _ret258
-                                                        _ret258 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret258 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret258
                                                         if tleft == "table" and left.meta and left.meta.table.subr then
                                                             meta = left.meta.table.subr
@@ -2767,7 +2767,7 @@ return function (plume)
                                                 local _ret280, _ret281
                                                 do
                                                     local _ret282
-                                                    _ret282 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret282 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret282
                                                     local nx
                                                     if tx == "string" then
@@ -2796,7 +2796,7 @@ return function (plume)
                                                 local _ret277, _ret278
                                                 do
                                                     local _ret279
-                                                    _ret279 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret279 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret279
                                                     local nx
                                                     if tx == "string" then
@@ -2827,10 +2827,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret272
-                                                        _ret272 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret272 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret272
                                                         local _ret273
-                                                        _ret273 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret273 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret273
                                                         if tleft == "table" and left.meta and left.meta.table.divr then
                                                             meta = left.meta.table.divr
@@ -2918,7 +2918,7 @@ return function (plume)
                                             local _ret284, _ret285
                                             do
                                                 local _ret286
-                                                _ret286 = type (x) == "table" and (x == empty or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                _ret286 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                 local tx = _ret286
                                                 local nx
                                                 if tx == "string" then
@@ -2949,7 +2949,7 @@ return function (plume)
                                                 do
                                                     local meta
                                                     local _ret288
-                                                    _ret288 = type (x) == "table" and (x == empty or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                    _ret288 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                     if _ret288 == "table" and x.meta and x.meta.table.minus then
                                                         meta = x.meta.table.minus
                                                     end
@@ -3021,7 +3021,7 @@ return function (plume)
                                                 local _ret304, _ret305
                                                 do
                                                     local _ret306
-                                                    _ret306 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret306 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret306
                                                     local nx
                                                     if tx == "string" then
@@ -3050,7 +3050,7 @@ return function (plume)
                                                 local _ret301, _ret302
                                                 do
                                                     local _ret303
-                                                    _ret303 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret303 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret303
                                                     local nx
                                                     if tx == "string" then
@@ -3081,10 +3081,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret296
-                                                        _ret296 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret296 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret296
                                                         local _ret297
-                                                        _ret297 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret297 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret297
                                                         if tleft == "table" and left.meta and left.meta.table.modr then
                                                             meta = left.meta.table.modr
@@ -3183,7 +3183,7 @@ return function (plume)
                                                 local _ret319, _ret320
                                                 do
                                                     local _ret321
-                                                    _ret321 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret321 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret321
                                                     local nx
                                                     if tx == "string" then
@@ -3212,7 +3212,7 @@ return function (plume)
                                                 local _ret316, _ret317
                                                 do
                                                     local _ret318
-                                                    _ret318 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret318 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret318
                                                     local nx
                                                     if tx == "string" then
@@ -3243,10 +3243,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret311
-                                                        _ret311 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret311 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret311
                                                         local _ret312
-                                                        _ret312 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret312 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret312
                                                         if tleft == "table" and left.meta and left.meta.table.powr then
                                                             meta = left.meta.table.powr
@@ -3343,7 +3343,7 @@ return function (plume)
                                                 local _ret334, _ret335
                                                 do
                                                     local _ret336
-                                                    _ret336 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    _ret336 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret336
                                                     local nx
                                                     if tx == "string" then
@@ -3372,7 +3372,7 @@ return function (plume)
                                                 local _ret331, _ret332
                                                 do
                                                     local _ret333
-                                                    _ret333 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    _ret333 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret333
                                                     local nx
                                                     if tx == "string" then
@@ -3403,10 +3403,10 @@ return function (plume)
                                                     do
                                                         local meta, param1, param2, paramself
                                                         local _ret326
-                                                        _ret326 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        _ret326 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret326
                                                         local _ret327
-                                                        _ret327 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        _ret327 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret327
                                                         if tleft == "table" and left.meta and left.meta.table.ltr then
                                                             meta = left.meta.table.ltr
@@ -3502,10 +3502,10 @@ return function (plume)
                                             do
                                                 local meta, param1, param2, paramself
                                                 local _ret340
-                                                _ret340 = type (left) == "table" and (left == empty or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                _ret340 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                 local tleft = _ret340
                                                 local _ret341
-                                                _ret341 = type (right) == "table" and (right == empty or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                _ret341 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                 local tright = _ret341
                                                 if tleft == "table" and left.meta and left.meta.table.eqr then
                                                     meta = left.meta.table.eqr
@@ -3836,7 +3836,7 @@ return function (plume)
                                             _ret377 = mainStack[mainStackPointer + 1]
                                             local t = _ret377.table[1]
                                             local _ret378
-                                            _ret378 = type (t) == "table" and (t == empty or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            _ret378 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret378
                                         end
