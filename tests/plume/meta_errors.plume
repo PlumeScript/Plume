@@ -131,7 +131,7 @@ $(t+1)
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    2 │  meta addr: macro(x)                                                    │
+│    2 │meta addr: macro(x)                                                      │
 │    3 │  $(self+1)                                                              │
 │      │    ^^^^^^                                                               │
 │                                                                                │

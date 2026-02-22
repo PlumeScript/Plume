@@ -14,140 +14,6 @@ If not, see <https://www.gnu.org/licenses/>.
 return function(plume)
 	plume.error = {}
 
-	function plume.error.getLineInfos(node, parentNode)
-		local filename = node.filename
-		local code     = node.code
-		local bpos     = node.bpos
-		local epos     = node.epos
-		local len      = 0
-		local content  = code:sub(bpos, epos)
-		
-		plume.ast.browse(node, function(child)
-			if child.bpos and child.bpos < bpos then
-				bpos = child.bpos
-			end
-		end)
-
-		local capturedLine, capturedPrevLine, capturedNextLine, capturedBPos
-		local capturedNoPrevline, capturedNoNextline
-		local capturedNoline = 0
-		local currentPos = 0
-
-		for line in (code.."\n"):gmatch('[^\n]*\n') do
-			capturedNoline = capturedNoline + 1
-			
-			if currentPos + #line >= bpos then
-				capturedLine = line
-				currentPos = currentPos+1
-				break
-			end
-			currentPos = currentPos + #line
-			if not line:match('^%s*$') then
-				capturedPrevLine = line
-				capturedNoPrevline = capturedNoline
-			end
-		end
-
-		if not capturedLine then
-			return
-		end
-		
-		if capturedLine:match('\n$') then
-			capturedLine = capturedLine:gsub('\n$', '')
-		end
-		if capturedPrevLine and capturedPrevLine:match('\n$') then
-			capturedPrevLine = capturedPrevLine:gsub('\n$', '')
-		end
-
-		if currentPos < #code then
-			capturedNoNextline = capturedNoline+1
-			capturedNextLine = ""
-			local delta = 0
-			while true do
-				capturedNextLine = code:sub(currentPos+#capturedLine+delta, -1):match('^\n[^\n]*')
-				if not capturedNextLine then
-					capturedNoNextline = nil
-					break
-				end
-				if capturedNextLine:match('^%s*$') then
-					delta = delta + #capturedNextLine
-					capturedNoNextline = capturedNoNextline + 1
-				else
-					capturedNextLine = capturedNextLine:gsub('^\n*', '')
-					break
-				end
-			end
-		end
-
-		local parentLine, parentNoLine
-		if parentNode then
-			local parentInfos = plume.error.getLineInfos(parentNode)
-			if parentInfos.noline < capturedNoPrevline or capturedNoline then
-				parentLine = parentInfos.line
-				parentNoLine = parentInfos.noline
-			end
-		end
-
-		capturedPrevLine = capturedPrevLine and capturedPrevLine:gsub('\t', ' ')
-		capturedLine = capturedLine:gsub('\t', ' ')
-		capturedNextLine = capturedNextLine and capturedNextLine:gsub('\t', ' ')
-		
-		len  = math.min(epos - bpos + 1, #capturedLine - (bpos - currentPos))
-		bpos = bpos - currentPos
-
-		local indent = #capturedLine:match('^%s*')
-		if capturedPrevLine then
-			indent = math.min(indent, #capturedPrevLine:match('^%s*'))
-		end
-		if capturedNextLine then
-			indent = math.min(indent, #capturedNextLine:match('^%s*'))
-		end
-
-		if capturedPrevLine then
-			capturedPrevLine = capturedPrevLine:sub(indent+1, -1)
-		end
-		capturedLine = capturedLine:sub(indent+1, -1)
-		if capturedNextLine then
-			capturedNextLine = capturedNextLine:sub(indent+1, -1)
-		end
-
-		bpos = bpos - indent + 1
-		return {
-			parentLine = parentLine,
-			parentNoLine = parentNoLine,
-			prevLine = capturedPrevLine,
-			line     = capturedLine,
-			nextLine = capturedNextLine,
-			content  = content,
-			noprevline   = capturedNoPrevline,
-			nonextline   = capturedNoNextline,
-			noline   = capturedNoline,
-			bpos     = bpos,
-			len      = len,
-			filename = node.filename,
-		}
-	end
-
-	function plume.error.formatLine(lineInfos, macro, syntax)
-		local intro = string.format(
-			"%sFile '%s', line %i",
-			syntax and "" or "  ",
-			lineInfos.filename,
-			lineInfos.noline
-		)
-
-		if macro then
-			intro = intro .. ", in macro " .. macro
-		end
-
-		local msg = intro
-
-		msg = msg .. ": " ..lineInfos.line .. "\n"
-		msg = msg .. (" "):rep(#intro + lineInfos.bpos+1) .. ("^"):rep(lineInfos.len)
-
-		return msg
-	end
-
 	function plume.error.getNode(runtime, ip)
 		local node
 		for i=ip, 1, -1 do
@@ -157,17 +23,6 @@ return function(plume)
 			end
 		end
 		return node
-	end
-
-	function plume.error.makeMessage(message, node)
-		if node and node.bpos then
-			local lineInfos = plume.error.getLineInfos(node)
-			message = message .. "\n"..plume.error.formatLine(lineInfos, nil, true)
-		else
-			message = "Unexpected error"
-		end
-
-		return message
 	end
 
 	local function simplifyErrorCallstack(errorCallstack)
@@ -233,6 +88,100 @@ return function(plume)
 		elseif node.parent then
 			return findNodeParentMacro(node.parent)
 		end
+	end
+
+	function plume.error.getNodeLines(node)
+		local code      = node.code
+		local bpos      = node.bpos
+		local epos      = node.epos
+		local sourceLen = epos - bpos + 1
+
+		local currentPos = 1
+		local lines = {}
+		local noLine = 1
+		local sourceNoLine
+		local sourceLinePosBegin
+		for line in (node.code.."\n"):gmatch('[^\n]*\n') do
+			if not sourceNoLine and currentPos + #line > bpos then
+				sourceNoLine = noLine
+				sourceLinePosBegin = bpos - currentPos + 1
+				sourceLen = math.min(sourceLen, #line - sourceLinePosBegin)
+			end
+
+			lines[noLine] = line:sub(1, -2) -- remove `\n`
+			currentPos = currentPos + #line
+			noLine = noLine + 1
+		end
+
+		return {
+			filename           = node.filename,
+			lines              = lines,
+			sourceNoLine       = sourceNoLine,
+			sourceLinePosBegin = sourceLinePosBegin,
+			sourceLen          = sourceLen
+		}
+	end
+
+	function plume.error.getNodeLinesContext(node, fullContext, macroContext)
+		local selectedNoLines = {}
+		local selectedNoLinesCheck = {}
+		local function addLine(n)
+			if not selectedNoLinesCheck[n] then
+				table.insert(selectedNoLines, n)
+				selectedNoLinesCheck[n] = true
+			end
+		end
+
+		local linesInfos = plume.error.getNodeLines(node)
+		
+		addLine(linesInfos.sourceNoLine)
+		if fullContext then
+			local prevNoLine = linesInfos.sourceNoLine-1
+			while prevNoLine > 0 and linesInfos.lines[prevNoLine]:match('^%s*$') do
+				prevNoLine = prevNoLine - 1
+			end
+			if prevNoLine > 0 then
+				addLine(prevNoLine)
+			end
+			local nextNoLine = linesInfos.sourceNoLine+1
+			while nextNoLine <= #linesInfos.lines and linesInfos.lines[nextNoLine]:match('^%s*$') do
+				nextNoLine = nextNoLine + 1
+			end
+			if nextNoLine <= #linesInfos.lines then
+				addLine(nextNoLine)
+			end
+		end
+
+		if macroContext then
+			local parentMacro = findNodeParentMacro (node)
+			if parentMacro then
+				local parentMacroInfos = plume.error.getNodeLines(parentMacro)
+				addLine(parentMacroInfos.sourceNoLine)
+			end
+		end
+
+		table.sort(selectedNoLines)
+		local lines = {}
+		local indentSize = 1/0
+		local sourceLinePosBegin = linesInfos.sourceLinePosBegin
+		for _, noLine in ipairs(selectedNoLines) do
+			indentSize = math.min(indentSize, #linesInfos.lines[noLine]:match('^%s*'))
+		end
+		for _, noLine in ipairs(selectedNoLines) do
+			lines[noLine] = linesInfos.lines[noLine]:gsub('\t', ' '):sub(indentSize+1, -1)
+			if noLine == linesInfos.sourceNoLine then
+				sourceLinePosBegin = sourceLinePosBegin - indentSize
+			end
+		end
+
+		return {
+			filename           = linesInfos.filename,
+			sourceNoLine       = linesInfos.sourceNoLine,
+			sourceLinePosBegin = sourceLinePosBegin,
+			sourceLen          = linesInfos.sourceLen,
+			selectedNoLines    = selectedNoLines,
+			lines              = lines,
+		}
 	end
 
 	function plume.error.getRuntimeErrorInfos(runtime, ip, message)
@@ -316,7 +265,6 @@ return function(plume)
 		end
 
 		local result = {}
-		local width = 0
 		local maxLineNumberSize = 0
 
 		---------------
@@ -369,24 +317,24 @@ return function(plume)
 				makeLine{before, indent=indent, lineIndentDelta=lineIndentDelta, crop=crop}
 				makeLine{after,  indent=indent+lineIndentDelta, crop=crop}
 				return
-			elseif utf8len(content) >= width-2 then 
+			elseif utf8len(content) >= MAX_WIDTH-2 then 
 				if crop then
 					if crop == "start" then
-						content = content:sub(1, 3)..'...'..content:sub(utf8len(content)-width+10, -1)
+						content = content:sub(1, 3)..'...'..content:sub(utf8len(content)-MAX_WIDTH+10, -1)
 					else
-						content = content:sub(1, width-7):gsub('%s*$', '')..'...'
+						content = content:sub(1, MAX_WIDTH-7):gsub('%s*$', '')..'...'
 					end
 				else -- cut the last possible word
 					local pos = 1
 					for x in content:gmatch("%S+%s*") do
-						if pos + utf8len(x:gsub('%s*$', '')) >= width-2 then
+						if pos + utf8len(x:gsub('%s*$', '')) >= MAX_WIDTH-2 then
 							break
 						end
 						pos = pos + #x
 					end
 
 					if pos == 1 then -- cannot find a cut point
-						pos = width - 2
+						pos = MAX_WIDTH - 2
 					end
 
 					leftover = content:sub(pos, -1):gsub('^%s*', '')
@@ -397,7 +345,7 @@ return function(plume)
 			local firstIndent, lastIndent
 
 			if center then
-				local space = width - utf8len(content)
+				local space = MAX_WIDTH - utf8len(content)
 				firstIndent = space/2
 				lastIndent  = space/2
 
@@ -406,7 +354,7 @@ return function(plume)
 				end
 			else
 				firstIndent = indent
-				lastIndent  = width - utf8len(content) - indent
+				lastIndent  = MAX_WIDTH - utf8len(content) - indent
 			end
 
 			table.insert(result,
@@ -430,49 +378,39 @@ return function(plume)
 			makeLine{noline .. (" "):rep(1+indent) .. CODE_START .. content, indent=SOURCE_CODE_INDENT+dindent, crop=true}
 		end
 		local lastfilename
-		local function makeSourceSnippet(args)
-			local node    = args[1]
-			local infos   = args[2]
-			local indent  = args.indent or 0
-			local context = args.context
+		local function makeSourceSnippet(infos, indent)
+			indent = indent or 0
 
 			if infos.filename ~= lastfilename then
-				makeLine{infos.filename, indent=SOURCE_FILENAME_INDENT+indent, crop="start"}
+				makeLine{"↳ " .. infos.filename, indent=SOURCE_FILENAME_INDENT+indent, crop="start"}
 				lastfilename = infos.filename
 			else
-				makeLine{"↳ (same file)", indent=SOURCE_FILENAME_INDENT+indent, crop=true}
+				makeLine{"↳ (same file)", indent=SOURCE_FILENAME_INDENT+indent}
 			end
 
-			if infos.parentLine then
-				if infos.parentNoLine < (args.context and infos.noprevline or infos.noline) and infos.parentNoLine < infos.noline then
-					makeSourceLine{infos.parentLine, infos.parentNoLine, indent=indent}
-		
-					if infos.parentNoLine < (args.context and infos.noprevline or infos.noline) - 1 and infos.parentNoLine < infos.noline then
-						local sindent = infos.line:match('^%s*')
-						makeSourceLine{sindent.."...", "", indent=indent}
+			local lastNoLine
+			for _, noLine in ipairs(infos.selectedNoLines) do
+				-- if lastNoLine and lastNoLine < noLine - 1 then
+				-- 	makeSourceLine{"...", "", indent=indent}
+				-- end
+
+				local line = infos.lines[noLine]
+				local indicator
+				if noLine == infos.sourceNoLine then
+					indicator = (" "):rep(infos.sourceLinePosBegin-1) .. ("^"):rep(infos.sourceLen)
+					if #indicator >= MAX_WIDTH*3/4 then
+						delta     = #indicator - MAX_WIDTH*3/4
+						indicator = indicator:sub(delta, -1)
+						line      = "..."..line:sub(delta+3, -1)
 					end
 				end
-			end
 
-			if args.context and infos.prevLine then
-				makeSourceLine{infos.prevLine, infos.noprevline, indent=indent}
-			end
-			local line = infos.line:gsub('\t', ' ')
-			local indicator
+				makeSourceLine{line, noLine, indent=indent}
+				if indicator then
+					makeSourceLine{indicator, "", indent=indent}
+				end
 
-			local widthlimit = math.floor(3*width/4)
-			if infos.bpos+infos.len>widthlimit then
-				local delta = infos.bpos + infos.len + 4 - widthlimit
-				line = "..."..line:sub(delta, -1)
-				indicator = (" "):rep(maxLineNumberSize+1) .. CODE_START .. (" "):rep(infos.bpos+3-delta) .. ("^"):rep(infos.len)
-			else
-				indicator = (" "):rep(maxLineNumberSize+1) .. CODE_START .. (" "):rep(infos.bpos-1) .. ("^"):rep(infos.len)
-			end
-
-			makeSourceLine{line, infos.noline, indent=indent}
-			makeLine{indicator, indent=SOURCE_CODE_INDENT+indent, crop=true}
-			if args.context and infos.nextLine then
-				makeSourceLine{infos.nextLine, infos.nonextline, indent=indent}
+				lastNoLine = noLine
 			end
 		end
 
@@ -480,67 +418,43 @@ return function(plume)
 		-- Preparation --
 		-----------------
 		
+		local nodesInfos = {source=nil, traceback={}, warnings={count=0}}
 		-- Get node infos
-		local sourceNodeInfos
 		if errorInfos.sourceNode then
-			sourceNodeInfos = plume.error.getLineInfos(errorInfos.sourceNode, errorInfos.sourceNodeParent)
-			sourceNodeInfos.filename = "↳ " .. sourceNodeInfos.filename
+			nodesInfos.source = plume.error.getNodeLinesContext(errorInfos.sourceNode, true, true)
 		end
 		for _, infos in ipairs(errorInfos.errorCallstack or {}) do
 			if infos.node then
-				infos.infos = plume.error.getLineInfos(infos.node, infos.parentMacro)
-				infos.infos.filename = "↳ " .. infos.infos.filename
+				table.insert(nodesInfos.traceback,  plume.error.getNodeLinesContext(infos.node, false, true))
+			else
+				table.insert(nodesInfos.traceback, infos)
 			end
 		end
 		for i, infos in ipairs(plume.warning.cache) do
+			warningInfos = {message=infos.message, help=infos.help}
 			for j, node in ipairs(infos.nodes) do
-				node.infos = plume.error.getLineInfos(node)
-				node.infos.filename = "↳ " .. node.infos.filename
+				table.insert(warningInfos, plume.error.getNodeLinesContext(node, false, false))
+				nodesInfos.warnings.count = nodesInfos.warnings.count + 1
 			end
+			table.insert(nodesInfos.warnings, warningInfos)
 		end
-
-		-- Get width
-		-- width = math.max(width,  utf8len(errorInfos.header)  + 2 * HEADER_INDENT)
-		-- width = math.max(width,  utf8len(errorInfos.message) + 2 * HEADER_INDENT)
-
-		-- width = math.max(width,  utf8len(sourceNodeInfos.filename)   + 2 * SOURCE_FILENAME_INDENT)
-
-		-- width = math.max(width,  utf8len(TRACEBACK_HEADER) + 2 * HEADER_INDENT)
-		-- for _, infos in ipairs(errorInfos.errorCallstack or {}) do
-		-- 	width = math.max(width,  utf8len(infos.infos.filename) + 2 * SOURCE_FILENAME_INDENT)
-		-- end
-
-		-- width = math.min(width, MAX_WIDTH)
-		width = MAX_WIDTH
 
 		-- Get line number to align source code
-		if sourceNodeInfos then
-			if sourceNodeInfos.nonextline then
-				maxLineNumberSize = math.max(maxLineNumberSize,  sourceNodeInfos.nonextline)
-			else
-				maxLineNumberSize = math.max(maxLineNumberSize,  sourceNodeInfos.noline)
-			end
-		end
-		for _, infos in ipairs(errorInfos.errorCallstack or {}) do
-			if infos.node then
-				if infos.infos.nonextline then
-					maxLineNumberSize = math.max(maxLineNumberSize,  infos.infos.nonextline)
-				else
-					maxLineNumberSize = math.max(maxLineNumberSize,  infos.infos.noline)
-				end
-			end
-		end
-		for i, infos in ipairs(plume.warning.cache) do
-			for j, node in ipairs(infos.nodes) do
-				if node.infos.nonextline then
-					maxLineNumberSize = math.max(maxLineNumberSize,  node.infos.nonextline)
-				else
-					maxLineNumberSize = math.max(maxLineNumberSize,  node.infos.noline)
-				end
+		local allNode = {nodesInfos.source, unpack(nodesInfos.traceback)}
+		for _, warningInfos in ipairs(nodesInfos.warnings) do
+			for _, node in ipairs(warningInfos) do
+				table.insert(allNode, node)
 			end
 		end
 
-		maxLineNumberSize = #tostring(maxLineNumberSize)
+		local maxLineNumber = 1
+		for _, node in ipairs(allNode) do
+			for _, line in ipairs(node.selectedNoLines or {}) do
+				maxLineNumber = math.max(maxLineNumber, line)
+			end
+		end
+
+		maxLineNumberSize = #tostring(maxLineNumber)
 
 		---------------
 		-- Rendering --
@@ -548,31 +462,31 @@ return function(plume)
 
 		-- Header
 		if errorInfos.header then
-			table.insert(result, BORDER_UL .. BORDER_H:rep(width) .. BORDER_UR)
+			table.insert(result, BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR)
 			makeLine{errorInfos.header,  indent=HEADER_INDENT}
 			if errorInfos.message then
 				makeLine{"→ "..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
 			end
-			table.insert(result, BORDER_L.. BORDER_H:rep(width) .. BORDER_R)
+			table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
 		end
 
 		-- Source File
-		if errorInfos.sourceNode and sourceNodeInfos then
+		if nodesInfos.source then
 			makeLine{""}
-			makeSourceSnippet{errorInfos.sourceNode, sourceNodeInfos, context=true}
+			makeSourceSnippet(nodesInfos.source)
 			makeLine{""}
 		end
 
 		-- Traceback
-		if errorInfos.errorCallstack and #errorInfos.errorCallstack > 0 then
-			table.insert(result, BORDER_L .. BORDER_H:rep(width) .. BORDER_R)
+		if #nodesInfos.traceback > 0 then
+			table.insert(result, BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
 			makeLine{TRACEBACK_HEADER, indent=HEADER_INDENT}
-			table.insert(result, BORDER_L .. BORDER_H:rep(width) .. BORDER_R)
-			for i, infos in ipairs(errorInfos.errorCallstack or {}) do
-				if infos.node then
-					makeSourceSnippet{infos.node, infos.infos}
+			table.insert(result, BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
+			for i, infos in ipairs(nodesInfos.traceback) do
+				if infos.sourceNoLine then
+					makeSourceSnippet(infos)
 
-					if i < #errorInfos.errorCallstack then
+					if i < #nodesInfos.traceback then
 						makeLine{""}
 					end
 				elseif infos.repeatedBlockBegin then
@@ -582,58 +496,50 @@ return function(plume)
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 					makeLine{string.format("↳(previous block is repeated %s more times)", infos.repeated), indent=SOURCE_FILENAME_INDENT}
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
-					if i < #errorInfos.errorCallstack then
+					if i < #nodesInfos.traceback then
 						makeLine{""}
 					end
 				elseif infos.repeatedBlockEnd then
 					
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 					
-					if i < #errorInfos.errorCallstack then
-						makeLine{("~"):rep(width-4), indent=SOURCE_FILENAME_INDENT}
+					if i < #nodesInfos.traceback then
+						makeLine{("~"):rep(MAX_WIDTH-4), indent=SOURCE_FILENAME_INDENT}
 						makeLine{""}
 					end
 				end
 			end
 		end
 
-		if plume.warning.any then
-			local wcount = 0
-			for i, infos in ipairs(plume.warning.cache) do
-				wcount = wcount + #infos.nodes
-			end
-
+		if nodesInfos.warnings.count > 0 then
 			if errorInfos.header then
-				table.insert(result, BORDER_L.. BORDER_H:rep(width) .. BORDER_R)
+				table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
 			else
-				table.insert(result, BORDER_UL .. BORDER_H:rep(width) .. BORDER_UR)
+				table.insert(result, BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR)
 			end
 
-			makeLine{string.format("%s WARNINGS", wcount),  indent=HEADER_INDENT}
+			makeLine{string.format("%s WARNING%s", nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
 			makeLine{"  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. ",  indent=HEADER_INDENT, lineIndentDelta=2}
-			table.insert(result, BORDER_L.. BORDER_H:rep(width) .. BORDER_R)
+			table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
 
-			for i, infos in ipairs(plume.warning.cache) do
-				makeLine{string.format("→ WARNING %i (%i occurrences)", i, #infos.nodes),  indent=HEADER_INDENT}
-				makeLine{"! "..infos.message,  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
-				if infos.help then
-					makeLine{"(i) " .. infos.help:gsub('^%s*', ''),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
+			for i, warningInfos in ipairs(nodesInfos.warnings) do
+				makeLine{string.format("→ WARNING %i (%i occurrences)", i, #warningInfos),  indent=HEADER_INDENT}
+				makeLine{"! "..warningInfos.message,  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
+				if warningInfos.help then
+					makeLine{"(i) " .. warningInfos.help:gsub('^%s*', ''),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
 				end
 				makeLine{""}
-
-				for j, node in ipairs(infos.nodes) do
-					makeSourceSnippet{node, node.infos, indent=2}
+				for j, infos in ipairs(warningInfos) do
+					makeSourceSnippet(infos, 2)
 
 					makeLine{""}
 
 					if j > MAX_WARNINGS_NODES then
-						makeLine{string.format("↳... (%s more)", #infos.nodes-j+1),  indent=SOURCE_CODE_INDENT}
+						makeLine{string.format("↳... (%s more)", #warningInfos-j+1), indent=SOURCE_CODE_INDENT}
 						makeLine{""}
 						break
 					end
 				end
-
-				
 
 				if i<#plume.warning.cache then
 					makeLine{""}
@@ -642,7 +548,7 @@ return function(plume)
 		end
 
 		-- Border end
-		table.insert(result, BORDER_DL.. BORDER_H:rep(width) .. BORDER_DR)
+		table.insert(result, BORDER_DL.. BORDER_H:rep(MAX_WIDTH) .. BORDER_DR)
 
 		return table.concat(result, "\n")
 	end

@@ -5766,8 +5766,8 @@ This is a very, very, very, very, very, very, very, very, very, very, very, very
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ error line too long                                                         │
-│    1 │...y, very, very, very, very, very, very, long line, and $x=5.           │
-│      │                                                          ^              │
+│    1 │...ery, very, very, very, very, very, very, long line, and $x=5.         │
+│      │                                                            ^            │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -8293,10 +8293,10 @@ $mark()
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ stack overflow                                                              │
-│    4  │set quill = macro()                                                     │
-│    5  │  $mark()                                                               │
-│       │   ^^^^^^                                                               │
-│    6  │end                                                                     │
+│    4 │set quill = macro()                                                      │
+│    5 │  $mark()                                                                │
+│      │   ^^^^^^                                                                │
+│    6 │end                                                                      │
 │                                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │
@@ -8304,14 +8304,14 @@ $mark()
 │  ! This block is repeated 249 times:                                           │
 │  ↳...                                                                          │
 │  ↳ (same file)                                                                 │
-│    4  │set quill = macro()                                                     │
-│    5  │  $mark()                                                               │
-│       │   ^^^^^^                                                               │
+│    4 │set quill = macro()                                                      │
+│    5 │  $mark()                                                                │
+│      │   ^^^^^^                                                                │
 │                                                                                │
 │  ↳ (same file)                                                                 │
-│    8  │set mark = macro()                                                      │
-│    9  │  $quill()                                                              │
-│       │   ^^^^^^^                                                              │
+│    8 │set mark = macro()                                                       │
+│    9 │  $quill()                                                               │
+│      │   ^^^^^^^                                                               │
 │                                                                                │
 │  ↳...                                                                          │
 │  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  │
@@ -8319,14 +8319,14 @@ $mark()
 │  ! This block is repeated 620 times:                                           │
 │  ↳...                                                                          │
 │  ↳ (same file)                                                                 │
-│    8  │set mark = macro()                                                      │
-│    9  │  $quill()                                                              │
-│       │   ^^^^^^^                                                              │
+│    8 │set mark = macro()                                                       │
+│    9 │  $quill()                                                               │
+│      │   ^^^^^^^                                                               │
 │                                                                                │
 │  ↳ (same file)                                                                 │
-│    4  │set quill = macro()                                                     │
-│    5  │  $mark()                                                               │
-│       │   ^^^^^^                                                               │
+│    4 │set quill = macro()                                                      │
+│    5 │  $mark()                                                                │
+│      │   ^^^^^^                                                                │
 │                                                                                │
 │  ↳...                                                                          │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -9986,7 +9986,7 @@ $(t+1)
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    2 │  meta addr: macro(x)                                                    │
+│    2 │meta addr: macro(x)                                                      │
 │    3 │  $(self+1)                                                              │
 │      │    ^^^^^^                                                               │
 │                                                                                │

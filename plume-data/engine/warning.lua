@@ -37,8 +37,6 @@ return function (plume)
 	    	plume.error.strictWarningError (node, msg)
 	    end
 
-		plume.warning.any = true
-
 	    if not plume.warning.cache[msg] then
 	    	table.insert(plume.warning.cache, {nodes={}, message=msg, help=help})
 	       	plume.warning.cache[msg] = #plume.warning.cache

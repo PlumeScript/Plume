@@ -231,7 +231,7 @@ return function (plume)
 			local content = ""
 			local node = chunk.mapping[ip]
 			if node then
-				content = plume.error.getLineInfos(node).content
+				content = node.code:sub(node.bpos, node.epos)
 				if content:match('\n') then
 					content = content:match('^[^\n]*').."[...]"
 				end
@@ -264,12 +264,9 @@ return function (plume)
 			local node = runtime.mapping[ip]
 			local content = ""
 			if node and node.code then
-				local info = plume.error.getLineInfos(node)
-				if info then
-					content = info.content
-					if content:match('\n') then
-						content = content:match('^[^\n]*').."[...]"
-					end
+				content = node.code:sub(node.bpos, node.epos)
+				if content:match('\n') then
+					content = content:match('^[^\n]*').."[...]"
 				end
 			end
 			

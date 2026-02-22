@@ -447,8 +447,8 @@ This is a very, very, very, very, very, very, very, very, very, very, very, very
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ error line too long                                                         │
-│    1 │...y, very, very, very, very, very, very, long line, and $x=5.           │
-│      │                                                          ^              │
+│    1 │...ery, very, very, very, very, very, very, long line, and $x=5.         │
+│      │                                                            ^            │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

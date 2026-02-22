@@ -56,7 +56,6 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 	plume.lastErrorInfos = nil
 	plume.warning.cache = {}
 	plume.warning.mode = {default="normal"}
-	plume.warning.any = false
 
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
