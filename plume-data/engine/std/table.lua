@@ -16,8 +16,8 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume)
 	local _table = plume.obj.table (0, 2)
     _table.table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join"}
-    _table.table.remove = plume.std.remove
-    _table.table.append = plume.std.append
+    _table.table.remove = plume.obj.luaFunction("join", plume.temp.remove)
+    _table.table.append = plume.obj.luaFunction("join", plume.temp.append)
     _table.table.join   = plume.obj.luaFunction("join", plume.temp.join)
     _table.table.removeKey = plume.obj.luaFunction("removeKey", function (args)
         local t = args.table[1]

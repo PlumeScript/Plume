@@ -14,14 +14,19 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-    local function append (args)
+    
+
+    -----------------------
+    -- WILL BE MOVED IN 1.0
+    -----------------------
+    plume.temp = {}
+    function plume.temp.append (args)
         local t = args.table[1]
         local value = args.table[2]
         table.insert(t.table, value)
         table.insert(t.keys, #t.table)
     end
-
-    local function remove (args)
+    function plume.temp.remove (args)
         local t = args.table[1]
         local index = args.table[2]
 
@@ -29,11 +34,6 @@ return function (plume)
 
         return table.remove(t.table, index)
     end
-
-    -----------------------
-    -- WILL BE MOVED IN 1.0
-    -----------------------
-    plume.temp = {}
     function plume.temp.join (args)
         local sep = args.table.sep
         if sep == plume.obj.empty then
@@ -48,8 +48,8 @@ return function (plume)
     ---------------------------------
     -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
     ---------------------------------
-    plume.stdLua.remove = plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, remove)
-    plume.stdLua.append = plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, append)
+    plume.stdLua.remove = plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, plume.temp.remove)
+    plume.stdLua.append = plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, plume.temp.append)
     plume.stdLua.join = plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, plume.temp.join)
     ---------------------------------
     for name, f in pairs(plume.stdLua) do
