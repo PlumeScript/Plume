@@ -374,7 +374,7 @@ return function(plume)
 					if crop == "start" then
 						content = content:sub(1, 3)..'...'..content:sub(utf8len(content)-width+10, -1)
 					else
-						content = content:sub(1, width-5)..'...'
+						content = content:sub(1, width-7):gsub('%s*$', '')..'...'
 					end
 				else -- cut the last possible word
 					local pos = 1
