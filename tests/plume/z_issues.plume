@@ -482,3 +482,23 @@ end
 /// Output
 
 /// End
+
+/// Test #445
+macro wing(x)
+end
+let t = do
+    - do
+        color: a
+        taste: b
+    end
+end
+
+for nib, quill in enumerate(t)
+    $type($quill)\n
+    $wing($quill.color)
+    $type($quill)
+end
+/// Output
+table
+table
+/// End
