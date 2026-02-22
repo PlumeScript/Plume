@@ -20,9 +20,9 @@ return function(plume)
 	plume.obj.empty = {type = "empty"}
 
 	--- lua fonction take 1 parameter: the plume table of all given arguments
-	function plume.obj.luaFunction (name, f)
+	function plume.obj.luaMacro (name, f)
 		return {
-			type = "luaFunction",
+			type = "luaMacro",
 			callable = f,
 			name = name -- optionnal
 		}
@@ -104,12 +104,10 @@ return function(plume)
 		local t = obj.type
 		if t == "empty" then
 			return "empty"
-		elseif t == "luaFunction" then
-			return "luaMacro<" .. obj.name .. ">"
-		elseif t == "luaStdFunction" then
-			return "stdMacro<" .. obj.name .. ">"
-		elseif t == "macro" then
-			return "macro<" .. obj.name .. ">"
+		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
+			return t .. "<" .. obj.name .. ">"
+		elseif t == "closure" then
+			return "macro<" .. (obj.macro.name or "???") .. ">"
 		elseif t == "table" then
 			if acc[obj] then
 				return "$table(...)"

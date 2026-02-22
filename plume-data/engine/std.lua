@@ -53,7 +53,7 @@ return function (plume)
     plume.stdLua.join = plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, plume.temp.join)
     ---------------------------------
     for name, f in pairs(plume.stdLua) do
-        plume.std[name] = plume.obj.luaFunction(name, f)
+        plume.std[name] = plume.obj.luaMacro(name, f)
     end
     require 'plume-data/engine/std/vm' (plume)
     for name, obj in pairs(plume.stdVM) do
@@ -70,8 +70,8 @@ return function (plume)
     plume.std.tostring = {} -- hardcoded
     ---------------------------------
 
-    local function importLuaFunction(name, f)
-        return plume.obj.luaFunction(name, function(args)
+    local function importLuaMacro(name, f)
+        return plume.obj.luaMacro(name, function(args)
             return (f(unpack(args.table)))
         end)
     end
@@ -84,7 +84,7 @@ return function (plume)
             if type(v) == "table" then
                 v = importLuaTable(k, v)
             elseif type(v) == "function" then
-                v = importLuaFunction(k, v)
+                v = importLuaMacro(k, v)
             end
             result.table[k] = v
         end
@@ -95,14 +95,14 @@ return function (plume)
     plume.std.lua = plume.obj.table(0, 0)
 
     for name in ("assert error"):gmatch("%S+") do
-        plume.std.lua.table[name] = importLuaFunction(name, _G[name])
+        plume.std.lua.table[name] = importLuaMacro(name, _G[name])
     end
 
     for name in ("string math os io"):gmatch("%S+") do
         plume.std.lua.table[name] = importLuaTable(name, _G[name])
     end
 
-    plume.std.lua.table.require =  plume.obj.luaFunction("require", function(args, runtime, fileID)
+    plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
         local firstFilename = runtime.files[1].name
         local lastFilename  = runtime.files[fileID].name
 

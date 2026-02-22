@@ -16,10 +16,10 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume)
 	local _table = plume.obj.table (0, 2)
     _table.table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join"}
-    _table.table.remove = plume.obj.luaFunction("join", plume.temp.remove)
-    _table.table.append = plume.obj.luaFunction("join", plume.temp.append)
-    _table.table.join   = plume.obj.luaFunction("join", plume.temp.join)
-    _table.table.removeKey = plume.obj.luaFunction("removeKey", function (args)
+    _table.table.remove = plume.obj.luaMacro("remove", plume.temp.remove)
+    _table.table.append = plume.obj.luaMacro("append", plume.temp.append)
+    _table.table.join   = plume.obj.luaMacro("join", plume.temp.join)
+    _table.table.removeKey = plume.obj.luaMacro("removeKey", function (args)
         local t = args.table[1]
         local key = args.table[2]
 
@@ -35,7 +35,7 @@ return function (plume)
         t.table[key] = nil
         table.remove(t.keys, index)
     end)
-    _table.table.hasKey = plume.obj.luaFunction("hasKey", function (args)
+    _table.table.hasKey = plume.obj.luaMacro("hasKey", function (args)
         local t = args.table[1]
         local key = args.table[2]
 
@@ -48,7 +48,7 @@ return function (plume)
 
         return false
     end)
-    _table.table.find = plume.obj.luaFunction("find", function (args)
+    _table.table.find = plume.obj.luaMacro("find", function (args)
         local t = args.table[1]
         local x = args.table[2]
 
@@ -58,7 +58,7 @@ return function (plume)
             end
         end
     end)
-    _table.table.finds = plume.obj.luaFunction("findAll", function (args)
+    _table.table.finds = plume.obj.luaMacro("findAll", function (args)
         local t = args.table[1]
         local x = args.table[2]
 
@@ -72,7 +72,7 @@ return function (plume)
 
         return result
     end)
-    _table.table.count = plume.obj.luaFunction("count", function (args)
+    _table.table.count = plume.obj.luaMacro("count", function (args)
         local t = args.table[1]
         local named = args.table.named
 
@@ -88,7 +88,7 @@ return function (plume)
             return #t.keys
         end
     end)
-    _table.table.entry = plume.obj.luaFunction("entry", function (args)
+    _table.table.entry = plume.obj.luaMacro("entry", function (args)
         local t = args.table[1]
         local index = tonumber(args.table[2])
 

@@ -35,7 +35,7 @@ function GET_ITER (vm, arg1, arg2)
 
         
         if iter then
-            if iter.type == "luaFunction" then
+            if iter.type == "luaMacro" then
                 value = iter.callable({obj})
             elseif iter.type == "table" then
                 value = iter
@@ -149,7 +149,7 @@ function FOR_ITER (vm, arg1, arg2)
         end
     else
         local iter = obj.meta.table.next
-        if iter.type == "luaFunction" then
+        if iter.type == "luaMacro" then
             result = iter.callable()
         else
             call = true

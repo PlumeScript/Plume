@@ -22,22 +22,22 @@ return function (plume)
 	}
 
 	-- Manipulations
-	Number.table.floor = plume.obj.luaFunction("floor", function (args)
+	Number.table.floor = plume.obj.luaMacro("floor", function (args)
 		local x = plume.shiftArgs(Number, args)
 		local digit = tonumber(args.table.digit or 0)
 		return math.floor(x*10^digit)*10^-digit
 	end)
-	Number.table.ceil = plume.obj.luaFunction("ceil", function (args)
+	Number.table.ceil = plume.obj.luaMacro("ceil", function (args)
 		local x = plume.shiftArgs(Number, args)
 		local digit = tonumber(args.table.digit or 0)
 		return math.ceil(x*10^digit)*10^-digit
 	end)
-	Number.table.round = plume.obj.luaFunction("round", function (args)
+	Number.table.round = plume.obj.luaMacro("round", function (args)
 		local x = plume.shiftArgs(Number, args)
 		local digit = tonumber(args.table.digit or 0)
 		return math.floor(x*10^digit + 0.5)*10^-digit
 	end)
-	Number.table.clamp = plume.obj.luaFunction("clamp", function (args)
+	Number.table.clamp = plume.obj.luaMacro("clamp", function (args)
 		local x, min, max = plume.shiftArgs(Number, args)
 		return math.min(max, math.max(min, x))
 	end)
@@ -102,7 +102,7 @@ return function (plume)
 		return result
 	end
 
-	Number.table.format = plume.obj.luaFunction("format", function (args)
+	Number.table.format = plume.obj.luaMacro("format", function (args)
 		local x, format = plume.shiftArgs(Number, args)
 		local localTag             = args.table["locale"]
 		local thousandsSeparator    = args.table["thousandsSeparator"]
@@ -112,14 +112,14 @@ return function (plume)
 		return plume.formatNumber(x, format, localTag, thousandsSeparator, decimalSeparator, thousandthsSeparator)
 	end)
 
-	Number.table.localize = plume.obj.luaFunction("localize", function (args)
+	Number.table.localize = plume.obj.luaMacro("localize", function (args)
 		local x, localTag = plume.shiftArgs(Number, args)
 
 		return plume.formatNumber(x, "%s", localTag)
 	end)
 
 	-- Test
-	Number.table.sign = plume.obj.luaFunction("sign", function (args)
+	Number.table.sign = plume.obj.luaMacro("sign", function (args)
 		local x = plume.shiftArgs(Number, args)
 		if x>0 then
 			return 1
@@ -130,7 +130,7 @@ return function (plume)
 		end
 	end)
 
-	Number.meta.table.call = plume.obj.luaFunction("Number", function(args)
+	Number.meta.table.call = plume.obj.luaMacro("Number", function(args)
 		local x = args.table[1]
 		if x == plume.obj.empty then
 			error("Cannot convert empty into number", 0)

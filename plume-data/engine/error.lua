@@ -259,7 +259,7 @@ return function(plume)
 			for i=#runtime.callstack, 1, -1 do
 				local source = runtime.callstack[i]
 				local node
-				if source.macro.type == "macro" or source.macro.type == "luaFunction" and i>1 then
+				if source.macro.type == "macro" or source.macro.type == "luaMacro" and i>1 then
 					node = plume.error.getNode(runtime, source.ip)
 				end
 				if node then

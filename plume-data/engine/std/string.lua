@@ -24,15 +24,15 @@ return function (plume)
 	}
 
 	-- Manipulation
-	String.table.upper = plume.obj.luaFunction("upper", function (args)
+	String.table.upper = plume.obj.luaMacro("upper", function (args)
 		local s = plume.shiftArgs(String, args)
 		return string.upper(s)
 	end)
-	String.table.lower = plume.obj.luaFunction("lower", function (args)
+	String.table.lower = plume.obj.luaMacro("lower", function (args)
 		local s = plume.shiftArgs(String, args)
 		return string.lower(s)
 	end)
-	String.table.replace = plume.obj.luaFunction("replace", function (args)
+	String.table.replace = plume.obj.luaMacro("replace", function (args)
 		local s, pattern, sub  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 		local sub     = tostring(sub)
@@ -46,7 +46,7 @@ return function (plume)
 	end)
 
 	-- Tests
-	String.table.isNumber = plume.obj.luaFunction("isNumber", function (args)
+	String.table.isNumber = plume.obj.luaMacro("isNumber", function (args)
 		local s = plume.shiftArgs(String, args)
 		if tonumber(s) then
 			return true
@@ -56,35 +56,35 @@ return function (plume)
 	end)
 
 	-- Normalization
-	String.table.trim = plume.obj.luaFunction("trim", function (args)
+	String.table.trim = plume.obj.luaMacro("trim", function (args)
 		local s = plume.shiftArgs(String, args)
 		return s:gsub('^%s*', ''):gsub('%s*$', '')
 	end)
-	String.table.rtrim = plume.obj.luaFunction("rtrim", function (args)
+	String.table.rtrim = plume.obj.luaMacro("rtrim", function (args)
 		local s = plume.shiftArgs(String, args)
 		return s:gsub('^%s*', '')
 	end)
-	String.table.ltrim = plume.obj.luaFunction("ltrim", function (args)
+	String.table.ltrim = plume.obj.luaMacro("ltrim", function (args)
 		local s = plume.shiftArgs(String, args)
 		return s:gsub('%s*$', '')
 	end)
-	String.table.collapse = plume.obj.luaFunction("collapse", function (args)
+	String.table.collapse = plume.obj.luaMacro("collapse", function (args)
 		local s = plume.shiftArgs(String, args)
 		return s:gsub('%s+', ' ')
 	end)
-	String.table.dedent = plume.obj.luaFunction("dedent", function (args)
+	String.table.dedent = plume.obj.luaMacro("dedent", function (args)
 		local s = plume.shiftArgs(String, args)
 		local firstIndent = s:match('^%s+')
 		return s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
 	end)
-	String.table.indent = plume.obj.luaFunction("indent", function (args)
+	String.table.indent = plume.obj.luaMacro("indent", function (args)
 		local s = plume.shiftArgs(String, args)
 		local sep = args.table.sep or "\t"
 		return sep..s:gsub('\n', '\n'..sep)
 	end)
 
 	-- search
-	String.table.find = plume.obj.luaFunction("find", function (args)
+	String.table.find = plume.obj.luaMacro("find", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 
@@ -94,7 +94,7 @@ return function (plume)
 
 		return s:match(pattern) or plume.empty
 	end)
-	String.table.contains = plume.obj.luaFunction("contains", function (args)
+	String.table.contains = plume.obj.luaMacro("contains", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 
@@ -108,7 +108,7 @@ return function (plume)
 			return false
 		end
 	end)
-	String.table.startsWidth = plume.obj.luaFunction("startsWidth", function (args)
+	String.table.startsWidth = plume.obj.luaMacro("startsWidth", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 
@@ -122,7 +122,7 @@ return function (plume)
 			return false
 		end
 	end)
-	String.table.endsWidth = plume.obj.luaFunction("endsWidth", function (args)
+	String.table.endsWidth = plume.obj.luaMacro("endsWidth", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 
@@ -136,7 +136,7 @@ return function (plume)
 			return false
 		end
 	end)
-	String.table.count = plume.obj.luaFunction("count", function (args)
+	String.table.count = plume.obj.luaMacro("count", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 
@@ -153,7 +153,7 @@ return function (plume)
 	end)
 
 	-- table making
-	String.table.split = plume.obj.luaFunction("split", function (args)
+	String.table.split = plume.obj.luaMacro("split", function (args)
 		local s = plume.shiftArgs(String, args)
 		local sep = args.table.sep or " "
 		local t = plume.obj.table(0, 0)
@@ -176,7 +176,7 @@ return function (plume)
 
 		return t
 	end)
-	String.table.lines = plume.obj.luaFunction("lines", function (args)
+	String.table.lines = plume.obj.luaMacro("lines", function (args)
 		local s = plume.shiftArgs(String, args)
 		local t = plume.obj.table(0, 0)
 
@@ -194,7 +194,7 @@ return function (plume)
 
 		return t
 	end)
-	String.table.findAll = plume.obj.luaFunction("findAll", function (args)
+	String.table.findAll = plume.obj.luaMacro("findAll", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 		local sub     = tostring(sub)
@@ -212,7 +212,7 @@ return function (plume)
 
 		return t
 	end)
-	String.table.partition = plume.obj.luaFunction("partition", function (args)
+	String.table.partition = plume.obj.luaMacro("partition", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
 		local pattern = tostring(pattern)
 

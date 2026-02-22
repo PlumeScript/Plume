@@ -1260,7 +1260,7 @@ return function (plume)
                                                 end
                                                 closureStack.pointer = closureStack.pointer + 1
                                                 closureStack[closureStack.pointer] = tocall.upvalues
-                                            elseif t == "luaFunction" then
+                                            elseif t == "luaMacro" then
                                                 local _ret139
                                                 do
                                                     local _ret140, _ret141, _ret142, _ret143
@@ -1425,7 +1425,7 @@ return function (plume)
                                                 else
                                                     vmerr = result
                                                 end
-                                            elseif t == "luaStdFunction" then
+                                            elseif t == "stdMacro" then
                                                 local _ret124
                                                 do
                                                     local _ret125, _ret126, _ret127, _ret128
@@ -2054,7 +2054,7 @@ return function (plume)
                                                     iter = obj.meta.table.iter
                                                 end
                                                 if iter then
-                                                    if iter.type == "luaFunction" then
+                                                    if iter.type == "luaMacro" then
                                                         value = iter.callable ({obj})
                                                     elseif iter.type == "table" then
                                                         value = iter
@@ -2198,7 +2198,7 @@ return function (plume)
                                                 end
                                             else
                                                 local iter = obj.meta.table.next
-                                                if iter.type == "luaFunction" then
+                                                if iter.type == "luaMacro" then
                                                     result = iter.callable ()
                                                 else
                                                     call = true

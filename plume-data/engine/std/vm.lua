@@ -24,7 +24,7 @@ return function (plume)
 		end
 
 		plume.stdVM[name] = {
-			type = "luaStdFunction",
+			type = "stdMacro",
 			name = name,
 			opcode = plume.ops_count,
 			minArgs = minArgs,

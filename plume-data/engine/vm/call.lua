@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 --- @opcode
 --- Take the stack top to call, with all elements of the current frame as parameters.
 --- Stack the call result (or empty if nil)
---- Handle macros and luaFunctions
+--- Handle macros and luaMacro
 --! inline
 function CONCAT_CALL (vm, arg1, arg2)
     local tocall = _STACK_POP(vm.mainStack)
@@ -51,7 +51,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         _STACK_PUSH(vm.closureStack, tocall.upvalues)
 
     -- Std functions defined in lua or user lua functions
-    elseif t == "luaFunction" then
+    elseif t == "luaMacro" then
         CONCAT_TABLE(vm)
         table.insert(vm.runtime.callstack, {runtime=vm.runtime, macro=tocall, ip=vm.ip})
         local success, result  =  pcall(tocall.callable, _STACK_POP(vm.mainStack), vm.runtime, _STACK_GET(vm.fileStack), vm.ip)
@@ -67,7 +67,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
 
     -- Some harcoded std functions
-    elseif t == "luaStdFunction" then
+    elseif t == "stdMacro" then
         local args = CONCAT_TABLE(vm)
         if #args.table < tocall.minArgs or #args.table > tocall.maxArgs then
             _ERROR(vm, vm.plume.error.wrongArgsCountStd(tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
