@@ -253,7 +253,7 @@ return function (plume)
 	end
 
 	function plume.checkIdentifier(identifier)
-		for kw in ('if then elseif else while for do macro let set const param use raw run'):gmatch('%S+') do
+		for kw in ('if then elseif else while for do macro let set const param use raw run ref with'):gmatch('%S+') do
 			if identifier == kw then
 				return false
 			end
