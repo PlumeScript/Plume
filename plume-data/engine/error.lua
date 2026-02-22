@@ -457,8 +457,20 @@ return function(plume)
 			if args.context and infos.prevLine then
 				makeSourceLine{infos.prevLine, infos.noprevline, indent=indent}
 			end
-			makeSourceLine{infos.line, infos.noline, indent=indent}
-			makeLine{(" "):rep(maxLineNumberSize+1) .. CODE_START .. (" "):rep(infos.bpos-1) .. ("^"):rep(infos.len), indent=SOURCE_CODE_INDENT+indent, crop=true}
+			local line = infos.line:gsub('\t', ' ')
+			local indicator
+
+			local widthlimit = math.floor(3*width/4)
+			if infos.bpos+infos.len>widthlimit then
+				local delta = infos.bpos + infos.len + 4 - widthlimit
+				line = "..."..line:sub(delta, -1)
+				indicator = (" "):rep(maxLineNumberSize+1) .. CODE_START .. (" "):rep(infos.bpos+3-delta) .. ("^"):rep(infos.len)
+			else
+				indicator = (" "):rep(maxLineNumberSize+1) .. CODE_START .. (" "):rep(infos.bpos-1) .. ("^"):rep(infos.len)
+			end
+
+			makeSourceLine{line, infos.noline, indent=indent}
+			makeLine{indicator, indent=SOURCE_CODE_INDENT+indent, crop=true}
 			if args.context and infos.nextLine then
 				makeSourceLine{infos.nextLine, infos.nonextline, indent=indent}
 			end

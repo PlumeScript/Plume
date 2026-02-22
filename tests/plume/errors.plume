@@ -437,3 +437,18 @@ $wing()
 │       │ ^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test error line too long
+This is a very, very, very, very, very, very, very, very, very, very, very, very, long line, and $x=5.
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'x', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ error line too long                                                         │
+│    1 │...y, very, very, very, very, very, very, long line, and $x=5.           │
+│      │                                                          ^              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

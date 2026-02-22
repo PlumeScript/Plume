@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">434 passed out of 434 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">435 passed out of 435 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -4912,7 +4912,7 @@ Nib
 </code></pre>
 </div>
 </details>
-<h2>errors: <span style="font-weight: normal;">24 passed out of 24 tests</span></h2>
+<h2>errors: <span style="font-weight: normal;">25 passed out of 25 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -5735,6 +5735,39 @@ let x = Nib
 │    1 │let x = Wings                                                            │
 │    2 │let x = Nib                                                              │
 │      │^^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> error line too long <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+This is a very, very, very, very, very, very, very, very, very, very, very, very, long line, and $x=5.
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ error line too long                                                         │
+│    1 │...y, very, very, very, very, very, very, long line, and $x=5.           │
+│      │                                                          ^              │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
