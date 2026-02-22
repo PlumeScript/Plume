@@ -48,11 +48,15 @@ function plume.run(runtime, chunk, fileParams)
 	else
 		run = plume._run
 	end
+
 	return plume.safeRun(run, runtime, chunk, fileParams)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams)
 	plume.lastErrorInfos = nil
+	plume.warning.cache = {}
+	plume.warning.mode = {default="normal"}
+	plume.warning.any = false
 
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
@@ -83,7 +87,11 @@ function plume.executeFile(filename, runtime, fileParams)
 		local code = f:read("*a")
 	f:close()
 
-	return plume.execute(code, filename, chunk, runtime, fileParams)
+	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)
+	if success then
+		plume.error.showWarnings()
+	end
+	return success, result
 end
 
 plume.hook = nil -- A function call at each step of the vm

@@ -22,7 +22,8 @@ return function(plume)
 		error(message, -1)
 	end
 
-	function plume.error.customError (node, message)
+	function plume.error.strictWarningError (node, message)
+		message = plume.error.makeStrictWarningError(node, message)
 		error(message, -1)
 	end
 

@@ -15,9 +15,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 return function (plume)
 	plume.warning = {}
-	plume.warning.cache = {}
-	plume.warning.mode = {default="normal"}
-	plume.warning.first = true
 
 	--- Emits a warning with deduplication.
 	--- Displays the warning once per unique message globally, and once per specific
@@ -36,44 +33,23 @@ return function (plume)
 			return
 		end
 
-	    if plume.warning.cache[msg] then
-	        help = nil
-	    else
-	        plume.warning.cache[msg] = {}
+		if mode == "strict" then
+	    	plume.error.strictWarningError (node, msg)
 	    end
 
-	    if plume.warning.cache[msg][node] then
-	        return
-	    end
-	    plume.warning.cache[msg][node] = true
+		plume.warning.any = true
 
-	    if mode == "normal" then
-		    msg = "Warning: " .. msg
-		else
-			 msg = "(Warning strict mode) " .. msg
+	    if not plume.warning.cache[msg] then
+	    	table.insert(plume.warning.cache, {nodes={}, message=msg, help=help})
+	       	plume.warning.cache[msg] = #plume.warning.cache
+	    end
+
+	    local index = plume.warning.cache[msg]
+
+	    if not plume.warning.cache[index].nodes[node] then
+		    plume.warning.cache[index].nodes[node] = true
+		    table.insert(plume.warning.cache[index].nodes, node)
 		end
-
-    	local lineInfos = plume.error.getLineInfos(node)
-    	local msg = msg .. "\n" .. plume.error.formatLine(lineInfos)
-
-	    if help then
-	    	msg = msg .. "\n" .. "- - - - - - - -"
-	    	msg = msg .. "\n" .. "Migration help:"
-	        msg = msg .. "\n" .. help
-	        msg = msg .. "\n" .. "- - - - - - - -"
-	    end
-
-	    if mode == "strict" then
-	    	plume.error.customError (node, msg)
-	    else
-	    	if plume.warning.first then
-	    		msg = msg .. "\nAdd `use #warning(mode: ignore, issues:[related issues])` in your file to ignore warnings.\n"
-	    		plume.warning.first = false
-	    	end
-	    	print(msg)
-	    end
-
-
 	end
 
 	--- Emits a runtime warning
