@@ -2,17 +2,34 @@
 for x in
 end
 /// Error
-Syntax error: Missing iterator.
-File 'missing iterator', line 1: for x in
-                                      ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing iterator.                                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing iterator                                                            │
+│    1 │for x in                                                                 │
+│      │     ^^^                                                                 │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing condition 1
 if
 end
 /// Error
-Syntax error: Missing condition.
-File 'missing condition 1', line 1: if
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing condition.                                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing condition 1                                                         │
+│    1 │if                                                                       │
+│      │                                                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing condition 2
@@ -20,15 +37,33 @@ if true
 elseif
 end
 /// Error
-Syntax error: Missing condition.
-File 'missing condition 2', line 2: elseif
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing condition.                                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing condition 2                                                         │
+│    1 │if true                                                                  │
+│    2 │elseif                                                                   │
+│      │                                                                         │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing end 1
 if true
 /// Error
-Syntax error: Missing end.
-File 'missing end 1', line 1: if true
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing end 1                                                               │
+│    1 │if true                                                                  │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 
 /// End
 
@@ -36,47 +71,98 @@ File 'missing end 1', line 1: if true
 if true
 else
 /// Error
-Syntax error: Missing end.
-File 'missing end 2', line 2: else
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing end 2                                                               │
+│    1 │if true                                                                  │
+│    2 │else                                                                     │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing end 3
 while false
 /// Error
-Syntax error: Missing end.
-File 'missing end 3', line 1: while false
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing end 3                                                               │
+│    1 │while false                                                              │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing end 4
 for x in t
 /// Error
-Syntax error: Missing end.
-File 'missing end 4', line 1: for x in t
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing end 4                                                               │
+│    1 │for x in t                                                               │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing end 5
 while false
   wing
 /// Error
-Syntax error: Missing end.
-File 'missing end 5', line 2: wing
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing end 5                                                               │
+│    1 │while false                                                              │
+│    2 │  wing                                                                   │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing loop identifier
 for in t
 end
 /// Error
-Syntax error: Missing iterator.
-File 'missing loop identifier', line 1: for in t
-                                              ^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing iterator.                                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing loop identifier                                                     │
+│    1 │for in t                                                                 │
+│      │      ^^                                                                 │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing param list
 macro wing
 end
 /// Error
-Syntax error: Missing parameters list.
-File 'missing param list', line 1: macro wing
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing parameters list.                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing param list                                                          │
+│    1 │macro wing                                                               │
+│      │                                                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test missing @table
@@ -84,45 +170,92 @@ let x =
   - z
 end
 /// Error
-Syntax error: Malformed code.
-File 'missing @table', line 1: let x =
-                                   ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Malformed code.                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing @table                                                              │
+│    1 │let x =                                                                  │
+│      │    ^^^                                                                  │
+│    2 │  - z                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test empty set
 set x
 /// Error
-Syntax error: Using set without giving it a value.
-File 'empty set', line 1: set x
-                          ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Using set without giving it a value.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ empty set                                                                   │
+│    1 │set x                                                                    │
+│      │^^^                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test empty macro parameter
 macro wings(nib,,quill)
 end
 /// Error
-Syntax error: Missing parameter name.
-File 'empty macro parameter', line 1: macro wings(nib,,quill)
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing parameter name.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ empty macro parameter                                                       │
+│    1 │macro wings(nib,,quill)                                                  │
+│      │                                                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test non closed eval
 $(1
 /// Error
-Syntax error: Missing ')' to close evaluation.
-File 'non closed eval', line 1: $(1
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Missing ')' to close evaluation.                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ non closed eval                                                             │
+│    1 │$(1                                                                      │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test empty eval 1
 $()
 /// Error
-Syntax error: Evaluation cannot be empty.
-File 'empty eval 1', line 1: $()
-                               ^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Evaluation cannot be empty.                                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ empty eval 1                                                                │
+│    1 │$()                                                                      │
+│      │  ^                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test empty eval 2
 $(
 /// Error
-Syntax error: Evaluation cannot be empty.
-File 'empty eval 2', line 1: $(
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Evaluation cannot be empty.                                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ empty eval 2                                                                │
+│    1 │$(                                                                       │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

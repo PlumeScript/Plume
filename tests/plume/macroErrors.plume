@@ -3,11 +3,17 @@ macro Wings(nib, quill, ink)
 end
 $Wings(paint, write)
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro 'Wings', 2 instead of 3.
-
-Traceback (most recent call first):
-  File 'not enought macro args', line 3: $Wings(paint, write)
-                                          ^^^^^^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro 'Wings', 2 instead of 3.     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ not enought macro args                                                      │
+│    2 │end                                                                      │
+│    3 │$Wings(paint, write)                                                     │
+│      │ ^^^^^^^^^^^^^^^^^^^                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test to many macro args
@@ -15,11 +21,17 @@ macro Wings(nib, quill, ink)
 end
 $Wings(paint, write, sing, dance)
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro 'Wings', 4 instead of 3.
-
-Traceback (most recent call first):
-  File 'to many macro args', line 3: $Wings(paint, write, sing, dance)
-                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro 'Wings', 4 instead of 3.     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ to many macro args                                                          │
+│    2 │end                                                                      │
+│    3 │$Wings(paint, write, sing, dance)                                        │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test unknow named parameter 1
@@ -27,11 +39,17 @@ macro Wings(nib: quill)
 end
 $Wings(wing: red)
 /// Error
-Runtime error: Unknow named parameter 'wing' for macro 'Wings'.
-
-Traceback (most recent call first):
-  File 'unknow named parameter 1', line 3: $Wings(wing: red)
-                                            ^^^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Unknow named parameter 'wing' for macro 'Wings'.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ unknow named parameter 1                                                    │
+│    2 │end                                                                      │
+│    3 │$Wings(wing: red)                                                        │
+│      │ ^^^^^^^^^^^^^^^^                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test unknow named parameter 2
@@ -39,11 +57,17 @@ macro Wings(nib: quill)
 end
 $Wings(nib: blue, wing: red)
 /// Error
-Runtime error: Unknow named parameter 'wing' for macro 'Wings'.
-
-Traceback (most recent call first):
-  File 'unknow named parameter 2', line 3: $Wings(nib: blue, wing: red)
-                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Unknow named parameter 'wing' for macro 'Wings'.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ unknow named parameter 2                                                    │
+│    2 │end                                                                      │
+│    3 │$Wings(nib: blue, wing: red)                                             │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test get macro name 1
@@ -51,11 +75,17 @@ let quill = macro ()
 end
 $quill(a)
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro 'quill', 1 instead of 0.
-
-Traceback (most recent call first):
-  File 'get macro name 1', line 3: $quill(a)
-                                    ^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro 'quill', 1 instead of 0.     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ get macro name 1                                                            │
+│    2 │end                                                                      │
+│    3 │$quill(a)                                                                │
+│      │ ^^^^^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test get macro name 2
@@ -65,11 +95,17 @@ let quill = @table
 end
 $quill.mark(a)
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro 'mark', 1 instead of 0.
-
-Traceback (most recent call first):
-  File 'get macro name 2', line 5: $quill.mark(a)
-                                    ^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro 'mark', 1 instead of 0.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ get macro name 2                                                            │
+│    4 │end                                                                      │
+│    5 │$quill.mark(a)                                                           │
+│      │ ^^^^^^^^^^^^^                                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test get macro name 3
@@ -79,21 +115,32 @@ let quill = @table
 end
 $quill[1](a)
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro '???', 1 instead of 0.
-
-Traceback (most recent call first):
-  File 'get macro name 3', line 5: $quill[1](a)
-                                    ^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro '???', 1 instead of 0.       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ get macro name 3                                                            │
+│    4 │end                                                                      │
+│    5 │$quill[1](a)                                                             │
+│      │ ^^^^^^^^^^^                                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test call a non-macro
 $(1)()
 /// Error
-Runtime error: Cannot call a 'number' value.
-
-Traceback (most recent call first):
-  File 'call a non-macro', line 1: $(1)()
-                                    ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot call a 'number' value.                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ call a non-macro                                                            │
+│    1 │$(1)()                                                                   │
+│      │ ^^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test stack overflow
@@ -110,20 +157,47 @@ end
 
 $mark()
 /// Error
-Runtime error: Stack overflow
-
-Traceback (most recent call first):
-  File 'stack overflow', line 5, in macro quill: $mark()
-                                                  ^^^^^^
-  These lines are repeated 498 times:
-  -------------
-  File 'stack overflow', line 5, in macro quill: $mark()
-                                                  ^^^^^^
-  File 'stack overflow', line 9, in macro mark: $quill()
-                                                 ^^^^^^^
-  -------------
-  File 'stack overflow', line 9, in macro mark: $quill()
-                                                 ^^^^^^^
-  File 'stack overflow', line 12: $mark()
-                                   ^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Stack overflow                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ stack overflow                                                              │
+│    4  │set quill = macro()                                                     │
+│    5  │  $mark()                                                               │
+│       │   ^^^^^^                                                               │
+│    6  │end                                                                     │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ! This block is repeated 249 times:                                           │
+│  ↳...                                                                          │
+│  ↳ (same file)                                                                 │
+│    4  │set quill = macro()                                                     │
+│    5  │  $mark()                                                               │
+│       │   ^^^^^^                                                               │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    8  │set mark = macro()                                                      │
+│    9  │  $quill()                                                              │
+│       │   ^^^^^^^                                                              │
+│                                                                                │
+│  ↳...                                                                          │
+│  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  │
+│                                                                                │
+│  ! This block is repeated 620 times:                                           │
+│  ↳...                                                                          │
+│  ↳ (same file)                                                                 │
+│    8  │set mark = macro()                                                      │
+│    9  │  $quill()                                                              │
+│       │   ^^^^^^^                                                              │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    4  │set quill = macro()                                                     │
+│    5  │  $mark()                                                               │
+│       │   ^^^^^^                                                               │
+│                                                                                │
+│  ↳...                                                                          │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

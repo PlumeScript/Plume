@@ -191,9 +191,20 @@ let t = do
    end
 end
 /// Error
-Compilation error: Cannot use variable 'x', it isn't defined in the current scope. 'x' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
-File 'Cannot capture ref 1', line 4: $x
-                                      ^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot use variable 'x', it isn't defined in the current scope. 'x'          │
+│   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
+│   captured by macros.                                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Cannot capture ref 1                                                        │
+│    3 │y: macro()                                                               │
+│    4 │   $x                                                                    │
+│      │    ^                                                                    │
+│    5 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Cannot capture ref 2
@@ -204,7 +215,18 @@ let t = do
    end
 end
 /// Error
-Compilation error: Cannot set variable 'x', it isn't defined in the current scope. 'x' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.
-File 'Cannot capture ref 2', line 4: set x = 1
-                                     ^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot set variable 'x', it isn't defined in the current scope. 'x'          │
+│   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
+│   captured by macros.                                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Cannot capture ref 2                                                        │
+│    3 │y: macro()                                                               │
+│    4 │   set x = 1                                                             │
+│      │   ^^^^^^^^^                                                             │
+│    5 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

@@ -1,43 +1,80 @@
 /// Test set unknow variable
 set x = Wings
 /// Error
-Compilation error: Cannot set variable 'x', it isn't defined in the current scope.
-File 'set unknow variable', line 1: set x = Wings
-                                    ^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot set variable 'x', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ set unknow variable                                                         │
+│    1 │set x = Wings                                                            │
+│      │^^^^^^^^^^^^^                                                            │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test use unknow variable
 let x = $y
 /// Error
-Compilation error: Cannot use variable 'y', it isn't defined in the current scope.
-File 'use unknow variable', line 1: let x = $y
-                                             ^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot use variable 'y', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use unknow variable                                                         │
+│    1 │let x = $y                                                               │
+│      │         ^                                                               │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test set constant variable
 let const x = Wings
 set x = Nib
 /// Error
-Compilation error: Cannot set variable 'x', it is a constant.
-File 'set constant variable', line 2: set x = Nib
-                                      ^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot set variable 'x', it is a constant.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ set constant variable                                                       │
+│    1 │let const x = Wings                                                      │
+│    2 │set x = Nib                                                              │
+│      │^^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test let empty const
 let const x
 /// Error
-Compilation error: Cannot define an empty constant variable.
-File 'let empty const', line 1: let const x
-                                ^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot define an empty constant variable.                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ let empty const                                                             │
+│    1 │let const x                                                              │
+│      │^^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test define twice
 let x = Wings
 let x = Nib
 /// Error
-Compilation error: Cannot define variable 'x', it already exists in the current scope.
-File 'define twice', line 2: let x = Nib
-                             ^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot define variable 'x', it already exists in the current scope.          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ define twice                                                                │
+│    1 │let x = Wings                                                            │
+│    2 │let x = Nib                                                              │
+│      │^^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test define macro twice
@@ -46,97 +83,154 @@ end
 macro wings()
 end
 /// Error
-Compilation error: Cannot define variable 'wings', it already exists in the current scope.
-File 'define macro twice', line 3: macro wings()
-                                   ^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot define variable 'wings', it already exists in the current scope.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ define macro twice                                                          │
+│    2 │end                                                                      │
+│    3 │macro wings()                                                            │
+│      │^^^^^^^^^^^^^                                                            │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Add string
 let x = Wings
 $(x+1)
 /// Error
-Runtime error: Cannot convert the string value 'Wings' to a number.
-
-Traceback (most recent call first):
-  File 'Add string', line 2: $(x+1)
-                               ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot convert the string value 'Wings' to a number.                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Add string                                                                  │
+│    1 │let x = Wings                                                            │
+│    2 │$(x+1)                                                                   │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Add table
 let x = $table()
 $(x+1)
 /// Error
-Runtime error: Cannot do comparison or arithmetic with a table value.
-
-Traceback (most recent call first):
-  File 'Add table', line 2: $(x+1)
-                              ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot do comparison or arithmetic with a table value.                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Add table                                                                   │
+│    1 │let x = $table()                                                         │
+│    2 │$(x+1)                                                                   │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Iterate over non table
 for x in 1
 end
 /// Error
-Runtime error: Cannot iterate over a non-table 'number' value.
-
-Traceback (most recent call first):
-  File 'Iterate over non table', line 1: for x in 1
-                                         ^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot iterate over a non-table 'number' value.                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Iterate over non table                                                      │
+│    1 │for x in 1                                                               │
+│      │^^^^^^^^^^                                                               │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Empty key
 let t = $table()
 $t[empty]
 /// Error
-Runtime error: Cannot use empty as key.
-
-Traceback (most recent call first):
-  File 'Empty key', line 2: $t[empty]
-                              ^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot use empty as key.                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Empty key                                                                   │
+│    1 │let t = $table()                                                         │
+│    2 │$t[empty]                                                                │
+│      │  ^^^^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Invalid key (string)
 let t = $table(wing: 5)
 $t.nib
 /// Error
-Runtime error: Unregistered key 'nib'.
-
-Traceback (most recent call first):
-  File 'Invalid key (string)', line 2: $t.nib
-                                         ^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Unregistered key 'nib'.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Invalid key (string)                                                        │
+│    1 │let t = $table(wing: 5)                                                  │
+│    2 │$t.nib                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Invalid key (int)
 let t = $table(nib, quill)
 $t[3]
 /// Error
-Runtime error: Invalid index '3'.
-
-Traceback (most recent call first):
-  File 'Invalid key (int)', line 2: $t[3]
-                                      ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Invalid index '3'.                                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Invalid key (int)                                                           │
+│    1 │let t = $table(nib, quill)                                               │
+│    2 │$t[3]                                                                    │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Index non-table 1
 let t = 1
 $t[3]
 /// Error
-Runtime error: Cannot index a non-table 'number' value.
-
-Traceback (most recent call first):
-  File 'Index non-table 1', line 2: $t[3]
-                                      ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot index a non-table 'number' value.                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Index non-table 1                                                           │
+│    1 │let t = 1                                                                │
+│    2 │$t[3]                                                                    │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Expand non-table 2
 let t = 1
 ...t
 /// Error
-Runtime error: Cannot expand a non-table 'number' value.
-
-Traceback (most recent call first):
-  File 'Expand non-table 2', line 2: ...t
-                                     ^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot expand a non-table 'number' value.                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Expand non-table 2                                                          │
+│    1 │let t = 1                                                                │
+│    2 │...t                                                                     │
+│      │^^^^                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Concat error 1
@@ -145,11 +239,17 @@ let nib = $table()
 
 $wing $nib
 /// Error
-Runtime error: Cannot concat a 'table' value.
-
-Traceback (most recent call first):
-  File 'Concat error 1', line 4: $wing $nib
-                                        ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot concat a 'table' value.                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Concat error 1                                                              │
+│    2 │let nib = $table()                                                       │
+│    4 │$wing $nib                                                               │
+│      │       ^^^                                                               │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Concat error 2
@@ -161,29 +261,54 @@ if true
     $nib
 end
 /// Error
-Runtime error: Cannot concat a 'table' value.
-
-Traceback (most recent call first):
-  File 'Concat error 2', line 6: $nib
-                                  ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Cannot concat a 'table' value.                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Concat error 2                                                              │
+│    5 │if true                                                                  │
+│    6 │    $nib                                                                 │
+│      │     ^^^                                                                 │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test MixedBlockError 1
 - Wing
 Nib
 /// Error
-Syntax error: Mixed block: the expected type of the block is TABLE, but it contains an element TEXT.
-File 'MixedBlockError 1', line 2: Nib
-                                  ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: the expected type of the block is TABLE, but it contains an     │
+│   element TEXT.                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ MixedBlockError 1                                                           │
+│    1 │- Wing                                                                   │
+│    2 │Nib                                                                      │
+│      │^^^                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test MixedBlockError 2
 Nib
 - Wing
 /// Error
-Syntax error: Mixed block: the expected type of the block is VALUE, but it contains an element TABLE.
-File 'MixedBlockError 2', line 2: - Wing
-                                  ^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│   element TABLE.                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ MixedBlockError 2                                                           │
+│    1 │Nib                                                                      │
+│    2 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test MixedBlockError 3
@@ -192,9 +317,19 @@ for i in seq(1, 10)
     - Nib
 end
 /// Error
-Syntax error: Mixed block: the expected type of the block is VALUE, but it contains an element TABLE.
-File 'MixedBlockError 3', line 3: - Nib
-                                  ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│   element TABLE.                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ MixedBlockError 3                                                           │
+│    2 │for i in seq(1, 10)                                                      │
+│    3 │    - Nib                                                                │
+│      │    ^^^^^                                                                │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test MixedBlockError 4
@@ -203,9 +338,19 @@ if true
     - nib
 end
 /// Error
-Syntax error: Mixed block: the expected type of the block is VALUE, but it contains an element TABLE.
-File 'MixedBlockError 4', line 3: - nib
-                                  ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│   element TABLE.                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ MixedBlockError 4                                                           │
+│    2 │if true                                                                  │
+│    3 │    - nib                                                                │
+│      │    ^^^^^                                                                │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test MixedBlockError 6
@@ -219,9 +364,19 @@ else
     - nib
 end
 /// Error
-Syntax error: Mixed block: the expected type of the block is TEXT, but it contains an element TABLE.
-File 'MixedBlockError 6', line 8: - nib
-                                  ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: the expected type of the block is TEXT, but it contains an      │
+│   element TABLE.                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ MixedBlockError 6                                                           │
+│    7 │    song                                                                 │
+│    8 │    - nib                                                                │
+│      │    ^^^^^                                                                │
+│    9 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test no MixedBlockError 1
@@ -258,13 +413,27 @@ end
 
 $wing()
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro 'paint', 1 instead of 0.
-
-Traceback (most recent call first):
-  File 'callstack', line 5, in macro sing: $paint(1)
-                                            ^^^^^^^^
-  File 'callstack', line 9, in macro wing: $sing()
-                                            ^^^^^^
-  File 'callstack', line 12: $wing()
-                              ^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro 'paint', 1 instead of 0.     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ callstack                                                                   │
+│    4  │macro sing()                                                            │
+│    5  │    $paint(1)                                                           │
+│       │     ^^^^^^^^                                                           │
+│    6  │end                                                                     │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    8  │macro wing()                                                            │
+│    9  │    $sing()                                                             │
+│       │     ^^^^^^                                                             │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    12 │$wing()                                                                 │
+│       │ ^^^^^^                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

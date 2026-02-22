@@ -404,9 +404,15 @@ end
 
 $table.join($t)
 /// Error
-Runtime error: invalid value (table) at index 1 in table for 'concat'
-
-Traceback (most recent call first):
-  File 'Error', line 6: $table.join($t)
-                         ^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ invalid value (table) at index 1 in table for 'concat'                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Error                                                                       │
+│    4 │end                                                                      │
+│    6 │$table.join($t)                                                          │
+│      │ ^^^^^^^^^^^^^^                                                          │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

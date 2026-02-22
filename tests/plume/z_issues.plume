@@ -106,9 +106,18 @@ end
 macro wings()
 end
 /// Error
-Compilation error: Cannot define variable 'wings', it already exists in the current scope.
-File '#138', line 3: macro wings()
-                     ^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot define variable 'wings', it already exists in the current scope.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ #138                                                                        │
+│    2 │end                                                                      │
+│    3 │macro wings()                                                            │
+│      │^^^^^^^^^^^^^                                                            │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test #141
@@ -116,9 +125,17 @@ let const x = 5
 
 $(x+a)
 /// Error
-Compilation error: Cannot use variable 'a', it isn't defined in the current scope.
-File '#141', line 3: $(x+a)
-                         ^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot use variable 'a', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ #141                                                                        │
+│    1 │let const x = 5                                                          │
+│    3 │$(x+a)                                                                   │
+│      │    ^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test #143
@@ -175,11 +192,17 @@ end
 
 $x(1)
 /// Error
-Runtime error: Wrong number of positionnal arguments for macro 'x', 1 instead of 0.
-
-Traceback (most recent call first):
-  File '#148', line 4: $x(1)
-                        ^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ ➡ Wrong number of positionnal arguments for macro 'x', 1 instead of 0.         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ #148                                                                        │
+│    2 │end                                                                      │
+│    4 │$x(1)                                                                    │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test #162
@@ -321,9 +344,17 @@ a
 let x = 5
 let x = 5
 /// Error
-Compilation error: Cannot define variable 'x', it already exists in the current scope.
-File '#239', line 2: let x = 5
-                     ^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ ➡ Cannot define variable 'x', it already exists in the current scope.          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ #239                                                                        │
+│    1 │let x = 5                                                                │
+│    2 │let x = 5                                                                │
+│      │^^^^^^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test #288-1

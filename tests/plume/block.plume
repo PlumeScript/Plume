@@ -112,10 +112,20 @@ else
   Nib
 end
 /// Error
-Syntax error: Mixed block: The previous branches of this if statement were of type TABLE, but this else body is of type TEXT.
-All branches of an if statement must be of the same type.
-File 'IF auto unbalanced 1', line 4: Nib
-                                     ^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│   TABLE, but this else body is of type TEXT.                                   │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ IF auto unbalanced 1                                                        │
+│    3 │else                                                                     │
+│    4 │  Nib                                                                    │
+│      │  ^^^                                                                    │
+│    5 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test IF auto unbalanced 2
@@ -125,10 +135,20 @@ else
   - Nib
 end
 /// Error
-Syntax error: Mixed block: The previous branches of this if statement were of type VALUE, but this else body is of type TABLE.
-All branches of an if statement must be of the same type.
-File 'IF auto unbalanced 2', line 4: - Nib
-                                     ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│   VALUE, but this else body is of type TABLE.                                  │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ IF auto unbalanced 2                                                        │
+│    3 │else                                                                     │
+│    4 │  - Nib                                                                  │
+│      │  ^^^^^                                                                  │
+│    5 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test IF auto unbalanced 3
@@ -140,10 +160,20 @@ else
   - Nib
 end
 /// Error
-Syntax error: Mixed block: The previous branches of this if statement were of type TEXT, but this else body is of type TABLE.
-All branches of an if statement must be of the same type.
-File 'IF auto unbalanced 3', line 6: - Nib
-                                     ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│   TEXT, but this else body is of type TABLE.                                   │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ IF auto unbalanced 3                                                        │
+│    5 │else                                                                     │
+│    6 │  - Nib                                                                  │
+│      │  ^^^^^                                                                  │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test IF auto unbalanced 4
@@ -155,8 +185,18 @@ else
   - Nib
 end
 /// Error
-Syntax error: Mixed block: The previous branches of this if statement were of type VALUE, but this elseif body is of type TABLE.
-All branches of an if statement must be of the same type.
-File 'IF auto unbalanced 4', line 4: - Foo
-                                     ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│   VALUE, but this elseif body is of type TABLE.                                │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ IF auto unbalanced 4                                                        │
+│    3 │elseif false                                                             │
+│    4 │  - Foo                                                                  │
+│      │  ^^^^^                                                                  │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

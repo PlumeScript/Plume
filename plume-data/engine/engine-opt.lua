@@ -2302,13 +2302,8 @@ return function (plume)
                                                             _ret235, _ret236 = _CALL (vm, meta, params)
                                                             goto _inline_end497
                                                         else
-                                                            if tx == "string" then
-                                                                _ret235, _ret236 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end497
-                                                            else
-                                                                _ret235, _ret236 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end497
-                                                            end
+                                                            _ret235, _ret236 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end497
                                                         end
                                                     end
                                                     _ret235, _ret236 = right
@@ -2336,13 +2331,8 @@ return function (plume)
                                                             _ret232, _ret233 = _CALL (vm, meta, params)
                                                             goto _inline_end495
                                                         else
-                                                            if tx == "string" then
-                                                                _ret232, _ret233 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end495
-                                                            else
-                                                                _ret232, _ret233 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end495
-                                                            end
+                                                            _ret232, _ret233 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end495
                                                         end
                                                     end
                                                     _ret232, _ret233 = left
@@ -2472,13 +2462,8 @@ return function (plume)
                                                             _ret250, _ret251 = _CALL (vm, meta, params)
                                                             goto _inline_end529
                                                         else
-                                                            if tx == "string" then
-                                                                _ret250, _ret251 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end529
-                                                            else
-                                                                _ret250, _ret251 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end529
-                                                            end
+                                                            _ret250, _ret251 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end529
                                                         end
                                                     end
                                                     _ret250, _ret251 = right
@@ -2506,13 +2491,8 @@ return function (plume)
                                                             _ret247, _ret248 = _CALL (vm, meta, params)
                                                             goto _inline_end527
                                                         else
-                                                            if tx == "string" then
-                                                                _ret247, _ret248 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end527
-                                                            else
-                                                                _ret247, _ret248 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end527
-                                                            end
+                                                            _ret247, _ret248 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end527
                                                         end
                                                     end
                                                     _ret247, _ret248 = left
@@ -2644,13 +2624,8 @@ return function (plume)
                                                             _ret265, _ret266 = _CALL (vm, meta, params)
                                                             goto _inline_end561
                                                         else
-                                                            if tx == "string" then
-                                                                _ret265, _ret266 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end561
-                                                            else
-                                                                _ret265, _ret266 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end561
-                                                            end
+                                                            _ret265, _ret266 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end561
                                                         end
                                                     end
                                                     _ret265, _ret266 = right
@@ -2678,13 +2653,8 @@ return function (plume)
                                                             _ret262, _ret263 = _CALL (vm, meta, params)
                                                             goto _inline_end559
                                                         else
-                                                            if tx == "string" then
-                                                                _ret262, _ret263 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end559
-                                                            else
-                                                                _ret262, _ret263 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end559
-                                                            end
+                                                            _ret262, _ret263 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end559
                                                         end
                                                     end
                                                     _ret262, _ret263 = left
@@ -2814,13 +2784,8 @@ return function (plume)
                                                             _ret280, _ret281 = _CALL (vm, meta, params)
                                                             goto _inline_end593
                                                         else
-                                                            if tx == "string" then
-                                                                _ret280, _ret281 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end593
-                                                            else
-                                                                _ret280, _ret281 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end593
-                                                            end
+                                                            _ret280, _ret281 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end593
                                                         end
                                                     end
                                                     _ret280, _ret281 = right
@@ -2848,13 +2813,8 @@ return function (plume)
                                                             _ret277, _ret278 = _CALL (vm, meta, params)
                                                             goto _inline_end591
                                                         else
-                                                            if tx == "string" then
-                                                                _ret277, _ret278 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end591
-                                                            else
-                                                                _ret277, _ret278 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end591
-                                                            end
+                                                            _ret277, _ret278 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end591
                                                         end
                                                     end
                                                     _ret277, _ret278 = left
@@ -2975,13 +2935,8 @@ return function (plume)
                                                         _ret284, _ret285 = _CALL (vm, meta, params)
                                                         goto _inline_end598
                                                     else
-                                                        if tx == "string" then
-                                                            _ret284, _ret285 = x, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (x))
-                                                            goto _inline_end598
-                                                        else
-                                                            _ret284, _ret285 = x, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (x))
-                                                            goto _inline_end598
-                                                        end
+                                                        _ret284, _ret285 = x, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                        goto _inline_end598
                                                     end
                                                 end
                                                 _ret284, _ret285 = x
@@ -3083,13 +3038,8 @@ return function (plume)
                                                             _ret304, _ret305 = _CALL (vm, meta, params)
                                                             goto _inline_end649
                                                         else
-                                                            if tx == "string" then
-                                                                _ret304, _ret305 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end649
-                                                            else
-                                                                _ret304, _ret305 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end649
-                                                            end
+                                                            _ret304, _ret305 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end649
                                                         end
                                                     end
                                                     _ret304, _ret305 = right
@@ -3117,13 +3067,8 @@ return function (plume)
                                                             _ret301, _ret302 = _CALL (vm, meta, params)
                                                             goto _inline_end647
                                                         else
-                                                            if tx == "string" then
-                                                                _ret301, _ret302 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end647
-                                                            else
-                                                                _ret301, _ret302 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end647
-                                                            end
+                                                            _ret301, _ret302 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end647
                                                         end
                                                     end
                                                     _ret301, _ret302 = left
@@ -3255,13 +3200,8 @@ return function (plume)
                                                             _ret319, _ret320 = _CALL (vm, meta, params)
                                                             goto _inline_end681
                                                         else
-                                                            if tx == "string" then
-                                                                _ret319, _ret320 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end681
-                                                            else
-                                                                _ret319, _ret320 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end681
-                                                            end
+                                                            _ret319, _ret320 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end681
                                                         end
                                                     end
                                                     _ret319, _ret320 = right
@@ -3289,13 +3229,8 @@ return function (plume)
                                                             _ret316, _ret317 = _CALL (vm, meta, params)
                                                             goto _inline_end679
                                                         else
-                                                            if tx == "string" then
-                                                                _ret316, _ret317 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end679
-                                                            else
-                                                                _ret316, _ret317 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end679
-                                                            end
+                                                            _ret316, _ret317 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end679
                                                         end
                                                     end
                                                     _ret316, _ret317 = left
@@ -3425,13 +3360,8 @@ return function (plume)
                                                             _ret334, _ret335 = _CALL (vm, meta, params)
                                                             goto _inline_end713
                                                         else
-                                                            if tx == "string" then
-                                                                _ret334, _ret335 = right, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (right))
-                                                                goto _inline_end713
-                                                            else
-                                                                _ret334, _ret335 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (right))
-                                                                goto _inline_end713
-                                                            end
+                                                            _ret334, _ret335 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end713
                                                         end
                                                     end
                                                     _ret334, _ret335 = right
@@ -3459,13 +3389,8 @@ return function (plume)
                                                             _ret331, _ret332 = _CALL (vm, meta, params)
                                                             goto _inline_end711
                                                         else
-                                                            if tx == "string" then
-                                                                _ret331, _ret332 = left, string.format ("Cannot do comparison or arithmetic with the %s value '%s'.", tx, plume.repr (left))
-                                                                goto _inline_end711
-                                                            else
-                                                                _ret331, _ret332 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx, plume.repr (left))
-                                                                goto _inline_end711
-                                                            end
+                                                            _ret331, _ret332 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            goto _inline_end711
                                                         end
                                                     end
                                                     _ret331, _ret332 = left

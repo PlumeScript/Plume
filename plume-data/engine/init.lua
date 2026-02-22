@@ -52,6 +52,8 @@ function plume.run(runtime, chunk, fileParams)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams)
+	plume.lastErrorInfos = nil
+
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
 
@@ -64,9 +66,7 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 	if success then
 		return true, result
 	else
-		if not secondary then
-			result = plume.error.makeRuntimeError(runtime, ip, result)
-		end
+		result = plume.error.makeRuntimeError(runtime, ip, result)
 		return false, result
 	end
 end
