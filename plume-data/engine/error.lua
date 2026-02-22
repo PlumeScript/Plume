@@ -499,7 +499,7 @@ return function(plume)
 		-- Header
 		table.insert(result, BORDER_UL .. BORDER_H:rep(width) .. BORDER_UR)
 		makeLine{errorInfos.header .. " ERROR:",  indent=HEADER_INDENT}
-		makeLine{"➡ "..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
+		makeLine{"→ "..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
 		table.insert(result, BORDER_L.. BORDER_H:rep(width) .. BORDER_R)
 
 		-- Source File

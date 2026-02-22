@@ -347,9 +347,9 @@ print('adding edge', from, to)
 		elseif ast._multiple:isa(node) then
 			--[[
 			multiple means ...
-			froms -> start(node)
-			end(node) -> start(node)
-			end(node) -> tos
+			froms → start(node)
+			end(node) → start(node)
+			end(node) → tos
 			--]]
 			assert.len(node, 1)
 			local mult = node[1]
@@ -359,9 +359,9 @@ print('adding edge', from, to)
 			return combine(firstfroms, froms)	-- combine for when there's 0
 		elseif ast._optional:isa(node) then
 			--[[
-			froms -> optional
-			optional -> tos
-			froms -> tos
+			froms → optional
+			optional → tos
+			froms → tos
 			... same as multiple without the loop back
 			--]]
 			assert.len(node, 1)
@@ -371,8 +371,8 @@ print('adding edge', from, to)
 			return combine(firstfroms, froms)	-- combine for when we skip it
 		elseif ast._or:isa(node) then
 			--[[
-			froms -> start of each child of node
-			end of each child of node -> tos
+			froms → start of each child of node
+			end of each child of node → tos
 			--]]
 			local tos = table()
 			for _,ch in ipairs(node) do
@@ -432,7 +432,7 @@ print()
 print'before collapse:'
 for from,tos in pairs(edges) do
 	for to,v in pairs(tos) do
-		print(from..' -> '..to)
+		print(from..' → '..to)
 	end
 end
 
@@ -505,7 +505,7 @@ print(to.." goes to "..newto)
 		local tos = edges[from]
 		for _,to in ipairs(table.keys(tos)) do
 			local v = tos[to]
-			print(from..' -> '..to..(v ~= true and ' ['..tostring(v)..']' or ''))
+			print(from..' → '..to..(v ~= true and ' ['..tostring(v)..']' or ''))
 		end
 	end
 --]]

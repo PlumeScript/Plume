@@ -295,7 +295,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable 'x', it already exists in the current scope.          │
+│ → Cannot define variable 'x', it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ ref error                                                                   │

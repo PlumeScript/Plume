@@ -108,7 +108,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable 'wings', it already exists in the current scope.      │
+│ → Cannot define variable 'wings', it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #138                                                                        │
@@ -127,7 +127,7 @@ $(x+a)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use variable 'a', it isn't defined in the current scope.              │
+│ → Cannot use variable 'a', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #141                                                                        │
@@ -194,7 +194,7 @@ $x(1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro 'x', 1 instead of 0.         │
+│ → Wrong number of positionnal arguments for macro 'x', 1 instead of 0.         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #148                                                                        │
@@ -346,7 +346,7 @@ let x = 5
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable 'x', it already exists in the current scope.          │
+│ → Cannot define variable 'x', it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #239                                                                        │
@@ -420,10 +420,10 @@ let t = $table(wing, nib)
 run $table.remove($t)
 
 for k, v in items(t)
-    $k -> $v\n
+    $k → $v\n
 end
 /// Output
-1 -> wing
+1 → wing
 /// End
 
 /// Test #349

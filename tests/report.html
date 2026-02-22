@@ -1340,7 +1340,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   TABLE, but this else body is of type TEXT.                                   │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -1381,7 +1381,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   VALUE, but this else body is of type TABLE.                                  │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -1424,7 +1424,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   TEXT, but this else body is of type TABLE.                                   │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -1467,7 +1467,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   VALUE, but this elseif body is of type TABLE.                                │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -2216,7 +2216,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39;          │
+│ → Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39;          │
 │   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
 │   captured by macros.                                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -2258,7 +2258,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39;          │
+│ → Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39;          │
 │   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
 │   captured by macros.                                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -3518,7 +3518,7 @@ set locale = 5
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable &#39;locale&#39;, it is a context variable. Use `with            │
+│ → Cannot set variable &#39;locale&#39;, it is a context variable. Use `with            │
 │   locale: value` instead.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -3553,7 +3553,7 @@ let const context locale
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Variable cannot be both const and context                                    │
+│ → Variable cannot be both const and context                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ cannot use context with const                                               │
@@ -3586,7 +3586,7 @@ let param context locale
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Variable cannot be both const and context                                    │
+│ → Variable cannot be both const and context                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ cannot use context with param                                               │
@@ -3934,7 +3934,7 @@ let wing: 5
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use a default value outside of a from statement.                      │
+│ → Cannot use a default value outside of a from statement.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Forbiden default value 1                                                    │
@@ -3967,7 +3967,7 @@ let wing: 5 = 8
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use a default value outside of a from statement.                      │
+│ → Cannot use a default value outside of a from statement.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Forbiden default value 2                                                    │
@@ -4944,7 +4944,7 @@ $(x+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot convert the string value &#39;Wings&#39; to a number.                         │
+│ → Cannot convert the string value &#39;Wings&#39; to a number.                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Add string                                                                  │
@@ -4988,7 +4988,7 @@ $(x+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot do comparison or arithmetic with a table value.                       │
+│ → Cannot do comparison or arithmetic with a table value.                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Add table                                                                   │
@@ -5040,7 +5040,7 @@ $wing $nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot concat a &#39;table&#39; value.                                               │
+│ → Cannot concat a &#39;table&#39; value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Concat error 1                                                              │
@@ -5099,7 +5099,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot concat a &#39;table&#39; value.                                               │
+│ → Cannot concat a &#39;table&#39; value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Concat error 2                                                              │
@@ -5144,7 +5144,7 @@ $t[empty]
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot use empty as key.                                                     │
+│ → Cannot use empty as key.                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Empty key                                                                   │
@@ -5187,7 +5187,7 @@ let t = 1
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot expand a non-table &#39;number&#39; value.                                    │
+│ → Cannot expand a non-table &#39;number&#39; value.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Expand non-table 2                                                          │
@@ -5229,7 +5229,7 @@ $t[3]
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot index a non-table &#39;number&#39; value.                                     │
+│ → Cannot index a non-table &#39;number&#39; value.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Index non-table 1                                                           │
@@ -5275,7 +5275,7 @@ $t[3]
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Invalid index &#39;3&#39;.                                                           │
+│ → Invalid index &#39;3&#39;.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (int)                                                           │
@@ -5322,7 +5322,7 @@ $t.nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Unregistered key &#39;nib&#39;.                                                      │
+│ → Unregistered key &#39;nib&#39;.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (string)                                                        │
@@ -5372,7 +5372,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot iterate over a non-table &#39;number&#39; value.                              │
+│ → Cannot iterate over a non-table &#39;number&#39; value.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Iterate over non table                                                      │
@@ -5407,7 +5407,7 @@ Nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is TABLE, but it contains an     │
+│ → Mixed block: the expected type of the block is TABLE, but it contains an     │
 │   element TEXT.                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -5443,7 +5443,7 @@ Nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -5481,7 +5481,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -5520,7 +5520,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -5564,7 +5564,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is TEXT, but it contains an      │
+│ → Mixed block: the expected type of the block is TEXT, but it contains an      │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -5643,7 +5643,7 @@ $wing()
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;paint&#39;, 1 instead of 0.     │
+│ → Wrong number of positionnal arguments for macro &#39;paint&#39;, 1 instead of 0.     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ callstack                                                                   │
@@ -5692,7 +5692,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable &#39;wings&#39;, it already exists in the current scope.      │
+│ → Cannot define variable &#39;wings&#39;, it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ define macro twice                                                          │
@@ -5728,7 +5728,7 @@ let x = Nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
+│ → Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ define twice                                                                │
@@ -5762,7 +5762,7 @@ let const x
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define an empty constant variable.                                    │
+│ → Cannot define an empty constant variable.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ let empty const                                                             │
@@ -5910,7 +5910,7 @@ set x = Nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable &#39;x&#39;, it is a constant.                                   │
+│ → Cannot set variable &#39;x&#39;, it is a constant.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ set constant variable                                                       │
@@ -5944,7 +5944,7 @@ set x = Wings
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
+│ → Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ set unknow variable                                                         │
@@ -5977,7 +5977,7 @@ let x = $y
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use variable &#39;y&#39;, it isn&#39;t defined in the current scope.              │
+│ → Cannot use variable &#39;y&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ use unknow variable                                                         │
@@ -6349,7 +6349,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use break keyword outside a loop.                                     │
+│ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ break cutted from loops by macro                                            │
@@ -6436,7 +6436,7 @@ break
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use break keyword outside a loop.                                     │
+│ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ break outside loop                                                          │
@@ -6527,7 +6527,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use continue keyword outside a loop.                                  │
+│ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ continue cutted from loops by macro                                         │
@@ -6619,7 +6619,7 @@ continue
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use continue keyword outside a loop.                                  │
+│ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ continue outside loop                                                       │
@@ -7928,7 +7928,7 @@ $(1)()
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot call a &#39;number&#39; value.                                                │
+│ → Cannot call a &#39;number&#39; value.                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ call a non-macro                                                            │
@@ -7977,7 +7977,7 @@ $quill(a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;quill&#39;, 1 instead of 0.     │
+│ → Wrong number of positionnal arguments for macro &#39;quill&#39;, 1 instead of 0.     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 1                                                            │
@@ -8035,7 +8035,7 @@ $quill.mark(a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;mark&#39;, 1 instead of 0.      │
+│ → Wrong number of positionnal arguments for macro &#39;mark&#39;, 1 instead of 0.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 2                                                            │
@@ -8091,7 +8091,7 @@ $quill[1](a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;???&#39;, 1 instead of 0.       │
+│ → Wrong number of positionnal arguments for macro &#39;???&#39;, 1 instead of 0.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 3                                                            │
@@ -8140,7 +8140,7 @@ $Wings(paint, write)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;Wings&#39;, 2 instead of 3.     │
+│ → Wrong number of positionnal arguments for macro &#39;Wings&#39;, 2 instead of 3.     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ not enought macro args                                                      │
@@ -8214,7 +8214,7 @@ $mark()
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Stack overflow                                                               │
+│ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ stack overflow                                                              │
@@ -8297,7 +8297,7 @@ $Wings(paint, write, sing, dance)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;Wings&#39;, 4 instead of 3.     │
+│ → Wrong number of positionnal arguments for macro &#39;Wings&#39;, 4 instead of 3.     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ to many macro args                                                          │
@@ -8351,7 +8351,7 @@ $Wings(wing: red)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Unknow named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                             │
+│ → Unknow named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknow named parameter 1                                                    │
@@ -8408,7 +8408,7 @@ $Wings(nib: blue, wing: red)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Unknow named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                             │
+│ → Unknow named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknow named parameter 2                                                    │
@@ -9661,7 +9661,7 @@ $(t+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal parameters for meta-macro &#39;add&#39;, 0 instead       │
+│ → Wrong number of positionnal parameters for meta-macro &#39;add&#39;, 0 instead       │
 │   of 2.                                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -9718,7 +9718,7 @@ $(t+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal parameters for meta-macro &#39;add&#39;, 3 instead       │
+│ → Wrong number of positionnal parameters for meta-macro &#39;add&#39;, 3 instead       │
 │   of 2.                                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -9779,7 +9779,7 @@ $(t+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Meta-macro &#39;add&#39; dont support named parameters.                              │
+│ → Meta-macro &#39;add&#39; dont support named parameters.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 3                                               │
@@ -9840,7 +9840,7 @@ $t(1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;???&#39;, 1 instead of 2.       │
+│ → Wrong number of positionnal arguments for macro &#39;???&#39;, 1 instead of 2.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 4                                               │
@@ -9898,7 +9898,7 @@ $(t+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Stack overflow                                                               │
+│ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ stack overflow                                                              │
@@ -9965,7 +9965,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ &#39;mymacro&#39; isn&#39;t a valid meta-macro name.                                     │
+│ → &#39;mymacro&#39; isn&#39;t a valid meta-macro name.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknow meta                                                                 │
@@ -11074,7 +11074,7 @@ $table.join($t)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ invalid value (table) at index 1 in table for &#39;concat&#39;                       │
+│ → invalid value (table) at index 1 in table for &#39;concat&#39;                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Error                                                                       │
@@ -11737,11 +11737,11 @@ Item &quot;bonus&quot; is _(bird)_.
 <pre><code class="language-plume">
 let t = $table(wing: quill, write, song)
 for k, v in items(t)
-  $k -&gt; $v\n
+  $k → $v\n
 end
 ---\n
 for k, v in items(t, ?named)
-  $k -&gt; $v\n
+  $k → $v\n
 end
 
 </code></pre>
@@ -11782,7 +11782,7 @@ end
 <span class="bc-line-num">032</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">033</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; k</span>
 <span class="bc-line-num">034</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; k</span>
-<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">;  -&gt; </span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">;  → </span>
 <span class="bc-line-num">036</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">037</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">038</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span>
@@ -11816,7 +11816,7 @@ end
 <span class="bc-line-num">066</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">067</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; k</span>
 <span class="bc-line-num">068</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; k</span>
-<span class="bc-line-num">069</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">;  -&gt; </span>
+<span class="bc-line-num">069</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">;  → </span>
 <span class="bc-line-num">070</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">071</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">072</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span>
@@ -11829,11 +11829,11 @@ end
 </div>
 <h4>Output</h4>
 <pre><code>
-wing -&gt; quill
-1 -&gt; write
-2 -&gt; song
+wing → quill
+1 → write
+2 → song
 ---
-wing -&gt; quill
+wing → quill
 </code></pre>
 </div>
 </details>
@@ -12017,7 +12017,7 @@ let t = @table
 end
 
 for k, v in items(t)
-  $k -&gt; $v\n
+  $k → $v\n
 end
 
 </code></pre>
@@ -12058,7 +12058,7 @@ end
 <span class="bc-line-num">032</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">033</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; k</span>
 <span class="bc-line-num">034</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; k</span>
-<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">;  -&gt; </span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">;  → </span>
 <span class="bc-line-num">036</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">037</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">038</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span>
@@ -12071,9 +12071,9 @@ end
 </div>
 <h4>Output</h4>
 <pre><code>
-1 -&gt; Wing
-Write -&gt; Quill
-2 -&gt; Song
+1 → Wing
+Write → Quill
+2 → Song
 </code></pre>
 </div>
 </details>
@@ -12091,7 +12091,7 @@ let t = $table()
 set t[1] = Wing
 
 for k, v in items(t)
-  $k -&gt; $v\n
+  $k → $v\n
 end
 
 </code></pre>
@@ -12131,7 +12131,7 @@ end
 <span class="bc-line-num">031</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">032</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; k</span>
 <span class="bc-line-num">033</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; k</span>
-<span class="bc-line-num">034</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">;  -&gt; </span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">;  → </span>
 <span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">036</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span>
@@ -12144,7 +12144,7 @@ end
 </div>
 <h4>Output</h4>
 <pre><code>
-1 -&gt; Wing
+1 → Wing
 </code></pre>
 </div>
 </details>
@@ -13211,7 +13211,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;seq&#39;, 0 instead of          │
+│ → Wrong number of positionnal arguments for macro &#39;seq&#39;, 0 instead of          │
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -13272,7 +13272,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;seq&#39;, 4 instead of          │
+│ → Wrong number of positionnal arguments for macro &#39;seq&#39;, 4 instead of          │
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -14598,7 +14598,7 @@ $()
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Evaluation cannot be empty.                                                  │
+│ → Evaluation cannot be empty.                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ empty eval 1                                                                │
@@ -14631,7 +14631,7 @@ $(
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Evaluation cannot be empty.                                                  │
+│ → Evaluation cannot be empty.                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ empty eval 2                                                                │
@@ -14665,7 +14665,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing parameter name.                                                      │
+│ → Missing parameter name.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ empty macro parameter                                                       │
@@ -14699,7 +14699,7 @@ set x
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Using set without giving it a value.                                         │
+│ → Using set without giving it a value.                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ empty set                                                                   │
@@ -14734,7 +14734,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Malformed code.                                                              │
+│ → Malformed code.                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing @table                                                              │
@@ -14769,7 +14769,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing condition.                                                           │
+│ → Missing condition.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing condition 1                                                         │
@@ -14805,7 +14805,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing condition.                                                           │
+│ → Missing condition.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing condition 2                                                         │
@@ -14840,7 +14840,7 @@ if true
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing end.                                                                 │
+│ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing end 1                                                               │
@@ -14874,7 +14874,7 @@ else
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing end.                                                                 │
+│ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing end 2                                                               │
@@ -14908,7 +14908,7 @@ while false
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing end.                                                                 │
+│ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing end 3                                                               │
@@ -14941,7 +14941,7 @@ for x in t
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing end.                                                                 │
+│ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing end 4                                                               │
@@ -14975,7 +14975,7 @@ while false
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing end.                                                                 │
+│ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing end 5                                                               │
@@ -15010,7 +15010,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing iterator.                                                            │
+│ → Missing iterator.                                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing iterator                                                            │
@@ -15045,7 +15045,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing iterator.                                                            │
+│ → Missing iterator.                                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing loop identifier                                                     │
@@ -15080,7 +15080,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing parameters list.                                                     │
+│ → Missing parameters list.                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing param list                                                          │
@@ -15114,7 +15114,7 @@ $(1
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Missing &#39;)&#39; to close evaluation.                                             │
+│ → Missing &#39;)&#39; to close evaluation.                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ non closed eval                                                             │
@@ -16210,7 +16210,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
+│ → Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ ref error                                                                   │
@@ -17640,7 +17640,7 @@ use tests/plume/toimport/lib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable &#39;nib&#39; from lib &#39;tests/plume/toimport/lib&#39;, it         │
+│ → Cannot define variable &#39;nib&#39; from lib &#39;tests/plume/toimport/lib&#39;, it         │
 │   already exists in the current file scope.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -18051,7 +18051,7 @@ use idontexists
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot open &#39;idontexists&#39;.                                                   │
+│ → Cannot open &#39;idontexists&#39;.                                                   │
 │   Paths tried:                                                                 │
 │     main/idontexists.plume                                                     │
 │     main/idontexists/init.plume                                                │
@@ -18207,7 +18207,7 @@ use tests/plume/toimport/badlib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot convert the string value &#39;a&#39; to a number.                             │
+│ → Cannot convert the string value &#39;a&#39; to a number.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ tests/plume/toimport/badlib.plume                                           │
@@ -18250,7 +18250,7 @@ use tests/plume/toimport/text
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ To be used, &#39;tests/plume/toimport/text&#39; must return a table. Currently,      │
+│ → To be used, &#39;tests/plume/toimport/text&#39; must return a table. Currently,      │
 │   it returns a string.                                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -18284,7 +18284,7 @@ let if = 5
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Cannot use &#39;if&#39; as identifier.                                               │
+│ → Cannot use &#39;if&#39; as identifier.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ wrong indentifier                                                           │
@@ -18820,7 +18820,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable &#39;wings&#39;, it already exists in the current scope.      │
+│ → Cannot define variable &#39;wings&#39;, it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #138                                                                        │
@@ -18857,7 +18857,7 @@ $(x+a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use variable &#39;a&#39;, it isn&#39;t defined in the current scope.              │
+│ → Cannot use variable &#39;a&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #141                                                                        │
@@ -19148,7 +19148,7 @@ $x(1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro &#39;x&#39;, 1 instead of 0.         │
+│ → Wrong number of positionnal arguments for macro &#39;x&#39;, 1 instead of 0.         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #148                                                                        │
@@ -19777,7 +19777,7 @@ let x = 5
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
+│ → Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #239                                                                        │
@@ -20148,7 +20148,7 @@ let t = $table(wing, nib)
 run $table.remove($t)
 
 for k, v in items(t)
-    $k -&gt; $v\n
+    $k → $v\n
 end
 
 </code></pre>
@@ -20194,7 +20194,7 @@ end
 <span class="bc-line-num">037</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">038</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; k</span>
 <span class="bc-line-num">039</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; k</span>
-<span class="bc-line-num">040</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">;  -&gt; </span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">;  → </span>
 <span class="bc-line-num">041</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">042</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; v</span>
 <span class="bc-line-num">043</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span>
@@ -20207,7 +20207,7 @@ end
 </div>
 <h4>Output</h4>
 <pre><code>
-1 -&gt; wing
+1 → wing
 </code></pre>
 </div>
 </details>

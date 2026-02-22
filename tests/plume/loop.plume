@@ -86,7 +86,7 @@ break
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use break keyword outside a loop.                                     │
+│ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ break outside loop                                                          │
@@ -105,7 +105,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use break keyword outside a loop.                                     │
+│ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ break cutted from loops by macro                                            │
@@ -122,7 +122,7 @@ continue
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use continue keyword outside a loop.                                  │
+│ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ continue outside loop                                                       │
@@ -142,7 +142,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use continue keyword outside a loop.                                  │
+│ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ continue cutted from loops by macro                                         │

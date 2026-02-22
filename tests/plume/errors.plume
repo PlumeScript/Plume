@@ -3,7 +3,7 @@ set x = Wings
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable 'x', it isn't defined in the current scope.              │
+│ → Cannot set variable 'x', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ set unknow variable                                                         │
@@ -18,7 +18,7 @@ let x = $y
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use variable 'y', it isn't defined in the current scope.              │
+│ → Cannot use variable 'y', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ use unknow variable                                                         │
@@ -34,7 +34,7 @@ set x = Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable 'x', it is a constant.                                   │
+│ → Cannot set variable 'x', it is a constant.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ set constant variable                                                       │
@@ -50,7 +50,7 @@ let const x
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define an empty constant variable.                                    │
+│ → Cannot define an empty constant variable.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ let empty const                                                             │
@@ -66,7 +66,7 @@ let x = Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable 'x', it already exists in the current scope.          │
+│ → Cannot define variable 'x', it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ define twice                                                                │
@@ -85,7 +85,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable 'wings', it already exists in the current scope.      │
+│ → Cannot define variable 'wings', it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ define macro twice                                                          │
@@ -103,7 +103,7 @@ $(x+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot convert the string value 'Wings' to a number.                         │
+│ → Cannot convert the string value 'Wings' to a number.                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Add string                                                                  │
@@ -120,7 +120,7 @@ $(x+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot do comparison or arithmetic with a table value.                       │
+│ → Cannot do comparison or arithmetic with a table value.                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Add table                                                                   │
@@ -137,7 +137,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot iterate over a non-table 'number' value.                              │
+│ → Cannot iterate over a non-table 'number' value.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Iterate over non table                                                      │
@@ -154,7 +154,7 @@ $t[empty]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot use empty as key.                                                     │
+│ → Cannot use empty as key.                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Empty key                                                                   │
@@ -171,7 +171,7 @@ $t.nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Unregistered key 'nib'.                                                      │
+│ → Unregistered key 'nib'.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (string)                                                        │
@@ -188,7 +188,7 @@ $t[3]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Invalid index '3'.                                                           │
+│ → Invalid index '3'.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (int)                                                           │
@@ -205,7 +205,7 @@ $t[3]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot index a non-table 'number' value.                                     │
+│ → Cannot index a non-table 'number' value.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Index non-table 1                                                           │
@@ -222,7 +222,7 @@ let t = 1
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot expand a non-table 'number' value.                                    │
+│ → Cannot expand a non-table 'number' value.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Expand non-table 2                                                          │
@@ -241,7 +241,7 @@ $wing $nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot concat a 'table' value.                                               │
+│ → Cannot concat a 'table' value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Concat error 1                                                              │
@@ -263,7 +263,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot concat a 'table' value.                                               │
+│ → Cannot concat a 'table' value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Concat error 2                                                              │
@@ -281,7 +281,7 @@ Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is TABLE, but it contains an     │
+│ → Mixed block: the expected type of the block is TABLE, but it contains an     │
 │   element TEXT.                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -299,7 +299,7 @@ Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -319,7 +319,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -340,7 +340,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is VALUE, but it contains an     │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -366,7 +366,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: the expected type of the block is TEXT, but it contains an      │
+│ → Mixed block: the expected type of the block is TEXT, but it contains an      │
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -415,7 +415,7 @@ $wing()
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro 'paint', 1 instead of 0.     │
+│ → Wrong number of positionnal arguments for macro 'paint', 1 instead of 0.     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ callstack                                                                   │

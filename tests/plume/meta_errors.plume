@@ -9,7 +9,7 @@ $(t+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal parameters for meta-macro 'add', 0 instead       │
+│ → Wrong number of positionnal parameters for meta-macro 'add', 0 instead       │
 │   of 2.                                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -32,7 +32,7 @@ $(t+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal parameters for meta-macro 'add', 3 instead       │
+│ → Wrong number of positionnal parameters for meta-macro 'add', 3 instead       │
 │   of 2.                                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -55,7 +55,7 @@ $(t+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Meta-macro 'add' dont support named parameters.                              │
+│ → Meta-macro 'add' dont support named parameters.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 3                                               │
@@ -77,7 +77,7 @@ $t(1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro '???', 1 instead of 2.       │
+│ → Wrong number of positionnal arguments for macro '???', 1 instead of 2.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 4                                               │
@@ -96,7 +96,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ 'mymacro' isn't a valid meta-macro name.                                     │
+│ → 'mymacro' isn't a valid meta-macro name.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknow meta                                                                 │
@@ -118,7 +118,7 @@ $(t+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Stack overflow                                                               │
+│ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ stack overflow                                                              │

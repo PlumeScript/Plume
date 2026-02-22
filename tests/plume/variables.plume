@@ -107,7 +107,7 @@ let if = 5
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Cannot use 'if' as identifier.                                               │
+│ → Cannot use 'if' as identifier.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ wrong indentifier                                                           │
@@ -122,7 +122,7 @@ use idontexists
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot open 'idontexists'.                                                   │
+│ → Cannot open 'idontexists'.                                                   │
 │   Paths tried:                                                                 │
 │     main/idontexists.plume                                                     │
 │     main/idontexists/init.plume                                                │
@@ -142,7 +142,7 @@ use tests/plume/toimport/badlib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Cannot convert the string value 'a' to a number.                             │
+│ → Cannot convert the string value 'a' to a number.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ tests/plume/toimport/badlib.plume                                           │
@@ -164,7 +164,7 @@ use tests/plume/toimport/text
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ To be used, 'tests/plume/toimport/text' must return a table. Currently,      │
+│ → To be used, 'tests/plume/toimport/text' must return a table. Currently,      │
 │   it returns a string.                                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -181,7 +181,7 @@ use tests/plume/toimport/lib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot define variable 'nib' from lib 'tests/plume/toimport/lib', it         │
+│ → Cannot define variable 'nib' from lib 'tests/plume/toimport/lib', it         │
 │   already exists in the current file scope.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │

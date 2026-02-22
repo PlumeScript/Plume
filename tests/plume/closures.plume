@@ -193,7 +193,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot use variable 'x', it isn't defined in the current scope. 'x'          │
+│ → Cannot use variable 'x', it isn't defined in the current scope. 'x'          │
 │   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
 │   captured by macros.                                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -217,7 +217,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ ➡ Cannot set variable 'x', it isn't defined in the current scope. 'x'          │
+│ → Cannot set variable 'x', it isn't defined in the current scope. 'x'          │
 │   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
 │   captured by macros.                                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤

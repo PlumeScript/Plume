@@ -195,7 +195,7 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(var.ref, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.key))
 				context.registerOP(nil, plume.ops.SWITCH)
 				if var.default then
-					context.registerOP(nil, plume.ops.TABLE_INDEX, 1, 0) -- 1 -> safemode
+					context.registerOP(nil, plume.ops.TABLE_INDEX, 1, 0) -- 1 → safemode
 					local defUid = context.getUID()
 					context.registerGoto(node, "default_end_"..defUid, "JUMP_IF_PEEK")
 					context.registerOP(nil, plume.ops.STORE_VOID)

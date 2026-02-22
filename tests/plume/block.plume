@@ -114,7 +114,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   TABLE, but this else body is of type TEXT.                                   │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -137,7 +137,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   VALUE, but this else body is of type TABLE.                                  │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -162,7 +162,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   TEXT, but this else body is of type TABLE.                                   │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
@@ -187,7 +187,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ ➡ Mixed block: The previous branches of this if statement were of type         │
+│ → Mixed block: The previous branches of this if statement were of type         │
 │   VALUE, but this elseif body is of type TABLE.                                │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤

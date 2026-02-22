@@ -321,7 +321,7 @@ return function (plume)
 		if ip>0 then
 			sinstr = string.format("%s %i %i", plume.debug.invTable(plume.ops)[op], arg1, arg2)
 		end
-		local header = string.format("Step %i, instr %i->%i: %s", tic, ip, jump, sinstr)
+		local header = string.format("Step %i, instr %i→%i: %s", tic, ip, jump, sinstr)
 
 		local s_ms = {"main stack: "}
 		local s_vs = {"var  stack: "}

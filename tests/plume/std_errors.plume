@@ -5,7 +5,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro 'seq', 0 instead of          │
+│ → Wrong number of positionnal arguments for macro 'seq', 0 instead of          │
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -24,7 +24,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ ➡ Wrong number of positionnal arguments for macro 'seq', 4 instead of          │
+│ → Wrong number of positionnal arguments for macro 'seq', 4 instead of          │
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │

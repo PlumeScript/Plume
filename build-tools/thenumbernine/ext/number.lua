@@ -127,5 +127,5 @@ function number.bin(x, ...) return number.tostring(x, 2, ...) end
 function number.oct(x, ...) return number.tostring(x, 8, ...) end
 function number.hex(x, ...) return number.tostring(x, 16, ...) end
 
--- so the lookup goes: primitive number -> number -> math
+-- so the lookup goes: primitive number → number → math
 return number
