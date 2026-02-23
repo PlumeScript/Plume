@@ -111,8 +111,8 @@ return function(plume)
 
 	function plume.error.getNodeLines(node)
 		local code      = node.code
-		local bpos      = node.bpos
-		local epos      = node.epos
+		local bpos      = node.errorbpos or node.bpos
+		local epos      = node.errorepos or node.epos
 		local sourceLen = epos - bpos + 1
 
 		local currentPos = 1

@@ -198,7 +198,7 @@ set x
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test empty macro parameter
+/// Test empty macro parameter 1
 macro wings(nib,,quill)
 end
 /// Error
@@ -207,9 +207,26 @@ end
 │ → Missing parameter name.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ empty macro parameter                                                       │
+│  ↳ empty macro parameter 1                                                     │
 │    1 │macro wings(nib,,quill)                                                  │
-│      │                                                                         │
+│      │               ^                                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test empty macro parameter 2
+macro wings(nib,     ,quill)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing parameter name.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ empty macro parameter 2                                                     │
+│    1 │macro wings(nib,     ,quill)                                             │
+│      │                ^^^^^                                                    │
 │    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯

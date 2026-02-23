@@ -308,7 +308,7 @@ return function (plume)
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"("
-                    * param^-1 * (os * P"," * os * (param + E(plume.error.missingParamError, -param)))^0
+                    * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParamError, os-param)))^0
                 * P")"
             )
         local paramlistM = paramlist + E(plume.error.missingParamListError)

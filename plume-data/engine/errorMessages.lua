@@ -181,6 +181,9 @@ return function(plume)
 
 	function plume.error.missingParamError(node)
 		local message = "Missing parameter name."
+		if node.bpos == node.epos+1 then
+			node.errorbpos = node.bpos-1
+		end
 		throwSyntaxError(node, message)
 	end
 
