@@ -230,10 +230,14 @@ return function (plume, context)
 
 	function context.getAllVisiblesVariables()
 		local result = {}
+		local passMacroScope = false
     	for i=#context.scopes, 1, -1 do
+    		if i == context.roots[#context.roots]-1 then
+				passMacroScope = true
+			end
 			local current = context.scopes[i]
 			for k, v in pairs(current) do
-				if not tonumber(k) and not result[k] then
+				if not tonumber(k) and not result[k] and not v.isConst and (not passMacroScope or not v.isRef) then
 					result[k] = v
 				end
 			end
