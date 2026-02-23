@@ -84,7 +84,7 @@ return function(plume)
 	        end
 	    end
 	    for _, token in ipairs(tokensB) do
-	        if #token > minLen and significant[token] then
+	        if #token >= minLen and significant[token] then
 	            return true
 	        end
 	    end
@@ -95,7 +95,7 @@ return function(plume)
 		if #s <= 3 or #t <= 3 then
 			return math.huge
 		end
-		
+
 	    local dChar = damerauLevenshtein(toChars(s), toChars(t))
 	    
 	    local dSnake = math.huge
