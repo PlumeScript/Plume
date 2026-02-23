@@ -124,7 +124,7 @@ return function (plume, context)
 				
 				if scopeDepth > 0 then
 					if variable.isRef then
-						return nil, true
+						return nil, variable.node
 					elseif variable.isContext then
 						return {isContext = true}
 					else
@@ -133,11 +133,12 @@ return function (plume, context)
 				else
 					result = {
 						frameOffset = #context.scopes-i,
-						offset    = variable.offset,
-						isConst   = variable.isConst,
-						isContext = variable.isContext,
-						isRef     = variable.isRef,
-						ref       = variable.ref
+						offset      = variable.offset,
+						isConst     = variable.isConst,
+						isContext   = variable.isContext,
+						isRef       = variable.isRef,
+						ref         = variable.ref,
+						node        = variable.node
 					}
 				end
 
@@ -177,6 +178,7 @@ return function (plume, context)
 	end
 
 	--- Register a variable by its name in the local scope
+	--- @param node node Emitting node
 	--- @param name string The name of the variable.
 	--- @param isConst boolean Flag to prevent future edits.
 	--- @param isParam boolean True if it should be initialized by the calling script.
@@ -185,12 +187,12 @@ return function (plume, context)
 	--- @param ref string If isRef, name of the key ref
 	--- @param isContext booelan
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
-	function context.registerVariable(name, isConst, isParam, source, isRef, ref, isContext)
+	function context.registerVariable(node, name, isConst, isParam, source, isRef, ref, isContext)
 		local scope
 		scope = context.getCurrentScope()
 
 		if scope[name] then
-			return nil
+			return nil, scope[name].node
 		end
 		
 		-- Why count var by inserting empty table?
@@ -198,12 +200,13 @@ return function (plume, context)
 		table.insert(scope, {scope[name]}) 
 
 		scope[name] = {
-			offset = #scope, -- Used by opcodes GET_LOCAL / SET_LOCAL to use the correct frame
-			isConst = isConst,
-			isRef = isRef,
-			source = source,
+			offset    = #scope, -- Used by opcodes GET_LOCAL / SET_LOCAL to use the correct frame
+			isConst   = isConst,
+			isRef     = isRef,
+			source    = source,
 			isContext = isContext,
-			ref = ref
+			node      = node,
+			ref       = ref
 		}
 
 		if isRef then

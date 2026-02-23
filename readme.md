@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-1.0.beta.6-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Version](https://img.shields.io/badge/version-1.0.beta.7-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -94,7 +94,7 @@ $complex(quill, wing, optn: bird, ?flag) // in call, ?flag is a sugar for flag: 
 end
 
 @complex(quill, optn: bird, ?flag)
-    wing // content, if text, is send as last positionnal argument
+    wing // content, if text, is send as last positional argument
 end
 ```
 

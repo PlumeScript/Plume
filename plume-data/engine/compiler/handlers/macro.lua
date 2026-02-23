@@ -45,13 +45,14 @@ return function (plume, context, nodeHandlerTable)
 		local macroOffset  = context.registerConstant(macroObj)
 		macroObj.uid = uid
 		macroObj.upvalueMap = {}
+		macroObj.node = node
 		table.insert(context.macros, macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
 
 		if macroName then
-			local variable = context.registerVariable(macroName)
+			local variable = context.registerVariable(nil, macroName)
 			if not variable then
 				plume.error.letExistingVariableError(node, macroName, context.getNameSource(macroName))
 			end
@@ -75,10 +76,11 @@ return function (plume, context, nodeHandlerTable)
 			--- and evaluate default value when optionnal args are empty.
 			-------------------------------------------------------------
 			for i, paramNode in ipairs(paramList.children) do
-				local paramName = plume.ast.get(paramNode, "IDENTIFIER", 1, 2).content
-				local variadic  = plume.ast.get(paramNode, "VARIADIC")
-				local paramBody = plume.ast.get(paramNode, "BODY")
-				local param = context.registerVariable(paramName)
+				local paramNameNode = plume.ast.get(paramNode, "IDENTIFIER", 1, 2)
+				paramName           = paramNameNode.content
+				local variadic      = plume.ast.get(paramNode, "VARIADIC")
+				local paramBody     = plume.ast.get(paramNode, "BODY")
+				local param         = context.registerVariable(paramNameNode, paramName)
 
 				if paramBody then
 					if macroObj.variadicOffset then
@@ -96,10 +98,10 @@ return function (plume, context, nodeHandlerTable)
 					macroObj.variadicOffset = param.offset
 				else
 					if macroObj.namedParamCount > 0 then
-						plume.error.cannotAddPositionnalAfterNamed(paramNode)
+						plume.error.cannotAddPositionalAfterNamed(paramNode)
 					end
 					if macroObj.variadicOffset then
-						plume.error.cannotAddPositionnalAfterVariadic(paramNode)
+						plume.error.cannotAddPositionalAfterVariadic(paramNode)
 					end
 					macroObj.positionalParamCount = macroObj.positionalParamCount+1
 				end
@@ -109,7 +111,7 @@ return function (plume, context, nodeHandlerTable)
 			-- is a reference to this table.
 			-- Else is empty
 			if not context.getVariable("self", true) then
-				local param = context.registerVariable("self")
+				local param = context.registerVariable(nil, "self")
 				macroObj.namedParamCount = macroObj.namedParamCount+1
 				macroObj.namedParamOffset.self = param.offset
 			end

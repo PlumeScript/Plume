@@ -14,14 +14,19 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-    local function append (args)
+    
+
+    -----------------------
+    -- WILL BE MOVED IN 1.0
+    -----------------------
+    plume.temp = {}
+    function plume.temp.append (args)
         local t = args.table[1]
         local value = args.table[2]
         table.insert(t.table, value)
         table.insert(t.keys, #t.table)
     end
-
-    local function remove (args)
+    function plume.temp.remove (args)
         local t = args.table[1]
         local index = args.table[2]
 
@@ -29,26 +34,26 @@ return function (plume)
 
         return table.remove(t.table, index)
     end
-
-    local function join (args)
+    function plume.temp.join (args)
         local sep = args.table.sep
         if sep == plume.obj.empty then
             sep = ""
         end
         return table.concat(args.table, sep)
     end
+    -----------------------
 
     plume.std = {}
     require 'plume-data/engine/std/lua' (plume)
     ---------------------------------
     -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
     ---------------------------------
-    plume.stdLua.remove = plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, remove)
-    plume.stdLua.append = plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, append)
-    plume.stdLua.join = plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, join)
+    plume.stdLua.remove = plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, plume.temp.remove)
+    plume.stdLua.append = plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, plume.temp.append)
+    plume.stdLua.join = plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, plume.temp.join)
     ---------------------------------
     for name, f in pairs(plume.stdLua) do
-        plume.std[name] = plume.obj.luaFunction(name, f)
+        plume.std[name] = plume.obj.luaMacro(name, f)
     end
     require 'plume-data/engine/std/vm' (plume)
     for name, obj in pairs(plume.stdVM) do
@@ -65,8 +70,8 @@ return function (plume)
     plume.std.tostring = {} -- hardcoded
     ---------------------------------
 
-    local function importLuaFunction(name, f)
-        return plume.obj.luaFunction(name, function(args)
+    local function importLuaMacro(name, f)
+        return plume.obj.luaMacro(name, function(args)
             return (f(unpack(args.table)))
         end)
     end
@@ -79,7 +84,7 @@ return function (plume)
             if type(v) == "table" then
                 v = importLuaTable(k, v)
             elseif type(v) == "function" then
-                v = importLuaFunction(k, v)
+                v = importLuaMacro(k, v)
             end
             result.table[k] = v
         end
@@ -90,14 +95,14 @@ return function (plume)
     plume.std.lua = plume.obj.table(0, 0)
 
     for name in ("assert error"):gmatch("%S+") do
-        plume.std.lua.table[name] = importLuaFunction(name, _G[name])
+        plume.std.lua.table[name] = importLuaMacro(name, _G[name])
     end
 
     for name in ("string math os io"):gmatch("%S+") do
         plume.std.lua.table[name] = importLuaTable(name, _G[name])
     end
 
-    plume.std.lua.table.require =  plume.obj.luaFunction("require", function(args, runtime, fileID)
+    plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
         local firstFilename = runtime.files[1].name
         local lastFilename  = runtime.files[fileID].name
 

@@ -79,9 +79,9 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
         variadicTable = vm.plume.obj.table(max, max / 2)
     end
 
-    local tomanyPositionnalCounter = 0
+    local tomanyPositionalCounter = 0
     local capturedCount = 0
-    local unknowNamed
+    local unknownNamed
 
     while bufferOffset <= mainStackTop do
         local tag = vm.tagStack[bufferOffset+1]
@@ -93,14 +93,14 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                 _STACK_SET_FRAMED(vm.variableStack, argsOffset-1, 0, value)
                 capturedCount = capturedCount+1
             elseif variadicTable then
-                -- Surplus -> Insert into variadic table
+                -- Surplus → Insert into variadic table
                 local key = #variadicTable.table+1
                 if not variadicTable.table[key] then
                     table.insert(variadicTable.keys, key)
                 end
                 variadicTable.table[key] = value
             else
-                tomanyPositionnalCounter = tomanyPositionnalCounter+1
+                tomanyPositionalCounter = tomanyPositionalCounter+1
             end
             argsOffset = argsOffset + 1
 
@@ -118,7 +118,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                     _ERROR(vm, vm.plume.error.cannotUseMetaKey)
                 end
             else
-                -- Unknown key -> Insert into variadic table
+                -- Unknown key → Insert into variadic table
                 if variadicTable then
                     if tag == "key" then
                         if not variadicTable.table[key] then
@@ -126,15 +126,10 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                         end
                         variadicTable.table[key] = value
                     elseif tag == "metakey" then
-                        local success, err = _META_CHECK (key, value)
-                        if success then
-                            variadicTable.meta.table[key] = value
-                        else
-                            _ERROR(vm, err)
-                        end
+                        variadicTable.meta.table[key] = value
                     end
                 else
-                    unknowNamed = key
+                    unknownNamed = key
                     break
                 end
             end
@@ -144,7 +139,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
         bufferOffset = bufferOffset + 1
     end
 
-    return variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+    return variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
 end
 
 --- @opcode

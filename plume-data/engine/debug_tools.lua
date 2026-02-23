@@ -231,7 +231,7 @@ return function (plume)
 			local content = ""
 			local node = chunk.mapping[ip]
 			if node then
-				content = plume.error.getLineInfos(node).content
+				content = node.code:sub(node.bpos, node.epos)
 				if content:match('\n') then
 					content = content:match('^[^\n]*').."[...]"
 				end
@@ -264,12 +264,9 @@ return function (plume)
 			local node = runtime.mapping[ip]
 			local content = ""
 			if node and node.code then
-				local info = plume.error.getLineInfos(node)
-				if info then
-					content = info.content
-					if content:match('\n') then
-						content = content:match('^[^\n]*').."[...]"
-					end
+				content = node.code:sub(node.bpos, node.epos)
+				if content:match('\n') then
+					content = content:match('^[^\n]*').."[...]"
 				end
 			end
 			
@@ -321,7 +318,7 @@ return function (plume)
 		if ip>0 then
 			sinstr = string.format("%s %i %i", plume.debug.invTable(plume.ops)[op], arg1, arg2)
 		end
-		local header = string.format("Step %i, instr %i->%i: %s", tic, ip, jump, sinstr)
+		local header = string.format("Step %i, instr %i→%i: %s", tic, ip, jump, sinstr)
 
 		local s_ms = {"main stack: "}
 		local s_vs = {"var  stack: "}

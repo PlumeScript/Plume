@@ -449,7 +449,7 @@ The following infix methods are added to functions:
 
 `f:bind_n(n, arg1[, arg2, ..., argN])` = Same as above, but start the binding at argument index 'n'.
 
-`f:uncurry(n)` = Uncurry's a function 'n' functions deep.  (a1 -> (a2 -> ... (an -> b))) -> (a1, a2, ..., an -> b).
+`f:uncurry(n)` = Uncurry's a function 'n' functions deep.  (a1 → (a2 → ... (an → b))) → (a1, a2, ..., an → b).
 
 `f:nargs(n)` = Returns a function that is a duplicate of 'f' but only accepts 'n' arguments.  Very useful with passing builtin functions as callbacks to `table.map` when you don't want extra return values to mess up your resulting table's keys..
 

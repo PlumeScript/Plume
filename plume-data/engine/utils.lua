@@ -64,6 +64,11 @@ return function (plume)
 
 	plume.ops = makeNames(plume.ops_names)
 
+	plume.validMetaNames = {}
+	for name in ("add addr addl mul mull mulr div divr divl sub subr subl mod modr modl pow powl powr eq lt minus call getindex setindex iter next tostring"):gmatch("%S+") do
+        plume.validMetaNames[name] = true
+    end
+
 	-- AST
 	plume.ast = {}
 	function plume.ast.browse(node, f, mindeep, maxdeep, parents)
@@ -253,7 +258,7 @@ return function (plume)
 	end
 
 	function plume.checkIdentifier(identifier)
-		for kw in ('if then elseif else while for do macro let set const param use raw run'):gmatch('%S+') do
+		for kw in ('if then elseif else while for do macro let set const param use raw run ref with'):gmatch('%S+') do
 			if identifier == kw then
 				return false
 			end

@@ -20,18 +20,19 @@ If not, see <https://www.gnu.org/licenses/>.
 --! inline
 function _CHECK_NUMBER_META (vm, x)
     local tx = _GET_TYPE(vm, x)
+    local nx
     if tx  == "string" then
-        x = tonumber(x)
-        if not x then
-            return x, "Cannot convert the string value to a number."
+        if not tonumber(x) then
+            return nil, string.format("Cannot convert the string value '%s' to a number.", vm.plume.repr(x))
         end
+        x = tonumber(x)
     elseif tx  ~= "number" then
         if tx  == "table" and x.meta.table.tonumber then
             local meta = x.meta.table.tonumber
             local params = {}
             return _CALL (vm, meta, params)
         else
-            return x, "Cannot do comparison or arithmetic with " .. tostring(tx) .. " value."
+            return x, string.format("Cannot do comparison or arithmetic with a %s value.", tx)
         end
     end
     return x

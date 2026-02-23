@@ -18,7 +18,7 @@ If not, see <https://www.gnu.org/licenses/>.
 --- @param name string Operator's name
 --- @param obj macro or closure
 --! inline
-function _META_CHECK (name, obj)
+function _META_CHECK (vm, name, obj)
 	local comopps = "add mul div sub mod pow"
 	local binopps = "eq lt"
 	local unopps = "minus"
@@ -46,14 +46,23 @@ function _META_CHECK (name, obj)
 
 	if expectedParamCount then
 		if macro.positionalParamCount ~= expectedParamCount then
-			return false, "Wrong number of positionnal parameters for meta-macro '" .. name .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+			return false, "Wrong number of positional parameters for meta-macro '" .. name .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
 		end
 		if macro.namedParamCount > 1 then -- 1 for self
 			return false, "Meta-macro '" .. name .. "' dont support named parameters."
 		end
-	elseif name ~= "call" and name ~= "tostring" and name ~= "getindex" and name ~= "setindex" and name ~= "next" and name ~= "iter" then
-		return false, "'" .. name .. "' isn't a valid meta-macro name."
+	else
+		return _META_CHECK_NAME(vm, name)
 	end
 
 	return true
+end
+
+--! inline
+function _META_CHECK_NAME(vm, name)
+	if vm.plume.validMetaNames[name] then
+		return true
+	else
+		return false, "'" .. name .. "' isn't a valid meta-macro name."
+	end
 end

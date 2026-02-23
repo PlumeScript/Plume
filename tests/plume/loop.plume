@@ -84,9 +84,16 @@ end
 /// Test break outside loop
 break
 /// Error
-Compilation error: Cannot use break keyword outside a loop.
-File 'break outside loop', line 1: break
-                                   ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword outside a loop.                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ break outside loop                                                          │
+│    1 │break                                                                    │
+│      │^^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test break cutted from loops by macro
@@ -96,17 +103,33 @@ for i in seq(1, 10)
   end
 end
 /// Error
-Compilation error: Cannot use break keyword outside a loop.
-File 'break cutted from loops by macro', line 3: break
-                                                 ^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword outside a loop.                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ break cutted from loops by macro                                            │
+│    2 │let m = macro()                                                          │
+│    3 │  break                                                                  │
+│      │  ^^^^^                                                                  │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test continue outside loop
 continue
 /// Error
-Compilation error: Cannot use continue keyword outside a loop.
-File 'continue outside loop', line 1: continue
-                                      ^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword outside a loop.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ continue outside loop                                                       │
+│    1 │continue                                                                 │
+│      │^^^^^^^^                                                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 
@@ -117,9 +140,18 @@ for i in seq(1, 10)
   end
 end
 /// Error
-Compilation error: Cannot use continue keyword outside a loop.
-File 'continue cutted from loops by macro', line 3: continue
-                                                    ^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword outside a loop.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ continue cutted from loops by macro                                         │
+│    2 │let m = macro()                                                          │
+│    3 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test iterator (next)

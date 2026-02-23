@@ -272,7 +272,7 @@ return function (plume)
         local evalBase = Ct("EVAL", (
                   P"("
                     * (expr + E(plume.error.emptyExprError))
-                * (P")" + E(plume.error.missingClosingBraveError))
+                * (P")" + E(plume.error.missingClosingBracketError))
                 + idn
             ) * V"evalOpperator"^0
         )
@@ -308,7 +308,7 @@ return function (plume)
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"("
-                    * param^-1 * (os * P"," * os * (param + E(plume.error.missingParamError, -param)))^0
+                    * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParamError, os-param)))^0
                 * P")"
             )
         local paramlistM = paramlist + E(plume.error.missingParamListError)
@@ -357,7 +357,7 @@ return function (plume)
         local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar)^0)
         
         local let = Ct("LET", K"let" * statconst * s * letvarlist * (
-                                  os * P"=" * lbody
+                                  os * E(plume.error.letCompoundError, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody
                                 + s  * C("FROM", K"from") * s * lbody
                             )^-1)
 

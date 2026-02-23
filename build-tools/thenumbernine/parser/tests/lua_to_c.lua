@@ -295,12 +295,12 @@ int main(int argc, char** argv) {
 	_G["package"] = Object::Map();
 	_G["package"]["loaded"] = Object::Map();
 
-	error = _G["error"] = [](Object x) -> Object {
+	error = _G["error"] = [](Object x) → Object {
 		throw std::runtime_error((std::string)x);
 	};
 
 	//hmm, 'type' might be used as a global later, so i might have to remove the 'using namespace' and instead replace all Object's with Object::Object's
-	::type = _G["type"] = [](Object x) -> Object {
+	::type = _G["type"] = [](Object x) → Object {
 		if (x.is_nil()) {
 			return "nil";
 		} else if (x.is_string()) {
@@ -322,7 +322,7 @@ int main(int argc, char** argv) {
 
 	table = _G["table"] = Object::Map();
 
-	table["concat"] = [](VarArg arg) -> Object {
+	table["concat"] = [](VarArg arg) → Object {
 		if (!arg[1].is_table()) error("expected a table");
 	//TODO FINISHME
 		// list, sep, i
@@ -336,7 +336,7 @@ int main(int argc, char** argv) {
 		std::cout << std::endl;
 	};
 
-	require = _G["require"] = [&](std::string const & s) -> Object {
+	require = _G["require"] = [&](std::string const & s) → Object {
 		Object x = _G["package"]["loaded"][s];
 		if (x != nil) return x;
 
@@ -363,7 +363,7 @@ for _,req in ipairs(requires) do
 		print("// package.searchpath couldn't find file")
 	else
 		print([[
-	_G["cppmodules"]["]]..req..[["] = []() -> Object {
+	_G["cppmodules"]["]]..req..[["] = []() → Object {
 ]])
 		print(addtab(luaFileToCpp(fn)))
 

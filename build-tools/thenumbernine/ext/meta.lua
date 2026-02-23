@@ -160,7 +160,7 @@ local functionMeta = {
 		-- Takes a function and a number of arguments,
 		-- returns a function that applies them individually,
 		-- first to the function, then to each function returned
-		-- (a1 -> (a2 -> ... (an -> b))) -> (a1, a2, ..., an -> b)
+		-- (a1 → (a2 → ... (an → b))) → (a1, a2, ..., an → b)
 		uncurry = function(f, n)
 			return function(...)
 				local s = f

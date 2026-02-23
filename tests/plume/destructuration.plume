@@ -7,7 +7,7 @@ $b
 Wing
 /// End
 
-/// Test positionnal
+/// Test positional
 let t = (quill, mark)
 
 let a, b = $t
@@ -18,7 +18,7 @@ a=quill
 b=mark
 /// End
 
-/// Test positionnal with set
+/// Test positional with set
 let t = (quill, mark)
 
 let a, b
@@ -163,15 +163,29 @@ y = 2
 /// Test Forbiden default value 1
 let wing: 5
 /// Error
-Compilation error: Cannot use a default value outside of a from statement.
-File 'Forbiden default value 1', line 1: let wing: 5
-                                             ^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use a default value outside of a from statement.                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Forbiden default value 1                                                    │
+│    1 │let wing: 5                                                              │
+│      │    ^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Forbiden default value 2
 let wing: 5 = 8
 /// Error
-Compilation error: Cannot use a default value outside of a from statement.
-File 'Forbiden default value 2', line 1: let wing: 5 = 8
-                                             ^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use a default value outside of a from statement.                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Forbiden default value 2                                                    │
+│    1 │let wing: 5 = 8                                                          │
+│      │    ^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

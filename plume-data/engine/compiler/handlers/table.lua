@@ -25,7 +25,7 @@ return function (plume, context, nodeHandlerTable)
 
 		if ref then
 			local varName = refalias and plume.ast.get(refalias, "IDENTIFIER").content or identifier.content
-			if not context.registerVariable(varName, nil, nil, nil, true, identifier.content) then
+			if not context.registerVariable(node, varName, nil, nil, nil, true, identifier.content) then
 				plume.error.letExistingVariableError(node, varName)
 			end
 		end
@@ -50,7 +50,7 @@ return function (plume, context, nodeHandlerTable)
 
 		if identifier then
 			local offset = context.registerConstant(identifier.content)
-			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
+			context.registerOP(identifier, plume.ops.LOAD_CONSTANT, 0, offset)
 		else
 			context.registerOP(node, plume.ops.SWITCH, 0, 0)
 		end

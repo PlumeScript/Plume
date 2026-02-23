@@ -76,7 +76,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 * `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
 * `clamp(n, min, max)`: Restricts the number to lie within the inclusive range [min, max].
 * `localize(n, local)`: Proxy to `format(n, %s, local: local)`
-* `format(n, format, locale:, thousandsSeparator:, decimalSeparator:., thousandthsSeparator:)`: Formats the number according to the specified format string (uses Lua `string.format`). `local` can be `empty` (1055.2 -> 1055.2), `en` or `us` (1055.2 -> 1,055.2) or `fr` (1055.2 -> 1 055,2). `local` can also be set to `custom`, and `thousandsSeparator`, etc... will be used. This macro will be automatically called for any concatenation of a string and a number. Options used can be customised using the contextual variables `locale`, `localeNumberFormat`, `localeThousandsSeparator`, `localeDecimalSeparator`, and `localeThousandthsSeparator`.
+* `format(n, format, locale:, thousandsSeparator:, decimalSeparator:., thousandthsSeparator:)`: Formats the number according to the specified format string (uses Lua `string.format`). `local` can be `empty` (1055.2 → 1055.2), `en` or `us` (1055.2 → 1,055.2) or `fr` (1055.2 → 1 055,2). `local` can also be set to `custom`, and `thousandsSeparator`, etc... will be used. This macro will be automatically called for any concatenation of a string and a number. Options used can be customised using the contextual variables `locale`, `localeNumberFormat`, `localeThousandsSeparator`, `localeDecimalSeparator`, and `localeThousandthsSeparator`.
 
 #### Test
 * `sign(n)`: Return `1`, `-1` or `0` depending of `n` sign.

@@ -104,7 +104,7 @@ local function applyCommands(code)
 	code = code:gsub('%-%-! to%-add ([^\n]+)', '%1')
 	for command in code:gmatch('%-%-! ([^\n]*)') do
 		if not command:match("^inline") and not command:match("^index%-to%-inline") then
-			print("Error: unknow command '" .. command .. "'.")
+			print("Error: unknown command '" .. command .. "'.")
 		end
 	end
 

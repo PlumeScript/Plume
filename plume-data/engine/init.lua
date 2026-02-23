@@ -1,5 +1,5 @@
 --[[
-Plume🪶 1.0.beta.6
+Plume🪶 1.0.beta.7
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
@@ -48,10 +48,15 @@ function plume.run(runtime, chunk, fileParams)
 	else
 		run = plume._run
 	end
+
 	return plume.safeRun(run, runtime, chunk, fileParams)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams)
+	plume.lastErrorInfos = nil
+	plume.warning.cache = {}
+	plume.warning.mode = {default="normal"}
+
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
 
@@ -64,9 +69,7 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 	if success then
 		return true, result
 	else
-		if not secondary then
-			result = plume.error.makeRuntimeError(runtime, ip, result)
-		end
+		result = plume.error.makeRuntimeError(runtime, ip, result)
 		return false, result
 	end
 end
@@ -83,7 +86,11 @@ function plume.executeFile(filename, runtime, fileParams)
 		local code = f:read("*a")
 	f:close()
 
-	return plume.execute(code, filename, chunk, runtime, fileParams)
+	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)
+	if success then
+		plume.error.showWarnings()
+	end
+	return success, result
 end
 
 plume.hook = nil -- A function call at each step of the vm

@@ -174,7 +174,7 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 ### vm/call.lua
 
 #### CONCAT_CALL
-<br>Take the stack top to call, with all elements of the current frame as parameters. <br>Stack the call result (or empty if nil) <br>Handle macros and luaFunctions 
+<br>Take the stack top to call, with all elements of the current frame as parameters. <br>Stack the call result (or empty if nil) <br>Handle macros and luaMacro 
 
 #### RETURN
 

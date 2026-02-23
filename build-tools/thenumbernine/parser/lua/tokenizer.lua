@@ -112,7 +112,7 @@ function LuaTokenizer:parseHexNumber(...)
 	local r = self.r
 	-- if version is 5.2 then allow decimals in hex #'s, and use 'p's instead of 'e's for exponents
 	if self.version >= '5.2' then
-		-- TODO this looks like the float-parse code below (but with e+- <-> p+-) but meh I'm lazy so I just copied it.
+		-- TODO this looks like the float-parse code below (but with e+- <→ p+-) but meh I'm lazy so I just copied it.
 		local token = r:canbe'[%.%da-fA-F]+'
 		local numdots = #token:gsub('[^%.]','')
 		assert.le(numdots, 1, 'MSG:malformed number')

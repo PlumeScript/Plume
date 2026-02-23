@@ -42,7 +42,7 @@ return function (plume, context, nodeHandlerTable)
 
 	--- Handle evaluation node: computations, calls and indexes  
 	--- All values must be put on stack in reverse order, then all call/index in order  
-	--- `$wing.nib()[5]` -> `load 5; load nib; load wing; index; call; index`
+	--- `$wing.nib()[5]` → `load 5; load nib; load wing; index; call; index`
 	nodeHandlerTable.EVAL = function(node)
 		-- Push all index/call info in reverse order.
 		for i=#node.children, 2, -1 do

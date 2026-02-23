@@ -72,24 +72,47 @@ fr
 /// Test cannot use context with const
 let const context locale
 /// Error
-Compilation error: Variable cannot be both const and context
-File 'cannot use context with const', line 1: let const context locale
-                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Variable cannot be both const and context                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ cannot use context with const                                               │
+│    1 │let const context locale                                                 │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test cannot use context with param
 let param context locale
 /// Error
-Compilation error: Variable cannot be both const and context
-File 'cannot use context with param', line 1: let param context locale
-                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Variable cannot be both const and context                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ cannot use context with param                                               │
+│    1 │let param context locale                                                 │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test cannot set context
 let context locale
 set locale = 5
 /// Error
-Compilation error: Cannot set variable 'locale', it is a context variable. Use `with locale: value` instead.
-File 'cannot set context', line 2: set locale = 5
-                                   ^^^^^^^^^^^^^^
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot set variable 'locale', it is a context variable. Use `with            │
+│   locale: value` instead.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ cannot set context                                                          │
+│    1 │let context locale                                                       │
+│    2 │set locale = 5                                                           │
+│      │^^^^^^^^^^^^^^                                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
