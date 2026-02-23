@@ -76,6 +76,7 @@ $t(1)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro '???', 1 instead of 2.        │
+│   Usage: $<macro>(x, y, z: quill)                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 4                                               │

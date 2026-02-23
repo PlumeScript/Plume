@@ -1036,11 +1036,11 @@ return function (plume)
                                                     ::_inline_end207::
                                                     local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret93, _ret94, _ret95, _ret96
                                                     if tomanyPositionnalCounter > 0 then
-                                                        vmerr = plume.error.wrongArgsCount (tocall.name, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount)
+                                                        vmerr = plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount)
                                                     elseif capturedCount < tocall.positionalParamCount then
-                                                        vmerr = plume.error.wrongArgsCount (tocall.name, capturedCount, tocall.positionalParamCount)
+                                                        vmerr = plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount)
                                                     elseif unknownNamed then
-                                                        vmerr = plume.error.unknownParameter (unknownNamed, tocall.name)
+                                                        vmerr = plume.error.unknownParameter (unknownNamed, tocall)
                                                     else
                                                         if tocall.variadicOffset then
                                                             do
@@ -1229,11 +1229,11 @@ return function (plume)
                                                     ::_inline_end323::
                                                     local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret157, _ret158, _ret159, _ret160
                                                     if tomanyPositionnalCounter > 0 then
-                                                        vmerr = plume.error.wrongArgsCount (tocall.macro.name, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount)
+                                                        vmerr = plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount)
                                                     elseif capturedCount < tocall.macro.positionalParamCount then
-                                                        vmerr = plume.error.wrongArgsCount (tocall.macro.name, capturedCount, tocall.macro.positionalParamCount)
+                                                        vmerr = plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount)
                                                     elseif unknownNamed then
-                                                        vmerr = plume.error.unknownParameter (unknownNamed, tocall.macro.name)
+                                                        vmerr = plume.error.unknownParameter (unknownNamed, tocall.macro)
                                                     else
                                                         if tocall.macro.variadicOffset then
                                                             do

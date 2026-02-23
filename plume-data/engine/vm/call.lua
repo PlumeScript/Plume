@@ -135,18 +135,18 @@ function _CALL_MACRO(vm, chunk)
 
     if tomanyPositionnalCounter>0 then
         _ERROR(vm, vm.plume.error.wrongArgsCount(
-            chunk.name,
+            chunk,
             chunk.positionalParamCount+tomanyPositionnalCounter,
             chunk.positionalParamCount
         ))
     elseif capturedCount < chunk.positionalParamCount then
         _ERROR(vm, vm.plume.error.wrongArgsCount(
-            chunk.name,
+            chunk,
             capturedCount,
             chunk.positionalParamCount
         ))
     elseif unknownNamed then
-        _ERROR(vm, vm.plume.error.unknownParameter(unknownNamed, chunk.name))
+        _ERROR(vm, vm.plume.error.unknownParameter(unknownNamed, chunk))
     else
         -- If the chunk expects a variadic argument, assign the table to the specific register
         if chunk.variadicOffset then

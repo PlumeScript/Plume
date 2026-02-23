@@ -45,6 +45,7 @@ return function (plume, context, nodeHandlerTable)
 		local macroOffset  = context.registerConstant(macroObj)
 		macroObj.uid = uid
 		macroObj.upvalueMap = {}
+		macroObj.node = node
 		table.insert(context.macros, macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)

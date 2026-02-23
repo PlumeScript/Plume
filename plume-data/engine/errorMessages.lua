@@ -242,18 +242,24 @@ return function(plume)
 		return string.format("Cannot expand a non-table '%s' value.", t)
 	end
 
-	function plume.error.wrongArgsCount(macroName, argCount, expectedArgsCount)
-		return string.format(
+	function plume.error.wrongArgsCount(macro, argCount, expectedArgsCount)
+		local message = string.format(
 			"Wrong number of positional arguments for macro '%s', %s instead of %s.",
-			macroName, argCount, expectedArgsCount
+			macro.name, argCount, expectedArgsCount
 		)
+		local signature = plume.error.getMacroSignature(macro)
+		if signature then
+			message = string.format("%s\nUsage: %s", message, signature)
+		end
+
+		return message
 	end
 
 	function plume.error.wrongArgsCountStd(macroName, argCount, minArgsCount, maxArgsCount)
 		if minArgsCount == maxArgsCount then
 			return string.format(
-				"Wrong number of positional arguments for macro '%s', %s instead of %s.",
-				macroName, argCount, minArgsCount
+				"Wrong number of positional arguments for macro '%s', %s instead of %s.\nSignature: %s",
+				macro.name, argCount, minArgsCount, macro
 			)
 		else
 			return string.format(
@@ -283,8 +289,14 @@ return function(plume)
 		return string.format("Unregistered key '%s'.",  key)
 	end
 
-	function plume.error.unknownParameter(parameterName, macroName)
-		return string.format("Unknown named parameter '%s' for macro '%s'.", parameterName, macroName)
+	function plume.error.unknownParameter(parameterName, macro)
+		local message = string.format("Unknown named parameter '%s' for macro '%s'.", parameterName, macro.name)
+		local signature = plume.error.getMacroSignature(macro)
+		if signature then
+			message = string.format("%s\nUsage: %s", message, signature)
+		end
+
+		return message
 	end
 
 	function plume.error.hasNoLen(tt)

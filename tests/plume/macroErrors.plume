@@ -6,6 +6,7 @@ $Wings(paint, write)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro 'Wings', 2 instead of 3.      │
+│   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ not enought macro args                                                      │
@@ -24,6 +25,7 @@ $Wings(paint, write, sing, dance)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro 'Wings', 4 instead of 3.      │
+│   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ to many macro args                                                          │
@@ -42,6 +44,7 @@ $Wings(wing: red)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter 'wing' for macro 'Wings'.                            │
+│   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknown named parameter 1                                                   │
@@ -60,6 +63,7 @@ $Wings(nib: blue, wing: red)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter 'wing' for macro 'Wings'.                            │
+│   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknown named parameter 2                                                   │
@@ -78,6 +82,7 @@ $quill(a)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro 'quill', 1 instead of 0.      │
+│   Usage: $quill()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 1                                                            │
@@ -98,6 +103,7 @@ $quill.mark(a)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro 'mark', 1 instead of 0.       │
+│   Usage: $mark()                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 2                                                            │
@@ -118,6 +124,7 @@ $quill[1](a)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro '???', 1 instead of 0.        │
+│   Usage: $<macro>()                                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 3                                                            │

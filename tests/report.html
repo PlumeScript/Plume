@@ -5644,6 +5644,7 @@ $wing()
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;paint&#39;, 1 instead of 0.      │
+│   Usage: $paint()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ callstack                                                                   │
@@ -8053,6 +8054,7 @@ $quill(a)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;quill&#39;, 1 instead of 0.      │
+│   Usage: $quill()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 1                                                            │
@@ -8111,6 +8113,7 @@ $quill.mark(a)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;mark&#39;, 1 instead of 0.       │
+│   Usage: $mark()                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 2                                                            │
@@ -8167,6 +8170,7 @@ $quill[1](a)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;???&#39;, 1 instead of 0.        │
+│   Usage: $&lt;macro&gt;()                                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 3                                                            │
@@ -8216,6 +8220,7 @@ $Wings(paint, write)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;Wings&#39;, 2 instead of 3.      │
+│   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ not enought macro args                                                      │
@@ -8373,6 +8378,7 @@ $Wings(paint, write, sing, dance)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;Wings&#39;, 4 instead of 3.      │
+│   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ to many macro args                                                          │
@@ -8427,6 +8433,7 @@ $Wings(wing: red)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
+│   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknown named parameter 1                                                   │
@@ -8484,6 +8491,7 @@ $Wings(nib: blue, wing: red)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
+│   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ unknown named parameter 2                                                   │
@@ -9914,6 +9922,7 @@ $t(1)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;???&#39;, 1 instead of 2.        │
+│   Usage: $&lt;macro&gt;(x, y, z: quill)                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 4                                               │
@@ -19222,6 +19231,7 @@ $x(1)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;x&#39;, 1 instead of 0.          │
+│   Usage: $x()                                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #148                                                                        │

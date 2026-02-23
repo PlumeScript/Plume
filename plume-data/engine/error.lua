@@ -25,6 +25,20 @@ return function(plume)
 		return node
 	end
 
+	function plume.error.getMacroSignature(macro)
+		if macro.node then
+			local paramList = plume.ast.get(macro.node, "PARAMLIST")
+			if paramList then
+				local signature = paramList.code:sub(paramList.bpos, paramList.epos)
+				if macro.name and macro.name ~= "???" then
+					return "$"..macro.name .. signature
+				else
+					return string.format("$<macro>%s", signature)
+				end
+			end
+		end
+	end
+
 	local function simplifyErrorCallstack(errorCallstack)
 		local windowSize = 1
 		local detectedCount = 1
