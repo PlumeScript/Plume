@@ -14,10 +14,12 @@
 -- ]]
 
 return function(plume)
-	function plume.error.makeVisibleVariablesHint(node, name, visiblesVariables)
+	function plume.error.makeVisibleVariablesHint(node, name, visiblesVariables, includeConst)
 		local variablesNames = {}
-		for k in pairs(visiblesVariables) do
-			table.insert(variablesNames, k)
+		for k, v in pairs(visiblesVariables) do
+			if includeConst or not v.isConst then
+				table.insert(variablesNames, k)
+			end
 		end
 
 		local related = plume.error.suggestIdentifiers(name, variablesNames, 2, 3)

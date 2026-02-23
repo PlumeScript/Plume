@@ -237,7 +237,7 @@ return function (plume, context)
 			end
 			local current = context.scopes[i]
 			for k, v in pairs(current) do
-				if not tonumber(k) and not result[k] and not v.isConst and (not passMacroScope or not v.isRef) then
+				if not tonumber(k) and not result[k] and (not passMacroScope or not v.isRef) then
 					result[k] = v
 				end
 			end
