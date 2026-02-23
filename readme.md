@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="plume_logo.svg" width="400" height="200">
+    <img src="logo.svg" width="400" height="200">
 
 <p align="center"><i>
     A language where your code <b>is</b> your document
