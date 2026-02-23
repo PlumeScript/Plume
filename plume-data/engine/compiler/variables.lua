@@ -124,7 +124,7 @@ return function (plume, context)
 				
 				if scopeDepth > 0 then
 					if variable.isRef then
-						return nil, true
+						return nil, variable.node
 					elseif variable.isContext then
 						return {isContext = true}
 					else

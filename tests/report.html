@@ -2216,9 +2216,8 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ → Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39;          │
-│   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
-│   captured by macros.                                                          │
+│ → Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
+│   &#39;refx&#39; exists in parent scope, but a ref cannot be captured by macros.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Cannot capture ref 1                                                        │
@@ -2227,6 +2226,9 @@ end
 │      │    ^                                                                    │
 │    5 │end                                                                      │
 │                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │ref x: 5                                                                 │
+│      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
@@ -2258,9 +2260,8 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ → Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope. &#39;x&#39;          │
-│   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
-│   captured by macros.                                                          │
+│ → Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
+│   &#39;ref x&#39; exists in parent scope, but a ref cannot be captured by macros.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Cannot capture ref 2                                                        │
@@ -2269,6 +2270,9 @@ end
 │      │   ^^^^^^^^^                                                             │
 │    5 │end                                                                      │
 │                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │ref x: 5                                                                 │
+│      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>

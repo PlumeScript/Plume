@@ -19,9 +19,9 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node table The current AST node
 	nodeHandlerTable.IDENTIFIER = function(node)
 		local varName = node.content
-		local var, isRef = context.getVariable(varName)
+		local var, ref = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariableError(node, varName, isRef)
+			plume.error.useUnknownVariableError(node, varName, ref)
 		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
@@ -91,9 +91,9 @@ return function (plume, context, nodeHandlerTable)
 					plume.error.letExistingVariableError(node, name, source, definitionNode)
 				end
 			else
-				rvar, isRef = context.getVariable(name)
+				rvar, ref = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknownVariableError(node, name, isRef)
+					plume.error.setUnknownVariableError(node, name, ref)
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariableError(node, name, source, rvar.node)
 				elseif rvar.isContext then

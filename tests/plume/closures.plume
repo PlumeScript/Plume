@@ -193,9 +193,8 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ → Cannot use variable 'x', it isn't defined in the current scope. 'x'          │
-│   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
-│   captured by macros.                                                          │
+│ → Cannot use variable 'x', it isn't defined in the current scope.              │
+│   'refx' exists in parent scope, but a ref cannot be captured by macros.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Cannot capture ref 1                                                        │
@@ -204,6 +203,9 @@ end
 │      │    ^                                                                    │
 │    5 │end                                                                      │
 │                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │ref x: 5                                                                 │
+│      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -217,9 +219,8 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ → Cannot set variable 'x', it isn't defined in the current scope. 'x'          │
-│   exists in parent scope, but it is a `ref` variable, and `ref` cannot be      │
-│   captured by macros.                                                          │
+│ → Cannot set variable 'x', it isn't defined in the current scope.              │
+│   'ref x' exists in parent scope, but a ref cannot be captured by macros.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Cannot capture ref 2                                                        │
@@ -228,5 +229,8 @@ end
 │      │   ^^^^^^^^^                                                             │
 │    5 │end                                                                      │
 │                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │ref x: 5                                                                 │
+│      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
