@@ -65,7 +65,8 @@ return function(plume)
 			refHint = string.format("\n'ref%s' exists in parent scope, but a ref cannot be captured by macros.", varName)
 			plume.error.addContext(node, ref)
 		end
-		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.%s", varName, refHint)
+		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, varName, visiblesVariables)
+		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.%s%s", varName, refHint, visiblesVariableHint)
 		throwCompilationError(node, message)
 	end
 
@@ -75,7 +76,8 @@ return function(plume)
 			refHint = string.format("\n'ref %s' exists in parent scope, but a ref cannot be captured by macros.", varName)
 			plume.error.addContext(node, ref)
 		end
-		local message = string.format("Cannot set variable '%s', it isn't defined in the current scope.%s", varName, refHint)
+		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, varName, visiblesVariables)
+		local message = string.format("Cannot set variable '%s', it isn't defined in the current scope.%s%s", varName, refHint, visiblesVariableHint)
 		throwCompilationError(node, message)
 	end
 

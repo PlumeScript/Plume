@@ -238,6 +238,19 @@ return function (plume, context)
 				end
 			end
 		end
+
+		for k in pairs(plume.std) do
+			if not result[k] then
+				result[k] = {}
+			end
+		end
+
+		for k in pairs(context.importedVariables) do
+			if not result[k] then
+				result[k] = {}
+			end
+		end
+
 		return result
     end
 end

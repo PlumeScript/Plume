@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">440 passed out of 440 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">443 passed out of 443 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -14739,6 +14739,124 @@ $(&quot;az5AB&quot;).upper()
 <h4>Output</h4>
 <pre><code>
 AZ5AB
+</code></pre>
+</div>
+</details>
+<h2>suggestions: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let variableName = wing
+$variableNam
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;variableNam&#39;, it isn&#39;t defined in the current scope.    │
+│   Perhaps you mean variableName?                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion 1                                                                │
+│    2 │$variableNam                                                             │
+│      │ ^^^^^^^^^^^                                                             │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let variableName = wing                                                  │
+│      │^^^^^^^^^^^^^^^^^^^^^^^                                                  │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let configurationOptionA = wing
+let configurationOptionB = nib
+$configurationParameterA
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;configurationParameterA&#39;, it isn&#39;t defined in the       │
+│   current scope.                                                               │
+│   Perhaps you mean configurationOptionA or configurationOptionB?               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion 2                                                                │
+│    3 │$configurationParameterA                                                 │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let configurationOptionA = wing                                          │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │let configurationOptionB = nib                                           │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion std <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$prnt
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;prnt&#39;, it isn&#39;t defined in the current scope.           │
+│   Perhaps you mean print?                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion std                                                              │
+│    1 │$prnt                                                                    │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
 </details>
