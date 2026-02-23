@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version 1.0.beta.7_
+_For version 1.0.beta.8_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
