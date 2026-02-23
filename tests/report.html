@@ -4641,7 +4641,7 @@ mark
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> positionnal <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> positional <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -4696,7 +4696,7 @@ b=mark
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> positionnal with set <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> positional with set <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -5643,7 +5643,7 @@ $wing()
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;paint&#39;, 1 instead of 0.     │
+│ → Wrong number of positional arguments for macro &#39;paint&#39;, 1 instead of 0.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ callstack                                                                   │
@@ -5999,7 +5999,7 @@ set x = Nib
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> set unknow variable <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> set unknown variable <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -6022,7 +6022,7 @@ set x = Wings
 │ → Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ set unknow variable                                                         │
+│  ↳ set unknown variable                                                        │
 │    1 │set x = Wings                                                            │
 │      │^^^^^^^^^^^^^                                                            │
 │                                                                                │
@@ -6032,7 +6032,7 @@ set x = Wings
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> use unknow variable <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> use unknown variable <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -6055,7 +6055,7 @@ let x = $y
 │ → Cannot use variable &#39;y&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use unknow variable                                                         │
+│  ↳ use unknown variable                                                        │
 │    1 │let x = $y                                                               │
 │      │         ^                                                               │
 │                                                                                │
@@ -7470,7 +7470,7 @@ $index($t, red)
 <h4>Code</h4>
 <pre><code class="language-plume">
 macro write(...args)
-  Positionnals args: $join(...args, sep:\,\s)\n
+  Positionals args: $join(...args, sep:\,\s)\n
   Named args:\s
   @table.join(sep:\,\s)
     for key, value in items(args, ?named)
@@ -7491,7 +7491,7 @@ $write(write, paint, song, ink: quill, wing: mark)
 <span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; write</span>
 <span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 72</span>
 <span class="bc-line-num">007</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Positionnals args: </span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Positionals args: </span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; join(...args, sep:\,\s)</span>
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; args</span>
 <span class="bc-line-num">011</span> <span class="bc-opcode">TABLE_EXPAND    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ...args</span>
@@ -7572,7 +7572,7 @@ $write(write, paint, song, ink: quill, wing: mark)
 </div>
 <h4>Output</h4>
 <pre><code>
-Positionnals args: write, paint, song
+Positionals args: write, paint, song
 Named args: ink=quill, wing=mark
 </code></pre>
 </div>
@@ -8052,7 +8052,7 @@ $quill(a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;quill&#39;, 1 instead of 0.     │
+│ → Wrong number of positional arguments for macro &#39;quill&#39;, 1 instead of 0.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 1                                                            │
@@ -8110,7 +8110,7 @@ $quill.mark(a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;mark&#39;, 1 instead of 0.      │
+│ → Wrong number of positional arguments for macro &#39;mark&#39;, 1 instead of 0.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 2                                                            │
@@ -8166,7 +8166,7 @@ $quill[1](a)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;???&#39;, 1 instead of 0.       │
+│ → Wrong number of positional arguments for macro &#39;???&#39;, 1 instead of 0.        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 3                                                            │
@@ -8215,7 +8215,7 @@ $Wings(paint, write)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;Wings&#39;, 2 instead of 3.     │
+│ → Wrong number of positional arguments for macro &#39;Wings&#39;, 2 instead of 3.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ not enought macro args                                                      │
@@ -8372,7 +8372,7 @@ $Wings(paint, write, sing, dance)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;Wings&#39;, 4 instead of 3.     │
+│ → Wrong number of positional arguments for macro &#39;Wings&#39;, 4 instead of 3.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ to many macro args                                                          │
@@ -8386,7 +8386,7 @@ $Wings(paint, write, sing, dance)
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> unknow named parameter 1 <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> unknown named parameter 1 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -8426,10 +8426,10 @@ $Wings(wing: red)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unknow named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                             │
+│ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknow named parameter 1                                                    │
+│  ↳ unknown named parameter 1                                                   │
 │    2 │end                                                                      │
 │    3 │$Wings(wing: red)                                                        │
 │      │ ^^^^^^^^^^^^^^^^                                                        │
@@ -8440,7 +8440,7 @@ $Wings(wing: red)
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> unknow named parameter 2 <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> unknown named parameter 2 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -8483,10 +8483,10 @@ $Wings(nib: blue, wing: red)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unknow named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                             │
+│ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknow named parameter 2                                                    │
+│  ↳ unknown named parameter 2                                                   │
 │    2 │end                                                                      │
 │    3 │$Wings(nib: blue, wing: red)                                             │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
@@ -9736,8 +9736,7 @@ $(t+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal parameters for meta-macro &#39;add&#39;, 0 instead       │
-│   of 2.                                                                        │
+│ → Wrong number of positional parameters for meta-macro &#39;add&#39;, 0 instead of 2.  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 1                                               │
@@ -9793,8 +9792,7 @@ $(t+1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal parameters for meta-macro &#39;add&#39;, 3 instead       │
-│   of 2.                                                                        │
+│ → Wrong number of positional parameters for meta-macro &#39;add&#39;, 3 instead of 2.  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 2                                               │
@@ -9915,7 +9913,7 @@ $t(1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;???&#39;, 1 instead of 2.       │
+│ → Wrong number of positional arguments for macro &#39;???&#39;, 1 instead of 2.        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ meta wrong parameter number 4                                               │
@@ -10003,7 +10001,7 @@ $(t+1)
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> unknow meta <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> unknown meta <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -10043,7 +10041,7 @@ end
 │ → &#39;mymacro&#39; isn&#39;t a valid meta-macro name.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknow meta                                                                 │
+│  ↳ unknown meta                                                                │
 │    1 │let t = @table                                                           │
 │      │        ^^^^^^                                                           │
 │    2 │  meta mymacro: macro()                                                  │
@@ -13286,7 +13284,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;seq&#39;, 0 instead of          │
+│ → Wrong number of positional arguments for macro &#39;seq&#39;, 0 instead of           │
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -13347,7 +13345,7 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;seq&#39;, 4 instead of          │
+│ → Wrong number of positional arguments for macro &#39;seq&#39;, 4 instead of           │
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -18106,7 +18104,7 @@ quill
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> unknow use <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> unknown use <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -18134,7 +18132,7 @@ use idontexists
 │     idontexists/init.plume                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknow use                                                                  │
+│  ↳ unknown use                                                                 │
 │    1 │use idontexists                                                          │
 │      │    ^^^^^^^^^^^                                                          │
 │                                                                                │
@@ -18359,7 +18357,7 @@ let if = 5
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Cannot use &#39;if&#39; as identifier.                                               │
+│ → Cannot use &#39;if&#39; as an identifier.                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ wrong indentifier                                                           │
@@ -19223,7 +19221,7 @@ $x(1)
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro &#39;x&#39;, 1 instead of 0.         │
+│ → Wrong number of positional arguments for macro &#39;x&#39;, 1 instead of 0.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #148                                                                        │

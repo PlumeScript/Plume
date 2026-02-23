@@ -75,7 +75,7 @@ return function (plume)
 				decimalSeparator     = decimalSeparator or "."
 				thousandthsSeparator = thousandthsSeparator or nil
 			elseif locale then
-				error("Unknow localization format '" .. locale .. "'.")
+				error("Unknown localization format '" .. locale .. "'.")
 			end
 
 			if thousandsSeparator then

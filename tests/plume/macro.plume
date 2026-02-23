@@ -82,7 +82,7 @@ This is quite long, i think.
 
 /// Test Variadic 1
 macro write(...args)
-  Positionnals args: $join(...args, sep:\,\s)\n
+  Positionals args: $join(...args, sep:\,\s)\n
   Named args:\s
   @table.join(sep:\,\s)
     for key, value in items(args, ?named)
@@ -92,7 +92,7 @@ macro write(...args)
 end
 $write(write, paint, song, ink: quill, wing: mark)
 /// Output
-Positionnals args: write, paint, song
+Positionals args: write, paint, song
 Named args: ink=quill, wing=mark
 /// End
 

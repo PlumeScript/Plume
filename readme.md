@@ -94,7 +94,7 @@ $complex(quill, wing, optn: bird, ?flag) // in call, ?flag is a sugar for flag: 
 end
 
 @complex(quill, optn: bird, ?flag)
-    wing // content, if text, is send as last positionnal argument
+    wing // content, if text, is send as last positional argument
 end
 ```
 

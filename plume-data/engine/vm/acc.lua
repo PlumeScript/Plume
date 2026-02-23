@@ -79,9 +79,9 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
         variadicTable = vm.plume.obj.table(max, max / 2)
     end
 
-    local tomanyPositionnalCounter = 0
+    local tomanyPositionalCounter = 0
     local capturedCount = 0
-    local unknowNamed
+    local unknownNamed
 
     while bufferOffset <= mainStackTop do
         local tag = vm.tagStack[bufferOffset+1]
@@ -100,7 +100,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                 end
                 variadicTable.table[key] = value
             else
-                tomanyPositionnalCounter = tomanyPositionnalCounter+1
+                tomanyPositionalCounter = tomanyPositionalCounter+1
             end
             argsOffset = argsOffset + 1
 
@@ -134,7 +134,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                         end
                     end
                 else
-                    unknowNamed = key
+                    unknownNamed = key
                     break
                 end
             end
@@ -144,7 +144,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
         bufferOffset = bufferOffset + 1
     end
 
-    return variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+    return variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
 end
 
 --- @opcode

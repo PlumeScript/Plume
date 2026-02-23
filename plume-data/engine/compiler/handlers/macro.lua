@@ -96,10 +96,10 @@ return function (plume, context, nodeHandlerTable)
 					macroObj.variadicOffset = param.offset
 				else
 					if macroObj.namedParamCount > 0 then
-						plume.error.cannotAddPositionnalAfterNamed(paramNode)
+						plume.error.cannotAddPositionalAfterNamed(paramNode)
 					end
 					if macroObj.variadicOffset then
-						plume.error.cannotAddPositionnalAfterVariadic(paramNode)
+						plume.error.cannotAddPositionalAfterVariadic(paramNode)
 					end
 					macroObj.positionalParamCount = macroObj.positionalParamCount+1
 				end

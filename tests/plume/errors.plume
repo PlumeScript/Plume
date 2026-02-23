@@ -1,4 +1,4 @@
-/// Test set unknow variable
+/// Test set unknown variable
 set x = Wings
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -6,14 +6,14 @@ set x = Wings
 │ → Cannot set variable 'x', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ set unknow variable                                                         │
+│  ↳ set unknown variable                                                        │
 │    1 │set x = Wings                                                            │
 │      │^^^^^^^^^^^^^                                                            │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test use unknow variable
+/// Test use unknown variable
 let x = $y
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -21,7 +21,7 @@ let x = $y
 │ → Cannot use variable 'y', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use unknow variable                                                         │
+│  ↳ use unknown variable                                                        │
 │    1 │let x = $y                                                               │
 │      │         ^                                                               │
 │                                                                                │
@@ -415,7 +415,7 @@ $wing()
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro 'paint', 1 instead of 0.     │
+│ → Wrong number of positional arguments for macro 'paint', 1 instead of 0.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ callstack                                                                   │

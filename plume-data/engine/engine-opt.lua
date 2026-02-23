@@ -706,9 +706,9 @@ return function (plume)
                                                     local max = mainStackTop - bufferOffset + 1
                                                     variadicTable = plume.obj.table (max, max / 2)
                                                 end
-                                                local tomanyPositionnalCounter = 0
+                                                local tomanyPositionalCounter = 0
                                                 local capturedCount = 0
-                                                local unknowNamed
+                                                local unknownNamed
                                                 while bufferOffset <= mainStackTop do
                                                     local tag = tagStack[bufferOffset + 1]
                                                     local _ret79
@@ -729,7 +729,7 @@ return function (plume)
                                                             end
                                                             variadicTable.table[key] = value
                                                         else
-                                                            tomanyPositionnalCounter = tomanyPositionnalCounter + 1
+                                                            tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                         end
                                                         argsOffset = argsOffset + 1
                                                     else
@@ -788,7 +788,7 @@ return function (plume)
                                                                         end
                                                                         if expectedParamCount then
                                                                             if macro.positionalParamCount ~= expectedParamCount then
-                                                                                _ret82, _ret83 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                _ret82, _ret83 = false, "Wrong number of positional parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                 goto _inline_end180
                                                                             end
                                                                             if macro.namedParamCount > 1 then
@@ -811,7 +811,7 @@ return function (plume)
                                                                     end
                                                                 end
                                                             else
-                                                                unknowNamed = key
+                                                                unknownNamed = key
                                                                 break
                                                             end
                                                         end
@@ -819,7 +819,7 @@ return function (plume)
                                                     end
                                                     bufferOffset = bufferOffset + 1
                                                 end
-                                                _ret73, _ret74, _ret75, _ret76 = variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+                                                _ret73, _ret74, _ret75, _ret76 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                 goto _inline_end169
                                             end
                                             ::_inline_end169::
@@ -917,9 +917,9 @@ return function (plume)
                                                             local max = mainStackTop - bufferOffset + 1
                                                             variadicTable = plume.obj.table (max, max / 2)
                                                         end
-                                                        local tomanyPositionnalCounter = 0
+                                                        local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
-                                                        local unknowNamed
+                                                        local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
                                                             local _ret99
@@ -940,7 +940,7 @@ return function (plume)
                                                                     end
                                                                     variadicTable.table[key] = value
                                                                 else
-                                                                    tomanyPositionnalCounter = tomanyPositionnalCounter + 1
+                                                                    tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
                                                                 argsOffset = argsOffset + 1
                                                             else
@@ -999,7 +999,7 @@ return function (plume)
                                                                                 end
                                                                                 if expectedParamCount then
                                                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret102, _ret103 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                        _ret102, _ret103 = false, "Wrong number of positional parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end218
                                                                                     end
                                                                                     if macro.namedParamCount > 1 then
@@ -1022,7 +1022,7 @@ return function (plume)
                                                                             end
                                                                         end
                                                                     else
-                                                                        unknowNamed = key
+                                                                        unknownNamed = key
                                                                         break
                                                                     end
                                                                 end
@@ -1030,17 +1030,17 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret93, _ret94, _ret95, _ret96 = variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+                                                        _ret93, _ret94, _ret95, _ret96 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                         goto _inline_end207
                                                     end
                                                     ::_inline_end207::
-                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed = _ret93, _ret94, _ret95, _ret96
+                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret93, _ret94, _ret95, _ret96
                                                     if tomanyPositionnalCounter > 0 then
                                                         vmerr = plume.error.wrongArgsCount (tocall.name, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount)
                                                     elseif capturedCount < tocall.positionalParamCount then
                                                         vmerr = plume.error.wrongArgsCount (tocall.name, capturedCount, tocall.positionalParamCount)
-                                                    elseif unknowNamed then
-                                                        vmerr = plume.error.unknowParameter (unknowNamed, tocall.name)
+                                                    elseif unknownNamed then
+                                                        vmerr = plume.error.unknownParameter (unknownNamed, tocall.name)
                                                     else
                                                         if tocall.variadicOffset then
                                                             do
@@ -1110,9 +1110,9 @@ return function (plume)
                                                             local max = mainStackTop - bufferOffset + 1
                                                             variadicTable = plume.obj.table (max, max / 2)
                                                         end
-                                                        local tomanyPositionnalCounter = 0
+                                                        local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
-                                                        local unknowNamed
+                                                        local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
                                                             local _ret163
@@ -1133,7 +1133,7 @@ return function (plume)
                                                                     end
                                                                     variadicTable.table[key] = value
                                                                 else
-                                                                    tomanyPositionnalCounter = tomanyPositionnalCounter + 1
+                                                                    tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
                                                                 argsOffset = argsOffset + 1
                                                             else
@@ -1192,7 +1192,7 @@ return function (plume)
                                                                                 end
                                                                                 if expectedParamCount then
                                                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret166, _ret167 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                        _ret166, _ret167 = false, "Wrong number of positional parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end334
                                                                                     end
                                                                                     if macro.namedParamCount > 1 then
@@ -1215,7 +1215,7 @@ return function (plume)
                                                                             end
                                                                         end
                                                                     else
-                                                                        unknowNamed = key
+                                                                        unknownNamed = key
                                                                         break
                                                                     end
                                                                 end
@@ -1223,17 +1223,17 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret157, _ret158, _ret159, _ret160 = variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+                                                        _ret157, _ret158, _ret159, _ret160 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                         goto _inline_end323
                                                     end
                                                     ::_inline_end323::
-                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed = _ret157, _ret158, _ret159, _ret160
+                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret157, _ret158, _ret159, _ret160
                                                     if tomanyPositionnalCounter > 0 then
                                                         vmerr = plume.error.wrongArgsCount (tocall.macro.name, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount)
                                                     elseif capturedCount < tocall.macro.positionalParamCount then
                                                         vmerr = plume.error.wrongArgsCount (tocall.macro.name, capturedCount, tocall.macro.positionalParamCount)
-                                                    elseif unknowNamed then
-                                                        vmerr = plume.error.unknowParameter (unknowNamed, tocall.macro.name)
+                                                    elseif unknownNamed then
+                                                        vmerr = plume.error.unknownParameter (unknownNamed, tocall.macro.name)
                                                     else
                                                         if tocall.macro.variadicOffset then
                                                             do
@@ -1278,9 +1278,9 @@ return function (plume)
                                                             local max = mainStackTop - bufferOffset + 1
                                                             variadicTable = plume.obj.table (max, max / 2)
                                                         end
-                                                        local tomanyPositionnalCounter = 0
+                                                        local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
-                                                        local unknowNamed
+                                                        local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
                                                             local _ret146
@@ -1301,7 +1301,7 @@ return function (plume)
                                                                     end
                                                                     variadicTable.table[key] = value
                                                                 else
-                                                                    tomanyPositionnalCounter = tomanyPositionnalCounter + 1
+                                                                    tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
                                                                 argsOffset = argsOffset + 1
                                                             else
@@ -1360,7 +1360,7 @@ return function (plume)
                                                                                 end
                                                                                 if expectedParamCount then
                                                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret149, _ret150 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                        _ret149, _ret150 = false, "Wrong number of positional parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end302
                                                                                     end
                                                                                     if macro.namedParamCount > 1 then
@@ -1383,7 +1383,7 @@ return function (plume)
                                                                             end
                                                                         end
                                                                     else
-                                                                        unknowNamed = key
+                                                                        unknownNamed = key
                                                                         break
                                                                     end
                                                                 end
@@ -1391,7 +1391,7 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret140, _ret141, _ret142, _ret143 = variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+                                                        _ret140, _ret141, _ret142, _ret143 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                         goto _inline_end291
                                                     end
                                                     ::_inline_end291::
@@ -1443,9 +1443,9 @@ return function (plume)
                                                             local max = mainStackTop - bufferOffset + 1
                                                             variadicTable = plume.obj.table (max, max / 2)
                                                         end
-                                                        local tomanyPositionnalCounter = 0
+                                                        local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
-                                                        local unknowNamed
+                                                        local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
                                                             local _ret131
@@ -1466,7 +1466,7 @@ return function (plume)
                                                                     end
                                                                     variadicTable.table[key] = value
                                                                 else
-                                                                    tomanyPositionnalCounter = tomanyPositionnalCounter + 1
+                                                                    tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
                                                                 argsOffset = argsOffset + 1
                                                             else
@@ -1525,7 +1525,7 @@ return function (plume)
                                                                                 end
                                                                                 if expectedParamCount then
                                                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret134, _ret135 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                        _ret134, _ret135 = false, "Wrong number of positional parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end276
                                                                                     end
                                                                                     if macro.namedParamCount > 1 then
@@ -1548,7 +1548,7 @@ return function (plume)
                                                                             end
                                                                         end
                                                                     else
-                                                                        unknowNamed = key
+                                                                        unknownNamed = key
                                                                         break
                                                                     end
                                                                 end
@@ -1556,7 +1556,7 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret125, _ret126, _ret127, _ret128 = variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+                                                        _ret125, _ret126, _ret127, _ret128 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                         goto _inline_end265
                                                     end
                                                     ::_inline_end265::
@@ -1607,9 +1607,9 @@ return function (plume)
                                                             local max = mainStackTop - bufferOffset + 1
                                                             variadicTable = plume.obj.table (max, max / 2)
                                                         end
-                                                        local tomanyPositionnalCounter = 0
+                                                        local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
-                                                        local unknowNamed
+                                                        local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
                                                             local _ret117
@@ -1630,7 +1630,7 @@ return function (plume)
                                                                     end
                                                                     variadicTable.table[key] = value
                                                                 else
-                                                                    tomanyPositionnalCounter = tomanyPositionnalCounter + 1
+                                                                    tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
                                                                 argsOffset = argsOffset + 1
                                                             else
@@ -1689,7 +1689,7 @@ return function (plume)
                                                                                 end
                                                                                 if expectedParamCount then
                                                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                                                        _ret120, _ret121 = false, "Wrong number of positionnal parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                                                        _ret120, _ret121 = false, "Wrong number of positional parameters for meta-macro '" .. key .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
                                                                                         goto _inline_end257
                                                                                     end
                                                                                     if macro.namedParamCount > 1 then
@@ -1712,7 +1712,7 @@ return function (plume)
                                                                             end
                                                                         end
                                                                     else
-                                                                        unknowNamed = key
+                                                                        unknownNamed = key
                                                                         break
                                                                     end
                                                                 end
@@ -1720,7 +1720,7 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret111, _ret112, _ret113, _ret114 = variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed
+                                                        _ret111, _ret112, _ret113, _ret114 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                         goto _inline_end246
                                                     end
                                                     ::_inline_end246::

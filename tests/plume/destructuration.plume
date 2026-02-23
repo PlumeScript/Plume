@@ -7,7 +7,7 @@ $b
 Wing
 /// End
 
-/// Test positionnal
+/// Test positional
 let t = (quill, mark)
 
 let a, b = $t
@@ -18,7 +18,7 @@ a=quill
 b=mark
 /// End
 
-/// Test positionnal with set
+/// Test positional with set
 let t = (quill, mark)
 
 let a, b

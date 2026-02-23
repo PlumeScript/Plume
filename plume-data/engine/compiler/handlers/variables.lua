@@ -21,7 +21,7 @@ return function (plume, context, nodeHandlerTable)
 		local varName = node.content
 		local var, isRef = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknowVariableError(node, varName, isRef)
+			plume.error.useUnknownVariableError(node, varName, isRef)
 		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
@@ -75,7 +75,7 @@ return function (plume, context, nodeHandlerTable)
 				name = varNode.children[2].content
 				default = varNode.children[3]
 			else -- guards against typo
-				error("Internal error: unknow type '" .. (varNode.name or "") .. "' inside affectation.")
+				error("Internal error: unknown type '" .. (varNode.name or "") .. "' inside affectation.")
 			end
 
 			if default and not isFrom then
@@ -93,7 +93,7 @@ return function (plume, context, nodeHandlerTable)
 			else
 				rvar, isRef = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknowVariableError(node, name, isRef)
+					plume.error.setUnknownVariableError(node, name, isRef)
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariableError(node, name, source)
 				elseif rvar.isContext then

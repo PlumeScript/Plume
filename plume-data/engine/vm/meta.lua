@@ -46,7 +46,7 @@ function _META_CHECK (name, obj)
 
 	if expectedParamCount then
 		if macro.positionalParamCount ~= expectedParamCount then
-			return false, "Wrong number of positionnal parameters for meta-macro '" .. name .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+			return false, "Wrong number of positional parameters for meta-macro '" .. name .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
 		end
 		if macro.namedParamCount > 1 then -- 1 for self
 			return false, "Meta-macro '" .. name .. "' dont support named parameters."

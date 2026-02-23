@@ -194,7 +194,7 @@ $x(1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro 'x', 1 instead of 0.         │
+│ → Wrong number of positional arguments for macro 'x', 1 instead of 0.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ #148                                                                        │

@@ -126,7 +126,7 @@ function _CALL_MACRO(vm, chunk)
     ENTER_SCOPE(vm, 0, chunk.localsCount) -- Create a new scope
 
     -- Distribute arguments to locals and get the overflow table
-    local variadicTable, tomanyPositionnalCounter, capturedCount, unknowNamed = _CONCAT_TABLE(
+    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _CONCAT_TABLE(
         vm,
         chunk.positionalParamCount,
         chunk.namedParamOffset,
@@ -145,8 +145,8 @@ function _CALL_MACRO(vm, chunk)
             capturedCount,
             chunk.positionalParamCount
         ))
-    elseif unknowNamed then
-        _ERROR(vm, vm.plume.error.unknowParameter(unknowNamed, chunk.name))
+    elseif unknownNamed then
+        _ERROR(vm, vm.plume.error.unknownParameter(unknownNamed, chunk.name))
     else
         -- If the chunk expects a variadic argument, assign the table to the specific register
         if chunk.variadicOffset then

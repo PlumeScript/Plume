@@ -108,7 +108,7 @@ return function (plume, context, nodeHandlerTable)
 		
 		local handler = directivesHandler[directiveName]
 		if not handler then
-			plume.error.unknowDirective(directiveNameNode, directiveName)
+			plume.error.unknownDirective(directiveNameNode, directiveName)
 		end
 		handler(options)
 	end

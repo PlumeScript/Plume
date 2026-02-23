@@ -27,23 +27,23 @@ return function(plume)
 		error(message, -1)
 	end
 
-	function plume.error.cannotAddPositionnalAfterNamed(node, varName)
-		local message = "Cannot add a positionnal parameter after a named one"
+	function plume.error.cannotAddPositionalAfterNamed(node, varName)
+		local message = "Cannot add a positional parameter after a named one"
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.cannotAddPositionnalAfterVariadic(node, varName)
-		local message = "Cannot add a positionnal parameter after a variadic one"
+	function plume.error.cannotAddPositionalAfterVariadic(node, varName)
+		local message = "Cannot add a positional parameter after a variadic one"
 		throwCompilationError(node, message)
 	end
 
 	function plume.error.cannotAddNamedAfterVariadic(node, varName)
-		local message = "Cannot add a positionnal parameter after a variadic one"
+		local message = "Cannot add a named parameter after a variadic one"
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.unknowDirective(node, name)
-		local message = string.format("Cannot use directive '%s': it doesn't exists.", name)
+	function plume.error.unknownDirective(node, name)
+		local message = string.format("Cannot use directive '%s': it doesn't exist.", name)
 		throwCompilationError(node, message)
 	end
 
@@ -52,7 +52,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.useUnknowVariableError(node, varName, isRef)
+	function plume.error.useUnknownVariableError(node, varName, isRef)
 		local refHint = ""
 		if isRef then
 			refHint = string.format(" '%s' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.", varName)
@@ -61,7 +61,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setUnknowVariableError(node, varName, isRef)
+	function plume.error.setUnknownVariableError(node, varName, isRef)
 		local refHint = ""
 		if isRef then
 			refHint = string.format(" '%s' exists in parent scope, but it is a `ref` variable, and `ref` cannot be captured by macros.", varName)
@@ -111,7 +111,7 @@ return function(plume)
 	end
 
 	function plume.error.cannotUseParamAndConst(node)
-		local message = "Cannot use 'const' and 'param' together (parameter variable are by default constant)."
+		local message = "Cannot use 'const' and 'param' together (parameter variables are by default constant)."
 		throwCompilationError(node, message)
 	end
 
@@ -160,7 +160,7 @@ return function(plume)
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingClosingBraveError(node)
+	function plume.error.missingClosingBracketError(node)
 		local message = "Missing ')' to close evaluation."
 		throwSyntaxError(node, message)
 	end
@@ -192,7 +192,7 @@ return function(plume)
 	end
 
 	function plume.error.wrongIdentifierError(node, name)
-		local message = string.format("Cannot use '%s' as identifier.", name)
+		local message = string.format("Cannot use '%s' as an identifier.", name)
 		throwSyntaxError(node, message)
 	end
 
@@ -244,7 +244,7 @@ return function(plume)
 
 	function plume.error.wrongArgsCount(macroName, argCount, expectedArgsCount)
 		return string.format(
-			"Wrong number of positionnal arguments for macro '%s', %s instead of %s.",
+			"Wrong number of positional arguments for macro '%s', %s instead of %s.",
 			macroName, argCount, expectedArgsCount
 		)
 	end
@@ -252,12 +252,12 @@ return function(plume)
 	function plume.error.wrongArgsCountStd(macroName, argCount, minArgsCount, maxArgsCount)
 		if minArgsCount == maxArgsCount then
 			return string.format(
-				"Wrong number of positionnal arguments for macro '%s', %s instead of %s.",
+				"Wrong number of positional arguments for macro '%s', %s instead of %s.",
 				macroName, argCount, minArgsCount
 			)
 		else
 			return string.format(
-				"Wrong number of positionnal arguments for macro '%s', %s instead of between %s and %s.",
+				"Wrong number of positional arguments for macro '%s', %s instead of between %s and %s.",
 				macroName, argCount, minArgsCount, maxArgsCount
 			)
 		end
@@ -283,8 +283,8 @@ return function(plume)
 		return string.format("Unregistered key '%s'.",  key)
 	end
 
-	function plume.error.unknowParameter(parameterName, macroName)
-		return string.format("Unknow named parameter '%s' for macro '%s'.", parameterName, macroName)
+	function plume.error.unknownParameter(parameterName, macroName)
+		return string.format("Unknown named parameter '%s' for macro '%s'.", parameterName, macroName)
 	end
 
 	function plume.error.hasNoLen(tt)

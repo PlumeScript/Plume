@@ -5,7 +5,7 @@ $Wings(paint, write)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro 'Wings', 2 instead of 3.     │
+│ → Wrong number of positional arguments for macro 'Wings', 2 instead of 3.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ not enought macro args                                                      │
@@ -23,7 +23,7 @@ $Wings(paint, write, sing, dance)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro 'Wings', 4 instead of 3.     │
+│ → Wrong number of positional arguments for macro 'Wings', 4 instead of 3.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ to many macro args                                                          │
@@ -34,17 +34,17 @@ $Wings(paint, write, sing, dance)
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test unknow named parameter 1
+/// Test unknown named parameter 1
 macro Wings(nib: quill)
 end
 $Wings(wing: red)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unknow named parameter 'wing' for macro 'Wings'.                             │
+│ → Unknown named parameter 'wing' for macro 'Wings'.                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknow named parameter 1                                                    │
+│  ↳ unknown named parameter 1                                                   │
 │    2 │end                                                                      │
 │    3 │$Wings(wing: red)                                                        │
 │      │ ^^^^^^^^^^^^^^^^                                                        │
@@ -52,17 +52,17 @@ $Wings(wing: red)
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test unknow named parameter 2
+/// Test unknown named parameter 2
 macro Wings(nib: quill)
 end
 $Wings(nib: blue, wing: red)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unknow named parameter 'wing' for macro 'Wings'.                             │
+│ → Unknown named parameter 'wing' for macro 'Wings'.                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknow named parameter 2                                                    │
+│  ↳ unknown named parameter 2                                                   │
 │    2 │end                                                                      │
 │    3 │$Wings(nib: blue, wing: red)                                             │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
@@ -77,7 +77,7 @@ $quill(a)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro 'quill', 1 instead of 0.     │
+│ → Wrong number of positional arguments for macro 'quill', 1 instead of 0.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 1                                                            │
@@ -97,7 +97,7 @@ $quill.mark(a)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro 'mark', 1 instead of 0.      │
+│ → Wrong number of positional arguments for macro 'mark', 1 instead of 0.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 2                                                            │
@@ -117,7 +117,7 @@ $quill[1](a)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positionnal arguments for macro '???', 1 instead of 0.       │
+│ → Wrong number of positional arguments for macro '???', 1 instead of 0.        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ get macro name 3                                                            │

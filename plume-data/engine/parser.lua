@@ -272,7 +272,7 @@ return function (plume)
         local evalBase = Ct("EVAL", (
                   P"("
                     * (expr + E(plume.error.emptyExprError))
-                * (P")" + E(plume.error.missingClosingBraveError))
+                * (P")" + E(plume.error.missingClosingBracketError))
                 + idn
             ) * V"evalOpperator"^0
         )
