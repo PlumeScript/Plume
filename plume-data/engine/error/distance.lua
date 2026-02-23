@@ -92,7 +92,7 @@ return function(plume)
 	end
 
 	local function semanticDistance(s, t)
-		if #s <= 3 or #t <= 3 then
+		if (#s == 2 and #t == 2) or #s==1 or #t==1 then
 			return math.huge
 		end
 
