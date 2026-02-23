@@ -113,6 +113,10 @@ return function(plume)
 		plume.error.addContext(node, definitionNode)
 		throwCompilationError(node, message)
 	end
+	function plume.error.letExistingSelfVariableError(node)
+		local message = "Cannot define variable 'self', it already exists in the current scope.\nA 'self' variable is implicitly declared in macro body."
+		throwCompilationError(node, message)
+	end
 
 	function plume.error.cannotUseParamAndConst(node)
 		local message = "Cannot use 'const' and 'param' together (parameter variables are by default constant)."

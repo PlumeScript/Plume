@@ -208,3 +208,23 @@ $mark()
 │  ↳...                                                                          │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test overwrite self
+macro wing()
+  let self
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot define variable 'self', it already exists in the current scope.       │
+│   A 'self' variable is implicitly declared in macro body.                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ overwrite self                                                              │
+│    1 │macro wing()                                                             │
+│    2 │  let self                                                               │
+│      │  ^^^^^^^^                                                               │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

@@ -185,14 +185,15 @@ return function (plume, context)
 	--- @param source string|nil The path to the file if imported via `use`.
 	--- @param isRef boolean True if it is a reference to a table field
 	--- @param ref string If isRef, name of the key ref
-	--- @param isContext booelan
+	--- @param isContext boolean
+	--- @param isSelf boolean
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
-	function context.registerVariable(node, name, isConst, isParam, source, isRef, ref, isContext)
+	function context.registerVariable(node, name, isConst, isParam, source, isRef, ref, isContext, isSelf)
 		local scope
 		scope = context.getCurrentScope()
 
 		if scope[name] then
-			return nil, scope[name].node
+			return nil, scope[name]
 		end
 		
 		-- Why count var by inserting empty table?
@@ -205,6 +206,7 @@ return function (plume, context)
 			isRef     = isRef,
 			source    = source,
 			isContext = isContext,
+			isSelf    = isSelf,
 			node      = node,
 			ref       = ref
 		}
