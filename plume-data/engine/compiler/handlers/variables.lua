@@ -86,16 +86,16 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
-				rvar = context.registerVariable(name, isConst, isParam, nil, nil, nil, isContext)
+				rvar, definitionNode = context.registerVariable(node, name, isConst, isParam, nil, nil, nil, isContext)
 				if not rvar then
-					plume.error.letExistingVariableError(node, name, source)
+					plume.error.letExistingVariableError(node, name, source, definitionNode)
 				end
 			else
 				rvar, isRef = context.getVariable(name)
 				if not rvar then
 					plume.error.setUnknownVariableError(node, name, isRef)
 				elseif rvar.isConst or rvar.isStd then
-					plume.error.setConstantVariableError(node, name, source)
+					plume.error.setConstantVariableError(node, name, source, rvar.node)
 				elseif rvar.isContext then
 					plume.error.setContextVariableError(node, name)
 				end

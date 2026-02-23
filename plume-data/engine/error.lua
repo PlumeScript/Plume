@@ -39,6 +39,11 @@ return function(plume)
 		end
 	end
 
+	function plume.error.addContext(nodeA, nodeB)
+		nodeA.errorContext = nodeA.errorContext or {}
+		table.insert(nodeA.errorContext, nodeB)
+	end
+
 	local function simplifyErrorCallstack(errorCallstack)
 		local windowSize = 1
 		local detectedCount = 1
@@ -142,7 +147,13 @@ return function(plume)
 		local function addLine(n)
 			if not selectedNoLinesCheck[n] then
 				table.insert(selectedNoLines, n)
-				selectedNoLinesCheck[n] = true
+				selectedNoLinesCheck[n] = #selectedNoLines
+			end
+		end
+		local function removeLine(n)
+			if selectedNoLinesCheck[n] then
+				table.remove(selectedNoLines, selectedNoLinesCheck[n])
+				selectedNoLinesCheck[n] = nil
 			end
 		end
 
@@ -171,6 +182,13 @@ return function(plume)
 			if parentMacro then
 				local parentMacroInfos = plume.error.getNodeLines(parentMacro)
 				addLine(parentMacroInfos.sourceNoLine)
+			end
+		end
+
+		for _, child in ipairs(node.errorContext or {}) do
+			local childInfos = plume.error.getNodeLines(child)
+			if childInfos.filename == node.filename then
+				removeLine(childInfos.sourceNoLine)
 			end
 		end
 
@@ -432,10 +450,13 @@ return function(plume)
 		-- Preparation --
 		-----------------
 		
-		local nodesInfos = {source=nil, traceback={}, warnings={count=0}}
+		local nodesInfos = {source=nil, traceback={}, warnings={count=0}, context={}}
 		-- Get node infos
 		if errorInfos.sourceNode then
 			nodesInfos.source = plume.error.getNodeLinesContext(errorInfos.sourceNode, true, true)
+		end
+		for _, child in ipairs(errorInfos.sourceNode.errorContext or {}) do
+			table.insert(nodesInfos.context, plume.error.getNodeLinesContext(child, false, false))
 		end
 		for _, infos in ipairs(errorInfos.errorCallstack or {}) do
 			if infos.node then
@@ -454,7 +475,13 @@ return function(plume)
 		end
 
 		-- Get line number to align source code
-		local allNode = {nodesInfos.source, unpack(nodesInfos.traceback)}
+		local allNode = {nodesInfos.source}
+		for _, infos in ipairs(nodesInfos.traceback) do
+			table.insert(allNode, infos)
+		end
+		for _, infos in ipairs(nodesInfos.context) do
+			table.insert(allNode, infos)
+		end
 		for _, warningInfos in ipairs(nodesInfos.warnings) do
 			for _, node in ipairs(warningInfos) do
 				table.insert(allNode, node)
@@ -489,6 +516,18 @@ return function(plume)
 			makeLine{""}
 			makeSourceSnippet(nodesInfos.source)
 			makeLine{""}
+		end
+
+		-- Context
+		if #nodesInfos.context > 0 then
+			for i, infos in ipairs(nodesInfos.context) do
+				if infos.sourceNoLine then
+					makeSourceSnippet(infos)
+					if i < #nodesInfos.context then
+						makeLine{""}
+					end
+				end
+			end
 		end
 
 		-- Traceback

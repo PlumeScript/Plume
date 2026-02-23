@@ -70,13 +70,14 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setConstantVariableError(node, varName, source)
+	function plume.error.setConstantVariableError(node, varName, source, definitionNode)
 		if source then
 			source = string.format(" (imported from '%s')", source)
 		else
 			source = ""
 		end
 		local message = string.format("Cannot set variable '%s'%s, it is a constant.", varName, source)
+		plume.error.addContext(node, definitionNode)
 		throwCompilationError(node, message)
 	end
 
@@ -100,13 +101,14 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.letExistingVariableError(node, varName, source)
+	function plume.error.letExistingVariableError(node, varName, source, definitionNode)
 		if source then
 			source = string.format(" (imported from '%s')", source)
 		else
 			source = ""
 		end
 		local message = string.format("Cannot define variable '%s', it already exists in the current scope%s.", varName, source)
+		plume.error.addContext(node, definitionNode)
 		throwCompilationError(node, message)
 	end
 
