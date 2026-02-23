@@ -126,12 +126,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                         end
                         variadicTable.table[key] = value
                     elseif tag == "metakey" then
-                        local success, err = _META_CHECK (key, value)
-                        if success then
-                            variadicTable.meta.table[key] = value
-                        else
-                            _ERROR(vm, err)
-                        end
+                        variadicTable.meta.table[key] = value
                     end
                 else
                     unknownNamed = key

@@ -50,7 +50,7 @@ return function (plume, context, nodeHandlerTable)
 
 		if identifier then
 			local offset = context.registerConstant(identifier.content)
-			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
+			context.registerOP(identifier, plume.ops.LOAD_CONSTANT, 0, offset)
 		else
 			context.registerOP(node, plume.ops.SWITCH, 0, 0)
 		end

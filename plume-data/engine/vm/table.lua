@@ -33,6 +33,12 @@ end
 --- Mark the last element of the stack as a meta-key
 --! inline
 function TAG_META_KEY(vm, arg1, arg2)
+    local name = _STACK_GET(vm.mainStack)
+    local value = _STACK_GET(vm.mainStack, _STACK_POS(vm.mainStack)-1)
+    local valid, err = _META_CHECK(vm, name, value)
+    if not valid then
+        _ERROR(vm, err)
+    end
     local pos = _STACK_POS(vm.mainStack)
     vm.tagStack[pos] = "metakey"
 end
