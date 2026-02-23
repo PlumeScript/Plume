@@ -5,7 +5,7 @@ $variableNam
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot use variable 'variableNam', it isn't defined in the current scope.    │
-│   Perhaps you mean variableName?                                               │
+│   Perhaps you mean 'variableName'?                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ suggestion 1                                                                │
@@ -27,7 +27,7 @@ $configurationParameterA
 │ COMPILATION ERROR:                                                             │
 │ → Cannot use variable 'configurationParameterA', it isn't defined in the       │
 │   current scope.                                                               │
-│   Perhaps you mean configurationOptionA or configurationOptionB?               │
+│   Perhaps you mean 'configurationOptionA' or 'configurationOptionB'?           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ suggestion 2                                                                │
@@ -50,7 +50,7 @@ $prnt
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot use variable 'prnt', it isn't defined in the current scope.           │
-│   Perhaps you mean print?                                                      │
+│   Perhaps you mean 'print'?                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ suggestion std                                                              │

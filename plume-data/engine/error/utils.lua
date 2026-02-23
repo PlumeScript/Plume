@@ -31,7 +31,7 @@ return function(plume)
 				plume.error.addContext(node, visiblesVariables[name].node)
 			end
 
-			return string.format("\nPerhaps you mean %s?", table.concat( related, ", "):gsub(', ([^,]-)$', ' or %1'))
+			return string.format("\nPerhaps you mean '%s'?", table.concat( related, "', '"):gsub(', ([^,]-)$', ' or %1'))
 		end
 	end
 end
