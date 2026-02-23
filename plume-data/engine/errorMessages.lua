@@ -189,6 +189,10 @@ return function(plume)
 		throwSyntaxError(node, message)
 	end
 
+	function plume.error.letCompoundError(node)
+		local message = "Using let with a compound assignment."
+		throwSyntaxError(node, message)
+	end
 
 	function plume.error.malformedCodeError(node)
 		local message = "Malformed code."
