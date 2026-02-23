@@ -42,6 +42,11 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotUseSelfAsParam(node)
+		local message = "Cannot use 'self' as macro parameter.\n'self' is an implicit variable used to store the call table."
+		throwCompilationError(node, message)
+	end
+
 	function plume.error.unknownDirective(node, name)
 		local message = string.format("Cannot use directive '%s': it doesn't exist.", name)
 		throwCompilationError(node, message)
@@ -114,7 +119,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 	function plume.error.letExistingSelfVariableError(node)
-		local message = "Cannot define variable 'self', it already exists in the current scope.\nA 'self' variable is implicitly declared in macro body."
+		local message = "Cannot define variable 'self', it already exists in the current scope.\n'self' is an implicit variable used to store the call table."
 		throwCompilationError(node, message)
 	end
 

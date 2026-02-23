@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">439 passed out of 439 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">440 passed out of 440 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -7983,7 +7983,7 @@ mark
 </code></pre>
 </div>
 </details>
-<h2>macroErrors: <span style="font-weight: normal;">10 passed out of 10 tests</span></h2>
+<h2>macroErrors: <span style="font-weight: normal;">11 passed out of 11 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -8265,7 +8265,7 @@ end
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot define variable &#39;self&#39;, it already exists in the current scope.       │
-│   A &#39;self&#39; variable is implicitly declared in macro body.                      │
+│   &#39;self&#39; is an implicit variable used to store the call table.                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ overwrite self                                                              │
@@ -8544,6 +8544,42 @@ $Wings(nib: blue, wing: red)
 │    2 │end                                                                      │
 │    3 │$Wings(nib: blue, wing: red)                                             │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use self as param <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(self)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use &#39;self&#39; as macro parameter.                                        │
+│   &#39;self&#39; is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use self as param                                                           │
+│    1 │macro wing(self)                                                         │
+│      │           ^^^^                                                          │
+│    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>

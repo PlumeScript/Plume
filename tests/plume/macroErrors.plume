@@ -217,7 +217,7 @@ end
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot define variable 'self', it already exists in the current scope.       │
-│   A 'self' variable is implicitly declared in macro body.                      │
+│   'self' is an implicit variable used to store the call table.                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ overwrite self                                                              │
@@ -225,6 +225,24 @@ end
 │    2 │  let self                                                               │
 │      │  ^^^^^^^^                                                               │
 │    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test use self as param
+macro wing(self)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use 'self' as macro parameter.                                        │
+│   'self' is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use self as param                                                           │
+│    1 │macro wing(self)                                                         │
+│      │           ^^^^                                                          │
+│    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

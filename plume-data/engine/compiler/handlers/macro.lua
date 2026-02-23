@@ -82,6 +82,10 @@ return function (plume, context, nodeHandlerTable)
 				local paramBody     = plume.ast.get(paramNode, "BODY")
 				local param         = context.registerVariable(paramNameNode, paramName)
 
+				if paramName == "self" then
+					plume.error.cannotUseSelfAsParam(paramNameNode)
+				end
+
 				if paramBody then
 					if macroObj.variadicOffset then
 						plume.error.cannotAddNamedAfterVariadic(paramNode)
