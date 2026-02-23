@@ -86,7 +86,7 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
-				rvar, definitionVar = context.registerVariable(node, name, isConst, isParam, nil, nil, nil, isContext)
+				rvar, definitionVar = context.registerVariable(node, name, {isConst=isConst, isParam=isParam, isContext=isContext})
 				if not rvar then
 					if definitionVar.isSelf then
 						plume.error.letExistingSelfVariableError(node)

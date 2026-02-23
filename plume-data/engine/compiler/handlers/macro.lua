@@ -115,7 +115,7 @@ return function (plume, context, nodeHandlerTable)
 			-- is a reference to this table.
 			-- Else is empty
 			if not context.getVariable("self", true) then
-				local param = context.registerVariable(nil, "self", nil, nil, nil, nil, nil, nil, true)
+				local param = context.registerVariable(nil, "self", {isSelf=true})
 				macroObj.namedParamCount = macroObj.namedParamCount+1
 				macroObj.namedParamOffset.self = param.offset
 			end

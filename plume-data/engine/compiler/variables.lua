@@ -180,17 +180,21 @@ return function (plume, context)
 	--- Register a variable by its name in the local scope
 	--- @param node node Emitting node
 	--- @param name string The name of the variable.
-	--- @param isConst boolean Flag to prevent future edits.
-	--- @param isParam boolean True if it should be initialized by the calling script.
-	--- @param source string|nil The path to the file if imported via `use`.
-	--- @param isRef boolean True if it is a reference to a table field
-	--- @param ref string If isRef, name of the key ref
-	--- @param isContext boolean
-	--- @param isSelf boolean
+	--- @param options table
+	--- 	@field isConst boolean Flag to prevent future edits.
+	--- 	@field isParam boolean True if it should be initialized by the calling script.
+	--- 	@field source string|nil The path to the file if imported via `use`.
+	--- 	@field isRef boolean True if it is a reference to a table field
+	--- 	@field ref string If isRef, name of the key ref
+	--- 	@field isContext boolean
+	--- 	@field isSelf boolean
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
-	function context.registerVariable(node, name, isConst, isParam, source, isRef, ref, isContext, isSelf)
+	function context.registerVariable(node, name, options)
+		-- , isConst, isParam, source, isRef, ref, isContext, isSelf
 		local scope
 		scope = context.getCurrentScope()
+
+		options = options or {}
 
 		if scope[name] then
 			return nil, scope[name]
@@ -202,20 +206,20 @@ return function (plume, context)
 
 		scope[name] = {
 			offset    = #scope, -- Used by opcodes GET_LOCAL / SET_LOCAL to use the correct frame
-			isConst   = isConst,
-			isRef     = isRef,
-			source    = source,
-			isContext = isContext,
-			isSelf    = isSelf,
+			isConst   = options.isConst,
+			isRef     = options.isRef,
+			source    = options.source,
+			isContext = options.isContext,
+			isSelf    = options.isSelf,
 			node      = node,
-			ref       = ref
+			ref       = options.ref
 		}
 
-		if isRef then
+		if options.isRef then
 			scope[name].blockOffset = context.accBlockDeep
 		end
 
-		if isParam then
+		if options.isParam then
 			-- Files parameters are always named.
 			context.chunk.namedParamCount = context.chunk.namedParamCount+1
 			context.chunk.namedParamOffset[name] = #scope
