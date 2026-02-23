@@ -21,7 +21,7 @@ return function (plume, context, nodeHandlerTable)
 		local varName = node.content
 		local var, ref = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariableError(node, varName, ref)
+			plume.error.useUnknownVariableError(node, varName, ref, context.getAllVisiblesVariables())
 		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
@@ -97,7 +97,7 @@ return function (plume, context, nodeHandlerTable)
 			else
 				rvar, ref = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknownVariableError(node, name, ref)
+					plume.error.setUnknownVariableError(node, name, ref, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariableError(node, name, source, rvar.node)
 				elseif rvar.isContext then

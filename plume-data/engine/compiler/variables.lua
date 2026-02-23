@@ -228,4 +228,16 @@ return function (plume, context)
 		return scope[name]
 	end
 
+	function context.getAllVisiblesVariables()
+		local result = {}
+    	for i=#context.scopes, 1, -1 do
+			local current = context.scopes[i]
+			for k, v in pairs(current) do
+				if not tonumber(k) and not result[k] then
+					result[k] = v
+				end
+			end
+		end
+		return result
+    end
 end
