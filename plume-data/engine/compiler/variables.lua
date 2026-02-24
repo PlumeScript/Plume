@@ -270,6 +270,13 @@ return function (plume, context)
     					var.node, {381, 382}
     				)
     			end
+    			if not var.used then
+    				plume.warning.throwWarning(
+    					"Never used variables.",
+    					"Consider removing them.",
+    					var.node, {381, 473}
+    				)
+    			end
     		end
     	end
     end

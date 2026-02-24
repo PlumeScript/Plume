@@ -23,6 +23,9 @@ return function (plume, context, nodeHandlerTable)
 		if not var then
 			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables())
 		end
+		if var.source then
+			var.source.used = true
+		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
 			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
