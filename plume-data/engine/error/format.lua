@@ -189,7 +189,7 @@ return function(plume)
 			end
 		end
 		for i, infos in ipairs(plume.warning.cache) do
-			warningInfos = {message=infos.message, help=infos.help}
+			warningInfos = {message=infos.message, help=infos.help, issues=infos.issues}
 			for j, node in ipairs(infos.nodes) do
 				table.insert(warningInfos, plume.error.getNodeLinesContext(node, false, false))
 				nodesInfos.warnings.count = nodesInfos.warnings.count + 1
@@ -299,7 +299,15 @@ return function(plume)
 			table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
 
 			for i, warningInfos in ipairs(nodesInfos.warnings) do
-				makeLine{string.format("→ WARNING %i (%i occurrences)", i, #warningInfos),  indent=HEADER_INDENT}
+				makeLine{
+					string.format("→ WARNING %i (%i occurrences, issue%s %s)",
+						i,
+						#warningInfos,
+						#warningInfos.issues>1 and "s" or "",
+						table.concat(warningInfos.issues, ", ")
+					),
+					indent=HEADER_INDENT
+				}
 				makeLine{"! "..warningInfos.message,  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
 				if warningInfos.help then
 					makeLine{"(i) " .. warningInfos.help:gsub('^%s*', ''),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}

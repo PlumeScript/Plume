@@ -40,7 +40,7 @@ return function (plume)
 	    end
 
 	    if not plume.warning.cache[msg] then
-	    	table.insert(plume.warning.cache, {nodes={}, message=msg, help=help})
+	    	table.insert(plume.warning.cache, {nodes={}, message=msg, help=help, issues=issues})
 	       	plume.warning.cache[msg] = #plume.warning.cache
 	    end
 
@@ -66,13 +66,7 @@ return function (plume)
 
 	local function deprecatedMessage(version, description, help, issues)
 		help = "  "..help:gsub('\n', '\n  ')
-	    local issueLabel = ""
-	    if #issues > 1 then
-	    	issueLabel = "(Issues " .. table.concat(issues, ", ") .. ")"
-	    elseif #issues == 1 then
-	    	issueLabel = "(Issue " .. issues[1] .. ")"
-	    end
-	    return string.format("%s will be removed in version %s %s.", description, version, issueLabel), help
+	    return string.format("%s will be removed in version %s.", description, version), help
 	end
 
 	--- Emits a deprecation warning for features scheduled for removal.
