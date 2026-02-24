@@ -63,7 +63,9 @@ return function (plume, context, nodeHandlerTable)
 			local condition = branchs[i+1]
 			context.registerLabel(node, "branch_"..i.."_"..uid)
 			if condition then
+				context.toggleConcatOff()
 				context.childrenHandler(condition)
+				context.toggleConcatPop()
 				context.registerGoto(node, "branch_"..(i+2).."_"..uid, "JUMP_IF_NOT")
 			end
 			if body.type == "TEXT" then

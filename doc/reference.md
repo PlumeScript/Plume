@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version 1.0.beta.7_
+_For version 1.0.beta.8_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -158,6 +158,13 @@ If multiple variables are provided (e.g., `for x, y in list`), Plume expects eac
 *   An error is raised if the sub-table has fewer items than the number of declared variables.
 
 See the **Iterators** section for how iterables works.
+
+You can use the underscore `_` to ignore loop variables.
+```plume
+for _, _, _ in seq(1, 3) // The last '_' overwrites the previous ones
+    // Code
+end
+```
 
 #### `while`
 Executes a block of code as long as a condition is true.
@@ -372,6 +379,10 @@ Declares one or more variables without assigning values immediately. They are in
 let x, y, z
 // x, y, and z are defined and set to empty
 ```
+
+It is forbidden to declare a variable twice within the same scope.
+
+*Exception*: The underscore character `_` is reserved for unused loop variables in `for` loops. While `for i, i in ...` is invalid, `for _, _ in ...` is valid. The last `_` will overwrite the previous ones.
 
 **2. Positional Destructuring (`=`)**
 Assigns values based on the result of an expression.
@@ -869,6 +880,14 @@ use mylib
     *   **Exemples**
         *   `use #warning(mode: ignore)` suppresses all warnings
         *   `use #warning(mode: strict, issues: 75 76)` raises an error at the first warning related to issues #75 or #76
+*   **devWarnings**
+    *   Shorcut for `#warning(mode: normal, issues: 381)`.
+    *   Enable warnings about non-const never-modified variables (#381, #382) and never used variables (#381, #473).
+    *   **Options**
+        *   `mode: strict`: the first warning encountered raises an error
+    *   **Exemples**
+        *   `use #devWarnings`
+        *   `use #devWarnings(mode: strict)`
 *   **context**
     Pushes context variables onto the stack for the entire file scope. This is syntactic sugar for a `with` block wrapping the whole file.
     

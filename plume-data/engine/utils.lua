@@ -186,9 +186,9 @@ return function (plume)
 					node.type = "TEXT"
 				elseif childType ~= "EMPTY" and node.type ~= childType then
 					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==1 then
-						plume.error.mixedBlockErrorInsideIf(child, node.type, childType, node.parent.name)
+						plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
 					else
-						plume.error.mixedBlockError(child, node.type, childType)
+						plume.error.mixedBlock(child, node.type, childType)
 					end
 				end
 			end

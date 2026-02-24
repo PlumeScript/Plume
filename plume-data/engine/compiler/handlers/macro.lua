@@ -52,9 +52,9 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
 
 		if macroName then
-			local variable = context.registerVariable(nil, macroName)
+			local variable = context.registerVariable(node, macroName)
 			if not variable then
-				plume.error.letExistingVariableError(node, macroName, context.getNameSource(macroName))
+				plume.error.letExistingVariable(node, macroName, context.getNameSource(macroName))
 			end
 			
 			context.registerOP(macroIdentifier, plume.ops.STORE_LOCAL, 0, variable.offset)
@@ -81,6 +81,10 @@ return function (plume, context, nodeHandlerTable)
 				local variadic      = plume.ast.get(paramNode, "VARIADIC")
 				local paramBody     = plume.ast.get(paramNode, "BODY")
 				local param         = context.registerVariable(paramNameNode, paramName)
+
+				if paramName == "self" then
+					plume.error.cannotUseSelfAsParam(paramNameNode)
+				end
 
 				if paramBody then
 					if macroObj.variadicOffset then
@@ -111,7 +115,7 @@ return function (plume, context, nodeHandlerTable)
 			-- is a reference to this table.
 			-- Else is empty
 			if not context.getVariable("self", true) then
-				local param = context.registerVariable(nil, "self")
+				local param = context.registerVariable(nil, "self", {isSelf=true})
 				macroObj.namedParamCount = macroObj.namedParamCount+1
 				macroObj.namedParamOffset.self = param.offset
 			end

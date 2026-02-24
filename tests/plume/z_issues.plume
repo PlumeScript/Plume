@@ -505,3 +505,19 @@ end
 table
 table
 /// End
+
+/// Test #476
+use #context(locale: fr)
+wing
+if lua.math.random()>2
+end
+/// Output
+wing
+/// End
+
+/// Test #479
+macro Wing(?deg)
+end
+$Wing(?deg )
+/// Output
+/// End

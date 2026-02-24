@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">438 passed out of 438 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">451 passed out of 451 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -4916,7 +4916,7 @@ Nib
 </code></pre>
 </div>
 </details>
-<h2>errors: <span style="font-weight: normal;">26 passed out of 26 tests</span></h2>
+<h2>errors: <span style="font-weight: normal;">27 passed out of 27 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -5247,7 +5247,7 @@ $t[3]
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> Invalid key (int) <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> Invalid key (int 1) <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -5280,10 +5280,59 @@ $t[3]
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Invalid index &#39;3&#39;.                                                           │
+│   The largest index in this table is 2.                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int)                                                           │
+│  ↳ Invalid key (int 1)                                                         │
 │    1 │let t = $table(nib, quill)                                               │
+│    2 │$t[3]                                                                    │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Invalid key (int 2) <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $table(nib: quill)
+$t[3]
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(nib: quill)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(nib: quill)</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [3]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Invalid index &#39;3&#39;.                                                           │
+│   This table does not include any numerical indexes.                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Invalid key (int 2)                                                         │
+│    1 │let t = $table(nib: quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
 │                                                                                │
@@ -5301,7 +5350,7 @@ $t[3]
 <h4>Code</h4>
 <pre><code class="language-plume">
 let t = $table(wing: 5)
-$t.nib
+$t.wng
 
 </code></pre>
 </div>
@@ -5316,9 +5365,9 @@ $t.nib
 <span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; table</span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(wing: 5)</span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; wng</span>
 <span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .nib</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .wng</span>
 <span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
@@ -5326,12 +5375,13 @@ $t.nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unregistered key &#39;nib&#39;.                                                      │
+│ → Unregistered key &#39;wng&#39;.                                                      │
+│   Perhaps you mean &#39;wing&#39;?                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (string)                                                        │
 │    1 │let t = $table(wing: 5)                                                  │
-│    2 │$t.nib                                                                   │
+│    2 │$t.wng                                                                   │
 │      │  ^^^^                                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -7420,7 +7470,7 @@ $index($t, red)
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; index</span>
 <span class="bc-line-num">011</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; index</span>
 <span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; index</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 48</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 47</span>
 <span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
 <span class="bc-line-num">015</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; seq(1, len(t))</span>
 <span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; 1</span>
@@ -7435,32 +7485,31 @@ $index($t, red)
 <span class="bc-line-num">025</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for i in seq(1, len(t))[...]</span>
 <span class="bc-line-num">026</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for i in seq(1, len(t))[...]</span>
 <span class="bc-line-num">027</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for i in seq(1, len(t))[...]</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 45</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 44</span>
 <span class="bc-line-num">029</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
 <span class="bc-line-num">030</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
 <span class="bc-line-num">031</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
 <span class="bc-line-num">032</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">2 1</span> <span class="bc-info">; t</span>
 <span class="bc-line-num">033</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [i]</span>
-<span class="bc-line-num">034</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t[i]</span>
-<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">2 2</span> <span class="bc-info">; y</span>
-<span class="bc-line-num">036</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t[i] == y</span>
-<span class="bc-line-num">037</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 42</span>
-<span class="bc-line-num">038</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">039</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i</span>
-<span class="bc-line-num">040</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 46</span>
-<span class="bc-line-num">041</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 43</span>
-<span class="bc-line-num">042</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 43</span>
-<span class="bc-line-num">043</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">044</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 28</span>
-<span class="bc-line-num">045</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">046</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">047</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro index(t, y)[...]</span>
-<span class="bc-line-num">048</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; index($t, red)</span>
-<span class="bc-line-num">049</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">050</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; red</span>
-<span class="bc-line-num">051</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; index</span>
-<span class="bc-line-num">052</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; index($t, red)</span>
-<span class="bc-line-num">053</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">034</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">2 2</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t[i] == y</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 41</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; i</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 45</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 42</span>
+<span class="bc-line-num">041</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 42</span>
+<span class="bc-line-num">042</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">043</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 28</span>
+<span class="bc-line-num">044</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">045</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">046</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro index(t, y)[...]</span>
+<span class="bc-line-num">047</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; index($t, red)</span>
+<span class="bc-line-num">048</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">049</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; red</span>
+<span class="bc-line-num">050</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; index</span>
+<span class="bc-line-num">051</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; index($t, red)</span>
+<span class="bc-line-num">052</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
@@ -7983,7 +8032,7 @@ mark
 </code></pre>
 </div>
 </details>
-<h2>macroErrors: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
+<h2>macroErrors: <span style="font-weight: normal;">11 passed out of 11 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -8235,6 +8284,44 @@ $Wings(paint, write)
 │    2 │end                                                                      │
 │    3 │$Wings(paint, write)                                                     │
 │      │ ^^^^^^^^^^^^^^^^^^^                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> overwrite self <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing()
+  let self
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot define variable &#39;self&#39;, it already exists in the current scope.       │
+│   &#39;self&#39; is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ overwrite self                                                              │
+│    1 │macro wing()                                                             │
+│    2 │  let self                                                               │
+│      │  ^^^^^^^^                                                               │
+│    3 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -8506,6 +8593,42 @@ $Wings(nib: blue, wing: red)
 │    2 │end                                                                      │
 │    3 │$Wings(nib: blue, wing: red)                                             │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use self as param <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(self)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use &#39;self&#39; as macro parameter.                                        │
+│   &#39;self&#39; is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use self as param                                                           │
+│    1 │macro wing(self)                                                         │
+│      │           ^^^^                                                          │
+│    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -14668,8 +14791,200 @@ AZ5AB
 </code></pre>
 </div>
 </details>
-<h2>syntaxErrors: <span style="font-weight: normal;">18 passed out of 18 tests</span></h2>
+<h2>suggestions: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let variableName = wing
+$variableNam
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;variableNam&#39;, it isn&#39;t defined in the current scope.    │
+│   Perhaps you mean &#39;variableName&#39;?                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion 1                                                                │
+│    2 │$variableNam                                                             │
+│      │ ^^^^^^^^^^^                                                             │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let variableName = wing                                                  │
+│      │^^^^^^^^^^^^^^^^^^^^^^^                                                  │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let configurationOptionA = wing
+let configurationOptionB = nib
+$configurationParameterA
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;configurationParameterA&#39;, it isn&#39;t defined in the       │
+│   current scope.                                                               │
+│   Perhaps you mean &#39;configurationOptionA&#39; or &#39;configurationOptionB&#39;?           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion 2                                                                │
+│    3 │$configurationParameterA                                                 │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let configurationOptionA = wing                                          │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │let configurationOptionB = nib                                           │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion std <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$prnt
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;prnt&#39;, it isn&#39;t defined in the current scope.           │
+│   Perhaps you mean &#39;print&#39;?                                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion std                                                              │
+│    1 │$prnt                                                                    │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<h2>syntaxErrors: <span style="font-weight: normal;">23 passed out of 23 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Missing closing bracket 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing()
+end
+
+$wing(
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing &#39;)&#39; to close arguments list.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Missing closing bracket 1                                                   │
+│    2 │end                                                                      │
+│    4 │$wing(                                                                   │
+│      │      ^                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Missing closing bracket 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing()
+end
+
+$wing(a, b, c:d
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing &#39;)&#39; to close arguments list.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Missing closing bracket 2                                                   │
+│    2 │end                                                                      │
+│    4 │$wing(a, b, c:d                                                          │
+│      │               ^                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
 <details>
 <summary>
 <span class="status-icon status-pass">✓</span> empty eval 1 <em style='font-weight: normal'></em>
@@ -14697,7 +15012,7 @@ $()
 │                                                                                │
 │  ↳ empty eval 1                                                                │
 │    1 │$()                                                                      │
-│      │  ^                                                                      │
+│      │ ^^                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -14730,7 +15045,7 @@ $(
 │                                                                                │
 │  ↳ empty eval 2                                                                │
 │    1 │$(                                                                       │
-│      │                                                                         │
+│      │ ^                                                                       │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -14936,7 +15251,7 @@ end
 │                                                                                │
 │  ↳ missing condition 1                                                         │
 │    1 │if                                                                       │
-│      │                                                                         │
+│      │  ^^^                                                                    │
 │    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -14973,8 +15288,43 @@ end
 │  ↳ missing condition 2                                                         │
 │    1 │if true                                                                  │
 │    2 │elseif                                                                   │
-│      │                                                                         │
+│      │      ^^^                                                                │
 │    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> missing condition 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+while
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing condition.                                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ missing condition 3                                                         │
+│    1 │while                                                                    │
+│      │     ^^^                                                                 │
+│    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -15172,12 +15522,12 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Missing iterator.                                                            │
+│ → Missing for iterator.                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing iterator                                                            │
 │    1 │for x in                                                                 │
-│      │     ^^^                                                                 │
+│      │        ^^^                                                              │
 │    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -15207,12 +15557,12 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Missing iterator.                                                            │
+│ → Missing for variable.                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ missing loop identifier                                                     │
 │    1 │for in t                                                                 │
-│      │      ^^                                                                 │
+│      │   ^                                                                     │
 │    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -15281,7 +15631,78 @@ $(1
 │                                                                                │
 │  ↳ non closed eval                                                             │
 │    1 │$(1                                                                      │
-│      │                                                                         │
+│      │   ^                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use with dynamic arguments <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use lib(param:$(1+1))
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The arguments of &#39;use&#39; are read at compile time and must therefore be        │
+│   plain text.                                                                  │
+│   To import &#39;lib&#39; with dynamic parameters, use instead:                        │
+│       |let lib = $import(lib, param: $(1+1))                                   │
+│       |...                                                                     │
+│       |$lib.someMethod()                                                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use with dynamic arguments                                                  │
+│    1 │use lib(param:$(1+1))                                                    │
+│      │               ^^^^^                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use with positional arguments <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use lib(param: value, positional)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → &#39;use&#39; does not accept positional arguments.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use with positional arguments                                               │
+│    1 │use lib(param: value, positional)                                        │
+│      │                      ^^^^^^^^^^                                         │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -18457,7 +18878,7 @@ let if = 5
 </code></pre>
 </div>
 </details>
-<h2>z_issues: <span style="font-weight: normal;">45 passed out of 45 tests</span></h2>
+<h2>z_issues: <span style="font-weight: normal;">47 passed out of 47 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -19681,9 +20102,9 @@ $Wing( ?optn)
 <span class="bc-line-num">025</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing(?optn)</span>
 <span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span>
 <span class="bc-line-num">027</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing( ?optn)</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">;  ?optn</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?optn</span>
 <span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; optn</span>
-<span class="bc-line-num">030</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">;  ?optn</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?optn</span>
 <span class="bc-line-num">031</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">032</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing( ?optn)</span>
 <span class="bc-line-num">033</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing( ?optn)</span>
@@ -20572,49 +20993,48 @@ $t()$t()
 <span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
 <span class="bc-line-num">018</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib</span>
 <span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 48</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 47</span>
 <span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
 <span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; empty</span>
 <span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; y</span>
 <span class="bc-line-num">024</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; y: $empty</span>
 <span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; macro()[...]</span>
 <span class="bc-line-num">026</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 44</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 43</span>
 <span class="bc-line-num">028</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
 <span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; y</span>
 <span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; self</span>
 <span class="bc-line-num">031</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .y</span>
-<span class="bc-line-num">032</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; self.y</span>
-<span class="bc-line-num">033</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; not self.y</span>
-<span class="bc-line-num">034</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 41</span>
-<span class="bc-line-num">035</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing(self)</span>
-<span class="bc-line-num">036</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; self</span>
-<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">038</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing(self)</span>
-<span class="bc-line-num">039</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (wing(self))</span>
-<span class="bc-line-num">040</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 41</span>
-<span class="bc-line-num">041</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
-<span class="bc-line-num">042</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">043</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">044</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; call</span>
-<span class="bc-line-num">045</span> <span class="bc-opcode">TAG_META_KEY    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; meta call: macro()[...]</span>
-<span class="bc-line-num">046</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">047</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro nib()[...]</span>
-<span class="bc-line-num">048</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
-<span class="bc-line-num">049</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">050</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
-<span class="bc-line-num">051</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">052</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
-<span class="bc-line-num">053</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">054</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
-<span class="bc-line-num">055</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
-<span class="bc-line-num">056</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
-<span class="bc-line-num">057</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">058</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
-<span class="bc-line-num">059</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
-<span class="bc-line-num">060</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">061</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">062</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">032</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; not self.y</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 40</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing(self)</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; self</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing(self)</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (wing(self))</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 40</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">041</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">042</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">043</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; call</span>
+<span class="bc-line-num">044</span> <span class="bc-opcode">TAG_META_KEY    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; meta call: macro()[...]</span>
+<span class="bc-line-num">045</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">046</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro nib()[...]</span>
+<span class="bc-line-num">047</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
+<span class="bc-line-num">048</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">049</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib()</span>
+<span class="bc-line-num">050</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">051</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
+<span class="bc-line-num">052</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">053</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
+<span class="bc-line-num">054</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
+<span class="bc-line-num">055</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
+<span class="bc-line-num">056</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">057</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
+<span class="bc-line-num">058</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t()</span>
+<span class="bc-line-num">059</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">060</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">061</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
@@ -20768,6 +21188,98 @@ end
 <pre><code>
 table
 table
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #476 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use #context(locale: fr)
+wing
+if lua.math.random()&gt;2
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; lua.math.random()</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; math</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; lua</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .math</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .random</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .random</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; lua.math.random()</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; lua.math.random()&gt;2</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 20</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 20</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+wing
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #479 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wing(?deg)
+end
+$Wing(?deg )
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; ?deg</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT_EMPTY</span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_FALSE      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?deg</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; ?deg</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing(?deg)[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing(?deg )</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?deg</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; deg</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?deg</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing(?deg )</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+
 </code></pre>
 </div>
 </details>

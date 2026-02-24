@@ -171,32 +171,52 @@ $t[empty]
 
 /// Test Invalid key (string)
 let t = $table(wing: 5)
-$t.nib
+$t.wng
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unregistered key 'nib'.                                                      │
+│ → Unregistered key 'wng'.                                                      │
+│   Perhaps you mean 'wing'?                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (string)                                                        │
 │    1 │let t = $table(wing: 5)                                                  │
-│    2 │$t.nib                                                                   │
+│    2 │$t.wng                                                                   │
 │      │  ^^^^                                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test Invalid key (int)
+/// Test Invalid key (int 1)
 let t = $table(nib, quill)
 $t[3]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Invalid index '3'.                                                           │
+│   The largest index in this table is 2.                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int)                                                           │
+│  ↳ Invalid key (int 1)                                                         │
 │    1 │let t = $table(nib, quill)                                               │
+│    2 │$t[3]                                                                    │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Invalid key (int 2)
+let t = $table(nib: quill)
+$t[3]
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Invalid index '3'.                                                           │
+│   This table does not include any numerical indexes.                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Invalid key (int 2)                                                         │
+│    1 │let t = $table(nib: quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
 │                                                                                │

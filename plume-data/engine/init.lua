@@ -1,5 +1,5 @@
 --[[
-Plume🪶 1.0.beta.7
+Plume🪶 1.0.beta.8
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
@@ -20,9 +20,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 local plume = {}
 
-require 'plume-data/engine/debug_tools' (plume)
-require 'plume-data/engine/error'         (plume)
-require 'plume-data/engine/errorMessages' (plume)
+require 'plume-data/engine/debug_tools'   (plume)
+require 'plume-data/engine/error/core'    (plume)
 require 'plume-data/engine/warning'       (plume)
 require 'plume-data/engine/utils'         (plume)
 require 'plume-data/engine/objects'       (plume)
@@ -55,7 +54,11 @@ end
 function plume.execute(code, filename, chunk, runtime, fileParams)
 	plume.lastErrorInfos = nil
 	plume.warning.cache = {}
-	plume.warning.mode = {default="normal"}
+	plume.warning.any = false
+	plume.warning.mode = {
+		default="normal",
+		["381"]="ignore" -- helper warnings
+	}
 
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)

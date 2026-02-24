@@ -21,7 +21,10 @@ return function (plume, context, nodeHandlerTable)
 		local varName = node.content
 		local var, ref = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariableError(node, varName, ref)
+			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables())
+		end
+		if var.source then
+			var.source.used = true
 		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
@@ -47,7 +50,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isFrom boolean If using object destructuring
 	--- @param isContext boolean True if a bind to context
 	--- @return table rvar The resolved variable object containing scope information and metadata
-	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext)
+	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext, isLoopVariable)
 		local rvar, isRef
 		
 		----------------------------------------------------------
@@ -86,18 +89,22 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
-				rvar, definitionNode = context.registerVariable(node, name, isConst, isParam, nil, nil, nil, isContext)
+				rvar, definitionVar = context.registerVariable(node, name, {isConst=isConst, isParam=isParam, isContext=isContext, isLoopVariable=isLoopVariable})
 				if not rvar then
-					plume.error.letExistingVariableError(node, name, source, definitionNode)
+					if definitionVar.isSelf then
+						plume.error.letExistingSelfVariable(node)
+					else
+						plume.error.letExistingVariable(node, name, source, definitionVar.node)
+					end
 				end
 			else
 				rvar, ref = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknownVariableError(node, name, ref)
+					plume.error.setUnknownVariable(node, name, ref, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then
-					plume.error.setConstantVariableError(node, name, source, rvar.node)
+					plume.error.setConstantVariable(node, name, source, rvar.node)
 				elseif rvar.isContext then
-					plume.error.setContextVariableError(node, name)
+					plume.error.setContextVariable(node, name)
 				end
 			end
 			rvar.key = key
@@ -131,7 +138,7 @@ return function (plume, context, nodeHandlerTable)
 					context.toggleConcatPop()
 				end
 			else
-				plume.error.cannotSetCallError(node)
+				plume.error.cannotSetCall(node)
 			end
 		end
 
@@ -157,7 +164,7 @@ return function (plume, context, nodeHandlerTable)
 		local dest = #varlist > 1
 
 		if dest and compound then
-			plume.error.compoundWithDestructionError(node)
+			plume.error.compoundWithDestruction(node)
 		end
 
 		-- Generate RHS code
@@ -215,6 +222,10 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(nil, plume.ops.TABLE_INDEX)
 			end
 
+			if not isLet and var.source then
+				var.source.modified = true
+			end
+
 			-- Final storage of the value
 			if var.getKey then
 				var.getKey()
@@ -244,37 +255,50 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node table The current AST node
 	--- @param nodevarlist table The list of variable nodes from the AST
 	--- @param body table The RHS expression node
-	--- @param isLet boolean True if it's a declaration
-	--- @param isConst boolean True if it's a constant 
-	--- @param isParam boolean True if it's a parameter
-	--- @param isFrom boolean True if using object destructuring
-	--- @param compound table Compound operator node
-	--- @param isBodyStacked boolean True if value is already on stack
-	--- @param isContext boolean True if a bind to context
-	function context.affectation(node, nodevarlist, body, isLet, isConst, isParam, isFrom, compound, isBodyStacked, isContext)
+	--- @param options table
+	--- 	@field isLet boolean True if it's a declaration
+	--- 	@field isConst boolean True if it's a constant 
+	--- 	@field isParam boolean True if it's a parameter
+	--- 	@field isFrom boolean True if using object destructuring
+	--- 	@field compound table Compound operator node
+	--- 	@field isBodyStacked boolean True if value is already on stack
+	--- 	@field isContext boolean True if a bind to context
+	--- 	@field isLoopVariable boolean True
+	function context.affectation(node, nodevarlist, body, options)
 		local varlist = {}
 
-		if isContext then
-			if isConst then
-				plume.error.cannotMixContextConstError(node)
+		if options.isContext then
+			if options.isConst then
+				plume.error.cannotMixContextConst(node)
 			end
-			if isParam then
-				plume.error.cannotMixContextParamtError(node)
+			if options.isParam then
+				plume.error.cannotMixContextParamt(node)
 			end
 		end
 		
 		-- Phase 1: Preparation
 		for _, varNode in ipairs(nodevarlist.children) do
-			local rvar = resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext)
+			local parentNode = node
+			if options.isLoopVariable or #nodevarlist.children>1 then
+				parentNode = varNode
+			end
+			local rvar = resolveAssignmentTarget(parentNode, varNode, options.isLet, options.isConst, options.isParam, options.isFrom, options.isContext, options.isLoopVariable)
 			table.insert(varlist, rvar)
 		end
 
 		-- Phase 2: Bytecode generation
-		generateAssignmentBytecode(node, varlist, body, isLet, isParam, isFrom, compound, isBodyStacked, isContext)
+		generateAssignmentBytecode(node, varlist, body,
+			options.isLet,
+			options.isParam,
+			options.isFrom,
+			options.compound,
+			options.isBodyStacked,
+			options.isContext
+		)
 
 		-- Validation check for empty constants
-		if isConst and isLet and not isParam and not (body or isBodyStacked) then
-			plume.error.letEmptyConstantError(node)
+		if options.isConst and options.isLet and not options.isParam and not (body or options.isBodyStacked) then
+			plume.error.letEmptyConstant(node)
 		end
 	end
 
@@ -307,7 +331,14 @@ return function (plume, context, nodeHandlerTable)
 		local nodevarlist = plume.ast.get(node, "VARLIST")
 		local body        = plume.ast.get(node, "BODY")
 
-		context.affectation(node, nodevarlist, body, isLet, isConst, isParam, isFrom, compound, nil, isContext)
+		context.affectation(node, nodevarlist, body, {
+			isLet=isLet,
+			isConst=isConst,
+			isParam=isParam,
+			isFrom=isFrom,
+			compound=compound,
+			isContext=isContext
+		})
 	end
 
 	--- Entry point for declarations (LET)

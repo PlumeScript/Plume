@@ -22,7 +22,9 @@ return function (plume, context, nodeHandlerTable)
 		local uid = context.getUID()
 
 		context.registerLabel(node, "while_begin_"..uid)
+		context.toggleConcatOff()
 		context.childrenHandler(condition)
+		context.toggleConcatPop()
 		context.registerGoto(node, "while_end_"..uid, "JUMP_IF_NOT")
 
 		table.insert(context.loops, {begin_label="while_begin_"..uid, end_label="while_end_"..uid}) -- Informations used by break/continue
@@ -63,14 +65,12 @@ return function (plume, context, nodeHandlerTable)
 			context.registerGoto(node, "for_end_"..uid, "FOR_ITER", 1) -- Call iterator to get next(s) value(s)
 
 			context.scope(function(body)
-				context.affectation(node, varlist, -- Store returned value(s) into var(s)
-					nil,   -- body
-					true,  -- isLet
-					false, -- isConst
-					false, -- isParam
-					false, -- isFrom 
-					nil,   -- compound
-					true   -- isBodyStacked
+				context.affectation(node, varlist, nil,-- Store returned value(s) into var(s)
+					{
+						isLet = true,
+						isBodyStacked = true,
+						isLoopVariable = true
+					}
 				)
 				
 				table.insert(context.loops, {

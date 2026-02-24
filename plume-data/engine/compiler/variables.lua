@@ -138,7 +138,8 @@ return function (plume, context)
 						isContext   = variable.isContext,
 						isRef       = variable.isRef,
 						ref         = variable.ref,
-						node        = variable.node
+						node        = variable.node,
+						source      = variable
 					}
 				end
 
@@ -180,19 +181,25 @@ return function (plume, context)
 	--- Register a variable by its name in the local scope
 	--- @param node node Emitting node
 	--- @param name string The name of the variable.
-	--- @param isConst boolean Flag to prevent future edits.
-	--- @param isParam boolean True if it should be initialized by the calling script.
-	--- @param source string|nil The path to the file if imported via `use`.
-	--- @param isRef boolean True if it is a reference to a table field
-	--- @param ref string If isRef, name of the key ref
-	--- @param isContext booelan
+	--- @param options table
+	--- 	@field isConst boolean Flag to prevent future edits.
+	--- 	@field isParam boolean True if it should be initialized by the calling script.
+	--- 	@field source string|nil The path to the file if imported via `use`.
+	--- 	@field isRef boolean True if it is a reference to a table field
+	--- 	@field ref string If isRef, name of the key ref
+	--- 	@field isContext boolean
+	--- 	@field isSelf boolean
+	---		@field isLoopVariable boolean
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
-	function context.registerVariable(node, name, isConst, isParam, source, isRef, ref, isContext)
+	function context.registerVariable(node, name, options)
+		-- , isConst, isParam, source, isRef, ref, isContext, isSelf
 		local scope
 		scope = context.getCurrentScope()
 
-		if scope[name] then
-			return nil, scope[name].node
+		options = options or {}
+
+		if scope[name] and (name ~= "_" or not options.isLoopVariable) then
+			return nil, scope[name]
 		end
 		
 		-- Why count var by inserting empty table?
@@ -201,19 +208,21 @@ return function (plume, context)
 
 		scope[name] = {
 			offset    = #scope, -- Used by opcodes GET_LOCAL / SET_LOCAL to use the correct frame
-			isConst   = isConst,
-			isRef     = isRef,
-			source    = source,
-			isContext = isContext,
+			isConst   = options.isConst,
+			isRef     = options.isRef,
+			source    = options.source,
+			isContext = options.isContext,
+			isSelf    = options.isSelf,
 			node      = node,
-			ref       = ref
+			ref       = options.ref,
+			isLoopVariable = options.isLoopVariable
 		}
 
-		if isRef then
+		if options.isRef then
 			scope[name].blockOffset = context.accBlockDeep
 		end
 
-		if isParam then
+		if options.isParam then
 			-- Files parameters are always named.
 			context.chunk.namedParamCount = context.chunk.namedParamCount+1
 			context.chunk.namedParamOffset[name] = #scope
@@ -222,4 +231,65 @@ return function (plume, context)
 		return scope[name]
 	end
 
+	function context.getAllVisiblesVariables()
+		local result = {}
+		local passMacroScope = false
+    	for i=#context.scopes, 1, -1 do
+    		if i == context.roots[#context.roots]-1 then
+				passMacroScope = true
+			end
+			local current = context.scopes[i]
+			for k, v in pairs(current) do
+				if not tonumber(k) and not result[k] and (not passMacroScope or not v.isRef) then
+					result[k] = v
+				end
+			end
+		end
+
+		for k in pairs(plume.std) do
+			if not result[k] then
+				result[k] = {}
+			end
+		end
+
+		for k in pairs(context.importedVariables) do
+			if not result[k] then
+				result[k] = {}
+			end
+		end
+
+		return result
+    end
+
+    function context.emiVariablesUsageWarning(varList)
+
+    	for name, var in pairs(varList) do
+    		if not tonumber(name) then
+	    		if not var.isConst and not var.modified and not var.isLoopVariable then
+    				plume.warning.throwWarning(
+    					"Non-constant variables that are never modified.",
+    					"Consider making them constants.",
+    					var.node, {381, 382}
+    				)
+    			end
+    			if not var.used then
+    				if var.isLoopVariable then
+    					if name ~= "_" then
+	    					plume.warning.throwWarning(
+		    					"Never used loop variables.",
+		    					"Consider removing them or rename them '_'.",
+		    					var.node, {381, 473}
+		    				)
+		    			end
+    				else
+	    				plume.warning.throwWarning(
+	    					"Never used variables.",
+	    					"Consider removing them.",
+	    					var.node, {381, 473}
+	    				)
+	    			end
+    			end
+    		end
+    	end
+    end
 end

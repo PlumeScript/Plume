@@ -119,11 +119,7 @@ function TABLE_INDEX (vm, arg1, arg2)
                     _STACK_PUSH(vm.mainStack, meta)
                     _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
                 else
-                    if tonumber(key) then
-                        _ERROR (vm, vm.plume.error.invalidKey(key))
-                    else
-                        _ERROR (vm, vm.plume.error.unregisteredKey(key))
-                    end
+                    _ERROR (vm, vm.plume.error.unregisteredKey(t, key))
                 end
             end
         end

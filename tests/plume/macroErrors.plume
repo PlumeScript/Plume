@@ -208,3 +208,41 @@ $mark()
 │  ↳...                                                                          │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test overwrite self
+macro wing()
+  let self
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot define variable 'self', it already exists in the current scope.       │
+│   'self' is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ overwrite self                                                              │
+│    1 │macro wing()                                                             │
+│    2 │  let self                                                               │
+│      │  ^^^^^^^^                                                               │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test use self as param
+macro wing(self)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use 'self' as macro parameter.                                        │
+│   'self' is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use self as param                                                           │
+│    1 │macro wing(self)                                                         │
+│      │           ^^^^                                                          │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

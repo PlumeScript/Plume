@@ -1,0 +1,61 @@
+/// Test suggestion 1
+let variableName = wing
+$variableNam
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'variableNam', it isn't defined in the current scope.    │
+│   Perhaps you mean 'variableName'?                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion 1                                                                │
+│    2 │$variableNam                                                             │
+│      │ ^^^^^^^^^^^                                                             │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let variableName = wing                                                  │
+│      │^^^^^^^^^^^^^^^^^^^^^^^                                                  │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test suggestion 2
+let configurationOptionA = wing
+let configurationOptionB = nib
+$configurationParameterA
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'configurationParameterA', it isn't defined in the       │
+│   current scope.                                                               │
+│   Perhaps you mean 'configurationOptionA' or 'configurationOptionB'?           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion 2                                                                │
+│    3 │$configurationParameterA                                                 │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let configurationOptionA = wing                                          │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    2 │let configurationOptionB = nib                                           │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test suggestion std
+$prnt
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'prnt', it isn't defined in the current scope.           │
+│   Perhaps you mean 'print'?                                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ suggestion std                                                              │
+│    1 │$prnt                                                                    │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
