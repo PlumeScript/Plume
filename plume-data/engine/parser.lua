@@ -147,7 +147,7 @@ return function (plume)
                       --------------------------------------
                       -- WILL BE REMOVED IN 1.0 (#230, #273)
                       --------------------------------------
-                      + P"\\"*C("TEXT", P"(" + P")") * W("Starting with version 1.0.beta.5, it is no longer necessary to escape braces within a call, as long as they are paired (issue #273). This new behavior may disrupt existing code.", {230, 273})
+                      + P"\\"*C("TEXT", P"(" + P")") * W("Starting with version 1.0-beta.5, it is no longer necessary to escape bracket within a call, as long as they are paired (issue #273). This new behavior may disrupt existing code.", {230, 273})
                       --------------------------------------
                       + P"\\"*C("TEXT", P(1))
         
