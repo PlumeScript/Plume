@@ -25,12 +25,21 @@ return function(plume)
 	end
 
 	function plume.error.missingIterator(node)
-		local message = "Missing iterator."
+		local message = "Missing for iterator."
+		node.errlpos = 3 
+		node.errorepos = node.bpos + 3 -- target empty space after "in"
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.missingIteratorVariable(node)
+		local message = "Missing for variable."
+		node.errorepos = node.epos - 2 -- remove captured "in"
 		plume.error.throwSyntaxError(node, message)
 	end
 
 	function plume.error.missingCondition(node)
 		local message = "Missing condition."
+		node.errlpos = 3
 		plume.error.throwSyntaxError(node, message)
 	end
 

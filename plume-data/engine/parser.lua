@@ -285,9 +285,6 @@ return function (plume)
         -- commands --
         --------------
         -- common
-        local iterator  = s * (K"in") * s * Ct("ITERATOR", expr)
-                        + E(plume.error.missingIterator)
-        
         local condition = s * Ct("CONDITION", expr) + E(plume.error.missingCondition)
         local body      = Ct("BODY", V"statement"^0)
         local _end      = lt * K"end" + E(plume.error.missingEnd)
@@ -368,8 +365,11 @@ return function (plume)
         
         --- loops
         local forInd = letvarlist + E(plume.error.missingLoopIndentifier)
+        local iterator  = (s * forInd * s * K"in" + E(plume.error.missingIteratorVariable, os * K"in"))
+                        * (s * Ct("ITERATOR", expr) + E(plume.error.missingIterator))
+                        
         local _while = Ct("WHILE", K"while" * condition * body * _end)
-        local _for   = Ct("FOR", K"for" * s * forInd * iterator * body * _end)
+        local _for   = Ct("FOR", K"for" *  iterator * body * _end)
 
         local _break   = C("BREAK", K"break")
         local continue = C("CONTINUE", K"continue")
