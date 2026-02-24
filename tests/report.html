@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">443 passed out of 443 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">444 passed out of 444 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -4916,7 +4916,7 @@ Nib
 </code></pre>
 </div>
 </details>
-<h2>errors: <span style="font-weight: normal;">26 passed out of 26 tests</span></h2>
+<h2>errors: <span style="font-weight: normal;">27 passed out of 27 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -5247,7 +5247,7 @@ $t[3]
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> Invalid key (int) <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> Invalid key (int 1) <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -5280,10 +5280,59 @@ $t[3]
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Invalid index &#39;3&#39;.                                                           │
+│   The largest index in this table is 2.                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int)                                                           │
+│  ↳ Invalid key (int 1)                                                         │
 │    1 │let t = $table(nib, quill)                                               │
+│    2 │$t[3]                                                                    │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Invalid key (int 2) <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $table(nib: quill)
+$t[3]
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(nib: quill)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(nib: quill)</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [3]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Invalid index &#39;3&#39;.                                                           │
+│   This table does not include any numerical indexes.                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ Invalid key (int 2)                                                         │
+│    1 │let t = $table(nib: quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
 │                                                                                │
@@ -5301,7 +5350,7 @@ $t[3]
 <h4>Code</h4>
 <pre><code class="language-plume">
 let t = $table(wing: 5)
-$t.nib
+$t.wng
 
 </code></pre>
 </div>
@@ -5316,9 +5365,9 @@ $t.nib
 <span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; table</span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(wing: 5)</span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; wng</span>
 <span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .nib</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .wng</span>
 <span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
@@ -5326,12 +5375,13 @@ $t.nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unregistered key &#39;nib&#39;.                                                      │
+│ → Unregistered key &#39;wng&#39;.                                                      │
+│   Perhaps you mean &#39;wing&#39;?                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ Invalid key (string)                                                        │
 │    1 │let t = $table(wing: 5)                                                  │
-│    2 │$t.nib                                                                   │
+│    2 │$t.wng                                                                   │
 │      │  ^^^^                                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯

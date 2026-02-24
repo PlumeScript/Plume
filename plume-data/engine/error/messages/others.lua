@@ -22,16 +22,25 @@ return function(plume)
 		return "Cannot use empty as key."
 	end
 
-	function plume.error.invalidKey(key)
+	function plume.error.unregisteredKey(t, key)
 		if tonumber(key) then
-			return string.format("Invalid index '%s'.",  key)
-		else
-			return string.format("Invalid key '%s'.",  key)
-		end
-	end
+			local largestIndex = 0
+			for _, key in ipairs(t.keys) do
+				largestIndex = math.max(largestIndex, tonumber(key) or 0)
+			end
 
-	function plume.error.unregisteredKey(key)
-		return string.format("Unregistered key '%s'.",  key)
+			local hint
+			if largestIndex > 0 then
+				hint = string.format("The largest index in this table is %i.", largestIndex)
+			else
+				hint = "This table does not include any numerical indexes."
+			end
+
+			return string.format("Invalid index '%s'.\n%s",  key, hint)
+		else
+			hint = plume.error.makeVisibleKeysHint(key, t.keys)
+			return string.format("Unregistered key '%s'.%s",  key, hint)
+		end
 	end
 
 	function plume.error.cannotUseMetaKey()

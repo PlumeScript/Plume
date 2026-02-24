@@ -34,4 +34,20 @@ return function(plume)
 			return string.format("\nPerhaps you mean '%s'?", table.concat( related, "', '"):gsub(', ([^,]-)$', ' or %1'))
 		end
 	end
+
+	function plume.error.makeVisibleKeysHint(key, rawKeys)
+		local keys = {}
+		for _, key in ipairs(rawKeys) do
+			if not tonumber(key) then
+				table.insert(keys, key)
+			end
+		end
+		local related = plume.error.suggestIdentifiers(key, keys, 2, 3)
+
+		if #related == 0 then
+			return ""
+		else
+			return string.format("\nPerhaps you mean '%s'?", table.concat( related, "', '"):gsub(', ([^,]-)$', ' or %1'))
+		end
+	end
 end
