@@ -300,9 +300,10 @@ return function(plume)
 
 			for i, warningInfos in ipairs(nodesInfos.warnings) do
 				makeLine{
-					string.format("→ WARNING %i (%i occurrences, issue%s %s)",
+					string.format("→ WARNING %i (%i occurrence%s, issue%s %s)",
 						i,
 						#warningInfos,
+						#warningInfos>1 and "s" or "",
 						#warningInfos.issues>1 and "s" or "",
 						table.concat(warningInfos.issues, ", ")
 					),
