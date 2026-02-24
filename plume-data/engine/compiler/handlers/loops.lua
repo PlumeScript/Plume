@@ -66,7 +66,8 @@ return function (plume, context, nodeHandlerTable)
 				context.affectation(node, varlist, nil,-- Store returned value(s) into var(s)
 					{
 						isLet = true,
-						isBodyStacked = true
+						isBodyStacked = true,
+						isLoopVariable = true
 					}
 				)
 				

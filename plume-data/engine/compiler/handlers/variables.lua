@@ -263,6 +263,7 @@ return function (plume, context, nodeHandlerTable)
 	--- 	@field compound table Compound operator node
 	--- 	@field isBodyStacked boolean True if value is already on stack
 	--- 	@field isContext boolean True if a bind to context
+	--- 	@field isLoopVariable boolean True
 	function context.affectation(node, nodevarlist, body, options)
 		local varlist = {}
 
@@ -277,8 +278,13 @@ return function (plume, context, nodeHandlerTable)
 		
 		-- Phase 1: Preparation
 		for _, varNode in ipairs(nodevarlist.children) do
-			local rvar = resolveAssignmentTarget(node, varNode, options.isLet, options.isConst, options.isParam, options.isFrom, options.isContext)
+			local parentNode = node
+			if options.isLoopVariable or #nodevarlist.children>1 then
+				parentNode = varNode
+			end
+			local rvar = resolveAssignmentTarget(parentNode, varNode, options.isLet, options.isConst, options.isParam, options.isFrom, options.isContext)
 			table.insert(varlist, rvar)
+			rvar.isLoopVariable = options.isLoopVariable
 		end
 
 		-- Phase 2: Bytecode generation
