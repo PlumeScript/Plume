@@ -16,13 +16,13 @@ If not, see <https://www.gnu.org/licenses/>.
 return function(plume)
 	plume.error = {}
 
-	require 'plume-data/engine/error/messages'   (plume)
-	require 'plume-data/engine/error/navigation' (plume)
-	require 'plume-data/engine/error/source'     (plume)
-	require 'plume-data/engine/error/callstack'  (plume)
-	require 'plume-data/engine/error/format'     (plume) 
-	require 'plume-data/engine/error/distance'   (plume)
-	require 'plume-data/engine/error/utils'      (plume)
+	require 'plume-data/engine/error/messages/core' (plume)
+	require 'plume-data/engine/error/navigation'    (plume)
+	require 'plume-data/engine/error/source'        (plume)
+	require 'plume-data/engine/error/callstack'     (plume)
+	require 'plume-data/engine/error/format'        (plume) 
+	require 'plume-data/engine/error/distance'      (plume)
+	require 'plume-data/engine/error/utils'         (plume)
 
 	function plume.error.makeRuntimeError(runtime, ip, message)
 		local errorInfos = plume.error.getRuntimeErrorInfos(runtime, ip, message)
