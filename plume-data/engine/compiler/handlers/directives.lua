@@ -50,7 +50,7 @@ return function (plume, context, nodeHandlerTable)
 
         for _, key in ipairs(result.keys) do
 			if context.scopes[#context.scopes][key] then
-				plume.error.useExistingVariableError(pathNode, key, path)
+				plume.error.useExistingVariable(pathNode, key, path)
 			end
 			context.importedVariables[key] = result.table[key]
         end

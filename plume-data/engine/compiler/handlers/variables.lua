@@ -21,7 +21,7 @@ return function (plume, context, nodeHandlerTable)
 		local varName = node.content
 		local var, ref = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariableError(node, varName, ref, context.getAllVisiblesVariables())
+			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables())
 		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
@@ -89,19 +89,19 @@ return function (plume, context, nodeHandlerTable)
 				rvar, definitionVar = context.registerVariable(node, name, {isConst=isConst, isParam=isParam, isContext=isContext})
 				if not rvar then
 					if definitionVar.isSelf then
-						plume.error.letExistingSelfVariableError(node)
+						plume.error.letExistingSelfVariable(node)
 					else
-						plume.error.letExistingVariableError(node, name, source, definitionVar.node)
+						plume.error.letExistingVariable(node, name, source, definitionVar.node)
 					end
 				end
 			else
 				rvar, ref = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknownVariableError(node, name, ref, context.getAllVisiblesVariables())
+					plume.error.setUnknownVariable(node, name, ref, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then
-					plume.error.setConstantVariableError(node, name, source, rvar.node)
+					plume.error.setConstantVariable(node, name, source, rvar.node)
 				elseif rvar.isContext then
-					plume.error.setContextVariableError(node, name)
+					plume.error.setContextVariable(node, name)
 				end
 			end
 			rvar.key = key
@@ -135,7 +135,7 @@ return function (plume, context, nodeHandlerTable)
 					context.toggleConcatPop()
 				end
 			else
-				plume.error.cannotSetCallError(node)
+				plume.error.cannotSetCall(node)
 			end
 		end
 
@@ -161,7 +161,7 @@ return function (plume, context, nodeHandlerTable)
 		local dest = #varlist > 1
 
 		if dest and compound then
-			plume.error.compoundWithDestructionError(node)
+			plume.error.compoundWithDestruction(node)
 		end
 
 		-- Generate RHS code
@@ -260,10 +260,10 @@ return function (plume, context, nodeHandlerTable)
 
 		if isContext then
 			if isConst then
-				plume.error.cannotMixContextConstError(node)
+				plume.error.cannotMixContextConst(node)
 			end
 			if isParam then
-				plume.error.cannotMixContextParamtError(node)
+				plume.error.cannotMixContextParamt(node)
 			end
 		end
 		
@@ -278,7 +278,7 @@ return function (plume, context, nodeHandlerTable)
 
 		-- Validation check for empty constants
 		if isConst and isLet and not isParam and not (body or isBodyStacked) then
-			plume.error.letEmptyConstantError(node)
+			plume.error.letEmptyConstant(node)
 		end
 	end
 

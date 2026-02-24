@@ -54,12 +54,12 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.compoundWithDestructionError(node)
+	function plume.error.compoundWithDestruction(node)
 		local message = "Cannot use compound operator and destructuration at the same time."
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.useUnknownVariableError(node, varName, ref, visiblesVariables)
+	function plume.error.useUnknownVariable(node, varName, ref, visiblesVariables)
 		local refHint = ""
 		if ref then
 			refHint = string.format("\n'ref%s' exists in parent scope, but a ref cannot be captured by macros.", varName)
@@ -70,7 +70,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setUnknownVariableError(node, varName, ref, visiblesVariables)
+	function plume.error.setUnknownVariable(node, varName, ref, visiblesVariables)
 		local refHint = ""
 		if ref then
 			refHint = string.format("\n'ref %s' exists in parent scope, but a ref cannot be captured by macros.", varName)
@@ -81,7 +81,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setConstantVariableError(node, varName, source, definitionNode)
+	function plume.error.setConstantVariable(node, varName, source, definitionNode)
 		if source then
 			source = string.format(" (imported from '%s')", source)
 		else
@@ -92,27 +92,27 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.cannotMixContextConstError(node)
+	function plume.error.cannotMixContextConst(node)
 		local message = "Variable cannot be both const and context"
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.cannotMixContextParamError(node)
+	function plume.error.cannotMixContextParam(node)
 		local message = "Variable cannot be both param and context"
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.setContextVariableError(node, varName)
+	function plume.error.setContextVariable(node, varName)
 		local message = string.format("Cannot set variable '%s', it is a context variable. Use `with %s: value` instead.", varName, varName)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.letEmptyConstantError(node)
+	function plume.error.letEmptyConstant(node)
 		local message = string.format("Cannot define an empty constant variable.")
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.letExistingVariableError(node, varName, source, definitionNode)
+	function plume.error.letExistingVariable(node, varName, source, definitionNode)
 		if source then
 			source = string.format(" (imported from '%s')", source)
 		else
@@ -122,7 +122,7 @@ return function(plume)
 		plume.error.addContext(node, definitionNode)
 		throwCompilationError(node, message)
 	end
-	function plume.error.letExistingSelfVariableError(node)
+	function plume.error.letExistingSelfVariable(node)
 		local message = "Cannot define variable 'self', it already exists in the current scope.\n'self' is an implicit variable used to store the call table."
 		throwCompilationError(node, message)
 	end
@@ -132,7 +132,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.useExistingVariableError(node, varName, use)
+	function plume.error.useExistingVariable(node, varName, use)
 		local message = string.format("Cannot define variable '%s' from lib '%s', it already exists in the current file scope.", varName, use)
 		throwCompilationError(node, message)
 	end
@@ -142,7 +142,7 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.cannotSetCallError(node)
+	function plume.error.cannotSetCall(node)
 		local message = "Cannot set the result of a call."
 		throwCompilationError(node, message)
 	end
@@ -157,42 +157,42 @@ return function(plume)
 		throwCompilationError(node, message)
 	end
 
-	function plume.error.missingIteratorError(node)
+	function plume.error.missingIterator(node)
 		local message = "Missing iterator."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingConditionError(node)
+	function plume.error.missingCondition(node)
 		local message = "Missing condition."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingEndError(node)
+	function plume.error.missingEnd(node)
 		local message = "Missing end."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.emptyExprError(node)
+	function plume.error.emptyExpr(node)
 		local message = "Evaluation cannot be empty."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingClosingBracketError(node)
+	function plume.error.missingClosingBracket(node)
 		local message = "Missing ')' to close evaluation."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingLoopIdentifierError(node)
+	function plume.error.missingLoopIdentifier(node)
 		local message = "Missing loop identifier."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingParamListError(node)
+	function plume.error.missingParamList(node)
 		local message = "Missing parameters list."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingParamError(node)
+	function plume.error.missingParam(node)
 		local message = "Missing parameter name."
 		if node.bpos == node.epos+1 then
 			node.errorbpos = node.bpos-1
@@ -200,32 +200,32 @@ return function(plume)
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.emptySetError(node)
+	function plume.error.emptySet(node)
 		local message = "Using set without giving it a value."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.letCompoundError(node)
+	function plume.error.letCompound(node)
 		local message = "Using let with a compound assignment."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.malformedCodeError(node)
+	function plume.error.malformedCode(node)
 		local message = "Malformed code."
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.wrongIdentifierError(node, name)
+	function plume.error.wrongIdentifier(node, name)
 		local message = string.format("Cannot use '%s' as an identifier.", name)
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.mixedBlockError(node, expected, found)
+	function plume.error.mixedBlock(node, expected, found)
 		local message = string.format("Mixed block: the expected type of the block is %s, but it contains an element %s.", expected, found)
 		throwSyntaxError(node, message)
 	end
 
-	function plume.error.mixedBlockErrorInsideIf(node, expected, found, parentName)
+	function plume.error.mixedBlockInsideIf(node, expected, found, parentName)
 		local message = string.format("Mixed block: The previous branches of this if statement were of type %s, but this %s body is of type %s.\nAll branches of an if statement must be of the same type.", expected, parentName:lower(), found)
 		throwSyntaxError(node, message)
 	end
@@ -301,7 +301,7 @@ return function(plume)
 		return message
 	end
 
-	function plume.error.metaMacroWithoutNamedParameterError(name)
+	function plume.error.metaMacroWithoutNamedParameter(name)
 		return string.format("Meta-macro '%s' dont support named parameters.", name)
 	end
 
@@ -347,11 +347,11 @@ return function(plume)
 		return string.format("Error: cannot open '%s'.\nPaths tried:\n\t%s", path, table.concat(searchPaths, '\n\t'))
 	end
 
-	function plume.error.cannotConvertToStringError(x)
+	function plume.error.cannotConvertToString(x)
 		return string.format("Cannot convert the string value '%s' to a number.", plume.repr(x))
 	end
 
-	function plume.error.cannotDoArithmeticWithError(_type)
+	function plume.error.cannotDoArithmeticWith(_type)
 		return string.format("Cannot do comparison or arithmetic with a %s value.", _type)
 	end
 end

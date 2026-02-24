@@ -271,8 +271,8 @@ return function (plume)
         local expr = Ct("EXPR", genALU())
         local evalBase = Ct("EVAL", (
                   P"("
-                    * (expr + E(plume.error.emptyExprError))
-                * (P")" + E(plume.error.missingClosingBracketError))
+                    * (expr + E(plume.error.emptyExpr))
+                * (P")" + E(plume.error.missingClosingBracket))
                 + idn
             ) * V"evalOpperator"^0
         )
@@ -286,11 +286,11 @@ return function (plume)
         --------------
         -- common
         local iterator  = s * (K"in") * s * Ct("ITERATOR", expr)
-                        + E(plume.error.missingIteratorError)
+                        + E(plume.error.missingIterator)
         
-        local condition = s * Ct("CONDITION", expr) + E(plume.error.missingConditionError)
+        local condition = s * Ct("CONDITION", expr) + E(plume.error.missingCondition)
         local body      = Ct("BODY", V"statement"^0)
-        local _end      = lt * K"end" + E(plume.error.missingEndError)
+        local _end      = lt * K"end" + E(plume.error.missingEnd)
 
         -- if/elseif/else
         local _else   = Ct("ELSE", lt*K"else" * body)
@@ -308,10 +308,10 @@ return function (plume)
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"("
-                    * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParamError, os-param)))^0
+                    * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParam, os-param)))^0
                 * P")"
             )
-        local paramlistM = paramlist + E(plume.error.missingParamListError)
+        local paramlistM = paramlist + E(plume.error.missingParamList)
         local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
 
         local arg       = Ct("HASH_ITEM", os * (idn + eval) * os * P":" * os * Ct("BODY", V"textic"^-1))	
@@ -357,7 +357,7 @@ return function (plume)
         local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar)^0)
         
         local let = Ct("LET", K"let" * statconst * s * letvarlist * (
-                                  os * E(plume.error.letCompoundError, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody
+                                  os * E(plume.error.letCompound, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody
                                 + s  * C("FROM", K"from") * s * lbody
                             )^-1)
 
@@ -367,7 +367,7 @@ return function (plume)
                     ))
         
         --- loops
-        local forInd = letvarlist + E(plume.error.missingLoopIndentifierError)
+        local forInd = letvarlist + E(plume.error.missingLoopIndentifier)
         local _while = Ct("WHILE", K"while" * condition * body * _end)
         local _for   = Ct("FOR", K"for" * s * forInd * iterator * body * _end)
 
@@ -426,7 +426,7 @@ return function (plume)
             rawtextnp = C("TEXT", NOT(S"$\n)\\"+ P"//")^1),
             rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//")^1),
 
-            invalid = E(plume.error.emptySetError, K"set"),
+            invalid = E(plume.error.emptySet, K"set"),
             evalOpperator = call + index + directindex,
 
             inlinetable= inlinetable
@@ -464,7 +464,7 @@ return function (plume)
 
             if node.name == "IDENTIFIER" then
                 if not plume.checkIdentifier(node.content) then
-                    plume.error.wrongIdentifierError(node, node.content)
+                    plume.error.wrongIdentifier(node, node.content)
                 end
             end
 
@@ -476,7 +476,7 @@ return function (plume)
         plume.ast.labelMacro(ast)
 
         if pos < #code then
-            plume.error.malformedCodeError({
+            plume.error.malformedCode({
                 filename = filename,
                 code = code,
                 bpos = pos,
