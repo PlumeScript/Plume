@@ -685,11 +685,11 @@ return function (plume)
                                                 end
                                                 if expectedParamCount then
                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                        _ret71, _ret72 = false, "Wrong number of positional parameters for meta-macro '" .. name .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+                                                        _ret71, _ret72 = false, plume.error.wrongArgsCountMetaDefinition (macro, name, macro.positionalParamCount, expectedParamCount)
                                                         goto _inline_end158
                                                     end
                                                     if macro.namedParamCount > 1 then
-                                                        _ret71, _ret72 = false, "Meta-macro '" .. name .. "' dont support named parameters."
+                                                        _ret71, _ret72 = false, plume.error.metaMacroWithoutNamedParameterError (name)
                                                         goto _inline_end158
                                                     end
                                                 else
@@ -2057,7 +2057,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret230, _ret231 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret230, _ret231 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end491
                                                         end
                                                         right = tonumber (right)
@@ -2068,7 +2068,7 @@ return function (plume)
                                                             _ret230, _ret231 = _CALL (vm, meta, params)
                                                             goto _inline_end491
                                                         else
-                                                            _ret230, _ret231 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret230, _ret231 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end491
                                                         end
                                                     end
@@ -2086,7 +2086,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret227, _ret228 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret227, _ret228 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end489
                                                         end
                                                         left = tonumber (left)
@@ -2097,7 +2097,7 @@ return function (plume)
                                                             _ret227, _ret228 = _CALL (vm, meta, params)
                                                             goto _inline_end489
                                                         else
-                                                            _ret227, _ret228 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret227, _ret228 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end489
                                                         end
                                                     end
@@ -2217,7 +2217,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret245, _ret246 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret245, _ret246 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end523
                                                         end
                                                         right = tonumber (right)
@@ -2228,7 +2228,7 @@ return function (plume)
                                                             _ret245, _ret246 = _CALL (vm, meta, params)
                                                             goto _inline_end523
                                                         else
-                                                            _ret245, _ret246 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret245, _ret246 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end523
                                                         end
                                                     end
@@ -2246,7 +2246,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret242, _ret243 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret242, _ret243 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end521
                                                         end
                                                         left = tonumber (left)
@@ -2257,7 +2257,7 @@ return function (plume)
                                                             _ret242, _ret243 = _CALL (vm, meta, params)
                                                             goto _inline_end521
                                                         else
-                                                            _ret242, _ret243 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret242, _ret243 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end521
                                                         end
                                                     end
@@ -2379,7 +2379,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret260, _ret261 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret260, _ret261 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end555
                                                         end
                                                         right = tonumber (right)
@@ -2390,7 +2390,7 @@ return function (plume)
                                                             _ret260, _ret261 = _CALL (vm, meta, params)
                                                             goto _inline_end555
                                                         else
-                                                            _ret260, _ret261 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret260, _ret261 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end555
                                                         end
                                                     end
@@ -2408,7 +2408,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret257, _ret258 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret257, _ret258 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end553
                                                         end
                                                         left = tonumber (left)
@@ -2419,7 +2419,7 @@ return function (plume)
                                                             _ret257, _ret258 = _CALL (vm, meta, params)
                                                             goto _inline_end553
                                                         else
-                                                            _ret257, _ret258 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret257, _ret258 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end553
                                                         end
                                                     end
@@ -2539,7 +2539,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret275, _ret276 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret275, _ret276 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end587
                                                         end
                                                         right = tonumber (right)
@@ -2550,7 +2550,7 @@ return function (plume)
                                                             _ret275, _ret276 = _CALL (vm, meta, params)
                                                             goto _inline_end587
                                                         else
-                                                            _ret275, _ret276 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret275, _ret276 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end587
                                                         end
                                                     end
@@ -2568,7 +2568,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret272, _ret273 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret272, _ret273 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end585
                                                         end
                                                         left = tonumber (left)
@@ -2579,7 +2579,7 @@ return function (plume)
                                                             _ret272, _ret273 = _CALL (vm, meta, params)
                                                             goto _inline_end585
                                                         else
-                                                            _ret272, _ret273 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret272, _ret273 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end585
                                                         end
                                                     end
@@ -2690,7 +2690,7 @@ return function (plume)
                                                 if tx == "string" then
                                                     if not tonumber (x)
                                                      then
-                                                        _ret279, _ret280 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (x))
+                                                        _ret279, _ret280 = nil, plume.error.cannotConvertToStringError (x)
                                                         goto _inline_end592
                                                     end
                                                     x = tonumber (x)
@@ -2701,7 +2701,7 @@ return function (plume)
                                                         _ret279, _ret280 = _CALL (vm, meta, params)
                                                         goto _inline_end592
                                                     else
-                                                        _ret279, _ret280 = x, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                        _ret279, _ret280 = x, plume.error.cannotDoArithmeticWithError (tx)
                                                         goto _inline_end592
                                                     end
                                                 end
@@ -2793,7 +2793,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret299, _ret300 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret299, _ret300 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end643
                                                         end
                                                         right = tonumber (right)
@@ -2804,7 +2804,7 @@ return function (plume)
                                                             _ret299, _ret300 = _CALL (vm, meta, params)
                                                             goto _inline_end643
                                                         else
-                                                            _ret299, _ret300 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret299, _ret300 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end643
                                                         end
                                                     end
@@ -2822,7 +2822,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret296, _ret297 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret296, _ret297 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end641
                                                         end
                                                         left = tonumber (left)
@@ -2833,7 +2833,7 @@ return function (plume)
                                                             _ret296, _ret297 = _CALL (vm, meta, params)
                                                             goto _inline_end641
                                                         else
-                                                            _ret296, _ret297 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret296, _ret297 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end641
                                                         end
                                                     end
@@ -2955,7 +2955,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret314, _ret315 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret314, _ret315 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end675
                                                         end
                                                         right = tonumber (right)
@@ -2966,7 +2966,7 @@ return function (plume)
                                                             _ret314, _ret315 = _CALL (vm, meta, params)
                                                             goto _inline_end675
                                                         else
-                                                            _ret314, _ret315 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret314, _ret315 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end675
                                                         end
                                                     end
@@ -2984,7 +2984,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret311, _ret312 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret311, _ret312 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end673
                                                         end
                                                         left = tonumber (left)
@@ -2995,7 +2995,7 @@ return function (plume)
                                                             _ret311, _ret312 = _CALL (vm, meta, params)
                                                             goto _inline_end673
                                                         else
-                                                            _ret311, _ret312 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret311, _ret312 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end673
                                                         end
                                                     end
@@ -3115,7 +3115,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret329, _ret330 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (right))
+                                                            _ret329, _ret330 = nil, plume.error.cannotConvertToStringError (right)
                                                             goto _inline_end707
                                                         end
                                                         right = tonumber (right)
@@ -3126,7 +3126,7 @@ return function (plume)
                                                             _ret329, _ret330 = _CALL (vm, meta, params)
                                                             goto _inline_end707
                                                         else
-                                                            _ret329, _ret330 = right, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret329, _ret330 = right, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end707
                                                         end
                                                     end
@@ -3144,7 +3144,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret326, _ret327 = nil, string.format ("Cannot convert the string value '%s' to a number.", plume.repr (left))
+                                                            _ret326, _ret327 = nil, plume.error.cannotConvertToStringError (left)
                                                             goto _inline_end705
                                                         end
                                                         left = tonumber (left)
@@ -3155,7 +3155,7 @@ return function (plume)
                                                             _ret326, _ret327 = _CALL (vm, meta, params)
                                                             goto _inline_end705
                                                         else
-                                                            _ret326, _ret327 = left, string.format ("Cannot do comparison or arithmetic with a %s value.", tx)
+                                                            _ret326, _ret327 = left, plume.error.cannotDoArithmeticWithError (tx)
                                                             goto _inline_end705
                                                         end
                                                     end

@@ -46,10 +46,10 @@ function _META_CHECK (vm, name, obj)
 
 	if expectedParamCount then
 		if macro.positionalParamCount ~= expectedParamCount then
-			return false, "Wrong number of positional parameters for meta-macro '" .. name .. "', " .. macro.positionalParamCount .. " instead of " .. expectedParamCount .. "."
+			return false, vm.plume.error.wrongArgsCountMetaDefinition(macro, name, macro.positionalParamCount, expectedParamCount)
 		end
 		if macro.namedParamCount > 1 then -- 1 for self
-			return false, "Meta-macro '" .. name .. "' dont support named parameters."
+			return false, vm.plume.error.metaMacroWithoutNamedParameterError(name)
 		end
 	else
 		return _META_CHECK_NAME(vm, name)

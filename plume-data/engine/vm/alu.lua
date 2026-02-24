@@ -23,7 +23,7 @@ function _CHECK_NUMBER_META (vm, x)
     local nx
     if tx  == "string" then
         if not tonumber(x) then
-            return nil, string.format("Cannot convert the string value '%s' to a number.", vm.plume.repr(x))
+            return nil, vm.plume.error.cannotConvertToStringError(x)
         end
         x = tonumber(x)
     elseif tx  ~= "number" then
@@ -32,7 +32,7 @@ function _CHECK_NUMBER_META (vm, x)
             local params = {}
             return _CALL (vm, meta, params)
         else
-            return x, string.format("Cannot do comparison or arithmetic with a %s value.", tx)
+            return x, vm.plume.error.cannotDoArithmeticWithError(tx)
         end
     end
     return x

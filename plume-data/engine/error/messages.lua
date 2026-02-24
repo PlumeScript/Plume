@@ -293,6 +293,18 @@ return function(plume)
 		end
 	end
 
+	function plume.error.wrongArgsCountMetaDefinition(macro, macroName, argCount, expectedArgsCount)
+		local message = string.format(
+			"Wrong number of positional parameters for meta-macro '%s', %s instead of %s.",
+			macroName, argCount, expectedArgsCount
+		)
+		return message
+	end
+
+	function plume.error.metaMacroWithoutNamedParameterError(name)
+		return string.format("Meta-macro '%s' dont support named parameters.", name)
+	end
+
 	function plume.error.stackOverflow()
 		return "Stack overflow"
 	end
@@ -333,5 +345,13 @@ return function(plume)
 
 	function plume.error.cannotOpenFile(path, searchPaths)
 		return string.format("Error: cannot open '%s'.\nPaths tried:\n\t%s", path, table.concat(searchPaths, '\n\t'))
+	end
+
+	function plume.error.cannotConvertToStringError(x)
+		return string.format("Cannot convert the string value '%s' to a number.", plume.repr(x))
+	end
+
+	function plume.error.cannotDoArithmeticWithError(_type)
+		return string.format("Cannot do comparison or arithmetic with a %s value.", _type)
 	end
 end
