@@ -307,9 +307,9 @@ return function (plume)
                     		) + sugarFlagParam(Ct("FLAG", "?"*idn))
                     		
         local paramlist  = Ct("PARAMLIST",
-                P"("
+                P"(" * os
                     * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParam, os-param)))^0
-                * P")"
+                * os * P")"
             )
         local paramlistM = paramlist + E(plume.error.missingParamList)
         local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
@@ -320,7 +320,7 @@ return function (plume)
                         + Ct("LIST_ITEM", V"inlinetable")
                         + Ct("LIST_ITEM", V"textic")
 
-        local call      = Ct("CALL", P"(" * arg^-1 * (os * P"," * os * arg)^0 * (P")" + E(plume.error.missingClosingBracketArgList)))
+        local call      = Ct("CALL", P"(" * os * arg^-1 * (os * P"," * os * arg)^0 * (os * P")" + E(plume.error.missingClosingBracketArgList)))
         local block = Ct("EVAL", P"@" * idn * (index + directindex)^0 * os
         					* Ct("BLOCK_CALL", call^-1 * body)
         				* _end)

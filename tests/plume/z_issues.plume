@@ -505,3 +505,10 @@ end
 table
 table
 /// End
+
+/// Test #479
+macro Wing(?deg)
+end
+$Wing(?deg )
+/// Output
+/// End
