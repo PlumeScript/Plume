@@ -68,7 +68,8 @@ return function (plume, context, nodeHandlerTable)
         return result
 	end
 
-	local directivesHandler = {
+	local directivesHandler
+	directivesHandler = {
 		warning = function (args)
 			local mode = args.mode or "normal"
 			local filters = {}
@@ -86,6 +87,12 @@ return function (plume, context, nodeHandlerTable)
 					plume.warning.mode[x] = mode
 				end
 			end
+		end,
+
+		devWarnings = function(args)
+			args.issues = "381"
+			args.mode = args.mode or "normal"
+			directivesHandler.warning(args)
 		end,
 
 		context = function(args)

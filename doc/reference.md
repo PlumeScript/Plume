@@ -869,6 +869,14 @@ use mylib
     *   **Exemples**
         *   `use #warning(mode: ignore)` suppresses all warnings
         *   `use #warning(mode: strict, issues: 75 76)` raises an error at the first warning related to issues #75 or #76
+*   **devWarnings**
+    *   Shorcut for `#warning(mode: normal, issues: 381)`.
+    *   Enable warnings about non-const never-modified variables (#381, #382) and never used variables (#381, #473).
+    *   **Options**
+        *   `mode: strict`: the first warning encountered raises an error
+    *   **Exemples**
+        *   `use #devWarnings`
+        *   `use #devWarnings(mode: strict)`
 *   **context**
     Pushes context variables onto the stack for the entire file scope. This is syntactic sugar for a `with` block wrapping the whole file.
     
