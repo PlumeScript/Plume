@@ -63,14 +63,11 @@ return function (plume, context, nodeHandlerTable)
 			context.registerGoto(node, "for_end_"..uid, "FOR_ITER", 1) -- Call iterator to get next(s) value(s)
 
 			context.scope(function(body)
-				context.affectation(node, varlist, -- Store returned value(s) into var(s)
-					nil,   -- body
-					true,  -- isLet
-					false, -- isConst
-					false, -- isParam
-					false, -- isFrom 
-					nil,   -- compound
-					true   -- isBodyStacked
+				context.affectation(node, varlist, nil,-- Store returned value(s) into var(s)
+					{
+						isLet = true,
+						isBodyStacked = true
+					}
 				)
 				
 				table.insert(context.loops, {
