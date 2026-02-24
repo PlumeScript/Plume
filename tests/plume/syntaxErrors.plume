@@ -302,6 +302,26 @@ $wing(a, b, c:d
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test use with dynamic arguments
+use lib(param:$(1+1))
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The arguments of 'use' are read at compile time and must therefore be        │
+│   plain text.                                                                  │
+│   To import 'lib' with dynamic parameters, use instead:                        │
+│       |let lib = $import(lib, param: $(1+1))                                   │
+│       |...                                                                     │
+│       |$lib.someMethod()                                                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use with dynamic arguments                                                  │
+│    1 │use lib(param:$(1+1))                                                    │
+│      │               ^^^^^                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test non closed eval
 $(1
 /// Error

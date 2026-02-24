@@ -131,4 +131,15 @@ return function(plume)
 		local message = string.format("Mixed block: The previous branches of this if statement were of type %s, but this %s body is of type %s.\nAll branches of an if statement must be of the same type.", expected, parentName:lower(), found)
 		plume.error.throwSyntaxError(node, message)
 	end
+
+	function plume.error.useDoesNotAcceptDynamicArgs(node, libName, paramName, paramValue, isImport)
+		local message = "The arguments of 'use' are read at compile time and must therefore be plain text."
+		if isImport then
+			message = string.format(
+				"%s\nTo import '%s' with dynamic parameters, use instead:\n    |let %s = $import(%s, %s: %s)\n    |...\n    |$lib.someMethod()",
+				message, libName, libName, libName, paramName, paramValue
+			)
+		end
+		plume.error.throwSyntaxError(node, message)
+	end
 end
