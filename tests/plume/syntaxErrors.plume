@@ -322,6 +322,21 @@ use lib(param:$(1+1))
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test use with positional arguments
+use lib(param: value, positional)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → 'use' does not accept positional arguments.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ use with positional arguments                                               │
+│    1 │use lib(param: value, positional)                                        │
+│      │                      ^^^^^^^^^^                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test non closed eval
 $(1
 /// Error

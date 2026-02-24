@@ -144,4 +144,8 @@ return function(plume)
 		end
 		plume.error.throwSyntaxError(node, message)
 	end
+	function plume.error.useDoesNotAcceptPositionalArgs(node)
+		local message = "'use' does not accept positional arguments."
+		plume.error.throwSyntaxError(node, message)
+	end
 end
