@@ -50,11 +50,13 @@ return function(plume)
 
 	function plume.error.emptyExpr(node)
 		local message = "Evaluation cannot be empty."
+		node.errorbpos = node.bpos-1
 		plume.error.throwSyntaxError(node, message)
 	end
 
 	function plume.error.missingClosingBracket(node)
 		local message = "Missing ')' to close evaluation."
+		node.errlpos = 1
 		plume.error.throwSyntaxError(node, message)
 	end
 
