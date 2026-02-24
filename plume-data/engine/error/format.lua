@@ -178,7 +178,7 @@ return function(plume)
 		if errorInfos.sourceNode then
 			nodesInfos.source = plume.error.getNodeLinesContext(errorInfos.sourceNode, true, true)
 		end
-		for _, child in ipairs(errorInfos.sourceNode.errorContext or {}) do
+		for _, child in ipairs(errorInfos.sourceNode and errorInfos.sourceNode.errorContext or {}) do
 			table.insert(nodesInfos.context, plume.error.getNodeLinesContext(child, false, false))
 		end
 		for _, infos in ipairs(errorInfos.errorCallstack or {}) do
@@ -286,7 +286,7 @@ return function(plume)
 				end
 			end
 		end
-
+		
 		if nodesInfos.warnings.count > 0 then
 			if errorInfos.header then
 				table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)

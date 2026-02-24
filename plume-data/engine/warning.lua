@@ -33,6 +33,8 @@ return function (plume)
 			return
 		end
 
+		plume.warning.any = true
+
 		if mode == "strict" then
 	    	plume.error.strictWarning (node, msg)
 	    end

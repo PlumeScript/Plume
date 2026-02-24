@@ -102,7 +102,7 @@ return function (plume, context)
     --- @param includeOP boolean|nil If true, registers the LEAVE_SCOPE operation
     function context.leaveScope(includeOP)
         context.manageUpvalues(table.remove(context.scopesUp))
-        table.remove(context.scopes)
+        context.emiVariablesUsageWarning(table.remove(context.scopes))
         
         if includeOP then
             context.registerOP(nil, plume.ops.LEAVE_SCOPE, 0, 0)

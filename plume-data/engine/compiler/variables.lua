@@ -138,7 +138,8 @@ return function (plume, context)
 						isContext   = variable.isContext,
 						isRef       = variable.isRef,
 						ref         = variable.ref,
-						node        = variable.node
+						node        = variable.node,
+						source      = variable
 					}
 				end
 
@@ -256,5 +257,20 @@ return function (plume, context)
 		end
 
 		return result
+    end
+
+    function context.emiVariablesUsageWarning(varList)
+
+    	for name, var in pairs(varList) do
+    		if not tonumber(name) then
+	    		if not var.isConst and not var.modified then
+    				plume.warning.throwWarning(
+    					"Non-constant variables that are never modified.",
+    					"Consider making them constants.",
+    					var.node, {381, 382}
+    				)
+    			end
+    		end
+    	end
     end
 end

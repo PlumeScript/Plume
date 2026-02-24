@@ -219,6 +219,10 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(nil, plume.ops.TABLE_INDEX)
 			end
 
+			if not isLet and var.source then
+				var.source.modified = true
+			end
+
 			-- Final storage of the value
 			if var.getKey then
 				var.getKey()
