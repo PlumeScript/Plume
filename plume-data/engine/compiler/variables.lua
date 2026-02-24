@@ -189,6 +189,7 @@ return function (plume, context)
 	--- 	@field ref string If isRef, name of the key ref
 	--- 	@field isContext boolean
 	--- 	@field isSelf boolean
+	---		@field isLoopVariable boolean
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
 	function context.registerVariable(node, name, options)
 		-- , isConst, isParam, source, isRef, ref, isContext, isSelf
@@ -197,7 +198,7 @@ return function (plume, context)
 
 		options = options or {}
 
-		if scope[name] then
+		if scope[name] and (name ~= "_" or not options.isLoopVariable) then
 			return nil, scope[name]
 		end
 		
@@ -213,7 +214,8 @@ return function (plume, context)
 			isContext = options.isContext,
 			isSelf    = options.isSelf,
 			node      = node,
-			ref       = options.ref
+			ref       = options.ref,
+			isLoopVariable = options.isLoopVariable
 		}
 
 		if options.isRef then

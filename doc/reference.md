@@ -159,6 +159,13 @@ If multiple variables are provided (e.g., `for x, y in list`), Plume expects eac
 
 See the **Iterators** section for how iterables works.
 
+You can use the underscore `_` to ignore loop variables.
+```plume
+for _, _, _ in seq(1, 3) // The last '_' overwrites the previous ones
+    // Code
+end
+```
+
 #### `while`
 Executes a block of code as long as a condition is true.
 
@@ -372,6 +379,10 @@ Declares one or more variables without assigning values immediately. They are in
 let x, y, z
 // x, y, and z are defined and set to empty
 ```
+
+It is forbidden to declare a variable twice within the same scope.
+
+*Exception*: The underscore character `_` is reserved for unused loop variables in `for` loops. While `for i, i in ...` is invalid, `for _, _ in ...` is valid. The last `_` will overwrite the previous ones.
 
 **2. Positional Destructuring (`=`)**
 Assigns values based on the result of an expression.

@@ -50,7 +50,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isFrom boolean If using object destructuring
 	--- @param isContext boolean True if a bind to context
 	--- @return table rvar The resolved variable object containing scope information and metadata
-	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext)
+	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext, isLoopVariable)
 		local rvar, isRef
 		
 		----------------------------------------------------------
@@ -89,7 +89,7 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
-				rvar, definitionVar = context.registerVariable(node, name, {isConst=isConst, isParam=isParam, isContext=isContext})
+				rvar, definitionVar = context.registerVariable(node, name, {isConst=isConst, isParam=isParam, isContext=isContext, isLoopVariable=isLoopVariable})
 				if not rvar then
 					if definitionVar.isSelf then
 						plume.error.letExistingSelfVariable(node)
@@ -282,9 +282,8 @@ return function (plume, context, nodeHandlerTable)
 			if options.isLoopVariable or #nodevarlist.children>1 then
 				parentNode = varNode
 			end
-			local rvar = resolveAssignmentTarget(parentNode, varNode, options.isLet, options.isConst, options.isParam, options.isFrom, options.isContext)
+			local rvar = resolveAssignmentTarget(parentNode, varNode, options.isLet, options.isConst, options.isParam, options.isFrom, options.isContext, options.isLoopVariable)
 			table.insert(varlist, rvar)
-			rvar.isLoopVariable = options.isLoopVariable
 		end
 
 		-- Phase 2: Bytecode generation
