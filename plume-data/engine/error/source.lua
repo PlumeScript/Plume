@@ -42,7 +42,7 @@ return function(plume)
 			lines              = lines,
 			sourceNoLine       = sourceNoLine,
 			sourceLinePosBegin = sourceLinePosBegin,
-			sourceLen          = sourceLen
+			sourceLen          = sourceLen + (node.errlpos or 0)
 		}
 	end
 

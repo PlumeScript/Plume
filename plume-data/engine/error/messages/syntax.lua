@@ -49,6 +49,12 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.missingClosingBracketArgList(node)
+		local message = "Missing ')' to close arguments list."
+		node.errlpos = 1
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.missingLoopIdentifier(node)
 		local message = "Missing loop identifier."
 		plume.error.throwSyntaxError(node, message)
