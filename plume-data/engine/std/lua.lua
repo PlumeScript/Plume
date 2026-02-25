@@ -15,30 +15,12 @@ If not, see <https://www.gnu.org/licenses/>.
 
 return function (plume)
     
-    local function callPlumeMacro(macro, args, chunk)
-        table.insert(chunk.callstack, {chunk=chunk, macro=macro})
-        if #chunk.callstack>1000 then
-            return false, "stack overflow"
-        end
-
-        local success, callResult, cip, source  = plume.run(macro, args)
-        if not success then
-            return false, "Error running the macro."
-        end
-        table.remove(chunk.callstack)
-
-        return true, callResult
-    end
-
+   
     plume.stdLua = {
         print = function(args, chunk)
             local result = {}
             for _, x in ipairs(args.table) do
-                if type(x) == "table" and x.type == "table" and x.meta.table.tostring then
-                    table.insert(result, callPlumeMacro(x.meta.table.tostring, {x}, chunk))
-                else
-                    table.insert(result, plume.repr(x))
-                end
+                table.insert(result, plume.repr(x))
             end
             print(table.unpack(result))
             return true
