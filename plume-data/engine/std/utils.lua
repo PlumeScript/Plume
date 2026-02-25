@@ -29,7 +29,7 @@ return function (plume)
 		end
 
 		if signature.checkTypes or signature.named then
-			for _, key in ipairs(args.keys) do
+			for key, value in pairs(args.table) do
 				if not tonumber(key)
 				and (not signature.named      or not signature.named[key])
 				and (not signature.checkTypes or not signature.checkTypes[key]) then
@@ -38,11 +38,19 @@ return function (plume)
 
 				local exectedType = signature.checkTypes and signature.checkTypes[key]
 				if exectedType then
-					local value = args.table[key]
 					local t = type(value)
+					if exectedType == "string" and t == "number" then
+						t = "string"
+						args.table[key] = tostring(value)
+					elseif exectedType == "number" and t == "string" and tonumber(value) then
+						t = "number"
+						args.table[key] = tonumber(value)
+					end
+
 					if t == "table" then
 						t = t.type or t
 					end
+
 					if exectedType ~= t then
 						return false, plume.error.WrongArgTypeStd(key, name, t, exectedType, signature.signature)
 					end
