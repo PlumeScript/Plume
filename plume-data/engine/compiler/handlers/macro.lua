@@ -52,7 +52,7 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
 
 		if macroName then
-			local variable = context.registerVariable(node, macroName)
+			local variable = context.registerVariable(node, macroName, {isMacro=true})
 			if not variable then
 				plume.error.letExistingVariable(node, macroName, context.getNameSource(macroName))
 			end
@@ -80,7 +80,7 @@ return function (plume, context, nodeHandlerTable)
 				paramName           = paramNameNode.content
 				local variadic      = plume.ast.get(paramNode, "VARIADIC")
 				local paramBody     = plume.ast.get(paramNode, "BODY")
-				local param         = context.registerVariable(paramNameNode, paramName)
+				local param         = context.registerVariable(paramNameNode, paramName, {isMacroParam=true})
 
 				if paramName == "self" then
 					plume.error.cannotUseSelfAsParam(paramNameNode)
