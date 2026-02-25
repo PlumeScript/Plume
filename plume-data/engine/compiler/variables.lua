@@ -265,14 +265,7 @@ return function (plume, context)
 
     	for name, var in pairs(varList) do
     		if not tonumber(name) then
-	    		if not var.isConst and not var.modified and not var.isLoopVariable then
-    				plume.warning.throwWarning(
-    					"Non-constant variables that are never modified.",
-    					"Consider making them constants.",
-    					var.node, {381, 382}
-    				)
-    			end
-    			if not var.used then
+	    		if not var.used then
     				if var.isLoopVariable then
     					if name ~= "_" then
 	    					plume.warning.throwWarning(
@@ -288,7 +281,14 @@ return function (plume, context)
 	    					var.node, {381, 473}
 	    				)
 	    			end
+    			elseif not var.isConst and not var.modified and not var.isLoopVariable then
+    				plume.warning.throwWarning(
+    					"Non-constant variables that are never modified.",
+    					"Consider making them constants.",
+    					var.node, {381, 382}
+    				)
     			end
+    			
     		end
     	end
     end
