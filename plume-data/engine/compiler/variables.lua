@@ -264,7 +264,7 @@ return function (plume, context)
     function context.emiVariablesUsageWarning(varList)
 
     	for name, var in pairs(varList) do
-    		if not tonumber(name) then
+    		if not tonumber(name) and var.node then
 	    		if not var.used then
     				if var.isLoopVariable then
     					if name ~= "_" then
