@@ -86,6 +86,23 @@ return function (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
 
+    for name, f in pairs(plume.std.Number.table) do
+        if f.checkArgs then
+            f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
+        end
+        plume.std.Number.table[name] = plume.obj.luaMacro(name, function(args)
+            local shiftedArgs = plume.stdShiftArgs(plume.std.Number, args)
+            if f.checkArgs then
+                local success, message = plume.stdArgsCheck(name, shiftedArgs, f.checkArgs)
+                if not success then
+                    return false, message
+                end
+            end
+            table.insert(shiftedArgs.table, args)
+            return f.method(unpack(shiftedArgs.table))
+        end)
+    end
+
     ---------------------------------
     -- WILL BE REMOVED IN 1.0 (#230, #414)
     ---------------------------------

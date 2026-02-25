@@ -32,7 +32,7 @@ return function (plume)
 			for _, key in ipairs(args.keys) do
 				if not tonumber(key)
 				and (not signature.named      or not signature.named[key])
-				and (not signature.checkTypes or not signature.checkTypes[name]) then
+				and (not signature.checkTypes or not signature.checkTypes[key]) then
 					return false, plume.error.unknownParameterStd(key, name, signature.signature)
 				end
 

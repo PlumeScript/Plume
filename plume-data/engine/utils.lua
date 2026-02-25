@@ -356,4 +356,14 @@ return function (plume)
 			return unpack(args.table)
 		end
 	end
+
+    function plume.stdShiftArgs(cls, args)
+		local self = args.table.self
+		if self == cls then -- called with `cls.method(string)` instead of `cls.method()`
+			return args
+		else
+			table.insert(args.table, 1, self)
+			return args
+		end
+	end
 end
