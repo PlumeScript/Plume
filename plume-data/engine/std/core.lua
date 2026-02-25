@@ -14,7 +14,7 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-    
+    require 'plume-data/engine/std/utils' (plume)
 
     -----------------------
     -- WILL BE MOVED IN 1.0
@@ -49,12 +49,33 @@ return function (plume)
     ---------------------------------
     -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
     ---------------------------------
-    plume.stdLua.remove = plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, plume.temp.remove)
-    plume.stdLua.append = plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, plume.temp.append)
-    plume.stdLua.join = plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, plume.temp.join)
+    plume.stdLua.remove = {
+        method=plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, plume.temp.remove)
+    }
+    plume.stdLua.append = {
+        method=plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, plume.temp.append)
+    }
+    plume.stdLua.join = {
+        method=plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, plume.temp.join)
+    }
     ---------------------------------
     for name, f in pairs(plume.stdLua) do
-        plume.std[name] = plume.obj.luaMacro(name, f)
+        if f.checkArgs then
+            f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
+            plume.std[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
+                
+                if f.checkArgs then
+                    local success, message = plume.stdArgsCheck(name, args, f.checkArgs)
+                    if not success then
+                        return false, message
+                    end
+                end
+
+                return f.method(args, runtime, filestack, ip)
+            end)
+        else
+             plume.std[name] = plume.obj.luaMacro(name, f.method)
+        end
     end
     require 'plume-data/engine/std/vm' (plume)
     for name, obj in pairs(plume.stdVM) do
