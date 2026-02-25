@@ -20,28 +20,37 @@ return function (plume)
     -- WILL BE MOVED IN 1.0
     -----------------------
     plume.temp = {}
-    function plume.temp.append (args)
-        local t = args.table[1]
-        local value = args.table[2]
-        table.insert(t.table, value)
-        table.insert(t.keys, #t.table)
-        return true
-    end
-    function plume.temp.remove (args)
-        local t = args.table[1]
-        local index = args.table[2]
-
-        t.keys[#t.table] = nil
-
-        return true, table.remove(t.table, index)
-    end
-    function plume.temp.join (args)
-        local sep = args.table.sep
-        if sep == plume.obj.empty then
-            sep = ""
+    plume.temp.append = {
+        method = function  (t, value)
+            table.insert(t.table, value)
+            table.insert(t.keys, #t.table)
+            return true
         end
-        return pcall(table.concat, args.table, sep)
-    end
+    }
+    plume.temp.remove = {
+        method = function  (t, index, options)
+            if not options then
+                index = nil
+            end
+
+            t.keys[#t.table] = nil
+
+            return true, table.remove(t.table, index)
+        end
+    }
+    plume.temp.join = {
+        method = function  (...)
+            local args = {...}
+
+            local options = table.remove(args)
+            local sep = options.table.sep
+            if sep == plume.obj.empty then
+                sep = ""
+            end
+
+            return pcall(table.concat, args, sep)
+        end
+    }
     -----------------------
 
     plume.std = {}
@@ -50,20 +59,44 @@ return function (plume)
     -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
     ---------------------------------
     plume.stdLua.remove = {
-        method=plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230}, plume.temp.remove)
+        method=plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230},  function  (args)
+            args.table[1].keys[#args.table[1].table] = nil
+
+            return true, table.remove(args.table[1].table, index)
+        end
+        )
     }
     plume.stdLua.append = {
-        method=plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, plume.temp.append)
+        method=plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, function  (args)
+                table.insert(args.table[1].table, args.table[2])
+                table.insert(args.table[1].keys, #args.table[1].table)
+                return true
+            end)
     }
     plume.stdLua.join = {
-        method=plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, plume.temp.join)
+        method=plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, function  (args)
+                local sep = args.table.sep
+                if sep == plume.obj.empty then
+                    sep = ""
+                end
+                return pcall(table.concat, args.table, sep)
+            end)
     }
     ---------------------------------
-    for name, f in pairs(plume.stdLua) do
-        if f.checkArgs then
-            f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
-            plume.std[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
-                
+    
+    require 'plume-data/engine/std/vm' (plume)
+    
+
+    require 'plume-data/engine/std/table' (plume)
+    require 'plume-data/engine/std/string' (plume)
+    require 'plume-data/engine/std/number' (plume)
+
+    for _, Table in ipairs({plume.stdLua, plume.std.table.table}) do
+        for name, f in pairs(Table) do
+            if f.checkArgs then
+                f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
+            end
+            Table[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
                 if f.checkArgs then
                     local success, message = plume.stdArgsCheck(name, args, f.checkArgs)
                     if not success then
@@ -71,20 +104,22 @@ return function (plume)
                     end
                 end
 
-                return f.method(args, runtime, filestack, ip)
+                if Table == plume.stdLua then
+                    return f.method(args, runtime, filestack, ip)
+                elseif Table == plume.std.table.table then
+                    table.insert(args.table, args)
+                    return f.method(unpack(args.table))
+                end
             end)
-        else
-             plume.std[name] = plume.obj.luaMacro(name, f.method)
         end
     end
-    require 'plume-data/engine/std/vm' (plume)
+
+    for name, obj in pairs(plume.stdLua) do
+        plume.std[name] = obj
+    end
     for name, obj in pairs(plume.stdVM) do
         plume.std[name] = obj
     end
-
-    require 'plume-data/engine/std/table' (plume)
-    require 'plume-data/engine/std/string' (plume)
-    require 'plume-data/engine/std/number' (plume)
 
     for _, Table in ipairs({plume.std.Number, plume.std.String}) do
         for name, f in pairs(Table.table) do
