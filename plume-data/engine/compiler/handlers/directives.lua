@@ -89,6 +89,7 @@ return function (plume, context, nodeHandlerTable)
 						plume.warning.mode[x] = mode
 					end
 				end
+				plume.debug.print("!!", plume.warning.mode)
 			end
 		},
 

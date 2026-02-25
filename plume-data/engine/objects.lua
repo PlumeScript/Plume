@@ -62,6 +62,19 @@ return function(plume)
 	end
 
 	function plume.obj.runtime()
+		-----------------------------------------
+		--- Not very clean
+		--- In theory, there is only one runtime per execution,
+		---- so this should not pose a problem in the short term.
+		plume.lastErrorInfos = nil
+		plume.warning.cache = {}
+		plume.warning.any = false
+		plume.warning.mode = {
+			default="normal",
+			["381"]="ignore" -- helper warnings
+		}
+		-----------------------------------------
+
 		return {
 			type = "runtime",
 			instructions         = {},
