@@ -47,16 +47,21 @@ return function(plume)
 		return message
 	end
 
-	function plume.error.wrongArgsCountStd(macroName, argCount, minArgsCount, maxArgsCount)
+	function plume.error.wrongArgsCountStd(macroName, argCount, minArgsCount, maxArgsCount, signature)
+		local signatureHint = ""
+		if signature then
+			signatureHint = string.format("\nUsage: %s", signature)
+		end
+
 		if minArgsCount == maxArgsCount then
 			return string.format(
-				"Wrong number of positional arguments for macro '%s', %s instead of %s.\nSignature: %s",
-				macro.name, argCount, minArgsCount, macro
+				"Wrong number of positional arguments for macro '%s', %s instead of %s.%s",
+				macroName, argCount, minArgsCount, signatureHint
 			)
 		else
 			return string.format(
-				"Wrong number of positional arguments for macro '%s', %s instead of between %s and %s.",
-				macroName, argCount, minArgsCount, maxArgsCount
+				"Wrong number of positional arguments for macro '%s', %s instead of between %s and %s.%s",
+				macroName, argCount, minArgsCount, maxArgsCount, signatureHint
 			)
 		end
 	end
@@ -76,6 +81,26 @@ return function(plume)
 	function plume.error.unknownParameter(parameterName, macro)
 		local message = string.format("Unknown named parameter '%s' for macro '%s'.", parameterName, macro.name)
 		local signature = plume.error.getMacroSignature(macro)
+		if signature then
+			message = string.format("%s\nUsage: %s", message, signature)
+		end
+
+		return message
+	end
+
+	function plume.error.unknownParameterStd(parameterName, macroName, signature)
+		local message = string.format("Unknown named parameter '%s' for macro '%s'.", parameterName, macroName)
+
+		if signature then
+			message = string.format("%s\nUsage: %s", message, signature)
+		end
+
+		return message
+	end
+
+	function plume.error.wrongArgTypeStd(parameterName, macroName, usedType, expectedType, signature)
+		local message = string.format("Wrong type '%s' for parameter '%s' of macro '%s'. Expected: '%s'.", usedType, parameterName, macroName, expectedType)
+
 		if signature then
 			message = string.format("%s\nUsage: %s", message, signature)
 		end

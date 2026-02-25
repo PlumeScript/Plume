@@ -70,52 +70,79 @@ return function (plume, context, nodeHandlerTable)
 
 	local directivesHandler
 	directivesHandler = {
-		warning = function (args)
-			local mode = args.mode or "normal"
-			local filters = {}
-
-			if args.issues then
-				for issue in args.issues:gmatch('[0-9]+') do
-					table.insert(filters, issue)
+		warning = {
+			checkArgs = {"mode", "issues"},
+			method = function (args)
+				local mode = args.mode or "normal"
+				local filters = {}
+	
+				if args.issues then
+					for issue in args.issues:gmatch('[0-9]+') do
+						table.insert(filters, issue)
+					end
+				end
+	
+				if #filters == 0 then
+					plume.warning.mode.default = mode
+				else
+					for _, x in ipairs(filters) do
+						plume.warning.mode[x] = mode
+					end
 				end
 			end
+		},
 
-			if #filters == 0 then
-				plume.warning.mode.default = mode
-			else
-				for _, x in ipairs(filters) do
-					plume.warning.mode[x] = mode
+		devWarnings = {
+			checkArgs = {"mode"},
+			method = function(args)
+				args.issues = "381"
+				args.mode = args.mode or "normal"
+				directivesHandler.warning.method(args)
+			end
+		},
+
+		context = {
+			method = function(args)
+				for name, value in pairs(args) do
+					context.contextVariableToClose = context.contextVariableToClose + 1
+					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
+					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(value))
+					context.registerOP(node, plume.ops.PUSH_CONTEXT)
 				end
 			end
-		end,
-
-		devWarnings = function(args)
-			args.issues = "381"
-			args.mode = args.mode or "normal"
-			directivesHandler.warning(args)
-		end,
-
-		context = function(args)
-			for name, value in pairs(args) do
-				context.contextVariableToClose = context.contextVariableToClose + 1
-				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
-				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(value))
-				context.registerOP(node, plume.ops.PUSH_CONTEXT)
-			end
-		end
+		}
 	}
 
-	--- `use #name-optn-optn`
+	for _, handler in pairs(directivesHandler) do
+		if handler.checkArgs then
+			for _, arg in ipairs(handler.checkArgs) do
+				handler.checkArgs[arg] = true
+			end
+		end
+	end
+
+	--- `use #name(...optns)`
 	nodeHandlerTable.USE_DIRECTIVE = function(node)
 		local directiveNameNode = plume.ast.get(node, "NAME")
 		local directiveName = directiveNameNode.content
+		local handler = directivesHandler[directiveName]
+		if not handler then
+			plume.error.unknownDirective(directiveNameNode, directiveName)
+		end
+		
 		local options = {}
 		for _, option in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
 			local keyNode = plume.ast.get(option, "KEY")
 			local valueNode = plume.ast.get(option, "VALUE")
 			local key = keyNode and keyNode.content
-			local value = getRawValue(valueNode)
 
+			if handler.checkArgs then
+				if not handler.checkArgs[key] then
+					plume.error.wrongDirectiveArgs(node, directiveName, key, handler.checkArgs)
+				end
+			end
+
+			local value = getRawValue(valueNode)
 			if key then
 				options[key] = value
 			else
@@ -123,10 +150,6 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end
 		
-		local handler = directivesHandler[directiveName]
-		if not handler then
-			plume.error.unknownDirective(directiveNameNode, directiveName)
-		end
-		handler(options)
+		handler.method(options)
 	end
 end

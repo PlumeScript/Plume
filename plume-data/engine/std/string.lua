@@ -24,208 +24,314 @@ return function (plume)
 	}
 
 	-- Manipulation
-	String.table.upper = plume.obj.luaMacro("upper", function (args)
-		local s = plume.shiftArgs(String, args)
-		return string.upper(s)
-	end)
-	String.table.lower = plume.obj.luaMacro("lower", function (args)
-		local s = plume.shiftArgs(String, args)
-		return string.lower(s)
-	end)
-	String.table.replace = plume.obj.luaMacro("replace", function (args)
-		local s, pattern, sub  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
-		local sub     = tostring(sub)
-
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-			sub     = sub:gsub("%%", "%%%%")
+	String.table.upper = {
+		method =function (s)
+			return true, string.upper(s)
 		end
+	}
+	String.table.lower = {
+		method =function (s)
+			return true, string.lower(s)
+		end
+	}
+	String.table.replace = {
+		checkArgs = {
+			checkTypes = {"string", "string", "string"},
+			signature = "string s, string pattern, string sub, bool rich: $false",
+			named={self=true, rich=true},
+			args=3
+		},
+		method = function (s, pattern, sub, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+				sub     = sub:gsub("%%", "%%%%")
+			end
 
-		return s:gsub(pattern, sub)
-	end)
+			return true, s:gsub(pattern, sub)
+		end
+	}
 
 	-- Tests
-	String.table.isNumber = plume.obj.luaMacro("isNumber", function (args)
-		local s = plume.shiftArgs(String, args)
-		if tonumber(s) then
-			return true
-		else
-			return false
+	String.table.isNumber = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true},
+			args=1
+		},
+		method = function (s)
+			if tonumber(s) then
+				return true, true
+			else
+				return true, false
+			end
 		end
-	end)
+	}
 
 	-- Normalization
-	String.table.trim = plume.obj.luaMacro("trim", function (args)
-		local s = plume.shiftArgs(String, args)
-		return s:gsub('^%s*', ''):gsub('%s*$', '')
-	end)
-	String.table.rtrim = plume.obj.luaMacro("rtrim", function (args)
-		local s = plume.shiftArgs(String, args)
-		return s:gsub('^%s*', '')
-	end)
-	String.table.ltrim = plume.obj.luaMacro("ltrim", function (args)
-		local s = plume.shiftArgs(String, args)
-		return s:gsub('%s*$', '')
-	end)
-	String.table.collapse = plume.obj.luaMacro("collapse", function (args)
-		local s = plume.shiftArgs(String, args)
-		return s:gsub('%s+', ' ')
-	end)
-	String.table.dedent = plume.obj.luaMacro("dedent", function (args)
-		local s = plume.shiftArgs(String, args)
-		local firstIndent = s:match('^%s+')
-		return s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
-	end)
-	String.table.indent = plume.obj.luaMacro("indent", function (args)
-		local s = plume.shiftArgs(String, args)
-		local sep = args.table.sep or "\t"
-		return sep..s:gsub('\n', '\n'..sep)
-	end)
+	String.table.trim = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true},
+			args=1
+		},
+		method = function (s)
+			return true, s:gsub('^%s*', ''):gsub('%s*$', '')
+		end
+	}
+	String.table.rtrim = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true},
+			args=1
+		},
+		method = function (s)
+			return true, s:gsub('^%s*', '')
+		end
+	}
+	String.table.ltrim = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true},
+			args=1
+		},
+		method = function (s)
+			return true, s:gsub('%s*$', '')
+		end
+	}
+	String.table.collapse = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true},
+			args=1
+		},
+		method = function (s)
+			return true, s:gsub('%s+', ' ')
+		end
+	}
+	String.table.dedent = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true},
+			args=1
+		},
+		method = function (s)
+			local firstIndent = s:match('^%s+')
+			return true, s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
+		end
+	}
+	String.table.indent = {
+		checkArgs = {
+			checkTypes = {"string", sep="string"},
+			signature = "string s, string sep: \t",
+			named={self=true},
+			args=1
+		},
+		method = function (s, options)
+			local sep = options.table.sep or "\t"
+			return true, sep..s:gsub('\n', '\n'..sep)
+		end
+	}
 
 	-- search
-	String.table.find = plume.obj.luaMacro("find", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
+	String.table.find = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
 
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			return true, s:match(pattern) or plume.empty
 		end
+	}
+	String.table.contains = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
 
-		return s:match(pattern) or plume.empty
-	end)
-	String.table.contains = plume.obj.luaMacro("contains", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
-
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			if s:match(pattern) then
+				return true, true
+			else
+				return true, false
+			end
 		end
+	}
+	String.table.startsWidth = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
 
-		if s:match(pattern) then
-			return true
-		else
-			return false
+			if s:match("^"..pattern) then
+				return true, true
+			else
+				return true, false
+			end
 		end
-	end)
-	String.table.startsWidth = plume.obj.luaMacro("startsWidth", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
+	}
+	String.table.endsWidth = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
 
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			if s:match(pattern.."$") then
+				return true, true
+			else
+				return true, false
+			end
 		end
+	}
+	String.table.count = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
 
-		if s:match("^"..pattern) then
-			return true
-		else
-			return false
+			local count = 0
+			for x in s:gmatch(pattern) do
+				count = count + 1
+			end
+
+			return true, count
 		end
-	end)
-	String.table.endsWidth = plume.obj.luaMacro("endsWidth", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
-
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-		end
-
-		if s:match(pattern.."$") then
-			return true
-		else
-			return false
-		end
-	end)
-	String.table.count = plume.obj.luaMacro("count", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
-
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-		end
-
-		local count = 0
-		for x in s:gmatch(pattern) do
-			count = count + 1
-		end
-
-		return count
-	end)
+	}
 
 	-- table making
-	String.table.split = plume.obj.luaMacro("split", function (args)
-		local s = plume.shiftArgs(String, args)
-		local sep = args.table.sep or " "
-		local t = plume.obj.table(0, 0)
+	String.table.split = {
+		checkArgs = {
+			checkTypes = {"string", sep="string"},
+			signature = "string s, string sep: \\s, bool rich: $false",
+			named={self=true, rich=true},
+			args=1
+		},
+		method = function (s, options)
+			local sep = options.table.sep or " "
+			local t = plume.obj.table(0, 0)
 
-		if not args.table.rich then
-			sep = sep:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			if not options.table.rich then
+				sep = sep:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+
+			local pos = 1
+			for sub, _sep in s:gmatch('(.-)('..sep..")") do
+				table.insert(t.table, sub)
+				table.insert(t.keys, #t.table)
+				pos = pos + #sub + #_sep
+			end
+
+			if pos <= #s then
+				table.insert(t.table, s:sub(pos, -1))
+				table.insert(t.keys, #t.table)
+			end
+
+			return true, t
 		end
+	}
+	String.table.lines = {
+		checkArgs = {
+			checkTypes = {"string"},
+			signature = "string s",
+			named={self=true, rich=true},
+			args=1
+		},
+		method = function (s)
+			local t = plume.obj.table(0, 0)
 
-		local pos = 1
-		for sub, _sep in s:gmatch('(.-)('..sep..")") do
-			table.insert(t.table, sub)
-			table.insert(t.keys, #t.table)
-			pos = pos + #sub + #_sep
+			local pos = 1
+			for sub in s:gmatch('(.-)\n') do
+				table.insert(t.table, sub)
+				table.insert(t.keys, #t.table)
+				pos = pos + #sub + 1
+			end
+
+			if pos <= #s then
+				table.insert(t.table, s:sub(pos, -1))
+				table.insert(t.keys, #t.table)
+			end
+
+			return true, t
 		end
+	}
+	String.table.findAll = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			local pattern = tostring(pattern)
+			local sub     = tostring(sub)
 
-		if pos <= #s then
-			table.insert(t.table, s:sub(pos, -1))
-			table.insert(t.keys, #t.table)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+
+			local t = plume.obj.table(0, 0)
+
+			for sub in s:gmatch(pattern) do
+				table.insert(t.table, sub)
+				table.insert(t.keys, #t.table)
+			end
+
+			return true, t
 		end
+	}
+	String.table.partition = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, string pattern, bool rich: $false",
+			named={self=true, rich=true},
+			args=2
+		},
+		method = function (s, pattern, options)
+			if not options.table.rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
 
-		return t
-	end)
-	String.table.lines = plume.obj.luaMacro("lines", function (args)
-		local s = plume.shiftArgs(String, args)
-		local t = plume.obj.table(0, 0)
+			local t = plume.obj.table(3, 0)
+			t.keys = {1, 2, 3}
+			t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
 
-		local pos = 1
-		for sub in s:gmatch('(.-)\n') do
-			table.insert(t.table, sub)
-			table.insert(t.keys, #t.table)
-			pos = pos + #sub + 1
+			return true, t
 		end
-
-		if pos <= #s then
-			table.insert(t.table, s:sub(pos, -1))
-			table.insert(t.keys, #t.table)
-		end
-
-		return t
-	end)
-	String.table.findAll = plume.obj.luaMacro("findAll", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
-		local sub     = tostring(sub)
-
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-		end
-
-		local t = plume.obj.table(0, 0)
-
-		for sub in s:gmatch(pattern) do
-			table.insert(t.table, sub)
-			table.insert(t.keys, #t.table)
-		end
-
-		return t
-	end)
-	String.table.partition = plume.obj.luaMacro("partition", function (args)
-		local s, pattern  = plume.shiftArgs(String, args)
-		local pattern = tostring(pattern)
-
-		if not args.table.rich then
-			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-		end
-
-		local t = plume.obj.table(3, 0)
-		t.keys = {1, 2, 3}
-		t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
-
-		return t
-	end)
+	}
 
 	plume.std.String = String
 end

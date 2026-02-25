@@ -37,4 +37,9 @@ return function(plume)
 	function plume.error.cannotOpenFile(path, searchPaths)
 		return string.format("Error: cannot open '%s'.\nPaths tried:\n\t%s", path, table.concat(searchPaths, '\n\t'))
 	end
+
+	function plume.error.wrongDirectiveArgs(node, directiveName, argName, signature)
+		message = string.format("Unknown arg '%s' for directive '#%s'.\nUsage: #%s(%s%s)", argName, directiveName, directiveName, table.concat(signature, ":<value>, "), #signature>0 and ":<value>" or "")
+		plume.error.throwCompilationError(node, message)
+	end
 end

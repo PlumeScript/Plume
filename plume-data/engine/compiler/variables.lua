@@ -190,6 +190,8 @@ return function (plume, context)
 	--- 	@field isContext boolean
 	--- 	@field isSelf boolean
 	---		@field isLoopVariable boolean
+	---		@field isMacro boolean
+	---		@field isMacroParam boolean
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
 	function context.registerVariable(node, name, options)
 		-- , isConst, isParam, source, isRef, ref, isContext, isSelf
@@ -215,7 +217,10 @@ return function (plume, context)
 			isSelf    = options.isSelf,
 			node      = node,
 			ref       = options.ref,
-			isLoopVariable = options.isLoopVariable
+			-- Used by warning 381
+			isLoopVariable = options.isLoopVariable,
+			isMacro        = options.isMacro,
+			isMacroParam   = options.isMacroParam
 		}
 
 		if options.isRef then
@@ -264,15 +269,8 @@ return function (plume, context)
     function context.emiVariablesUsageWarning(varList)
 
     	for name, var in pairs(varList) do
-    		if not tonumber(name) then
-	    		if not var.isConst and not var.modified and not var.isLoopVariable then
-    				plume.warning.throwWarning(
-    					"Non-constant variables that are never modified.",
-    					"Consider making them constants.",
-    					var.node, {381, 382}
-    				)
-    			end
-    			if not var.used then
+    		if not tonumber(name) and var.node then
+	    		if not var.used then
     				if var.isLoopVariable then
     					if name ~= "_" then
 	    					plume.warning.throwWarning(
@@ -281,6 +279,18 @@ return function (plume, context)
 		    					var.node, {381, 473}
 		    				)
 		    			end
+		    		elseif var.isMacro then
+		    			plume.warning.throwWarning(
+	    					"Never used macros.",
+	    					"Consider removing them.",
+	    					var.node, {381, 473}
+	    				)
+	    			elseif var.isMacroParam then
+		    			plume.warning.throwWarning(
+	    					"Never used macros parameters.",
+	    					"Consider removing them.",
+	    					var.node, {381, 473}
+	    				)
     				else
 	    				plume.warning.throwWarning(
 	    					"Never used variables.",
@@ -288,7 +298,14 @@ return function (plume, context)
 	    					var.node, {381, 473}
 	    				)
 	    			end
+    			elseif not var.isConst and not var.modified and not var.isLoopVariable and not var.isMacro and not var.isMacroParam then
+    				plume.warning.throwWarning(
+    					"Non-constant variables that are never modified.",
+    					"Consider making them constants.",
+    					var.node, {381, 382}
+    				)
     			end
+    			
     		end
     	end
     end
