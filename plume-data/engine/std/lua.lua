@@ -18,16 +18,16 @@ return function (plume)
     local function callPlumeMacro(macro, args, chunk)
         table.insert(chunk.callstack, {chunk=chunk, macro=macro})
         if #chunk.callstack>1000 then
-            error("stack overflow", 0)
+            return false, "stack overflow"
         end
 
         local success, callResult, cip, source  = plume.run(macro, args)
         if not success then
-            error("Error running the macro.", 0)
+            return false, "Error running the macro."
         end
         table.remove(chunk.callstack)
 
-        return callResult
+        return true, callResult
     end
 
     plume.stdLua = {
@@ -41,6 +41,7 @@ return function (plume)
                 end
             end
             print(table.unpack(result))
+            return true
         end,
 
         --------------------------------------
@@ -50,23 +51,25 @@ return function (plume)
 
             local x = args.table[1]
             if x == plume.obj.empty then
-                error("Cannot convert empty into number", 0)
+                return false, "Cannot convert empty into number"
             elseif type(x) == "number" then
-                return x
+                return true, x
             else
-               error(string.format("Cannot convert %s into number", type(x)), 0)
+               return false, string.format("Cannot convert %s into number", type(x))
             end
-            return table.concat(result)
+            return true, table.concat(result)
         end),
         --------------------------------------
 
         -- path
         setPlumePath = function(args, runtime)
             runtime.env.plume_path = args.table[1]
+            return true
         end,
 
         addToPlumePath = function(args, runtime)
             runtime.env.plume_path = (runtime.env.plume_path or "") .. ";" .. args.table[1]
+            return true
         end,
 
         -- io
@@ -75,21 +78,22 @@ return function (plume)
             local content = table.concat(args.table, 2,  #args.table)
             local file = io.open(filename, "w")
                 if not file then
-                    error("Cannot write file '" .. filename .. "'.")
+                    return false, "Cannot write file '" .. filename .. "'."
                 end
                 file:write(content)
             file:close()
+            return true
         end,
 
         read = function(args)
             local filename = args.table[1]
             local file = io.open(filename)
                 if not file then
-                    error("Cannot read file '" .. filename .. "'.")
+                    return false, "Cannot read file '" .. filename .. "'."
                 end
                 local content = file:read("*a")
             file:close()
-            return content
+            return true, content
         end,
 
         rawset = function(args)
@@ -101,11 +105,12 @@ return function (plume)
                 table.insert(obj.keys, key)
             end
             obj.table[key] = value
+            return true
         end,
 
         repr = function(args)
             local obj = args.table[1]
-            return plume.repr(obj)
+            return true, plume.repr(obj)
         end
     }
 end

@@ -26,11 +26,11 @@ return function (plume)
 	-- Manipulation
 	String.table.upper = plume.obj.luaMacro("upper", function (args)
 		local s = plume.shiftArgs(String, args)
-		return string.upper(s)
+		return true, string.upper(s)
 	end)
 	String.table.lower = plume.obj.luaMacro("lower", function (args)
 		local s = plume.shiftArgs(String, args)
-		return string.lower(s)
+		return true, string.lower(s)
 	end)
 	String.table.replace = plume.obj.luaMacro("replace", function (args)
 		local s, pattern, sub  = plume.shiftArgs(String, args)
@@ -42,45 +42,45 @@ return function (plume)
 			sub     = sub:gsub("%%", "%%%%")
 		end
 
-		return s:gsub(pattern, sub)
+		return true, s:gsub(pattern, sub)
 	end)
 
 	-- Tests
 	String.table.isNumber = plume.obj.luaMacro("isNumber", function (args)
 		local s = plume.shiftArgs(String, args)
 		if tonumber(s) then
-			return true
+			return true, true
 		else
-			return false
+			return true, false
 		end
 	end)
 
 	-- Normalization
 	String.table.trim = plume.obj.luaMacro("trim", function (args)
 		local s = plume.shiftArgs(String, args)
-		return s:gsub('^%s*', ''):gsub('%s*$', '')
+		return true, s:gsub('^%s*', ''):gsub('%s*$', '')
 	end)
 	String.table.rtrim = plume.obj.luaMacro("rtrim", function (args)
 		local s = plume.shiftArgs(String, args)
-		return s:gsub('^%s*', '')
+		return true, s:gsub('^%s*', '')
 	end)
 	String.table.ltrim = plume.obj.luaMacro("ltrim", function (args)
 		local s = plume.shiftArgs(String, args)
-		return s:gsub('%s*$', '')
+		return true, s:gsub('%s*$', '')
 	end)
 	String.table.collapse = plume.obj.luaMacro("collapse", function (args)
 		local s = plume.shiftArgs(String, args)
-		return s:gsub('%s+', ' ')
+		return true, s:gsub('%s+', ' ')
 	end)
 	String.table.dedent = plume.obj.luaMacro("dedent", function (args)
 		local s = plume.shiftArgs(String, args)
 		local firstIndent = s:match('^%s+')
-		return s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
+		return true, s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n')
 	end)
 	String.table.indent = plume.obj.luaMacro("indent", function (args)
 		local s = plume.shiftArgs(String, args)
 		local sep = args.table.sep or "\t"
-		return sep..s:gsub('\n', '\n'..sep)
+		return true, sep..s:gsub('\n', '\n'..sep)
 	end)
 
 	-- search
@@ -92,7 +92,7 @@ return function (plume)
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		return s:match(pattern) or plume.empty
+		return true, s:match(pattern) or plume.empty
 	end)
 	String.table.contains = plume.obj.luaMacro("contains", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
@@ -103,9 +103,9 @@ return function (plume)
 		end
 
 		if s:match(pattern) then
-			return true
+			return true, true
 		else
-			return false
+			return true, false
 		end
 	end)
 	String.table.startsWidth = plume.obj.luaMacro("startsWidth", function (args)
@@ -117,9 +117,9 @@ return function (plume)
 		end
 
 		if s:match("^"..pattern) then
-			return true
+			return true, true
 		else
-			return false
+			return true, false
 		end
 	end)
 	String.table.endsWidth = plume.obj.luaMacro("endsWidth", function (args)
@@ -131,9 +131,9 @@ return function (plume)
 		end
 
 		if s:match(pattern.."$") then
-			return true
+			return true, true
 		else
-			return false
+			return true, false
 		end
 	end)
 	String.table.count = plume.obj.luaMacro("count", function (args)
@@ -149,7 +149,7 @@ return function (plume)
 			count = count + 1
 		end
 
-		return count
+		return true, count
 	end)
 
 	-- table making
@@ -174,7 +174,7 @@ return function (plume)
 			table.insert(t.keys, #t.table)
 		end
 
-		return t
+		return true, t
 	end)
 	String.table.lines = plume.obj.luaMacro("lines", function (args)
 		local s = plume.shiftArgs(String, args)
@@ -192,7 +192,7 @@ return function (plume)
 			table.insert(t.keys, #t.table)
 		end
 
-		return t
+		return true, t
 	end)
 	String.table.findAll = plume.obj.luaMacro("findAll", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
@@ -210,7 +210,7 @@ return function (plume)
 			table.insert(t.keys, #t.table)
 		end
 
-		return t
+		return true, t
 	end)
 	String.table.partition = plume.obj.luaMacro("partition", function (args)
 		local s, pattern  = plume.shiftArgs(String, args)
@@ -224,7 +224,7 @@ return function (plume)
 		t.keys = {1, 2, 3}
 		t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
 
-		return t
+		return true, t
 	end)
 
 	plume.std.String = String

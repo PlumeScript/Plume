@@ -34,6 +34,7 @@ return function (plume)
 
         t.table[key] = nil
         table.remove(t.keys, index)
+        return true
     end)
     _table.table.hasKey = plume.obj.luaMacro("hasKey", function (args)
         local t = args.table[1]
@@ -42,11 +43,11 @@ return function (plume)
         key = tonumber(key) or key
         for k, v in ipairs(t.keys) do
             if v == key then
-                return true
+                return true, true
             end
         end
 
-        return false
+        return true, false
     end)
     _table.table.find = plume.obj.luaMacro("find", function (args)
         local t = args.table[1]
@@ -54,9 +55,10 @@ return function (plume)
 
         for k, v in ipairs(t.keys) do
             if t.table[v] == x then
-                return v
+                return true, v
             end
         end
+        return true, nil
     end)
     _table.table.finds = plume.obj.luaMacro("findAll", function (args)
         local t = args.table[1]
@@ -70,7 +72,7 @@ return function (plume)
             end
         end
 
-        return result
+        return true, result
     end)
     _table.table.count = plume.obj.luaMacro("count", function (args)
         local t = args.table[1]
@@ -83,9 +85,9 @@ return function (plume)
                     count = count + 1
                 end
             end
-            return count
+            return true, count
         else
-            return #t.keys
+            return true, #t.keys
         end
     end)
     _table.table.entry = plume.obj.luaMacro("entry", function (args)
@@ -97,7 +99,7 @@ return function (plume)
         result.table[1] = key
         result.table[2] = t.table[key]
         result.keys = {1, 2}
-        return result
+        return true, result
     end)
 
     plume.std.table = _table

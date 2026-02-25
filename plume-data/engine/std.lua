@@ -25,6 +25,7 @@ return function (plume)
         local value = args.table[2]
         table.insert(t.table, value)
         table.insert(t.keys, #t.table)
+        return true
     end
     function plume.temp.remove (args)
         local t = args.table[1]
@@ -32,14 +33,14 @@ return function (plume)
 
         t.keys[#t.table] = nil
 
-        return table.remove(t.table, index)
+        return true, table.remove(t.table, index)
     end
     function plume.temp.join (args)
         local sep = args.table.sep
         if sep == plume.obj.empty then
             sep = ""
         end
-        return table.concat(args.table, sep)
+        return pcall(table.concat, args.table, sep)
     end
     -----------------------
 
@@ -72,7 +73,7 @@ return function (plume)
 
     local function importLuaMacro(name, f)
         return plume.obj.luaMacro(name, function(args)
-            return (f(unpack(args.table)))
+            return pcall(f, unpack(args.table))
         end)
     end
 
@@ -108,10 +109,10 @@ return function (plume)
 
         local filename, searchPaths = plume.getFilenameFromPath(args.table[1], true, runtime, firstFilename, lastFilename)
         if filename then
-            return dofile(filename)(plume) 
+            return true, dofile(filename)(plume) 
         else
             msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
-            error(msg, 0)
+            return false, msg
         end
     end)
 end
