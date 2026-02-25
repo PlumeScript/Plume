@@ -3608,6 +3608,7 @@ return function (plume)
                                         end
                                     else
                                         do
+                                            local signature = "numbers stop|start, stop|start, stop, step"
                                             local _ret374
                                             mainStackPointer = mainStackPointer - 1
                                             _ret374 = mainStack[mainStackPointer + 1]
@@ -3615,10 +3616,67 @@ return function (plume)
                                             local start = args[1]
                                             local stop = args[2]
                                             local step = args[3] or 1
+                                            local _ret375
+                                            do
+                                                local _ret376
+                                                _ret376 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
+                                                local t = _ret376
+                                                if t ~= "number" then
+                                                    if not vmerr then
+                                                        if t == "nil" then
+                                                            t = "empty"
+                                                        end
+                                                        vmerr = plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
+                                                    end
+                                                    _ret375 = false
+                                                    goto _inline_end811
+                                                end
+                                                _ret375 = true
+                                                goto _inline_end811
+                                            end
+                                            ::_inline_end811::
                                             if not stop then
                                                 stop = start
                                                 start = 1
                                             end
+                                            local _ret377
+                                            do
+                                                local _ret378
+                                                _ret378 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
+                                                local t = _ret378
+                                                if t ~= "number" then
+                                                    if not vmerr then
+                                                        if t == "nil" then
+                                                            t = "empty"
+                                                        end
+                                                        vmerr = plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
+                                                    end
+                                                    _ret377 = false
+                                                    goto _inline_end814
+                                                end
+                                                _ret377 = true
+                                                goto _inline_end814
+                                            end
+                                            ::_inline_end814::
+                                            local _ret379
+                                            do
+                                                local _ret380
+                                                _ret380 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
+                                                local t = _ret380
+                                                if t ~= "number" then
+                                                    if not vmerr then
+                                                        if t == "nil" then
+                                                            t = "empty"
+                                                        end
+                                                        vmerr = plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
+                                                    end
+                                                    _ret379 = false
+                                                    goto _inline_end817
+                                                end
+                                                _ret379 = true
+                                                goto _inline_end817
+                                            end
+                                            ::_inline_end817::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
@@ -3638,25 +3696,63 @@ return function (plume)
                                 if op < 66 then
                                     if op < 65 then
                                         do
-                                            local _ret375
+                                            local _ret381
                                             mainStackPointer = mainStackPointer - 1
-                                            _ret375 = mainStack[mainStackPointer + 1]
-                                            local args = _ret375.table
+                                            _ret381 = mainStack[mainStackPointer + 1]
+                                            local args = _ret381.table
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key → x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey → value\nend\n```", runtime, ip, {228, 230})
                                             end
+                                            local _ret382
+                                            do
+                                                local _ret383
+                                                _ret383 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local t = _ret383
+                                                if t ~= "table" then
+                                                    if not vmerr then
+                                                        if t == "nil" then
+                                                            t = "empty"
+                                                        end
+                                                        vmerr = plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)")
+                                                    end
+                                                    _ret382 = false
+                                                    goto _inline_end823
+                                                end
+                                                _ret382 = true
+                                                goto _inline_end823
+                                            end
+                                            ::_inline_end823::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named, legacy = args.legacy}
                                         end
                                     else
                                         do
-                                            local _ret376
+                                            local _ret384
                                             mainStackPointer = mainStackPointer - 1
-                                            _ret376 = mainStack[mainStackPointer + 1]
-                                            local args = _ret376.table
+                                            _ret384 = mainStack[mainStackPointer + 1]
+                                            local args = _ret384.table
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index → x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex → value\nend\n```", runtime, ip, {228, 230})
                                             end
+                                            local _ret385
+                                            do
+                                                local _ret386
+                                                _ret386 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local t = _ret386
+                                                if t ~= "table" then
+                                                    if not vmerr then
+                                                        if t == "nil" then
+                                                            t = "empty"
+                                                        end
+                                                        vmerr = plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)")
+                                                    end
+                                                    _ret385 = false
+                                                    goto _inline_end829
+                                                end
+                                                _ret385 = true
+                                                goto _inline_end829
+                                            end
+                                            ::_inline_end829::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS, legacy = args.legacy}
                                         end
@@ -3664,65 +3760,87 @@ return function (plume)
                                 else
                                     if op < 67 then
                                         do
-                                            local _ret377
+                                            local _ret387
                                             mainStackPointer = mainStackPointer - 1
-                                            _ret377 = mainStack[mainStackPointer + 1]
-                                            local args = _ret377
+                                            _ret387 = mainStack[mainStackPointer + 1]
+                                            local args = _ret387
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("1.0", "`?lua` flag for macro import", "Instead of \n`$import(<path>, ?lua)`, use `lua.require(<path>)`", runtime, ip, {235, 230})
                                             end
-                                            local filename, searchPaths = plume.getFilenameFromPath (args.table[1], args.table.lua, runtime, firstFilename, lastFilename)
-                                            if filename then
-                                                if args.table.lua then
-                                                    local result = dofile (filename)
-                                                     (plume)
-                                                    mainStackPointer = mainStackPointer + 1
-                                                    mainStack[mainStackPointer] = result or empty
-                                                else
-                                                    local success = true
-                                                    local err
-                                                    local chunk = runtime.files[filename]
-                                                    if not chunk then
-                                                        chunk = plume.obj.macro (filename, runtime)
-                                                        local f = io.open (filename)
-                                                        local code = f:read ("*a")
-                                                        f:close ()
-                                                        success, err = pcall (plume.compileFile, code, filename, chunk, runtime)
-                                                        runtime.files[filename] = chunk
-                                                    end
-                                                    if success then
-                                                        fileParams = {}
-                                                        for _, key in ipairs (args.keys)
-                                                         do
-                                                            local offset = chunk.namedParamOffset[key]
-                                                            if offset then
-                                                                table.insert (fileParams, {offset = offset, value = args.table[key]})
-                                                            end
+                                            local _ret388
+                                            do
+                                                local _ret389
+                                                _ret389 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
+                                                local t = _ret389
+                                                if t ~= "string" then
+                                                    if not vmerr then
+                                                        if t == "nil" then
+                                                            t = "empty"
                                                         end
-                                                        fileStackPointer = fileStackPointer + 1
-                                                        fileStack[fileStackPointer] = chunk.fileID
-                                                        macroStackPointer = macroStackPointer + 1
-                                                        macroStack[macroStackPointer] = ip + 1
-                                                        do
-                                                            injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = plume.ops.JUMP
-                                                            injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = 0
-                                                            injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = chunk.offset
-                                                            local _ret378
-                                                            _ret378 = macroStackPointer
-                                                            injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = _ret378
-                                                        end
-                                                    else
-                                                        vmerr = err
+                                                        vmerr = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
                                                     end
+                                                    _ret388 = false
+                                                    goto _inline_end835
                                                 end
-                                            else
-                                                vmerr = plume.error.cannotOpenFile (args[1], searchPaths)
+                                                _ret388 = true
+                                                goto _inline_end835
+                                            end
+                                            ::_inline_end835::
+                                            local assertion = _ret388
+                                            if assertion then
+                                                local filename, searchPaths = plume.getFilenameFromPath (args.table[1], args.table.lua, runtime, firstFilename, lastFilename)
+                                                if filename then
+                                                    if args.table.lua then
+                                                        local result = dofile (filename)
+                                                         (plume)
+                                                        mainStackPointer = mainStackPointer + 1
+                                                        mainStack[mainStackPointer] = result or empty
+                                                    else
+                                                        local success = true
+                                                        local err
+                                                        local chunk = runtime.files[filename]
+                                                        if not chunk then
+                                                            chunk = plume.obj.macro (filename, runtime)
+                                                            local f = io.open (filename)
+                                                            local code = f:read ("*a")
+                                                            f:close ()
+                                                            success, err = pcall (plume.compileFile, code, filename, chunk, runtime)
+                                                            runtime.files[filename] = chunk
+                                                        end
+                                                        if success then
+                                                            fileParams = {}
+                                                            for _, key in ipairs (args.keys)
+                                                             do
+                                                                local offset = chunk.namedParamOffset[key]
+                                                                if offset then
+                                                                    table.insert (fileParams, {offset = offset, value = args.table[key]})
+                                                                end
+                                                            end
+                                                            fileStackPointer = fileStackPointer + 1
+                                                            fileStack[fileStackPointer] = chunk.fileID
+                                                            macroStackPointer = macroStackPointer + 1
+                                                            macroStack[macroStackPointer] = ip + 1
+                                                            do
+                                                                injectionStackPointer = injectionStackPointer + 1
+                                                                injectionStack[injectionStackPointer] = plume.ops.JUMP
+                                                                injectionStackPointer = injectionStackPointer + 1
+                                                                injectionStack[injectionStackPointer] = 0
+                                                                injectionStackPointer = injectionStackPointer + 1
+                                                                injectionStack[injectionStackPointer] = chunk.offset
+                                                                local _ret390
+                                                                _ret390 = macroStackPointer
+                                                                injectionStackPointer = injectionStackPointer + 1
+                                                                injectionStack[injectionStackPointer] = _ret390
+                                                            end
+                                                        else
+                                                            vmerr = err
+                                                        end
+                                                    end
+                                                else
+                                                    vmerr = plume.error.cannotOpenFile (args[1], searchPaths)
+                                                end
                                             end
                                         end
                                     end
@@ -3734,8 +3852,8 @@ return function (plume)
             end
             goto DISPATCH
         ::END::
-        local _ret379
-        _ret379 = mainStack[mainStackPointer]
-        return true, _ret379
+        local _ret391
+        _ret391 = mainStack[mainStackPointer]
+        return true, _ret391
     end
 end

@@ -98,7 +98,7 @@ return function(plume)
 		return message
 	end
 
-	function plume.error.WrongArgTypeStd(parameterName, macroName, usedType, expectedType, signature)
+	function plume.error.wrongArgTypeStd(parameterName, macroName, usedType, expectedType, signature)
 		local message = string.format("Wrong type '%s' for parameter '%s' of macro '%s'. Expected: '%s'.", usedType, parameterName, macroName, expectedType)
 
 		if signature then

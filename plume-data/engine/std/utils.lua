@@ -52,7 +52,7 @@ return function (plume)
 					end
 
 					if exectedType ~= t then
-						return false, plume.error.WrongArgTypeStd(key, name, t, exectedType, signature.signature)
+						return false, plume.error.wrongArgTypeStd(key, name, t, exectedType, signature.signature)
 					end
 				end
 			end
