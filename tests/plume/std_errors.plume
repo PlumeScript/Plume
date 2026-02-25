@@ -35,3 +35,71 @@ end
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test wrong args number 1
+$addToPlumePath()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'addToPlumePath', 0           │
+│   instead of 1.                                                                │
+│   Usage: $addToPlumePath(string path)                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ wrong args number 1                                                         │
+│    1 │$addToPlumePath()                                                        │
+│      │ ^^^^^^^^^^^^^^^^                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong args number 2
+$addToPlumePath(a, b)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'addToPlumePath', 2           │
+│   instead of 1.                                                                │
+│   Usage: $addToPlumePath(string path)                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ wrong args number 2                                                         │
+│    1 │$addToPlumePath(a, b)                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong args name
+$addToPlumePath(x, wing: blue)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown named parameter 'wing' for macro 'addToPlumePath'.                   │
+│   Usage: $addToPlumePath(string path)                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ wrong args name                                                             │
+│    1 │$addToPlumePath(x, wing: blue)                                           │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong args type
+$addToPlumePath($table())
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'table' for parameter '1' of macro 'addToPlumePath'.              │
+│   Expected: 'string'.                                                          │
+│   Usage: $addToPlumePath(string path)                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ wrong args type                                                             │
+│    1 │$addToPlumePath($table())                                                │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
