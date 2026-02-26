@@ -14,6 +14,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 *   **`table`**:
     *   `table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
+    *   `table.sort(table)`: In place sort. Doesn't change keys order.
     *   `table.append(table, item)`: Adds `item` to the end of the specified `table`.
     *   `table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
     *   `table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied.

@@ -98,6 +98,13 @@ return function (plume)
             return true, result
         end
     }
+    _table.table.sort = {
+        method = function (t)
+            table.sort(t.table)
+            
+            return true
+        end
+    }
 
     plume.std.table = _table
 end
