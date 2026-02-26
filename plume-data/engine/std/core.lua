@@ -48,6 +48,16 @@ return function (plume)
                 sep = ""
             end
 
+            if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
+                return false, plume.error.joinErrorHint()
+            end
+
+            for i, value in ipairs(args) do
+                if type(value) ~= "number" and type(value) ~= "string" then
+                    return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
+                end
+            end
+
             return pcall(table.concat, args, sep)
         end
     }
