@@ -70,7 +70,6 @@ return function (plume, context, nodeHandlerTable)
 		context.file(function ()
 			context.enterScope(nil)
 			table.insert(context.loops, {})
-
 			-------------------------------------------------------------
 			--- Count arguments, save variadic offset
 			--- and evaluate default value when optionnal args are empty.
@@ -85,7 +84,6 @@ return function (plume, context, nodeHandlerTable)
 				if paramName == "self" then
 					plume.error.cannotUseSelfAsParam(paramNameNode)
 				end
-
 				if paramBody then
 					if macroObj.variadicOffset then
 						plume.error.cannotAddNamedAfterVariadic(paramNode)
@@ -99,7 +97,11 @@ return function (plume, context, nodeHandlerTable)
 					macroObj.namedParamCount = macroObj.namedParamCount+1
 					macroObj.namedParamOffset[paramName] = param.offset
 				elseif variadic then
-					macroObj.variadicOffset = param.offset
+					if macroObj.variadicOffset then
+						plume.error.cannotUseMultipleVariadic(variadic)
+					else
+						macroObj.variadicOffset = param.offset
+					end
 				else
 					if macroObj.namedParamCount > 0 then
 						plume.error.cannotAddPositionalAfterNamed(paramNode)

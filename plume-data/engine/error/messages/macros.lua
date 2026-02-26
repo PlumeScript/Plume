@@ -29,6 +29,11 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.cannotUseMultipleVariadic(node)
+		local message = "Cannot use multiple variadic parameters"
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.cannotUseSelfAsParam(node)
 		local message = "Cannot use 'self' as macro parameter.\n'self' is an implicit variable used to store the call table."
 		plume.error.throwCompilationError(node, message)
