@@ -78,6 +78,11 @@ function _LOAD_CONTEXT(vm, name)
             return frame.value
         end
     end
+    vm.plume.warning.runtimeWarning(
+        "Empty context variable",
+        "Consider declaring it with a default value: `let context var = <value>`",
+        vm.runtime, vm.ip, {526}
+    )
     return vm.empty
 end
 
