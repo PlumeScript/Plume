@@ -277,6 +277,7 @@ return function (plume)
                     * (expr + E(plume.error.emptyExpr))
                 * (P")" + E(plume.error.missingClosingBracket))
                 + idn
+                + E(plume.error.evalAlone)
             ) * V"evalOpperator"^0
         )
 

@@ -54,6 +54,12 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.evalAlone(node)
+		local message = "'$' must be followed by a variable name or an expression in parentheses.\nIf you want to write the '$' character, write '\\$'."
+		node.errorbpos = node.bpos-1
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.missingClosingBracket(node)
 		local message = "Missing ')' to close evaluation."
 		node.errlpos = 1
