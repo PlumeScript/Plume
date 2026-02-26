@@ -81,6 +81,10 @@ return function (plume, context, nodeHandlerTable)
 				local paramBody     = plume.ast.get(paramNode, "BODY")
 				local param         = context.registerVariable(paramNameNode, paramName, {isMacroParam=true})
 
+				if not param then
+					plume.error.cannotUseMultipleParamName(paramNode, paramName)
+				end
+
 				if paramName == "self" then
 					plume.error.cannotUseSelfAsParam(paramNameNode)
 				end
