@@ -521,3 +521,10 @@ end
 $Wing(?deg )
 /// Output
 /// End
+
+/// Test #516
+let r = 5
+$r 0 $r
+/// Output
+5 0 5
+/// End

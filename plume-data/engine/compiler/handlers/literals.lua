@@ -34,7 +34,10 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.COMMENT = function()end
 
 	nodeHandlerTable.TEXT = function(node)
-		local value = tonumber(node.content) or node.content
+		local value = node.content
+		if not context.checkIfCanConcat() then
+			value = tonumber(value) or value
+		end
 		local offset = context.registerConstant(value)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
 	end
