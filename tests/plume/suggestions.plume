@@ -8,7 +8,7 @@ $variableNam
 │   Perhaps you mean 'variableName'?                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ suggestion 1                                                                │
+│  ↳ test.plume                                                                  │
 │    2 │$variableNam                                                             │
 │      │ ^^^^^^^^^^^                                                             │
 │                                                                                │
@@ -30,7 +30,7 @@ $configurationParameterA
 │   Perhaps you mean 'configurationOptionA' or 'configurationOptionB'?           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ suggestion 2                                                                │
+│  ↳ test.plume                                                                  │
 │    3 │$configurationParameterA                                                 │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^                                                 │
 │                                                                                │
@@ -53,7 +53,7 @@ $prnt
 │   Perhaps you mean 'print'?                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ suggestion std                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │$prnt                                                                    │
 │      │ ^^^^                                                                    │
 │                                                                                │

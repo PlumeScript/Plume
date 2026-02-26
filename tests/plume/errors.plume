@@ -6,7 +6,7 @@ set x = Wings
 │ → Cannot set variable 'x', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ set unknown variable                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │set x = Wings                                                            │
 │      │^^^^^^^^^^^^^                                                            │
 │                                                                                │
@@ -21,7 +21,7 @@ let x = $y
 │ → Cannot use variable 'y', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use unknown variable                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │let x = $y                                                               │
 │      │         ^                                                               │
 │                                                                                │
@@ -37,7 +37,7 @@ set x = Nib
 │ → Cannot set variable 'x', it is a constant.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ set constant variable                                                       │
+│  ↳ test.plume                                                                  │
 │    2 │set x = Nib                                                              │
 │      │^^^^^^^^^^^                                                              │
 │                                                                                │
@@ -55,7 +55,7 @@ let const x
 │ → Cannot define an empty constant variable.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ let empty const                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │let const x                                                              │
 │      │^^^^^^^^^^^                                                              │
 │                                                                                │
@@ -71,7 +71,7 @@ let x = Nib
 │ → Cannot define variable 'x', it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ define twice                                                                │
+│  ↳ test.plume                                                                  │
 │    2 │let x = Nib                                                              │
 │      │^^^^^^^^^^^                                                              │
 │                                                                                │
@@ -92,7 +92,7 @@ end
 │ → Cannot define variable 'wings', it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ define macro twice                                                          │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │macro wings()                                                            │
 │      │^^^^^^^^^^^^^                                                            │
@@ -110,7 +110,7 @@ $(x+1)
 │ → Cannot convert the string value 'Wings' to a number.                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Add string                                                                  │
+│  ↳ test.plume                                                                  │
 │    1 │let x = Wings                                                            │
 │    2 │$(x+1)                                                                   │
 │      │  ^^^                                                                    │
@@ -127,7 +127,7 @@ $(x+1)
 │ → Cannot do comparison or arithmetic with a table value.                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Add table                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │let x = $table()                                                         │
 │    2 │$(x+1)                                                                   │
 │      │  ^^^                                                                    │
@@ -144,7 +144,7 @@ end
 │ → Cannot iterate over a non-table 'number' value.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Iterate over non table                                                      │
+│  ↳ test.plume                                                                  │
 │    1 │for x in 1                                                               │
 │      │^^^^^^^^^^                                                               │
 │    2 │end                                                                      │
@@ -161,7 +161,7 @@ $t[empty]
 │ → Cannot use empty as key.                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Empty key                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table()                                                         │
 │    2 │$t[empty]                                                                │
 │      │  ^^^^^^^                                                                │
@@ -179,7 +179,7 @@ $t.wng
 │   Perhaps you mean 'wing'?                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (string)                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table(wing: 5)                                                  │
 │    2 │$t.wng                                                                   │
 │      │  ^^^^                                                                   │
@@ -197,7 +197,7 @@ $t[3]
 │   The largest index in this table is 2.                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int 1)                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table(nib, quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
@@ -215,7 +215,7 @@ $t[3]
 │   This table does not include any numerical indexes.                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int 2)                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table(nib: quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
@@ -232,7 +232,7 @@ $t[3]
 │ → Cannot index a non-table 'number' value.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Index non-table 1                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │let t = 1                                                                │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
@@ -249,7 +249,7 @@ let t = 1
 │ → Cannot expand a non-table 'number' value.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Expand non-table 2                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │let t = 1                                                                │
 │    2 │...t                                                                     │
 │      │^^^^                                                                     │
@@ -268,7 +268,7 @@ $wing $nib
 │ → Cannot concat a 'table' value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Concat error 1                                                              │
+│  ↳ test.plume                                                                  │
 │    2 │let nib = $table()                                                       │
 │    4 │$wing $nib                                                               │
 │      │       ^^^                                                               │
@@ -290,7 +290,7 @@ end
 │ → Cannot concat a 'table' value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Concat error 2                                                              │
+│  ↳ test.plume                                                                  │
 │    5 │if true                                                                  │
 │    6 │    $nib                                                                 │
 │      │     ^^^                                                                 │
@@ -309,7 +309,7 @@ Nib
 │   element TEXT.                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 1                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │- Wing                                                                   │
 │    2 │Nib                                                                      │
 │      │^^^                                                                      │
@@ -327,7 +327,7 @@ Nib
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 2                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │Nib                                                                      │
 │    2 │- Wing                                                                   │
 │      │^^^^^^                                                                   │
@@ -347,7 +347,7 @@ end
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 3                                                           │
+│  ↳ test.plume                                                                  │
 │    2 │for i in seq(1, 10)                                                      │
 │    3 │    - Nib                                                                │
 │      │    ^^^^^                                                                │
@@ -368,7 +368,7 @@ end
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 4                                                           │
+│  ↳ test.plume                                                                  │
 │    2 │if true                                                                  │
 │    3 │    - nib                                                                │
 │      │    ^^^^^                                                                │
@@ -394,7 +394,7 @@ end
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 6                                                           │
+│  ↳ test.plume                                                                  │
 │    7 │    song                                                                 │
 │    8 │    - nib                                                                │
 │      │    ^^^^^                                                                │
@@ -443,7 +443,7 @@ $wing()
 │   Usage: $paint()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ callstack                                                                   │
+│  ↳ test.plume                                                                  │
 │    4  │macro sing()                                                            │
 │    5  │    $paint(1)                                                           │
 │       │     ^^^^^^^^                                                           │
@@ -471,7 +471,7 @@ This is a very, very, very, very, very, very, very, very, very, very, very, very
 │ → Cannot use variable 'x', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ error line too long                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │...ery, very, very, very, very, very, very, long line, and $x=5.         │
 │      │                                                            ^            │
 │                                                                                │
@@ -487,7 +487,7 @@ $x.wing
 │ → Cannot index a non-table 'empty' value.                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ index empty                                                                 │
+│  ↳ test.plume                                                                  │
 │    1 │let x = $empty                                                           │
 │    2 │$x.wing                                                                  │
 │      │  ^^^^^                                                                  │

@@ -409,7 +409,7 @@ $table.join($t)
 │ → invalid value (table) at index 1 in table for 'concat'                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Error                                                                       │
+│  ↳ test.plume                                                                  │
 │    4 │end                                                                      │
 │    6 │$table.join($t)                                                          │
 │      │ ^^^^^^^^^^^^^^                                                          │

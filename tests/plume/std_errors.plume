@@ -9,7 +9,7 @@ end
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ seq to few argument                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │for x in seq()                                                           │
 │      │         ^^^^^                                                           │
 │    2 │  $x                                                                     │
@@ -28,7 +28,7 @@ end
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ seq to many arguments                                                       │
+│  ↳ test.plume                                                                  │
 │    1 │for x in seq(1, 2, 3, 4)                                                 │
 │      │         ^^^^^^^^^^^^^^^                                                 │
 │    2 │  $x                                                                     │
@@ -46,7 +46,7 @@ $addToPlumePath()
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args number 1                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath()                                                        │
 │      │ ^^^^^^^^^^^^^^^^                                                        │
 │                                                                                │
@@ -63,7 +63,7 @@ $addToPlumePath(a, b)
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args number 2                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath(a, b)                                                    │
 │      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
 │                                                                                │
@@ -79,7 +79,7 @@ $addToPlumePath(x, wing: blue)
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args name                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath(x, wing: blue)                                           │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
 │                                                                                │
@@ -96,7 +96,7 @@ $addToPlumePath($table())
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args type                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath($table())                                                │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
 │                                                                                │

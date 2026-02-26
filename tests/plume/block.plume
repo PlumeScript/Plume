@@ -119,7 +119,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 1                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │else                                                                     │
 │    4 │  Nib                                                                    │
 │      │  ^^^                                                                    │
@@ -142,7 +142,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 2                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │else                                                                     │
 │    4 │  - Nib                                                                  │
 │      │  ^^^^^                                                                  │
@@ -167,7 +167,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 3                                                        │
+│  ↳ test.plume                                                                  │
 │    5 │else                                                                     │
 │    6 │  - Nib                                                                  │
 │      │  ^^^^^                                                                  │
@@ -192,7 +192,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 4                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │elseif false                                                             │
 │    4 │  - Foo                                                                  │
 │      │  ^^^^^                                                                  │

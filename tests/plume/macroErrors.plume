@@ -9,7 +9,7 @@ $Wings(paint, write)
 │   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ not enought macro args                                                      │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(paint, write)                                                     │
 │      │ ^^^^^^^^^^^^^^^^^^^                                                     │
@@ -28,7 +28,7 @@ $Wings(paint, write, sing, dance)
 │   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ to many macro args                                                          │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(paint, write, sing, dance)                                        │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
@@ -47,7 +47,7 @@ $Wings(wing: red)
 │   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown named parameter 1                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(wing: red)                                                        │
 │      │ ^^^^^^^^^^^^^^^^                                                        │
@@ -66,7 +66,7 @@ $Wings(nib: blue, wing: red)
 │   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown named parameter 2                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(nib: blue, wing: red)                                             │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
@@ -85,7 +85,7 @@ $quill(a)
 │   Usage: $quill()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ get macro name 1                                                            │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$quill(a)                                                                │
 │      │ ^^^^^^^^                                                                │
@@ -106,7 +106,7 @@ $quill.mark(a)
 │   Usage: $mark()                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ get macro name 2                                                            │
+│  ↳ test.plume                                                                  │
 │    4 │end                                                                      │
 │    5 │$quill.mark(a)                                                           │
 │      │ ^^^^^^^^^^^^^                                                           │
@@ -127,7 +127,7 @@ $quill[1](a)
 │   Usage: $<macro>()                                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ get macro name 3                                                            │
+│  ↳ test.plume                                                                  │
 │    4 │end                                                                      │
 │    5 │$quill[1](a)                                                             │
 │      │ ^^^^^^^^^^^                                                             │
@@ -143,7 +143,7 @@ $(1)()
 │ → Cannot call a 'number' value.                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ call a non-macro                                                            │
+│  ↳ test.plume                                                                  │
 │    1 │$(1)()                                                                   │
 │      │ ^^^^^                                                                   │
 │                                                                                │
@@ -169,7 +169,7 @@ $mark()
 │ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ stack overflow                                                              │
+│  ↳ test.plume                                                                  │
 │    4 │set quill = macro()                                                      │
 │    5 │  $mark()                                                                │
 │      │   ^^^^^^                                                                │
@@ -220,7 +220,7 @@ end
 │   'self' is an implicit variable used to store the call table.                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ overwrite self                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │macro wing()                                                             │
 │    2 │  let self                                                               │
 │      │  ^^^^^^^^                                                               │
@@ -239,7 +239,7 @@ end
 │   'self' is an implicit variable used to store the call table.                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use self as param                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │macro wing(self)                                                         │
 │      │           ^^^^                                                          │
 │    2 │end                                                                      │

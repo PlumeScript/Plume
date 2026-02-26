@@ -197,7 +197,7 @@ end
 │   'refx' exists in parent scope, but a ref cannot be captured by macros.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Cannot capture ref 1                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │y: macro()                                                               │
 │    4 │   $x                                                                    │
 │      │    ^                                                                    │
@@ -223,7 +223,7 @@ end
 │   'ref x' exists in parent scope, but a ref cannot be captured by macros.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Cannot capture ref 2                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │y: macro()                                                               │
 │    4 │   set x = 1                                                             │
 │      │   ^^^^^^^^^                                                             │

@@ -12,7 +12,7 @@ $(t+1)
 │ → Wrong number of positional parameters for meta-macro 'add', 0 instead of 2.  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 1                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta add: macro()                                                      │
 │      │  ^^^^^^^^^^^^^^^^^                                                      │
@@ -35,7 +35,7 @@ $(t+1)
 │ → Wrong number of positional parameters for meta-macro 'add', 3 instead of 2.  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 2                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta add: macro(x, y, z)                                               │
 │      │  ^^^^^^^^^^^^^^^^^^^^^^^^                                               │
@@ -58,7 +58,7 @@ $(t+1)
 │ → Meta-macro 'add' dont support named parameters.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 3                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta add: macro(x, y, z: quill)                                        │
 │      │  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
@@ -82,7 +82,7 @@ $t(1)
 │   Usage: $<macro>(x, y, z: quill)                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 4                                               │
+│  ↳ test.plume                                                                  │
 │    5 │end                                                                      │
 │    7 │$t(1)                                                                    │
 │      │ ^^^^                                                                    │
@@ -101,7 +101,7 @@ end
 │ → 'mymacro' isn't a valid meta-macro name.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown meta                                                                │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta mymacro: macro()                                                  │
 │      │  ^^^^^^^^^^^^^^^^^^^^^                                                  │
@@ -124,7 +124,7 @@ $(t+1)
 │ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ stack overflow                                                              │
+│  ↳ test.plume                                                                  │
 │    2 │meta addr: macro(x)                                                      │
 │    3 │  $(self+1)                                                              │
 │      │    ^^^^^^                                                               │

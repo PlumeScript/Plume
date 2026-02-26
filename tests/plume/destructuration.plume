@@ -168,7 +168,7 @@ let wing: 5
 │ → Cannot use a default value outside of a from statement.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Forbiden default value 1                                                    │
+│  ↳ test.plume                                                                  │
 │    1 │let wing: 5                                                              │
 │      │    ^^^^^^^                                                              │
 │                                                                                │
@@ -183,7 +183,7 @@ let wing: 5 = 8
 │ → Cannot use a default value outside of a from statement.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Forbiden default value 2                                                    │
+│  ↳ test.plume                                                                  │
 │    1 │let wing: 5 = 8                                                          │
 │      │    ^^^^^^^                                                              │
 │                                                                                │
