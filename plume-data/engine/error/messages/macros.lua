@@ -44,6 +44,16 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotSetFlagDefaultValue(node)
+		local message = "Flag cannot have default value."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotSetVariadicDefaultValue(node)
+		local message = "Variadic cannot have default value."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.wrongArgsCount(macro, argCount, expectedArgsCount)
 		local message = string.format(
 			"Wrong number of positional arguments for macro '%s', %s instead of %s.",

@@ -98,8 +98,822 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">465 passed out of 465 tests</span></h1>
-<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<h1>Global: <span style="font-weight: normal;">466 passed and <span class="fail-count">1</span> failed out of 467 tests</span></h1>
+<div class="progress-bar"><div class="progress-success" style="width: 99.79%"></div><div class="progress-fail" style="width: 0.21%"></div></div>
+<h2>macroErrors: <span style="font-weight: normal;">16 passed and <span class="fail-count">1</span> failed out of 17 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 94.12%"></div><div class="progress-fail" style="width: 5.88%"></div></div>
+<details open>
+<summary>
+<span class="status-icon status-fail">✗</span> variadic with default value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(...variadic: default value)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<div class="comparison-grid">
+<h4>Expected</h4>
+<h4>Obtained</h4>
+<div><div class="result-type-header">Error</div><pre><code></code></pre></div>
+<div><div class="result-type-header">Error</div><pre><code><span class="diff-obtained">╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Variadic cannot have default value.                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wings(...variadic: default value)                                  │
+│      │                       ^^^^^^^^^^^^^^^                                   │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯</span></code></pre></div>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> call a non-macro <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(1)()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1)()</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1)()</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot call a &#39;number&#39; value.                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$(1)()                                                                   │
+│      │ ^^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> double variadic <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(...a, ...b)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Cannot use multiple variadic parameters                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(...a, ...b)                                                   │
+│      │                 ^^^^                                                    │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> flag with default value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(?flag: default value)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Flag cannot have default value.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wings(?flag: default value)                                        │
+│      │                 ^^^^^^^^^^^^^^^                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> get macro name 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let quill = macro ()
+end
+$quill(a)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill(a)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill(a)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro &#39;quill&#39;, 1 instead of 0.      │
+│   Usage: $quill()                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$quill(a)                                                                │
+│      │ ^^^^^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> get macro name 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let quill = @table
+  mark: macro ()
+  end
+end
+$quill.mark(a)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark: macro ()[...]</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill.mark(a)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .mark</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .mark</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill.mark(a)</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro &#39;mark&#39;, 1 instead of 0.       │
+│   Usage: $mark()                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │end                                                                      │
+│    5 │$quill.mark(a)                                                           │
+│      │ ^^^^^^^^^^^^^                                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> get macro name 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let quill = @table
+  - macro ()
+  end
+end
+$quill[1](a)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill[1](a)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; [1]</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [1]</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill[1](a)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro &#39;???&#39;, 1 instead of 0.        │
+│   Usage: $&lt;macro&gt;()                                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │end                                                                      │
+│    5 │$quill[1](a)                                                             │
+│      │ ^^^^^^^^^^^                                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> not enought macro args <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(nib, quill, ink)
+end
+$Wings(paint, write)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib, quill, ink)[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write)</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; paint</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; write</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro &#39;Wings&#39;, 2 instead of 3.      │
+│   Usage: $Wings(nib, quill, ink)                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$Wings(paint, write)                                                     │
+│      │ ^^^^^^^^^^^^^^^^^^^                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> overwrite self <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing()
+  let self
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot define variable &#39;self&#39;, it already exists in the current scope.       │
+│   &#39;self&#39; is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing()                                                             │
+│    2 │  let self                                                               │
+│      │  ^^^^^^^^                                                               │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> same name 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(a, a)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Name &#39;a&#39; is already used by another parameter.                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(a, a)                                                         │
+│      │              ^                                                          │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> same name 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(a, a:)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Name &#39;a&#39; is already used by another parameter.                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(a, a:)                                                        │
+│      │              ^^                                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> same name 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(a, ...a)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Name &#39;a&#39; is already used by another parameter.                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(a, ...a)                                                      │
+│      │              ^^^^                                                       │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> stack overflow <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let quill, mark
+
+
+set quill = macro()
+  $mark()
+end
+
+set mark = macro()
+  $quill()
+end
+
+$mark()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; mark</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 23</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill()</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill()</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Stack overflow                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │set quill = macro()                                                      │
+│    5 │  $mark()                                                                │
+│      │   ^^^^^^                                                                │
+│    6 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ! This block is repeated 249 times:                                           │
+│  ↳...                                                                          │
+│  ↳ (same file)                                                                 │
+│    4 │set quill = macro()                                                      │
+│    5 │  $mark()                                                                │
+│      │   ^^^^^^                                                                │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    8 │set mark = macro()                                                       │
+│    9 │  $quill()                                                               │
+│      │   ^^^^^^^                                                               │
+│                                                                                │
+│  ↳...                                                                          │
+│  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  │
+│                                                                                │
+│  ! This block is repeated 620 times:                                           │
+│  ↳...                                                                          │
+│  ↳ (same file)                                                                 │
+│    8 │set mark = macro()                                                       │
+│    9 │  $quill()                                                               │
+│      │   ^^^^^^^                                                               │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    4 │set quill = macro()                                                      │
+│    5 │  $mark()                                                                │
+│      │   ^^^^^^                                                                │
+│                                                                                │
+│  ↳...                                                                          │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> to many macro args <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(nib, quill, ink)
+end
+$Wings(paint, write, sing, dance)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib, quill, ink)[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write, sing, dance)</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; paint</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; write</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; sing</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; dance</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write, sing, dance)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro &#39;Wings&#39;, 4 instead of 3.      │
+│   Usage: $Wings(nib, quill, ink)                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$Wings(paint, write, sing, dance)                                        │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> unknown named parameter 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(nib: quill)
+end
+$Wings(wing: red)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT_EMPTY</span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib: quill)[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(wing: red)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; red</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: red</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(wing: red)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
+│   Usage: $Wings(nib: quill)                                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$Wings(wing: red)                                                        │
+│      │ ^^^^^^^^^^^^^^^^                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> unknown named parameter 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(nib: quill)
+end
+$Wings(nib: blue, wing: red)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT_EMPTY</span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; quill</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib: quill)[...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(nib: blue, wing: red)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; blue</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: blue</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; red</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: red</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(nib: blue, wing: red)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
+│   Usage: $Wings(nib: quill)                                                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$Wings(nib: blue, wing: red)                                             │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use self as param <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(self)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use &#39;self&#39; as macro parameter.                                        │
+│   &#39;self&#39; is an implicit variable used to store the call table.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(self)                                                         │
+│      │           ^^^^                                                          │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
@@ -8029,748 +8843,6 @@ $quill()
 <h4>Output</h4>
 <pre><code>
 mark
-</code></pre>
-</div>
-</details>
-<h2>macroErrors: <span style="font-weight: normal;">15 passed out of 15 tests</span></h2>
-<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> call a non-macro <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-$(1)()
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1)()</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1)()</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot call a &#39;number&#39; value.                                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │$(1)()                                                                   │
-│      │ ^^^^^                                                                   │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> double variadic <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro wing(...a, ...b)
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Cannot use multiple variadic parameters                                      │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │macro wing(...a, ...b)                                                   │
-│      │                 ^^^^                                                    │
-│    2 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> get macro name 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let quill = macro ()
-end
-$quill(a)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill(a)</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill(a)</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro &#39;quill&#39;, 1 instead of 0.      │
-│   Usage: $quill()                                                              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    2 │end                                                                      │
-│    3 │$quill(a)                                                                │
-│      │ ^^^^^^^^                                                                │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> get macro name 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let quill = @table
-  mark: macro ()
-  end
-end
-$quill.mark(a)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark: macro ()[...]</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; table</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill.mark(a)</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; a</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .mark</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .mark</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill.mark(a)</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro &#39;mark&#39;, 1 instead of 0.       │
-│   Usage: $mark()                                                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    4 │end                                                                      │
-│    5 │$quill.mark(a)                                                           │
-│      │ ^^^^^^^^^^^^^                                                           │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> get macro name 3 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let quill = @table
-  - macro ()
-  end
-end
-$quill[1](a)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro ()[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; table</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill[1](a)</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; [1]</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [1]</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill[1](a)</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro &#39;???&#39;, 1 instead of 0.        │
-│   Usage: $&lt;macro&gt;()                                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    4 │end                                                                      │
-│    5 │$quill[1](a)                                                             │
-│      │ ^^^^^^^^^^^                                                             │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> not enought macro args <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro Wings(nib, quill, ink)
-end
-$Wings(paint, write)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib, quill, ink)[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write)</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; paint</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; write</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write)</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro &#39;Wings&#39;, 2 instead of 3.      │
-│   Usage: $Wings(nib, quill, ink)                                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    2 │end                                                                      │
-│    3 │$Wings(paint, write)                                                     │
-│      │ ^^^^^^^^^^^^^^^^^^^                                                     │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> overwrite self <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro wing()
-  let self
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot define variable &#39;self&#39;, it already exists in the current scope.       │
-│   &#39;self&#39; is an implicit variable used to store the call table.                 │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │macro wing()                                                             │
-│    2 │  let self                                                               │
-│      │  ^^^^^^^^                                                               │
-│    3 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> same name 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro wing(a, a)
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Name &#39;a&#39; is already used by another parameter.                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │macro wing(a, a)                                                         │
-│      │              ^                                                          │
-│    2 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> same name 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro wing(a, a:)
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Name &#39;a&#39; is already used by another parameter.                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │macro wing(a, a:)                                                        │
-│      │              ^^                                                         │
-│    2 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> same name 3 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro wing(a, ...a)
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Name &#39;a&#39; is already used by another parameter.                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │macro wing(a, ...a)                                                      │
-│      │              ^^^^                                                       │
-│    2 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> stack overflow <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let quill, mark
-
-
-set quill = macro()
-  $mark()
-end
-
-set mark = macro()
-  $quill()
-end
-
-$mark()
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; mark</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 23</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill()</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; quill()</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">023</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">024</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
-<span class="bc-line-num">025</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
-<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; mark</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; mark()</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">029</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">030</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Stack overflow                                                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    4 │set quill = macro()                                                      │
-│    5 │  $mark()                                                                │
-│      │   ^^^^^^                                                                │
-│    6 │end                                                                      │
-│                                                                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ Traceback (most recent call first):                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│  ! This block is repeated 249 times:                                           │
-│  ↳...                                                                          │
-│  ↳ (same file)                                                                 │
-│    4 │set quill = macro()                                                      │
-│    5 │  $mark()                                                                │
-│      │   ^^^^^^                                                                │
-│                                                                                │
-│  ↳ (same file)                                                                 │
-│    8 │set mark = macro()                                                       │
-│    9 │  $quill()                                                               │
-│      │   ^^^^^^^                                                               │
-│                                                                                │
-│  ↳...                                                                          │
-│  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  │
-│                                                                                │
-│  ! This block is repeated 620 times:                                           │
-│  ↳...                                                                          │
-│  ↳ (same file)                                                                 │
-│    8 │set mark = macro()                                                       │
-│    9 │  $quill()                                                               │
-│      │   ^^^^^^^                                                               │
-│                                                                                │
-│  ↳ (same file)                                                                 │
-│    4 │set quill = macro()                                                      │
-│    5 │  $mark()                                                                │
-│      │   ^^^^^^                                                                │
-│                                                                                │
-│  ↳...                                                                          │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> to many macro args <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro Wings(nib, quill, ink)
-end
-$Wings(paint, write, sing, dance)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib, quill, ink)[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write, sing, dance)</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; paint</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; write</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; sing</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; dance</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(paint, write, sing, dance)</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro &#39;Wings&#39;, 4 instead of 3.      │
-│   Usage: $Wings(nib, quill, ink)                                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    2 │end                                                                      │
-│    3 │$Wings(paint, write, sing, dance)                                        │
-│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> unknown named parameter 1 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro Wings(nib: quill)
-end
-$Wings(wing: red)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT_EMPTY</span> <span class="bc-arg">0 11</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib: quill)[...]</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(wing: red)</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; red</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: red</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(wing: red)</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
-│   Usage: $Wings(nib: quill)                                                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    2 │end                                                                      │
-│    3 │$Wings(wing: red)                                                        │
-│      │ ^^^^^^^^^^^^^^^^                                                        │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> unknown named parameter 2 <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro Wings(nib: quill)
-end
-$Wings(nib: blue, wing: red)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT_EMPTY</span> <span class="bc-arg">0 11</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; quill</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib: quill</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wings(nib: quill)[...]</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(nib: blue, wing: red)</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; blue</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; nib: blue</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; red</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; wing</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing: red</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wings</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wings(nib: blue, wing: red)</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Unknown named parameter &#39;wing&#39; for macro &#39;Wings&#39;.                            │
-│   Usage: $Wings(nib: quill)                                                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    2 │end                                                                      │
-│    3 │$Wings(nib: blue, wing: red)                                             │
-│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> use self as param <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-macro wing(self)
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot use &#39;self&#39; as macro parameter.                                        │
-│   &#39;self&#39; is an implicit variable used to store the call table.                 │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │macro wing(self)                                                         │
-│      │           ^^^^                                                          │
-│    2 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
 </details>

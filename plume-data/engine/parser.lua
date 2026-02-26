@@ -57,6 +57,17 @@ return function (plume)
                 }
             end
         end
+        local function Et(errorHandler, pattern)
+            return Cp() * pattern * Cp() / function(bpos, content, epos)
+                return {
+                    name = "Error",
+                    bpos = bpos,
+                    epos  = epos-1,
+                    content = content,
+                    error = errorHandler
+                }
+            end
+        end
 
         local function W(warning, issues)
             return Cp() * P(0) * Cp() / function (bpos, epos)
@@ -301,11 +312,11 @@ return function (plume)
         
 
         -- macro & calls
+        local paramDefaultValue =   os * P":" * os * Ct("BODY", V"textic"^-1)
         local param      = Ct("PARAM",
-                			      idn * os * P":" * os * Ct("BODY", V"textic"^-1)
-                    			+ idn
-                    			+ Ct("VARIADIC", P"..." * idn)
-                    		) + sugarFlagParam(Ct("FLAG", "?"*idn))
+                			      idn * paramDefaultValue^-1
+                    			+ Ct("VARIADIC", P"..." * idn * Et(plume.error.cannotSetVariadicDefaultValue, paramDefaultValue)^-1)
+                    		) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"(" * os

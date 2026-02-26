@@ -74,6 +74,40 @@ $Wings(nib: blue, wing: red)
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test flag with default value
+macro Wings(?flag: default value)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Flag cannot have default value.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wings(?flag: default value)                                        │
+│      │                 ^^^^^^^^^^^^^^^                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test variadic with default value
+macro Wings(...variadic: default value)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Variadic cannot have default value.                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wings(...variadic: default value)                                  │
+│      │                       ^^^^^^^^^^^^^^^                                   │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test get macro name 1
 let quill = macro ()
 end
