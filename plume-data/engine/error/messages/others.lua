@@ -23,15 +23,25 @@ return function(plume)
 	end
 
 	function plume.error.unregisteredKey(t, key)
-		if tonumber(key) then
+		local index = tonumber(key)
+		if index and math.floor(index) == index then
 			local largestIndex = 0
 			for _, key in ipairs(t.keys) do
 				largestIndex = math.max(largestIndex, tonumber(key) or 0)
 			end
 
-			local hint
+			local hole = false
+			for i=1, largestIndex do
+				if not t.table[i] then
+					hole = true
+				end
+			end
+
+			local hint = ""
 			if largestIndex > 0 then
-				hint = string.format("The largest index in this table is %i.", largestIndex)
+				if not hole then
+					hint = string.format("The largest index in this table is %i.", largestIndex)
+				end
 			else
 				hint = "This table does not include any numerical indexes."
 			end

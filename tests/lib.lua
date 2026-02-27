@@ -180,7 +180,7 @@ function lib.executeTests(allTests, plumeEngine)
                         plumeEngine.execute,
                         debug.traceback,
                         testData.input,
-                        testName,
+                        "test.plume",
                         chunk,
                         runtime
                     )

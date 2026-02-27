@@ -111,7 +111,7 @@ end
 │ → Cannot define variable 'wings', it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #138                                                                        │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │macro wings()                                                            │
 │      │^^^^^^^^^^^^^                                                            │
@@ -130,7 +130,7 @@ $(x+a)
 │ → Cannot use variable 'a', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #141                                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │let const x = 5                                                          │
 │    3 │$(x+a)                                                                   │
 │      │    ^                                                                    │
@@ -198,7 +198,7 @@ $x(1)
 │   Usage: $x()                                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #148                                                                        │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    4 │$x(1)                                                                    │
 │      │ ^^^^                                                                    │
@@ -350,7 +350,7 @@ let x = 5
 │ → Cannot define variable 'x', it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #239                                                                        │
+│  ↳ test.plume                                                                  │
 │    2 │let x = 5                                                                │
 │      │^^^^^^^^^                                                                │
 │                                                                                │
@@ -520,4 +520,64 @@ macro Wing(?deg)
 end
 $Wing(?deg )
 /// Output
+/// End
+
+/// Test #508
+a
+ref x
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
+│   element TABLE.                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │a                                                                        │
+│    2 │ref x                                                                    │
+│      │^^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #516
+let r = 5
+$r 0 $r
+/// Output
+5 0 5
+/// End
+
+/// Test #534
+$table.join($table())
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'table' for parameter '1' of macro 'join'.                        │
+│   Did you write `table.join($t)` instead of `table.join(...t)`?                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$table.join($table())                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #542
+macro Wing()
+end
+
+macro Nib(...args)
+  macro Quill()
+      for k, v in items(args)
+        $Wing()
+      end
+  end
+  $Quill()
+end
+
+a
+$Nib(a:b)
+/// Output
+a
 /// End

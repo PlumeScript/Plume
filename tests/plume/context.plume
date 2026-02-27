@@ -77,7 +77,7 @@ let const context locale
 │ → Variable cannot be both const and context                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ cannot use context with const                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let const context locale                                                 │
 │      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
 │                                                                                │
@@ -92,7 +92,7 @@ let param context locale
 │ → Variable cannot be both const and context                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ cannot use context with param                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let param context locale                                                 │
 │      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
 │                                                                                │
@@ -109,7 +109,7 @@ set locale = 5
 │   locale: value` instead.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ cannot set context                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │let context locale                                                       │
 │    2 │set locale = 5                                                           │
 │      │^^^^^^^^^^^^^^                                                           │

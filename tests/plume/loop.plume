@@ -89,7 +89,7 @@ break
 │ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ break outside loop                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │break                                                                    │
 │      │^^^^^                                                                    │
 │                                                                                │
@@ -108,7 +108,7 @@ end
 │ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ break cutted from loops by macro                                            │
+│  ↳ test.plume                                                                  │
 │    2 │let m = macro()                                                          │
 │    3 │  break                                                                  │
 │      │  ^^^^^                                                                  │
@@ -125,7 +125,7 @@ continue
 │ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ continue outside loop                                                       │
+│  ↳ test.plume                                                                  │
 │    1 │continue                                                                 │
 │      │^^^^^^^^                                                                 │
 │                                                                                │
@@ -145,7 +145,7 @@ end
 │ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ continue cutted from loops by macro                                         │
+│  ↳ test.plume                                                                  │
 │    2 │let m = macro()                                                          │
 │    3 │  continue                                                               │
 │      │  ^^^^^^^^                                                               │

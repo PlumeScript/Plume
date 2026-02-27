@@ -1559,6 +1559,9 @@ return function (plume)
                                                             goto _inline_end367
                                                         end
                                                     end
+                                                    if not true then
+                                                        plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
+                                                    end
                                                     _ret173 = empty
                                                     goto _inline_end367
                                                 end
@@ -1579,6 +1582,9 @@ return function (plume)
                                                                 goto _inline_end370
                                                             end
                                                         end
+                                                        if not true then
+                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
+                                                        end
                                                         _ret176 = empty
                                                         goto _inline_end370
                                                     end
@@ -1596,6 +1602,9 @@ return function (plume)
                                                                 _ret179 = frame.value
                                                                 goto _inline_end373
                                                             end
+                                                        end
+                                                        if not true then
+                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret179 = empty
                                                         goto _inline_end373
@@ -1615,6 +1624,9 @@ return function (plume)
                                                                 goto _inline_end376
                                                             end
                                                         end
+                                                        if not true then
+                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
+                                                        end
                                                         _ret182 = empty
                                                         goto _inline_end376
                                                     end
@@ -1632,6 +1644,9 @@ return function (plume)
                                                                 _ret185 = frame.value
                                                                 goto _inline_end379
                                                             end
+                                                        end
+                                                        if not true then
+                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret185 = empty
                                                         goto _inline_end379
@@ -3561,6 +3576,9 @@ return function (plume)
                                                         _ret368 = frame.value
                                                         goto _inline_end797
                                                     end
+                                                end
+                                                if not nil then
+                                                    plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                 end
                                                 _ret368 = empty
                                                 goto _inline_end797

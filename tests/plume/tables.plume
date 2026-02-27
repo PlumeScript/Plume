@@ -298,7 +298,7 @@ end
 │ → Cannot define variable 'x', it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ ref error                                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │ let x                                                                   │
 │    3 │ ref x: 5                                                                │
 │      │ ^^^^^^^^                                                                │

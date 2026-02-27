@@ -151,3 +151,12 @@ Wing
 /// Output
 Nib
 /// End
+
+/// Test table as default value
+macro Wing(a:(a, b, c))
+  $table.join(...a)
+end
+$Wing()
+/// Output
+abc
+/// End

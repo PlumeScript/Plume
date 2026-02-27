@@ -70,13 +70,20 @@ function PUSH_CONTEXT(vm, arg1, arg2)
 end
 
 --! inline
-function _LOAD_CONTEXT(vm, name)
+function _LOAD_CONTEXT(vm, name, nocheck)
     local top = _STACK_POS(vm.contextStack)
     for i = top, 1, -1 do
         local frame = _STACK_GET(vm.contextStack, i)
         if frame.name == name then
             return frame.value
         end
+    end
+    if not nocheck then
+        vm.plume.warning.runtimeWarning(
+            "Empty context variable",
+            "Consider declaring it with a default value: `let context var = <value>`",
+            vm.runtime, vm.ip, {526}
+        )
     end
     return vm.empty
 end

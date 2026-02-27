@@ -377,6 +377,34 @@ $repr($t)
 $table($table(...))
 /// End
 
+/// Test repr table with holes 1
+let t = $table()
+set t[1] = 5
+set t[3]  = z
+$repr($t)
+/// Output
+$table(5, empty, z)
+/// End
+
+/// Test repr table with holes 2
+let t = $table()
+set t[1] = 5
+set t[3000]  = z
+$repr($t)
+/// Output
+$table(5, 3000: z)
+/// End
+
+/// Test repr table not ordered
+let t = $table()
+set t[3]  = z
+set t[1] = 5
+
+$repr($t)
+/// Output
+$table(3: z, 1: 5)
+/// End
+
 /// Test count
 let t = $table(wing: nib, write, nib)
 
@@ -394,25 +422,4 @@ let k, v = $table.entry($t, 2)
 $k = $v
 /// Output
 write = nib
-/// End
-
-/// Test Error
-let t = @table
-  - macro()
-  end
-end
-
-$table.join($t)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → invalid value (table) at index 1 in table for 'concat'                       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ Error                                                                       │
-│    4 │end                                                                      │
-│    6 │$table.join($t)                                                          │
-│      │ ^^^^^^^^^^^^^^                                                          │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

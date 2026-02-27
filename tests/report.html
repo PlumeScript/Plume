@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">455 passed out of 455 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">474 passed out of 474 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -1345,7 +1345,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 1                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │else                                                                     │
 │    4 │  Nib                                                                    │
 │      │  ^^^                                                                    │
@@ -1386,7 +1386,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 2                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │else                                                                     │
 │    4 │  - Nib                                                                  │
 │      │  ^^^^^                                                                  │
@@ -1429,7 +1429,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 3                                                        │
+│  ↳ test.plume                                                                  │
 │    5 │else                                                                     │
 │    6 │  - Nib                                                                  │
 │      │  ^^^^^                                                                  │
@@ -1472,7 +1472,7 @@ end
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ IF auto unbalanced 4                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │elseif false                                                             │
 │    4 │  - Foo                                                                  │
 │      │  ^^^^^                                                                  │
@@ -2220,7 +2220,7 @@ end
 │   &#39;refx&#39; exists in parent scope, but a ref cannot be captured by macros.       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Cannot capture ref 1                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │y: macro()                                                               │
 │    4 │   $x                                                                    │
 │      │    ^                                                                    │
@@ -2264,7 +2264,7 @@ end
 │   &#39;ref x&#39; exists in parent scope, but a ref cannot be captured by macros.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Cannot capture ref 2                                                        │
+│  ↳ test.plume                                                                  │
 │    3 │y: macro()                                                               │
 │    4 │   set x = 1                                                             │
 │      │   ^^^^^^^^^                                                             │
@@ -3526,7 +3526,7 @@ set locale = 5
 │   locale: value` instead.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ cannot set context                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │let context locale                                                       │
 │    2 │set locale = 5                                                           │
 │      │^^^^^^^^^^^^^^                                                           │
@@ -3560,7 +3560,7 @@ let const context locale
 │ → Variable cannot be both const and context                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ cannot use context with const                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let const context locale                                                 │
 │      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
 │                                                                                │
@@ -3593,7 +3593,7 @@ let param context locale
 │ → Variable cannot be both const and context                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ cannot use context with param                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let param context locale                                                 │
 │      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
 │                                                                                │
@@ -3941,7 +3941,7 @@ let wing: 5
 │ → Cannot use a default value outside of a from statement.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Forbiden default value 1                                                    │
+│  ↳ test.plume                                                                  │
 │    1 │let wing: 5                                                              │
 │      │    ^^^^^^^                                                              │
 │                                                                                │
@@ -3974,7 +3974,7 @@ let wing: 5 = 8
 │ → Cannot use a default value outside of a from statement.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Forbiden default value 2                                                    │
+│  ↳ test.plume                                                                  │
 │    1 │let wing: 5 = 8                                                          │
 │      │    ^^^^^^^                                                              │
 │                                                                                │
@@ -4916,7 +4916,7 @@ Nib
 </code></pre>
 </div>
 </details>
-<h2>errors: <span style="font-weight: normal;">27 passed out of 27 tests</span></h2>
+<h2>errors: <span style="font-weight: normal;">29 passed out of 29 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -4951,7 +4951,7 @@ $(x+1)
 │ → Cannot convert the string value &#39;Wings&#39; to a number.                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Add string                                                                  │
+│  ↳ test.plume                                                                  │
 │    1 │let x = Wings                                                            │
 │    2 │$(x+1)                                                                   │
 │      │  ^^^                                                                    │
@@ -4995,7 +4995,7 @@ $(x+1)
 │ → Cannot do comparison or arithmetic with a table value.                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Add table                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │let x = $table()                                                         │
 │    2 │$(x+1)                                                                   │
 │      │  ^^^                                                                    │
@@ -5047,7 +5047,7 @@ $wing $nib
 │ → Cannot concat a &#39;table&#39; value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Concat error 1                                                              │
+│  ↳ test.plume                                                                  │
 │    2 │let nib = $table()                                                       │
 │    4 │$wing $nib                                                               │
 │      │       ^^^                                                               │
@@ -5106,7 +5106,7 @@ end
 │ → Cannot concat a &#39;table&#39; value.                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Concat error 2                                                              │
+│  ↳ test.plume                                                                  │
 │    5 │if true                                                                  │
 │    6 │    $nib                                                                 │
 │      │     ^^^                                                                 │
@@ -5151,7 +5151,7 @@ $t[empty]
 │ → Cannot use empty as key.                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Empty key                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table()                                                         │
 │    2 │$t[empty]                                                                │
 │      │  ^^^^^^^                                                                │
@@ -5194,7 +5194,7 @@ let t = 1
 │ → Cannot expand a non-table &#39;number&#39; value.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Expand non-table 2                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │let t = 1                                                                │
 │    2 │...t                                                                     │
 │      │^^^^                                                                     │
@@ -5236,7 +5236,7 @@ $t[3]
 │ → Cannot index a non-table &#39;number&#39; value.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Index non-table 1                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │let t = 1                                                                │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
@@ -5283,7 +5283,7 @@ $t[3]
 │   The largest index in this table is 2.                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int 1)                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table(nib, quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
@@ -5331,7 +5331,7 @@ $t[3]
 │   This table does not include any numerical indexes.                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (int 2)                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table(nib: quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
@@ -5379,10 +5379,111 @@ $t.wng
 │   Perhaps you mean &#39;wing&#39;?                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Invalid key (string)                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │let t = $table(wing: 5)                                                  │
 │    2 │$t.wng                                                                   │
 │      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Invalid key with float <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2)
+$t[0.5]
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 0.5</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [0.5]</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unregistered key &#39;0.5&#39;.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = (1, 2)                                                           │
+│    2 │$t[0.5]                                                                  │
+│      │  ^^^^^                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Invalid key with holes <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $table(a)
+set t[1] = 0
+set t[3] = 0
+$t[2]
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(a)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(a)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[1] = 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[3] = 0</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [2]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Invalid index &#39;2&#39;.                                                           │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │set t[3] = 0                                                             │
+│    4 │$t[2]                                                                    │
+│      │  ^^^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -5429,7 +5530,7 @@ end
 │ → Cannot iterate over a non-table &#39;number&#39; value.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Iterate over non table                                                      │
+│  ↳ test.plume                                                                  │
 │    1 │for x in 1                                                               │
 │      │^^^^^^^^^^                                                               │
 │    2 │end                                                                      │
@@ -5465,7 +5566,7 @@ Nib
 │   element TEXT.                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 1                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │- Wing                                                                   │
 │    2 │Nib                                                                      │
 │      │^^^                                                                      │
@@ -5501,7 +5602,7 @@ Nib
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 2                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │Nib                                                                      │
 │    2 │- Wing                                                                   │
 │      │^^^^^^                                                                   │
@@ -5539,7 +5640,7 @@ end
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 3                                                           │
+│  ↳ test.plume                                                                  │
 │    2 │for i in seq(1, 10)                                                      │
 │    3 │    - Nib                                                                │
 │      │    ^^^^^                                                                │
@@ -5578,7 +5679,7 @@ end
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 4                                                           │
+│  ↳ test.plume                                                                  │
 │    2 │if true                                                                  │
 │    3 │    - nib                                                                │
 │      │    ^^^^^                                                                │
@@ -5622,7 +5723,7 @@ end
 │   element TABLE.                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ MixedBlockError 6                                                           │
+│  ↳ test.plume                                                                  │
 │    7 │    song                                                                 │
 │    8 │    - nib                                                                │
 │      │    ^^^^^                                                                │
@@ -5701,7 +5802,7 @@ $wing()
 │   Usage: $paint()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ callstack                                                                   │
+│  ↳ test.plume                                                                  │
 │    4  │macro sing()                                                            │
 │    5  │    $paint(1)                                                           │
 │       │     ^^^^^^^^                                                           │
@@ -5750,7 +5851,7 @@ end
 │ → Cannot define variable &#39;wings&#39;, it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ define macro twice                                                          │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │macro wings()                                                            │
 │      │^^^^^^^^^^^^^                                                            │
@@ -5786,7 +5887,7 @@ let x = Nib
 │ → Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ define twice                                                                │
+│  ↳ test.plume                                                                  │
 │    2 │let x = Nib                                                              │
 │      │^^^^^^^^^^^                                                              │
 │                                                                                │
@@ -5822,7 +5923,7 @@ This is a very, very, very, very, very, very, very, very, very, very, very, very
 │ → Cannot use variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ error line too long                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │...ery, very, very, very, very, very, very, long line, and $x=5.         │
 │      │                                                            ^            │
 │                                                                                │
@@ -5863,7 +5964,7 @@ $x.wing
 │ → Cannot index a non-table &#39;empty&#39; value.                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ index empty                                                                 │
+│  ↳ test.plume                                                                  │
 │    1 │let x = $empty                                                           │
 │    2 │$x.wing                                                                  │
 │      │  ^^^^^                                                                  │
@@ -5897,7 +5998,7 @@ let const x
 │ → Cannot define an empty constant variable.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ let empty const                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │let const x                                                              │
 │      │^^^^^^^^^^^                                                              │
 │                                                                                │
@@ -6045,7 +6146,7 @@ set x = Nib
 │ → Cannot set variable &#39;x&#39;, it is a constant.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ set constant variable                                                       │
+│  ↳ test.plume                                                                  │
 │    2 │set x = Nib                                                              │
 │      │^^^^^^^^^^^                                                              │
 │                                                                                │
@@ -6081,7 +6182,7 @@ set x = Wings
 │ → Cannot set variable &#39;x&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ set unknown variable                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │set x = Wings                                                            │
 │      │^^^^^^^^^^^^^                                                            │
 │                                                                                │
@@ -6114,7 +6215,7 @@ let x = $y
 │ → Cannot use variable &#39;y&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use unknown variable                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │let x = $y                                                               │
 │      │         ^                                                               │
 │                                                                                │
@@ -6486,7 +6587,7 @@ end
 │ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ break cutted from loops by macro                                            │
+│  ↳ test.plume                                                                  │
 │    2 │let m = macro()                                                          │
 │    3 │  break                                                                  │
 │      │  ^^^^^                                                                  │
@@ -6573,7 +6674,7 @@ break
 │ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ break outside loop                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │break                                                                    │
 │      │^^^^^                                                                    │
 │                                                                                │
@@ -6664,7 +6765,7 @@ end
 │ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ continue cutted from loops by macro                                         │
+│  ↳ test.plume                                                                  │
 │    2 │let m = macro()                                                          │
 │    3 │  continue                                                               │
 │      │  ^^^^^^^^                                                               │
@@ -6756,7 +6857,7 @@ continue
 │ → Cannot use continue keyword outside a loop.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ continue outside loop                                                       │
+│  ↳ test.plume                                                                  │
 │    1 │continue                                                                 │
 │      │^^^^^^^^                                                                 │
 │                                                                                │
@@ -7278,7 +7379,7 @@ $lua.string.gsub(azerty, [ae], .)
 </code></pre>
 </div>
 </details>
-<h2>macro: <span style="font-weight: normal;">13 passed out of 13 tests</span></h2>
+<h2>macro: <span style="font-weight: normal;">14 passed out of 14 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -8032,7 +8133,60 @@ mark
 </code></pre>
 </div>
 </details>
-<h2>macroErrors: <span style="font-weight: normal;">11 passed out of 11 tests</span></h2>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> table as default value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wing(a:(a, b, c))
+  $table.join(...a)
+end
+$Wing()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 24</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a:(a, b, c)</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP_IF_NOT_EMPTY</span> <span class="bc-arg">0 15</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (a, b, c)</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a:(a, b, c)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join(...a)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_EXPAND    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ...a</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join(...a)</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing(a:(a, b, c))[...]</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+abc
+</code></pre>
+</div>
+</details>
+<h2>macroErrors: <span style="font-weight: normal;">17 passed out of 17 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -8064,9 +8218,79 @@ $(1)()
 │ → Cannot call a &#39;number&#39; value.                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ call a non-macro                                                            │
+│  ↳ test.plume                                                                  │
 │    1 │$(1)()                                                                   │
 │      │ ^^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> double variadic <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(...a, ...b)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Cannot use multiple variadic parameters                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(...a, ...b)                                                   │
+│      │                 ^^^^                                                    │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> flag with default value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(?flag: default value)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Flag cannot have default value.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wings(?flag: default value)                                        │
+│      │                 ^^^^^^^^^^^^^^^                                         │
+│    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -8114,7 +8338,7 @@ $quill(a)
 │   Usage: $quill()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ get macro name 1                                                            │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$quill(a)                                                                │
 │      │ ^^^^^^^^                                                                │
@@ -8173,7 +8397,7 @@ $quill.mark(a)
 │   Usage: $mark()                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ get macro name 2                                                            │
+│  ↳ test.plume                                                                  │
 │    4 │end                                                                      │
 │    5 │$quill.mark(a)                                                           │
 │      │ ^^^^^^^^^^^^^                                                           │
@@ -8230,7 +8454,7 @@ $quill[1](a)
 │   Usage: $&lt;macro&gt;()                                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ get macro name 3                                                            │
+│  ↳ test.plume                                                                  │
 │    4 │end                                                                      │
 │    5 │$quill[1](a)                                                             │
 │      │ ^^^^^^^^^^^                                                             │
@@ -8280,7 +8504,7 @@ $Wings(paint, write)
 │   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ not enought macro args                                                      │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(paint, write)                                                     │
 │      │ ^^^^^^^^^^^^^^^^^^^                                                     │
@@ -8317,11 +8541,116 @@ end
 │   &#39;self&#39; is an implicit variable used to store the call table.                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ overwrite self                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │macro wing()                                                             │
 │    2 │  let self                                                               │
 │      │  ^^^^^^^^                                                               │
 │    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> same name 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(a, a)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Name &#39;a&#39; is already used by another parameter.                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(a, a)                                                         │
+│      │              ^                                                          │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> same name 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(a, a:)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Name &#39;a&#39; is already used by another parameter.                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(a, a:)                                                        │
+│      │              ^^                                                         │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> same name 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(a, ...a)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Name &#39;a&#39; is already used by another parameter.                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(a, ...a)                                                      │
+│      │              ^^^^                                                       │
+│    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -8392,7 +8721,7 @@ $mark()
 │ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ stack overflow                                                              │
+│  ↳ test.plume                                                                  │
 │    4 │set quill = macro()                                                      │
 │    5 │  $mark()                                                                │
 │      │   ^^^^^^                                                                │
@@ -8476,7 +8805,7 @@ $Wings(paint, write, sing, dance)
 │   Usage: $Wings(nib, quill, ink)                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ to many macro args                                                          │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(paint, write, sing, dance)                                        │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
@@ -8531,7 +8860,7 @@ $Wings(wing: red)
 │   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown named parameter 1                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(wing: red)                                                        │
 │      │ ^^^^^^^^^^^^^^^^                                                        │
@@ -8589,7 +8918,7 @@ $Wings(nib: blue, wing: red)
 │   Usage: $Wings(nib: quill)                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown named parameter 2                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │$Wings(nib: blue, wing: red)                                             │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                             │
@@ -8625,9 +8954,44 @@ end
 │   &#39;self&#39; is an implicit variable used to store the call table.                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use self as param                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │macro wing(self)                                                         │
 │      │           ^^^^                                                          │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> variadic with default value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wings(...variadic: default value)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Variadic cannot have default value.                                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wings(...variadic: default value)                                  │
+│      │                       ^^^^^^^^^^^^^^^                                   │
 │    2 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -9878,7 +10242,7 @@ $(t+1)
 │ → Wrong number of positional parameters for meta-macro &#39;add&#39;, 0 instead of 2.  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 1                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta add: macro()                                                      │
 │      │  ^^^^^^^^^^^^^^^^^                                                      │
@@ -9935,7 +10299,7 @@ $(t+1)
 │ → Wrong number of positional parameters for meta-macro &#39;add&#39;, 3 instead of 2.  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 2                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta add: macro(x, y, z)                                               │
 │      │  ^^^^^^^^^^^^^^^^^^^^^^^^                                               │
@@ -9996,7 +10360,7 @@ $(t+1)
 │ → Meta-macro &#39;add&#39; dont support named parameters.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 3                                               │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta add: macro(x, y, z: quill)                                        │
 │      │  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
@@ -10059,7 +10423,7 @@ $t(1)
 │   Usage: $&lt;macro&gt;(x, y, z: quill)                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ meta wrong parameter number 4                                               │
+│  ↳ test.plume                                                                  │
 │    5 │end                                                                      │
 │    7 │$t(1)                                                                    │
 │      │ ^^^^                                                                    │
@@ -10117,7 +10481,7 @@ $(t+1)
 │ → Stack overflow                                                               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ stack overflow                                                              │
+│  ↳ test.plume                                                                  │
 │    2 │meta addr: macro(x)                                                      │
 │    3 │  $(self+1)                                                              │
 │      │    ^^^^^^                                                               │
@@ -10184,7 +10548,7 @@ end
 │ → &#39;mymacro&#39; isn&#39;t a valid meta-macro name.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown meta                                                                │
+│  ↳ test.plume                                                                  │
 │    1 │let t = @table                                                           │
 │    2 │  meta mymacro: macro()                                                  │
 │      │  ^^^^^^^^^^^^^^^^^^^^^                                                  │
@@ -11244,65 +11608,8 @@ $x
 </code></pre>
 </div>
 </details>
-<h2>std: <span style="font-weight: normal;">41 passed out of 41 tests</span></h2>
+<h2>std: <span style="font-weight: normal;">43 passed out of 43 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> Error <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let t = @table
-  - macro()
-  end
-end
-
-$table.join($t)
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 9</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; table</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @table[...]</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join($t)</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; join</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; table</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join($t)</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → invalid value (table) at index 1 in table for &#39;concat&#39;                       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ Error                                                                       │
-│    4 │end                                                                      │
-│    6 │$table.join($t)                                                          │
-│      │ ^^^^^^^^^^^^^^                                                          │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
 <details>
 <summary>
 <span class="status-icon status-pass">✓</span> count <em style='font-weight: normal'></em>
@@ -12868,6 +13175,142 @@ $table(wing, nib, color: blue, quill)
 </details>
 <details>
 <summary>
+<span class="status-icon status-pass">✓</span> repr table not ordered <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $table()
+set t[3]  = z
+set t[1] = 5
+
+$repr($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[3]  = z</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[1] = 5</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+$table(3: z, 1: 5)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> repr table with holes 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $table()
+set t[1] = 5
+set t[3]  = z
+$repr($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[1] = 5</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[3]  = z</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+$table(5, empty, z)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> repr table with holes 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $table()
+set t[1] = 5
+set t[3000]  = z
+$repr($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[1] = 5</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; z</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 3000</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[3000]  = z</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+$table(5, 3000: z)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
 <span class="status-icon status-pass">✓</span> seq 1 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
@@ -13432,7 +13875,7 @@ end
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ seq to few argument                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │for x in seq()                                                           │
 │      │         ^^^^^                                                           │
 │    2 │  $x                                                                     │
@@ -13493,7 +13936,7 @@ end
 │   between 1 and 3.                                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ seq to many arguments                                                       │
+│  ↳ test.plume                                                                  │
 │    1 │for x in seq(1, 2, 3, 4)                                                 │
 │      │         ^^^^^^^^^^^^^^^                                                 │
 │    2 │  $x                                                                     │
@@ -13537,7 +13980,7 @@ $addToPlumePath(x, wing: blue)
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args name                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath(x, wing: blue)                                           │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
 │                                                                                │
@@ -13577,7 +14020,7 @@ $addToPlumePath()
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args number 1                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath()                                                        │
 │      │ ^^^^^^^^^^^^^^^^                                                        │
 │                                                                                │
@@ -13619,7 +14062,7 @@ $addToPlumePath(a, b)
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args number 2                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath(a, b)                                                    │
 │      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
 │                                                                                │
@@ -13662,7 +14105,7 @@ $addToPlumePath($table())
 │   Usage: $addToPlumePath(string path)                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong args type                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │$addToPlumePath($table())                                                │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
 │                                                                                │
@@ -14988,7 +15431,7 @@ $variableNam
 │   Perhaps you mean &#39;variableName&#39;?                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ suggestion 1                                                                │
+│  ↳ test.plume                                                                  │
 │    2 │$variableNam                                                             │
 │      │ ^^^^^^^^^^^                                                             │
 │                                                                                │
@@ -15028,7 +15471,7 @@ $configurationParameterA
 │   Perhaps you mean &#39;configurationOptionA&#39; or &#39;configurationOptionB&#39;?           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ suggestion 2                                                                │
+│  ↳ test.plume                                                                  │
 │    3 │$configurationParameterA                                                 │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^                                                 │
 │                                                                                │
@@ -15069,7 +15512,7 @@ $prnt
 │   Perhaps you mean &#39;print&#39;?                                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ suggestion std                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │$prnt                                                                    │
 │      │ ^^^^                                                                    │
 │                                                                                │
@@ -15077,7 +15520,7 @@ $prnt
 </code></pre>
 </div>
 </details>
-<h2>syntaxErrors: <span style="font-weight: normal;">23 passed out of 23 tests</span></h2>
+<h2>syntaxErrors: <span style="font-weight: normal;">27 passed out of 27 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -15107,7 +15550,7 @@ $wing(
 │ → Missing &#39;)&#39; to close arguments list.                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Missing closing bracket 1                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    4 │$wing(                                                                   │
 │      │      ^                                                                  │
@@ -15144,10 +15587,46 @@ $wing(a, b, c:d
 │ → Missing &#39;)&#39; to close arguments list.                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ Missing closing bracket 2                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    4 │$wing(a, b, c:d                                                          │
 │      │               ^                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> empty eval <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$
+a
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → &#39;$&#39; must be followed by a variable name or an expression in parentheses.     │
+│   If you want to write the &#39;$&#39; character, write &#39;\$&#39;.                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$                                                                        │
+│      │^                                                                        │
+│    2 │a                                                                        │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -15178,7 +15657,7 @@ $()
 │ → Evaluation cannot be empty.                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ empty eval 1                                                                │
+│  ↳ test.plume                                                                  │
 │    1 │$()                                                                      │
 │      │ ^^                                                                      │
 │                                                                                │
@@ -15211,7 +15690,7 @@ $(
 │ → Evaluation cannot be empty.                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ empty eval 2                                                                │
+│  ↳ test.plume                                                                  │
 │    1 │$(                                                                       │
 │      │ ^                                                                       │
 │                                                                                │
@@ -15245,7 +15724,7 @@ end
 │ → Missing parameter name.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ empty macro parameter 1                                                     │
+│  ↳ test.plume                                                                  │
 │    1 │macro wings(nib,,quill)                                                  │
 │      │               ^                                                         │
 │    2 │end                                                                      │
@@ -15280,7 +15759,7 @@ end
 │ → Missing parameter name.                                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ empty macro parameter 2                                                     │
+│  ↳ test.plume                                                                  │
 │    1 │macro wings(nib,     ,quill)                                             │
 │      │                ^^^^^                                                    │
 │    2 │end                                                                      │
@@ -15314,7 +15793,7 @@ set x
 │ → Using set without giving it a value.                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ empty set                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │set x                                                                    │
 │      │^^^                                                                      │
 │                                                                                │
@@ -15347,7 +15826,7 @@ let x += 1
 │ → Using let with a compound assignment.                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ let compound                                                                │
+│  ↳ test.plume                                                                  │
 │    1 │let x += 1                                                               │
 │      │      ^                                                                  │
 │                                                                                │
@@ -15382,7 +15861,7 @@ end
 │ → Malformed code.                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing @table                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │let x =                                                                  │
 │      │    ^^^                                                                  │
 │    2 │  - z                                                                    │
@@ -15417,7 +15896,7 @@ end
 │ → Missing condition.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing condition 1                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │if                                                                       │
 │      │  ^^^                                                                    │
 │    2 │end                                                                      │
@@ -15453,7 +15932,7 @@ end
 │ → Missing condition.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing condition 2                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │if true                                                                  │
 │    2 │elseif                                                                   │
 │      │      ^^^                                                                │
@@ -15489,7 +15968,7 @@ end
 │ → Missing condition.                                                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing condition 3                                                         │
+│  ↳ test.plume                                                                  │
 │    1 │while                                                                    │
 │      │     ^^^                                                                 │
 │    2 │end                                                                      │
@@ -15523,7 +16002,7 @@ if true
 │ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing end 1                                                               │
+│  ↳ test.plume                                                                  │
 │    1 │if true                                                                  │
 │      │                                                                         │
 │                                                                                │
@@ -15557,7 +16036,7 @@ else
 │ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing end 2                                                               │
+│  ↳ test.plume                                                                  │
 │    1 │if true                                                                  │
 │    2 │else                                                                     │
 │      │                                                                         │
@@ -15591,7 +16070,7 @@ while false
 │ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing end 3                                                               │
+│  ↳ test.plume                                                                  │
 │    1 │while false                                                              │
 │      │                                                                         │
 │                                                                                │
@@ -15624,7 +16103,7 @@ for x in t
 │ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing end 4                                                               │
+│  ↳ test.plume                                                                  │
 │    1 │for x in t                                                               │
 │      │                                                                         │
 │                                                                                │
@@ -15658,7 +16137,7 @@ while false
 │ → Missing end.                                                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing end 5                                                               │
+│  ↳ test.plume                                                                  │
 │    1 │while false                                                              │
 │    2 │  wing                                                                   │
 │      │                                                                         │
@@ -15693,7 +16172,7 @@ end
 │ → Missing for iterator.                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing iterator                                                            │
+│  ↳ test.plume                                                                  │
 │    1 │for x in                                                                 │
 │      │        ^^^                                                              │
 │    2 │end                                                                      │
@@ -15728,7 +16207,7 @@ end
 │ → Missing for variable.                                                        │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing loop identifier                                                     │
+│  ↳ test.plume                                                                  │
 │    1 │for in t                                                                 │
 │      │   ^                                                                     │
 │    2 │end                                                                      │
@@ -15763,7 +16242,7 @@ end
 │ → Missing parameters list.                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ missing param list                                                          │
+│  ↳ test.plume                                                                  │
 │    1 │macro wing                                                               │
 │      │                                                                         │
 │    2 │end                                                                      │
@@ -15797,9 +16276,110 @@ $(1
 │ → Missing &#39;)&#39; to close evaluation.                                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ non closed eval                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │$(1                                                                      │
 │      │   ^                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> unfinished raw 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+raw[
+content without closing
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raw[                                                                     │
+│    2 │content without closing                                                  │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> unfinished raw 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+raw
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raw                                                                      │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> unfinished raw 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+raw[
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raw[                                                                     │
+│      │                                                                         │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -15835,7 +16415,7 @@ use lib(param:$(1+1))
 │       |$lib.someMethod()                                                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use with dynamic arguments                                                  │
+│  ↳ test.plume                                                                  │
 │    1 │use lib(param:$(1+1))                                                    │
 │      │               ^^^^^                                                     │
 │                                                                                │
@@ -15868,7 +16448,7 @@ use lib(param: value, positional)
 │ → &#39;use&#39; does not accept positional arguments.                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use with positional arguments                                               │
+│  ↳ test.plume                                                                  │
 │    1 │use lib(param: value, positional)                                        │
 │      │                      ^^^^^^^^^^                                         │
 │                                                                                │
@@ -16964,7 +17544,7 @@ end
 │ → Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ ref error                                                                   │
+│  ↳ test.plume                                                                  │
 │    2 │ let x                                                                   │
 │    3 │ ref x: 5                                                                │
 │      │ ^^^^^^^^                                                                │
@@ -18395,7 +18975,7 @@ use tests/plume/toimport/lib
 │   already exists in the current file scope.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ already exists                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │let nib                                                                  │
 │    2 │use tests/plume/toimport/lib                                             │
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^                                             │
@@ -18810,7 +19390,7 @@ use idontexists
 │     idontexists/init.plume                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown use                                                                 │
+│  ↳ test.plume                                                                  │
 │    1 │use idontexists                                                          │
 │      │    ^^^^^^^^^^^                                                          │
 │                                                                                │
@@ -18969,7 +19549,7 @@ use tests/plume/toimport/badlib
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ use crash                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │use tests/plume/toimport/badlib                                          │
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -19005,7 +19585,7 @@ use tests/plume/toimport/text
 │   it returns a string.                                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use not a table                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │use tests/plume/toimport/text                                            │
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^^                                            │
 │                                                                                │
@@ -19038,7 +19618,7 @@ let if = 5
 │ → Cannot use &#39;if&#39; as an identifier.                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong indentifier                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │let if = 5                                                               │
 │      │    ^^                                                                   │
 │                                                                                │
@@ -19046,7 +19626,7 @@ let if = 5
 </code></pre>
 </div>
 </details>
-<h2>z_issues: <span style="font-weight: normal;">47 passed out of 47 tests</span></h2>
+<h2>z_issues: <span style="font-weight: normal;">51 passed out of 51 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -19574,7 +20154,7 @@ end
 │ → Cannot define variable &#39;wings&#39;, it already exists in the current scope.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #138                                                                        │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    3 │macro wings()                                                            │
 │      │^^^^^^^^^^^^^                                                            │
@@ -19611,7 +20191,7 @@ $(x+a)
 │ → Cannot use variable &#39;a&#39;, it isn&#39;t defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #141                                                                        │
+│  ↳ test.plume                                                                  │
 │    1 │let const x = 5                                                          │
 │    3 │$(x+a)                                                                   │
 │      │    ^                                                                    │
@@ -19903,7 +20483,7 @@ $x(1)
 │   Usage: $x()                                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #148                                                                        │
+│  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
 │    4 │$x(1)                                                                    │
 │      │ ^^^^                                                                    │
@@ -20532,7 +21112,7 @@ let x = 5
 │ → Cannot define variable &#39;x&#39;, it already exists in the current scope.          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ #239                                                                        │
+│  ↳ test.plume                                                                  │
 │    2 │let x = 5                                                                │
 │      │^^^^^^^^^                                                                │
 │                                                                                │
@@ -21448,6 +22028,224 @@ $Wing(?deg )
 <h4>Output</h4>
 <pre><code>
 
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #508 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+a
+ref x
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
+│   element TABLE.                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │a                                                                        │
+│    2 │ref x                                                                    │
+│      │^^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #516 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let r = 5
+$r 0 $r
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; r</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; r</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">;  0 </span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; r</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+5 0 5
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #534 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$table.join($table())
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join($table())</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table()</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; table</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join($table())</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type &#39;table&#39; for parameter &#39;1&#39; of macro &#39;join&#39;.                        │
+│   Did you write `table.join($t)` instead of `table.join(...t)`?                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$table.join($table())                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #542 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wing()
+end
+
+macro Nib(...args)
+  macro Quill()
+      for k, v in items(args)
+        $Wing()
+      end
+  end
+  $Quill()
+end
+
+a
+$Nib(a:b)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; m</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing()[...]</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 55</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Quill</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Quill</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Quill</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 50</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; items(args)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; args</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; items(args)</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">GET_ITER        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; for k, v in items(args)[...]</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; for k, v in items(args)[...]</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; for k, v in items(args)[...]</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; for k, v in items(args)[...]</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">FOR_ITER        </span> <span class="bc-arg">0 47</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">DUPLICATE       </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">SWITCH          </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; k</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">SWITCH          </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; v</span>
+<span class="bc-line-num">041</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">042</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">043</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">044</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">045</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">046</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 30</span>
+<span class="bc-line-num">047</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">048</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">049</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Quill()[...]</span>
+<span class="bc-line-num">050</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Quill()</span>
+<span class="bc-line-num">051</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Quill</span>
+<span class="bc-line-num">052</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Quill()</span>
+<span class="bc-line-num">053</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">054</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Nib(...args)[...]</span>
+<span class="bc-line-num">055</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">056</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib(a:b)</span>
+<span class="bc-line-num">057</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">058</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">059</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a:b</span>
+<span class="bc-line-num">060</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">061</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib(a:b)</span>
+<span class="bc-line-num">062</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib(a:b)</span>
+<span class="bc-line-num">063</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">064</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">065</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+a
 </code></pre>
 </div>
 </details>

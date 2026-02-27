@@ -57,6 +57,17 @@ return function (plume)
                 }
             end
         end
+        local function Et(errorHandler, pattern)
+            return Cp() * pattern * Cp() / function(bpos, content, epos)
+                return {
+                    name = "Error",
+                    bpos = bpos,
+                    epos  = epos-1,
+                    content = content,
+                    error = errorHandler
+                }
+            end
+        end
 
         local function W(warning, issues)
             return Cp() * P(0) * Cp() / function (bpos, epos)
@@ -277,6 +288,7 @@ return function (plume)
                     * (expr + E(plume.error.emptyExpr))
                 * (P")" + E(plume.error.missingClosingBracket))
                 + idn
+                + E(plume.error.evalAlone)
             ) * V"evalOpperator"^0
         )
 
@@ -300,11 +312,11 @@ return function (plume)
         
 
         -- macro & calls
+        local paramDefaultValue =   os * P":" * os * Ct("BODY", V"inlinetable" + V"textic"^-1)
         local param      = Ct("PARAM",
-                			      idn * os * P":" * os * Ct("BODY", V"textic"^-1)
-                    			+ idn
-                    			+ Ct("VARIADIC", P"..." * idn)
-                    		) + sugarFlagParam(Ct("FLAG", "?"*idn))
+                			      idn * paramDefaultValue^-1
+                    			+ Ct("VARIADIC", P"..." * idn * Et(plume.error.cannotSetVariadicDefaultValue, paramDefaultValue)^-1)
+                    		) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"(" * os
@@ -390,9 +402,9 @@ return function (plume)
 
         -- Deepness 0, 1 and 2 hardcoded.
         -- Should handle more case (#401)
-        local raw = Ct("RAW", os * K"raw[[" *  C("TEXT", P"\n" * (P(1)-P"]]end")^0) * P"]]end")
-                  + Ct("RAW", os * K"raw["  *  C("TEXT", P"\n" * (P(1)-P"]end")^0)  * P"]end")
-                  + Ct("RAW", os * K"raw"   *  C("TEXT", P"\n" * (P(1)-P"end")^0)   * P"end")
+        local raw = Ct("RAW", os * K"raw[[" *  C("TEXT", (P"\n"+-1) * (P(1)-P"]]end")^0) * (P"]]end" + E(plume.error.missingEnd, -P(1))))
+                  + Ct("RAW", os * K"raw["  *  C("TEXT", (P"\n"+-1) * (P(1)-P"]end")^0)  * (P"]end"  + E(plume.error.missingEnd, -P(1))))
+                  + Ct("RAW", os * K"raw"   *  C("TEXT", (P"\n"+-1) * (P(1)-P"end")^0)   * (P"end"   + E(plume.error.missingEnd, -P(1))))
 
         local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
         local with = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)

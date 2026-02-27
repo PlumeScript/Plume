@@ -91,20 +91,44 @@ return function(plume)
 		}
 	end
 
+	local function toint(x)
+		local n = tonumber(x)
+		return n and n == math.floor(n) and n
+	end
+
 	local function reprTable(t, acc)
 		acc[t] = true
+
 		local result = {}
+		local ordered = true
+		local lastIndex = 0
+
 		for _, key in ipairs(t.keys) do
 			local value = plume.repr(t.table[key], acc)
+			local index = toint(key)
+			if index then
+				if ordered then
+					if index < lastIndex or index > lastIndex+2 then
+						ordered = false
+					else
+						for i=1, index-lastIndex-1 do
+							table.insert(result,  "empty")
+						end
+						lastIndex = index
+					end
+				end
 
-			if tonumber(key) then
-				table.insert(result, value)
+				if ordered then
+					table.insert(result,  value)
+				else
+					table.insert(result, string.format("%s: %s", key, value))
+				end
 			else
 				local key = plume.repr(key, acc)
 				table.insert(result, string.format("%s: %s", key, value))
 			end
 		end
-
+		
 		return string.format("$table(%s)", table.concat(result, ", "))
 	end
 

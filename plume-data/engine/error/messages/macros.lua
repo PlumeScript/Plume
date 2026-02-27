@@ -29,8 +29,28 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.cannotUseMultipleVariadic(node)
+		local message = "Cannot use multiple variadic parameters"
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.cannotUseMultipleParamName(node, varName)
+		local message = string.format("Name '%s' is already used by another parameter.", varName)
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.cannotUseSelfAsParam(node)
 		local message = "Cannot use 'self' as macro parameter.\n'self' is an implicit variable used to store the call table."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotSetFlagDefaultValue(node)
+		local message = "Flag cannot have default value."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotSetVariadicDefaultValue(node)
+		local message = "Variadic cannot have default value."
 		plume.error.throwCompilationError(node, message)
 	end
 

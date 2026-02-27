@@ -204,7 +204,8 @@ return function (plume)
 		-- primitive types
 		if node.name == "LIST_ITEM"
 		or node.name == "HASH_ITEM"
-		or node.name == "EXPAND" then
+		or node.name == "EXPAND"
+		or node.name == "EMPTY_REF" then
 			return "TABLE"
 		elseif node.name == "TEXT"
 			or node.name == "RAW"

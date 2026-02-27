@@ -110,7 +110,7 @@ let if = 5
 │ → Cannot use 'if' as an identifier.                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ wrong indentifier                                                           │
+│  ↳ test.plume                                                                  │
 │    1 │let if = 5                                                               │
 │      │    ^^                                                                   │
 │                                                                                │
@@ -130,7 +130,7 @@ use idontexists
 │     idontexists/init.plume                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ unknown use                                                                 │
+│  ↳ test.plume                                                                  │
 │    1 │use idontexists                                                          │
 │      │    ^^^^^^^^^^^                                                          │
 │                                                                                │
@@ -153,7 +153,7 @@ use tests/plume/toimport/badlib
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ use crash                                                                   │
+│  ↳ test.plume                                                                  │
 │    1 │use tests/plume/toimport/badlib                                          │
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -168,7 +168,7 @@ use tests/plume/toimport/text
 │   it returns a string.                                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ use not a table                                                             │
+│  ↳ test.plume                                                                  │
 │    1 │use tests/plume/toimport/text                                            │
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^^                                            │
 │                                                                                │
@@ -185,7 +185,7 @@ use tests/plume/toimport/lib
 │   already exists in the current file scope.                                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ already exists                                                              │
+│  ↳ test.plume                                                                  │
 │    1 │let nib                                                                  │
 │    2 │use tests/plume/toimport/lib                                             │
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^                                             │

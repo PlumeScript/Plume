@@ -154,16 +154,16 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
     if value == vm.empty then
         _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), "")
     elseif t == "number" then
-        local locale = _LOAD_CONTEXT(vm, "locale")
+        local locale = _LOAD_CONTEXT(vm, "locale", true)
 
         if locale ~= vm.empty and locale ~= "none" then
             local success, result = vm.plume.formatNumber(
                 value, 
-                _LOAD_CONTEXT(vm, "localeNumberFormat"),
+                _LOAD_CONTEXT(vm, "localeNumberFormat", true),
                 locale,
-                _LOAD_CONTEXT(vm, "localeThousandsSeparator"),
-                _LOAD_CONTEXT(vm, "localeDecimalSeparator"),
-                _LOAD_CONTEXT(vm, "localeThousandthsSeparator")
+                _LOAD_CONTEXT(vm, "localeThousandsSeparator", true),
+                _LOAD_CONTEXT(vm, "localeDecimalSeparator", true),
+                _LOAD_CONTEXT(vm, "localeThousandthsSeparator", true)
             )
     
             if success then
