@@ -29,9 +29,18 @@ return function(plume)
 				largestIndex = math.max(largestIndex, tonumber(key) or 0)
 			end
 
-			local hint
+			local hole = false
+			for i=1, largestIndex do
+				if not t.table[i] then
+					hole = true
+				end
+			end
+
+			local hint = ""
 			if largestIndex > 0 then
-				hint = string.format("The largest index in this table is %i.", largestIndex)
+				if not hole then
+					hint = string.format("The largest index in this table is %i.", largestIndex)
+				end
 			else
 				hint = "This table does not include any numerical indexes."
 			end
