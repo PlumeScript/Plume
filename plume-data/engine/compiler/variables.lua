@@ -83,6 +83,8 @@ return function (plume, context)
 			end
 		end
 
+		macro = context.macros[#context.macros] or macro -- return from the deepest macro
+
 		return macro.upvalueMap[name]
 	end
 

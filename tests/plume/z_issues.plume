@@ -562,3 +562,22 @@ $table.join($table())
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #542
+macro Wing()
+end
+
+macro Nib(...args)
+  macro Quill()
+      for k, v in items(args)
+        $Wing()
+      end
+  end
+  $Quill()
+end
+
+a
+$Nib(a:b)
+/// Output
+a
+/// End
