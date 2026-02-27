@@ -23,7 +23,8 @@ return function(plume)
 	end
 
 	function plume.error.unregisteredKey(t, key)
-		if tonumber(key) then
+		local index = tonumber(key)
+		if index and math.floor(index) == index then
 			local largestIndex = 0
 			for _, key in ipairs(t.keys) do
 				largestIndex = math.max(largestIndex, tonumber(key) or 0)
