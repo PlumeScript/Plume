@@ -20,6 +20,12 @@ return function (plume)
     _table.table.append = plume.temp.append
     _table.table.join   = plume.temp.join
     _table.table.removeKey = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, any key",
+            named={self=true},
+            args=2
+        },
         method = function (t, key)
             key = tonumber(key) or key
             local index = 0
@@ -36,6 +42,12 @@ return function (plume)
         end
     }
     _table.table.hasKey = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, any key",
+            named={self=true},
+            args=2
+        },
         method = function (t, key)
             key = tonumber(key) or key
             for k, v in ipairs(t.keys) do
@@ -48,6 +60,12 @@ return function (plume)
         end
     }
     _table.table.find = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, any x",
+            named={self=true},
+            args=2
+        },
         method = function (t, x)
             for k, v in ipairs(t.keys) do
                 if t.table[v] == x then
@@ -58,6 +76,12 @@ return function (plume)
         end
     }
     _table.table.finds = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, any x",
+            named={self=true},
+            args=2
+        },
         method = function (t, x)
             local result = plume.obj.table(0, 0)
             for k, v in ipairs(t.keys) do
@@ -71,6 +95,12 @@ return function (plume)
         end
     }
     _table.table.count = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, ?named",
+            named={self=true, named=true},
+            args=1
+        },
         method = function (t, options)
             local named = options.table.named
 
@@ -88,6 +118,12 @@ return function (plume)
         end
     }
     _table.table.entry = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, any index",
+            named={self=true},
+            args=2
+        },
         method = function (t, index)
             local key = t.keys[index]
             local result = plume.obj.table(2, 0)
@@ -99,9 +135,14 @@ return function (plume)
         end
     }
     _table.table.sort = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t",
+            named={self=true},
+            args=1
+        },
         method = function (t)
             table.sort(t.table)
-            
             return true
         end
     }
