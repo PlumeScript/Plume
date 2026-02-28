@@ -23,7 +23,13 @@ If not, see <https://www.gnu.org/licenses/>.
 ---@return any
 --! inline  
 function _STACK_GET(stack, index)  
-	return stack[index or stack.pointer]  
+	local value = stack[index or stack.pointer]
+	--! to-remove-begin
+    if value == nil then
+        error("[VM] get nil from stack.")
+    end
+    --! to-remove-end
+	return value
 end  
 
 --- Retrieves a value relative to the current stack pointer position.
@@ -32,7 +38,13 @@ end
 ---@return any
 --! inline  
 function _STACK_GET_OFFSET(stack, offset)  
-	return stack[stack.pointer + offset]  
+	local value = stack[stack.pointer + offset]
+	--! to-remove-begin
+    if value == nil then
+        error("[VM] get nil from stack.")
+    end
+    --! to-remove-end
+	return value
 end  
 
 --- Sets a value at a specific index in the stack.
@@ -57,8 +69,14 @@ end
 ---@return any
 --! inline  
 function _STACK_POP(stack)  
-	stack.pointer = stack.pointer - 1  
-	return stack[stack.pointer + 1]  
+	stack.pointer = stack.pointer - 1
+	local value = stack[stack.pointer + 1]
+	--! to-remove-begin
+    if value == nil then
+        error("[VM] get nil from stack.")
+    end
+    --! to-remove-end
+	return value
 end  
 
 --- Pushes a value onto the stack.
@@ -66,7 +84,12 @@ end
 ---@param value any The value to push.
 --! inline  
 function _STACK_PUSH(stack, value)  
-	stack.pointer = stack.pointer + 1  
+	stack.pointer = stack.pointer + 1
+	--! to-remove-begin
+    if value == nil then
+        error("[VM] push nil to stack.")
+    end
+    --! to-remove-end
 	stack[stack.pointer] = value  
 end  
 
