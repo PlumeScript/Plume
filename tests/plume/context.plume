@@ -69,6 +69,18 @@ $Wing()
 fr
 /// End
 
+/// Test context block 1
+let t = do
+  - item 1
+  with locale: fr
+    - item 2
+  end
+end
+$repr($t)
+/// Output
+$table(item 1, item 2)
+/// End
+
 /// Test cannot use context with const
 let const context locale
 /// Error

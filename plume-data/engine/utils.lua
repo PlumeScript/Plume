@@ -171,7 +171,7 @@ return function (plume)
 			if not avoid then
 				if node.type == "EMPTY" then
 					if childType == "TEXT"
-					and (child.name ~= "FOR" and child.name ~= "WHILE") then
+					and (child.name ~= "FOR" and child.name ~= "WHILE" and child.name ~= "WITH") then
 						node.type = "VALUE"
 					else
 						node.type = childType
