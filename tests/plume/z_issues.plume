@@ -581,3 +581,16 @@ $Nib(a:b)
 /// Output
 a
 /// End
+
+/// Test #550
+let t = do
+    x: x
+    meta tostring: macro()
+        $self.x
+    end
+end
+
+$String($t)
+/// Output
+x
+/// End

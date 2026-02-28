@@ -2140,7 +2140,7 @@ return function (plume)
                                                     mainStackFramesPointer = mainStackFramesPointer + 1
                                                     mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
                                                     mainStackPointer = mainStackPointer + 1
-                                                    mainStack[mainStackPointer] = t
+                                                    mainStack[mainStackPointer] = value
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
