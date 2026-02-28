@@ -58,6 +58,7 @@ return function (plume)
         local ITER_SEQ = 1
         local ITER_ITEMS = 2
         local ITER_ENUMS = 3
+        local ITER_CUSTOM = 4
         local bit = require ("bit")
         local OP_BITS = plume.OP_BITS
         local ARG1_BITS = plume.ARG1_BITS
@@ -2345,6 +2346,7 @@ return function (plume)
                                                     elseif iter.type == "macro" then
                                                         macrocall = true
                                                     end
+                                                    flag = ITER_CUSTOM
                                                 else
                                                     value = obj.table
                                                     flag = ITER_TABLE
@@ -2510,7 +2512,7 @@ return function (plume)
                                                         result.table[2] = obj.ref.table[result.table[1]]
                                                     end
                                                 end
-                                            else
+                                            elseif flag == ITER_CUSTOM then
                                                 local iter = obj.meta.table.next
                                                 if iter.type == "luaMacro" then
                                                     result = iter.callable ()
@@ -2555,6 +2557,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = _ret214
                                                     end
                                                 end
+                                            else
+                                                error (string.format ("[VM] Unkonwn flag '%s'")
+                                                , flag)
                                             end
                                             if not call then
                                                 do
