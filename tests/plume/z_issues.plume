@@ -395,6 +395,14 @@ $nib()
 nib
 /// End
 
+/// Test #310
+macro wing(a)
+end
+
+$(wing(-5))
+/// Output
+/// End
+
 /// Test #311
 let t = $table(x: $false)
 $t.x

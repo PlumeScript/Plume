@@ -235,6 +235,7 @@ return function (plume)
 			or node.name == "SUB"
 			or node.name == "MUL"
 			or node.name == "DIV"
+			or node.name == "NEG"
 			or node.name == "POW"
 			or node.name == "MOD"
 			or node.name == "EQ"
