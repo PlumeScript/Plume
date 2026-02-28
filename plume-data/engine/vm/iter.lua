@@ -42,6 +42,7 @@ function GET_ITER (vm, arg1, arg2)
             elseif iter.type == "macro" then
                 macrocall = true
             end
+            flag = vm.flag.ITER_CUSTOM
         else
             value = obj.table
             flag = vm.flag.ITER_TABLE
@@ -53,18 +54,25 @@ function GET_ITER (vm, arg1, arg2)
         start = obj.start or start
     else
         _ERROR(vm, vm.plume.error.cannotIterateValue(tobj))
-    end 
-
-    _STACK_PUSH(vm.mainStack, flag)
-    _STACK_PUSH(vm.mainStack, start) -- state
-    if macrocall then -- call will add the value
-        BEGIN_ACC(vm, 0, 0)
-        _PUSH_SELF(vm, obj)
-        _STACK_PUSH(vm.mainStack, iter)
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
-    else
-        _STACK_PUSH(vm.mainStack, value)
     end
+
+    --! to-remove-begin
+    if not vm.err then -- only needed in dev mode, to prevent STACK_PUSH to crash
+    --! to-remove-end
+        _STACK_PUSH(vm.mainStack, flag)
+        _STACK_PUSH(vm.mainStack, start) -- state
+        if macrocall then -- call will add the value
+            BEGIN_ACC(vm, 0, 0)
+            _PUSH_SELF(vm, obj)
+            _STACK_PUSH(vm.mainStack, iter)
+            _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
+        else
+            _STACK_PUSH(vm.mainStack, value)
+        end
+
+    --! to-remove-begin
+    end
+    --! to-remove-end
 
     -- GET_ITER is followed by 3 STORE_LOCAL
 end
@@ -147,7 +155,7 @@ function FOR_ITER (vm, arg1, arg2)
                 result.table[2] = obj.ref.table[result.table[1]]
             end
         end
-    else
+    elseif flag == vm.flag.ITER_CUSTOM then
         local iter = obj.meta.table.next
         if iter.type == "luaMacro" then
             result = iter.callable()
@@ -162,6 +170,8 @@ function FOR_ITER (vm, arg1, arg2)
             _INJECTION_PUSH(vm, vm.plume.ops.JUMP_FOR, 0, arg2)
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
         end
+    else
+        error(string.format("[VM] Unkonwn flag '%s'"), flag)
     end
 
     if not call then

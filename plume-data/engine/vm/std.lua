@@ -35,8 +35,9 @@ end
 --! inline
 function STD_LEN(vm, arg1, arg2)
 	local t = _STACK_POP(vm.mainStack).table[1]
-	local tt = type(t)
+	local tt = _GET_TYPE(vm, t)
     local result
+
 	if tt == "table" then
         result = #t.table
     elseif tt == "string" then
@@ -44,7 +45,14 @@ function STD_LEN(vm, arg1, arg2)
     else
         _ERROR(vm, vm.plume.error.hasNoLen(tt))
     end
-    _STACK_PUSH(vm.mainStack, result)
+
+    --! to-remove-begin
+    if not vm.err then -- only needed in dev mode, to prevent STACK_PUSH to crash
+    --! to-remove-end
+        _STACK_PUSH(vm.mainStack, result)
+    --! to-remove-begin
+    end
+    --! to-remove-end
 end
 
 --- @opcode

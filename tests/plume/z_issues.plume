@@ -395,12 +395,29 @@ $nib()
 nib
 /// End
 
+/// Test #310
+macro wing(a)
+end
+
+$(wing(-5))
+/// Output
+/// End
+
 /// Test #311
 let t = $table(x: $false)
 $t.x
 /// Output
 false
 /// End
+
+/// Test #312
+let stop = 1
+let start = 0.5
+$((stop - start).ceil())
+/// Output
+1
+/// End
+
 
 /// Test #330-1
 let nib from $import(tests/plume/toimport/touse)
@@ -522,6 +539,16 @@ $Wing(?deg )
 /// Output
 /// End
 
+/// Test #483
+macro Wing(a, b, c: d)
+end
+
+let a, b, d
+
+$(Wing(a, b, c: d))
+/// Output
+/// End
+
 /// Test #508
 a
 ref x
@@ -580,4 +607,17 @@ a
 $Nib(a:b)
 /// Output
 a
+/// End
+
+/// Test #550
+let t = do
+    x: x
+    meta tostring: macro()
+        $self.x
+    end
+end
+
+$String($t)
+/// Output
+x
 /// End

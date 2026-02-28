@@ -171,6 +171,8 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
             else
                 _ERROR(vm, result)
             end
+        else
+            _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), tostring(value))
         end
     elseif t ~= "string" then
         local meta = t == "table" and value.meta.table.tostring
@@ -178,7 +180,7 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
             _STACK_POP(vm.mainStack)
 
             BEGIN_ACC(vm, 0, 0)
-            _PUSH_SELF(vm, t)
+            _PUSH_SELF(vm, value)
             _STACK_PUSH(vm.mainStack, meta)
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
         elseif t == "boolean" then

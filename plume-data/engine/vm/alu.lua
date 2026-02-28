@@ -93,9 +93,10 @@ end
 --- @return false|true, any(call result)
 --! inline
 function _HANDLE_META_UN (vm, x, name)
-    local meta
+    local meta, paramself
     if _GET_TYPE(vm, x) == "table" and x.meta and x.meta.table[name] then
         meta = x.meta.table[name]
+        paramself = x
     end
 
     if meta then
@@ -119,7 +120,7 @@ function _BIN_OP_BOOL (vm, op)
     right = _CHECK_BOOL (vm, right)
     left  = _CHECK_BOOL (vm, left)
 
-    _STACK_PUSH(vm.mainStack, op(right, left))
+    _STACK_PUSH(vm.mainStack, op(left, right))
 end
 
 --- Unstack 1 value, apply an boolean operation, stack the result.

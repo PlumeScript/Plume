@@ -146,8 +146,8 @@ return function (plume)
 				   node.parent.name == "FOR"
 				or node.parent.name == "WHILE"
 				or node.parent.name == "IF"
-				or node.parent.name == "ELSE"
-				or node.parent.name == "ELSEIF"
+				or (node.parent.name == "ELSE" and #(node.children or {})>0)
+				or (node.parent.name == "ELSEIF" and #(node.children or {})>0)
 			)))	 then
 			node.type = node.parent.type
 		else
@@ -165,12 +165,13 @@ return function (plume)
 			local avoid = child.name == "IDENTIFIER" and (
 			    	node.name ~= "EVAL"
 					and node.name ~= "LIST_ITEM"
+					and node.name ~= "BODY"
 			)
 
 			if not avoid then
 				if node.type == "EMPTY" then
 					if childType == "TEXT"
-					and (child.name ~= "FOR" and child.name ~= "WHILE") then
+					and (child.name ~= "FOR" and child.name ~= "WHILE" and child.name ~= "WITH") then
 						node.type = "VALUE"
 					else
 						node.type = childType
@@ -234,6 +235,7 @@ return function (plume)
 			or node.name == "SUB"
 			or node.name == "MUL"
 			or node.name == "DIV"
+			or node.name == "NEG"
 			or node.name == "POW"
 			or node.name == "MOD"
 			or node.name == "EQ"

@@ -423,3 +423,9 @@ $k = $v
 /// Output
 write = nib
 /// End
+
+/// Test String on number
+$type($String(5))
+/// Output
+string
+/// End

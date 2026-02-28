@@ -270,14 +270,14 @@ return function (plume)
             local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
         	local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
-            local inlinetable = Ct("INLINE_TABLE", P"(" * arg^-1 * (os * P"," * os * arg)^1 * P")")
+            local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (os * P"," * os * arg)^1 + optnarg) * P")")
 
             local evalOpperator = arglist + index + directindex
-        	local access = Ct("EVAL", idn * evalOpperator^1)
-        	---
+        	local primary = num + idn + quote + inlinetable + P"(" * V"_layer1" * P")"
+            local access = Ct("EVAL", primary * evalOpperator^1)
 
             local terminal = num + access + idn + quote
-            rules["_layer" .. (#opplist+1)] = os * (inlinetable + terminal + P"(" * V("_layer1") * P")") * os
+            rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
 
             return rules
         end
@@ -326,7 +326,11 @@ return function (plume)
         local paramlistM = paramlist + E(plume.error.missingParamList)
         local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
 
-        local arg       = Ct("HASH_ITEM", os * (idn + eval) * os * P":" * os * Ct("BODY", V"textic"^-1))	
+        local namedArg  =Ct("HASH_ITEM",
+                            os * (idn + eval) * os * P":"
+                            * os * Ct("BODY", (V"inlinetable" + V"textic")^-1)
+                        )
+        local arg       = namedArg	
         				+ sugarFlagCall(Ct("FLAG", os *"?"*idn))
                         + Ct("EXPAND", P"..."*evalBase)
                         + Ct("LIST_ITEM", V"inlinetable")
@@ -398,7 +402,7 @@ return function (plume)
 
         local _do = Ct("DO", os * K"do" * body * _end)
 
-        local inlinetable = Ct("INLINE_TABLE", os * P"(" * arg * (P"," * os * arg)^1 * P")")
+        local inlinetable = Ct("INLINE_TABLE", os * P"(" * (arg * (P"," * os * arg)^1 + namedArg) * P")")
 
         -- Deepness 0, 1 and 2 hardcoded.
         -- Should handle more case (#401)

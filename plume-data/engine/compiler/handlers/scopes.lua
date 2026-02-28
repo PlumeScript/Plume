@@ -48,7 +48,7 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.PUSH_CONTEXT)
 		end
 
-		context.accBlock()(body)
+		context.childrenHandler(body)
 		
 		for _, child in ipairs(params.children) do
 			context.registerOP(node, plume.ops.POP_CONTEXT)

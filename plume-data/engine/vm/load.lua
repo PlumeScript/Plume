@@ -21,7 +21,15 @@ function LOAD_CONSTANT (vm, arg1, arg2)
     --- Stack 1 from constant
     --- arg1: -
     --- arg2: constant offset
-    _STACK_PUSH(vm.mainStack, vm.constants[arg2])
+    local value = vm.constants[arg2]
+
+    --! to-remove-begin
+    if value == nil then
+        error("[VM] Try to load a nil value.")
+    end
+    --! to-remove-end
+
+    _STACK_PUSH(vm.mainStack, value)
 end
 
 --- @opcode
