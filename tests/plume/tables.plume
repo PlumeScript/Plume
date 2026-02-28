@@ -287,6 +287,30 @@ $(len((1, 2, 3)))
 3
 /// End
 
+/// Test inline table as inline table value 1
+let t = (1, a:(1, 2))
+$repr($t)
+/// Output
+$table(1, a: $table(1, 2))
+/// End
+
+/// Test inline table as inline table value 2
+let t = $((1, a:(1, 2)))
+$repr($t)
+/// Output
+$table(1, a: $table(1, 2))
+/// End
+
+/// Test inline table in as named arg
+macro wing(nib:$table())
+	$table.join(...nib)
+end
+
+$wing(nib:(1, 2, 3))
+/// Output
+123
+/// End
+
 /// Test ref error
 let t = @table
 	let x
