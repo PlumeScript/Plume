@@ -16,7 +16,7 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume)
 	local Number = plume.obj.table (0, 7)
 
-	Number.table.keys = {
+	Number.keys = {
 		"floor", "ceil", "round", "clamp", "format", "localize",
 		"sign"
 	}
