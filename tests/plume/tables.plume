@@ -295,6 +295,13 @@ $table(1, a: $table(1, 2))
 /// End
 
 /// Test inline table as inline table value 2
+let t = (a:(1, 2))
+$repr($t)
+/// Output
+$table(a: $table(1, 2))
+/// End
+
+/// Test inline table as inline table value 3
 let t = $((1, a:(1, 2)))
 $repr($t)
 /// Output
