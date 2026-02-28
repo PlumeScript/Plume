@@ -522,6 +522,16 @@ $Wing(?deg )
 /// Output
 /// End
 
+/// Test #483
+macro Wing(a, b, c: d)
+end
+
+let a, b, d
+
+$(Wing(a, b, c: d))
+/// Output
+/// End
+
 /// Test #508
 a
 ref x

@@ -165,6 +165,7 @@ return function (plume)
 			local avoid = child.name == "IDENTIFIER" and (
 			    	node.name ~= "EVAL"
 					and node.name ~= "LIST_ITEM"
+					and node.name ~= "BODY"
 			)
 
 			if not avoid then
