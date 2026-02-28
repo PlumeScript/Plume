@@ -120,7 +120,7 @@ function _BIN_OP_BOOL (vm, op)
     right = _CHECK_BOOL (vm, right)
     left  = _CHECK_BOOL (vm, left)
 
-    _STACK_PUSH(vm.mainStack, op(right, left))
+    _STACK_PUSH(vm.mainStack, op(left, right))
 end
 
 --- Unstack 1 value, apply an boolean operation, stack the result.

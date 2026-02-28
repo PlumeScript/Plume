@@ -4024,7 +4024,7 @@ return function (plume)
                                             ::_inline_end739::
                                             left = _ret343
                                             local _ret344
-                                            _ret344 = right and left
+                                            _ret344 = left and right
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret344
                                         end
@@ -4091,7 +4091,7 @@ return function (plume)
                                             ::_inline_end753::
                                             left = _ret351
                                             local _ret352
-                                            _ret352 = right or left
+                                            _ret352 = left or right
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret352
                                         end

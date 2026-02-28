@@ -107,6 +107,12 @@ $(1+1==2 and 5>9)
 false
 /// End
 
+/// Test and 3
+$(true and 1)
+/// Output
+1
+/// End
+
 /// Test or 1
 $(1+1==2 or 5>9)
 /// Output
