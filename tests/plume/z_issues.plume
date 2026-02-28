@@ -410,6 +410,15 @@ $t.x
 false
 /// End
 
+/// Test #312
+let stop = 1
+let start = 0.5
+$((stop - start).ceil())
+/// Output
+1
+/// End
+
+
 /// Test #330-1
 let nib from $import(tests/plume/toimport/touse)
 $nib()

@@ -273,11 +273,11 @@ return function (plume)
             local inlinetable = Ct("INLINE_TABLE", P"(" * arg^-1 * (os * P"," * os * arg)^1 * P")")
 
             local evalOpperator = arglist + index + directindex
-        	local access = Ct("EVAL", idn * evalOpperator^1)
-        	---
+        	local primary = num + idn + quote + inlinetable + P"(" * V"_layer1" * P")"
+            local access = Ct("EVAL", primary * evalOpperator^1)
 
             local terminal = num + access + idn + quote
-            rules["_layer" .. (#opplist+1)] = os * (inlinetable + terminal + P"(" * V("_layer1") * P")") * os
+            rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
 
             return rules
         end
