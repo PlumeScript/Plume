@@ -146,8 +146,8 @@ return function (plume)
 				   node.parent.name == "FOR"
 				or node.parent.name == "WHILE"
 				or node.parent.name == "IF"
-				or node.parent.name == "ELSE"
-				or node.parent.name == "ELSEIF"
+				or (node.parent.name == "ELSE" and #(node.children or {})>0)
+				or (node.parent.name == "ELSEIF" and #(node.children or {})>0)
 			)))	 then
 			node.type = node.parent.type
 		else

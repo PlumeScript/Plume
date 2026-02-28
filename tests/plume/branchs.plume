@@ -96,3 +96,13 @@ end
 /// Output
 ???
 /// End
+
+/// Test if-else empty else
+let x = if false
+  a
+else
+end
+
+/// Output
+
+/// End
