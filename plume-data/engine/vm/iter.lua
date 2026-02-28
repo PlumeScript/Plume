@@ -53,18 +53,26 @@ function GET_ITER (vm, arg1, arg2)
         start = obj.start or start
     else
         _ERROR(vm, vm.plume.error.cannotIterateValue(tobj))
-    end 
-
-    _STACK_PUSH(vm.mainStack, flag)
-    _STACK_PUSH(vm.mainStack, start) -- state
-    if macrocall then -- call will add the value
-        BEGIN_ACC(vm, 0, 0)
-        _PUSH_SELF(vm, obj)
-        _STACK_PUSH(vm.mainStack, iter)
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
-    else
-        _STACK_PUSH(vm.mainStack, value)
     end
+
+    --! to-remove-begin
+    if not vm.err then -- only needed in dev mode, to prevent STACK_PUSH to crash
+    --! to-remove-end
+
+        _STACK_PUSH(vm.mainStack, flag)
+        _STACK_PUSH(vm.mainStack, start) -- state
+        if macrocall then -- call will add the value
+            BEGIN_ACC(vm, 0, 0)
+            _PUSH_SELF(vm, obj)
+            _STACK_PUSH(vm.mainStack, iter)
+            _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
+        else
+            _STACK_PUSH(vm.mainStack, value)
+        end
+
+    --! to-remove-begin
+    end
+    --! to-remove-end
 
     -- GET_ITER is followed by 3 STORE_LOCAL
 end
