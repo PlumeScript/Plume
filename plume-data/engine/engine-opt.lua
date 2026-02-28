@@ -3311,11 +3311,12 @@ return function (plume)
                                             if err then
                                                 local _ret282
                                                 do
-                                                    local meta
+                                                    local meta, paramself
                                                     local _ret283
                                                     _ret283 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                     if _ret283 == "table" and x.meta and x.meta.table.minus then
                                                         meta = x.meta.table.minus
+                                                        paramself = x
                                                     end
                                                     if meta then
                                                         mainStackFramesPointer = mainStackFramesPointer + 1

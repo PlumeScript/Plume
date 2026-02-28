@@ -93,9 +93,10 @@ end
 --- @return false|true, any(call result)
 --! inline
 function _HANDLE_META_UN (vm, x, name)
-    local meta
+    local meta, paramself
     if _GET_TYPE(vm, x) == "table" and x.meta and x.meta.table[name] then
         meta = x.meta.table[name]
+        paramself = x
     end
 
     if meta then
