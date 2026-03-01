@@ -75,7 +75,7 @@ return function (plume)
             return true, nil
         end
     }
-    _table.table.finds = {
+    _table.table.findAll = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t, any x",
