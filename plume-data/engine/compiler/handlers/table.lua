@@ -31,7 +31,12 @@ return function (plume, context, nodeHandlerTable)
 		end
 	end
 
-	nodeHandlerTable.INLINE_TABLE = context.accBlock()
+	nodeHandlerTable.INLINE_TABLE = function(node)
+		if node.parent and node.parent.type == "TEXT" then
+			plume.error.mixedBlock(node, "TEXT", node.type)
+		end
+		context.accBlock()(node)
+	end
 	
 	--- `key: value` and `meta key: value`
 	nodeHandlerTable.HASH_ITEM = function(node)
