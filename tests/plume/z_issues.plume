@@ -621,3 +621,10 @@ $String($t)
 /// Output
 x
 /// End
+
+/// Test #563
+macro()
+end
+/// Output
+macro<???>
+/// End

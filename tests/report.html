@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">487 passed out of 487 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">488 passed out of 488 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -12005,7 +12005,7 @@ wing
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> finds <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> findAll <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -12014,7 +12014,7 @@ wing
 <pre><code class="language-plume">
 let t = $table(wing: nib, write: nib)
 
-$table.join(...table.finds($t, nib))
+$table.join(...table.findAll($t, nib))
 
 </code></pre>
 </div>
@@ -12032,21 +12032,21 @@ $table.join(...table.finds($t, nib))
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; table</span>
 <span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table(wing: nib, write: nib)</span>
 <span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join(...table.finds($t, nib))</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.finds($t, nib)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join(...table.findAll($t, nib))</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.findAll($t, nib)</span>
 <span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
 <span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; nib</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; finds</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; findAll</span>
 <span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; table</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .finds</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .finds</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.finds($t, nib)</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">TABLE_EXPAND    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ...table.finds($t, nib)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.findAll($t, nib)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">TABLE_EXPAND    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ...table.findAll($t, nib)</span>
 <span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; join</span>
 <span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; table</span>
 <span class="bc-line-num">025</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
 <span class="bc-line-num">026</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join(...table.finds($t, nib))</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; table.join(...table.findAll($t, nib))</span>
 <span class="bc-line-num">028</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
@@ -19991,7 +19991,7 @@ let if = 5
 </code></pre>
 </div>
 </details>
-<h2>z_issues: <span style="font-weight: normal;">55 passed out of 55 tests</span></h2>
+<h2>z_issues: <span style="font-weight: normal;">56 passed out of 56 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -22792,6 +22792,38 @@ $String($t)
 <h4>Output</h4>
 <pre><code>
 x
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #563 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro()
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 8</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro()[...]</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+macro&lt;???&gt;
 </code></pre>
 </div>
 </details>
