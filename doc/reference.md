@@ -4,6 +4,8 @@ _For version 1.0.beta.12_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
+Note: Some features are labeled "experimental". This means that they are likely to be significantly modified or even removed in future versions of Plume.
+
 ## Core Principles
 
 ### 1. Text and Statements
@@ -368,7 +370,7 @@ let [const] key1, sourceKey as alias, key: default, ... from expression
 // 4. Parameter Declaration
 let param name [= value]
 
-// 5. Context Variable Declaration
+// 5. Context Variable Declaration (EXPERIMENTAL - #571)
 let context name
 // Declares a variable that acts as an immutable proxy to a context variable. The variable reflects the current value from the context stack at the point of access.
 // Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`.
@@ -717,7 +719,7 @@ end
 
 Using `run` allows for imperative-style procedure calls within Plume's expression-oriented architecture, providing a clear and safe way to manage side-effects.
 
-### Context Variables and `with` Statement
+### Context Variables and `with` Statement (EXPERIMENTAL - #571)
 
 Context variables provide a mechanism for passing implicit parameters through nested scopes, similar to a scoped global variable stack. They are useful for reducing boilerplate when a configuration value needs to be accessed deep in a call chain.
 
