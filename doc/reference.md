@@ -101,11 +101,28 @@ There are four types of accumulation blocks:
 
 ### Comments
 
-Comments start with `//` and extend to the end of the line.
+Plume supports two types of comments: **line comments** and **block comments**.
+
+#### Line Comment
+A line comment starts with `//` and extends to the end of the current line. It can be used on its own or inline after code.
 
 ```plume
-// This is a comment.
-let x = 1 // This is also a comment.
+// This is a single-line comment.
+let x = 1 // Inline comment allowed here.
+```
+
+#### Block Comment
+A block comment starts with `/*` and ends with `*/`. These comments can span multiple lines. They are ignored by the parser similarly to line comments.
+
+```plume
+/* 
+   This is a multi-line comment.
+   It can wrap across several lines.
+   
+   Note: Comments inside 'raw' blocks are treated as literal text anyway,
+   so block comment delimiters there do not affect parsing.
+*/
+let y = 5 // Another example
 ```
 
 ### Statements

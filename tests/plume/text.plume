@@ -164,3 +164,31 @@ Raw:
     raw
     end
 /// End
+
+/// Test oneline comment
+// A comment
+/// Output
+/// End
+
+/// Test multiline comment 1
+/* A singleline multiline comment */
+/// Output
+/// End
+
+/// Test multiline comment 2
+/* A
+multiline
+comment */
+/// Output
+/// End
+
+/// Test multiline comment 3
+Text\n
+/* A
+multiline
+comment */
+Text
+/// Output
+Text
+Text
+/// End
