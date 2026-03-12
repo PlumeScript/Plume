@@ -288,7 +288,7 @@ return function (plume)
                     * (expr + E(plume.error.emptyExpr))
                 * (P")" + E(plume.error.missingClosingBracket))
                 + idn
-                + E(plume.error.evalAlone)
+                -- + E(plume.error.evalAlone)
             ) * V"evalOpperator"^0
         )
 
@@ -435,11 +435,11 @@ return function (plume)
 
             command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + with,
 
-            text =   (escaped + eval + V"comment" + V"rawtext")^1,
-            textns = (escaped + eval + V"comment" + V"rawtextns")^1,
-            textnc = (escaped + eval + V"comment" + V"rawtextnc")^1,
-            textnp = (escaped + eval + V"comment" + V"rawtextnp")^1,
-            textic = (escaped + eval + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
+            text =   (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
+            textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
+            textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
+            textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
+            textic = (escaped + eval + C("TEXT", P"$") + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
 
             comment  = os *C("COMMENT",
                   P"//" * NOT(S"\n")^0
