@@ -103,7 +103,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         --------------------------------------
         if tocall == vm.plume.std.tostring then
             vm.plume.warning.deprecatedRuntime(
-                "1.0",
+                "Sparrow",
                 "macro `tostring`",
                 "Use `String` instead",
                 vm.runtime, vm.ip, {230, 414}

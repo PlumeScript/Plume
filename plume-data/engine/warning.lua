@@ -66,13 +66,13 @@ return function (plume)
 
 	local function deprecatedMessage(version, description, help, issues)
 		help = "  "..help:gsub('\n', '\n  ')
-	    return string.format("%s will be removed in version %s.", description, version), help
+	    return string.format("%s will be removed in edition %s.", description, version), help
 	end
 
 	--- Emits a deprecation warning for features scheduled for removal.
 	--- Formats the description with target version and indents the help text.
 	--- Inherits deduplication logic from runtimeWarning.
-	--- @param version string target version for removal (e.g., "1.0")
+	--- @param version string target version for removal (e.g., "Lark")
 	--- @param description string description of the deprecated feature
 	--- @param help string migration instructions or alternatives
 	--- @param runtime table current execution context
@@ -88,7 +88,7 @@ return function (plume)
 	end
 
 	--- Wraps a function to emit a deprecation warning upon first call.
-    --- @param version string target version for removal (e.g., "1.0")
+    --- @param version string target version for removal (e.g., "Lark")
 	--- @param description string description of the deprecated feature
 	--- @param help string migration instructions or alternatives
     --- @param issues table Identifier for the issue (e.g., GitHub issue number).

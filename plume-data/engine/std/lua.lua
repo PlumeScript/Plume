@@ -31,7 +31,7 @@ return function (plume)
         -- WILL BE REMOVED IN 1.0 (#230, #414)  
         --------------------------------------  
         tonumber = {
-            method = plume.warning.deprecatedFunctionRuntime("1.0", "`tonumber` standard macro", "Use `Number` instead", {230, 414},function(args, chunk)
+            method = plume.warning.deprecatedFunctionRuntime("Sparrow", "`tonumber` standard macro", "Use `Number` instead", {230, 414},function(args, chunk)
                     local x = args.table[1]
                     if x == plume.obj.empty then
                         return false, "Cannot convert empty into number"

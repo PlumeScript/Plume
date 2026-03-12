@@ -69,7 +69,7 @@ return function (plume)
     -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
     ---------------------------------
     plume.stdLua.remove = {
-        method=plume.warning.deprecatedFunctionRuntime("1.0", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230},  function  (args)
+        method=plume.warning.deprecatedFunctionRuntime("Sparrow", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230},  function  (args)
             args.table[1].keys[#args.table[1].table] = nil
 
             return true, table.remove(args.table[1].table, index)
@@ -77,14 +77,14 @@ return function (plume)
         )
     }
     plume.stdLua.append = {
-        method=plume.warning.deprecatedFunctionRuntime("1.0", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, function  (args)
+        method=plume.warning.deprecatedFunctionRuntime("Sparrow", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, function  (args)
                 table.insert(args.table[1].table, args.table[2])
                 table.insert(args.table[1].keys, #args.table[1].table)
                 return true
             end)
     }
     plume.stdLua.join = {
-        method=plume.warning.deprecatedFunctionRuntime("1.0", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, function  (args)
+        method=plume.warning.deprecatedFunctionRuntime("Sparrow", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, function  (args)
                 local sep = args.table.sep
                 if sep == plume.obj.empty then
                     sep = ""

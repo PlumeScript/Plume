@@ -104,7 +104,7 @@ function STD_ITEMS(vm, arg1, arg2)
     ---------------------------------
     if args.legacy then
         vm.plume.warning.deprecatedRuntime(
-                    "1.0",
+                    "Sparrow",
                     "`?legacy` flag for macro items",
                     "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key → x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey → value\nend\n```",
                     vm.runtime, vm.ip, {228, 230}
@@ -137,7 +137,7 @@ function STD_ENUMERATE(vm, arg1, arg2)
     ---------------------------------
     if args.legacy then
         vm.plume.warning.deprecatedRuntime(
-                    "1.0",
+                    "Sparrow",
                     "`?legacy` flag for macro enumerate",
                     "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index → x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex → value\nend\n```",
                     vm.runtime, vm.ip, {228, 230}
@@ -172,7 +172,7 @@ function STD_IMPORT(vm, arg1, arg2)
     ---------------------------------
     if args.legacy then
         vm.plume.warning.deprecatedRuntime(
-            "1.0",
+            "Sparrow",
             "`?lua` flag for macro import",
             "Instead of \n`$import(<path>, ?lua)`, use `lua.require(<path>)`",
             vm.runtime, vm.ip, {235, 230}

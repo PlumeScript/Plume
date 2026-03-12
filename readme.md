@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-1.0.beta.12-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Version](https://img.shields.io/badge/version-Lark_32-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -103,6 +103,19 @@ end
 [Reference](doc/reference.md) (not necessarily very pedagogical) and, for the curious, [documentation of the VM](doc/vm.md).
 
 [Lot of examples](https://html-preview.github.io/?url=https://github.com/ErwanBarbedor/PlumeScript/blob/main/tests/report.html) in the tests suite, with bytecode.
+
+### Versioning
+
+Plume uses an **Edition-Build** versioning scheme:
+
+```
+Plume <edition> <build>
+```
+
+*   **Edition** (e.g., `Lark`, `Sparrow `): A named release line. API stability is guaranteed within an edition; code written for `Lark` runs on any `Lark` build without modification.
+*   **Build** (e.g., `32`): A monotonically increasing integer. Higher build numbers are newer, but always compatible within the same edition.
+
+Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking changes. Consult the [migration guide](doc/migration.md) and changelog before updating.
 
 ### Project History
 `Plume🪶` was born out of my need for a language suited to creating my course documents. Before arriving at the current version, it went through... a lot of experimentation.
