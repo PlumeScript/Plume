@@ -133,6 +133,8 @@ All statements must start at the beginning of a line, though they may be precede
 
 Some statements that initiate a value assignment or a data structure (`let`, `set`, `-`, `key:`, `$key:`) can be **chained** on the same line with a statement that produces a value (`if`, `for`, `while`, `macro`, `@name`).
 
+**Note on `@` Chaining:** Multiple block calls (`@name`) can be chained on the same line to initiate nested accumulation contexts.
+
 ```plume
 // Assigning the result of an @-call to a variable
 let config = @loadConfig
@@ -325,6 +327,24 @@ The following call formats are available:
         active: $true
     end
     ```
+
+**Chained Block Calls**
+To reduce nesting depth, multiple block calls can be chained on the same line. Each subsequent call inherits the indentation level of the initiated block.
+
+```plume
+// Standard nesting
+@outer(a, b: c)
+    @inner(x, y: z)
+        body content
+    end
+end
+
+// Chained syntax (Proposed)
+@outer(a, b: c) @inner(x, y: z)
+    body content
+end
+```
+
 #### `leave`
 Exits the current execution block (macro or file) and immediately returns the value accumulated up to that point. It provides a mechanism for an early return, similar to a `return` statement in other languages.
 

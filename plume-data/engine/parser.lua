@@ -337,9 +337,12 @@ return function (plume)
                         + Ct("LIST_ITEM", V"textic")
 
         local call      = Ct("CALL", P"(" * os * arg^-1 * (os * P"," * os * arg)^0 * (os * P")" + E(plume.error.missingClosingBracketArgList)))
-        local block = Ct("EVAL", P"@" * idn * (index + directindex)^0 * os
-        					* Ct("BLOCK_CALL", call^-1 * body)
-        				* _end)
+
+        local blockName = idn * (index + directindex)^0
+        local blockStart = Ct("EVAL", P"@" * blockName * os
+        					* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
+        				)
+        local block = blockStart * C("NULL", _end)
         local leave     = C("LEAVE", K"leave")
 
         -- affectations
@@ -451,7 +454,8 @@ return function (plume)
             invalid = E(plume.error.emptySet, K"set"),
             evalOpperator = call + index + directindex,
 
-            inlinetable= inlinetable
+            inlinetable= inlinetable,
+            blockStart = blockStart
         }
 
         return lpeg.Ct(rules)
