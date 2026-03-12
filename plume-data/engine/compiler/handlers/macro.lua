@@ -27,8 +27,8 @@ return function (plume, context, nodeHandlerTable)
 		local debugMacroName = macroName or node.label
 		-- Case let x = macro
 		if not debugMacroName then
-			local parent = node.parent.parent
-			if parent.name == "SET" or parent.name == "LET" then
+			local parent = node.parent and node.parent.parent
+			if parent and (parent.name == "SET" or parent.name == "LET") then
 				local varlist    = plume.ast.get(parent, "VARLIST")
 				local identifier = plume.ast.get(varlist, "IDENTIFIER")
 				debugMacroName = identifier and identifier.content

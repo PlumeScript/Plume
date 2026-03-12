@@ -1953,7 +1953,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = _ret112
                                                 end
                                                 if tocall == plume.std.tostring then
-                                                    plume.warning.deprecatedRuntime ("1.0", "macro `tostring`", "Use `String` instead", runtime, ip, {230, 414})
+                                                    plume.warning.deprecatedRuntime ("Sparrow", "macro `tostring`", "Use `String` instead", runtime, ip, {230, 414})
                                                 end
                                             else
                                                 vmerr = plume.error.cannotCallValue (t)
@@ -4474,7 +4474,7 @@ return function (plume)
                                             ::_inline_end825::
                                             local args = _ret383.table
                                             if args.legacy then
-                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key → x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey → value\nend\n```", runtime, ip, {228, 230})
+                                                plume.warning.deprecatedRuntime ("Sparrow", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key → x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey → value\nend\n```", runtime, ip, {228, 230})
                                             end
                                             local _ret384
                                             do
@@ -4510,7 +4510,7 @@ return function (plume)
                                             ::_inline_end831::
                                             local args = _ret386.table
                                             if args.legacy then
-                                                plume.warning.deprecatedRuntime ("1.0", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index → x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex → value\nend\n```", runtime, ip, {228, 230})
+                                                plume.warning.deprecatedRuntime ("Sparrow", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index → x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex → value\nend\n```", runtime, ip, {228, 230})
                                             end
                                             local _ret387
                                             do
@@ -4550,7 +4550,7 @@ return function (plume)
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
                                             if args.legacy then
-                                                plume.warning.deprecatedRuntime ("1.0", "`?lua` flag for macro import", "Instead of \n`$import(<path>, ?lua)`, use `lua.require(<path>)`", runtime, ip, {235, 230})
+                                                plume.warning.deprecatedRuntime ("Sparrow", "`?lua` flag for macro import", "Instead of \n`$import(<path>, ?lua)`, use `lua.require(<path>)`", runtime, ip, {235, 230})
                                             end
                                             local _ret390
                                             do

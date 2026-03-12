@@ -288,7 +288,7 @@ return function (plume)
                     * (expr + E(plume.error.emptyExpr))
                 * (P")" + E(plume.error.missingClosingBracket))
                 + idn
-                + E(plume.error.evalAlone)
+                -- + E(plume.error.evalAlone)
             ) * V"evalOpperator"^0
         )
 
@@ -337,9 +337,12 @@ return function (plume)
                         + Ct("LIST_ITEM", V"textic")
 
         local call      = Ct("CALL", P"(" * os * arg^-1 * (os * P"," * os * arg)^0 * (os * P")" + E(plume.error.missingClosingBracketArgList)))
-        local block = Ct("EVAL", P"@" * idn * (index + directindex)^0 * os
-        					* Ct("BLOCK_CALL", call^-1 * body)
-        				* _end)
+
+        local blockName = idn * (index + directindex)^0
+        local blockStart = Ct("EVAL", P"@" * blockName * os
+        					* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
+        				)
+        local block = blockStart * C("NULL", _end)
         local leave     = C("LEAVE", K"leave")
 
         -- affectations
@@ -432,23 +435,27 @@ return function (plume)
 
             command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + with,
 
-            text =   (escaped + eval + V"comment" + V"rawtext")^1,
-            textns = (escaped + eval + V"comment" + V"rawtextns")^1,
-            textnc = (escaped + eval + V"comment" + V"rawtextnc")^1,
-            textnp = (escaped + eval + V"comment" + V"rawtextnp")^1,
-            textic = (escaped + eval + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
+            text =   (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
+            textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
+            textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
+            textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
+            textic = (escaped + eval + C("TEXT", P"$") + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
 
-            comment   = os * P"//" * C("COMMENT", NOT(S"\n")^0),
-            rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * P"//")^1),
-            rawtextns = C("TEXT", NOT(S"$\n\\" + P"//" + s)^1),
-            rawtextnc = C("TEXT", NOT(S"$\n,\\" + P"//" + s)^1),
-            rawtextnp = C("TEXT", NOT(S"$\n)\\"+ P"//")^1),
-            rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//")^1),
+            comment  = os *C("COMMENT",
+                  P"//" * NOT(S"\n")^0
+                + P"/*" * (-P"*/" * P(1))^0 * P"*/"
+            ),
+            rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*"))^1),
+            rawtextns = C("TEXT", NOT(S"$\n\\"   + P"//" + P"/*" + s)^1),
+            rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"//" + P"/*" + s)^1),
+            rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"//" + P"/*")^1),
+            rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//" + P"/*")^1),
 
             invalid = E(plume.error.emptySet, K"set"),
             evalOpperator = call + index + directindex,
 
-            inlinetable= inlinetable
+            inlinetable= inlinetable,
+            blockStart = blockStart
         }
 
         return lpeg.Ct(rules)

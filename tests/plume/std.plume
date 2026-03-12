@@ -256,10 +256,10 @@ $table.find($t, nib)
 wing
 /// End
 
-/// Test finds
+/// Test findAll
 let t = $table(wing: nib, write: nib)
 
-$table.join(...table.finds($t, nib))
+$table.join(...table.findAll($t, nib))
 /// Output
 wingwrite
 /// End

@@ -210,7 +210,7 @@ function lib.executeTests(allTests, plumeEngine)
                             if result == plumeEngine.obj.empty then
                                 result = ""
                             end
-                            result = tostring(result)
+                            result = plumeEngine.repr(result)
                         end
 
                         local bytecode_info = {

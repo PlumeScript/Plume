@@ -314,7 +314,7 @@ return function (plume, context, nodeHandlerTable)
 		-- WILL BE REMOVED IN 1.0 (#230, #332)
 		---------------------------------------
 		if plume.ast.get(node, "STATIC") then
-			plume.warning.deprecatedCompilationTime(node, "1.0", "Keyword `static`", "Instead of `let static x`, put `let x` at the file root.", {230, 332})
+			plume.warning.deprecatedCompilationTime(node, "Sparrow", "Keyword `static`", "Instead of `let static x`, put `let x` at the file root.", {230, 332})
 		end
 		---------------------------------------
 

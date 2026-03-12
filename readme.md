@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-1.0.beta.11-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Version](https://img.shields.io/badge/version-Lark_32-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -104,11 +104,20 @@ end
 
 [Lot of examples](https://html-preview.github.io/?url=https://github.com/ErwanBarbedor/PlumeScript/blob/main/tests/report.html) in the tests suite, with bytecode.
 
+### Versioning
+
+Plume uses an **Edition-Build** versioning scheme:
+
+```
+Plume <edition> <build>
+```
+
+*   **Edition** (e.g., `Lark`, `Sparrow `): A named release line. API stability is guaranteed within an edition; code written for `Lark` runs on any `Lark` build without modification.
+*   **Build** (e.g., `32`): A monotonically increasing integer. Higher build numbers are newer, but always compatible within the same edition.
+
+Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking changes. Consult the [migration guide](doc/migration.md) and changelog before updating.
+
 ### Project History
 `Plume🪶` was born out of my need for a language suited to creating my course documents. Before arriving at the current version, it went through... a lot of experimentation.
 
-*   2018-2024: Various attempts, including LaTeX-focused Python preprocessors and LaTeX transpilation.
-*   `Plume🪶 v0.1 - v0.13`: first implementation (scratchy home interpreter with AST manipulations).
-*   `Plume🪶 v0.20 - v0.47`: second implementation (move away from LaTeX syntax, transpilation to Lua).
-*   From `Plume🪶 v0.50 to Plume🪶 v0.70`: third implementation (major syntax changes, custom VM)
-*   Then `Plume🪶 v1.0.0.beta.x`: tests in real world, last-minute changes, bugfixs.
+3 implmentations, from 2018 to 2026, from a scratchy home interpreter with AST manipulations to a custom WM, passing through a lua-transpilator.

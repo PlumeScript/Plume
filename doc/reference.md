@@ -1,8 +1,10 @@
 # Plume Technical Documentation
 
-_For version 1.0.beta.11_
+_For version Lark 32_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
+
+Note: Some features are labeled "experimental". This means that they are likely to be significantly modified or even removed in future versions of Plume.
 
 ## Core Principles
 
@@ -101,11 +103,28 @@ There are four types of accumulation blocks:
 
 ### Comments
 
-Comments start with `//` and extend to the end of the line.
+Plume supports two types of comments: **line comments** and **block comments**.
+
+#### Line Comment
+A line comment starts with `//` and extends to the end of the current line. It can be used on its own or inline after code.
 
 ```plume
-// This is a comment.
-let x = 1 // This is also a comment.
+// This is a single-line comment.
+let x = 1 // Inline comment allowed here.
+```
+
+#### Block Comment
+A block comment starts with `/*` and ends with `*/`. These comments can span multiple lines. They are ignored by the parser similarly to line comments.
+
+```plume
+/* 
+   This is a multi-line comment.
+   It can wrap across several lines.
+   
+   Note: Comments inside 'raw' blocks are treated as literal text anyway,
+   so block comment delimiters there do not affect parsing.
+*/
+let y = 5 // Another example
 ```
 
 ### Statements
@@ -113,6 +132,8 @@ let x = 1 // This is also a comment.
 All statements must start at the beginning of a line, though they may be preceded by whitespace.
 
 Some statements that initiate a value assignment or a data structure (`let`, `set`, `-`, `key:`, `$key:`) can be **chained** on the same line with a statement that produces a value (`if`, `for`, `while`, `macro`, `@name`).
+
+**Note on `@` Chaining:** Multiple block calls (`@name`) can be chained on the same line to initiate nested accumulation contexts.
 
 ```plume
 // Assigning the result of an @-call to a variable
@@ -306,6 +327,24 @@ The following call formats are available:
         active: $true
     end
     ```
+
+**Chained Block Calls**
+To reduce nesting depth, multiple block calls can be chained on the same line. Each subsequent call inherits the indentation level of the initiated block.
+
+```plume
+// Standard nesting
+@outer(a, b: c)
+    @inner(x, y: z)
+        body content
+    end
+end
+
+// Chained syntax (Proposed)
+@outer(a, b: c) @inner(x, y: z)
+    body content
+end
+```
+
 #### `leave`
 Exits the current execution block (macro or file) and immediately returns the value accumulated up to that point. It provides a mechanism for an early return, similar to a `return` statement in other languages.
 
@@ -351,7 +390,7 @@ let [const] key1, sourceKey as alias, key: default, ... from expression
 // 4. Parameter Declaration
 let param name [= value]
 
-// 5. Context Variable Declaration
+// 5. Context Variable Declaration (EXPERIMENTAL - #571)
 let context name
 // Declares a variable that acts as an immutable proxy to a context variable. The variable reflects the current value from the context stack at the point of access.
 // Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`.
@@ -700,7 +739,7 @@ end
 
 Using `run` allows for imperative-style procedure calls within Plume's expression-oriented architecture, providing a clear and safe way to manage side-effects.
 
-### Context Variables and `with` Statement
+### Context Variables and `with` Statement (EXPERIMENTAL - #571)
 
 Context variables provide a mechanism for passing implicit parameters through nested scopes, similar to a scoped global variable stack. They are useful for reducing boilerplate when a configuration value needs to be accessed deep in a call chain.
 

@@ -105,6 +105,81 @@ table
 0
 /// End
 
+/// Test Nested block call 1
+macro double(x)
+     $x$x
+end
+
+@double @double
+     x
+end
+/// Output
+xxxx
+/// End
+
+/// Test Nested block call 2
+macro double(x, sep:)
+     $x$sep$x
+end
+
+@double(sep:-) @double
+     x
+end
+/// Output
+xx-xx
+/// End
+
+/// Test Nested block call 3
+macro double(x, sep:)
+     $x$sep$x
+end
+
+@double @double(sep:-)
+     x
+end
+/// Output
+x-xx-x
+/// End
+
+/// Test Nested block call 4
+macro double(x, sep:)
+     $x$sep$x
+end
+
+@double(sep:-) @double(sep:+)
+     x
+end
+/// Output
+x+x-x+x
+/// End
+
+/// Test Nested block call 5
+macro double(x, sep:)
+     $x$sep$x
+end
+
+@double @double
+  sep: +
+  - x
+end
+/// Output
+x+xx+x
+/// End
+
+/// Test Nested block call 6
+macro double(x, sep:)
+     $x$sep$x
+end
+
+@double(sep:-) @double
+  sep: +
+  - x
+end
+/// Output
+x+x-x+x
+/// End
+
+
 /// Test IF auto unbalanced 1
 let x = if true
   - Wing
