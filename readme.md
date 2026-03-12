@@ -107,8 +107,4 @@ end
 ### Project History
 `Plume🪶` was born out of my need for a language suited to creating my course documents. Before arriving at the current version, it went through... a lot of experimentation.
 
-*   2018-2024: Various attempts, including LaTeX-focused Python preprocessors and LaTeX transpilation.
-*   `Plume🪶 v0.1 - v0.13`: first implementation (scratchy home interpreter with AST manipulations).
-*   `Plume🪶 v0.20 - v0.47`: second implementation (move away from LaTeX syntax, transpilation to Lua).
-*   From `Plume🪶 v0.50 to Plume🪶 v0.70`: third implementation (major syntax changes, custom VM)
-*   Then `Plume🪶 v1.0.0.beta.x`: tests in real world, last-minute changes, bugfixs.
+3 implmentations, from 2018 to 2026, from a scratchy home interpreter with AST manipulations to a custom WM, passing through a lua-transpilator.
