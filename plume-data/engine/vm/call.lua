@@ -91,7 +91,8 @@ function CONCAT_CALL (vm, arg1, arg2)
         if #args.table < tocall.minArgs or #args.table > tocall.maxArgs then
             _ERROR(vm, vm.plume.error.wrongArgsCountStd(tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
         end
-
+        
+        _PUSH_CALLSTACK(vm, tocall)
         _INJECTION_PUSH(vm, tocall.opcode, 0, 0)
 
     -- @table ... end just return the accumulated table

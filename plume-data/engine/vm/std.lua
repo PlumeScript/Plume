@@ -13,6 +13,9 @@ You should have received a copy of the GNU General Public License along with Plu
 If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+
+-- all STD_* should end by "_POP_CALLSTACK(vm)"
+
 --- @param x any
 --- @param t string
 --- @raise an error if x
@@ -53,6 +56,8 @@ function STD_LEN(vm, arg1, arg2)
     --! to-remove-begin
     end
     --! to-remove-end
+
+    _POP_CALLSTACK(vm)
 end
 
 --- @opcode
@@ -60,6 +65,8 @@ end
 function STD_TYPE(vm, arg1, arg2)
     local t = _STACK_POP(vm.mainStack).table[1]
     _STACK_PUSH(vm.mainStack, _GET_TYPE(vm, t))
+
+    _POP_CALLSTACK(vm)
 end
 
 --- @opcode
@@ -92,6 +99,8 @@ function STD_SEQ(vm, arg1, arg2)
         step=step,
         flag = vm.flag.ITER_SEQ
     })
+
+    _POP_CALLSTACK(vm)
 end
 
 --- @opcode
@@ -125,6 +134,8 @@ function STD_ITEMS(vm, arg1, arg2)
         legacy = args.legacy
         ---------------------------------
     })
+
+    _POP_CALLSTACK(vm)
 end
 
 --- @opcode
@@ -157,6 +168,8 @@ function STD_ENUMERATE(vm, arg1, arg2)
         legacy = args.legacy
         ---------------------------------
     })
+
+    _POP_CALLSTACK(vm)
 end
 
 --- @opcode
@@ -240,4 +253,6 @@ function STD_IMPORT(vm, arg1, arg2)
             _ERROR(vm, vm.plume.error.cannotOpenFile(args[1], searchPaths))
         end
     end
+
+    _POP_CALLSTACK(vm)
 end
