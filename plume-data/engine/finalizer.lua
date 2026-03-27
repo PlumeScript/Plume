@@ -64,7 +64,22 @@ return function (plume)
 
 		table.insert(runtime.linkedInstructions, {plume.ops.RETURN_FILE, 0, 0})
 	end
-	
+
+	local function findNode(instructions, offset)
+		local node
+		while not node and offset>0 do
+			node = instructions[offset].mapsto
+			offset = offset - 1
+		end
+		return node
+	end
+
+	local function checkPartSize(instructions, offset, value, name, max)
+	    if value > max then
+	    	plume.error.instructionFieldOverflow(findNode(instructions, offset), name, value, max)
+	    end
+	end
+
     require"table.new"
     local bit = require("bit")
 	local function encode(runtime)
@@ -72,8 +87,18 @@ return function (plume)
 			runtime.bytecode = table.new(#runtime.linkedInstructions, 0)
 		end
 		local bytecodeSize = #runtime.bytecode
-		for offset=1, #runtime.linkedInstructions do
+		local instructionsCount = #runtime.linkedInstructions
+
+		if bytecodeSize + instructionsCount > plume.MASK_ARG2 then
+			plume.error.toManyInstructions(findNode(runtime.linkedInstructions, instructionsCount), bytecodeSize + instructionsCount, plume.MASK_ARG2)
+		end
+
+		for offset=1, instructionsCount do
 			instr = runtime.linkedInstructions[offset]
+
+			checkPartSize(runtime.linkedInstructions, offset, instr[1], "OP",   2^plume.OP_BITS-1)
+			checkPartSize(runtime.linkedInstructions, offset, instr[2], "ARG1", 2^plume.ARG1_BITS-1)
+			checkPartSize(runtime.linkedInstructions, offset, instr[3], "ARG2", 2^plume.ARG2_BITS-1)
 
 			local op_part = bit.lshift(bit.band(instr[1], plume.MASK_OP), plume.OP_SHIFT)
 			local arg1_part = bit.lshift(bit.band(instr[2], plume.MASK_ARG1), plume.ARG1_SHIFT)
@@ -82,8 +107,6 @@ return function (plume)
 			runtime.bytecode[bytecodeSize+offset] = byte
 			runtime.mapping[bytecodeSize+offset] = instr.mapsto
 		end
-
-		assert(#runtime.bytecode <= plume.MASK_ARG2)
 	end
 
 	local function clean(runtime)
