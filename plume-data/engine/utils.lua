@@ -295,6 +295,42 @@ return function (plume)
         return result
     end
 
+    local lfs = require "lfs"
+	function plume.normalizePath(path)
+	    if path:match("^/") or path:match("^[A-Za-z]:[/\\]") then 
+	        return path:gsub("\\", "/")
+	    end
+	    
+	    local cwd = plume.debugForcedRoot or lfs.currentdir()
+	    
+	    local result = cwd:gsub("\\", "/") .. "/" .. path:gsub("\\", "/")
+	    
+	    local parts = {}
+	    for part in string.gmatch(result, "[^/]+") do
+	        if part == "." then
+	        elseif part == ".." then
+	            if #parts > 0 and parts[#parts] ~= "" then
+	                table.remove(parts)
+	            end
+	        else
+	            table.insert(parts, part)
+	        end
+	    end
+
+	    local normalized = table.concat(parts, "/")
+	    
+	    if parts[1] and string.match(parts[1], "^[A-Za-z]:$") then
+	        local drive = table.remove(parts, 1)
+	        normalized = drive .. "/" .. table.concat(parts, "/")
+	    end
+	    
+	    while string.match(normalized, "//+") do 
+	        normalized = string.gsub(normalized, "//+", "/") 
+	    end
+	    
+	    return normalized:gsub("/$", "")
+	end
+
     local pathTemplates = {
         "%base%%path%.%ext%",
         "%base%%path%/init.%ext%",
@@ -335,6 +371,8 @@ return function (plume)
                 template = template:gsub('%%path%%', path)
                 template = template:gsub('%%ext%%', ext)
 
+                template = plume.normalizePath(template)
+
                 table.insert(searchPaths, template)
             end
         end
@@ -349,7 +387,6 @@ return function (plume)
         
         return nil, searchPaths
     end
-
 
     function plume.stdShiftArgs(cls, args)
 		local self = args.table.self

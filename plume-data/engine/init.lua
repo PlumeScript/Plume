@@ -70,6 +70,7 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 end
 
 function plume.executeFile(filename, runtime, fileParams)
+	filename = plume.normalizePath(filename)
 	local runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 
