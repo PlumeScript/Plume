@@ -1291,31 +1291,30 @@ return function (plume)
                                                                 do
                                                                     local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                     _ret109 = value
-                                                                    goto _inline_end232
+                                                                    goto _inline_end233
                                                                 end
-                                                                ::_inline_end232::
+                                                                ::_inline_end233::
                                                                 variableStack[_ret109 + (tocall.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
-                                                        table.insert (runtime.callstack, {macro = tocall, ip = ip})
-                                                        if #runtime.callstack <= 1000 then
-                                                            do
-                                                                local _ret108
-                                                                do
-                                                                    mainStackFramesPointer = mainStackFramesPointer - 1
-                                                                    local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                                    _ret108 = value
-                                                                    goto _inline_end226
-                                                                end
-                                                                ::_inline_end226::
-                                                                mainStackPointer = _ret108 - 1
-                                                            end
-                                                            macroStackPointer = macroStackPointer + 1
-                                                            macroStack[macroStackPointer] = ip + 1
-                                                            jump = tocall.offset
-                                                        else
+                                                        table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip})
+                                                        if #runtime.callstack > 1000 then
                                                             vmerr = plume.error.stackOverflow ()
                                                         end
+                                                        do
+                                                            local _ret108
+                                                            do
+                                                                mainStackFramesPointer = mainStackFramesPointer - 1
+                                                                local value = mainStackFrames[mainStackFramesPointer + 1]
+                                                                _ret108 = value
+                                                                goto _inline_end228
+                                                            end
+                                                            ::_inline_end228::
+                                                            mainStackPointer = _ret108 - 1
+                                                        end
+                                                        macroStackPointer = macroStackPointer + 1
+                                                        macroStack[macroStackPointer] = ip + 1
+                                                        jump = tocall.offset
                                                     end
                                                 end
                                                 closureStack.pointer = closureStack.pointer + 1
@@ -1355,9 +1354,9 @@ return function (plume)
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
                                                             _ret158 = value
-                                                            goto _inline_end319
+                                                            goto _inline_end323
                                                         end
-                                                        ::_inline_end319::
+                                                        ::_inline_end323::
                                                         local frameOffset = _ret158
                                                         local bufferOffset = frameOffset
                                                         local _ret159
@@ -1377,9 +1376,9 @@ return function (plume)
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
                                                                 _ret160 = value
-                                                                goto _inline_end321
+                                                                goto _inline_end325
                                                             end
-                                                            ::_inline_end321::
+                                                            ::_inline_end325::
                                                             local value = _ret160
                                                             if tag == nil then
                                                                 if argsOffset <= tocall.macro.positionalParamCount then
@@ -1388,9 +1387,9 @@ return function (plume)
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                             _ret161 = value
-                                                                            goto _inline_end323
+                                                                            goto _inline_end327
                                                                         end
-                                                                        ::_inline_end323::
+                                                                        ::_inline_end327::
                                                                         variableStack[_ret161 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
@@ -1410,9 +1409,9 @@ return function (plume)
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
                                                                     _ret163 = value
-                                                                    goto _inline_end329
+                                                                    goto _inline_end333
                                                                 end
-                                                                ::_inline_end329::
+                                                                ::_inline_end333::
                                                                 local key = _ret163
                                                                 local argOffset = tocall.macro.namedParamOffset and (tocall.macro.namedParamOffset)[key]
                                                                 if argOffset then
@@ -1422,9 +1421,9 @@ return function (plume)
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                                 _ret162 = value
-                                                                                goto _inline_end326
+                                                                                goto _inline_end330
                                                                             end
-                                                                            ::_inline_end326::
+                                                                            ::_inline_end330::
                                                                             variableStack[_ret162 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
@@ -1450,9 +1449,9 @@ return function (plume)
                                                             bufferOffset = bufferOffset + 1
                                                         end
                                                         _ret154, _ret155, _ret156, _ret157 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
-                                                        goto _inline_end318
+                                                        goto _inline_end322
                                                     end
-                                                    ::_inline_end318::
+                                                    ::_inline_end322::
                                                     local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret154, _ret155, _ret156, _ret157
                                                     if tomanyPositionnalCounter > 0 then
                                                         vmerr = plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount)
@@ -1467,31 +1466,30 @@ return function (plume)
                                                                 do
                                                                     local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                     _ret165 = value
-                                                                    goto _inline_end340
+                                                                    goto _inline_end345
                                                                 end
-                                                                ::_inline_end340::
+                                                                ::_inline_end345::
                                                                 variableStack[_ret165 + (tocall.macro.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
-                                                        table.insert (runtime.callstack, {macro = tocall.macro, ip = ip})
-                                                        if #runtime.callstack <= 1000 then
-                                                            do
-                                                                local _ret164
-                                                                do
-                                                                    mainStackFramesPointer = mainStackFramesPointer - 1
-                                                                    local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                                    _ret164 = value
-                                                                    goto _inline_end334
-                                                                end
-                                                                ::_inline_end334::
-                                                                mainStackPointer = _ret164 - 1
-                                                            end
-                                                            macroStackPointer = macroStackPointer + 1
-                                                            macroStack[macroStackPointer] = ip + 1
-                                                            jump = tocall.macro.offset
-                                                        else
+                                                        table.insert (runtime.callstack, {runtime = runtime, macro = tocall.macro, ip = ip})
+                                                        if #runtime.callstack > 1000 then
                                                             vmerr = plume.error.stackOverflow ()
                                                         end
+                                                        do
+                                                            local _ret164
+                                                            do
+                                                                mainStackFramesPointer = mainStackFramesPointer - 1
+                                                                local value = mainStackFrames[mainStackFramesPointer + 1]
+                                                                _ret164 = value
+                                                                goto _inline_end340
+                                                            end
+                                                            ::_inline_end340::
+                                                            mainStackPointer = _ret164 - 1
+                                                        end
+                                                        macroStackPointer = macroStackPointer + 1
+                                                        macroStack[macroStackPointer] = ip + 1
+                                                        jump = tocall.macro.offset
                                                     end
                                                 end
                                                 closureStack.pointer = closureStack.pointer + 1
@@ -1506,9 +1504,9 @@ return function (plume)
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
                                                             _ret143 = value
-                                                            goto _inline_end289
+                                                            goto _inline_end290
                                                         end
-                                                        ::_inline_end289::
+                                                        ::_inline_end290::
                                                         local frameOffset = _ret143
                                                         local bufferOffset = frameOffset
                                                         local _ret144
@@ -1528,9 +1526,9 @@ return function (plume)
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
                                                                 _ret145 = value
-                                                                goto _inline_end291
+                                                                goto _inline_end292
                                                             end
-                                                            ::_inline_end291::
+                                                            ::_inline_end292::
                                                             local value = _ret145
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
@@ -1539,9 +1537,9 @@ return function (plume)
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                             _ret146 = value
-                                                                            goto _inline_end293
+                                                                            goto _inline_end294
                                                                         end
-                                                                        ::_inline_end293::
+                                                                        ::_inline_end294::
                                                                         variableStack[_ret146 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
@@ -1561,9 +1559,9 @@ return function (plume)
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
                                                                     _ret148 = value
-                                                                    goto _inline_end299
+                                                                    goto _inline_end300
                                                                 end
-                                                                ::_inline_end299::
+                                                                ::_inline_end300::
                                                                 local key = _ret148
                                                                 local argOffset = nil and (nil)[key]
                                                                 if argOffset then
@@ -1573,9 +1571,9 @@ return function (plume)
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                                 _ret147 = value
-                                                                                goto _inline_end296
+                                                                                goto _inline_end297
                                                                             end
-                                                                            ::_inline_end296::
+                                                                            ::_inline_end297::
                                                                             variableStack[_ret147 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
@@ -1601,9 +1599,9 @@ return function (plume)
                                                             bufferOffset = bufferOffset + 1
                                                         end
                                                         _ret139, _ret140, _ret141, _ret142 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
-                                                        goto _inline_end288
+                                                        goto _inline_end289
                                                     end
-                                                    ::_inline_end288::
+                                                    ::_inline_end289::
                                                     local resultTable = _ret139, _ret140, _ret141, _ret142
                                                     do
                                                         local _ret149
@@ -1611,33 +1609,36 @@ return function (plume)
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
                                                             _ret149 = value
-                                                            goto _inline_end301
+                                                            goto _inline_end302
                                                         end
-                                                        ::_inline_end301::
+                                                        ::_inline_end302::
                                                         mainStackPointer = _ret149 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
                                                     _ret138 = resultTable
-                                                    goto _inline_end287
+                                                    goto _inline_end288
                                                 end
-                                                ::_inline_end287::
+                                                ::_inline_end288::
                                                 table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip})
+                                                if #runtime.callstack > 1000 then
+                                                    vmerr = plume.error.stackOverflow ()
+                                                end
                                                 local _ret150
                                                 do
                                                     local value = fileStack[fileStackPointer]
                                                     _ret150 = value
-                                                    goto _inline_end304
+                                                    goto _inline_end307
                                                 end
-                                                ::_inline_end304::
+                                                ::_inline_end307::
                                                 local _ret151
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
                                                     _ret151 = value
-                                                    goto _inline_end305
+                                                    goto _inline_end308
                                                 end
-                                                ::_inline_end305::
+                                                ::_inline_end308::
                                                 local success, result = tocall.callable (_ret151, runtime, _ret150, ip)
                                                 if success then
                                                     table.remove (runtime.callstack)
@@ -1659,9 +1660,9 @@ return function (plume)
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
                                                             _ret130 = value
-                                                            goto _inline_end265
+                                                            goto _inline_end266
                                                         end
-                                                        ::_inline_end265::
+                                                        ::_inline_end266::
                                                         local frameOffset = _ret130
                                                         local bufferOffset = frameOffset
                                                         local _ret131
@@ -1681,9 +1682,9 @@ return function (plume)
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
                                                                 _ret132 = value
-                                                                goto _inline_end267
+                                                                goto _inline_end268
                                                             end
-                                                            ::_inline_end267::
+                                                            ::_inline_end268::
                                                             local value = _ret132
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
@@ -1692,9 +1693,9 @@ return function (plume)
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                             _ret133 = value
-                                                                            goto _inline_end269
+                                                                            goto _inline_end270
                                                                         end
-                                                                        ::_inline_end269::
+                                                                        ::_inline_end270::
                                                                         variableStack[_ret133 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
@@ -1714,9 +1715,9 @@ return function (plume)
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
                                                                     _ret135 = value
-                                                                    goto _inline_end275
+                                                                    goto _inline_end276
                                                                 end
-                                                                ::_inline_end275::
+                                                                ::_inline_end276::
                                                                 local key = _ret135
                                                                 local argOffset = nil and (nil)[key]
                                                                 if argOffset then
@@ -1726,9 +1727,9 @@ return function (plume)
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                                 _ret134 = value
-                                                                                goto _inline_end272
+                                                                                goto _inline_end273
                                                                             end
-                                                                            ::_inline_end272::
+                                                                            ::_inline_end273::
                                                                             variableStack[_ret134 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
@@ -1754,9 +1755,9 @@ return function (plume)
                                                             bufferOffset = bufferOffset + 1
                                                         end
                                                         _ret126, _ret127, _ret128, _ret129 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
-                                                        goto _inline_end264
+                                                        goto _inline_end265
                                                     end
-                                                    ::_inline_end264::
+                                                    ::_inline_end265::
                                                     local resultTable = _ret126, _ret127, _ret128, _ret129
                                                     do
                                                         local _ret136
@@ -1764,17 +1765,17 @@ return function (plume)
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
                                                             _ret136 = value
-                                                            goto _inline_end277
+                                                            goto _inline_end278
                                                         end
-                                                        ::_inline_end277::
+                                                        ::_inline_end278::
                                                         mainStackPointer = _ret136 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
                                                     _ret125 = resultTable
-                                                    goto _inline_end263
+                                                    goto _inline_end264
                                                 end
-                                                ::_inline_end263::
+                                                ::_inline_end264::
                                                 local args = _ret125
                                                 if #args.table < tocall.minArgs or #args.table > tocall.maxArgs then
                                                     vmerr = plume.error.wrongArgsCountStd (tocall.name, #args.table, tocall.minArgs, tocall.maxArgs)
@@ -1801,9 +1802,9 @@ return function (plume)
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
                                                             _ret118 = value
-                                                            goto _inline_end248
+                                                            goto _inline_end249
                                                         end
-                                                        ::_inline_end248::
+                                                        ::_inline_end249::
                                                         local frameOffset = _ret118
                                                         local bufferOffset = frameOffset
                                                         local _ret119
@@ -1823,9 +1824,9 @@ return function (plume)
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
                                                                 _ret120 = value
-                                                                goto _inline_end250
+                                                                goto _inline_end251
                                                             end
-                                                            ::_inline_end250::
+                                                            ::_inline_end251::
                                                             local value = _ret120
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
@@ -1834,9 +1835,9 @@ return function (plume)
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                             _ret121 = value
-                                                                            goto _inline_end252
+                                                                            goto _inline_end253
                                                                         end
-                                                                        ::_inline_end252::
+                                                                        ::_inline_end253::
                                                                         variableStack[_ret121 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
@@ -1856,9 +1857,9 @@ return function (plume)
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
                                                                     _ret123 = value
-                                                                    goto _inline_end258
+                                                                    goto _inline_end259
                                                                 end
-                                                                ::_inline_end258::
+                                                                ::_inline_end259::
                                                                 local key = _ret123
                                                                 local argOffset = nil and (nil)[key]
                                                                 if argOffset then
@@ -1868,9 +1869,9 @@ return function (plume)
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
                                                                                 _ret122 = value
-                                                                                goto _inline_end255
+                                                                                goto _inline_end256
                                                                             end
-                                                                            ::_inline_end255::
+                                                                            ::_inline_end256::
                                                                             variableStack[_ret122 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
@@ -1896,9 +1897,9 @@ return function (plume)
                                                             bufferOffset = bufferOffset + 1
                                                         end
                                                         _ret114, _ret115, _ret116, _ret117 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
-                                                        goto _inline_end247
+                                                        goto _inline_end248
                                                     end
-                                                    ::_inline_end247::
+                                                    ::_inline_end248::
                                                     local resultTable = _ret114, _ret115, _ret116, _ret117
                                                     do
                                                         local _ret124
@@ -1906,26 +1907,26 @@ return function (plume)
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
                                                             _ret124 = value
-                                                            goto _inline_end260
+                                                            goto _inline_end261
                                                         end
-                                                        ::_inline_end260::
+                                                        ::_inline_end261::
                                                         mainStackPointer = _ret124 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
                                                     _ret113 = resultTable
-                                                    goto _inline_end246
+                                                    goto _inline_end247
                                                 end
-                                                ::_inline_end246::
+                                                ::_inline_end247::
                                             elseif tocall == plume.std.tostring or tocall == plume.std.String then
                                                 local _ret110
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
                                                     _ret110 = value
-                                                    goto _inline_end235
+                                                    goto _inline_end236
                                                 end
-                                                ::_inline_end235::
+                                                ::_inline_end236::
                                                 local value = _ret110
                                                 do
                                                     local _ret111
@@ -1933,9 +1934,9 @@ return function (plume)
                                                         mainStackFramesPointer = mainStackFramesPointer - 1
                                                         local value = mainStackFrames[mainStackFramesPointer + 1]
                                                         _ret111 = value
-                                                        goto _inline_end237
+                                                        goto _inline_end238
                                                     end
-                                                    ::_inline_end237::
+                                                    ::_inline_end238::
                                                     mainStackPointer = _ret111 - 1
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
@@ -1967,9 +1968,9 @@ return function (plume)
                                             do
                                                 local value = mainStack[mainStackPointer]
                                                 _ret166 = value
-                                                goto _inline_end345
+                                                goto _inline_end350
                                             end
-                                            ::_inline_end345::
+                                            ::_inline_end350::
                                             local value = _ret166
                                             local _ret167
                                             _ret167 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
@@ -1989,22 +1990,22 @@ return function (plume)
                                                         do
                                                             local value = contextStack[i or contextStackPointer]
                                                             _ret175 = value
-                                                            goto _inline_end369
+                                                            goto _inline_end374
                                                         end
-                                                        ::_inline_end369::
+                                                        ::_inline_end374::
                                                         local frame = _ret175
                                                         if frame.name == "locale" then
                                                             _ret173 = frame.value
-                                                            goto _inline_end367
+                                                            goto _inline_end372
                                                         end
                                                     end
                                                     if not true then
                                                         plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                     end
                                                     _ret173 = empty
-                                                    goto _inline_end367
+                                                    goto _inline_end372
                                                 end
-                                                ::_inline_end367::
+                                                ::_inline_end372::
                                                 local locale = _ret173
                                                 if locale ~= empty and locale ~= "none" then
                                                     local _ret176
@@ -2017,22 +2018,22 @@ return function (plume)
                                                             do
                                                                 local value = contextStack[i or contextStackPointer]
                                                                 _ret178 = value
-                                                                goto _inline_end372
+                                                                goto _inline_end377
                                                             end
-                                                            ::_inline_end372::
+                                                            ::_inline_end377::
                                                             local frame = _ret178
                                                             if frame.name == "localeThousandthsSeparator" then
                                                                 _ret176 = frame.value
-                                                                goto _inline_end370
+                                                                goto _inline_end375
                                                             end
                                                         end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret176 = empty
-                                                        goto _inline_end370
+                                                        goto _inline_end375
                                                     end
-                                                    ::_inline_end370::
+                                                    ::_inline_end375::
                                                     local _ret179
                                                     do
                                                         local _ret180
@@ -2043,22 +2044,22 @@ return function (plume)
                                                             do
                                                                 local value = contextStack[i or contextStackPointer]
                                                                 _ret181 = value
-                                                                goto _inline_end375
+                                                                goto _inline_end380
                                                             end
-                                                            ::_inline_end375::
+                                                            ::_inline_end380::
                                                             local frame = _ret181
                                                             if frame.name == "localeDecimalSeparator" then
                                                                 _ret179 = frame.value
-                                                                goto _inline_end373
+                                                                goto _inline_end378
                                                             end
                                                         end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret179 = empty
-                                                        goto _inline_end373
+                                                        goto _inline_end378
                                                     end
-                                                    ::_inline_end373::
+                                                    ::_inline_end378::
                                                     local _ret182
                                                     do
                                                         local _ret183
@@ -2069,22 +2070,22 @@ return function (plume)
                                                             do
                                                                 local value = contextStack[i or contextStackPointer]
                                                                 _ret184 = value
-                                                                goto _inline_end378
+                                                                goto _inline_end383
                                                             end
-                                                            ::_inline_end378::
+                                                            ::_inline_end383::
                                                             local frame = _ret184
                                                             if frame.name == "localeThousandsSeparator" then
                                                                 _ret182 = frame.value
-                                                                goto _inline_end376
+                                                                goto _inline_end381
                                                             end
                                                         end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret182 = empty
-                                                        goto _inline_end376
+                                                        goto _inline_end381
                                                     end
-                                                    ::_inline_end376::
+                                                    ::_inline_end381::
                                                     local _ret185
                                                     do
                                                         local _ret186
@@ -2095,22 +2096,22 @@ return function (plume)
                                                             do
                                                                 local value = contextStack[i or contextStackPointer]
                                                                 _ret187 = value
-                                                                goto _inline_end381
+                                                                goto _inline_end386
                                                             end
-                                                            ::_inline_end381::
+                                                            ::_inline_end386::
                                                             local frame = _ret187
                                                             if frame.name == "localeNumberFormat" then
                                                                 _ret185 = frame.value
-                                                                goto _inline_end379
+                                                                goto _inline_end384
                                                             end
                                                         end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret185 = empty
-                                                        goto _inline_end379
+                                                        goto _inline_end384
                                                     end
-                                                    ::_inline_end379::
+                                                    ::_inline_end384::
                                                     local success, result = plume.formatNumber (value, _ret185, locale, _ret182, _ret179, _ret176)
                                                     if success then
                                                         local _ret188
@@ -2122,8 +2123,8 @@ return function (plume)
                                                 else
                                                     local _ret189
                                                     _ret189 = mainStackPointer
-                                                    goto _inline_end385
-                                                    ::_inline_end385::
+                                                    goto _inline_end390
+                                                    ::_inline_end390::
                                                     mainStack[_ret189] = tostring (value)
                                                 end
                                             elseif t ~= "string" then
@@ -2134,9 +2135,9 @@ return function (plume)
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
                                                         _ret169 = value
-                                                        goto _inline_end349
+                                                        goto _inline_end354
                                                     end
-                                                    ::_inline_end349::
+                                                    ::_inline_end354::
                                                     mainStackFramesPointer = mainStackFramesPointer + 1
                                                     mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
                                                     mainStackPointer = mainStackPointer + 1
@@ -2179,17 +2180,17 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret190 = value
-                                                goto _inline_end388
+                                                goto _inline_end393
                                             end
-                                            ::_inline_end388::
+                                            ::_inline_end393::
                                             local test = _ret190
                                             local _ret191
                                             if test == empty then
                                                 _ret191 = false
-                                                goto _inline_end389
+                                                goto _inline_end394
                                             end
                                             _ret191 = test
-                                            ::_inline_end389::
+                                            ::_inline_end394::
                                             if _ret191 then
                                                 jump = arg2
                                             end
@@ -2211,17 +2212,17 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret192 = value
-                                                goto _inline_end391
+                                                goto _inline_end396
                                             end
-                                            ::_inline_end391::
+                                            ::_inline_end396::
                                             local test = _ret192
                                             local _ret193
                                             if test == empty then
                                                 _ret193 = false
-                                                goto _inline_end392
+                                                goto _inline_end397
                                             end
                                             _ret193 = test
-                                            ::_inline_end392::
+                                            ::_inline_end397::
                                             if not _ret193 then
                                                 jump = arg2
                                             end
@@ -2233,9 +2234,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret194 = value
-                                                goto _inline_end394
+                                                goto _inline_end399
                                             end
-                                            ::_inline_end394::
+                                            ::_inline_end399::
                                             local test = _ret194
                                             if test ~= empty then
                                                 jump = arg2
@@ -2249,26 +2250,26 @@ return function (plume)
                                             do
                                                 local value = mainStack[mainStackPointer]
                                                 _ret195 = value
-                                                goto _inline_end396
+                                                goto _inline_end401
                                             end
-                                            ::_inline_end396::
+                                            ::_inline_end401::
                                             local test = _ret195
                                             local _ret197
                                             if test == empty then
                                                 _ret197 = false
-                                                goto _inline_end399
+                                                goto _inline_end404
                                             end
                                             _ret197 = test
-                                            ::_inline_end399::
+                                            ::_inline_end404::
                                             if not _ret197 then
                                                 local _ret196
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
                                                     _ret196 = value
-                                                    goto _inline_end397
+                                                    goto _inline_end402
                                                 end
-                                                ::_inline_end397::
+                                                ::_inline_end402::
                                                 jump = arg2
                                             end
                                         end
@@ -2284,17 +2285,17 @@ return function (plume)
                                             do
                                                 local value = mainStack[mainStackPointer]
                                                 _ret198 = value
-                                                goto _inline_end402
+                                                goto _inline_end407
                                             end
-                                            ::_inline_end402::
+                                            ::_inline_end407::
                                             local test = _ret198
                                             local _ret199
                                             if test == empty then
                                                 _ret199 = false
-                                                goto _inline_end403
+                                                goto _inline_end408
                                             end
                                             _ret199 = test
-                                            ::_inline_end403::
+                                            ::_inline_end408::
                                             if _ret199 then
                                                 jump = arg2
                                             end
@@ -2305,17 +2306,17 @@ return function (plume)
                                             do
                                                 local value = mainStack[mainStackPointer]
                                                 _ret200 = value
-                                                goto _inline_end405
+                                                goto _inline_end410
                                             end
-                                            ::_inline_end405::
+                                            ::_inline_end410::
                                             local test = _ret200
                                             local _ret201
                                             if test == empty then
                                                 _ret201 = false
-                                                goto _inline_end406
+                                                goto _inline_end411
                                             end
                                             _ret201 = test
-                                            ::_inline_end406::
+                                            ::_inline_end411::
                                             if not _ret201 then
                                                 jump = arg2
                                             end
@@ -2329,9 +2330,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret202 = value
-                                                goto _inline_end408
+                                                goto _inline_end413
                                             end
-                                            ::_inline_end408::
+                                            ::_inline_end413::
                                             local obj = _ret202
                                             local _ret203
                                             _ret203 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
@@ -2408,20 +2409,20 @@ return function (plume)
                                                 do
                                                     local value = variableStackFrames[variableStackFramesPointer]
                                                     _ret207 = value
-                                                    goto _inline_end430
+                                                    goto _inline_end435
                                                 end
-                                                ::_inline_end430::
+                                                ::_inline_end435::
                                                 local _ret208
                                                 do
                                                     local value = variableStack[_ret207 or variableStackPointer]
                                                     _ret208 = value
-                                                    goto _inline_end431
+                                                    goto _inline_end436
                                                 end
-                                                ::_inline_end431::
+                                                ::_inline_end436::
                                                 _ret206 = _ret208
-                                                goto _inline_end429
+                                                goto _inline_end434
                                             end
-                                            ::_inline_end429::
+                                            ::_inline_end434::
                                             local obj = _ret206
                                             local _ret209
                                             do
@@ -2429,20 +2430,20 @@ return function (plume)
                                                 do
                                                     local value = variableStackFrames[variableStackFramesPointer]
                                                     _ret210 = value
-                                                    goto _inline_end433
+                                                    goto _inline_end438
                                                 end
-                                                ::_inline_end433::
+                                                ::_inline_end438::
                                                 local _ret211
                                                 do
                                                     local value = variableStack[_ret210 + 1 or variableStackPointer]
                                                     _ret211 = value
-                                                    goto _inline_end434
+                                                    goto _inline_end439
                                                 end
-                                                ::_inline_end434::
+                                                ::_inline_end439::
                                                 _ret209 = _ret211
-                                                goto _inline_end432
+                                                goto _inline_end437
                                             end
-                                            ::_inline_end432::
+                                            ::_inline_end437::
                                             local state = _ret209
                                             local _ret212
                                             do
@@ -2450,20 +2451,20 @@ return function (plume)
                                                 do
                                                     local value = variableStackFrames[variableStackFramesPointer]
                                                     _ret213 = value
-                                                    goto _inline_end436
+                                                    goto _inline_end441
                                                 end
-                                                ::_inline_end436::
+                                                ::_inline_end441::
                                                 local _ret214
                                                 do
                                                     local value = variableStack[_ret213 + 2 or variableStackPointer]
                                                     _ret214 = value
-                                                    goto _inline_end437
+                                                    goto _inline_end442
                                                 end
-                                                ::_inline_end437::
+                                                ::_inline_end442::
                                                 _ret212 = _ret214
-                                                goto _inline_end435
+                                                goto _inline_end440
                                             end
-                                            ::_inline_end435::
+                                            ::_inline_end440::
                                             local flag = _ret212
                                             local result, call
                                             if flag == ITER_TABLE then
@@ -2573,9 +2574,9 @@ return function (plume)
                                                     do
                                                         local value = variableStackFrames[variableStackFramesPointer or 0]
                                                         _ret218 = value
-                                                        goto _inline_end459
+                                                        goto _inline_end464
                                                     end
-                                                    ::_inline_end459::
+                                                    ::_inline_end464::
                                                     variableStack[_ret218 + 1] = state
                                                 end
                                                 if result == empty then
@@ -2599,18 +2600,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret219 = value
-                                                goto _inline_end465
+                                                goto _inline_end470
                                             end
-                                            ::_inline_end465::
+                                            ::_inline_end470::
                                             local right = _ret219
                                             local _ret220
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret220 = value
-                                                goto _inline_end466
+                                                goto _inline_end471
                                             end
-                                            ::_inline_end466::
+                                            ::_inline_end471::
                                             local left = _ret220
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -2632,7 +2633,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret231, _ret232 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end493
+                                                            goto _inline_end498
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -2640,16 +2641,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret231, _ret232 = _CALL (vm, meta, params)
-                                                            goto _inline_end493
+                                                            goto _inline_end498
                                                         else
                                                             _ret231, _ret232 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end493
+                                                            goto _inline_end498
                                                         end
                                                     end
                                                     _ret231, _ret232 = right
-                                                    goto _inline_end493
+                                                    goto _inline_end498
                                                 end
-                                                ::_inline_end493::
+                                                ::_inline_end498::
                                                 right, rerr = _ret231, _ret232
                                                 local _ret228, _ret229
                                                 do
@@ -2661,7 +2662,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret228, _ret229 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end491
+                                                            goto _inline_end496
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -2669,16 +2670,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret228, _ret229 = _CALL (vm, meta, params)
-                                                            goto _inline_end491
+                                                            goto _inline_end496
                                                         else
                                                             _ret228, _ret229 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end491
+                                                            goto _inline_end496
                                                         end
                                                     end
                                                     _ret228, _ret229 = left
-                                                    goto _inline_end491
+                                                    goto _inline_end496
                                                 end
-                                                ::_inline_end491::
+                                                ::_inline_end496::
                                                 left, lerr = _ret228, _ret229
                                                 if lerr or rerr then
                                                     local _ret222
@@ -2744,9 +2745,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret222 = meta
-                                                        goto _inline_end469
+                                                        goto _inline_end474
                                                     end
-                                                    ::_inline_end469::
+                                                    ::_inline_end474::
                                                     local meta = _ret222
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -2754,8 +2755,8 @@ return function (plume)
                                                 else
                                                     local _ret227
                                                     _ret227 = left + right
-                                                    goto _inline_end490
-                                                    ::_inline_end490::
+                                                    goto _inline_end495
+                                                    ::_inline_end495::
                                                     result = _ret227
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -2769,18 +2770,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret234 = value
-                                                goto _inline_end497
+                                                goto _inline_end502
                                             end
-                                            ::_inline_end497::
+                                            ::_inline_end502::
                                             local right = _ret234
                                             local _ret235
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret235 = value
-                                                goto _inline_end498
+                                                goto _inline_end503
                                             end
-                                            ::_inline_end498::
+                                            ::_inline_end503::
                                             local left = _ret235
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -2802,7 +2803,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret246, _ret247 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end525
+                                                            goto _inline_end530
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -2810,16 +2811,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret246, _ret247 = _CALL (vm, meta, params)
-                                                            goto _inline_end525
+                                                            goto _inline_end530
                                                         else
                                                             _ret246, _ret247 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end525
+                                                            goto _inline_end530
                                                         end
                                                     end
                                                     _ret246, _ret247 = right
-                                                    goto _inline_end525
+                                                    goto _inline_end530
                                                 end
-                                                ::_inline_end525::
+                                                ::_inline_end530::
                                                 right, rerr = _ret246, _ret247
                                                 local _ret243, _ret244
                                                 do
@@ -2831,7 +2832,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret243, _ret244 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end523
+                                                            goto _inline_end528
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -2839,16 +2840,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret243, _ret244 = _CALL (vm, meta, params)
-                                                            goto _inline_end523
+                                                            goto _inline_end528
                                                         else
                                                             _ret243, _ret244 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end523
+                                                            goto _inline_end528
                                                         end
                                                     end
                                                     _ret243, _ret244 = left
-                                                    goto _inline_end523
+                                                    goto _inline_end528
                                                 end
-                                                ::_inline_end523::
+                                                ::_inline_end528::
                                                 left, lerr = _ret243, _ret244
                                                 if lerr or rerr then
                                                     local _ret237
@@ -2914,9 +2915,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret237 = meta
-                                                        goto _inline_end501
+                                                        goto _inline_end506
                                                     end
-                                                    ::_inline_end501::
+                                                    ::_inline_end506::
                                                     local meta = _ret237
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -2924,8 +2925,8 @@ return function (plume)
                                                 else
                                                     local _ret242
                                                     _ret242 = left * right
-                                                    goto _inline_end522
-                                                    ::_inline_end522::
+                                                    goto _inline_end527
+                                                    ::_inline_end527::
                                                     result = _ret242
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -2941,18 +2942,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret249 = value
-                                                goto _inline_end529
+                                                goto _inline_end534
                                             end
-                                            ::_inline_end529::
+                                            ::_inline_end534::
                                             local right = _ret249
                                             local _ret250
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret250 = value
-                                                goto _inline_end530
+                                                goto _inline_end535
                                             end
-                                            ::_inline_end530::
+                                            ::_inline_end535::
                                             local left = _ret250
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -2974,7 +2975,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret261, _ret262 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end557
+                                                            goto _inline_end562
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -2982,16 +2983,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret261, _ret262 = _CALL (vm, meta, params)
-                                                            goto _inline_end557
+                                                            goto _inline_end562
                                                         else
                                                             _ret261, _ret262 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end557
+                                                            goto _inline_end562
                                                         end
                                                     end
                                                     _ret261, _ret262 = right
-                                                    goto _inline_end557
+                                                    goto _inline_end562
                                                 end
-                                                ::_inline_end557::
+                                                ::_inline_end562::
                                                 right, rerr = _ret261, _ret262
                                                 local _ret258, _ret259
                                                 do
@@ -3003,7 +3004,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret258, _ret259 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end555
+                                                            goto _inline_end560
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -3011,16 +3012,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret258, _ret259 = _CALL (vm, meta, params)
-                                                            goto _inline_end555
+                                                            goto _inline_end560
                                                         else
                                                             _ret258, _ret259 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end555
+                                                            goto _inline_end560
                                                         end
                                                     end
                                                     _ret258, _ret259 = left
-                                                    goto _inline_end555
+                                                    goto _inline_end560
                                                 end
-                                                ::_inline_end555::
+                                                ::_inline_end560::
                                                 left, lerr = _ret258, _ret259
                                                 if lerr or rerr then
                                                     local _ret252
@@ -3086,9 +3087,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret252 = meta
-                                                        goto _inline_end533
+                                                        goto _inline_end538
                                                     end
-                                                    ::_inline_end533::
+                                                    ::_inline_end538::
                                                     local meta = _ret252
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -3096,8 +3097,8 @@ return function (plume)
                                                 else
                                                     local _ret257
                                                     _ret257 = left - right
-                                                    goto _inline_end554
-                                                    ::_inline_end554::
+                                                    goto _inline_end559
+                                                    ::_inline_end559::
                                                     result = _ret257
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3111,18 +3112,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret264 = value
-                                                goto _inline_end561
+                                                goto _inline_end566
                                             end
-                                            ::_inline_end561::
+                                            ::_inline_end566::
                                             local right = _ret264
                                             local _ret265
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret265 = value
-                                                goto _inline_end562
+                                                goto _inline_end567
                                             end
-                                            ::_inline_end562::
+                                            ::_inline_end567::
                                             local left = _ret265
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -3144,7 +3145,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret276, _ret277 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end589
+                                                            goto _inline_end594
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -3152,16 +3153,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret276, _ret277 = _CALL (vm, meta, params)
-                                                            goto _inline_end589
+                                                            goto _inline_end594
                                                         else
                                                             _ret276, _ret277 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end589
+                                                            goto _inline_end594
                                                         end
                                                     end
                                                     _ret276, _ret277 = right
-                                                    goto _inline_end589
+                                                    goto _inline_end594
                                                 end
-                                                ::_inline_end589::
+                                                ::_inline_end594::
                                                 right, rerr = _ret276, _ret277
                                                 local _ret273, _ret274
                                                 do
@@ -3173,7 +3174,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret273, _ret274 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end587
+                                                            goto _inline_end592
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -3181,16 +3182,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret273, _ret274 = _CALL (vm, meta, params)
-                                                            goto _inline_end587
+                                                            goto _inline_end592
                                                         else
                                                             _ret273, _ret274 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end587
+                                                            goto _inline_end592
                                                         end
                                                     end
                                                     _ret273, _ret274 = left
-                                                    goto _inline_end587
+                                                    goto _inline_end592
                                                 end
-                                                ::_inline_end587::
+                                                ::_inline_end592::
                                                 left, lerr = _ret273, _ret274
                                                 if lerr or rerr then
                                                     local _ret267
@@ -3256,9 +3257,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret267 = meta
-                                                        goto _inline_end565
+                                                        goto _inline_end570
                                                     end
-                                                    ::_inline_end565::
+                                                    ::_inline_end570::
                                                     local meta = _ret267
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -3266,8 +3267,8 @@ return function (plume)
                                                 else
                                                     local _ret272
                                                     _ret272 = left / right
-                                                    goto _inline_end586
-                                                    ::_inline_end586::
+                                                    goto _inline_end591
+                                                    ::_inline_end591::
                                                     result = _ret272
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3285,9 +3286,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret279 = value
-                                                goto _inline_end593
+                                                goto _inline_end598
                                             end
-                                            ::_inline_end593::
+                                            ::_inline_end598::
                                             local x = _ret279
                                             local err, meta
                                             local _ret280, _ret281
@@ -3300,7 +3301,7 @@ return function (plume)
                                                     if not tonumber (x)
                                                      then
                                                         _ret280, _ret281 = nil, plume.error.cannotConvertToString (x)
-                                                        goto _inline_end594
+                                                        goto _inline_end599
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
@@ -3308,16 +3309,16 @@ return function (plume)
                                                         local meta = x.meta.table.tonumber
                                                         local params = {}
                                                         _ret280, _ret281 = _CALL (vm, meta, params)
-                                                        goto _inline_end594
+                                                        goto _inline_end599
                                                     else
                                                         _ret280, _ret281 = x, plume.error.cannotDoArithmeticWith (tx)
-                                                        goto _inline_end594
+                                                        goto _inline_end599
                                                     end
                                                 end
                                                 _ret280, _ret281 = x
-                                                goto _inline_end594
+                                                goto _inline_end599
                                             end
-                                            ::_inline_end594::
+                                            ::_inline_end599::
                                             x, err = _ret280, _ret281
                                             if err then
                                                 local _ret283
@@ -3358,9 +3359,9 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret283 = meta
-                                                    goto _inline_end596
+                                                    goto _inline_end601
                                                 end
-                                                ::_inline_end596::
+                                                ::_inline_end601::
                                                 meta = _ret283
                                                 if not meta then
                                                     vmerr = err
@@ -3368,8 +3369,8 @@ return function (plume)
                                             else
                                                 local _ret287
                                                 _ret287 = -x
-                                                goto _inline_end613
-                                                ::_inline_end613::
+                                                goto _inline_end618
+                                                ::_inline_end618::
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = _ret287
                                             end
@@ -3381,18 +3382,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret288 = value
-                                                goto _inline_end617
+                                                goto _inline_end622
                                             end
-                                            ::_inline_end617::
+                                            ::_inline_end622::
                                             local right = _ret288
                                             local _ret289
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret289 = value
-                                                goto _inline_end618
+                                                goto _inline_end623
                                             end
-                                            ::_inline_end618::
+                                            ::_inline_end623::
                                             local left = _ret289
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -3414,7 +3415,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret300, _ret301 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end645
+                                                            goto _inline_end650
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -3422,16 +3423,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret300, _ret301 = _CALL (vm, meta, params)
-                                                            goto _inline_end645
+                                                            goto _inline_end650
                                                         else
                                                             _ret300, _ret301 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end645
+                                                            goto _inline_end650
                                                         end
                                                     end
                                                     _ret300, _ret301 = right
-                                                    goto _inline_end645
+                                                    goto _inline_end650
                                                 end
-                                                ::_inline_end645::
+                                                ::_inline_end650::
                                                 right, rerr = _ret300, _ret301
                                                 local _ret297, _ret298
                                                 do
@@ -3443,7 +3444,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret297, _ret298 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end643
+                                                            goto _inline_end648
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -3451,16 +3452,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret297, _ret298 = _CALL (vm, meta, params)
-                                                            goto _inline_end643
+                                                            goto _inline_end648
                                                         else
                                                             _ret297, _ret298 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end643
+                                                            goto _inline_end648
                                                         end
                                                     end
                                                     _ret297, _ret298 = left
-                                                    goto _inline_end643
+                                                    goto _inline_end648
                                                 end
-                                                ::_inline_end643::
+                                                ::_inline_end648::
                                                 left, lerr = _ret297, _ret298
                                                 if lerr or rerr then
                                                     local _ret291
@@ -3526,9 +3527,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret291 = meta
-                                                        goto _inline_end621
+                                                        goto _inline_end626
                                                     end
-                                                    ::_inline_end621::
+                                                    ::_inline_end626::
                                                     local meta = _ret291
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -3536,8 +3537,8 @@ return function (plume)
                                                 else
                                                     local _ret296
                                                     _ret296 = left % right
-                                                    goto _inline_end642
-                                                    ::_inline_end642::
+                                                    goto _inline_end647
+                                                    ::_inline_end647::
                                                     result = _ret296
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3553,18 +3554,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret303 = value
-                                                goto _inline_end649
+                                                goto _inline_end654
                                             end
-                                            ::_inline_end649::
+                                            ::_inline_end654::
                                             local right = _ret303
                                             local _ret304
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret304 = value
-                                                goto _inline_end650
+                                                goto _inline_end655
                                             end
-                                            ::_inline_end650::
+                                            ::_inline_end655::
                                             local left = _ret304
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -3586,7 +3587,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret315, _ret316 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end677
+                                                            goto _inline_end682
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -3594,16 +3595,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret315, _ret316 = _CALL (vm, meta, params)
-                                                            goto _inline_end677
+                                                            goto _inline_end682
                                                         else
                                                             _ret315, _ret316 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end677
+                                                            goto _inline_end682
                                                         end
                                                     end
                                                     _ret315, _ret316 = right
-                                                    goto _inline_end677
+                                                    goto _inline_end682
                                                 end
-                                                ::_inline_end677::
+                                                ::_inline_end682::
                                                 right, rerr = _ret315, _ret316
                                                 local _ret312, _ret313
                                                 do
@@ -3615,7 +3616,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret312, _ret313 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end675
+                                                            goto _inline_end680
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -3623,16 +3624,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret312, _ret313 = _CALL (vm, meta, params)
-                                                            goto _inline_end675
+                                                            goto _inline_end680
                                                         else
                                                             _ret312, _ret313 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end675
+                                                            goto _inline_end680
                                                         end
                                                     end
                                                     _ret312, _ret313 = left
-                                                    goto _inline_end675
+                                                    goto _inline_end680
                                                 end
-                                                ::_inline_end675::
+                                                ::_inline_end680::
                                                 left, lerr = _ret312, _ret313
                                                 if lerr or rerr then
                                                     local _ret306
@@ -3698,9 +3699,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret306 = meta
-                                                        goto _inline_end653
+                                                        goto _inline_end658
                                                     end
-                                                    ::_inline_end653::
+                                                    ::_inline_end658::
                                                     local meta = _ret306
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -3708,8 +3709,8 @@ return function (plume)
                                                 else
                                                     local _ret311
                                                     _ret311 = left ^ right
-                                                    goto _inline_end674
-                                                    ::_inline_end674::
+                                                    goto _inline_end679
+                                                    ::_inline_end679::
                                                     result = _ret311
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3723,18 +3724,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret318 = value
-                                                goto _inline_end681
+                                                goto _inline_end686
                                             end
-                                            ::_inline_end681::
+                                            ::_inline_end686::
                                             local right = _ret318
                                             local _ret319
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret319 = value
-                                                goto _inline_end682
+                                                goto _inline_end687
                                             end
-                                            ::_inline_end682::
+                                            ::_inline_end687::
                                             local left = _ret319
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
@@ -3756,7 +3757,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret330, _ret331 = nil, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end709
+                                                            goto _inline_end714
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -3764,16 +3765,16 @@ return function (plume)
                                                             local meta = right.meta.table.tonumber
                                                             local params = {}
                                                             _ret330, _ret331 = _CALL (vm, meta, params)
-                                                            goto _inline_end709
+                                                            goto _inline_end714
                                                         else
                                                             _ret330, _ret331 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end709
+                                                            goto _inline_end714
                                                         end
                                                     end
                                                     _ret330, _ret331 = right
-                                                    goto _inline_end709
+                                                    goto _inline_end714
                                                 end
-                                                ::_inline_end709::
+                                                ::_inline_end714::
                                                 right, rerr = _ret330, _ret331
                                                 local _ret327, _ret328
                                                 do
@@ -3785,7 +3786,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret327, _ret328 = nil, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end707
+                                                            goto _inline_end712
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -3793,16 +3794,16 @@ return function (plume)
                                                             local meta = left.meta.table.tonumber
                                                             local params = {}
                                                             _ret327, _ret328 = _CALL (vm, meta, params)
-                                                            goto _inline_end707
+                                                            goto _inline_end712
                                                         else
                                                             _ret327, _ret328 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end707
+                                                            goto _inline_end712
                                                         end
                                                     end
                                                     _ret327, _ret328 = left
-                                                    goto _inline_end707
+                                                    goto _inline_end712
                                                 end
-                                                ::_inline_end707::
+                                                ::_inline_end712::
                                                 left, lerr = _ret327, _ret328
                                                 if lerr or rerr then
                                                     local _ret321
@@ -3868,9 +3869,9 @@ return function (plume)
                                                             end
                                                         end
                                                         _ret321 = meta
-                                                        goto _inline_end685
+                                                        goto _inline_end690
                                                     end
-                                                    ::_inline_end685::
+                                                    ::_inline_end690::
                                                     local meta = _ret321
                                                     if not meta then
                                                         vmerr = lerr or rerr
@@ -3878,8 +3879,8 @@ return function (plume)
                                                 else
                                                     local _ret326
                                                     _ret326 = left < right
-                                                    goto _inline_end706
-                                                    ::_inline_end706::
+                                                    goto _inline_end711
+                                                    ::_inline_end711::
                                                     result = _ret326
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3901,18 +3902,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret333 = value
-                                                goto _inline_end712
+                                                goto _inline_end717
                                             end
-                                            ::_inline_end712::
+                                            ::_inline_end717::
                                             local right = _ret333
                                             local _ret334
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret334 = value
-                                                goto _inline_end713
+                                                goto _inline_end718
                                             end
-                                            ::_inline_end713::
+                                            ::_inline_end718::
                                             local left = _ret334
                                             local _ret335
                                             do
@@ -3977,9 +3978,9 @@ return function (plume)
                                                     end
                                                 end
                                                 _ret335 = meta
-                                                goto _inline_end714
+                                                goto _inline_end719
                                             end
-                                            ::_inline_end714::
+                                            ::_inline_end719::
                                             local meta = _ret335
                                             if not meta then
                                                 local result = left == right or tonumber (left) and tonumber (left) == tonumber (right) or (false)
@@ -3994,34 +3995,34 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret340 = value
-                                                goto _inline_end736
+                                                goto _inline_end741
                                             end
-                                            ::_inline_end736::
+                                            ::_inline_end741::
                                             local right = _ret340
                                             local _ret341
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret341 = value
-                                                goto _inline_end737
+                                                goto _inline_end742
                                             end
-                                            ::_inline_end737::
+                                            ::_inline_end742::
                                             local left = _ret341
                                             local _ret342
                                             if right == empty then
                                                 _ret342 = false
-                                                goto _inline_end738
+                                                goto _inline_end743
                                             end
                                             _ret342 = right
-                                            ::_inline_end738::
+                                            ::_inline_end743::
                                             right = _ret342
                                             local _ret343
                                             if left == empty then
                                                 _ret343 = false
-                                                goto _inline_end739
+                                                goto _inline_end744
                                             end
                                             _ret343 = left
-                                            ::_inline_end739::
+                                            ::_inline_end744::
                                             left = _ret343
                                             local _ret344
                                             _ret344 = left and right
@@ -4037,17 +4038,17 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret345 = value
-                                                goto _inline_end744
+                                                goto _inline_end749
                                             end
-                                            ::_inline_end744::
+                                            ::_inline_end749::
                                             local x = _ret345
                                             local _ret346
                                             if x == empty then
                                                 _ret346 = false
-                                                goto _inline_end745
+                                                goto _inline_end750
                                             end
                                             _ret346 = x
-                                            ::_inline_end745::
+                                            ::_inline_end750::
                                             x = _ret346
                                             local _ret347
                                             _ret347 = not x
@@ -4061,34 +4062,34 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret348 = value
-                                                goto _inline_end750
+                                                goto _inline_end755
                                             end
-                                            ::_inline_end750::
+                                            ::_inline_end755::
                                             local right = _ret348
                                             local _ret349
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret349 = value
-                                                goto _inline_end751
+                                                goto _inline_end756
                                             end
-                                            ::_inline_end751::
+                                            ::_inline_end756::
                                             local left = _ret349
                                             local _ret350
                                             if right == empty then
                                                 _ret350 = false
-                                                goto _inline_end752
+                                                goto _inline_end757
                                             end
                                             _ret350 = right
-                                            ::_inline_end752::
+                                            ::_inline_end757::
                                             right = _ret350
                                             local _ret351
                                             if left == empty then
                                                 _ret351 = false
-                                                goto _inline_end753
+                                                goto _inline_end758
                                             end
                                             _ret351 = left
-                                            ::_inline_end753::
+                                            ::_inline_end758::
                                             left = _ret351
                                             local _ret352
                                             _ret352 = left or right
@@ -4105,9 +4106,9 @@ return function (plume)
                                             do
                                                 local value = mainStack[mainStackPointer]
                                                 _ret353 = value
-                                                goto _inline_end757
+                                                goto _inline_end762
                                             end
-                                            ::_inline_end757::
+                                            ::_inline_end762::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret353
                                         end
@@ -4118,18 +4119,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret354 = value
-                                                goto _inline_end760
+                                                goto _inline_end765
                                             end
-                                            ::_inline_end760::
+                                            ::_inline_end765::
                                             local x = _ret354
                                             local _ret355
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret355 = value
-                                                goto _inline_end761
+                                                goto _inline_end766
                                             end
-                                            ::_inline_end761::
+                                            ::_inline_end766::
                                             local y = _ret355
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = x
@@ -4146,9 +4147,9 @@ return function (plume)
                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
                                                     _ret356 = value
-                                                    goto _inline_end767
+                                                    goto _inline_end772
                                                 end
-                                                ::_inline_end767::
+                                                ::_inline_end772::
                                                 variableStackPointer = _ret356 - 1
                                             end
                                             local _ret357
@@ -4156,18 +4157,18 @@ return function (plume)
                                                 closureStack.pointer = closureStack.pointer - 1
                                                 local value = closureStack[closureStack.pointer + 1]
                                                 _ret357 = value
-                                                goto _inline_end769
+                                                goto _inline_end774
                                             end
-                                            ::_inline_end769::
+                                            ::_inline_end774::
                                             table.remove (runtime.callstack)
                                             local _ret358
                                             do
                                                 macroStackPointer = macroStackPointer - 1
                                                 local value = macroStack[macroStackPointer + 1]
                                                 _ret358 = value
-                                                goto _inline_end770
+                                                goto _inline_end775
                                             end
-                                            ::_inline_end770::
+                                            ::_inline_end775::
                                             jump = _ret358
                                         end
                                     else
@@ -4178,9 +4179,9 @@ return function (plume)
                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
                                                     _ret359 = value
-                                                    goto _inline_end775
+                                                    goto _inline_end780
                                                 end
-                                                ::_inline_end775::
+                                                ::_inline_end780::
                                                 variableStackPointer = _ret359 - 1
                                             end
                                             local _ret360
@@ -4188,9 +4189,9 @@ return function (plume)
                                                 fileStackPointer = fileStackPointer - 1
                                                 local value = fileStack[fileStackPointer + 1]
                                                 _ret360 = value
-                                                goto _inline_end777
+                                                goto _inline_end782
                                             end
-                                            ::_inline_end777::
+                                            ::_inline_end782::
                                             local _ret362
                                             _ret362 = fileStackPointer
                                             if _ret362 == 0 then
@@ -4212,9 +4213,9 @@ return function (plume)
                                                     macroStackPointer = macroStackPointer - 1
                                                     local value = macroStack[macroStackPointer + 1]
                                                     _ret363 = value
-                                                    goto _inline_end785
+                                                    goto _inline_end790
                                                 end
-                                                ::_inline_end785::
+                                                ::_inline_end790::
                                                 jump = _ret363
                                             end
                                         end
@@ -4235,9 +4236,9 @@ return function (plume)
                                                         do
                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
                                                             _ret364 = value
-                                                            goto _inline_end789
+                                                            goto _inline_end794
                                                         end
-                                                        ::_inline_end789::
+                                                        ::_inline_end794::
                                                         variableStack[_ret364 + (paramInfos.offset - 1 or 0)] = paramInfos.value
                                                     end
                                                 end
@@ -4251,18 +4252,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret365 = value
-                                                goto _inline_end792
+                                                goto _inline_end797
                                             end
-                                            ::_inline_end792::
+                                            ::_inline_end797::
                                             local value = _ret365
                                             local _ret366
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret366 = value
-                                                goto _inline_end793
+                                                goto _inline_end798
                                             end
-                                            ::_inline_end793::
+                                            ::_inline_end798::
                                             local name = _ret366
                                             contextStackPointer = contextStackPointer + 1
                                             contextStack[contextStackPointer] = {name = name, value = value}
@@ -4276,9 +4277,9 @@ return function (plume)
                                                 contextStackPointer = contextStackPointer - 1
                                                 local value = contextStack[contextStackPointer + 1]
                                                 _ret367 = value
-                                                goto _inline_end796
+                                                goto _inline_end801
                                             end
-                                            ::_inline_end796::
+                                            ::_inline_end801::
                                         end
                                     else
                                         do
@@ -4287,9 +4288,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret368 = value
-                                                goto _inline_end798
+                                                goto _inline_end803
                                             end
-                                            ::_inline_end798::
+                                            ::_inline_end803::
                                             local name = _ret368
                                             local _ret369
                                             do
@@ -4301,22 +4302,22 @@ return function (plume)
                                                     do
                                                         local value = contextStack[i or contextStackPointer]
                                                         _ret371 = value
-                                                        goto _inline_end801
+                                                        goto _inline_end806
                                                     end
-                                                    ::_inline_end801::
+                                                    ::_inline_end806::
                                                     local frame = _ret371
                                                     if frame.name == name then
                                                         _ret369 = frame.value
-                                                        goto _inline_end799
+                                                        goto _inline_end804
                                                     end
                                                 end
                                                 if not nil then
                                                     plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                 end
                                                 _ret369 = empty
-                                                goto _inline_end799
+                                                goto _inline_end804
                                             end
-                                            ::_inline_end799::
+                                            ::_inline_end804::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret369
                                         end
@@ -4333,9 +4334,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret372 = value
-                                                goto _inline_end804
+                                                goto _inline_end809
                                             end
-                                            ::_inline_end804::
+                                            ::_inline_end809::
                                             local t = _ret372.table[1]
                                             local _ret373
                                             _ret373 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
@@ -4360,9 +4361,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret374 = value
-                                                goto _inline_end809
+                                                goto _inline_end814
                                             end
-                                            ::_inline_end809::
+                                            ::_inline_end814::
                                             local t = _ret374.table[1]
                                             local _ret375
                                             _ret375 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
@@ -4377,9 +4378,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret376 = value
-                                                goto _inline_end813
+                                                goto _inline_end818
                                             end
-                                            ::_inline_end813::
+                                            ::_inline_end818::
                                             local args = _ret376.table
                                             local start = args[1]
                                             local stop = args[2]
@@ -4397,12 +4398,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
                                                     _ret377 = false
-                                                    goto _inline_end814
+                                                    goto _inline_end819
                                                 end
                                                 _ret377 = true
-                                                goto _inline_end814
+                                                goto _inline_end819
                                             end
-                                            ::_inline_end814::
+                                            ::_inline_end819::
                                             if not stop then
                                                 stop = start
                                                 start = 1
@@ -4420,12 +4421,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
                                                     _ret379 = false
-                                                    goto _inline_end817
+                                                    goto _inline_end822
                                                 end
                                                 _ret379 = true
-                                                goto _inline_end817
+                                                goto _inline_end822
                                             end
-                                            ::_inline_end817::
+                                            ::_inline_end822::
                                             local _ret381
                                             do
                                                 local _ret382
@@ -4439,12 +4440,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
                                                     _ret381 = false
-                                                    goto _inline_end820
+                                                    goto _inline_end825
                                                 end
                                                 _ret381 = true
-                                                goto _inline_end820
+                                                goto _inline_end825
                                             end
-                                            ::_inline_end820::
+                                            ::_inline_end825::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
@@ -4469,9 +4470,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret383 = value
-                                                goto _inline_end825
+                                                goto _inline_end830
                                             end
-                                            ::_inline_end825::
+                                            ::_inline_end830::
                                             local args = _ret383.table
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("Sparrow", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key → x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey → value\nend\n```", runtime, ip, {228, 230})
@@ -4489,12 +4490,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)")
                                                     end
                                                     _ret384 = false
-                                                    goto _inline_end826
+                                                    goto _inline_end831
                                                 end
                                                 _ret384 = true
-                                                goto _inline_end826
+                                                goto _inline_end831
                                             end
-                                            ::_inline_end826::
+                                            ::_inline_end831::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named, legacy = args.legacy}
                                         end
@@ -4505,9 +4506,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret386 = value
-                                                goto _inline_end831
+                                                goto _inline_end836
                                             end
-                                            ::_inline_end831::
+                                            ::_inline_end836::
                                             local args = _ret386.table
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("Sparrow", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index → x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex → value\nend\n```", runtime, ip, {228, 230})
@@ -4525,12 +4526,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)")
                                                     end
                                                     _ret387 = false
-                                                    goto _inline_end832
+                                                    goto _inline_end837
                                                 end
                                                 _ret387 = true
-                                                goto _inline_end832
+                                                goto _inline_end837
                                             end
-                                            ::_inline_end832::
+                                            ::_inline_end837::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS, legacy = args.legacy}
                                         end
@@ -4543,9 +4544,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret389 = value
-                                                goto _inline_end837
+                                                goto _inline_end842
                                             end
-                                            ::_inline_end837::
+                                            ::_inline_end842::
                                             local args = _ret389
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
@@ -4565,12 +4566,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
                                                     end
                                                     _ret390 = false
-                                                    goto _inline_end838
+                                                    goto _inline_end843
                                                 end
                                                 _ret390 = true
-                                                goto _inline_end838
+                                                goto _inline_end843
                                             end
-                                            ::_inline_end838::
+                                            ::_inline_end843::
                                             local assertion = _ret390
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], args.table.lua, runtime, firstFilename, lastFilename)
@@ -4639,9 +4640,9 @@ return function (plume)
         do
             local value = mainStack[mainStackPointer]
             _ret393 = value
-            goto _inline_end852
+            goto _inline_end857
         end
-        ::_inline_end852::
+        ::_inline_end857::
         return true, _ret393
     end
 end

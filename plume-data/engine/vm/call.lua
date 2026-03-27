@@ -13,6 +13,24 @@ You should have received a copy of the GNU General Public License along with Plu
 If not, see <https://www.gnu.org/licenses/>.
 ]]
 
+--- Add a macro to the callstack, with current ip
+---@param vm VM The virtual machine instance.
+---@param macro table The called macro
+--! inline
+function _PUSH_CALLSTACK(vm, macro)
+    table.insert(vm.runtime.callstack, {runtime=vm.runtime, macro=macro, ip=vm.ip})
+    if #vm.runtime.callstack>1000 then
+        _ERROR (vm, vm.plume.error.stackOverflow())
+    end
+end
+
+--- Remove a macro from callstack
+---@param vm VM The virtual machine instance.
+--! inline
+function _POP_CALLSTACK(vm)
+    table.remove(vm.runtime.callstack)
+end
+
 --- @opcode
 --- Take the stack top to call, with all elements of the current frame as parameters.
 --- Stack the call result (or empty if nil)
@@ -46,19 +64,18 @@ function CONCAT_CALL (vm, arg1, arg2)
             _PUSH_SELF(vm, self)
         end
 
-
         _CALL_MACRO(vm, tocall.macro)
         _STACK_PUSH(vm.closureStack, tocall.upvalues)
 
     -- Std functions defined in lua or user lua functions
     elseif t == "luaMacro" then
         CONCAT_TABLE(vm)
-        table.insert(vm.runtime.callstack, {runtime=vm.runtime, macro=tocall, ip=vm.ip})
+        _PUSH_CALLSTACK(vm, tocall)
         
         local success, result = tocall.callable (_STACK_POP(vm.mainStack), vm.runtime, _STACK_GET(vm.fileStack), vm.ip)
 
         if success then
-            table.remove(vm.runtime.callstack)
+            _POP_CALLSTACK(vm)
             if result == nil then
                 result = vm.empty
             end
@@ -155,14 +172,10 @@ function _CALL_MACRO(vm, chunk)
             _STACK_SET_FRAMED(vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
         end
 
-        table.insert(vm.runtime.callstack, {macro=chunk, ip=vm.ip})
-        if #vm.runtime.callstack<=1000 then
-            _STACK_POP_FRAME(vm.mainStack)        -- Clean stack from arguments
-            _STACK_PUSH(vm.macroStack, vm.ip + 1) -- Set the return pointer
-            JUMP(vm, 0, chunk.offset)             -- Jump to macro body  
-        else
-            _ERROR (vm, vm.plume.error.stackOverflow())
-        end
+        _PUSH_CALLSTACK(vm, chunk)
+        _STACK_POP_FRAME(vm.mainStack)        -- Clean stack from arguments
+        _STACK_PUSH(vm.macroStack, vm.ip + 1) -- Set the return pointer
+        JUMP(vm, 0, chunk.offset)             -- Jump to macro body  
     end
 end
 
