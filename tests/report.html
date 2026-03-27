@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">500 passed out of 500 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">501 passed out of 501 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -14359,8 +14359,54 @@ number
 </code></pre>
 </div>
 </details>
-<h2>std_errors: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
+<h2>std_errors: <span style="font-weight: normal;">8 passed out of 8 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> infinite import <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$import(tests/plume/toimport/loop)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/loop)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; tests/plume/toimport/loop</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; import</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/loop)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/loop)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; tests/plume/toimport/loop</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; import</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; import(tests/plume/toimport/loop)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Stack overflow                                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ tests/plume/toimport/loop.plume                                             │
+│    1 │$import(tests/plume/toimport/loop)                                       │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
 <details>
 <summary>
 <span class="status-icon status-pass">✓</span> seq to few argument <em style='font-weight: normal'></em>

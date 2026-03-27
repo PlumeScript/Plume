@@ -254,5 +254,5 @@ function STD_IMPORT(vm, arg1, arg2)
         end
     end
 
-    _POP_CALLSTACK(vm)
+    -- No _POP_STACK, handled by RETURN_FILE
 end

@@ -4196,6 +4196,7 @@ return function (plume)
                                                 goto _inline_end784
                                             end
                                             ::_inline_end784::
+                                            table.remove (runtime.callstack)
                                             local _ret362
                                             _ret362 = fileStackPointer
                                             if _ret362 == 0 then
@@ -4217,9 +4218,9 @@ return function (plume)
                                                     macroStackPointer = macroStackPointer - 1
                                                     local value = macroStack[macroStackPointer + 1]
                                                     _ret363 = value
-                                                    goto _inline_end792
+                                                    goto _inline_end793
                                                 end
-                                                ::_inline_end792::
+                                                ::_inline_end793::
                                                 jump = _ret363
                                             end
                                         end
@@ -4240,9 +4241,9 @@ return function (plume)
                                                         do
                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
                                                             _ret364 = value
-                                                            goto _inline_end796
+                                                            goto _inline_end797
                                                         end
-                                                        ::_inline_end796::
+                                                        ::_inline_end797::
                                                         variableStack[_ret364 + (paramInfos.offset - 1 or 0)] = paramInfos.value
                                                     end
                                                 end
@@ -4256,18 +4257,18 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret365 = value
-                                                goto _inline_end799
+                                                goto _inline_end800
                                             end
-                                            ::_inline_end799::
+                                            ::_inline_end800::
                                             local value = _ret365
                                             local _ret366
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret366 = value
-                                                goto _inline_end800
+                                                goto _inline_end801
                                             end
-                                            ::_inline_end800::
+                                            ::_inline_end801::
                                             local name = _ret366
                                             contextStackPointer = contextStackPointer + 1
                                             contextStack[contextStackPointer] = {name = name, value = value}
@@ -4281,9 +4282,9 @@ return function (plume)
                                                 contextStackPointer = contextStackPointer - 1
                                                 local value = contextStack[contextStackPointer + 1]
                                                 _ret367 = value
-                                                goto _inline_end803
+                                                goto _inline_end804
                                             end
-                                            ::_inline_end803::
+                                            ::_inline_end804::
                                         end
                                     else
                                         do
@@ -4292,9 +4293,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret368 = value
-                                                goto _inline_end805
+                                                goto _inline_end806
                                             end
-                                            ::_inline_end805::
+                                            ::_inline_end806::
                                             local name = _ret368
                                             local _ret369
                                             do
@@ -4306,22 +4307,22 @@ return function (plume)
                                                     do
                                                         local value = contextStack[i or contextStackPointer]
                                                         _ret371 = value
-                                                        goto _inline_end808
+                                                        goto _inline_end809
                                                     end
-                                                    ::_inline_end808::
+                                                    ::_inline_end809::
                                                     local frame = _ret371
                                                     if frame.name == name then
                                                         _ret369 = frame.value
-                                                        goto _inline_end806
+                                                        goto _inline_end807
                                                     end
                                                 end
                                                 if not nil then
                                                     plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                 end
                                                 _ret369 = empty
-                                                goto _inline_end806
+                                                goto _inline_end807
                                             end
-                                            ::_inline_end806::
+                                            ::_inline_end807::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret369
                                         end
@@ -4338,9 +4339,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret372 = value
-                                                goto _inline_end811
+                                                goto _inline_end812
                                             end
-                                            ::_inline_end811::
+                                            ::_inline_end812::
                                             local t = _ret372.table[1]
                                             local _ret373
                                             _ret373 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
@@ -4366,9 +4367,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret374 = value
-                                                goto _inline_end817
+                                                goto _inline_end818
                                             end
-                                            ::_inline_end817::
+                                            ::_inline_end818::
                                             local t = _ret374.table[1]
                                             local _ret375
                                             _ret375 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
@@ -4384,9 +4385,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret376 = value
-                                                goto _inline_end822
+                                                goto _inline_end823
                                             end
-                                            ::_inline_end822::
+                                            ::_inline_end823::
                                             local args = _ret376.table
                                             local start = args[1]
                                             local stop = args[2]
@@ -4404,12 +4405,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
                                                     _ret377 = false
-                                                    goto _inline_end823
+                                                    goto _inline_end824
                                                 end
                                                 _ret377 = true
-                                                goto _inline_end823
+                                                goto _inline_end824
                                             end
-                                            ::_inline_end823::
+                                            ::_inline_end824::
                                             if not stop then
                                                 stop = start
                                                 start = 1
@@ -4427,12 +4428,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
                                                     _ret379 = false
-                                                    goto _inline_end826
+                                                    goto _inline_end827
                                                 end
                                                 _ret379 = true
-                                                goto _inline_end826
+                                                goto _inline_end827
                                             end
-                                            ::_inline_end826::
+                                            ::_inline_end827::
                                             local _ret381
                                             do
                                                 local _ret382
@@ -4446,12 +4447,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
                                                     _ret381 = false
-                                                    goto _inline_end829
+                                                    goto _inline_end830
                                                 end
                                                 _ret381 = true
-                                                goto _inline_end829
+                                                goto _inline_end830
                                             end
-                                            ::_inline_end829::
+                                            ::_inline_end830::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
@@ -4477,9 +4478,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret383 = value
-                                                goto _inline_end835
+                                                goto _inline_end836
                                             end
-                                            ::_inline_end835::
+                                            ::_inline_end836::
                                             local args = _ret383.table
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("Sparrow", "`?legacy` flag for macro items", "Instead of \n```\nfor x in items(t, ?legacy)\n\tx.key → x.value\nend\n```\ndo\n```\nfor key, value in items(t)\n\tkey → value\nend\n```", runtime, ip, {228, 230})
@@ -4497,12 +4498,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)")
                                                     end
                                                     _ret384 = false
-                                                    goto _inline_end836
+                                                    goto _inline_end837
                                                 end
                                                 _ret384 = true
-                                                goto _inline_end836
+                                                goto _inline_end837
                                             end
-                                            ::_inline_end836::
+                                            ::_inline_end837::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named, legacy = args.legacy}
                                             table.remove (runtime.callstack)
@@ -4514,9 +4515,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret386 = value
-                                                goto _inline_end842
+                                                goto _inline_end843
                                             end
-                                            ::_inline_end842::
+                                            ::_inline_end843::
                                             local args = _ret386.table
                                             if args.legacy then
                                                 plume.warning.deprecatedRuntime ("Sparrow", "`?legacy` flag for macro enumerate", "Instead of \n```\nfor x in enumerate(t, ?legacy)\n\tx.index → x.value\nend\n```\ndo\n```\nfor index, value in enumerate(t)\n\tindex → value\nend\n```", runtime, ip, {228, 230})
@@ -4534,12 +4535,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)")
                                                     end
                                                     _ret387 = false
-                                                    goto _inline_end843
+                                                    goto _inline_end844
                                                 end
                                                 _ret387 = true
-                                                goto _inline_end843
+                                                goto _inline_end844
                                             end
-                                            ::_inline_end843::
+                                            ::_inline_end844::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS, legacy = args.legacy}
                                             table.remove (runtime.callstack)
@@ -4553,9 +4554,9 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret389 = value
-                                                goto _inline_end849
+                                                goto _inline_end850
                                             end
-                                            ::_inline_end849::
+                                            ::_inline_end850::
                                             local args = _ret389
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
@@ -4575,12 +4576,12 @@ return function (plume)
                                                         vmerr = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
                                                     end
                                                     _ret390 = false
-                                                    goto _inline_end850
+                                                    goto _inline_end851
                                                 end
                                                 _ret390 = true
-                                                goto _inline_end850
+                                                goto _inline_end851
                                             end
-                                            ::_inline_end850::
+                                            ::_inline_end851::
                                             local assertion = _ret390
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], args.table.lua, runtime, firstFilename, lastFilename)
@@ -4635,7 +4636,6 @@ return function (plume)
                                                     vmerr = plume.error.cannotOpenFile (args[1], searchPaths)
                                                 end
                                             end
-                                            table.remove (runtime.callstack)
                                         end
                                     end
                                 end
