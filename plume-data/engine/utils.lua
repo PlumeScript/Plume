@@ -154,12 +154,10 @@ return function (plume)
 			node.type = "EMPTY"
 		end
 
-
-
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
 			local childType = plume.ast.markType(child)
-
+			
 			-- workaround for the case where child is an information,
 			-- not a proper child
 			local avoid = child.name == "IDENTIFIER" and (
@@ -254,9 +252,14 @@ return function (plume)
 		    or node.name == "FALSE"
 		    or node.name == "TRUE"
 
-		    or node.name == "DO"
 		    or node.name == "INLINE_TABLE" then
 			return "VALUE"
+		elseif node.name == "DO" then
+			if node.type == "EMPTY" then
+				return "EMPTY"
+			else
+				return "VALUE"
+			end
 		else
 			return "EMPTY"
 		end

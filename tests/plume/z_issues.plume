@@ -684,3 +684,14 @@ $
 /// Output
 $
 /// End
+
+/// Test #576
+do
+    let x = 0
+end
+do
+    let x = 0
+end
+/// Output
+
+/// End
