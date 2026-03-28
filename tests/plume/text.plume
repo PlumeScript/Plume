@@ -192,3 +192,54 @@ Text
 Text
 Text
 /// End
+
+/// Test escape in quotes 1
+$("$")
+/// Output
+$
+/// End
+
+/// Test escape in quotes 2
+$("a\ta")
+/// Output
+a	a
+/// End
+
+/// Test escape in quotes 3
+$("\\")
+/// Output
+\
+/// End
+
+/// Test escape in quotes 4
+$("\"")
+/// Output
+"
+/// End
+
+/// Test escape in quotes 5
+$('\\')
+/// Output
+\
+/// End
+
+/// Test escape in quotes 6
+$('\'')
+/// Output
+'
+/// End
+
+/// Test escape in quotes error
+$("\a")
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Unknown escape sequence '\a'.                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$("\a")                                                                  │
+│      │    ^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

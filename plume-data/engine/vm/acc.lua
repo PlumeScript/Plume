@@ -128,9 +128,8 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                     elseif tag == "metakey" then
                         variadicTable.meta.table[key] = value
                     end
-                else
+                elseif not unknownNamed then -- should capture all unknown?
                     unknownNamed = key
-                    break
                 end
             end
             

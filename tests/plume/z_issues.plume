@@ -549,6 +549,26 @@ $(Wing(a, b, c: d))
 /// Output
 /// End
 
+/// Test #507-1
+let t = do
+    - b
+    -
+end
+$t
+/// Output
+$table(b, empty)
+/// End
+
+/// Test #507-2
+let t = do
+    a:
+    c: a
+end
+$t
+/// Output
+$table(a: empty, c: a)
+/// End
+
 /// Test #508
 a
 ref x
@@ -629,6 +649,50 @@ end
 macro<???>
 /// End
 
+/// Test #565
+macro wing(a, b: c)
+end
+
+@wing(c: b)
+    a
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown named parameter 'c' for macro 'wing'.                                │
+│   Usage: $wing(a, b: c)                                                        │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │@wing(c: b)                                                              │
+│      │^^^^^^^^^^^                                                              │
+│    5 │    a                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #566
+macro Vect(x, y)
+    x: $x
+    y: $y
+    meta add: macro(_, v)
+        @Vect
+            - $(self.x + v.x)
+            - $(self.y + v.y)
+        end
+    end
+end
+    
+with locale: none
+    let A = $Vect(1, 0.5) 
+    let B = $Vect(7, 0.5)
+    $(A+B)
+end
+/// Output
+$table(x: 14, y: 1)
+/// End
+
 /// Test #573
 ...
 /// Output
@@ -639,4 +703,15 @@ macro<???>
 $
 /// Output
 $
+/// End
+
+/// Test #576
+do
+    let x = 0
+end
+do
+    let x = 0
+end
+/// Output
+
 /// End

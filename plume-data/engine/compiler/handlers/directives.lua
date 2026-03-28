@@ -15,20 +15,22 @@ If not, see <https://www.gnu.org/licenses/>.
 
 return function (plume, context, nodeHandlerTable)
 	local function getRawValue(node, name, paramName, isImport)
-		local value = node.code:sub(node.bpos, node.epos)
+		local value = {}
 		plume.ast.browse(node, function(child)
-			if child.name ~= "TEXT" then
-				plume.error.useDoesNotAcceptDynamicArgs(child, name, paramName, value, isImport)
+			if child.name == "TEXT" then
+				table.insert(value, child.content)
+			else
+				plume.error.useDoesNotAcceptDynamicArgs(child, name, paramName, node.code:sub(node.bpos, node.epos), isImport)
 			end
 		end, 2)
-		return value
+		return table.concat(value)
 	end
 
 	--- `use` directive execute a file that must return a table,
 	--- and load all keys as constants into the current file scope
 	nodeHandlerTable.USE_LIB = function(node)
 		local pathNode = plume.ast.get(node, "NAME")
-		local path = pathNode.content
+		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
 
 		local fileParams = {}
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do

@@ -72,3 +72,17 @@ use tests/plume/toimport/loop2
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test Escape in use param
+use tests/plume/toimport/lib2(info2: \s\s)
+$wing()
+/// Output
+blue   quill
+/// End
+
+/// Test trim
+use tests/plume/toimport/lib2 
+$wing()
+/// Output
+blue quill
+/// End

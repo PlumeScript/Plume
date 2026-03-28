@@ -51,7 +51,11 @@ return function (plume, context, nodeHandlerTable)
 			context.nodeHandler(eval) 
 		end
 
-		context.accBlock()(body)
+		if body then
+			context.accBlock()(body)
+		else
+			context.registerOP(node, plume.ops.LOAD_EMPTY, 0, 0)
+		end
 
 		if identifier then
 			local offset = context.registerConstant(identifier.content)

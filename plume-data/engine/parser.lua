@@ -155,6 +155,7 @@ return function (plume)
         local escaped = P"\\s" * Cc("TEXT", " ")
                       + P"\\t" * Cc("TEXT", "\t")
                       + P"\\n" * Cc("TEXT", "\n")
+                      + P"\\r" * Cc("TEXT", "\r")
                       --------------------------------------
                       -- WILL BE REMOVED IN 1.0 (#230, #273)
                       --------------------------------------
@@ -216,9 +217,11 @@ return function (plume)
             return ast
         end
 
-        local quoteText = C("TEXT", NOT(S'"\\')^1)
-        local quoteEscape = P"\\"*C("ESCAPED", P(1))
-        local quote = P'"' * Ct("QUOTE", (quoteEscape + quoteText)^0) * P'"'
+        local doublequoteText = C("TEXT", NOT(S'"\\')^1)
+        local singlequoteText = C("TEXT", NOT(S'\'\\')^1)
+        local quoteEscape =  P"\\" * C("ESCAPED",P(1))
+        local quote = P'"' * Ct("QUOTE", (doublequoteText + quoteEscape)^0) * P'"'
+                    + P"'" * Ct("QUOTE", (singlequoteText + quoteEscape)^0) * P"'"
 
         local opplist = {
             {{"OR",  "or"}},
@@ -323,8 +326,8 @@ return function (plume)
                     * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParam, os-param)))^0
                 * os * P")"
             )
-        local paramlistM = paramlist + E(plume.error.missingParamList)
-        local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
+        -- local paramlistM = paramlist + E(plume.error.missingParamList)
+        local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlist^-1 * body * _end)
 
         local namedArg  =Ct("HASH_ITEM",
                             os * (idn + eval) * os * P":"
@@ -397,8 +400,8 @@ return function (plume)
         local continue = C("CONTINUE", K"continue")
 
         -- table
-        local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatement") 
-        local hashitem = Ct("HASH_ITEM", (Ct("META", K"meta"*s))^-1 * (idn + eval) * P":" *  os *lbody)
+        local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatement" + P"-" * #lt) 
+        local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbody + #lt))
                         + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os *lbody)
                         + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1)
         local expand   = Ct("EXPAND", P"..." * evalBase) 

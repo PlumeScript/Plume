@@ -77,11 +77,6 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.missingParamList(node)
-		local message = "Missing parameters list."
-		plume.error.throwSyntaxError(node, message)
-	end
-
 	function plume.error.missingParam(node)
 		local message = "Missing parameter name."
 		if node.bpos == node.epos+1 then
@@ -152,6 +147,11 @@ return function(plume)
 	end
 	function plume.error.useDoesNotAcceptPositionalArgs(node)
 		local message = "'use' does not accept positional arguments."
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.unknownEscapeSequence(node, s)
+		local message = string.format("Unknown escape sequence '\\%s'.", s)
 		plume.error.throwSyntaxError(node, message)
 	end
 end

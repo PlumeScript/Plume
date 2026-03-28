@@ -154,12 +154,10 @@ return function (plume)
 			node.type = "EMPTY"
 		end
 
-
-
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
 			local childType = plume.ast.markType(child)
-
+			
 			-- workaround for the case where child is an information,
 			-- not a proper child
 			local avoid = child.name == "IDENTIFIER" and (
@@ -167,11 +165,13 @@ return function (plume)
 					and node.name ~= "LIST_ITEM"
 					and node.name ~= "BODY"
 			)
-
+			
 			if not avoid then
-				if node.type == "EMPTY" then
+				if child.name == "BODY" and node.name == "WITH" then
+					node.type = child.type
+				elseif node.type == "EMPTY" then
 					if childType == "TEXT"
-					and (child.name ~= "FOR" and child.name ~= "WHILE" and child.name ~= "WITH") then
+					and (child.name ~= "FOR" and child.name ~= "WHILE") then
 						node.type = "VALUE"
 					else
 						node.type = childType
@@ -196,7 +196,7 @@ return function (plume)
 		end
 
 		-- For / While cannot produce VALUE
-		if node.name == "FOR" or node.name == "WHILE" or node.name == "WITH" then
+		if node.name == "FOR" or node.name == "WHILE" then
 			if node.type == "VALUE" then
 				node.type = "TEXT"
 			end
@@ -252,9 +252,14 @@ return function (plume)
 		    or node.name == "FALSE"
 		    or node.name == "TRUE"
 
-		    or node.name == "DO"
 		    or node.name == "INLINE_TABLE" then
 			return "VALUE"
+		elseif node.name == "DO" then
+			if node.type == "EMPTY" then
+				return "EMPTY"
+			else
+				return "VALUE"
+			end
 		else
 			return "EMPTY"
 		end
@@ -272,9 +277,11 @@ return function (plume)
 	function plume.ast.labelMacro(ast)
 		plume.ast.browse(ast, function(node)
 			if node.name == "HASH_ITEM" and node.children[1].name == "IDENTIFIER"  then
-				local value = node.children[2]
-				if value.name == "BODY" and #value.children == 1 and value.children[1].name == "MACRO" then
-					value.children[1].label = node.children[1].content
+				if node.children[2] then -- HAST_ITEM value should be empty
+					local value = node.children[2]
+					if value.name == "BODY" and #value.children == 1 and value.children[1].name == "MACRO" then
+						value.children[1].label = node.children[1].content
+					end
 				end
 			end
 		end)

@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Lark 33_
+_For version Lark 34_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -706,6 +706,22 @@ let t = $((1, 2, 3, key: 4))
 *   **Multi-element requirement:** An inline table must contain at least two items. It cannot be used for empty tables or single-element tables.
 *   **Fallback:** For empty tables or single-element tables, use the `$table()` function instead.
 
+#### String Literals `$("...")`
+
+Plume supports string literals within evaluation contexts using the syntax `$("literal text")`. Inside these quotes, escape sequences are processed to allow special characters.
+
+**Supported Escape Sequences:**
+
+| Sequence | Result        | Description              |
+|----------|---------------|--------------------------|
+| `\n`     | Newline       | Line feed (U+000A)       |
+| `\t`     | Tab           | Horizontal tab (U+0009)  |
+| `\r`     | Carriage return | Return character (U+000D)|
+| `\"`     | Double quote  | Literal quotation mark   |
+| `\\`     | Backslash     | Literal backslash        |
+
+Any escape sequence not listed above is treated as an error.
+
 ### Calls for Side-Effects (`run`)
 
 By default, every expression in Plume, including macro calls, contributes its return value to the current accumulation block. This can be undesirable for macros that are executed solely for their side-effects (e.g., printing to the console, writing to a file).
@@ -1040,6 +1056,7 @@ If the table does not contain a next meta field, it calls the iter meta field, d
 Any character can be escaped with a backslash (`\`) to be treated as a literal. Special escape sequences exist for whitespace:
 
 *   `\n`: Newline
+*   `\r`: Carriage Return
 *   `\t`: Tab
 *   `\s`: Space
 

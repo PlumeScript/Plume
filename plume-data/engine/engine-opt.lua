@@ -1060,9 +1060,8 @@ return function (plume)
                                                                 elseif tag == "metakey" then
                                                                     variadicTable.meta.table[key] = value
                                                                 end
-                                                            else
+                                                            elseif not unknownNamed then
                                                                 unknownNamed = key
-                                                                break
                                                             end
                                                         end
                                                         tagStack[bufferOffset] = nil
@@ -1264,9 +1263,8 @@ return function (plume)
                                                                         elseif tag == "metakey" then
                                                                             variadicTable.meta.table[key] = value
                                                                         end
-                                                                    else
+                                                                    elseif not unknownNamed then
                                                                         unknownNamed = key
-                                                                        break
                                                                     end
                                                                 end
                                                                 tagStack[bufferOffset] = nil
@@ -1439,9 +1437,8 @@ return function (plume)
                                                                         elseif tag == "metakey" then
                                                                             variadicTable.meta.table[key] = value
                                                                         end
-                                                                    else
+                                                                    elseif not unknownNamed then
                                                                         unknownNamed = key
-                                                                        break
                                                                     end
                                                                 end
                                                                 tagStack[bufferOffset] = nil
@@ -1589,9 +1586,8 @@ return function (plume)
                                                                         elseif tag == "metakey" then
                                                                             variadicTable.meta.table[key] = value
                                                                         end
-                                                                    else
+                                                                    elseif not unknownNamed then
                                                                         unknownNamed = key
-                                                                        break
                                                                     end
                                                                 end
                                                                 tagStack[bufferOffset] = nil
@@ -1745,9 +1741,8 @@ return function (plume)
                                                                         elseif tag == "metakey" then
                                                                             variadicTable.meta.table[key] = value
                                                                         end
-                                                                    else
+                                                                    elseif not unknownNamed then
                                                                         unknownNamed = key
-                                                                        break
                                                                     end
                                                                 end
                                                                 tagStack[bufferOffset] = nil
@@ -1891,9 +1886,8 @@ return function (plume)
                                                                         elseif tag == "metakey" then
                                                                             variadicTable.meta.table[key] = value
                                                                         end
-                                                                    else
+                                                                    elseif not unknownNamed then
                                                                         unknownNamed = key
-                                                                        break
                                                                     end
                                                                 end
                                                                 tagStack[bufferOffset] = nil
