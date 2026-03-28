@@ -79,3 +79,10 @@ $wing()
 /// Output
 blue   quill
 /// End
+
+/// Test trim
+use tests/plume/toimport/lib2 
+$wing()
+/// Output
+blue quill
+/// End

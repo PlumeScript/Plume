@@ -30,7 +30,7 @@ return function (plume, context, nodeHandlerTable)
 	--- and load all keys as constants into the current file scope
 	nodeHandlerTable.USE_LIB = function(node)
 		local pathNode = plume.ast.get(node, "NAME")
-		local path = pathNode.content
+		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
 
 		local fileParams = {}
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
