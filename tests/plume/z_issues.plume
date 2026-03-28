@@ -549,6 +549,26 @@ $(Wing(a, b, c: d))
 /// Output
 /// End
 
+/// Test #507-1
+let t = do
+    - b
+    -
+end
+$t
+/// Output
+$table(b, empty)
+/// End
+
+/// Test #507-2
+let t = do
+    a:
+    c: a
+end
+$t
+/// Output
+$table(a: empty, c: a)
+/// End
+
 /// Test #508
 a
 ref x

@@ -397,8 +397,8 @@ return function (plume)
         local continue = C("CONTINUE", K"continue")
 
         -- table
-        local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatement") 
-        local hashitem = Ct("HASH_ITEM", (Ct("META", K"meta"*s))^-1 * (idn + eval) * P":" *  os *lbody)
+        local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatement" + P"-" * #lt) 
+        local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbody + #lt))
                         + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os *lbody)
                         + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1)
         local expand   = Ct("EXPAND", P"..." * evalBase) 
