@@ -31,7 +31,6 @@ require 'plume-data/engine/compiler/core' (plume)
 require 'plume-data/engine/engine'        (plume)
 require 'plume-data/engine/engine-opt'    (plume)
 require 'plume-data/engine/finalizer'     (plume)
-require 'plume-data/engine/pec'           (plume)
 require 'plume-data/engine/config'        (plume)
 require 'plume-data/engine/profiler'      (plume)
 

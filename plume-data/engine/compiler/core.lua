@@ -21,37 +21,41 @@ return function(plume)
 	--- (bytecode, parameters names and number...)
 	--- @return nil (instructions are writted directly into the chunk)
 	function plume.compileFile(code, filename, chunk, runtime)
+		if runtime.cache[filename] then
+			plume.copyMacrosInfos(runtime.cache[filename], chunk)
+			return true
+		end
+
 		local context = plume.newCompilationContext(chunk, runtime)
-			-- A compilation is already running. Save the partial result
-			if #runtime.instructions > 0 then
-				context.savedInstructions = runtime.instructions
-				runtime.instructions = {}
-			end
 
-		-- Cache system disabled
-		-- if not plume.copyExecutableChunckFromCache(filename, chunk) then
-			-- Make the ast from source code
-			local ast = plume.parse(code, filename) 
-			-- Call, for each ast node, a function to emit bytecode
-			context.nodeHandler(ast) 
+		-- A compilation is already running. Save the partial result
+		if #runtime.instructions > 0 then
+			context.savedInstructions = runtime.instructions
+			runtime.instructions = {}
+		end
 
-			-- Close context
-			for i=1, context.contextVariableToClose do
-				context.registerOP(node, plume.ops.POP_CONTEXT)
-			end
+		-- Make the ast from source code
+		local ast = plume.parse(code, filename) 
+		-- Call, for each ast node, a function to emit bytecode
+		context.nodeHandler(ast) 
 
-			-- Save file offset
-			chunk.offset = (runtime.bytecode and #runtime.bytecode or 0) + 1
-			-- Encode OP, compute goto offsets
-			plume.finalize(runtime) 
-			-- plume.saveExecutableChunckToCache(filename, chunk)
-		-- end
+		-- Close context
+		for i=1, context.contextVariableToClose do
+			context.registerOP(node, plume.ops.POP_CONTEXT)
+		end
 
-			-- Restore instructions
-			if context.savedInstructions then
-				runtime.instructions = context.savedInstructions
-				context.savedInstructions = nil
-			end
+		-- Save file offset
+		chunk.offset = (runtime.bytecode and #runtime.bytecode or 0) + 1
+		-- Encode OP, compute goto offsets
+		plume.finalize(runtime)
+
+		-- Restore instructions
+		if context.savedInstructions then
+			runtime.instructions = context.savedInstructions
+			context.savedInstructions = nil
+		end
+
+		runtime.cache[filename] = chunk
 
 		return true
 	end

@@ -1,0 +1,5 @@
+let x = 0
+inc: macro()
+	set x+= 1
+	$x
+end
