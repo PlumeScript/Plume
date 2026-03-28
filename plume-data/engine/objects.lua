@@ -80,6 +80,7 @@ return function(plume)
 			default="normal",
 			["381"]="ignore" -- helper warnings
 		}
+		plume.currentUseProcessing = {}
 		-----------------------------------------
 
 		return {
