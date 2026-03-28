@@ -217,9 +217,11 @@ return function (plume)
             return ast
         end
 
-        local quoteText = C("TEXT", NOT(S'"\\')^1)
+        local doublequoteText = C("TEXT", NOT(S'"\\')^1)
+        local singlequoteText = C("TEXT", NOT(S'\'\\')^1)
         local quoteEscape =  P"\\" * C("ESCAPED",P(1))
-        local quote = P'"' * Ct("QUOTE", (quoteEscape + quoteText)^0) * P'"'
+        local quote = P'"' * Ct("QUOTE", (doublequoteText + quoteEscape)^0) * P'"'
+                    + P"'" * Ct("QUOTE", (singlequoteText + quoteEscape)^0) * P"'"
 
         local opplist = {
             {{"OR",  "or"}},

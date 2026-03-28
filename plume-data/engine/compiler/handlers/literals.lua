@@ -73,7 +73,7 @@ return function (plume, context, nodeHandlerTable)
 					table.insert(content, "\r")
 				elseif child.content == "n" then
 					table.insert(content, "\n")
-				elseif ("\"\\"):match(child.content) then
+				elseif ("\"\'\\"):match(child.content) then
 					table.insert(content, child.content)
 				else
 					plume.error.unknownEscapeSequence(child, child.content)
