@@ -48,6 +48,16 @@ return function (plume, context, nodeHandlerTable)
             plume.error.compilationCannotOpenFile(pathNode, path, searchPaths)
 		end
 
+		-- Prevent cyclical import
+		table.insert(plume.currentUseProcessing, filename)
+
+		for i=1, #plume.currentUseProcessing-1 do
+			if plume.currentUseProcessing[i] == filename then
+				plume.error.cycleWithUse(pathNode, plume.currentUseProcessing)
+			end
+		end
+		
+
 		local success, result = plume.executeFile(filename, context.runtime, fileParams)
         if not success then
             plume.error.cannotExecuteFile(pathNode, path, result)
@@ -65,6 +75,7 @@ return function (plume, context, nodeHandlerTable)
 			context.importedVariables[key] = result.table[key]
         end
 
+        table.remove(plume.currentUseProcessing)
         return result
 	end
 

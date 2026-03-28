@@ -16,3 +16,59 @@ $x
 /// Output
 5
 /// End
+
+/// Test params with cache
+$import(tests/plume/toimport/param, x: 5)\n
+$import(tests/plume/toimport/param)
+/// Output
+5
+10
+/// End
+
+/// Test use params with cache
+use tests/plume/toimport/useparam(x: 5)
+$x\n
+use tests/plume/toimport/useparam()
+$x
+/// Output
+5
+10
+/// End
+
+/// Test upvalue with cache
+use tests/plume/toimport/inc
+$inc()\n
+$inc()\n
+use tests/plume/toimport/inc
+$inc()\n
+$inc()\n
+$inc()\n
+/// Output
+1
+2
+1
+2
+3
+/// End
+
+/// Test cycle in use
+use tests/plume/toimport/loop2
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cycle in use: tests/plume/toimport/loop2.plume ->                            │
+│   tests/plume/toimport/loop2.plume                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ tests/plume/toimport/loop2.plume                                            │
+│    1 │use tests/plume/toimport/loop2                                           │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ test.plume                                                                  │
+│    1 │use tests/plume/toimport/loop2                                           │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

@@ -42,4 +42,9 @@ return function(plume)
 		message = string.format("Unknown arg '%s' for directive '#%s'.\nUsage: #%s(%s%s)", argName, directiveName, directiveName, table.concat(signature, ":<value>, "), #signature>0 and ":<value>" or "")
 		plume.error.throwCompilationError(node, message)
 	end
+
+	function plume.error.cycleWithUse(node, filenames)
+		message = string.format("Cycle in use: %s", table.concat(filenames, " -> "))
+		plume.error.throwCompilationError(node, message)
+	end
 end

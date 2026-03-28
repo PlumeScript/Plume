@@ -1,5 +1,5 @@
 --[[
-Plume🪶 Lark 32
+Plume🪶 Lark 33
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
@@ -31,7 +31,6 @@ require 'plume-data/engine/compiler/core' (plume)
 require 'plume-data/engine/engine'        (plume)
 require 'plume-data/engine/engine-opt'    (plume)
 require 'plume-data/engine/finalizer'     (plume)
-require 'plume-data/engine/pec'           (plume)
 require 'plume-data/engine/config'        (plume)
 require 'plume-data/engine/profiler'      (plume)
 
@@ -70,6 +69,7 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 end
 
 function plume.executeFile(filename, runtime, fileParams)
+	filename = plume.normalizePath(filename)
 	local runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 

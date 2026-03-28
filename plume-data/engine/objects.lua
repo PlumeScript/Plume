@@ -61,6 +61,13 @@ return function(plume)
 		return t
 	end
 
+	function plume.copyMacrosInfos(src, dest)
+		dest.positionalParamCount = src.positionalParamCount
+		dest.namedParamCount = src.namedParamCount
+		dest.namedParamOffset = src.namedParamOffset
+		dest.offset = src.offset
+	end
+
 	function plume.obj.runtime()
 		-----------------------------------------
 		--- Not very clean
@@ -73,6 +80,7 @@ return function(plume)
 			default="normal",
 			["381"]="ignore" -- helper warnings
 		}
+		plume.currentUseProcessing = {}
 		-----------------------------------------
 
 		return {
@@ -85,8 +93,9 @@ return function(plume)
 			mapping              = {},
 			callstack            = {},
 			files                = {},
+			cache                = {},
 			env = {
-				PLUME_PATH= os.getenv("PLUME_PATH")
+				PLUME_PATH = os.getenv("PLUME_PATH")
 			}
 		}
 	end

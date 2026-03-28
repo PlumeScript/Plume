@@ -36,4 +36,5 @@ return function(plume)
 	require 'plume-data/engine/error/messages/types'     (plume)
 	require 'plume-data/engine/error/messages/variables' (plume)
 	require 'plume-data/engine/error/messages/std'       (plume)
+	require 'plume-data/engine/error/messages/finalizer' (plume)
 end
