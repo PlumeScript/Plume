@@ -652,6 +652,27 @@ end
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test #566
+macro Vect(x, y)
+    x: $x
+    y: $y
+    meta add: macro(_, v)
+        @Vect
+            - $(self.x + v.x)
+            - $(self.y + v.y)
+        end
+    end
+end
+    
+with locale: none
+    let A = $Vect(1, 0.5) 
+    let B = $Vect(7, 0.5)
+    $(A+B)
+end
+/// Output
+$table(x: 14, y: 1)
+/// End
+
 /// Test #573
 ...
 /// Output

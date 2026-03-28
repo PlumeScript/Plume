@@ -167,11 +167,13 @@ return function (plume)
 					and node.name ~= "LIST_ITEM"
 					and node.name ~= "BODY"
 			)
-
+			
 			if not avoid then
-				if node.type == "EMPTY" then
+				if child.name == "BODY" and node.name == "WITH" then
+					node.type = child.type
+				elseif node.type == "EMPTY" then
 					if childType == "TEXT"
-					and (child.name ~= "FOR" and child.name ~= "WHILE" and child.name ~= "WITH") then
+					and (child.name ~= "FOR" and child.name ~= "WHILE") then
 						node.type = "VALUE"
 					else
 						node.type = childType
@@ -196,7 +198,7 @@ return function (plume)
 		end
 
 		-- For / While cannot produce VALUE
-		if node.name == "FOR" or node.name == "WHILE" or node.name == "WITH" then
+		if node.name == "FOR" or node.name == "WHILE" then
 			if node.type == "VALUE" then
 				node.type = "TEXT"
 			end
