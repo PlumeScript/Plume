@@ -323,8 +323,8 @@ return function (plume)
                     * param^-1 * (os * P"," *  (os * param + E(plume.error.missingParam, os-param)))^0
                 * os * P")"
             )
-        local paramlistM = paramlist + E(plume.error.missingParamList)
-        local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlistM * body * _end)
+        -- local paramlistM = paramlist + E(plume.error.missingParamList)
+        local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlist^-1 * body * _end)
 
         local namedArg  =Ct("HASH_ITEM",
                             os * (idn + eval) * os * P":"

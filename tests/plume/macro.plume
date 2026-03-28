@@ -47,6 +47,16 @@ quill mark value
 quill ink another value
 /// End
 
+/// Test no parenthesis
+macro quill
+  mark
+end
+$quill()
+/// Output
+mark
+/// End
+
+
 /// Test macro scope
 let _write = 5
 macro f()
