@@ -217,7 +217,7 @@ return function (plume)
         end
 
         local quoteText = C("TEXT", NOT(S'"\\')^1)
-        local quoteEscape = P"\\"*C("ESCAPED", P(1))
+        local quoteEscape =  P"\\" * C("ESCAPED",P(1))
         local quote = P'"' * Ct("QUOTE", (quoteEscape + quoteText)^0) * P'"'
 
         local opplist = {

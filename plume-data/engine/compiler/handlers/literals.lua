@@ -63,8 +63,27 @@ return function (plume, context, nodeHandlerTable)
 
 	--- If no content, load an empty string
 	nodeHandlerTable.QUOTE = function(node)
-		local content = (node.children[1] and node.children[1].content) or ""
-		local offset = context.registerConstant(content)
+		local content = {}
+
+		for _, child in ipairs(node.children) do
+			if child.name == "ESCAPED" then
+				if child.content == "t" then
+					table.insert(content, "\t")
+				elseif child.content == "r" then
+					table.insert(content, "\r")
+				elseif child.content == "n" then
+					table.insert(content, "\n")
+				elseif ("\"\\"):match(child.content) then
+					table.insert(content, child.content)
+				else
+					plume.error.unknownEscapeSequence(child, child.content)
+				end
+			elseif child.content then
+				table.insert(content, child.content)
+			end
+		end
+
+		local offset = context.registerConstant(table.concat(content))
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
 	end
 end

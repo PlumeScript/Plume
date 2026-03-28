@@ -149,4 +149,9 @@ return function(plume)
 		local message = "'use' does not accept positional arguments."
 		plume.error.throwSyntaxError(node, message)
 	end
+
+	function plume.error.unknownEscapeSequence(node, s)
+		local message = string.format("Unknown escape sequence '\\%s'.", s)
+		plume.error.throwSyntaxError(node, message)
+	end
 end
