@@ -1056,6 +1056,7 @@ If the table does not contain a next meta field, it calls the iter meta field, d
 Any character can be escaped with a backslash (`\`) to be treated as a literal. Special escape sequences exist for whitespace:
 
 *   `\n`: Newline
+*   `\r`: Carriage Return
 *   `\t`: Tab
 *   `\s`: Space
 

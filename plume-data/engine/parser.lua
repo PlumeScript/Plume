@@ -155,6 +155,7 @@ return function (plume)
         local escaped = P"\\s" * Cc("TEXT", " ")
                       + P"\\t" * Cc("TEXT", "\t")
                       + P"\\n" * Cc("TEXT", "\n")
+                      + P"\\r" * Cc("TEXT", "\r")
                       --------------------------------------
                       -- WILL BE REMOVED IN 1.0 (#230, #273)
                       --------------------------------------
