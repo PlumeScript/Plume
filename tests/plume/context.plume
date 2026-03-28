@@ -72,8 +72,8 @@ fr
 /// Test context block 1
 let t = do
   - item 1
-  with locale: fr
-    - item 2
+  - with locale: fr
+    item 2
   end
 end
 $repr($t)
