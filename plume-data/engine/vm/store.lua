@@ -35,3 +35,32 @@ end
 function STORE_VOID (vm, arg1, arg2)
     _STACK_POP(vm.mainStack)
 end
+
+--- @opcode
+--- Unstack 2, value, key
+--- Stack 1, key value in target accumulator
+--- @param arg1 Scope offset
+--! inline
+function STORE_REF (vm, arg1, arg2)
+    local key   = _STACK_POP(vm.mainStack)
+    local value = _STACK_POP(vm.mainStack)
+
+    local frameOffset  = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-arg1)
+    local frameTop
+    if arg1 == 0 then
+        frameTop = _STACK_POS(vm.mainStack)
+    else
+        frameTop = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-arg1+1)
+    end
+
+    local found
+    for i = frameTop, frameOffset, -1 do
+        if vm.tagStack[i] == "key" then
+            if _STACK_GET(vm.mainStack, i) == key then
+                found = true
+                _STACK_SET(vm.mainStack, i-1, value)
+                break
+            end
+        end
+    end
+end

@@ -241,6 +241,15 @@ $t.y
 5
 /// End
 
+/// Test ref change
+let t = @table
+	ref x: 5
+	set x += 1
+end
+$t.x
+/// Output
+6
+/// End
 
 /// Test ref alias
 let t = @table

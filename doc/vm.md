@@ -328,6 +328,10 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### STORE_VOID
 <br>Unstack 1, do nothing with it. <br>Used to remove a value at stack top. 
 
+#### STORE_REF
+<br>Unstack 2, value, key <br>Stack 1, key value in target accumulator 
+- **arg1** *(Scope)*: offset
+
 ### vm/table.lua
 
 #### TABLE_NEW
