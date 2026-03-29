@@ -43,31 +43,50 @@ return function (plume, context)
 	--- @param scopeDepth number Number of macro boundaries between current position and the variable's defining scope (≥1)
 	--- @param currentScopeIndex number Index in context.scopes where the variable is defined
 	--- @param relativeScopeOffset number Frame offset between current scope and variable's scope (used to locate the correct scope frame)
+	--- @param ref string
 	--- @return table upvalueInfo Metadata for the upvalue
-	function context.registerUpvalue(name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset)
+	function context.registerUpvalue(name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.macros[#context.macros - scopeDepth + 1]
 
 		if not macro.upvalueMap[name] then
-			table.insert(macro.upvalues, {
-				offset = #macro.upvalues+1,
-				localOffset = variableOffset, -- local offset to capture the variable
-				scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
-				isUpvalue = true
-			})
+			if ref then
+				table.insert(macro.upvalues, {
+					offset = #macro.upvalues+1,
+					key = ref,
+					scopeOffset = relativeScopeOffset-1,
+					isUpvalue = true,
+					isRefUpvalue = true
+				})
+			else
+				table.insert(macro.upvalues, {
+					offset = #macro.upvalues+1,
+					localOffset = variableOffset, -- local offset to capture the variable
+					scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
+					isUpvalue = true
+				})
+				
+			end
 
 			macro.upvalueMap[name] = macro.upvalues[#macro.upvalues]
+
 			local scopeUp = context.scopesUp[currentScopeIndex]
 			local found
-			for _, offset in ipairs(scopeUp) do
-				if offset == variableOffset then
+			for _, infos in ipairs(scopeUp) do
+				if infos.offset == (ref or variableOffset) then
 					found = true
 					break
 				end
 			end
+
 			if not found then
-				table.insert(scopeUp, variableOffset)
+				if ref then
+					table.insert(scopeUp, {offset=ref, isRef=true})
+				else
+					table.insert(scopeUp, {offset=variableOffset})
+				end
 			end
+			
 		end
 
 		-- All nested macro will load upvalue from previous first macro
@@ -92,11 +111,21 @@ return function (plume, context)
 	--- close it at scope end
 	--- @param upvalues table
 	function context.manageUpvalues(upvalues)
-		for _, offset in ipairs(upvalues) do
-			context.registerOP(paramNode, plume.ops.OPEN_UPVALUE, 0, offset, "scope_begin_" .. upvalues.uid)
+		for _, infos in ipairs(upvalues) do
+			if infos.isRef then
+				context.registerOP(paramNode, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset), "scope_begin_" .. upvalues.uid)
+				context.registerOP(paramNode, plume.ops.OPEN_REF_UPVALUE, 0, 0, "scope_begin_" .. upvalues.uid)
+			else
+				context.registerOP(paramNode, plume.ops.OPEN_UPVALUE, 0, infos.offset, "scope_begin_" .. upvalues.uid)
+			end
 		end
-		for _, offset in ipairs(upvalues) do
-			context.registerOP(paramNode, plume.ops.CLOSE_UPVALUE, 0, offset)
+		for _, infos in ipairs(upvalues) do
+			if infos.isRef then
+				context.registerOP(paramNode, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset))
+				context.registerOP(paramNode, plume.ops.CLOSE_REF_UPVALUE, 0, 0)
+			else
+				context.registerOP(paramNode, plume.ops.CLOSE_UPVALUE, 0, infos.offset)
+			end
 		end
 	end
 	
@@ -126,7 +155,7 @@ return function (plume, context)
 				
 				if scopeDepth > 0 then
 					if variable.isRef then
-						return nil, variable.node
+						return context.registerUpvalue(name, nil, scopeDepth, i, relativeScopeOffset-i+1, variable.ref)
 					elseif variable.isContext then
 						return {isContext = true}
 					else

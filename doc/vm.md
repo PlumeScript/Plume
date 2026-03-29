@@ -185,7 +185,13 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 
 - **arg2** *(local)*: offset
 
+#### OPEN_REF_UPVALUE
+
+
 #### CLOSE_UPVALUE
+
+
+#### CLOSE_REF_UPVALUE
 
 
 #### LOAD_UPVALUE

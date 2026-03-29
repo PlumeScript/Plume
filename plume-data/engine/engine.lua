@@ -107,9 +107,9 @@ return function (plume)
 									end
 								else
 									if op < 15 then
-										CLOSURE(vm, arg1, arg2)
+										OPEN_REF_UPVALUE(vm, arg1, arg2)
 									else
-										TABLE_NEW(vm, arg1, arg2)
+										CLOSE_REF_UPVALUE(vm, arg1, arg2)
 									end
 								end
 							end
@@ -119,29 +119,29 @@ return function (plume)
 							if op < 20 then
 								if op < 18 then
 									if op < 17 then
-										TABLE_SET(vm, arg1, arg2)
+										CLOSURE(vm, arg1, arg2)
 									else
-										TABLE_INDEX(vm, arg1, arg2)
+										TABLE_NEW(vm, arg1, arg2)
 									end
 								else
 									if op < 19 then
-										TABLE_REGISTER_SELF(vm, arg1, arg2)
+										TABLE_SET(vm, arg1, arg2)
 									else
-										TABLE_SET_META(vm, arg1, arg2)
+										TABLE_INDEX(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 22 then
 									if op < 21 then
-										TABLE_SET_ACC(vm, arg1, arg2)
+										TABLE_REGISTER_SELF(vm, arg1, arg2)
 									else
-										TABLE_EXPAND(vm, arg1, arg2)
+										TABLE_SET_META(vm, arg1, arg2)
 									end
 								else
 									if op < 23 then
-										CALL_INDEX_REGISTER_SELF(vm, arg1, arg2)
+										TABLE_SET_ACC(vm, arg1, arg2)
 									else
-										TAG_META_KEY(vm, arg1, arg2)
+										TABLE_EXPAND(vm, arg1, arg2)
 									end
 								end
 							end
@@ -149,29 +149,29 @@ return function (plume)
 							if op < 28 then
 								if op < 26 then
 									if op < 25 then
-										TAG_KEY(vm, arg1, arg2)
+										CALL_INDEX_REGISTER_SELF(vm, arg1, arg2)
 									else
-										ENTER_SCOPE(vm, arg1, arg2)
+										TAG_META_KEY(vm, arg1, arg2)
 									end
 								else
 									if op < 27 then
-										LEAVE_SCOPE(vm, arg1, arg2)
+										TAG_KEY(vm, arg1, arg2)
 									else
-										BEGIN_ACC(vm, arg1, arg2)
+										ENTER_SCOPE(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 30 then
 									if op < 29 then
-										CONCAT_TABLE(vm, arg1, arg2)
+										LEAVE_SCOPE(vm, arg1, arg2)
 									else
-										CONCAT_TEXT(vm, arg1, arg2)
+										BEGIN_ACC(vm, arg1, arg2)
 									end
 								else
 									if op < 31 then
-										CONCAT_CALL(vm, arg1, arg2)
+										CONCAT_TABLE(vm, arg1, arg2)
 									else
-										CHECK_IS_TEXT(vm, arg1, arg2)
+										CONCAT_TEXT(vm, arg1, arg2)
 									end
 								end
 							end
@@ -183,29 +183,29 @@ return function (plume)
 							if op < 36 then
 								if op < 34 then
 									if op < 33 then
-										JUMP_IF(vm, arg1, arg2)
+										CONCAT_CALL(vm, arg1, arg2)
 									else
-										JUMP_IF_NOT(vm, arg1, arg2)
+										CHECK_IS_TEXT(vm, arg1, arg2)
 									end
 								else
 									if op < 35 then
-										JUMP_IF_NOT_EMPTY(vm, arg1, arg2)
+										JUMP_IF(vm, arg1, arg2)
 									else
-										JUMP_FOR(vm, arg1, arg2)
+										JUMP_IF_NOT(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 38 then
 									if op < 37 then
-										JUMP(vm, arg1, arg2)
+										JUMP_IF_NOT_EMPTY(vm, arg1, arg2)
 									else
-										JUMP_IF_PEEK(vm, arg1, arg2)
+										JUMP_FOR(vm, arg1, arg2)
 									end
 								else
 									if op < 39 then
-										JUMP_IF_NOT_PEEK(vm, arg1, arg2)
+										JUMP(vm, arg1, arg2)
 									else
-										GET_ITER(vm, arg1, arg2)
+										JUMP_IF_PEEK(vm, arg1, arg2)
 									end
 								end
 							end
@@ -213,29 +213,29 @@ return function (plume)
 							if op < 44 then
 								if op < 42 then
 									if op < 41 then
-										FOR_ITER(vm, arg1, arg2)
+										JUMP_IF_NOT_PEEK(vm, arg1, arg2)
 									else
-										OP_ADD(vm, arg1, arg2)
+										GET_ITER(vm, arg1, arg2)
 									end
 								else
 									if op < 43 then
-										OP_MUL(vm, arg1, arg2)
+										FOR_ITER(vm, arg1, arg2)
 									else
-										OP_SUB(vm, arg1, arg2)
+										OP_ADD(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 46 then
 									if op < 45 then
-										OP_DIV(vm, arg1, arg2)
+										OP_MUL(vm, arg1, arg2)
 									else
-										OP_NEG(vm, arg1, arg2)
+										OP_SUB(vm, arg1, arg2)
 									end
 								else
 									if op < 47 then
-										OP_MOD(vm, arg1, arg2)
+										OP_DIV(vm, arg1, arg2)
 									else
-										OP_POW(vm, arg1, arg2)
+										OP_NEG(vm, arg1, arg2)
 									end
 								end
 							end
@@ -245,29 +245,29 @@ return function (plume)
 							if op < 52 then
 								if op < 50 then
 									if op < 49 then
-										OP_LT(vm, arg1, arg2)
+										OP_MOD(vm, arg1, arg2)
 									else
-										OP_EQ(vm, arg1, arg2)
+										OP_POW(vm, arg1, arg2)
 									end
 								else
 									if op < 51 then
-										OP_AND(vm, arg1, arg2)
+										OP_LT(vm, arg1, arg2)
 									else
-										OP_NOT(vm, arg1, arg2)
+										OP_EQ(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 54 then
 									if op < 53 then
-										OP_OR(vm, arg1, arg2)
+										OP_AND(vm, arg1, arg2)
 									else
-										DUPLICATE(vm, arg1, arg2)
+										OP_NOT(vm, arg1, arg2)
 									end
 								else
 									if op < 55 then
-										SWITCH(vm, arg1, arg2)
+										OP_OR(vm, arg1, arg2)
 									else
-										RETURN(vm, arg1, arg2)
+										DUPLICATE(vm, arg1, arg2)
 									end
 								end
 							end
@@ -275,29 +275,29 @@ return function (plume)
 							if op < 60 then
 								if op < 58 then
 									if op < 57 then
-										RETURN_FILE(vm, arg1, arg2)
+										SWITCH(vm, arg1, arg2)
 									else
-										FILE_INIT_PARAMS(vm, arg1, arg2)
+										RETURN(vm, arg1, arg2)
 									end
 								else
 									if op < 59 then
-										PUSH_CONTEXT(vm, arg1, arg2)
+										RETURN_FILE(vm, arg1, arg2)
 									else
-										POP_CONTEXT(vm, arg1, arg2)
+										FILE_INIT_PARAMS(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 62 then
 									if op < 61 then
-										LOAD_CONTEXT(vm, arg1, arg2)
+										PUSH_CONTEXT(vm, arg1, arg2)
 									else
-										goto END
+										POP_CONTEXT(vm, arg1, arg2)
 									end
 								else
 									if op < 63 then
-										STD_LEN(vm, arg1, arg2)
+										LOAD_CONTEXT(vm, arg1, arg2)
 									else
-										STD_TYPE(vm, arg1, arg2)
+										goto END
 									end
 								end
 							end
@@ -311,12 +311,20 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
+										STD_LEN(vm, arg1, arg2)
+									else
+										STD_TYPE(vm, arg1, arg2)
+									end
+								else
+									if op < 67 then
 										STD_SEQ(vm, arg1, arg2)
 									else
 										STD_ITEMS(vm, arg1, arg2)
 									end
-								else
-									if op < 67 then
+								end
+							else
+								if op < 70 then
+									if op < 69 then
 										STD_ENUMERATE(vm, arg1, arg2)
 									else
 										STD_IMPORT(vm, arg1, arg2)

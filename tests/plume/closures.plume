@@ -183,54 +183,34 @@ $t()
 5
 /// End
 
-/// Test Cannot capture ref 1
+/// Test ref 1
 let t = do
    ref x: 5
-   y: macro()
+   macro y
+      $x
+   end
+   z: $y()
+end
+$t.z
+/// Output
+5
+/// End
+
+/// Test ref 2
+let t = do
+   ref x: 5
+   y: macro
       $x
    end
 end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot use variable 'x', it isn't defined in the current scope.              │
-│   'refx' exists in parent scope, but a ref cannot be captured by macros.       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    3 │y: macro()                                                               │
-│    4 │   $x                                                                    │
-│      │    ^                                                                    │
-│    5 │end                                                                      │
-│                                                                                │
-│  ↳ (same file)                                                                 │
-│    2 │ref x: 5                                                                 │
-│      │^^^^^^^^                                                                 │
-╰────────────────────────────────────────────────────────────────────────────────╯
+$t.y()
+/// Output
+5
 /// End
 
-/// Test Cannot capture ref 2
-let t = do
-   ref x: 5
-   y: macro()
-      set x = 1
-   end
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot set variable 'x', it isn't defined in the current scope.              │
-│   'ref x' exists in parent scope, but a ref cannot be captured by macros.      │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    3 │y: macro()                                                               │
-│    4 │   set x = 1                                                             │
-│      │   ^^^^^^^^^                                                             │
-│    5 │end                                                                      │
-│                                                                                │
-│  ↳ (same file)                                                                 │
-│    2 │ref x: 5                                                                 │
-│      │^^^^^^^^                                                                 │
-╰────────────────────────────────────────────────────────────────────────────────╯
+/// Test ref import
+let nib from $import(tests/plume/toimport/lib3)
+$nib()
+/// Output
+Wing!Wing!
 /// End
