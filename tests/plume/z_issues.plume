@@ -715,3 +715,19 @@ end
 /// Output
 
 /// End
+
+/// Test #596
+ref wing: macro()
+end
+
+macro nib()
+end
+ref quill: macro()
+   $nib()
+end
+
+run $quill()
+
+/// Output
+$table(wing: macro<???>, quill: macro<???>)
+/// End

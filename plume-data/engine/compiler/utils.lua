@@ -73,23 +73,18 @@ return function (plume, context)
     --- @param node node
     --- @return number
     function context.countLocals(node)
-    	local lets = plume.ast.getAll(node, "LET") 
+    	local lets      = plume.ast.getAll(node, "LET") 
+    	local hashItems = plume.ast.getAll(node, "HASH_ITEM")
+
     	local count = #plume.ast.getAll(node, "MACRO")
     	for _, let in ipairs(lets) do
     		count = count + #plume.ast.get(let, "VARLIST").children
     	end
-    	return count
-    end
-
-    --- Check if the node as ref variable
-    --- @param node node
-    --- @return number
-    function context.hasRef(node)
-    	local hashItems = plume.ast.getAll(node, "HASH_ITEM")
-    	for _, child in ipairs(hashItems) do
-    		if plume.ast.get(child, "REF") then
-    			return true
-    		end
+    	for _, hashItem in ipairs(hashItems) do
+    		if plume.ast.get(hashItem, "REF") then
+	    		count = count + 1
+	    	end
     	end
+    	return count
     end
 end

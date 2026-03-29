@@ -121,7 +121,7 @@ return function (plume, context)
         f = f or context.childrenHandler  
         return function (node)
             local lets = context.countLocals(node) + (internVar or 0)
-            if lets>0 or context.hasRef(node) then  
+            if lets>0 then  
                 context.enterScope(lets)
                 f(node)  
                 context.leaveScope(true)
