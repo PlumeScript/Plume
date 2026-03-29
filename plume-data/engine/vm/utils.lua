@@ -37,3 +37,25 @@ function _CHECK_BOOL (vm, x)
     end
     return x
 end
+
+--- Find offset corresponding to a key in the current building table
+--- @param key string
+--- @param offset number
+--! inline
+function _GET_REF_POS(vm, key, offset)
+    local frameOffset  = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-offset)
+    local frameTop
+    if offset == 0 then
+        frameTop = _STACK_POS(vm.mainStack)
+    else
+        frameTop = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-offset+1)
+    end
+
+    for i = frameTop, frameOffset, -1 do
+        if vm.tagStack[i] == "key" then
+            if _STACK_GET(vm.mainStack, i) == key then
+                return i-1
+            end
+        end
+    end
+end

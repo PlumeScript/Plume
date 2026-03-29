@@ -51,27 +51,11 @@ end
 --! inline
 function LOAD_REF (vm, arg1, arg2)
     local key = _STACK_POP(vm.mainStack)
+    local pos = _GET_REF_POS(vm, key, arg1)
 
-    local frameOffset  = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-arg1)
-    local frameTop
-    if arg1 == 0 then
-        frameTop = _STACK_POS(vm.mainStack)
+    if pos then
+        _STACK_PUSH(vm.mainStack, _STACK_GET(vm.mainStack, pos))
     else
-        frameTop = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-arg1+1)
-    end
-
-    local found
-    for i = frameTop, frameOffset, -1 do
-        if vm.tagStack[i] == "key" then
-            if _STACK_GET(vm.mainStack, i) == key then
-                found = true
-                _STACK_PUSH(vm.mainStack, _STACK_GET(vm.mainStack, i-1))
-                break
-            end
-        end
-    end
-
-    if not found then
         _STACK_PUSH(vm.mainStack, vm.plume.obj.empty)
     end
 end
