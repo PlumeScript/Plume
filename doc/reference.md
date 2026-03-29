@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Lark 34_
+_For version Lark 35_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -294,7 +294,7 @@ A macro signature can include positional parameters, named parameters with defau
     *   Named arguments are added as named items (e.g., `key: "value"`).
     *   The order of items in the table respects the order in which they were provided in the call.
 
-Macros support **closures**: they can access variables from their parent scopes, capturing the values at the point of definition. This allows macros to reference outer variables, parameters, and other macros defined in enclosing scopes. The only exception to this rule is that macros **cannot capture** variables declared with the `ref` keyword; attempting to do so will result in a compilation error.
+Macros support **closures**: they can access variables from their parent scopes, capturing the values at the point of definition. This allows macros to reference outer variables, parameters, and other macros defined in enclosing scopes.
 
 The statement `macro name ...` is syntactic sugar for `let name = macro ...`.
 

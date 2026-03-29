@@ -1,0 +1,7 @@
+ref wing: macro
+	Wing!
+end
+
+nib: macro
+	$wing()$wing()
+end

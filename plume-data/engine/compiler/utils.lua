@@ -80,4 +80,16 @@ return function (plume, context)
     	end
     	return count
     end
+
+    --- Check if the node as ref variable
+    --- @param node node
+    --- @return number
+    function context.hasRef(node)
+    	local hashItems = plume.ast.getAll(node, "HASH_ITEM")
+    	for _, child in ipairs(hashItems) do
+    		if plume.ast.get(child, "REF") then
+    			return true
+    		end
+    	end
+    end
 end

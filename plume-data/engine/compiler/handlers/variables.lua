@@ -231,7 +231,10 @@ return function (plume, context, nodeHandlerTable)
 				var.getKey()
 				context.registerOP(node, plume.ops.TABLE_SET, 0, 0)
 			else
-				if var.isUpvalue then
+				if var.isRef then
+					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.source.ref))
+					context.registerOP(node, plume.ops.STORE_REF, var.frameOffset, 0)
+				elseif var.isUpvalue then
 					context.registerOP(node, plume.ops.STORE_UPVALUE, 0, var.offset)
 				elseif not isLet and var.frameOffset > 0 then
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, var.frameOffset, var.offset)

@@ -35,3 +35,15 @@ end
 function STORE_VOID (vm, arg1, arg2)
     _STACK_POP(vm.mainStack)
 end
+
+--- @opcode
+--- Unstack 2, value, key
+--- Stack 1, key value in target accumulator
+--- @param arg1 Scope offset
+--! inline
+function STORE_REF (vm, arg1, arg2)
+    local key   = _STACK_POP(vm.mainStack)
+    local value = _STACK_POP(vm.mainStack)
+
+    _STACK_SET(vm.mainStack, _GET_REF_POS(vm, key, arg1), value)
+end
