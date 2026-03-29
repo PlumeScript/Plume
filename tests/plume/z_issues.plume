@@ -731,3 +731,27 @@ run $quill()
 /// Output
 $table(wing: macro<???>, quill: macro<???>)
 /// End
+
+/// Test #597-1
+macro wing
+   with x: y
+   end
+end
+
+$wing()
+a
+/// Output
+a
+/// End
+
+/// Test #597-2
+macro wing
+   do
+   end
+end
+
+$wing()
+a
+/// Output
+a
+/// End

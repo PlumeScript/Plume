@@ -222,7 +222,7 @@ return function (plume)
 			or node.name == "IF"
 			or node.name == "ELSE"
 			or node.name == "ELSEIF"
-			or node.name == "WITH"
+			
 			or node.name == "BODY" then
 			return node.type
 		elseif node.name == "MACRO" then
@@ -252,14 +252,11 @@ return function (plume)
 		    or node.name == "FALSE"
 		    or node.name == "TRUE"
 
+		    or node.name == "WITH"
+		    or node.name == "DO"
+
 		    or node.name == "INLINE_TABLE" then
 			return "VALUE"
-		elseif node.name == "DO" then
-			if node.type == "EMPTY" then
-				return "EMPTY"
-			else
-				return "VALUE"
-			end
 		else
 			return "EMPTY"
 		end
