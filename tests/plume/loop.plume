@@ -175,7 +175,7 @@ end
 
 
 /// Test iterator (iter)
-let first5 = @Table
+let first5 = do
   meta iter: macro()
     parent: $self
     state: 1

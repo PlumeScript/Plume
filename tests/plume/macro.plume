@@ -122,7 +122,7 @@ paint
 /// End
 
 /// Test Leave macro (text)
-let t = @Table
+let t = do
   - blue
   - red
   - green

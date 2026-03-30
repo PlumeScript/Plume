@@ -213,8 +213,8 @@ let blank = $("")
 /// End
 
 /// Test #166
-let t = @Table
-    - @Table
+let t = do
+    - do
         wing: blue
     end
 end
@@ -237,7 +237,7 @@ end
 
 
 /// Test #174-1
-let t = @Table
+let t = do
   mark: song
   quill: macro(write)
     $write $self.mark
@@ -252,7 +252,7 @@ write song
 /// End
 
 /// Test #174-2
-let t = @Table
+let t = do
   mark: song
   quill: macro()
      $self.mark
@@ -361,7 +361,7 @@ let x = 5
 /// End
 
 /// Test #288-1
-let t = @Table
+let t = do
   if false
   else
     - item

@@ -16,7 +16,7 @@ wing
 /// Test Table write expand 1
 let t1 = $Table(write, paint, make)
 
-let t2 = @Table
+let t2 = do
 	...t1
 end
 
@@ -30,7 +30,7 @@ write paint make
 /// Test Table write expand 2
 let t1 = $Table(write, paint, make)
 
-let t2 = @Table
+let t2 = do
 	- ink
 	...t1
 	- quill
@@ -46,7 +46,7 @@ ink write paint make quill
 /// Test Table write expand 3
 let t1 = $Table(write: quill, paint: song)
 
-let t2 = @Table
+let t2 = do
 	...t1
 end
 
@@ -60,7 +60,7 @@ song
 /// Test Table write expand 4
 let t1 = $Table(write: quill, paint: song)
 
-let t2 = @Table
+let t2 = do
 	write: nib
 	...t1
 	paint: words
@@ -74,7 +74,7 @@ words
 /// End
 
 /// Test Table ewritepand inline
-let t = @Table
+let t = do
 	- write
 	- paint
 	- song
@@ -92,7 +92,7 @@ write - paint - song - mark
 /// End
 
 /// Test Table set
-let t = @Table
+let t = do
 	- write
 	- paint
 	- song
@@ -139,7 +139,7 @@ $(t["b"]? or 1)
 
 /// Test dynamic keys 1
 let x = wing
-let t = @Table
+let t = do
 	$x: nib
 end
 
@@ -167,7 +167,7 @@ nib
 /// End
 
 /// Test ref 1
-let t = @Table
+let t = do
 	ref x: 1
 	y: $x
 end
@@ -177,7 +177,7 @@ $t.y
 /// End
 
 /// Test ref 2
-let t = @Table
+let t = do
 	ref x: 1
 	z: aaaa
 	y: $x
@@ -188,7 +188,7 @@ $t.y
 /// End
 
 /// Test ref 3
-let t = @Table
+let t = do
 	ref x: 1
 	if true
 		y: $x
@@ -200,7 +200,7 @@ $t.y
 /// End
 
 /// Test ref 4
-let t = @Table
+let t = do
 	ref x: 1
 	y: $x$x$x
 end
@@ -210,7 +210,7 @@ $t.y
 /// End
 
 /// Test ref 5
-let t = @Table
+let t = do
 	ref x: 1
 	y: @Table.join
 		a$x\aaa
@@ -222,7 +222,7 @@ a1aaa
 /// End
 
 /// Test ref  empty 1
-let t = @Table
+let t = do
 	ref x
 	y: $x
 end
@@ -231,7 +231,7 @@ $t.y
 /// End
 
 /// Test ref  empty 2
-let t = @Table
+let t = do
 	ref x
 	x: 5
 	y: $x
@@ -242,7 +242,7 @@ $t.y
 /// End
 
 /// Test ref change
-let t = @Table
+let t = do
 	ref x: 5
 	set x += 1
 end
@@ -252,7 +252,7 @@ $t.x
 /// End
 
 /// Test ref alias
-let t = @Table
+let t = do
 	ref x as z: 1
 	y: @Table.join
 		a$z\aaa
@@ -328,7 +328,7 @@ $wing(nib:(1, 2, 3))
 /// End
 
 /// Test ref error
-let t = @Table
+let t = do
 	let x
 	ref x: 5
 end

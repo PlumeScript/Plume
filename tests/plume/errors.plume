@@ -459,7 +459,7 @@ a
 /// End
 
 /// Test no MixedBlockError 1
-let t = @Table
+let t = do
     x: for i in seq(1, 10)
         - $i
     end
@@ -469,7 +469,7 @@ end
 /// End
 
 /// Test no MixedBlockError 2
-let t = @Table
+let t = do
     x: for i in seq(1, 10)
         y: $i
     end

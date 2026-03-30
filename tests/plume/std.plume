@@ -18,7 +18,7 @@ mark
 /// End
 
 /// Test Table
-let t = @Table
+let t = do
   - quill
   - mark
   quill: ink
@@ -106,7 +106,7 @@ wing → quill
 /// End
 
 /// Test numeric keys 1 (#253)
-let t = @Table
+let t = do
   - Wing
   Write: Quill
   - Song
@@ -173,7 +173,7 @@ $double(3)
 /// End
 
 /// Test len
-let t = @Table
+let t = do
   - Wing
   - Nib
   quill: blue
@@ -184,7 +184,7 @@ $len($t)
 /// End
 
 /// Test Table append
-let t = @Table
+let t = do
   - Wing
   - Nib
   quill: blue
@@ -198,7 +198,7 @@ $len($t)
 /// End
 
 /// Test Table remove 1
-let t = @Table
+let t = do
   - Wing
   - Nib
   quill: blue
@@ -213,7 +213,7 @@ Nib
 /// End
 
 /// Test Table remove 2
-let t = @Table
+let t = do
   - Wing
   - Nib
   quill: blue
@@ -226,7 +226,7 @@ Wing
 /// End
 
 /// Test Table remove 3
-let t = @Table
+let t = do
   Wing: Nib
   quill: blue
 end
