@@ -431,7 +431,7 @@ Assigns values based on the result of an expression.
     *   **Excess:** If the table contains more items than variables, the excess items are ignored.
 
 ```plume
-let coord = $table(10, 20, 30)
+let coord = $Table(10, 20, 30)
 
 // 'z' is ignored here
 let x, y = $coord 
@@ -526,7 +526,7 @@ Updates variables by extracting values from a table using specific keys. The syn
 
 ```plume
 // Assume 'host' exists, and 'port' is a variable used for the connection
-let config = @table
+let config = @Table
     host: 127.0.0.1
     // 'p' is defined in config, but not 'port'
     p: 8080
@@ -557,7 +557,7 @@ Plume allows table keys to be determined at runtime by evaluating an expression.
 let dynamicField = status
 let val = 200
 
-let response = @table
+let response = @Table
     code: $val
     $dynamicField: Success
 end
@@ -577,13 +577,13 @@ The items are inserted at the position of the `...` statement. If there are key 
 *   If a key from an expanded table is later redefined in the block, the final value will be the one defined last.
 
 ```plume
-let defaults = @table
+let defaults = @Table
     host: localhost
     port: 8000
     - write
 end
 
-let config = @table
+let config = @Table
     port: 9090
     ...defaults
     - paint
@@ -608,7 +608,7 @@ let myMacro = macro(write, paint, namedArg: "default", ?flag)
     // ...
 end
 
-let params = @table
+let params = @Table
     - quill
     flag: $true
 end
@@ -676,7 +676,7 @@ The `ref` keyword allows creating a variable that acts as a **reference** to a s
 **Example:**
 
 ```plume
-let t = @table
+let t = @Table
     ref x
     y: $x  // y is `empty` (x is not yet set)
     x: 5   // x is now 5
@@ -704,7 +704,7 @@ let t = $((1, 2, 3, key: 4))
 
 **Constraints:**
 *   **Multi-element requirement:** An inline table must contain at least two items. It cannot be used for empty tables or single-element tables.
-*   **Fallback:** For empty tables or single-element tables, use the `$table()` function instead.
+*   **Fallback:** For empty tables or single-element tables, use the `$Table()` function instead.
 
 #### String Literals `$("...")`
 
@@ -729,7 +729,7 @@ By default, every expression in Plume, including macro calls, contributes its re
 To execute a macro call without its return value affecting the accumulation context, prefix the call with the `do` keyword. The `do` statement ensures the macro is executed, but its return value is discarded.
 
 ```plume
-let myTable = @table
+let myTable = @Table
     // $print returns 'empty', but 'run' prevents it from converting
     // this block into a TEXT block.
     run $print(Initializing table definition...)
@@ -898,7 +898,7 @@ Only use this when you need to import a large number of symbols that are central
 use html
 
 @div
-    style: @table
+    style: @Table
         background: red
     end
 
@@ -968,7 +968,7 @@ use mylib
 Plume allows tables to define special behaviors called "metafields". By prefixing a key with the `meta` keyword during table definition, you can intercept language operations such as arithmetic, indexing, or iteration.
 
 ```plume
-let t = @table
+let t = @Table
     meta addr: macro(x)
         $(x + 1)
     end
@@ -1009,7 +1009,7 @@ The indexing metafields are triggered only when accessing or modifying a key tha
 
 **Example of `setindex` transformation:**
 ```plume
-let t = @table
+let t = @Table
     meta setindex: macro(name, value)
         // Wraps any new assigned value in a prefix
         Modified: $value

@@ -12,20 +12,20 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 ### Table Manipulation
 
-*   **`table`**:
-    *   `table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
-    *   `table.sort(table)`: In place sort. Doesn't change keys order.
-    *   `table.append(table, item)`: Adds `item` to the end of the specified `table`.
-    *   `table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
-    *   `table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied.
-    *   `table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.
-    *   `table.find(table, v)`: Search for a `k` such that `table[k] = v` and return the first found. Return `empty` if not found.
-    *   `table.findAll(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.
-    *   `table.count(table, ?named)`: Total number of elements (all keys or named keys only).
-    *   `table.entry(table, index)`: Returns the key and value at the given position in insertion order.
-    *   `table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
-    *   `table.copy(table)`: Returns a superficial copy of `table`.
-    *   `table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
+*   **`Table`**:
+    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
+    *   `Table.sort(table)`: In place sort. Doesn't change keys order.
+    *   `Table.append(table, item)`: Adds `item` to the end of the specified `table`.
+    *   `Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
+    *   `Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied.
+    *   `Table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.
+    *   `Table.find(table, v)`: Search for a `k` such that `table[k] = v` and return the first found. Return `empty` if not found.
+    *   `Table.findAll(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.
+    *   `Table.count(table, ?named)`: Total number of elements (all keys or named keys only).
+    *   `Table.entry(table, index)`: Returns the key and value at the given position in insertion order.
+    *   `Table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
+    *   `Table.copy(table)`: Returns a superficial copy of `table`.
+    *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
     *   **Edge Cases:** Use this function specifically when creating empty tables (`table()`) or tables with a single element.
 *   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 
