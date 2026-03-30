@@ -14,8 +14,8 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local Table = plume.obj.table (0, 2)
-    Table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join"}
+	local Table = plume.obj.table (0, 10)
+    Table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join", "deepcopy"}
     Table.table.remove = plume.temp.remove
     Table.table.append = plume.temp.append
     Table.table.join   = plume.temp.join
@@ -144,6 +144,54 @@ return function (plume)
         method = function (t)
             table.sort(t.table)
             return true
+        end
+    }
+
+    local function copy(t, deep, nt)
+        local nt = nt or plume.obj.table(#t.table, #t.keys)
+
+        for _, key in ipairs(t.keys) do
+            local rawvalue = t.table[key]
+            local value
+            if deep and type(rawvalue) == "table" and rawvalue.type == "table" then
+                if deep[rawvalue] then
+                    value = deep[rawvalue]
+                else
+                    deep[rawvalue] = plume.obj.table(0, 0)
+                    value = copy(rawvalue, deep, deep[rawvalue])
+                end
+            else
+                value = rawvalue
+            end
+
+            table.insert(nt.keys, key)
+            nt.table[key] = value
+        end
+
+        return nt
+    end
+
+    Table.table.copy = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t",
+            named={self=true},
+            args=1
+        },
+        method = function (t)
+            return true, copy(t)
+        end
+    }
+
+    Table.table.deepcopy = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t",
+            named={self=true},
+            args=1
+        },
+        method = function (t)
+            return true, copy(t, {})
         end
     }
 

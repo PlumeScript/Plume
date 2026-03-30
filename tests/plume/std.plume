@@ -429,3 +429,39 @@ $type($String(5))
 /// Output
 string
 /// End
+
+/// Test copy 1
+let t1 = (1, 2, 3)
+let t2 = $Table.copy($t1)
+set t2[1] = 0
+$t1
+/// Output
+$Table(1, 2, 3)
+/// End
+
+/// Test copy 2
+let t1 = ((1, 2, 3), 2, 3)
+let t2 = $Table.copy($t1)
+set t2[1][1] = 0
+$t1
+/// Output
+$Table($Table(0, 2, 3), 2, 3)
+/// End
+
+/// Test deepcopy
+let t1 = ((1, 2, 3), 2, 3)
+let t2 = $Table.deepcopy($t1)
+set t2[1][1] = 0
+$t1
+/// Output
+$Table($Table(1, 2, 3), 2, 3)
+/// End
+
+/// Test nested deepcopy
+let t1 = $Table()
+set t1[1] = $t1
+let t2 = $Table.deepcopy($t1)
+$t2
+/// Output
+$Table($Table($Table(...)))
+/// End
