@@ -15,6 +15,6 @@ If not, see <https://www.gnu.org/licenses/>.
 
 return function(plume)
 	function plume.error.joinErrorHint()
-		return "Wrong type 'table' for parameter '1' of macro 'join'.\nDid you write `table.join($t)` instead of `table.join(...t)`?"
+		return "Wrong type 'table' for parameter '1' of macro 'join'.\nDid you write `Table.join($t)` instead of `Table.join(...t)`?"
 	end
 end

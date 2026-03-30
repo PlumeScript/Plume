@@ -138,7 +138,7 @@ return function(plume)
 			end
 		end
 		
-		return string.format("$table(%s)", table.concat(result, ", "))
+		return string.format("$Table(%s)", table.concat(result, ", "))
 	end
 
 	function plume.repr(obj, acc)
@@ -156,7 +156,7 @@ return function(plume)
 			return "macro<" .. (obj.macro.name or "???") .. ">"
 		elseif t == "table" then
 			if acc[obj] then
-				return "$table(...)"
+				return "$Table(...)"
 			else
 				return reprTable(obj, acc)
 			end

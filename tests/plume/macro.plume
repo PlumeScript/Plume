@@ -94,7 +94,7 @@ This is quite long, i think.
 macro write(...args)
   Positionals args: $join(...args, sep:\,\s)\n
   Named args:\s
-  @table.join(sep:\,\s)
+  @Table.join(sep:\,\s)
     for key, value in items(args, ?named)
       - $key\=$value
     end
@@ -122,7 +122,7 @@ paint
 /// End
 
 /// Test Leave macro (text)
-let t = @table
+let t = @Table
   - blue
   - red
   - green
@@ -142,7 +142,7 @@ $index($t, red)
 2
 /// End
 
-/// Test Leave macro (table)
+/// Test Leave macro (Table)
 macro t()
   content: wing
   leave
@@ -162,9 +162,9 @@ Wing
 Nib
 /// End
 
-/// Test table as default value
+/// Test Table as default value
 macro Wing(a:(a, b, c))
-  $table.join(...a)
+  $Table.join(...a)
 end
 $Wing()
 /// Output

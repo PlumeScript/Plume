@@ -156,7 +156,7 @@ end
 /// End
 
 /// Test #145
-let t = $table(wing)
+let t = $Table(wing)
 let index = 1
 
 $t[index]
@@ -213,8 +213,8 @@ let blank = $("")
 /// End
 
 /// Test #166
-let t = @table
-    - @table
+let t = @Table
+    - @Table
         wing: blue
     end
 end
@@ -225,7 +225,7 @@ set t[1].wing = red
 /// End
 
 /// Test #169
-let t = $table()
+let t = $Table()
 let t2 = if false
     $t
 else
@@ -237,7 +237,7 @@ end
 
 
 /// Test #174-1
-let t = @table
+let t = @Table
   mark: song
   quill: macro(write)
     $write $self.mark
@@ -252,7 +252,7 @@ write song
 /// End
 
 /// Test #174-2
-let t = @table
+let t = @Table
   mark: song
   quill: macro()
      $self.mark
@@ -327,15 +327,15 @@ $(quill(?flag))
 /// End
 
 /// Test #236-1
-let t = $table() //note the ending space
+let t = $Table() //note the ending space
 a
 /// Output
 a
 /// End
 
 /// Test #236-2
-// Space after "table", but no comment
-let t = $table() 
+// Space after "Table", but no comment
+let t = $Table() 
 a
 /// Output
 a
@@ -361,7 +361,7 @@ let x = 5
 /// End
 
 /// Test #288-1
-let t = @table
+let t = @Table
   if false
   else
     - item
@@ -404,7 +404,7 @@ $(wing(-5))
 /// End
 
 /// Test #311
-let t = $table(x: $false)
+let t = $Table(x: $false)
 $t.x
 /// Output
 false
@@ -436,8 +436,8 @@ nibnib
 /// End
 
 /// Test #345
-let t = $table(wing, nib)
-run $table.remove($t)
+let t = $Table(wing, nib)
+run $Table.remove($t)
 
 for k, v in items(t)
     $k → $v\n
@@ -456,9 +456,9 @@ end
 /// End
 
 /// Test #354
-let t1 = $table(a, b, c)
-let t2 = $(table(...t1))
-$table.join(...t2)
+let t1 = $Table(a, b, c)
+let t2 = $(Table(...t1))
+$Table.join(...t2)
 /// Output
 abc
 /// End
@@ -474,7 +474,7 @@ a
 
 /// Test #358
 macro wing(x)
-    set x.y = $table()
+    set x.y = $Table()
 end
 macro nib()
     y: $empty
@@ -556,7 +556,7 @@ let t = do
 end
 $t
 /// Output
-$table(b, empty)
+$Table(b, empty)
 /// End
 
 /// Test #507-2
@@ -566,7 +566,7 @@ let t = do
 end
 $t
 /// Output
-$table(a: empty, c: a)
+$Table(a: empty, c: a)
 /// End
 
 /// Test #508
@@ -595,16 +595,16 @@ $r 0 $r
 /// End
 
 /// Test #534
-$table.join($table())
+$Table.join($Table())
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong type 'table' for parameter '1' of macro 'join'.                        │
-│   Did you write `table.join($t)` instead of `table.join(...t)`?                │
+│   Did you write `Table.join($t)` instead of `Table.join(...t)`?                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$table.join($table())                                                    │
+│    1 │$Table.join($Table())                                                    │
 │      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -690,7 +690,7 @@ with locale: none
     $(A+B)
 end
 /// Output
-$table(x: 14, y: 1)
+$Table(x: 14, y: 1)
 /// End
 
 /// Test #573
@@ -729,7 +729,7 @@ end
 run $quill()
 
 /// Output
-$table(wing: macro<???>, quill: macro<???>)
+$Table(wing: macro<???>, quill: macro<???>)
 /// End
 
 /// Test #597-1

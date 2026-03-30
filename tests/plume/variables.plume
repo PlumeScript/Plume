@@ -65,7 +65,7 @@ $_write
 
 /// Test lexical offset 1
 let x = 0
-@table.join
+@Table.join
 	let y=0
 	$(x+y)
 end
@@ -75,9 +75,9 @@ end
 
 /// Test lexical offset 2
 let x = 0
-@table.join
+@Table.join
 	let y=0
-	@table.join
+	@Table.join
 		let z=0
 		$(x+y+z)
 	end
@@ -159,7 +159,7 @@ use tests/plume/toimport/badlib
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test use not a table
+/// Test use not a Table
 use tests/plume/toimport/text
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮

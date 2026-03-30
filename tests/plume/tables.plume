@@ -1,52 +1,52 @@
-/// Test table get indewrite
-let t = $table(mark, quill, ink)
+/// Test Table get indewrite
+let t = $Table(mark, quill, ink)
 $t[1]
 /// Output
 mark
 /// End
 
-/// Test table set indewrite
-let t = $table(mark, quill, ink)
+/// Test Table set indewrite
+let t = $Table(mark, quill, ink)
 set t[1] = wing
 $t[1]
 /// Output
 wing
 /// End
 
-/// Test table ewritepand 1
-let t1 = $table(write, paint, make)
+/// Test Table write expand 1
+let t1 = $Table(write, paint, make)
 
-let t2 = @table
+let t2 = @Table
 	...t1
 end
 
-@table.join(sep: \s)
+@Table.join(sep: \s)
 	...t2
 end
 /// Output
 write paint make
 /// End
 
-/// Test table ewritepand 2
-let t1 = $table(write, paint, make)
+/// Test Table write expand 2
+let t1 = $Table(write, paint, make)
 
-let t2 = @table
+let t2 = @Table
 	- ink
 	...t1
 	- quill
 end
 
-@table.join(sep: \s)
+@Table.join(sep: \s)
 	...t2
 end
 /// Output
 ink write paint make quill
 /// End
 
-/// Test table ewritepand 3
-let t1 = $table(write: quill, paint: song)
+/// Test Table write expand 3
+let t1 = $Table(write: quill, paint: song)
 
-let t2 = @table
+let t2 = @Table
 	...t1
 end
 
@@ -57,10 +57,10 @@ quill
 song
 /// End
 
-/// Test table ewritepand 4
-let t1 = $table(write: quill, paint: song)
+/// Test Table write expand 4
+let t1 = $Table(write: quill, paint: song)
 
-let t2 = @table
+let t2 = @Table
 	write: nib
 	...t1
 	paint: words
@@ -73,8 +73,8 @@ quill
 words
 /// End
 
-/// Test table ewritepand inline
-let t = @table
+/// Test Table ewritepand inline
+let t = @Table
 	- write
 	- paint
 	- song
@@ -91,8 +91,8 @@ $wing(...t)
 write - paint - song - mark
 /// End
 
-/// Test table set
-let t = @table
+/// Test Table set
+let t = @Table
 	- write
 	- paint
 	- song
@@ -106,7 +106,7 @@ mark
 /// End
 
 /// Test safe index 1
-let t = $table(a:b)
+let t = $Table(a:b)
 $t.a?
 $(t.a?)
 /// Output
@@ -114,7 +114,7 @@ bb
 /// End
 
 /// Test safe index 2
-let t = $table(a:b)
+let t = $Table(a:b)
 $t.b?
 $(t.b? or 1)
 /// Output
@@ -122,7 +122,7 @@ $(t.b? or 1)
 /// End
 
 /// Test safe index 3
-let t = $table(a:b)
+let t = $Table(a:b)
 $t["a"]?
 $(t["a"]?)
 /// Output
@@ -130,7 +130,7 @@ bb
 /// End
 
 /// Test safe index 4
-let t = $table(a:b)
+let t = $Table(a:b)
 $t["b"]?
 $(t["b"]? or 1)
 /// Output
@@ -139,7 +139,7 @@ $(t["b"]? or 1)
 
 /// Test dynamic keys 1
 let x = wing
-let t = @table
+let t = @Table
 	$x: nib
 end
 
@@ -150,7 +150,7 @@ nib
 
 /// Test dynamic keys 2
 let x = wing
-let t = $table($x: nib)
+let t = $Table($x: nib)
 
 $t.wing
 /// Output
@@ -159,7 +159,7 @@ nib
 
 /// Test dynamic keys 3
 let x = wing
-let t = $(table($x: "nib"))
+let t = $(Table($x: "nib"))
 
 $t.wing
 /// Output
@@ -167,7 +167,7 @@ nib
 /// End
 
 /// Test ref 1
-let t = @table
+let t = @Table
 	ref x: 1
 	y: $x
 end
@@ -177,7 +177,7 @@ $t.y
 /// End
 
 /// Test ref 2
-let t = @table
+let t = @Table
 	ref x: 1
 	z: aaaa
 	y: $x
@@ -188,7 +188,7 @@ $t.y
 /// End
 
 /// Test ref 3
-let t = @table
+let t = @Table
 	ref x: 1
 	if true
 		y: $x
@@ -200,7 +200,7 @@ $t.y
 /// End
 
 /// Test ref 4
-let t = @table
+let t = @Table
 	ref x: 1
 	y: $x$x$x
 end
@@ -210,9 +210,9 @@ $t.y
 /// End
 
 /// Test ref 5
-let t = @table
+let t = @Table
 	ref x: 1
-	y: @table.join
+	y: @Table.join
 		a$x\aaa
 	end
 end
@@ -222,7 +222,7 @@ a1aaa
 /// End
 
 /// Test ref  empty 1
-let t = @table
+let t = @Table
 	ref x
 	y: $x
 end
@@ -231,7 +231,7 @@ $t.y
 /// End
 
 /// Test ref  empty 2
-let t = @table
+let t = @Table
 	ref x
 	x: 5
 	y: $x
@@ -242,7 +242,7 @@ $t.y
 /// End
 
 /// Test ref change
-let t = @table
+let t = @Table
 	ref x: 5
 	set x += 1
 end
@@ -252,9 +252,9 @@ $t.x
 /// End
 
 /// Test ref alias
-let t = @table
+let t = @Table
 	ref x as z: 1
-	y: @table.join
+	y: @Table.join
 		a$z\aaa
 	end
 end
@@ -263,63 +263,63 @@ $t.y
 a1aaa
 /// End
 
-/// Test inline table
+/// Test inline Table
 let t = (1, 2, a:b)
 $t[1]$t.a
 /// Output
 1b
 /// End
 
-/// Test inline table - eval
+/// Test inline Table - eval
 let t = $((1+2, 2, a:"b"))
 $t[1]$t.a
 /// Output
 3b
 /// End
 
-/// Test inline table nested
+/// Test inline Table nested
 let t = (1, (1, 2), a:b)
 $t[2][1]
 /// Output
 1
 /// End
 
-/// Test inline table in call
+/// Test inline Table in call
 $len((1, 2, 3))
 /// Output
 3
 /// End
 
-/// Test inline table in call - eval
+/// Test inline Table in call - eval
 $(len((1, 2, 3)))
 /// Output
 3
 /// End
 
-/// Test inline table as inline table value 1
+/// Test inline Table as inline Table value 1
 let t = (1, a:(1, 2))
 $repr($t)
 /// Output
-$table(1, a: $table(1, 2))
+$Table(1, a: $Table(1, 2))
 /// End
 
-/// Test inline table as inline table value 2
+/// Test inline Table as inline Table value 2
 let t = (a:(1, 2))
 $repr($t)
 /// Output
-$table(a: $table(1, 2))
+$Table(a: $Table(1, 2))
 /// End
 
-/// Test inline table as inline table value 3
+/// Test inline Table as inline Table value 3
 let t = $((1, a:(1, 2)))
 $repr($t)
 /// Output
-$table(1, a: $table(1, 2))
+$Table(1, a: $Table(1, 2))
 /// End
 
-/// Test inline table in as named arg
-macro wing(nib:$table())
-	$table.join(...nib)
+/// Test inline Table in as named arg
+macro wing(nib:$Table())
+	$Table.join(...nib)
 end
 
 $wing(nib:(1, 2, 3))
@@ -328,7 +328,7 @@ $wing(nib:(1, 2, 3))
 /// End
 
 /// Test ref error
-let t = @table
+let t = @Table
 	let x
 	ref x: 5
 end

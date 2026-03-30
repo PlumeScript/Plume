@@ -1,5 +1,5 @@
 /// Test join
-@table.join
+@Table.join
   quill
   mark
 end
@@ -8,7 +8,7 @@ quillmark
 /// End
 
 /// Test join with sep
-@table.join(sep: \n)
+@Table.join(sep: \n)
   - quill
   - mark
 end
@@ -17,8 +17,8 @@ quill
 mark
 /// End
 
-/// Test table
-let t = @table
+/// Test Table
+let t = @Table
   - quill
   - mark
   quill: ink
@@ -29,7 +29,7 @@ mark, ink
 /// End
 
 /// Test type
-$type($table())\n
+$type($Table())\n
 $type(nib)\n
 $type($(1+1))
 /// Output
@@ -63,8 +63,8 @@ end
 /// End
 
 /// Test enumerate
-let t = $table(quill, wing, bird)
-@table.join(sep:\n)
+let t = $Table(quill, wing, bird)
+@Table.join(sep:\n)
   for index, value in enumerate(t)
     - Item $index is $value.
   end
@@ -76,8 +76,8 @@ Item 3 is bird.
 /// End
 
 /// Test items
-let t = $table(first: quill, second: wing, bonus: bird)
-@table.join(sep:\n)
+let t = $Table(first: quill, second: wing, bonus: bird)
+@Table.join(sep:\n)
   for key, value in items(t)
     - Item "$key" is _($value)_.
   end
@@ -89,7 +89,7 @@ Item "bonus" is _(bird)_.
 /// End
 
 /// Test items ?named
-let t = $table(wing: quill, write, song)
+let t = $Table(wing: quill, write, song)
 for k, v in items(t)
   $k → $v\n
 end
@@ -106,7 +106,7 @@ wing → quill
 /// End
 
 /// Test numeric keys 1 (#253)
-let t = @table
+let t = @Table
   - Wing
   Write: Quill
   - Song
@@ -122,7 +122,7 @@ Write → Quill
 /// End
 
 /// Test numeric keys 2 (#253)
-let t = $table()
+let t = $Table()
 
 set t[1] = Wing
 
@@ -173,7 +173,7 @@ $double(3)
 /// End
 
 /// Test len
-let t = @table
+let t = @Table
   - Wing
   - Nib
   quill: blue
@@ -183,28 +183,28 @@ $len($t)
 2
 /// End
 
-/// Test table append
-let t = @table
+/// Test Table append
+let t = @Table
   - Wing
   - Nib
   quill: blue
 end
 $len($t)\n
-$table.append($t, paint)
+$Table.append($t, paint)
 $len($t)
 /// Output
 2
 3
 /// End
 
-/// Test table remove 1
-let t = @table
+/// Test Table remove 1
+let t = @Table
   - Wing
   - Nib
   quill: blue
 end
 $len($t)\n
-$table.remove($t)\n
+$Table.remove($t)\n
 $len($t)
 /// Output
 2
@@ -212,25 +212,25 @@ Nib
 1
 /// End
 
-/// Test table remove 2
-let t = @table
+/// Test Table remove 2
+let t = @Table
   - Wing
   - Nib
   quill: blue
 end
-$table.remove($t)\n
+$Table.remove($t)\n
 $t[1]
 /// Output
 Nib
 Wing
 /// End
 
-/// Test table remove 3
-let t = @table
+/// Test Table remove 3
+let t = @Table
   Wing: Nib
   quill: blue
 end
-$table.removeKey($t, Wing)\n
+$Table.removeKey($t, Wing)\n
 for k, v in items(t)
   $k
 end
@@ -239,27 +239,27 @@ quill
 /// End
 
 /// Test hasKey
-let t = $table(wing: nib)
+let t = $Table(wing: nib)
 
-$table.hasKey($t, wing)\n
-$table.hasKey($t, nib)
+$Table.hasKey($t, wing)\n
+$Table.hasKey($t, nib)
 /// Output
 true
 false
 /// End
 
 /// Test find
-let t = $table(wing: nib)
+let t = $Table(wing: nib)
 
-$table.find($t, nib)
+$Table.find($t, nib)
 /// Output
 wing
 /// End
 
 /// Test findAll
-let t = $table(wing: nib, write: nib)
+let t = $Table(wing: nib, write: nib)
 
-$table.join(...table.findAll($t, nib))
+$Table.join(...Table.findAll($t, nib))
 /// Output
 wingwrite
 /// End
@@ -331,7 +331,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$table(wing, nib, color: blue, quill)
+$Table(wing, nib, color: blue, quill)
 /// End
 
 /// Test repr 10
@@ -342,18 +342,18 @@ let t = do
 end
 $repr($t)
 /// Output
-$table(empty, color: macro<color>)
+$Table(empty, color: macro<color>)
 /// End
 
 /// Test repr 11
-let t = $table()
+let t = $Table()
 macro Wing()
 end
 
 set t[Wing] = 5
 $repr($t)
 /// Output
-$table(macro<Wing>: 5)
+$Table(macro<Wing>: 5)
 /// End
 
 /// Test repr 12
@@ -366,59 +366,59 @@ let t = do
 end
 $repr($t)
 /// Output
-$table(wing, sub: $table(quill, nib))
+$Table(wing, sub: $Table(quill, nib))
 /// End
 
 /// Test repr 13
-let t = $table()
+let t = $Table()
 set t[1] = $t
 $repr($t)
 /// Output
-$table($table(...))
+$Table($Table(...))
 /// End
 
-/// Test repr table with holes 1
-let t = $table()
+/// Test repr Table with holes 1
+let t = $Table()
 set t[1] = 5
 set t[3]  = z
 $repr($t)
 /// Output
-$table(5, empty, z)
+$Table(5, empty, z)
 /// End
 
-/// Test repr table with holes 2
-let t = $table()
+/// Test repr Table with holes 2
+let t = $Table()
 set t[1] = 5
 set t[3000]  = z
 $repr($t)
 /// Output
-$table(5, 3000: z)
+$Table(5, 3000: z)
 /// End
 
-/// Test repr table not ordered
-let t = $table()
+/// Test repr Table not ordered
+let t = $Table()
 set t[3]  = z
 set t[1] = 5
 
 $repr($t)
 /// Output
-$table(3: z, 1: 5)
+$Table(3: z, 1: 5)
 /// End
 
 /// Test count
-let t = $table(wing: nib, write, nib)
+let t = $Table(wing: nib, write, nib)
 
-$table.count($t)\n
-$table.count($t, ?named)
+$Table.count($t)\n
+$Table.count($t, ?named)
 /// Output
 3
 1
 /// End
 
 /// Test entry
-let t = $table(wing: nib, write: nib)
+let t = $Table(wing: nib, write: nib)
 
-let k, v = $table.entry($t, 2)
+let k, v = $Table.entry($t, 2)
 $k = $v
 /// Output
 write = nib

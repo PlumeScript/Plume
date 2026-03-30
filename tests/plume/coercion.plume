@@ -14,7 +14,7 @@ $(_write+1) // 1 is a number
 /// End
 
 /// Test type convertion
-let _write = $table()
+let _write = $Table()
 $type($_write)
 /// Output
 table
@@ -22,9 +22,9 @@ table
 
 /// Test type convertion (if)
 let _write = if 2==1+1
-	$table()
+	$Table()
 else
-	$table(write)
+	$Table(write)
 end
 $type($_write)
 /// Output

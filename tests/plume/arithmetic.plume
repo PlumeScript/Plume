@@ -140,7 +140,7 @@ $x
 /// End
 
 /// Test compound 2
-let t = @table
+let t = @Table
   - 5
 end
 set t[1] *= 7
@@ -151,7 +151,7 @@ $t[1]
 
 
 /// Test compound 3
-let t = @table
+let t = @Table
   value: 6
 end
 set t.value /= 2

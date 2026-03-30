@@ -11,8 +11,8 @@ Iterate 3 times...
 Iterate 4 times...
 /// End
 
-/// Test for over table
-let t = $table(nib, quill, wing)
+/// Test for over Table
+let t = $Table(nib, quill, wing)
 
 for write in t
   $write;
@@ -21,8 +21,8 @@ end
 nib;quill;wing;
 /// End
 
-/// Test for over table (idiomatic)
-let t = $table(nib, quill, wing)
+/// Test for over Table (idiomatic)
+let t = $Table(nib, quill, wing)
 
 @join(sep:\n)
   for write in t
@@ -175,7 +175,7 @@ end
 
 
 /// Test iterator (iter)
-let first5 = @table
+let first5 = @Table
   meta iter: macro()
     parent: $self
     state: 1

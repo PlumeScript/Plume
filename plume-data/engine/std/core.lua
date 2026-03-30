@@ -101,7 +101,13 @@ return function (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
 
-    for _, Table in ipairs({plume.stdLua, plume.std.table.table}) do
+    for _, Table in ipairs({plume.stdLua, plume.std.Table.table
+    --------------------------------------
+    -- WILL BE REMOVED IN 1.0 (#230, #413)
+    --------------------------------------
+    , plume.std.table.table
+    --------------------------------------
+    }) do
         for name, f in pairs(Table) do
             if f.checkArgs then
                 f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
@@ -116,9 +122,16 @@ return function (plume)
 
                 if Table == plume.stdLua then
                     return f.method(args, runtime, filestack, ip)
+                elseif Table == plume.std.Table.table then
+                    table.insert(args.table, args)
+                    return f.method(unpack(args.table))
+                --------------------------------------
+                -- WILL BE REMOVED IN 1.0 (#230, #413)
+                --------------------------------------
                 elseif Table == plume.std.table.table then
                     table.insert(args.table, args)
                     return f.method(unpack(args.table))
+                --------------------------------------
                 end
             end)
         end

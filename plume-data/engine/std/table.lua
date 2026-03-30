@@ -14,15 +14,15 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local _table = plume.obj.table (0, 2)
-    _table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join"}
-    _table.table.remove = plume.temp.remove
-    _table.table.append = plume.temp.append
-    _table.table.join   = plume.temp.join
-    _table.table.removeKey = {
+	local Table = plume.obj.table (0, 2)
+    Table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join"}
+    Table.table.remove = plume.temp.remove
+    Table.table.append = plume.temp.append
+    Table.table.join   = plume.temp.join
+    Table.table.removeKey = {
         checkArgs = {
             checkTypes = {"table"},
-            signature = "table t, any key",
+            signature = "Table t, any key",
             named={self=true},
             args=2
         },
@@ -41,7 +41,7 @@ return function (plume)
             return true
         end
     }
-    _table.table.hasKey = {
+    Table.table.hasKey = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t, any key",
@@ -59,7 +59,7 @@ return function (plume)
             return true, false
         end
     }
-    _table.table.find = {
+    Table.table.find = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t, any x",
@@ -75,7 +75,7 @@ return function (plume)
             return true, nil
         end
     }
-    _table.table.findAll = {
+    Table.table.findAll = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t, any x",
@@ -94,7 +94,7 @@ return function (plume)
             return true, result
         end
     }
-    _table.table.count = {
+    Table.table.count = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t, ?named",
@@ -117,7 +117,7 @@ return function (plume)
             end
         end
     }
-    _table.table.entry = {
+    Table.table.entry = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t, any index",
@@ -134,7 +134,7 @@ return function (plume)
             return true, result
         end
     }
-    _table.table.sort = {
+    Table.table.sort = {
         checkArgs = {
             checkTypes = {"table"},
             signature = "table t",
@@ -147,5 +147,17 @@ return function (plume)
         end
     }
 
-    plume.std.table = _table
+    plume.std.Table = Table
+
+    plume.std.table = plume.obj.table (0, 2)
+    --------------------------------------
+    -- WILL BE REMOVED IN 1.0 (#230, #413)
+    --------------------------------------
+    for k, v in pairs(plume.std.Table.table) do
+        plume.std.table.table[k] = {
+            checkArgs = v.checkArgs,
+            method=v.method
+            -- plume.warning.deprecatedFunctionRuntime("Sparrow", "`table.*` standard macro", "Instead of `table.*`, use `table.*`", {230, 416}, v.method)
+        }
+    end
 end
