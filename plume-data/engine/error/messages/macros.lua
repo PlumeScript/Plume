@@ -24,8 +24,23 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.cannotAddPositionalAfterFlag(node, varName)
+		local message = "Cannot add a positional parameter after a flag"
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.cannotAddNamedAfterVariadic(node, varName)
 		local message = "Cannot add a named parameter after a variadic one"
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.cannotAddNamedAfterFlag(node, varName)
+		local message = "Cannot add a named parameter after a flag"
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.cannotAddFlagAfterVariadic(node, varName)
+		local message = "Cannot add a flag after a variadic parameter"
 		plume.error.throwSyntaxError(node, message)
 	end
 

@@ -95,6 +95,7 @@ return function (plume)
         local function sugarFlagParam(p)
             return p / function(capture)
                 capture.name = "PARAM"
+                capture.isFlag = true
                 table.insert(capture.children, {
                     name="BODY",
                     bpos=capture.bpos,
