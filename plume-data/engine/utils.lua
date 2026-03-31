@@ -358,13 +358,21 @@ return function (plume)
         end
 
         local basedirs = {}
-        local env = runtime.env.PLUME_PATH
-        if env then
-            for dir in env:gmatch('[^;]+') do
-                dir = formatDir(dir)
-                table.insert(basedirs, dir)
-            end
-        end
+        local env = runtime.plume.table.path
+        if type(env) == "table" and env.type == "table" then
+	        if env then
+	            for _, dir in ipairs(env.table) do
+	            	if type(dir) == "string" then
+		                dir = formatDir(dir)
+		                table.insert(basedirs, dir)
+		            else
+		            	-- Should raise an error?
+		            end
+	            end
+	        end
+	    else
+	    	-- Should raise an error?
+	    end
         table.insert(basedirs, root)
         table.insert(basedirs, "")
 

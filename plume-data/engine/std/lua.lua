@@ -46,22 +46,30 @@ return function (plume)
         },
         --------------------------------------  
 
+        --------------------------------------  
+        -- WILL BE REMOVED IN 1.0 (#230, #198)  
+        --------------------------------------  
         -- path
         setPlumePath = {
             checkArgs = {checkTypes={"string"}, args=1, signature="string path"},
-            method = function(args, runtime)
-                runtime.env.plume_path = args.table[1]
-                return true
-            end
+            method = plume.warning.deprecatedFunctionRuntime("Sparrow", "`setPlumePath` standard macro", "Use `plume.path = ...` instead", {230, 198},
+                function(args, runtime)
+                    runtime.plume.path.table = args.table[1]
+                    return true
+                end
+            )
         },
 
         addToPlumePath = {
             checkArgs = {checkTypes={"string"}, args=1, signature="string path"},
-            method = function(args, runtime)
-                runtime.env.plume_path = (runtime.env.plume_path or "") .. ";" .. args.table[1]
-                return true
-            end
+            method = plume.warning.deprecatedFunctionRuntime("Sparrow", "`addToPlumePath` standard macro", "Use `Table.insert(plume.path, ...)` instead", {230, 198},
+                function(args, runtime)
+                    table.insert(runtime.plume.path, args.table[1])
+                    return true
+                end
+            )
         },
+        --------------------------------------  
 
         -- io
         write = {
