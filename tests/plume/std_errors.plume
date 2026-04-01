@@ -36,69 +36,51 @@ end
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test wrong args number 1
-$addToPlumePath()
+/// Test wrong args number
+$write()
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro 'addToPlumePath', 0           │
-│   instead of 1.                                                                │
-│   Usage: $addToPlumePath(string path)                                          │
+│ → Wrong number of positional arguments for macro 'write', 0 instead of         │
+│   between 1 and inf.                                                           │
+│   Usage: $write(string path, ...content)                                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$addToPlumePath()                                                        │
-│      │ ^^^^^^^^^^^^^^^^                                                        │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test wrong args number 2
-$addToPlumePath(a, b)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro 'addToPlumePath', 2           │
-│   instead of 1.                                                                │
-│   Usage: $addToPlumePath(string path)                                          │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │$addToPlumePath(a, b)                                                    │
-│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│    1 │$write()                                                                 │
+│      │ ^^^^^^^                                                                 │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test wrong args name
-$addToPlumePath(x, wing: blue)
+$write(x, wing: blue)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Unknown named parameter 'wing' for macro 'addToPlumePath'.                   │
-│   Usage: $addToPlumePath(string path)                                          │
+│ → Unknown named parameter 'wing' for macro 'write'.                            │
+│   Usage: $write(string path, ...content)                                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$addToPlumePath(x, wing: blue)                                           │
-│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                           │
+│    1 │$write(x, wing: blue)                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test wrong args type 1
-$addToPlumePath($Table())
+$write($Table())
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for parameter '1' of macro 'addToPlumePath'.              │
-│   Expected: 'string'.                                                          │
-│   Usage: $addToPlumePath(string path)                                          │
+│ → Wrong type 'table' for parameter '1' of macro 'write'. Expected: 'string'.   │
+│   Usage: $write(string path, ...content)                                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$addToPlumePath($Table())                                                │
-│      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
+│    1 │$write($Table())                                                         │
+│      │ ^^^^^^^^^^^^^^^                                                         │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

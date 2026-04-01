@@ -99,28 +99,8 @@ function CONCAT_CALL (vm, arg1, arg2)
     elseif tocall == vm.plume.std.Table then
         CONCAT_TABLE(vm)
 
-    --------------------------------------
-    -- WILL BE REMOVED IN Sparrow (#230, #413)
-    --------------------------------------
-    elseif tocall == vm.plume.std.table then
-        vm.plume.warning.deprecatedRuntime(
-            "Sparrow",
-            "macro `table`",
-            "Use `Table` instead",
-            vm.runtime, vm.ip, {230, 413}
-        )
-        CONCAT_TABLE(vm)
-    --------------------------------------
-
     -- CHECK_IS_TEXT do exactly the same thing as tostring
-    elseif
-        --------------------------------------
-        -- WILL BE REMOVED IN 1.0 (#230, #414)
-        --------------------------------------
-        tocall == vm.plume.std.tostring
-        or
-        --------------------------------------
-        tocall == vm.plume.std.String then
+    elseif tocall == vm.plume.std.String then
 
         local value = _STACK_POP(vm.mainStack)
         _STACK_POP_FRAME(vm.mainStack)
@@ -128,19 +108,6 @@ function CONCAT_CALL (vm, arg1, arg2)
         -- Should check for to many arguments, instead of ignoring them
         _INJECTION_PUSH(vm, vm.plume.ops.CHECK_IS_TEXT, 0, 0)
 
-
-        --------------------------------------
-        -- WILL BE REMOVED IN 1.0 (#230, #414)
-        --------------------------------------
-        if tocall == vm.plume.std.tostring then
-            vm.plume.warning.deprecatedRuntime(
-                "Sparrow",
-                "macro `tostring`",
-                "Use `String` instead",
-                vm.runtime, vm.ip, {230, 414}
-            )
-        end
-        --------------------------------------
     else
         _ERROR (vm, vm.plume.error.cannotCallValue(t))
     end

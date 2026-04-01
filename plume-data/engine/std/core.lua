@@ -65,34 +65,7 @@ return function (plume)
 
     plume.std = {}
     require 'plume-data/engine/std/lua' (plume)
-    ---------------------------------
-    -- WILL BE REMOVED IN 1.0 (#175, #230, #403)
-    ---------------------------------
-    plume.stdLua.remove = {
-        method=plume.warning.deprecatedFunctionRuntime("Sparrow", "`remove` standard macro", "Instead of `remove`, use `able.remove`", {175, 230},  function  (args)
-            args.table[1].keys[#args.table[1].table] = nil
-
-            return true, table.remove(args.table[1].table, index)
-        end
-        )
-    }
-    plume.stdLua.append = {
-        method=plume.warning.deprecatedFunctionRuntime("Sparrow", "`append` standard macro", "Instead of `append`, use `table.append`", {175, 230}, function  (args)
-                table.insert(args.table[1].table, args.table[2])
-                table.insert(args.table[1].keys, #args.table[1].table)
-                return true
-            end)
-    }
-    plume.stdLua.join = {
-        method=plume.warning.deprecatedFunctionRuntime("Sparrow", "`join` standard macro", "Instead of `join`, use `table.join`", {230, 430}, function  (args)
-                local sep = args.table.sep
-                if sep == plume.obj.empty then
-                    sep = ""
-                end
-                return pcall(table.concat, args.table, sep)
-            end)
-    }
-    ---------------------------------
+    
     
     require 'plume-data/engine/std/vm' (plume)
     
@@ -101,13 +74,7 @@ return function (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
 
-    for _, Table in ipairs({plume.stdLua, plume.std.Table.table
-    --------------------------------------
-    -- WILL BE REMOVED IN 1.0 (#230, #413)
-    --------------------------------------
-    , plume.std.table.table
-    --------------------------------------
-    }) do
+    for _, Table in ipairs({plume.stdLua, plume.std.Table.table}) do
         for name, f in pairs(Table) do
             if f.checkArgs then
                 f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
@@ -125,13 +92,6 @@ return function (plume)
                 elseif Table == plume.std.Table.table then
                     table.insert(args.table, args)
                     return f.method(unpack(args.table))
-                --------------------------------------
-                -- WILL BE REMOVED IN 1.0 (#230, #413)
-                --------------------------------------
-                elseif Table == plume.std.table.table then
-                    table.insert(args.table, args)
-                    return f.method(unpack(args.table))
-                --------------------------------------
                 end
             end)
         end
@@ -162,12 +122,6 @@ return function (plume)
             end)
         end
     end
-
-    ---------------------------------
-    -- WILL BE REMOVED IN 1.0 (#230, #414)
-    ---------------------------------
-    plume.std.tostring = {} -- hardcoded
-    ---------------------------------
 
     local function importLuaMacro(name, f)
         return plume.obj.luaMacro(name, function(args)

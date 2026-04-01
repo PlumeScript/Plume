@@ -24,7 +24,7 @@ nib;quill;wing;
 /// Test for over Table (idiomatic)
 let t = $Table(nib, quill, wing)
 
-@join(sep:\n)
+@Table.join(sep:\n)
   for write in t
     - A new item: "$write"
   end
