@@ -26,50 +26,6 @@ return function (plume)
                 return true
             end
         },
-        
-        --------------------------------------  
-        -- WILL BE REMOVED IN 1.0 (#230, #414)  
-        --------------------------------------  
-        tonumber = {
-            method = plume.warning.deprecatedFunctionRuntime("Sparrow", "`tonumber` standard macro", "Use `Number` instead", {230, 414},function(args, chunk)
-                    local x = args.table[1]
-                    if x == plume.obj.empty then
-                        return false, "Cannot convert empty into number"
-                    elseif type(x) == "number" then
-                        return true, x
-                    else
-                       return false, string.format("Cannot convert %s into number", type(x))
-                    end
-                    return true, table.concat(result)
-                end
-            )
-        },
-        --------------------------------------  
-
-        --------------------------------------  
-        -- WILL BE REMOVED IN 1.0 (#230, #198)  
-        --------------------------------------  
-        -- path
-        setPlumePath = {
-            checkArgs = {checkTypes={"string"}, args=1, signature="string path"},
-            method = plume.warning.deprecatedFunctionRuntime("Sparrow", "`setPlumePath` standard macro", "Use `plume.path = ...` instead", {230, 198},
-                function(args, runtime)
-                    runtime.plume.path.table = args.table[1]
-                    return true
-                end
-            )
-        },
-
-        addToPlumePath = {
-            checkArgs = {checkTypes={"string"}, args=1, signature="string path"},
-            method = plume.warning.deprecatedFunctionRuntime("Sparrow", "`addToPlumePath` standard macro", "Use `Table.insert(plume.path, ...)` instead", {230, 198},
-                function(args, runtime)
-                    table.insert(runtime.plume.path, args.table[1])
-                    return true
-                end
-            )
-        },
-        --------------------------------------  
 
         -- io
         write = {

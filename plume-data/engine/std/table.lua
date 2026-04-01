@@ -196,16 +196,4 @@ return function (plume)
     }
 
     plume.std.Table = Table
-
-    plume.std.table = plume.obj.table (0, 2)
-    --------------------------------------
-    -- WILL BE REMOVED IN 1.0 (#230, #413)
-    --------------------------------------
-    for k, v in pairs(plume.std.Table.table) do
-        plume.std.table.table[k] = {
-            checkArgs = v.checkArgs,
-            method=v.method
-            -- plume.warning.deprecatedFunctionRuntime("Sparrow", "`table.*` standard macro", "Instead of `table.*`, use `table.*`", {230, 416}, v.method)
-        }
-    end
 end

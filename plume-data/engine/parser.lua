@@ -158,11 +158,6 @@ return function (plume)
                       + P"\\t" * Cc("TEXT", "\t")
                       + P"\\n" * Cc("TEXT", "\n")
                       + P"\\r" * Cc("TEXT", "\r")
-                      --------------------------------------
-                      -- WILL BE REMOVED IN 1.0 (#230, #273)
-                      --------------------------------------
-                      + P"\\"*C("TEXT", P"(" + P")") * W("Starting with version 1.0-beta.5, it is no longer necessary to escape bracket within a call, as long as they are paired (issue #273). This new behavior may disrupt existing code.", {230, 273})
-                      --------------------------------------
                       + P"\\"*C("TEXT", P(1))
         
 
@@ -355,13 +350,7 @@ return function (plume)
         local lbodynlb = Ct("BODY", V"firstStatementNLB")
         local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
                        + C("MUL", P"*") + C("DIV", P"/"))
-        local statconst = (s *
-            -----------------------------------------
-            -- WILL BE REMOVED IN 1.0 (#230, #332)
-            -----------------------------------------
-            C("STATIC", K"static"))^-1 *
-            -----------------------------------------
-            (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1 * (s * C("CONTEXT", K"context"))^-1
+        local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1 * (s * C("CONTEXT", K"context"))^-1
         
 
         --- Common identifier
@@ -439,11 +428,6 @@ return function (plume)
             firstStatementNLB = os * (-V"statementTerminator")
                                 * (
                                       V"commandStd"
-                                    -----------------------------------------
-                                    -- WILL BE REMOVED IN Sparrow (#230, #531)
-                                    -----------------------------------------
-                                    + V"commandLB" * W("Deprecated syntax, will be removed in Sparrow with error:\nCannot chain theses two commands.", {230, 531})
-                                    -----------------------------------------
                                     + Ct("RUN", K"run" * s * V"firstStatementNLB")
                                     + V"invalid"^-1 * V"text"
                                 ),
