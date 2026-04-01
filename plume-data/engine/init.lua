@@ -1,5 +1,5 @@
 --[[
-Plume🪶 Sparrow 37
+Plume🪶 b38 (Sparrow Edition)
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
