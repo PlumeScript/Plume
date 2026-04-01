@@ -1,5 +1,5 @@
 /// Test macro key
-let t = @table
+let t = do
   quill: macro()
     mark
   end
@@ -10,7 +10,7 @@ mark
 /// End
 
 /// Test macro item
-let t = @table
+let t = do
   - macro()
     mark
   end
@@ -21,7 +21,7 @@ mark
 /// End
 
 /// Test self by key
-let t = @table
+let t = do
   mark: song
   quill: macro()
      $self.mark
@@ -34,7 +34,7 @@ song
 /// End
 
 /// Test self by index
-let t = @table
+let t = do
   mark: song
   - macro()
      $self.mark
@@ -47,7 +47,7 @@ song
 /// End
 
 /// Test self chained
-let obj = @table
+let obj = do
   wings: quill
   method1: macro()
     $self.wings
@@ -64,8 +64,8 @@ $obj.wings
 quill
 /// End
 
-/// Test block form table
-let t = @table
+/// Test block form Table
+let t = do
     wing: macro(body)
         Write "$body"
     end

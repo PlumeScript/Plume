@@ -183,7 +183,7 @@ return function (plume, context)
 		end
 
 		-- Cannot found variable ; check if it is a std/imported one
-		local value = plume.std[name] or context.importedVariables[name]
+		local value = plume.std[name] or context.importedVariables[name] or (name == "plume" and context.runtime.plume)
 		if value then
 			return {
 				isStd = true,
@@ -286,6 +286,10 @@ return function (plume, context)
 			if not result[k] then
 				result[k] = {}
 			end
+		end
+
+		if not result.plume then
+			result.plume = {}
 		end
 
 		for k in pairs(context.importedVariables) do

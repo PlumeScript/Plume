@@ -73,22 +73,57 @@ return function (plume, context)
     --- @param node node
     --- @return number
     function context.countLocals(node)
-    	local lets = plume.ast.getAll(node, "LET") 
+    	local lets      = plume.ast.getAll(node, "LET") 
+    	local hashItems = plume.ast.getAll(node, "HASH_ITEM")
+
     	local count = #plume.ast.getAll(node, "MACRO")
     	for _, let in ipairs(lets) do
     		count = count + #plume.ast.get(let, "VARLIST").children
     	end
+    	for _, hashItem in ipairs(hashItems) do
+    		if plume.ast.get(hashItem, "REF") then
+	    		count = count + 1
+	    	end
+    	end
     	return count
     end
 
-    --- Check if the node as ref variable
-    --- @param node node
-    --- @return number
-    function context.hasRef(node)
-    	local hashItems = plume.ast.getAll(node, "HASH_ITEM")
-    	for _, child in ipairs(hashItems) do
-    		if plume.ast.get(child, "REF") then
-    			return true
+    function context.checkArgsOrder(node)
+    	local firstNamed, firstFlag, firstVariadic
+    	local function w()
+    		plume.warning.deprecatedCompilationTime(node, "Sparrow", "This argument order support", "", {230, 601})
+    	end
+    	for _, child in ipairs(node.children) do
+    		if child.name == "LIST_ITEM" then
+    			if firstFlag then
+    				-- plume.error.cannotAddPositionalAfterFlag(child, true)
+    				w()
+    			elseif firstNamed then
+    				-- plume.error.cannotAddPositionalAfterNamed(child, true)
+    				w()
+    			elseif firstVariadic then
+    				-- plume.error.cannotAddPositionalAfterVariadic(child, true)
+    				w()
+    			end
+    		elseif child.name == "HASH_ITEM" then
+    			if child.isFlag then
+    				firstFlag = true
+    				if firstVariadic then
+    					-- plume.error.cannotAddFlagAfterVariadic(child, true)
+    					w()
+    				end
+    			else
+    				firstNamed = true
+    				if firstFlag then
+    					-- plume.error.cannotAddNamedAfterFlag(child, true)
+    					w()
+    				elseif firstVariadic then
+    					-- plume.error.cannotAddNamedAfterVariadic(child, true)
+    					w()
+    				end
+    			end
+    		elseif child.name == "EXPAND" then
+    			firstVariadic = true
     		end
     	end
     end

@@ -78,7 +78,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$table(item 1, item 2)
+$Table(item 1, item 2)
 /// End
 
 /// Test cannot use context with const

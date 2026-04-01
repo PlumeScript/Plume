@@ -74,6 +74,8 @@ return function (plume, context, nodeHandlerTable)
 			--- Count arguments, save variadic offset
 			--- and evaluate default value when optionnal args are empty.
 			-------------------------------------------------------------
+			local passFlag
+
 			for i, paramNode in ipairs(paramList.children) do
 				local paramNameNode = plume.ast.get(paramNode, "IDENTIFIER", 1, 2)
 				paramName           = paramNameNode.content
@@ -90,8 +92,17 @@ return function (plume, context, nodeHandlerTable)
 				end
 				if paramBody then
 					if macroObj.variadicOffset then
-						plume.error.cannotAddNamedAfterVariadic(paramNode)
+						if paramNode.isFlag then
+							plume.error.cannotAddNamedAfterVariadic(paramNode)
+						else
+							plume.error.cannotAddFlagAfterVariadic(paramNode)
+						end
 					end
+					if passFlag and not paramNode.isFlag then
+						plume.error.cannotAddNamedAfterFlag(paramNode)
+					end
+					passFlag = paramNode.isFlag
+
 					context.registerOP(paramNode, plume.ops.LOAD_LOCAL, 0, i)
 					context.registerGoto(paramNode, "macro_var_" .. i .. "_" .. uid, "JUMP_IF_NOT_EMPTY")
 					context.accBlock()(paramBody)
@@ -108,7 +119,11 @@ return function (plume, context, nodeHandlerTable)
 					end
 				else
 					if macroObj.namedParamCount > 0 then
-						plume.error.cannotAddPositionalAfterNamed(paramNode)
+						if flag then
+							plume.error.cannotAddPositionalAfterFlag(paramNode)
+						else
+							plume.error.cannotAddPositionalAfterNamed(paramNode)
+						end
 					end
 					if macroObj.variadicOffset then
 						plume.error.cannotAddPositionalAfterVariadic(paramNode)

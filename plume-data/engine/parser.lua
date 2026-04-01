@@ -95,6 +95,7 @@ return function (plume)
         local function sugarFlagParam(p)
             return p / function(capture)
                 capture.name = "PARAM"
+                capture.isFlag = true
                 table.insert(capture.children, {
                     name="BODY",
                     bpos=capture.bpos,
@@ -116,6 +117,7 @@ return function (plume)
         local function sugarFlagCall(p)
             return p / function(capture)
                 capture.name = "HASH_ITEM"
+                capture.isFlag = true
                 table.insert(capture.children, {
                     name="BODY",
                     bpos=capture.bpos,
@@ -350,6 +352,7 @@ return function (plume)
 
         -- affectations
         local lbody    = Ct("BODY", V"firstStatement")
+        local lbodynlb = Ct("BODY", V"firstStatementNLB")
         local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
                        + C("MUL", P"*") + C("DIV", P"/"))
         local statconst = (s *
@@ -400,9 +403,9 @@ return function (plume)
         local continue = C("CONTINUE", K"continue")
 
         -- table
-        local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatement" + P"-" * #lt) 
-        local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbody + #lt))
-                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os *lbody)
+        local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatementNLB" + P"-" * #lt) 
+        local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbodynlb + #lt))
+                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os * lbodynlb)
                         + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1)
         local expand   = Ct("EXPAND", P"..." * evalBase) 
 
@@ -432,11 +435,25 @@ return function (plume)
                                       V"command"
                                     + Ct("RUN", K"run" * s * V"firstStatement")
                                     + V"invalid"^-1 * V"text"
-                                )
-                                ,
+                                ),
+            firstStatementNLB = os * (-V"statementTerminator")
+                                * (
+                                      V"commandStd"
+                                    -----------------------------------------
+                                    -- WILL BE REMOVED IN Sparrow (#230, #531)
+                                    -----------------------------------------
+                                    + V"commandLB" * W("Deprecated syntax, will be removed in Sparrow with error:\nCannot chain theses two commands.", {230, 531})
+                                    -----------------------------------------
+                                    + Ct("RUN", K"run" * s * V"firstStatementNLB")
+                                    + V"invalid"^-1 * V"text"
+                                ),
             statement    = lt * V"firstStatement",
 
-            command =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + listitem + hashitem + inlinetable + expand + use + raw + with,
+            commandStd =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + inlinetable + expand + use + raw + with,
+            -- Only at line start
+            commandLB = listitem + hashitem,
+
+            command = V"commandStd" + V"commandLB",
 
             text =   (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,

@@ -31,7 +31,7 @@ b=mark
 /// End
 
 /// Test named destructuration 1
-let t = @table
+let t = do
 	wing: mark
 end
 let wing from $t
@@ -41,7 +41,7 @@ mark
 /// End
 
 /// Test named destructuration 2
-let t = @table
+let t = do
 	wing: mark
 	paint: song
 end
@@ -52,7 +52,7 @@ mark, song
 /// End
 
 /// Test named destructuration 3
-let t = @table
+let t = do
 	wing: mark
 	paint: song
 	quill: nib
@@ -64,7 +64,7 @@ mark, song, nib
 /// End
 
 /// Test named destructuration with alias 1
-let t = @table
+let t = do
 	wing: mark
 	paint: song
 	quill: nib
@@ -76,7 +76,7 @@ mark
 /// End
 
 /// Test named destructuration with alias 2
-let t = @table
+let t = do
 	wing: mark
 	paint: song
 	quill: nib
@@ -88,7 +88,7 @@ mark, nib
 /// End
 
 /// Test named destructuration with default value 1
-let t = @table
+let t = do
 	paint: song
 end
 let wing: 5 from $t
@@ -98,7 +98,7 @@ $wing
 /// End
 
 /// Test named destructuration with default value 2
-let t = @table
+let t = do
 	wing: song
 end
 let wing: 5 from $t
@@ -108,7 +108,7 @@ song
 /// End
 
 /// Test named destructuration with default value 3
-let t = $table()
+let t = $Table()
 let wing: (5 5) from $t
 $wing
 /// Output
@@ -116,7 +116,7 @@ $wing
 /// End
 
 /// Test named destructuration with default value and alias 1
-let t = @table
+let t = do
 	quill: song
 end
 let wing as paint: 5 from $t
@@ -126,7 +126,7 @@ $paint
 /// End
 
 /// Test named destructuration with default value and alias 2
-let t = @table
+let t = do
 	wing: song
 end
 let wing as paint: 5 from $t
@@ -136,7 +136,7 @@ song
 /// End
 
 /// Test named destructuration with set
-let t = @table
+let t = do
 	wing: mark
 end
 let wing
@@ -147,9 +147,9 @@ mark
 /// End
 
 /// Test for destructuration with set
-let t = @table
-	- $table(x, 1)
-	- $table(y, 2)
+let t = do
+	- $Table(x, 1)
+	- $Table(y, 2)
 end
 
 for a, b in t

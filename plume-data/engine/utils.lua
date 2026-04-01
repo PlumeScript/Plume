@@ -222,7 +222,7 @@ return function (plume)
 			or node.name == "IF"
 			or node.name == "ELSE"
 			or node.name == "ELSEIF"
-			or node.name == "WITH"
+			
 			or node.name == "BODY" then
 			return node.type
 		elseif node.name == "MACRO" then
@@ -252,14 +252,11 @@ return function (plume)
 		    or node.name == "FALSE"
 		    or node.name == "TRUE"
 
+		    or node.name == "WITH"
+		    or node.name == "DO"
+
 		    or node.name == "INLINE_TABLE" then
 			return "VALUE"
-		elseif node.name == "DO" then
-			if node.type == "EMPTY" then
-				return "EMPTY"
-			else
-				return "VALUE"
-			end
 		else
 			return "EMPTY"
 		end
@@ -361,13 +358,21 @@ return function (plume)
         end
 
         local basedirs = {}
-        local env = runtime.env.PLUME_PATH
-        if env then
-            for dir in env:gmatch('[^;]+') do
-                dir = formatDir(dir)
-                table.insert(basedirs, dir)
-            end
-        end
+        local env = runtime.plume.table.path
+        if type(env) == "table" and env.type == "table" then
+	        if env then
+	            for _, dir in ipairs(env.table) do
+	            	if type(dir) == "string" then
+		                dir = formatDir(dir)
+		                table.insert(basedirs, dir)
+		            else
+		            	-- Should raise an error?
+		            end
+	            end
+	        end
+	    else
+	    	-- Should raise an error?
+	    end
         table.insert(basedirs, root)
         table.insert(basedirs, "")
 

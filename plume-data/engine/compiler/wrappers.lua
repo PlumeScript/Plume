@@ -31,23 +31,28 @@ return function (plume, context)
         --- @param node node
         --- @param label|nil string Used to jump at block end, but before finalizer.
         --- @return nil
-        return function (node, label)  
+        return function (node, label)
             if node.type == "TEXT" then
                 context.accBlockDeep = context.accBlockDeep + 1
-                context.toggleConcatOn()
                 context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)  
+                
+                context.toggleConcatOn()
                 f(node)  
+                context.toggleConcatPop()
+
                 if label then  
                     context.registerLabel(node, label)  
                 end  
                 context.registerOP(nil, plume.ops.CONCAT_TEXT, 0, 0)
                 context.accBlockDeep = context.accBlockDeep - 1
             else  
-                context.toggleConcatOff()
                 -- More or less a TEXT block with 1 element.
                 -- Don't use ACC_TEXT to prevent conversion to string
-                if node.type == "VALUE" then  
-                    f(node)  
+                if node.type == "VALUE" then 
+                    context.toggleConcatOff() 
+                    f(node)
+                    context.toggleConcatPop()
+
                     if label then  
                         context.registerLabel(node, label)  
                     end  
@@ -55,22 +60,33 @@ return function (plume, context)
                 elseif node.type == "TABLE" then  
                     context.accTableInit(node)
                     context.accBlockDeep = context.accBlockDeep + 1
-                    f(node)  
+
+                    context.toggleConcatOff()
+                    f(node)
+                    context.toggleConcatPop()
+
                     if label then  
                         context.registerLabel(node, label)  
                     end  
                     context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
                     context.accBlockDeep = context.accBlockDeep - 1
                 -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
-                elseif node.type == "EMPTY" then  
-                    f(node)  
+                elseif node.type == "EMPTY" then
+                    context.toggleConcatOff()
+                    f(node)
+                    context.toggleConcatPop()
+
                     if label then  
                         context.registerLabel(node, label)  
                     end  
-                    context.registerOP(nil, plume.ops.LOAD_EMPTY, 0, 0)  
+                    if context.checkIfCanConcat() then
+                        context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
+                    else
+                        context.registerOP(nil, plume.ops.LOAD_EMPTY, 0, 0)
+                    end
                 end  
             end  
-            context.toggleConcatPop()
+            
         end          
     end  
     
@@ -121,7 +137,7 @@ return function (plume, context)
         f = f or context.childrenHandler  
         return function (node)
             local lets = context.countLocals(node) + (internVar or 0)
-            if lets>0 or context.hasRef(node) then  
+            if lets>0 then  
                 context.enterScope(lets)
                 f(node)  
                 context.leaveScope(true)

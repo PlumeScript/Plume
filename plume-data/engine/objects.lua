@@ -68,6 +68,21 @@ return function(plume)
 		dest.offset = src.offset
 	end
 
+	local function makePlumeTable()
+		local result = plume.obj.table(0, 1)
+		result.keys = {"path"}
+
+		local pathTable = plume.obj.table(0, 0)
+		for path in os.getenv("PLUME_PATH"):gmatch('[^;]+') do
+			local i = #pathTable.table + 1
+			table.insert(pathTable.keys, i)
+			pathTable.table[i] = path
+		end
+		result.table.path = pathTable
+
+		return result
+	end
+
 	function plume.obj.runtime()
 		-----------------------------------------
 		--- Not very clean
@@ -94,9 +109,7 @@ return function(plume)
 			callstack            = {},
 			files                = {},
 			cache                = {},
-			env = {
-				PLUME_PATH = os.getenv("PLUME_PATH")
-			}
+			plume                = makePlumeTable()
 		}
 	end
 
@@ -138,7 +151,7 @@ return function(plume)
 			end
 		end
 		
-		return string.format("$table(%s)", table.concat(result, ", "))
+		return string.format("$Table(%s)", table.concat(result, ", "))
 	end
 
 	function plume.repr(obj, acc)
@@ -156,7 +169,7 @@ return function(plume)
 			return "macro<" .. (obj.macro.name or "???") .. ">"
 		elseif t == "table" then
 			if acc[obj] then
-				return "$table(...)"
+				return "$Table(...)"
 			else
 				return reprTable(obj, acc)
 			end

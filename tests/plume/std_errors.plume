@@ -87,7 +87,7 @@ $addToPlumePath(x, wing: blue)
 /// End
 
 /// Test wrong args type 1
-$addToPlumePath($table())
+$addToPlumePath($Table())
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
@@ -97,7 +97,7 @@ $addToPlumePath($table())
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$addToPlumePath($table())                                                │
+│    1 │$addToPlumePath($Table())                                                │
 │      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯

@@ -118,8 +118,8 @@ $(x+1)
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test Add table
-let x = $table()
+/// Test Add Table
+let x = $Table()
 $(x+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -128,14 +128,14 @@ $(x+1)
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let x = $table()                                                         │
+│    1 │let x = $Table()                                                         │
 │    2 │$(x+1)                                                                   │
 │      │  ^^^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test Iterate over non table
+/// Test Iterate over non Table
 for x in 1
 end
 /// Error
@@ -153,7 +153,7 @@ end
 /// End
 
 /// Test Empty key
-let t = $table()
+let t = $Table()
 $t[empty]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -162,7 +162,7 @@ $t[empty]
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = $table()                                                         │
+│    1 │let t = $Table()                                                         │
 │    2 │$t[empty]                                                                │
 │      │  ^^^^^^^                                                                │
 │                                                                                │
@@ -170,7 +170,7 @@ $t[empty]
 /// End
 
 /// Test Invalid key (string)
-let t = $table(wing: 5)
+let t = $Table(wing: 5)
 $t.wng
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -180,7 +180,7 @@ $t.wng
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = $table(wing: 5)                                                  │
+│    1 │let t = $Table(wing: 5)                                                  │
 │    2 │$t.wng                                                                   │
 │      │  ^^^^                                                                   │
 │                                                                                │
@@ -188,7 +188,7 @@ $t.wng
 /// End
 
 /// Test Invalid key (int 1)
-let t = $table(nib, quill)
+let t = $Table(nib, quill)
 $t[3]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -198,7 +198,7 @@ $t[3]
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = $table(nib, quill)                                               │
+│    1 │let t = $Table(nib, quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
 │                                                                                │
@@ -206,7 +206,7 @@ $t[3]
 /// End
 
 /// Test Invalid key (int 2)
-let t = $table(nib: quill)
+let t = $Table(nib: quill)
 $t[3]
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -216,7 +216,7 @@ $t[3]
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = $table(nib: quill)                                               │
+│    1 │let t = $Table(nib: quill)                                               │
 │    2 │$t[3]                                                                    │
 │      │  ^^^                                                                    │
 │                                                                                │
@@ -224,7 +224,7 @@ $t[3]
 /// End
 
 /// Test Invalid key with holes
-let t = $table(a)
+let t = $Table(a)
 set t[1] = 0
 set t[3] = 0
 $t[2]
@@ -296,7 +296,7 @@ let t = 1
 
 /// Test Concat error 1
 let wing = Quill
-let nib = $table()
+let nib = $Table()
 
 $wing $nib
 /// Error
@@ -306,7 +306,7 @@ $wing $nib
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    2 │let nib = $table()                                                       │
+│    2 │let nib = $Table()                                                       │
 │    4 │$wing $nib                                                               │
 │      │       ^^^                                                               │
 │                                                                                │
@@ -315,7 +315,7 @@ $wing $nib
 
 /// Test Concat error 2
 let wing = Quill
-let nib = $table()
+let nib = $Table()
 
 $wing
 if true
@@ -459,7 +459,7 @@ a
 /// End
 
 /// Test no MixedBlockError 1
-let t = @table
+let t = do
     x: for i in seq(1, 10)
         - $i
     end
@@ -469,7 +469,7 @@ end
 /// End
 
 /// Test no MixedBlockError 2
-let t = @table
+let t = do
     x: for i in seq(1, 10)
         y: $i
     end

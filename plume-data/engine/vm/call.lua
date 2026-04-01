@@ -96,8 +96,21 @@ function CONCAT_CALL (vm, arg1, arg2)
         _INJECTION_PUSH(vm, tocall.opcode, 0, 0)
 
     -- @table ... end just return the accumulated table
-    elseif tocall == vm.plume.std.table then
+    elseif tocall == vm.plume.std.Table then
         CONCAT_TABLE(vm)
+
+    --------------------------------------
+    -- WILL BE REMOVED IN Sparrow (#230, #413)
+    --------------------------------------
+    elseif tocall == vm.plume.std.table then
+        vm.plume.warning.deprecatedRuntime(
+            "Sparrow",
+            "macro `table`",
+            "Use `Table` instead",
+            vm.runtime, vm.ip, {230, 413}
+        )
+        CONCAT_TABLE(vm)
+    --------------------------------------
 
     -- CHECK_IS_TEXT do exactly the same thing as tostring
     elseif

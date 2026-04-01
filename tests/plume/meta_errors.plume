@@ -1,5 +1,5 @@
 /// Test meta wrong parameter number 1
-let t = @table
+let t = do
   meta add: macro()
     $true
   end
@@ -13,7 +13,7 @@ $(t+1)
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = @table                                                           │
+│    1 │let t = do                                                               │
 │    2 │  meta add: macro()                                                      │
 │      │  ^^^^^^^^^^^^^^^^^                                                      │
 │    3 │    $true                                                                │
@@ -22,7 +22,7 @@ $(t+1)
 /// End
 
 /// Test meta wrong parameter number 2
-let t = @table
+let t = do
   meta add: macro(x, y, z)
     $true
   end
@@ -36,7 +36,7 @@ $(t+1)
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = @table                                                           │
+│    1 │let t = do                                                               │
 │    2 │  meta add: macro(x, y, z)                                               │
 │      │  ^^^^^^^^^^^^^^^^^^^^^^^^                                               │
 │    3 │    $true                                                                │
@@ -45,7 +45,7 @@ $(t+1)
 /// End
 
 /// Test meta wrong parameter number 3
-let t = @table
+let t = do
   meta add: macro(x, y, z: quill)
     $true
   end
@@ -59,7 +59,7 @@ $(t+1)
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = @table                                                           │
+│    1 │let t = do                                                               │
 │    2 │  meta add: macro(x, y, z: quill)                                        │
 │      │  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
 │    3 │    $true                                                                │
@@ -68,7 +68,7 @@ $(t+1)
 /// End
 
 /// Test meta wrong parameter number 4
-let t = @table
+let t = do
   meta call: macro(x, y, z: quill)
     $true
   end
@@ -91,7 +91,7 @@ $t(1)
 /// End
 
 /// Test unknown meta
-let t = @table
+let t = do
   meta mymacro: macro()
   end
 end
@@ -102,7 +102,7 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = @table                                                           │
+│    1 │let t = do                                                               │
 │    2 │  meta mymacro: macro()                                                  │
 │      │  ^^^^^^^^^^^^^^^^^^^^^                                                  │
 │    3 │  end                                                                    │
@@ -111,7 +111,7 @@ end
 /// End
 
 /// Test stack overflow
-let t = @table
+let t = do
   meta addr: macro(x)
     $(self+1)
   end

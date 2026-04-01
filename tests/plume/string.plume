@@ -200,14 +200,14 @@ end
 let text = a52zazz
 $repr($text.partition(z))
 /// Output
-$table(a52, z, azz)
+$Table(a52, z, azz)
 /// End
 
 /// Test partition 2
 let text = a52zazz
 $repr($text.partition([0-9]+, ?rich))
 /// Output
-$table(a, 52, zazz)
+$Table(a, 52, zazz)
 /// End
 
 /// Test find
