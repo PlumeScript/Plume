@@ -89,7 +89,7 @@ Item "bonus" is _(bird)_.
 /// End
 
 /// Test items ?named
-let t = $Table(wing: quill, write, song)
+let t = $Table( write, song, wing: quill)
 for k, v in items(t)
   $k → $v\n
 end
@@ -98,9 +98,9 @@ for k, v in items(t, ?named)
   $k → $v\n
 end
 /// Output
-wing → quill
 1 → write
 2 → song
+wing → quill
 ---
 wing → quill
 /// End
@@ -406,7 +406,7 @@ $Table(3: z, 1: 5)
 /// End
 
 /// Test count
-let t = $Table(wing: nib, write, nib)
+let t = $Table(write, nib, wing: nib)
 
 $Table.count($t)\n
 $Table.count($t, ?named)

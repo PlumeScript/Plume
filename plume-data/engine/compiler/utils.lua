@@ -87,4 +87,44 @@ return function (plume, context)
     	end
     	return count
     end
+
+    function context.checkArgsOrder(node)
+    	local firstNamed, firstFlag, firstVariadic
+    	local function w()
+    		plume.warning.deprecatedCompilationTime(node, "Sparrow", "This argument order support", "", {230, 601})
+    	end
+    	for _, child in ipairs(node.children) do
+    		if child.name == "LIST_ITEM" then
+    			if firstFlag then
+    				-- plume.error.cannotAddPositionalAfterFlag(child, true)
+    				w()
+    			elseif firstNamed then
+    				-- plume.error.cannotAddPositionalAfterNamed(child, true)
+    				w()
+    			elseif firstVariadic then
+    				-- plume.error.cannotAddPositionalAfterVariadic(child, true)
+    				w()
+    			end
+    		elseif child.name == "HASH_ITEM" then
+    			if child.isFlag then
+    				firstFlag = true
+    				if firstVariadic then
+    					-- plume.error.cannotAddFlagAfterVariadic(child, true)
+    					w()
+    				end
+    			else
+    				firstNamed = true
+    				if firstFlag then
+    					-- plume.error.cannotAddNamedAfterFlag(child, true)
+    					w()
+    				elseif firstVariadic then
+    					-- plume.error.cannotAddNamedAfterVariadic(child, true)
+    					w()
+    				end
+    			end
+    		elseif child.name == "EXPAND" then
+    			firstVariadic = true
+    		end
+    	end
+    end
 end

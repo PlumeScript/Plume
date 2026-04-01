@@ -117,6 +117,7 @@ return function (plume)
         local function sugarFlagCall(p)
             return p / function(capture)
                 capture.name = "HASH_ITEM"
+                capture.isFlag = true
                 table.insert(capture.children, {
                     name="BODY",
                     bpos=capture.bpos,

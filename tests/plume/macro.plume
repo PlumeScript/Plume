@@ -92,7 +92,7 @@ This is quite long, i think.
 
 /// Test Variadic 1
 macro write(...args)
-  Positionals args: $join(...args, sep:\,\s)\n
+  Positionals args: $Table.join(sep:\,\s, ...args)\n
   Named args:\s
   @Table.join(sep:\,\s)
     for key, value in items(args, ?named)

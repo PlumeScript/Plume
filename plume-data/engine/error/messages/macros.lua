@@ -14,33 +14,39 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function(plume)
-	function plume.error.cannotAddPositionalAfterNamed(node, varName)
-		local message = "Cannot add a positional parameter after a named one"
+	function plume.error.cannotAddPositionalAfterNamed(node, arg)
+		local name = arg and "argument" or "parameter"
+		local message = string.format("Cannot add a positional %s after a named one", name)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.cannotAddPositionalAfterVariadic(node, varName)
-		local message = "Cannot add a positional parameter after a variadic one"
+	function plume.error.cannotAddPositionalAfterVariadic(node, arg)
+		local name = arg and "argument" or "parameter"
+		local message = string.format("Cannot add a positional %s after a variadic one", name)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.cannotAddPositionalAfterFlag(node, varName)
-		local message = "Cannot add a positional parameter after a flag"
+	function plume.error.cannotAddPositionalAfterFlag(node, arg)
+		local name = arg and "argument" or "parameter"
+		local message = string.format("Cannot add a positional %s after a flag", name)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.cannotAddNamedAfterVariadic(node, varName)
-		local message = "Cannot add a named parameter after a variadic one"
+	function plume.error.cannotAddNamedAfterVariadic(node, arg)
+		local name = arg and "argument" or "parameter"
+		local message = string.format("Cannot add a named %s after a variadic one", name)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.cannotAddNamedAfterFlag(node, varName)
-		local message = "Cannot add a named parameter after a flag"
+	function plume.error.cannotAddNamedAfterFlag(node, arg)
+		local name = arg and "argument" or "parameter"
+		local message = string.format("Cannot add a named %s after a flag", name)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.cannotAddFlagAfterVariadic(node, varName)
-		local message = "Cannot add a flag after a variadic parameter"
+	function plume.error.cannotAddFlagAfterVariadic(node, arg)
+		local name = arg and "argument" or "parameter"
+		local message = string.format("Cannot add a flag after a variadic parameter", name)
 		plume.error.throwSyntaxError(node, message)
 	end
 

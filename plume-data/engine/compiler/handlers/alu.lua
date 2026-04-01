@@ -52,6 +52,7 @@ return function (plume, context, nodeHandlerTable)
 			if child.name == "CALL" then
 				context.accBlockDeep = context.accBlockDeep + 1
 				context.accTableInit(node)
+				context.checkArgsOrder(child)
 				context.childrenHandler(child) -- child.children are the args
 			
 			-- `@wing ... end`
