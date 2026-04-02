@@ -335,7 +335,7 @@ return function(plume)
 			if USE_SIMPLE and errorInfos.message then
 				makeLine{focus(errorInfos.header).." "..errorInfos.message:gsub('\n', ' '),  indent=HEADER_INDENT}
 			else
-				makeLine{errorInfos.header,  indent=HEADER_INDENT, color=focus}
+				makeLine{focus(errorInfos.header),  indent=HEADER_INDENT, color=focus}
 				if errorInfos.message then
 					makeLine{START_ARROW_1..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
 				end
