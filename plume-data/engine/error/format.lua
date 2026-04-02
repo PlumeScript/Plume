@@ -14,7 +14,8 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function(plume)
-	local USE_COLOR = true
+	local USE_COLOR  = true
+	local USE_SIMPLE = false
 
 	local function focus(s)
 		if USE_COLOR then
@@ -69,6 +70,9 @@ return function(plume)
 
 		local CODE_START  = "│"
 
+		local START_ARROW_1 = "→ "
+		local START_ARROW_2 = "↳ "
+
 		local HEADER_INDENT          = 1
 		local SOURCE_FILENAME_INDENT = 2
 		local SOURCE_CODE_INDENT     = 4
@@ -76,6 +80,29 @@ return function(plume)
 		local TRACEBACK_HEADER = "Traceback (most recent call first):"
 
 		local MAX_WARNINGS_NODES = 3
+
+		if USE_SIMPLE then
+			MAX_WIDTH = 80
+
+			BORDER_UR = ""
+			BORDER_UL = ""
+			BORDER_DR = ""
+			BORDER_DL = ""
+			BORDER_R  = ""
+			BORDER_L  = ""
+
+			BORDER_H  = ""
+			BORDER_V  = ""
+
+			CODE_START  = ""
+
+			START_ARROW_1 = ""
+			START_ARROW_2 = ""
+
+			HEADER_INDENT          = 0
+			SOURCE_FILENAME_INDENT = 0
+			SOURCE_CODE_INDENT     = 2
+		end
 
 		-----------
 		-- Utils --
@@ -105,7 +132,7 @@ return function(plume)
 				makeLine{before, indent=indent, lineIndentDelta=lineIndentDelta, crop=crop}
 				makeLine{after,  indent=indent+lineIndentDelta, crop=crop}
 				return
-			elseif utf8len(content) >= MAX_WIDTH-2 then 
+			elseif not USE_SIMPLE and utf8len(content) >= MAX_WIDTH-2 then 
 				if crop then
 					if crop == "start" then
 						content = content:sub(1, 3)..'...'..content:sub(utf8len(content)-MAX_WIDTH+10, -1)
@@ -132,7 +159,7 @@ return function(plume)
 
 			local firstIndent, lastIndent
 
-			if center then
+			if center and not USE_SIMPLE then
 				local space = MAX_WIDTH - utf8len(content)
 				firstIndent = space/2
 				lastIndent  = space/2
@@ -163,10 +190,19 @@ return function(plume)
 			local noline  = args[2]
 			local dindent  = args.indent or 0
 			local indent = maxLineNumberSize - #tostring(noline)
+
+			if not USE_SIMPLE then
+				indent = indent + 1
+			end
+
+			local linestart = neutral(noline) .. (" "):rep(indent).. neutral(CODE_START)
+
+			if USE_SIMPLE then
+				linestart = ""
+			end
+
 			makeLine{
-				neutral(noline) .. (" "):rep(1+indent)
-				.. neutral(CODE_START)
-				.. content,
+				linestart .. content,
 				indent=SOURCE_CODE_INDENT+dindent,
 				crop=true
 			}
@@ -176,10 +212,23 @@ return function(plume)
 			indent = indent or 0
 
 			if infos.filename ~= lastfilename then
-				makeLine{"↳ " .. infos.filename, indent=SOURCE_FILENAME_INDENT+indent, crop="start", color=secondary}
+				local line
+				if USE_SIMPLE then
+					line = infos.filename .. ":" .. infos.sourceNoLine
+				else
+					line = START_ARROW_2 .. infos.filename
+				end
+
+				makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, crop="start", color=secondary}
 				lastfilename = infos.filename
 			else
-				makeLine{"↳ (same file)", indent=SOURCE_FILENAME_INDENT+indent, color=secondary}
+				local line
+				if USE_SIMPLE then
+					line = "(same file:" .. infos.sourceNoLine .. ")"
+				else
+					line = START_ARROW_2 .. "(same file)"
+				end
+				makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, color=secondary}
 			end
 
 			local lastNoLine
@@ -191,7 +240,14 @@ return function(plume)
 				local line = infos.lines[noLine]
 				local indicator
 				if noLine == infos.sourceNoLine then
-					indicator = (" "):rep(infos.sourceLinePosBegin-1) .. ("^"):rep(infos.sourceLen)
+					local startspace = ""
+
+					if USE_SIMPLE then
+						startspace = line:match('^%s*')
+						line = line:gsub('^%s*', '')
+					end
+
+					indicator = (" "):rep(infos.sourceLinePosBegin-1-#startspace) .. ("^"):rep(infos.sourceLen)
 					if #indicator >= MAX_WIDTH*3/4 then
 						delta     = #indicator - MAX_WIDTH*3/4
 						indicator = indicator:sub(delta, -1)
@@ -204,9 +260,11 @@ return function(plume)
 					end
 				end
 				
-				makeSourceLine{line, noLine, indent=indent}
-				if indicator then
-					makeSourceLine{indicator, "", indent=indent}
+				if noLine == infos.sourceNoLine or not USE_SIMPLE then
+					makeSourceLine{line, noLine, indent=indent}
+					if indicator then
+						makeSourceLine{indicator, "", indent=indent}
+					end
 				end
 
 				lastNoLine = noLine
@@ -270,19 +328,29 @@ return function(plume)
 
 		-- Header
 		if errorInfos.header then
-			table.insert(result, neutral(BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR))
-			makeLine{errorInfos.header,  indent=HEADER_INDENT, color=focus}
-			if errorInfos.message then
-				makeLine{"→ "..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
+			if not USE_SIMPLE then
+				table.insert(result, neutral(BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR))
 			end
-			table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+
+			if USE_SIMPLE and errorInfos.message then
+				makeLine{focus(errorInfos.header).." "..errorInfos.message:gsub('\n', ' '),  indent=HEADER_INDENT}
+			else
+				makeLine{errorInfos.header,  indent=HEADER_INDENT, color=focus}
+				if errorInfos.message then
+					makeLine{START_ARROW_1..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
+				end
+			end
+			
+			if not USE_SIMPLE then
+				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			end
 		end
 
 		-- Source File
 		if nodesInfos.source then
-			makeLine{""}
+			if not USE_SIMPLE then makeLine{""} end
 			makeSourceSnippet(nodesInfos.source, 0, true)
-			makeLine{""}
+			if not USE_SIMPLE then makeLine{""} end
 		end
 
 		-- Context
@@ -291,7 +359,7 @@ return function(plume)
 				if infos.sourceNoLine then
 					makeSourceSnippet(infos)
 					if i < #nodesInfos.context then
-						makeLine{""}
+						if not USE_SIMPLE then makeLine{""} end
 					end
 				end
 			end
@@ -299,15 +367,22 @@ return function(plume)
 
 		-- Traceback
 		if #nodesInfos.traceback > 0 then
-			table.insert(result, neutral(BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			if not USE_SIMPLE then
+				table.insert(result, neutral(BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			end
+
 			makeLine{TRACEBACK_HEADER, indent=HEADER_INDENT}
-			table.insert(result, neutral(BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			
+			if not USE_SIMPLE then
+				table.insert(result, neutral(BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			end
+
 			for i, infos in ipairs(nodesInfos.traceback) do
 				if infos.sourceNoLine then
 					makeSourceSnippet(infos)
 
 					if i < #nodesInfos.traceback then
-						makeLine{""}
+						if not USE_SIMPLE then makeLine{""} end
 					end
 				elseif infos.repeatedBlockBegin then
 					makeLine{string.format("! This block is repeated %s times:", infos.repeatedBlockBegin), indent=SOURCE_FILENAME_INDENT}
@@ -317,7 +392,7 @@ return function(plume)
 					makeLine{string.format("↳(previous block is repeated %s more times)", infos.repeated), indent=SOURCE_FILENAME_INDENT}
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 					if i < #nodesInfos.traceback then
-						makeLine{""}
+						if not USE_SIMPLE then makeLine{""} end
 					end
 				elseif infos.repeatedBlockEnd then
 					
@@ -325,26 +400,30 @@ return function(plume)
 					
 					if i < #nodesInfos.traceback then
 						makeLine{("~"):rep(MAX_WIDTH-4), indent=SOURCE_FILENAME_INDENT}
-						makeLine{""}
+						if not USE_SIMPLE then makeLine{""} end
 					end
 				end
 			end
 		end
 		
 		if nodesInfos.warnings.count > 0 then
-			if errorInfos.header then
-				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
-			else
-				table.insert(result, neutral(BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR))
+			if not USE_SIMPLE then
+				if errorInfos.header then
+					table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+				else
+					table.insert(result, neutral(BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR))
+				end
 			end
 
 			makeLine{string.format(focusless(" %s WARNING%s "), nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
 			makeLine{"  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. ",  indent=HEADER_INDENT, lineIndentDelta=2}
-			table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			if not USE_SIMPLE then
+				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
+			end
 
 			for i, warningInfos in ipairs(nodesInfos.warnings) do
 				makeLine{
-					string.format("" .. focusless("→ WARNING %i ") .. neutral(" (%i occurrence%s, issue%s %s)"),
+					string.format("" .. focusless(START_ARROW_1 .. "WARNING %i ") .. neutral(" (%i occurrence%s, issue%s %s)"),
 						i,
 						#warningInfos,
 						#warningInfos>1 and "s" or "",
@@ -357,27 +436,29 @@ return function(plume)
 				if warningInfos.help then
 					makeLine{"(i) " .. warningInfos.help:gsub('^%s*', ''),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
 				end
-				makeLine{""}
+				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do
 					makeSourceSnippet(infos, 2)
 
-					makeLine{""}
+					if not USE_SIMPLE then makeLine{""} end
 
 					if j > MAX_WARNINGS_NODES then
 						makeLine{string.format("↳... (%s more)", #warningInfos-j+1), indent=SOURCE_CODE_INDENT}
-						makeLine{""}
+						if not USE_SIMPLE then makeLine{""} end
 						break
 					end
 				end
 
 				if i<#plume.warning.cache then
-					makeLine{""}
+					if not USE_SIMPLE then makeLine{""} end
 				end
 			end
 		end
 
 		-- Border end
-		table.insert(result, neutral(BORDER_DL.. BORDER_H:rep(MAX_WIDTH) .. BORDER_DR))
+		if not USE_SIMPLE then
+			table.insert(result, neutral(BORDER_DL.. BORDER_H:rep(MAX_WIDTH) .. BORDER_DR))
+		end
 
 		return table.concat(result, "\n")
 	end
