@@ -20,7 +20,8 @@ local function normalizeOutput(s)
         s = tostring(s)
     end
     
-    local withNl = s:gsub("\r\n", "\n"):gsub("\r", "\n")
+    local noansiescape = s:gsub('\x1b%[.-m', '')
+    local withNl = noansiescape:gsub("\r\n", "\n"):gsub("\r", "\n")
     local trimmed = withNl:match("^%s*(.-)%s*$")
     
     return trimmed

@@ -14,6 +14,23 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function(plume)
+	local USE_COLOR = false
+
+	local function red(s)
+		if USE_COLOR then
+			return "\x1b[31m" .. s .. "\x1b[0m"
+		else
+			return s
+		end
+	end
+	local function grey(s)
+		if USE_COLOR then
+			return "\x1b[38;2;100;100;100m" .. s .. "\x1b[0m"
+		else
+			return s
+		end
+	end
+
 	function plume.error.formatError(errorInfos)
 		if not plume.warning.any and not errorInfos.message then
 			return
@@ -64,6 +81,7 @@ return function(plume)
 			local lineIndentDelta = args.lineIndentDelta or 0
 			local crop            = args.crop
 			local center          = args.center
+			local color           = args.color or function(x) return x end
 
 			local leftover
 			if content:match("\n") then
@@ -113,11 +131,11 @@ return function(plume)
 			end
 
 			table.insert(result,
-				BORDER_V
+				grey(BORDER_V)
 					.. (" "):rep(firstIndent)
-						.. content
+						.. color(content)
 					.. (" "):rep(lastIndent)
-				.. BORDER_V
+				.. grey(BORDER_V)
 			)
 
 			if leftover then
@@ -130,7 +148,7 @@ return function(plume)
 			local noline  = args[2]
 			local dindent  = args.indent or 0
 			local indent = maxLineNumberSize - #tostring(noline)
-			makeLine{noline .. (" "):rep(1+indent) .. CODE_START .. content, indent=SOURCE_CODE_INDENT+dindent, crop=true}
+			makeLine{noline .. (" "):rep(1+indent) .. CODE_START .. content, indent=SOURCE_CODE_INDENT+dindent, crop=true, color=args.color}
 		end
 		local lastfilename
 		local function makeSourceSnippet(infos, indent)
@@ -226,12 +244,12 @@ return function(plume)
 
 		-- Header
 		if errorInfos.header then
-			table.insert(result, BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR)
-			makeLine{errorInfos.header,  indent=HEADER_INDENT}
+			table.insert(result, grey(BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR))
+			makeLine{errorInfos.header,  indent=HEADER_INDENT, color=red}
 			if errorInfos.message then
 				makeLine{"→ "..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
 			end
-			table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
+			table.insert(result, grey(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 		end
 
 		-- Source File
@@ -255,9 +273,9 @@ return function(plume)
 
 		-- Traceback
 		if #nodesInfos.traceback > 0 then
-			table.insert(result, BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
+			table.insert(result, grey(BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			makeLine{TRACEBACK_HEADER, indent=HEADER_INDENT}
-			table.insert(result, BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
+			table.insert(result, grey(BORDER_L .. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			for i, infos in ipairs(nodesInfos.traceback) do
 				if infos.sourceNoLine then
 					makeSourceSnippet(infos)
@@ -289,9 +307,9 @@ return function(plume)
 		
 		if nodesInfos.warnings.count > 0 then
 			if errorInfos.header then
-				table.insert(result, BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R)
+				table.insert(result, grey(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			else
-				table.insert(result, BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR)
+				table.insert(result, grey(BORDER_UL .. BORDER_H:rep(MAX_WIDTH) .. BORDER_UR))
 			end
 
 			makeLine{string.format("%s WARNING%s", nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
@@ -333,7 +351,7 @@ return function(plume)
 		end
 
 		-- Border end
-		table.insert(result, BORDER_DL.. BORDER_H:rep(MAX_WIDTH) .. BORDER_DR)
+		table.insert(result, grey(BORDER_DL.. BORDER_H:rep(MAX_WIDTH) .. BORDER_DR))
 
 		return table.concat(result, "\n")
 	end
