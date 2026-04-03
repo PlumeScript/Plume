@@ -20,8 +20,7 @@ local function normalizeOutput(s)
         s = tostring(s)
     end
     
-    local noansiescape = s:gsub('\x1b%[.-m', '')
-    local withNl = noansiescape:gsub("\r\n", "\n"):gsub("\r", "\n")
+    local withNl = s:gsub("\r\n", "\n"):gsub("\r", "\n")
     local trimmed = withNl:match("^%s*(.-)%s*$")
     
     return trimmed
@@ -173,6 +172,8 @@ function lib.executeTests(allTests, plumeEngine)
 
                     plumeEngine.runDevFlag = mode==1
                     testData.opt = mode==2
+
+                    plumeEngine.config = {color="never", errorStyle="fancy"}
 
                     -- Set hook to run every 1,000,000 instructions
                     debug.sethook(timeout_hook, "", 1000000)

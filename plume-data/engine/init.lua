@@ -69,7 +69,14 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 	end
 end
 
-function plume.executeFile(filename, runtime, fileParams)
+function plume.executeFile(filename, runtime, fileParams, args)
+	-- Should be associated with a runtime
+	if args then
+		plume.config = plume.config or {}
+		plume.config.errorStyle = args.errorStyle
+		plume.config.color = args.color
+	end
+
 	filename = plume.normalizePath(filename)
 	local runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)

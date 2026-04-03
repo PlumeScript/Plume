@@ -14,41 +14,41 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function(plume)
-	local USE_COLOR  = true
-	local USE_SIMPLE = false
-
-	local function focus(s)
-		if USE_COLOR then
-			return "\x1b[31m" .. s .. "\x1b[0m"
-		else
-			return s
-		end
-	end
-	local function neutral(s)
-		if USE_COLOR then
-			return "\x1b[38;2;100;100;100m" .. s .. "\x1b[0m"
-		else
-			return s
-		end
-	end
-	local function secondary(s)
-		if USE_COLOR then
-			return "\x1b[34m" .. s .. "\x1b[0m"
-		else
-			return s
-		end
-	end
-	local function focusless(s)
-		if USE_COLOR then
-			return "\x1b[97;100m" .. s .. "\x1b[0m"
-		else
-			return s
-		end
-	end
-
 	function plume.error.formatError(errorInfos)
 		if not plume.warning.any and not errorInfos.message then
 			return
+		end
+
+		local USE_COLOR  = plume.config and (plume.config.color == "always")
+		local USE_SIMPLE = not (plume.config and (plume.config.errorStyle == "fancy"))
+
+		local function focus(s)
+			if USE_COLOR then
+				return "\x1b[31m" .. s .. "\x1b[0m"
+			else
+				return s
+			end
+		end
+		local function neutral(s)
+			if USE_COLOR then
+				return "\x1b[38;2;100;100;100m" .. s .. "\x1b[0m"
+			else
+				return s
+			end
+		end
+		local function secondary(s)
+			if USE_COLOR then
+				return "\x1b[34m" .. s .. "\x1b[0m"
+			else
+				return s
+			end
+		end
+		local function focusless(s)
+			if USE_COLOR then
+				return "\x1b[97;100m" .. s .. "\x1b[0m"
+			else
+				return s
+			end
 		end
 
 		local result = {}
