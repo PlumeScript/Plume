@@ -255,7 +255,10 @@ return function(plume)
 					end
 
 					if important then
-						line = focus(line)
+						local startpos = infos.sourceLinePosBegin-#startspace
+						local endpos   = infos.sourceLinePosBegin-1-#startspace+infos.sourceLen
+
+						line = line:sub(1, startpos-1) .. focus(line:sub(startpos, endpos)) .. line:sub(endpos+1, -1)
 						indicator = focus(indicator)
 					end
 				end
