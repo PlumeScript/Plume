@@ -19,6 +19,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 local plume = {}
+plume._VERSION = "b38 (Sparrow Edition)"
 
 require 'plume-data/engine/debug_tools'   (plume)
 require 'plume-data/engine/error/core'    (plume)
@@ -75,7 +76,7 @@ function plume.executeFile(filename, runtime, fileParams)
 
 	local f = io.open(filename)
 		if not f then
-			error("The file '" .. filename .. "' don't exist or isn't readable.")
+			return false, "Error: the file '" .. filename .. "' don't exist or isn't readable."
 		end
 
 		local code = f:read("*a")
