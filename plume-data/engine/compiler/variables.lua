@@ -326,6 +326,12 @@ return function (plume, context)
 	    					"Consider removing them.",
 	    					var.node, {381, 473}
 	    				)
+    				elseif var.isRef then
+    					plume.warning.throwWarning(
+	    					"Never used reference.",
+	    					"Consider removing `ref`.",
+	    					var.node, {381, 473}
+	    				)
     				else
 	    				plume.warning.throwWarning(
 	    					"Never used variables.",
