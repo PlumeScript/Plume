@@ -509,8 +509,6 @@ return function (plume)
         plume.ast.browse(ast, function (node)
             if node.error then
                 node.error(node)
-            elseif node.warning then
-                plume.warning.throwWarning(node.warning, node.warningHint, node, node.issues)
             end
 
             if node.name == "IDENTIFIER" then

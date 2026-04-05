@@ -18,6 +18,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node node The node to process
 	--- @return nil (Bytecode is directly added to chunk.instructions)
 	function context.nodeHandler(node)
+		context.checkForWarnings(node)
 		local handler = nodeHandlerTable[node.name]
 		if not handler then
 			error("NYI tokenhandler " .. node.name) -- Guard against typo errors in parser

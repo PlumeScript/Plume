@@ -95,4 +95,11 @@ return function (plume, context)
     		end
     	end
     end
+
+    -- Chekc for warnings emmited during parsing
+    function context.checkForWarnings(node)
+    	if node.warning then
+            plume.warning.throwWarning(node.warning, node.warningHint, node, node.issues)
+    	end
+    end
 end

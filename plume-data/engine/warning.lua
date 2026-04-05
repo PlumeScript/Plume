@@ -38,7 +38,7 @@ return function (plume)
 		plume.warning.any = true
 
 		if mode == "strict" then
-	    	plume.error.strictWarning (node, msg)
+	    	plume.error.strictWarningError (node, msg)
 	    end
 
 	    if not plume.warning.cache[msg] then
