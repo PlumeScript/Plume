@@ -71,17 +71,25 @@ return function (plume, context)
     end
 
     function context.checkCallWarning(node)
-    	local name  = plume.ast.get(node, "IDENTIFIER").content
+    	local name  = plume.ast.get(node, "IDENTIFIER")
     	local call  = plume.ast.get(node, "CALL")
     	local bcall = plume.ast.get(node, "BLOCK_CALL")
 
-    	if name == "Table" then
+    	if name and name.content == "Table" then
     		if call then
     			if #call.children >= 2 then
     				plume.warning.throwWarning(
     					"Using the macro `$Table` for create a new table, but a shorter alternative exists for any table with at least 2 elements.",
     					string.format("Consider writing `%s`.", getCode(call)),
     					node, {381, 607}
+    				)
+    			end
+    		elseif bcall then
+    			if not plume.ast.get(node, "LIST_ITEM") then
+    				plume.warning.throwWarning(
+    					"Using the macro `@Table` for create a new table block, but a shorter alternative exists.",
+    					"Consider writing `do ... end` instead of `@Table ... end`.",
+    					node, {381, 608}
     				)
     			end
     		end
