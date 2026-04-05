@@ -27,6 +27,14 @@ return function (plume)
             end
         },
 
+        help = {
+            checkArgs = { checkTypes = {"macro"}, signature = "macro m", args = 1},
+            method = function(args)
+                print("macro " .. (args.table[1].debugMacroName or args.table[1].name) .. "\n    " .. args.table[1].doc:gsub('\n', '\n    ') or "")
+                return true
+            end
+        },
+
         -- io
         write = {
             checkArgs = {checkTypes={"string"}, minArgs=1, maxArgs=math.huge, signature="string path, ...content"},

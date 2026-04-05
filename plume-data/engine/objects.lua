@@ -80,6 +80,10 @@ return function(plume)
 			pathTable.table[i] = path
 		end
 		result.table.path = pathTable
+		for _, key in ipairs(plume.std.plume.keys) do
+			table.insert(result.keys, key)
+			result.table[key] = plume.std.plume.table[key]
+		end
 
 		return result
 	end

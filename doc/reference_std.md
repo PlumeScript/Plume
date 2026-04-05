@@ -9,6 +9,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `tostring(x)`: Converts the value `x` to its string representation.
 *   `len(table)`: Returns the number of items in a table.
 *   `repr(x)`: Give a string representation of any object.
+*   `help(x)`: A shortcut for `print(plume.doc(x))`
 
 ### Table Manipulation
 
@@ -142,3 +143,6 @@ The automatic type conversion between Plume and Lua is currently considered **un
 *   **Functionality**: Mapping between Plume macros and Lua functions.
 
 As a result, some features or data transfers may be entirely non-functional or unusable in the current version.
+
+### Others
+*   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
