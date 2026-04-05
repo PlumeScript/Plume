@@ -21,6 +21,9 @@ return function (plume, context, nodeHandlerTable)
 		local uid = context.getUID()
 
 		local doc = context.collectComments(node)
+		if doc == "" then
+			plume.warning.throwWarning("Macro without documentation.", nil, node, {381, 454})
+		end
 
 		-- If the macro is named, save them in the local scope
 		-- `macro wing()` is a sugar for `let wing = macro()`
