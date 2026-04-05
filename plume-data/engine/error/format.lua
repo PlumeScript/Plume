@@ -51,6 +51,12 @@ return function(plume)
 			end
 		end
 
+		local function formatText(s)
+			return s
+				:gsub('`(.-)`', '\x1b[38;2;100;100;100m`\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m`\x1b[0m')
+				:gsub('\'(.-)\'', '\x1b[38;2;100;100;100m\'\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m\'\x1b[0m')
+		end
+
 		local result = {}
 		local maxLineNumberSize = 0
 
@@ -340,7 +346,7 @@ return function(plume)
 			else
 				makeLine{focus(errorInfos.header),  indent=HEADER_INDENT, color=focus}
 				if errorInfos.message then
-					makeLine{START_ARROW_1..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
+					makeLine{START_ARROW_1..formatText(errorInfos.message), indent=HEADER_INDENT, lineIndentDelta=2}
 				end
 			end
 			
@@ -435,9 +441,9 @@ return function(plume)
 					),
 					indent=HEADER_INDENT
 				}
-				makeLine{"! "..warningInfos.message,  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
+				makeLine{focus("! ")..formatText(warningInfos.message),  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
 				if warningInfos.help then
-					makeLine{"(i) " .. warningInfos.help:gsub('^%s*', ''),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
+					makeLine{focus("(i) ") .. formatText(warningInfos.help:gsub('^%s*', '')),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
 				end
 				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do
