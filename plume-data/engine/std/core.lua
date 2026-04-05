@@ -16,62 +16,11 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume)
     require 'plume-data/engine/std/utils' (plume)
 
-    -----------------------
-    -- WILL BE MOVED IN 1.0
-    -----------------------
-    plume.temp = {}
-    plume.temp.append = {
-        method = function  (t, value)
-            table.insert(t.table, value)
-            table.insert(t.keys, #t.table)
-            return true
-        end
-    }
-    plume.temp.remove = {
-        method = function  (t, index, options)
-            if not options then
-                index = nil
-            end
-
-            t.keys[#t.table] = nil
-
-            return true, table.remove(t.table, index)
-        end
-    }
-    plume.temp.join = {
-        method = function  (...)
-            local args = {...}
-
-            local options = table.remove(args)
-            local sep = options.table.sep
-            if sep == plume.obj.empty then
-                sep = ""
-            end
-
-            if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
-                return false, plume.error.joinErrorHint()
-            end
-
-            for i, value in ipairs(args) do
-                if type(value) ~= "number" and type(value) ~= "string" then
-                    return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
-                end
-            end
-
-            return pcall(table.concat, args, sep)
-        end
-    }
-    -----------------------
-
     plume.std = {}
-    require 'plume-data/engine/std/plume' (plume)
-    require 'plume-data/engine/std/lua'   (plume)
-    
-    
-    require 'plume-data/engine/std/vm' (plume)
-    
-
-    require 'plume-data/engine/std/table' (plume)
+    require 'plume-data/engine/std/plume'  (plume)
+    require 'plume-data/engine/std/lua'    (plume)
+    require 'plume-data/engine/std/vm'     (plume)
+    require 'plume-data/engine/std/table'  (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
 
