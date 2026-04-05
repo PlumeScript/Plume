@@ -931,6 +931,7 @@ use mylib
     *   **Options**
         *   `mode: strict`: the first warning encountered raises an error
         *   `mode: ignore`: does not display warnings
+        *   `scope: global`: show warning raised in other files
         *   `issues: n1 n2 n3`: applies the directive only to warnings related to issue `n1`, `n2` or `n3`
     *   **Exemples**
         *   `use #warning(mode: ignore)` suppresses all warnings

@@ -97,8 +97,8 @@ return function(plume)
 		plume.warning.cache = {}
 		plume.warning.any = false
 		plume.warning.mode = {
-			default="normal",
-			["381"]="ignore" -- helper warnings
+			default={global="normal"},
+			["381"]={global="ignore"} -- helper warnings
 		}
 		plume.currentUseProcessing = {}
 		-----------------------------------------
