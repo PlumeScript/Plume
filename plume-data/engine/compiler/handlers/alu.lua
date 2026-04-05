@@ -50,6 +50,8 @@ return function (plume, context, nodeHandlerTable)
 
 			-- `$wing(arg1, arg2)`
 			if child.name == "CALL" then
+				context.checkCallWarning(node)
+
 				context.accBlockDeep = context.accBlockDeep + 1
 				context.accTableInit(node)
 				context.checkArgsOrder(child)
@@ -57,6 +59,8 @@ return function (plume, context, nodeHandlerTable)
 			
 			-- `@wing ... end`
 			elseif child.name == "BLOCK_CALL" then
+				context.checkCallWarning(node)
+				
 				context.accBlockDeep = context.accBlockDeep + 1
 				context.accTableInit(node)
 				context.nodeHandler(child) -- = nodeHandlerTable.BLOCK_CALL(child)
