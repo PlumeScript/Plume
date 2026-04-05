@@ -87,6 +87,7 @@ return function(plume)
 		require 'plume-data/engine/compiler/wrappers'  (plume, context)
 		require 'plume-data/engine/compiler/utils'     (plume, context)
 		require 'plume-data/engine/compiler/variables' (plume, context)
+		require 'plume-data/engine/compiler/warnings'  (plume, context, context.nodeHandlerTable)
 
 		context.nodeHandlerTable = {}
 		require 'plume-data/engine/compiler/handlers/core'       (plume, context, context.nodeHandlerTable)
@@ -100,6 +101,7 @@ return function(plume)
 		require 'plume-data/engine/compiler/handlers/scopes'     (plume, context, context.nodeHandlerTable)
 		require 'plume-data/engine/compiler/handlers/table'      (plume, context, context.nodeHandlerTable)
 		require 'plume-data/engine/compiler/handlers/variables'  (plume, context, context.nodeHandlerTable)
+
 
 		return context
 	end

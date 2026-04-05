@@ -22,7 +22,7 @@ return function (plume, context, nodeHandlerTable)
 
 		local doc = context.collectComments(node)
 		if doc == "" then
-			plume.warning.throwWarning("Macro without documentation.", nil, node, {381, 454})
+			context.macroWithoutDocWarning(node)
 		end
 
 		-- If the macro is named, save them in the local scope
