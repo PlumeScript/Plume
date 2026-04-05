@@ -48,6 +48,7 @@ return function(plume)
 			namedParamOffset     = {},
 			parent               = parent,
 			isFile               = parent.type == "runtime",
+			doc                  = "",
 			upvalues             = {} -- Variables that should be captured
 			-- offset = offset -- Offset is set by the linker
 		}

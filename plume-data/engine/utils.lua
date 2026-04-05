@@ -154,6 +154,8 @@ return function (plume)
 			node.type = "EMPTY"
 		end
 
+		local nulldelta = 0
+
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
 			local childType = plume.ast.markType(child)
@@ -164,9 +166,11 @@ return function (plume)
 			    	node.name ~= "EVAL"
 					and node.name ~= "LIST_ITEM"
 					and node.name ~= "BODY"
-			)
+			) or child.name == "NULL" or child.name == "LINESTART"
 			
-			if not avoid then
+			if avoid then
+				nulldelta = nulldelta + 1
+			else
 				if child.name == "BODY" and node.name == "WITH" then
 					node.type = child.type
 				elseif node.type == "EMPTY" then
@@ -186,7 +190,7 @@ return function (plume)
 				elseif node.type == "TEXT" and childType == "VALUE" then
 					node.type = "TEXT"
 				elseif childType ~= "EMPTY" and node.type ~= childType then
-					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==1 then
+					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
 						plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
 					else
 						plume.error.mixedBlock(child, node.type, childType)
