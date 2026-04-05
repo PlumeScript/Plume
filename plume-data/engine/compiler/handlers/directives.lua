@@ -84,7 +84,11 @@ return function (plume, context, nodeHandlerTable)
 	local directivesHandler
 	directivesHandler = {
 		warning = {
-			checkArgs = {"mode", "issues", "scope"},
+			checkArgs = {
+				mode   = {"normal", "ignore", "strict"},
+				scope  = {"local", "global"},
+				issues = "*"
+			},
 			method = function (node, args)
 				local mode  = args.mode  or "normal"
 				local scope = args.scope or "local"
@@ -112,7 +116,10 @@ return function (plume, context, nodeHandlerTable)
 		},
 
 		devWarnings = {
-			checkArgs = {"mode", "scope"},
+			checkArgs = {
+				mode  = {"normal", "ignore", "strict"},
+				scope = {"local", "global"}
+			},
 			method = function(node, args)
 				args.issues = "381"
 				args.mode = args.mode or "normal"
@@ -134,8 +141,12 @@ return function (plume, context, nodeHandlerTable)
 
 	for _, handler in pairs(directivesHandler) do
 		if handler.checkArgs then
-			for _, arg in ipairs(handler.checkArgs) do
-				handler.checkArgs[arg] = true
+			for name, values in pairs(handler.checkArgs) do
+				if type(values) == "table" then
+					for _, value in ipairs(values) do
+						handler.checkArgs[name][value] = true
+					end
+				end
 			end
 		end
 	end
@@ -155,13 +166,17 @@ return function (plume, context, nodeHandlerTable)
 			local valueNode = plume.ast.get(option, "VALUE")
 			local key = keyNode and keyNode.content
 
+			local value = getRawValue(valueNode)
+
 			if handler.checkArgs then
 				if not handler.checkArgs[key] then
 					plume.error.wrongDirectiveArgs(node, directiveName, key, handler.checkArgs)
+				elseif (handler.checkArgs[key] ~= "*" and not handler.checkArgs[key][value]) then
+					plume.error.wrongDirectiveArgsValue(node, directiveName, key, handler.checkArgs, value)
 				end
 			end
 
-			local value = getRawValue(valueNode)
+			
 			if key then
 				options[key] = value
 			else

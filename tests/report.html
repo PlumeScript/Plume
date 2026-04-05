@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">532 passed out of 532 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">534 passed out of 534 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -4140,9 +4140,9 @@ $Wing()
 <h4>Bytecode</h4>
 <pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; #context(locale: fr)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; #context(locale: fr)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; #context(locale: fr)</span>
 <span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">007</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
@@ -4227,9 +4227,9 @@ Voici un nombre: $(6543.56)
 <pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; #context(locale: fr)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; #context(locale: fr)</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; #context(locale: fr)</span>
 <span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Voici un nombre: </span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 6543.56</span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (6543.56)</span>
@@ -5613,7 +5613,7 @@ macro double
 </code></pre>
 </div>
 </details>
-<h2>errors: <span style="font-weight: normal;">30 passed out of 30 tests</span></h2>
+<h2>errors: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -6916,6 +6916,74 @@ set x = Wings
 │  ↳ test.plume                                                                  │
 │    1 │set x = Wings                                                            │
 │      │^^^^^^^^^^^^^                                                            │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use #warning bad arg name <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use #warning(explosion: 5)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Unknown arg &#39;explosion&#39; for directive &#39;#warning&#39;.                            │
+│   Usage: `use #warning(issues: &lt;value&gt;, mode: &lt;value&gt;, scope: &lt;value&gt;)`        │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │use #warning(explosion: 5)                                               │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^                                               │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> use #warning bad arg value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+use #warning(scope: whole universe)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Unknown value &#39;whole universe&#39; for arg &#39;scope&#39; of directive &#39;#warning&#39;.      │
+│   Usage: `use #warning(issues: &lt;value&gt;, mode: &lt;value&gt;, scope: local|global)`   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │use #warning(scope: whole universe)                                      │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -23776,9 +23844,9 @@ end
 <pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; #context(locale: fr)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; #context(locale: fr)</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; #context(locale: fr)</span>
 <span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; wing</span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 2</span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; lua.math.random()</span>
