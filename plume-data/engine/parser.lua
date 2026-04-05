@@ -432,6 +432,18 @@ return function (plume)
         local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
         local with = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
 
+        -- Warning
+        local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") / function(x)
+            x.warning = "This is plain text, not an assignement."
+            if x.content:match('[%+%-%*%/]') then
+                x.warningHint = string.format("Do you mean `set %s ...` ?", x.content)
+            else
+                x.warningHint = string.format("Do you mean `let %s ...` or `set %s ...` ?", x.content)
+            end
+            x.issues = {381, 26}
+            return x
+        end
+
         ----------
         -- main --
         ----------
@@ -460,7 +472,7 @@ return function (plume)
 
             command = V"commandStd" + V"commandLB",
 
-            text =   (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
+            text   = fakeAffectation ^-1 * (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^0,
             textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
             textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
             textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
