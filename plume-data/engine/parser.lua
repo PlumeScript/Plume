@@ -14,6 +14,8 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
+    local warningBuffer
+
     local function buildGrammar()
         local lpeg = require "lpeg"
 
@@ -69,14 +71,15 @@ return function (plume)
             end
         end
 
-        local function W(warning, issues)
-            return Cp() * P(0) * Cp() / function (bpos, epos)
+        local function W(pattern, warning, warningHint, issues)
+            return Cp() * pattern * Cp() / function (bpos, epos)
                 return {
                     name = "NULL",
                     issues = issues,
                     bpos = bpos,
                     epos  = epos-1,
-                    warning = warning
+                    warning = warning,
+                    warningHint = warningHint
                 }
             end
         end
@@ -89,6 +92,18 @@ return function (plume)
                 	epos=epos-1,
                 	children=children
                 }
+            end
+        end
+
+        local function bindWarning(a, b)
+            if b then
+                b.warning = a.warning
+                b.warningHint = a.warningHint
+                b.issues  = a.issues
+                b.bpos    = a.bpos
+                return b
+            else
+                return a
             end
         end
 
@@ -261,6 +276,12 @@ return function (plume)
                 end
             end
 
+            local safeidn = W(
+                P"$",
+                "Unnecessary `$` prefix inside eval mode `$(...)`.",
+                "Everything inside is already evaluated. Extra `$` is allowed for convenience, though not required.",
+                {547}
+            )^-1 * idn / bindWarning
 
             -- Eval & index
             local posarg  = Ct("LIST_ITEM", V"_layer1")
@@ -273,10 +294,10 @@ return function (plume)
             local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (os * P"," * os * arg)^1 + optnarg) * P")")
 
             local evalOpperator = arglist + index + directindex
-        	local primary = num + idn + quote + inlinetable + P"(" * V"_layer1" * P")"
+        	local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
             local access = Ct("EVAL", primary * evalOpperator^1)
 
-            local terminal = num + access + idn + quote
+            local terminal = num + access + safeidn + quote
             rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
 
             return rules
@@ -489,7 +510,7 @@ return function (plume)
             if node.error then
                 node.error(node)
             elseif node.warning then
-                plume.warning.throwWarning(node.warning, nil, node, node.issues)
+                plume.warning.throwWarning(node.warning, node.warningHint, node, node.issues)
             end
 
             if node.name == "IDENTIFIER" then
