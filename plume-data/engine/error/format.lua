@@ -441,7 +441,7 @@ return function(plume)
 				end
 				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do
-					makeSourceSnippet(infos, 2)
+					makeSourceSnippet(infos, 2, true)
 
 					if not USE_SIMPLE then makeLine{""} end
 
