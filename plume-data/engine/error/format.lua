@@ -429,7 +429,7 @@ return function(plume)
 			end
 
 			makeLine{string.format(focusless(" %s WARNING%s "), nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
-			makeLine{"  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. ",  indent=HEADER_INDENT, lineIndentDelta=2}
+			makeLine{formatText("  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. "),  indent=HEADER_INDENT, lineIndentDelta=2}
 			if not USE_SIMPLE then
 				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			end
