@@ -48,6 +48,7 @@ return function(plume)
 			namedParamOffset     = {},
 			parent               = parent,
 			isFile               = parent.type == "runtime",
+			doc                  = "",
 			upvalues             = {} -- Variables that should be captured
 			-- offset = offset -- Offset is set by the linker
 		}
@@ -79,6 +80,10 @@ return function(plume)
 			pathTable.table[i] = path
 		end
 		result.table.path = pathTable
+		for _, key in ipairs(plume.std.plume.keys) do
+			table.insert(result.keys, key)
+			result.table[key] = plume.std.plume.table[key]
+		end
 
 		return result
 	end
@@ -92,8 +97,8 @@ return function(plume)
 		plume.warning.cache = {}
 		plume.warning.any = false
 		plume.warning.mode = {
-			default="normal",
-			["381"]="ignore" -- helper warnings
+			default={global="normal"},
+			["381"]={global="ignore"} -- helper warnings
 		}
 		plume.currentUseProcessing = {}
 		-----------------------------------------

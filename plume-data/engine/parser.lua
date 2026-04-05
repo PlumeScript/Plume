@@ -146,7 +146,7 @@ return function (plume)
 
         local s  = S" \t"^1
         local os = S" \t"^0
-        local lt = (os * S"\n")^1 * os -- linestart
+        local lt =  C("LINESTART", (os * S"\n")^1 * os) -- linestart
         local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
         -- strict identifier
         local idns = C("IDENTIFIER", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0)
@@ -342,7 +342,7 @@ return function (plume)
         local blockStart = Ct("EVAL", P"@" * blockName * os
         					* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
         				)
-        local block = blockStart * C("NULL", _end)
+        local block = blockStart * Ct("NULL", _end)
         local leave     = C("LEAVE", K"leave")
 
         -- affectations
@@ -445,9 +445,9 @@ return function (plume)
             textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
             textic = (escaped + eval + C("TEXT", P"$") + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
 
-            comment  = os *C("COMMENT",
-                  P"//" * NOT(S"\n")^0
-                + P"/*" * (-P"*/" * P(1))^0 * P"*/"
+            comment  = os * (
+                  P"//" * os * C("COMMENT", NOT(S"\n")^0)
+                + P"/*" * os * C("COMMENT", (P(1) - P("*/"))^0)  * C("NULL", P"*/")
             ),
             rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*"))^1),
             rawtextns = C("TEXT", NOT(S"$\n\\"   + P"//" + P"/*" + s)^1),

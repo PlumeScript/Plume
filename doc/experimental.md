@@ -1,5 +1,8 @@
 *	**Contextual variables**
-*	*Experimental thead*: #571
+*	*Experimental thread*: #571
 
 *   **Macro call argument order**
-*	*Experimental thead*: #604
+*	*Experimental thread*: #604
+
+*	**Type validation**
+*	*Experimental thread*: #56

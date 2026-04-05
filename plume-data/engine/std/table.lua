@@ -16,9 +16,63 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume)
 	local Table = plume.obj.table (0, 10)
     Table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join", "deepcopy"}
-    Table.table.remove = plume.temp.remove
-    Table.table.append = plume.temp.append
-    Table.table.join   = plume.temp.join
+    Table.table.remove = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t[, string|number index]",
+            named={self=true},
+            minArgs=1,
+            maxArgs=2
+        },
+        method = function  (t, index)
+            --`Table` automatically passes all of the macro's arguments as its second argument
+            index = (type(index) == "number" and index) or #t.table
+
+            for key, value in ipairs(t.keys) do
+                if value == index then
+                    table.remove(t.keys, key)
+                end
+            end
+
+            return true, table.remove(t.table, index)
+        end
+    }
+    Table.table.append = {
+        checkArgs = {
+            checkTypes = {"table"},
+            signature = "table t, any x",
+            named={self=true},
+            args=2
+        },
+        method = function  (t, value)
+            table.insert(t.table, value)
+            table.insert(t.keys, #t.table)
+            return true
+        end
+    }
+    Table.table.join   = {
+        method = function  (...)
+            local args = {...}
+
+            local options = table.remove(args)
+            local sep = options.table.sep
+            if sep == plume.obj.empty then
+                sep = ""
+            end
+
+            if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
+                return false, plume.error.joinErrorHint()
+            end
+
+            for i, value in ipairs(args) do
+                if type(value) ~= "number" and type(value) ~= "string" then
+                    return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
+                end
+            end
+
+            return pcall(table.concat, args, sep)
+        end
+    }
     Table.table.removeKey = {
         checkArgs = {
             checkTypes = {"table"},

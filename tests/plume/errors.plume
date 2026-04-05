@@ -549,3 +549,35 @@ $x.wing
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test use #warning bad arg name
+use #warning(explosion: 5)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Unknown arg 'explosion' for directive '#warning'.                            │
+│   Usage: `use #warning(issues: <value>, mode: <value>, scope: <value>)`        │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │use #warning(explosion: 5)                                               │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^                                               │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test use #warning bad arg value
+use #warning(scope: whole universe)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Unknown value 'whole universe' for arg 'scope' of directive '#warning'.      │
+│   Usage: `use #warning(issues: <value>, mode: <value>, scope: local|global)`   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │use #warning(scope: whole universe)                                      │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

@@ -38,8 +38,45 @@ return function(plume)
 		return string.format("Error: cannot open '%s'.\nPaths tried:\n\t%s", path, table.concat(searchPaths, '\n\t'))
 	end
 
-	function plume.error.wrongDirectiveArgs(node, directiveName, argName, signature)
-		message = string.format("Unknown arg '%s' for directive '#%s'.\nUsage: #%s(%s%s)", argName, directiveName, directiveName, table.concat(signature, ":<value>, "), #signature>0 and ":<value>" or "")
+	local function makeDirectiveSignature(directiveName, checkArgs, showAcceptedValues)
+		local result = {"use #", directiveName, "("}
+		local keys = {}
+		for key, _ in pairs(checkArgs) do
+			table.insert(keys, key)
+		end
+		table.sort(keys)
+		for i, key in ipairs(keys) do
+			table.insert(result, key)
+			table.insert(result, ': ')
+
+			local values = checkArgs[key]
+			if type(values) == "table" and showAcceptedValues==key then
+				table.insert(result, table.concat(values, "|"))
+			else
+				table.insert(result, '<value>')
+			end
+			if i<#keys then
+				table.insert(result, ", ")
+			end
+		end
+
+		table.insert(result, ")")
+		return table.concat(result)
+	end
+
+	function plume.error.wrongDirectiveArgs(node, directiveName, argName, checkArgs)
+		message = string.format("Unknown arg '%s' for directive '#%s'.\nUsage: `%s`",
+			argName, directiveName,
+			makeDirectiveSignature(directiveName, checkArgs)
+		)
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.wrongDirectiveArgsValue(node, directiveName, argName, checkArgs, value)
+		message = string.format("Unknown value '%s' for arg '%s' of directive '#%s'.\nUsage: `%s`",
+			value, argName, directiveName,
+			makeDirectiveSignature(directiveName, checkArgs, argName)
+		)
 		plume.error.throwCompilationError(node, message)
 	end
 

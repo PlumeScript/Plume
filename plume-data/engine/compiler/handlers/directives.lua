@@ -84,9 +84,14 @@ return function (plume, context, nodeHandlerTable)
 	local directivesHandler
 	directivesHandler = {
 		warning = {
-			checkArgs = {"mode", "issues"},
-			method = function (args)
-				local mode = args.mode or "normal"
+			checkArgs = {
+				mode   = {"normal", "ignore", "strict"},
+				scope  = {"local", "global"},
+				issues = "*"
+			},
+			method = function (node, args)
+				local mode  = args.mode  or "normal"
+				local scope = args.scope or "local"
 				local filters = {}
 	
 				if args.issues then
@@ -94,28 +99,36 @@ return function (plume, context, nodeHandlerTable)
 						table.insert(filters, issue)
 					end
 				end
-	
+
+				if scope ~= "global" then
+					scope = node.filename
+				end
+
 				if #filters == 0 then
 					plume.warning.mode.default = mode
 				else
 					for _, x in ipairs(filters) do
-						plume.warning.mode[x] = mode
+						plume.warning.mode[x] = plume.warning.mode[x] or {}
+						plume.warning.mode[x][scope] = mode
 					end
 				end
 			end
 		},
 
 		devWarnings = {
-			checkArgs = {"mode"},
-			method = function(args)
+			checkArgs = {
+				mode  = {"normal", "ignore", "strict"},
+				scope = {"local", "global"}
+			},
+			method = function(node, args)
 				args.issues = "381"
 				args.mode = args.mode or "normal"
-				directivesHandler.warning.method(args)
+				directivesHandler.warning.method(node, args)
 			end
 		},
 
 		context = {
-			method = function(args)
+			method = function(node, args)
 				for name, value in pairs(args) do
 					context.contextVariableToClose = context.contextVariableToClose + 1
 					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
@@ -128,8 +141,12 @@ return function (plume, context, nodeHandlerTable)
 
 	for _, handler in pairs(directivesHandler) do
 		if handler.checkArgs then
-			for _, arg in ipairs(handler.checkArgs) do
-				handler.checkArgs[arg] = true
+			for name, values in pairs(handler.checkArgs) do
+				if type(values) == "table" then
+					for _, value in ipairs(values) do
+						handler.checkArgs[name][value] = true
+					end
+				end
 			end
 		end
 	end
@@ -149,13 +166,17 @@ return function (plume, context, nodeHandlerTable)
 			local valueNode = plume.ast.get(option, "VALUE")
 			local key = keyNode and keyNode.content
 
+			local value = getRawValue(valueNode)
+
 			if handler.checkArgs then
 				if not handler.checkArgs[key] then
 					plume.error.wrongDirectiveArgs(node, directiveName, key, handler.checkArgs)
+				elseif (handler.checkArgs[key] ~= "*" and not handler.checkArgs[key][value]) then
+					plume.error.wrongDirectiveArgsValue(node, directiveName, key, handler.checkArgs, value)
 				end
 			end
 
-			local value = getRawValue(valueNode)
+			
 			if key then
 				options[key] = value
 			else
@@ -163,6 +184,6 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end
 		
-		handler.method(options)
+		handler.method(node, options)
 	end
 end

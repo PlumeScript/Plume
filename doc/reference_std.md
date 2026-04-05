@@ -9,6 +9,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `tostring(x)`: Converts the value `x` to its string representation.
 *   `len(table)`: Returns the number of items in a table.
 *   `repr(x)`: Give a string representation of any object.
+*   `help(x)`: A shortcut for `print(plume.doc(x))`
 
 ### Table Manipulation
 
@@ -107,9 +108,8 @@ The `import` statement follows a specific lookup order to locate files:
 3.  **File Patterns:** For any given directory, Plume looks for `[path].plume` and `[path]/init.plume`
 
 **Environment and Path Management:**
-*   The initial `plume_path` is populated from the `PLUME_PATH` environment variable (paths are separated by commas).
-*   `setPlumePath(path)`: Replaces the current `plume_path` with a new value.
-*   `addToPlumePath(path)`: Appends a new directory to the existing `plume_path`.
+*   The initial `plume.path` is populated from the `PLUME_PATH` environment variable (paths are separated by commas).
+*   You can add, remove or replace by editing the `plume.path` table.
 
 #### Module Lifecycle and Performance
 Plume balances performance and safety through its loading strategy:
@@ -142,3 +142,6 @@ The automatic type conversion between Plume and Lua is currently considered **un
 *   **Functionality**: Mapping between Plume macros and Lua functions.
 
 As a result, some features or data transfers may be entirely non-functional or unusable in the current version.
+
+### Others
+*   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.

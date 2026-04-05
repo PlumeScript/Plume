@@ -38,4 +38,7 @@ return function (plume, context, nodeHandlerTable)
 
 	nodeHandlerTable.NULL = function(node)
 	end
+
+	nodeHandlerTable.LINESTART = function(node)
+	end
 end

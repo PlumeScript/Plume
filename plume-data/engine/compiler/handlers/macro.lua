@@ -20,6 +20,8 @@ return function (plume, context, nodeHandlerTable)
 		local paramList       = plume.ast.get(node, "PARAMLIST") or {children={}}
 		local uid = context.getUID()
 
+		local doc = context.collectComments(node)
+
 		-- If the macro is named, save them in the local scope
 		-- `macro wing()` is a sugar for `let wing = macro()`
 		local macroName = macroIdentifier and macroIdentifier.content
@@ -46,6 +48,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.uid = uid
 		macroObj.upvalueMap = {}
 		macroObj.node = node
+		macroObj.doc  = doc
 		table.insert(context.macros, macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)

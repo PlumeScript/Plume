@@ -35,10 +35,12 @@ return function (plume)
 				and (not signature.checkTypes or not signature.checkTypes[key]) then
 					return false, plume.error.unknownParameterStd(key, name, signature.signature)
 				end
-
 				local exectedType = signature.checkTypes and signature.checkTypes[key]
 				if exectedType then
 					local t = type(value)
+					if t == "table" then
+						t = value.type or "table"
+					end
 					if exectedType == "string" and t == "number" then
 						t = "string"
 						args.table[key] = tostring(value)

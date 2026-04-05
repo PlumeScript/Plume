@@ -1,0 +1,38 @@
+/// Test simple doc
+// double the number
+macro double(x)
+	$(2*x)
+end
+$(plume.doc(double))
+/// Output
+macro double
+    double the number
+/// End
+
+/// Test multiple line
+// double the number
+// @param x number the number to double
+macro double(x)
+	$(2*x)
+end
+$(plume.doc(double))
+/// Output
+macro double
+    double the number
+    @param x number the number to double
+/// End
+
+/// Test blank line
+// This is a test file
+
+// double the number
+// @param x number the number to double
+macro double(x)
+	$(2*x)
+end
+$(plume.doc(double))
+/// Output
+macro double
+    double the number
+    @param x number the number to double
+/// End

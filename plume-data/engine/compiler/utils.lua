@@ -118,4 +118,29 @@ return function (plume, context)
     		end
     	end
     end
+
+    --- Collects comments that appear before the given node within its parent's children list.
+	--- Iterates through all sibling nodes preceding the target node and gathers COMMENT tokens, ignoring those separated by a significant newline (anything other than LINESTART).
+	--- @param node node to get adjacent comments
+	--- @return string Concatenated comment strings separated by newlines (`\n`).
+	function context.collectComments(node)
+    	local parent = node.parent
+    	if not parent then
+    		return ""
+    	end
+
+    	local result = {}
+    	local currentpos = 1
+    	while currentpos<#parent.children and parent.children[currentpos] ~= node do
+    		local child = parent.children[currentpos]
+    		if child.name == "COMMENT" then
+    			table.insert(result, child.content)
+    		elseif child.name ~= "LINESTART" or child.content:match('\n.-\n') then
+    			result = {}
+    		end
+    		currentpos = currentpos + 1
+    	end
+
+    	return table.concat(result, "\n")
+    end
 end
