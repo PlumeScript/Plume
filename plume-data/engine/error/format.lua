@@ -52,9 +52,13 @@ return function(plume)
 		end
 
 		local function formatText(s)
-			return s
-				:gsub('`(.-)`', '\x1b[38;2;100;100;100m`\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m`\x1b[0m')
-				:gsub('\'(.-)\'', '\x1b[38;2;100;100;100m\'\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m\'\x1b[0m')
+			if USE_COLOR then
+				return s
+					:gsub('`(.-)`', '\x1b[38;2;100;100;100m`\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m`\x1b[0m')
+					:gsub('\'(.-)\'', '\x1b[38;2;100;100;100m\'\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m\'\x1b[0m')
+			else
+				return s
+			end
 		end
 
 		local result = {}
