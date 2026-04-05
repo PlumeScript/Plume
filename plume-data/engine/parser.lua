@@ -438,7 +438,7 @@ return function (plume)
             if x.content:match('[%+%-%*%/]') then
                 x.warningHint = string.format("Do you mean `set %s ...` ?", x.content)
             else
-                x.warningHint = string.format("Do you mean `let %s ...` or `set %s ...` ?", x.content)
+                x.warningHint = string.format("Do you mean `let %s ...` or `set %s ...` ?", x.content, x.content)
             end
             x.issues = {381, 26}
             return x
@@ -456,7 +456,7 @@ return function (plume)
                                 * (
                                       V"command"
                                     + Ct("RUN", K"run" * s * V"firstStatement")
-                                    + V"invalid"^-1 * V"text"
+                                    + V"invalid"^-1 * (fakeAffectation^-1 * V"text" + fakeAffectation)
                                 ),
             firstStatementNLB = os * (-V"statementTerminator")
                                 * (
@@ -472,7 +472,7 @@ return function (plume)
 
             command = V"commandStd" + V"commandLB",
 
-            text   = fakeAffectation ^-1 * (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^0,
+            text   = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
             textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
             textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
