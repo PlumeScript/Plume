@@ -355,5 +355,21 @@ return function (plume)
 		end
 	}
 
+	String.table.sub = {
+		checkArgs = {
+			checkTypes = {"string", "number", "number"},
+			signature = "string s, number start, number end",
+			named={self=true, sep=true},
+			args=3
+		},
+		method = function (s, spos, epos)
+			if epos == 1 then
+				epos = #s
+			end
+
+			return true, s:sub(spos, epos)
+		end
+	}
+
 	plume.std.String = String
 end

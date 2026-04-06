@@ -272,3 +272,15 @@ $("a").rep(5, sep:;)
 /// Output
 a;a;a;a;a
 /// End
+
+/// Test sub 1
+$("abcd").sub(2, 3)
+/// Output
+bc
+/// End
+
+/// Test sub 2
+$("abcd").sub(2, -1)
+/// Output
+bcd
+/// End

@@ -53,6 +53,8 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 *  `lower(s)`: Converts all characters in the string to lowercase.
 *  `upper(s)`: Converts all characters in the string to uppercase.
 *  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub.
+*  `rep(s, count, sep:)`: Repeat the string `count`, separate with `sep` if provided.
+*  `sub(s, start, end)`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end.
 
 #### Search
 * `find(s, pattern, ?rich)`: Returns tthe first match, or empty if not found.
@@ -69,9 +71,6 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 * `lines(s)`: Splits the string into a slice of individual lines.
 * `findAll(s, pattern, ?rich)`: Returns a slice of all non-overlapping matches of the pattern found in the string.
 * `partition(s, pattern, ?rich)`: Splits the string into three parts around the first occurrence of the pattern: the text before the match, the match itself, and the text after.
-
-#### Generation
-* `rep(s, count, sep:)`: Repeat the string `count`, separate with `sep` if provided.
 
 ### Number manipulation
 
