@@ -260,3 +260,15 @@ $("542").isNumber()
 false
 true
 /// End
+
+/// Test rep 1
+$("a").rep(5)
+/// Output
+aaaaa
+/// End
+
+/// Test rep 2
+$("a").rep(5, sep:;)
+/// Output
+a;a;a;a;a
+/// End

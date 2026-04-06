@@ -70,6 +70,9 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 * `findAll(s, pattern, ?rich)`: Returns a slice of all non-overlapping matches of the pattern found in the string.
 * `partition(s, pattern, ?rich)`: Splits the string into three parts around the first occurrence of the pattern: the text before the match, the match itself, and the text after.
 
+#### Generation
+* `rep(s, count, sep:)`: Repeat the string `count`, separate with `sep` if provided.
+
 ### Number manipulation
 
 `$Number.method($n)` and `$n.method()` are both valids way to call `method` on a number named `n`.

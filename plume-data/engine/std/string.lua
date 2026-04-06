@@ -333,5 +333,27 @@ return function (plume)
 		end
 	}
 
+	String.table.rep = {
+		checkArgs = {
+			checkTypes = {"string", "string"},
+			signature = "string s, number count, string sep: $empty",
+			named={self=true, sep=true},
+			args=2
+		},
+		method = function (s, count, options)
+			local sep = options.table.sep or ""
+			count = tonumber(count)
+			local result = {}
+			for i=1, count do
+				table.insert(result, s)
+				if i<count then
+					table.insert(result, sep)
+				end
+			end
+
+			return true, table.concat(result)
+		end
+	}
+
 	plume.std.String = String
 end
