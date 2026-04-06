@@ -458,7 +458,7 @@ return function(plume)
 				}
 				makeLine{focus("! ")..formatText(warningInfos.message),  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
 				if warningInfos.help then
-					makeLine{focus("(i) ") .. formatText(warningInfos.help:gsub('^%s*', '')),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
+					makeLine{focus("(i) ") .. formatText((warningInfos.help:gsub('^%s*', ''))),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
 				end
 				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do
