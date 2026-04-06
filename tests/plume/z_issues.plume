@@ -575,15 +575,17 @@ ref x
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
 │    1 │a                                                                        │
+│      │^                                                                        │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
 │    2 │ref x                                                                    │
 │      │^^^^^                                                                    │
-│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 

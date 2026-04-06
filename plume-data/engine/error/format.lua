@@ -51,11 +51,16 @@ return function(plume)
 			end
 		end
 
-		local function formatText(s)
+		local function formatText(s, maincolor)
+			local main = ""
+			if maincolor then
+				main = maincolor("|"):match('^[^|]*')
+			end
 			if USE_COLOR then
-				return s
-					:gsub('`(.-)`', '\x1b[38;2;100;100;100m`\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m`\x1b[0m')
-					:gsub('\'(.-)\'', '\x1b[38;2;100;100;100m\'\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m\'\x1b[0m')
+				return main .. s
+					:gsub('`(.-)`',   '\x1b[38;2;100;100;100m`\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m`\x1b[0m'..main)
+					:gsub('\'(.-)\'', '\x1b[38;2;100;100;100m\'\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m\'\x1b[0m'..main)
+					.."\x1b[0m"
 			else
 				return s
 			end
@@ -221,24 +226,30 @@ return function(plume)
 		local function makeSourceSnippet(infos, indent, important)
 			indent = indent or 0
 
-			if infos.filename ~= lastfilename then
-				local line
-				if USE_SIMPLE then
-					line = infos.filename .. ":" .. infos.sourceNoLine
-				else
-					line = START_ARROW_2 .. infos.filename
-				end
+			if not infos.skipFilename then
+				if infos.filename ~= lastfilename then
+					local line
+					if USE_SIMPLE then
+						line = infos.filename .. ":" .. infos.sourceNoLine
+					else
+						line = START_ARROW_2 .. infos.filename
+					end
 
-				makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, crop="start", color=secondary}
-				lastfilename = infos.filename
-			else
-				local line
-				if USE_SIMPLE then
-					line = "(same file:" .. infos.sourceNoLine .. ")"
+					makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, crop="start", color=secondary}
+					lastfilename = infos.filename
 				else
-					line = START_ARROW_2 .. "(same file)"
+					local line
+					if USE_SIMPLE then
+						line = "(same file:" .. infos.sourceNoLine .. ")"
+					else
+						line = START_ARROW_2 .. "(same file)"
+					end
+					makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, color=secondary}
 				end
-				makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, color=secondary}
+			end
+
+			if infos.label then
+				makeLine{formatText(infos.label, neutral), indent=SOURCE_FILENAME_INDENT+2+indent}
 			end
 
 			local lastNoLine
@@ -362,7 +373,7 @@ return function(plume)
 		-- Source File
 		if nodesInfos.source then
 			if not USE_SIMPLE then makeLine{""} end
-			makeSourceSnippet(nodesInfos.source, 0, true)
+			makeSourceSnippet(nodesInfos.source, 0, nodesInfos.source.sourceNoLine)
 			if not USE_SIMPLE then makeLine{""} end
 		end
 
@@ -370,7 +381,7 @@ return function(plume)
 		if #nodesInfos.context > 0 then
 			for i, infos in ipairs(nodesInfos.context) do
 				if infos.sourceNoLine then
-					makeSourceSnippet(infos)
+					makeSourceSnippet(infos, 0, nodesInfos.source.sourceNoLine)
 					if i < #nodesInfos.context then
 						if not USE_SIMPLE then makeLine{""} end
 					end

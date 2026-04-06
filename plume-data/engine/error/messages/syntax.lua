@@ -125,13 +125,27 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.mixedBlock(node, expected, found)
-		local message = string.format("Mixed block: the expected type of the block is %s, but it contains an element %s.", expected, found)
+	function plume.error.mixedBlock(node, expected, found, lastNode)
+		if expected == "VALUE" then
+			expected = "TEXT"
+		end
+		local message = string.format("Invalid '%s' content in a '%s' block.", found, expected)
+		
+		node.errorLabel = string.format("Reading this line, Plume assumes the block type is '%s'.", expected)
+
+		lastNode.errorSkipFilename = true
+		lastNode.errorLabel = string.format("But you try to add a '%s' element.", found)
+
+		plume.error.addContext(node, lastNode)
+
 		plume.error.throwSyntaxError(node, message)
 	end
 
 	function plume.error.mixedBlockInsideIf(node, expected, found, parentName)
-		local message = string.format("Mixed block: The previous branches of this if statement were of type %s, but this %s body is of type %s.\nAll branches of an if statement must be of the same type.", expected, parentName:lower(), found)
+		if expected == "VALUE" then
+			expected = "TEXT"
+		end
+		local message = string.format("Invalid '%s' content in a '%s' block.\nThe previous branches of this if statement were of type %s, but this %s body is of type %s.\nAll branches of an if statement must be of the same type.", found, expected, expected, parentName:lower(), found)
 		plume.error.throwSyntaxError(node, message)
 	end
 
@@ -152,6 +166,11 @@ return function(plume)
 
 	function plume.error.unknownEscapeSequence(node, s)
 		local message = string.format("Unknown escape sequence '\\%s'.", s)
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.inlineTableMuseBeAlone(node)
+		local message = "Inline tables must be the only elements in their block."
 		plume.error.throwSyntaxError(node, message)
 	end
 end
