@@ -388,8 +388,8 @@ return function (plume)
         local setvar     = Ct("SETINDEX", (idn * V"evalOpperator"^1)) + letsetvar
 
         --- Make full rule
-        local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar)^0)
-        local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar)^0)
+        local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar + E(plume.error.missingValue, P","))^0)
+        local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar + E(plume.error.missingValue, P","))^0)
         
         local let = Ct("LET", K"let" * statconst * s * letvarlist * (
                                   os * E(plume.error.letCompound, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody

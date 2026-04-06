@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">534 passed out of 534 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">535 passed out of 535 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -16881,7 +16881,7 @@ $prnt
 </code></pre>
 </div>
 </details>
-<h2>syntaxErrors: <span style="font-weight: normal;">25 passed out of 25 tests</span></h2>
+<h2>syntaxErrors: <span style="font-weight: normal;">26 passed out of 26 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -16952,6 +16952,39 @@ $wing(a, b, c:d
 │    2 │end                                                                      │
 │    4 │$wing(a, b, c:d                                                          │
 │      │               ^                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Missing value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let x,, y = $table(1, 2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing value                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let x,, y = $table(1, 2)                                                 │
+│      │     ^                                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>

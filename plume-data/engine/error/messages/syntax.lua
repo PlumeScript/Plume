@@ -48,6 +48,11 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.missingValue(node)
+		local message = "Missing value"
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.emptyExpr(node)
 		local message = "Evaluation cannot be empty."
 		node.errorbpos = node.bpos-1
