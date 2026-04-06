@@ -342,15 +342,17 @@ Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is TABLE, but it contains an     │
-│   element TEXT.                                                                │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TABLE'.                 │
 │    1 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+│                                                                                │
+│    But you try to add a 'TEXT' element.                                        │
 │    2 │Nib                                                                      │
 │      │^^^                                                                      │
-│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -360,15 +362,17 @@ Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
 │    1 │Nib                                                                      │
+│      │^^^                                                                      │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
 │    2 │- Wing                                                                   │
 │      │^^^^^^                                                                   │
-│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -380,16 +384,18 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
 │    2 │for i in seq(1, 10)                                                      │
-│    3 │    - Nib                                                                │
-│      │    ^^^^^                                                                │
-│    4 │end                                                                      │
 │                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    3 │- Nib                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -401,16 +407,18 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
 │    2 │if true                                                                  │
-│    3 │    - nib                                                                │
-│      │    ^^^^^                                                                │
-│    4 │end                                                                      │
 │                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    3 │- nib                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -427,16 +435,18 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is TEXT, but it contains an      │
-│   element TABLE.                                                               │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    7 │    song                                                                 │
-│    8 │    - nib                                                                │
-│      │    ^^^^^                                                                │
-│    9 │end                                                                      │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
+│    2 │if true                                                                  │
 │                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    8 │- nib                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -446,8 +456,7 @@ a
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is TEXT, but it contains an      │
-│   element TABLE.                                                               │
+│ → Inline tables must be the only elements in their block.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

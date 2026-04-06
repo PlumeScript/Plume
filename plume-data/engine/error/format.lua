@@ -51,6 +51,21 @@ return function(plume)
 			end
 		end
 
+		local function formatText(s, maincolor)
+			local main = ""
+			if maincolor then
+				main = maincolor("|"):match('^[^|]*')
+			end
+			if USE_COLOR then
+				return main .. s
+					:gsub('`(.-)`',   '\x1b[38;2;100;100;100m`\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m`\x1b[0m'..main)
+					:gsub('\'(.-)\'', '\x1b[38;2;100;100;100m\'\x1b[0m\x1b[91m%1\x1b[0m\x1b[38;2;100;100;100m\'\x1b[0m'..main)
+					.."\x1b[0m"
+			else
+				return s
+			end
+		end
+
 		local result = {}
 		local maxLineNumberSize = 0
 
@@ -211,24 +226,30 @@ return function(plume)
 		local function makeSourceSnippet(infos, indent, important)
 			indent = indent or 0
 
-			if infos.filename ~= lastfilename then
-				local line
-				if USE_SIMPLE then
-					line = infos.filename .. ":" .. infos.sourceNoLine
-				else
-					line = START_ARROW_2 .. infos.filename
-				end
+			if not infos.skipFilename then
+				if infos.filename ~= lastfilename then
+					local line
+					if USE_SIMPLE then
+						line = infos.filename .. ":" .. infos.sourceNoLine
+					else
+						line = START_ARROW_2 .. infos.filename
+					end
 
-				makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, crop="start", color=secondary}
-				lastfilename = infos.filename
-			else
-				local line
-				if USE_SIMPLE then
-					line = "(same file:" .. infos.sourceNoLine .. ")"
+					makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, crop="start", color=secondary}
+					lastfilename = infos.filename
 				else
-					line = START_ARROW_2 .. "(same file)"
+					local line
+					if USE_SIMPLE then
+						line = "(same file:" .. infos.sourceNoLine .. ")"
+					else
+						line = START_ARROW_2 .. "(same file)"
+					end
+					makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, color=secondary}
 				end
-				makeLine{line, indent=SOURCE_FILENAME_INDENT+indent, color=secondary}
+			end
+
+			if infos.label then
+				makeLine{formatText(infos.label, neutral), indent=SOURCE_FILENAME_INDENT+2+indent}
 			end
 
 			local lastNoLine
@@ -340,7 +361,7 @@ return function(plume)
 			else
 				makeLine{focus(errorInfos.header),  indent=HEADER_INDENT, color=focus}
 				if errorInfos.message then
-					makeLine{START_ARROW_1..errorInfos.message, indent=HEADER_INDENT, lineIndentDelta=2}
+					makeLine{START_ARROW_1..formatText(errorInfos.message), indent=HEADER_INDENT, lineIndentDelta=2}
 				end
 			end
 			
@@ -352,7 +373,7 @@ return function(plume)
 		-- Source File
 		if nodesInfos.source then
 			if not USE_SIMPLE then makeLine{""} end
-			makeSourceSnippet(nodesInfos.source, 0, true)
+			makeSourceSnippet(nodesInfos.source, 0, nodesInfos.source.sourceNoLine)
 			if not USE_SIMPLE then makeLine{""} end
 		end
 
@@ -360,7 +381,7 @@ return function(plume)
 		if #nodesInfos.context > 0 then
 			for i, infos in ipairs(nodesInfos.context) do
 				if infos.sourceNoLine then
-					makeSourceSnippet(infos)
+					makeSourceSnippet(infos, 0, nodesInfos.source.sourceNoLine)
 					if i < #nodesInfos.context then
 						if not USE_SIMPLE then makeLine{""} end
 					end
@@ -419,7 +440,7 @@ return function(plume)
 			end
 
 			makeLine{string.format(focusless(" %s WARNING%s "), nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
-			makeLine{"  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. ",  indent=HEADER_INDENT, lineIndentDelta=2}
+			makeLine{formatText("  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. "),  indent=HEADER_INDENT, lineIndentDelta=2}
 			if not USE_SIMPLE then
 				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			end
@@ -435,13 +456,13 @@ return function(plume)
 					),
 					indent=HEADER_INDENT
 				}
-				makeLine{"! "..warningInfos.message,  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
+				makeLine{focus("! ")..formatText(warningInfos.message),  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
 				if warningInfos.help then
-					makeLine{"(i) " .. warningInfos.help:gsub('^%s*', ''),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
+					makeLine{focus("(i) ") .. formatText(warningInfos.help:gsub('^%s*', '')),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
 				end
 				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do
-					makeSourceSnippet(infos, 2)
+					makeSourceSnippet(infos, 2, true)
 
 					if not USE_SIMPLE then makeLine{""} end
 

@@ -105,7 +105,7 @@ return function (plume, context, nodeHandlerTable)
 				end
 
 				if #filters == 0 then
-					plume.warning.mode.default = mode
+					plume.warning.mode.default[scope] = mode
 				else
 					for _, x in ipairs(filters) do
 						plume.warning.mode[x] = plume.warning.mode[x] or {}

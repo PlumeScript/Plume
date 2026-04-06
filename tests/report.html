@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">534 passed out of 534 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">535 passed out of 535 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -1368,8 +1368,9 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: The previous branches of this if statement were of type         │
-│   TABLE, but this else body is of type TEXT.                                   │
+│ → Invalid &#39;TEXT&#39; content in a &#39;TABLE&#39; block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this else │
+│   body is of type TEXT.                                                        │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -1409,8 +1410,9 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: The previous branches of this if statement were of type         │
-│   VALUE, but this else body is of type TABLE.                                  │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -1452,8 +1454,9 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: The previous branches of this if statement were of type         │
-│   TEXT, but this else body is of type TABLE.                                   │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -1495,8 +1498,9 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: The previous branches of this if statement were of type         │
-│   VALUE, but this elseif body is of type TABLE.                                │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this       │
+│   elseif body is of type TABLE.                                                │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -4275,11 +4279,12 @@ end
 <span class="bc-line-num">012</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">013</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; x = </span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; 654237.4589</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (654237.4589)</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; x =</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">;  </span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 654237.4589</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (654237.4589)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
@@ -6259,15 +6264,17 @@ Nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is TABLE, but it contains an     │
-│   element TEXT.                                                                │
+│ → Invalid &#39;TEXT&#39; content in a &#39;TABLE&#39; block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is &#39;TABLE&#39;.                 │
 │    1 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+│                                                                                │
+│    But you try to add a &#39;TEXT&#39; element.                                        │
 │    2 │Nib                                                                      │
 │      │^^^                                                                      │
-│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
@@ -6295,15 +6302,17 @@ Nib
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is &#39;TEXT&#39;.                  │
 │    1 │Nib                                                                      │
+│      │^^^                                                                      │
+│                                                                                │
+│    But you try to add a &#39;TABLE&#39; element.                                       │
 │    2 │- Wing                                                                   │
 │      │^^^^^^                                                                   │
-│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
@@ -6333,16 +6342,18 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is &#39;TEXT&#39;.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
 │    2 │for i in seq(1, 10)                                                      │
-│    3 │    - Nib                                                                │
-│      │    ^^^^^                                                                │
-│    4 │end                                                                      │
 │                                                                                │
+│    But you try to add a &#39;TABLE&#39; element.                                       │
+│    3 │- Nib                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
@@ -6372,16 +6383,18 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is &#39;TEXT&#39;.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
 │    2 │if true                                                                  │
-│    3 │    - nib                                                                │
-│      │    ^^^^^                                                                │
-│    4 │end                                                                      │
 │                                                                                │
+│    But you try to add a &#39;TABLE&#39; element.                                       │
+│    3 │- nib                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
@@ -6416,16 +6429,18 @@ end
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is TEXT, but it contains an      │
-│   element TABLE.                                                               │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    7 │    song                                                                 │
-│    8 │    - nib                                                                │
-│      │    ^^^^^                                                                │
-│    9 │end                                                                      │
+│    Reading this line, Plume assumes the block type is &#39;TEXT&#39;.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
+│    2 │if true                                                                  │
 │                                                                                │
+│    But you try to add a &#39;TABLE&#39; element.                                       │
+│    8 │- nib                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
@@ -6453,8 +6468,7 @@ a
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is TEXT, but it contains an      │
-│   element TABLE.                                                               │
+│ → Inline tables must be the only elements in their block.                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -16867,7 +16881,7 @@ $prnt
 </code></pre>
 </div>
 </details>
-<h2>syntaxErrors: <span style="font-weight: normal;">25 passed out of 25 tests</span></h2>
+<h2>syntaxErrors: <span style="font-weight: normal;">26 passed out of 26 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -16938,6 +16952,39 @@ $wing(a, b, c:d
 │    2 │end                                                                      │
 │    4 │$wing(a, b, c:d                                                          │
 │      │               ^                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Missing value <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let x,, y = $table(1, 2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing value                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let x,, y = $table(1, 2)                                                 │
+│      │     ^                                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -17147,42 +17194,6 @@ let x += 1
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> missing @table <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-let x =
-  - z
-end
-
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Error</h4>
-<pre><code>
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Malformed code.                                                              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let x =                                                                  │
-│      │    ^^^                                                                  │
-│    2 │  - z                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-</code></pre>
-</div>
-</details>
-<details>
-<summary>
 <span class="status-icon status-pass">✓</span> missing condition 1 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
@@ -17283,6 +17294,42 @@ end
 │    1 │while                                                                    │
 │      │     ^^^                                                                 │
 │    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> missing do <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let x =
+  - z
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Malformed code.                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let x =                                                                  │
+│      │    ^^^                                                                  │
+│    2 │  - z                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -24063,15 +24110,17 @@ ref x
 <pre><code>
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Mixed block: the expected type of the block is VALUE, but it contains an     │
-│   element TABLE.                                                               │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is &#39;TEXT&#39;.                  │
 │    1 │a                                                                        │
+│      │^                                                                        │
+│                                                                                │
+│    But you try to add a &#39;TABLE&#39; element.                                       │
 │    2 │ref x                                                                    │
 │      │^^^^^                                                                    │
-│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>

@@ -33,7 +33,7 @@ return function (plume, context, nodeHandlerTable)
 
 	nodeHandlerTable.INLINE_TABLE = function(node)
 		if node.parent and node.parent.type == "TEXT" then
-			plume.error.mixedBlock(node, "TEXT", node.type)
+			plume.error.inlineTableMuseBeAlone(node)
 		end
 		context.accBlock()(node)
 	end

@@ -118,6 +118,8 @@ return function(plume)
 			sourceLen          = linesInfos.sourceLen,
 			selectedNoLines    = selectedNoLines,
 			lines              = lines,
+			label              = node.errorLabel,
+			skipFilename       = node.errorSkipFilename
 		}
 	end
 end

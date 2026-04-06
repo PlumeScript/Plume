@@ -29,7 +29,7 @@ return function (plume)
 			mode = plume.warning.mode[tostring(issue)] or mode
 		end
 
-		mode = mode["global"] or mode[node.filename]
+		mode = mode[node.filename] or mode["global"]
 
 		if mode == "ignore" then
 			return
@@ -38,7 +38,7 @@ return function (plume)
 		plume.warning.any = true
 
 		if mode == "strict" then
-	    	plume.error.strictWarning (node, msg)
+	    	plume.error.strictWarningError (node, msg)
 	    end
 
 	    if not plume.warning.cache[msg] then

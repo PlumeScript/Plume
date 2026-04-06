@@ -133,7 +133,7 @@ return function (plume)
 		return result
 	end
 
-	function plume.ast.markType(node)
+	function plume.ast.markType(node, parentLastNode)
 		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF")
 
 		if node.parent and (
@@ -155,10 +155,11 @@ return function (plume)
 		end
 
 		local nulldelta = 0
+		local lastNode = parentLastNode
 
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
-			local childType = plume.ast.markType(child)
+			local childType = plume.ast.markType(child, lastNode)
 			
 			-- workaround for the case where child is an information,
 			-- not a proper child
@@ -180,6 +181,7 @@ return function (plume)
 					else
 						node.type = childType
 					end
+					lastNode = child
 				elseif node.type == "VALUE"
 				and (childType == "TEXT" or childType == "VALUE") then
 					if waitOneValue then
@@ -193,7 +195,7 @@ return function (plume)
 					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
 						plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
 					else
-						plume.error.mixedBlock(child, node.type, childType)
+						plume.error.mixedBlock(lastNode, node.type, childType, child)
 					end
 				end
 			end

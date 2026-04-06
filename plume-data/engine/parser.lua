@@ -14,6 +14,8 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
+    local warningBuffer
+
     local function buildGrammar()
         local lpeg = require "lpeg"
 
@@ -69,14 +71,15 @@ return function (plume)
             end
         end
 
-        local function W(warning, issues)
-            return Cp() * P(0) * Cp() / function (bpos, epos)
+        local function W(pattern, warning, warningHint, issues)
+            return Cp() * pattern * Cp() / function (bpos, epos)
                 return {
                     name = "NULL",
                     issues = issues,
                     bpos = bpos,
                     epos  = epos-1,
-                    warning = warning
+                    warning = warning,
+                    warningHint = warningHint
                 }
             end
         end
@@ -89,6 +92,18 @@ return function (plume)
                 	epos=epos-1,
                 	children=children
                 }
+            end
+        end
+
+        local function bindWarning(a, b)
+            if b then
+                b.warning = a.warning
+                b.warningHint = a.warningHint
+                b.issues  = a.issues
+                b.bpos    = a.bpos
+                return b
+            else
+                return a
             end
         end
 
@@ -261,6 +276,12 @@ return function (plume)
                 end
             end
 
+            local safeidn = W(
+                P"$",
+                "Unnecessary `$` prefix inside eval mode `$(...)`.",
+                "Everything inside is already evaluated. Extra `$` is allowed for convenience, though not required.",
+                {547}
+            )^-1 * idn / bindWarning
 
             -- Eval & index
             local posarg  = Ct("LIST_ITEM", V"_layer1")
@@ -273,10 +294,10 @@ return function (plume)
             local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (os * P"," * os * arg)^1 + optnarg) * P")")
 
             local evalOpperator = arglist + index + directindex
-        	local primary = num + idn + quote + inlinetable + P"(" * V"_layer1" * P")"
+        	local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
             local access = Ct("EVAL", primary * evalOpperator^1)
 
-            local terminal = num + access + idn + quote
+            local terminal = num + access + safeidn + quote
             rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
 
             return rules
@@ -367,8 +388,8 @@ return function (plume)
         local setvar     = Ct("SETINDEX", (idn * V"evalOpperator"^1)) + letsetvar
 
         --- Make full rule
-        local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar)^0)
-        local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar)^0)
+        local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar + E(plume.error.missingValue, P","))^0)
+        local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar + E(plume.error.missingValue, P","))^0)
         
         local let = Ct("LET", K"let" * statconst * s * letvarlist * (
                                   os * E(plume.error.letCompound, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody
@@ -411,6 +432,18 @@ return function (plume)
         local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
         local with = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
 
+        -- Warning
+        local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") / function(x)
+            x.warning = "This is plain text, not an assignement."
+            if x.content:match('[%+%-%*%/]') then
+                x.warningHint = string.format("Do you mean `set %s ...` ?", x.content)
+            else
+                x.warningHint = string.format("Do you mean `let %s ...` or `set %s ...` ?", x.content, x.content)
+            end
+            x.issues = {381, 26}
+            return x
+        end
+
         ----------
         -- main --
         ----------
@@ -423,7 +456,7 @@ return function (plume)
                                 * (
                                       V"command"
                                     + Ct("RUN", K"run" * s * V"firstStatement")
-                                    + V"invalid"^-1 * V"text"
+                                    + V"invalid"^-1 * (fakeAffectation^-1 * V"text" + fakeAffectation)
                                 ),
             firstStatementNLB = os * (-V"statementTerminator")
                                 * (
@@ -439,7 +472,7 @@ return function (plume)
 
             command = V"commandStd" + V"commandLB",
 
-            text =   (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
+            text   = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
             textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
             textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
             textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
@@ -488,8 +521,6 @@ return function (plume)
         plume.ast.browse(ast, function (node)
             if node.error then
                 node.error(node)
-            elseif node.warning then
-                plume.warning.throwWarning(node.warning, nil, node, node.issues)
             end
 
             if node.name == "IDENTIFIER" then
