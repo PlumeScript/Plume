@@ -102,7 +102,7 @@ return function(plume)
 		else
 			return string.format(
 				"Wrong number of positional arguments for macro '%s', %s instead of between %s and %s.%s",
-				macroName, argCount, minArgsCount, maxArgsCount, signatureHint
+				macroName, argCount, (minArgsCount or 0), (maxArgsCount or "inf"), signatureHint
 			)
 		end
 	end

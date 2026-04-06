@@ -40,12 +40,32 @@ return function (plume)
     Table.table.append = {
         checkArgs = {
             checkTypes = {"table"},
-            signature = "table t, any x",
-            named={self=true},
-            -- args=2
+            signature = "Table t, [any item|...items]",
+            named={["*"]=true}
         },
-        method = function  (t, value)
-            table.insert(t.table, value)
+        method = function  (t, ...)
+            local args = {...}
+            local options = table.remove(args)
+            
+            local arg
+            if #args == 1 then
+                arg = args[1]
+            else
+                -- A very dirty fix to an outdated, but still-used, incorrect behavior.
+                arg = plume.obj.table(0, 0)
+                for _, key in ipairs(options.keys) do
+                    if key ~= "self" and key ~= 1 and options.table[key] ~= plume.obj.empty then
+                        local rkey = key
+                        if tonumber(key) then
+                            rkey = rkey - 1
+                        end
+                        arg.table[rkey] = options.table[key]
+                        table.insert(arg.keys, rkey)
+                    end
+                end
+            end
+
+            table.insert(t.table, arg)
             table.insert(t.keys, #t.table)
             return true
         end

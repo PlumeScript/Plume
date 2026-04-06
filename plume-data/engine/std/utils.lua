@@ -19,8 +19,8 @@ return function (plume)
 		local minArgsCount = signature.minArgs or argsCount
 		local maxArgsCount = signature.maxArgs or argsCount
 		
-		if minArgsCount and maxArgsCount then
-			if #args.table < minArgsCount or #args.table > maxArgsCount then
+		if minArgsCount or maxArgsCount then
+			if (minArgsCount and #args.table < minArgsCount) or (maxArgsCount and #args.table > maxArgsCount) then
 				return false, plume.error.wrongArgsCountStd(
 					name, #args.table, minArgsCount, maxArgsCount, signature.signature
 					
@@ -31,7 +31,7 @@ return function (plume)
 		if signature.checkTypes or signature.named then
 			for key, value in pairs(args.table) do
 				if not tonumber(key)
-				and (not signature.named      or not signature.named[key])
+				and (not signature.named      or (not signature.named[key] and not signature.named["*"]))
 				and (not signature.checkTypes or not signature.checkTypes[key]) then
 					return false, plume.error.unknownParameterStd(key, name, signature.signature)
 				end

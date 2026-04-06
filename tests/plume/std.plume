@@ -183,7 +183,42 @@ $len($t)
 2
 /// End
 
-/// Test Table append
+// /// Test Table append 1
+// let t = $Table()
+// $Table.append($t)
+// /// Error
+// ╭────────────────────────────────────────────────────────────────────────────────╮
+// │ RUNTIME ERROR:                                                                 │
+// │ → Wrong number of positional arguments for macro 'append', 1 instead of        │
+// │   between 2 and inf.                                                           │
+// │   Usage: $append(Table t, [any item|...items])                                 │
+// ├────────────────────────────────────────────────────────────────────────────────┤
+// │                                                                                │
+// │  ↳ test.plume                                                                  │
+// │    1 │let t = $Table()                                                         │
+// │    2 │$Table.append($t)                                                        │
+// │      │ ^^^^^^^^^^^^^^^^                                                        │
+// │                                                                                │
+// ╰────────────────────────────────────────────────────────────────────────────────╯
+// /// End
+
+/// Test Table append 2
+$Table.append(a, b)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'string' for parameter '1' of macro 'append'. Expected: 'table'.  │
+│   Usage: $append(Table t, [any item|...items])                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$Table.append(a, b)                                                      │
+│      │ ^^^^^^^^^^^^^^^^^^                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Table append 3
 let t = do
   - Wing
   - Nib
@@ -191,10 +226,30 @@ let t = do
 end
 $len($t)\n
 $Table.append($t, paint)
-$len($t)
+$len($t)\n
+$t[3]
 /// Output
 2
 3
+paint
+/// End
+
+/// Test Table append 4
+let t = do
+  - Wing
+  - Nib
+  quill: blue
+end
+$len($t)\n
+@Table.append($t)
+  - paint
+end
+$len($t)\n
+$t[3]
+/// Output
+2
+3
+paint
 /// End
 
 /// Test Table remove 1
