@@ -42,7 +42,7 @@ return function (plume)
             checkTypes = {"table"},
             signature = "table t, any x",
             named={self=true},
-            args=2
+            -- args=2
         },
         method = function  (t, value)
             table.insert(t.table, value)
