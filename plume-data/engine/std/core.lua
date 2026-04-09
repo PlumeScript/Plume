@@ -28,6 +28,11 @@ return function (plume)
         for name, f in pairs(Table) do
             if f.checkArgs then
                 f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
+                for k, v in pairs(f.checkArgs.checkTypes or {}) do
+                    if type(v) ~= "table" then
+                        f.checkArgs.checkTypes[k] = {v}
+                    end
+                end
             end
             Table[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
                 if f.checkArgs then
@@ -35,6 +40,8 @@ return function (plume)
                     if not success then
                         return false, message
                     end
+
+                    
                 end
 
                 if Table == plume.stdLua then
@@ -60,6 +67,11 @@ return function (plume)
         for name, f in pairs(Table.table) do
             if f.checkArgs then
                 f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
+                for k, v in pairs(f.checkArgs.checkTypes or {}) do
+                    if type(v) ~= "table" then
+                        f.checkArgs.checkTypes[k] = {v}
+                    end
+                end
             end
             Table.table[name] = plume.obj.luaMacro(name, function(args)
 
@@ -69,6 +81,7 @@ return function (plume)
                     if not success then
                         return false, message
                     end
+                    
                 end
                 table.insert(shiftedArgs.table, args)
                 return f.method(unpack(shiftedArgs.table))

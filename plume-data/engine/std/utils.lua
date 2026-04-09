@@ -35,9 +35,12 @@ return function (plume)
 				and (not signature.checkTypes or not signature.checkTypes[key]) then
 					return false, plume.error.unknownParameterStd(key, name, signature.signature)
 				end
-				local exectedType = signature.checkTypes and signature.checkTypes[key]
-				if exectedType then
-					local t = type(value)
+				local exectedTypeTable = signature.checkTypes and signature.checkTypes[key]
+				local found = false
+				local t
+
+				for i, exectedType in ipairs(exectedTypeTable or {}) do
+					t = type(value)
 					if t == "table" then
 						t = value.type or "table"
 					end
@@ -53,9 +56,14 @@ return function (plume)
 						t = t.type or t
 					end
 
-					if exectedType ~= t then
-						return false, plume.error.wrongArgTypeStd(key, name, t, exectedType, signature.signature)
+					if exectedType == t then
+						found = true
+						break
 					end
+				end
+
+				if exectedTypeTable and not found then
+					return false, plume.error.wrongArgTypeStd(key, name, t, table.concat(exectedTypeTable, '|'), signature.signature)
 				end
 			end
 		end
