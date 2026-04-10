@@ -367,7 +367,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$Table(wing, nib, color: blue, quill)
+(wing, nib, color: blue, quill)
 /// End
 
 /// Test repr 10
@@ -378,7 +378,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$Table(empty, color: macro<color>)
+(empty, color: macro<color>)
 /// End
 
 /// Test repr 11
@@ -389,7 +389,7 @@ end
 set t[Wing] = 5
 $repr($t)
 /// Output
-$Table(macro<Wing>: 5)
+(macro<Wing>: 5)
 /// End
 
 /// Test repr 12
@@ -402,7 +402,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$Table(wing, sub: $Table(quill, nib))
+(wing, sub: (quill, nib))
 /// End
 
 /// Test repr 13
@@ -419,7 +419,7 @@ set t[1] = 5
 set t[3]  = z
 $repr($t)
 /// Output
-$Table(5, empty, z)
+(5, empty, z)
 /// End
 
 /// Test repr Table with holes 2
@@ -428,7 +428,7 @@ set t[1] = 5
 set t[3000]  = z
 $repr($t)
 /// Output
-$Table(5, 3000: z)
+(5, 3000: z)
 /// End
 
 /// Test repr Table not ordered
@@ -438,7 +438,7 @@ set t[1] = 5
 
 $repr($t)
 /// Output
-$Table(3: z, 1: 5)
+(3: z, 1: 5)
 /// End
 
 /// Test count
@@ -472,7 +472,7 @@ let t2 = $Table.copy($t1)
 set t2[1] = 0
 $t1
 /// Output
-$Table(1, 2, 3)
+(1, 2, 3)
 /// End
 
 /// Test copy 2
@@ -481,7 +481,7 @@ let t2 = $Table.copy($t1)
 set t2[1][1] = 0
 $t1
 /// Output
-$Table($Table(0, 2, 3), 2, 3)
+((0, 2, 3), 2, 3)
 /// End
 
 /// Test deepcopy
@@ -490,7 +490,7 @@ let t2 = $Table.deepcopy($t1)
 set t2[1][1] = 0
 $t1
 /// Output
-$Table($Table(1, 2, 3), 2, 3)
+((1, 2, 3), 2, 3)
 /// End
 
 /// Test nested deepcopy
@@ -536,7 +536,7 @@ $Table($Table($Table(...)))
   end
 end
 /// Output
-@Table
+do
   - Wing
   - Nib
   wing: nib
@@ -550,7 +550,7 @@ end
     \stempor sapien a sollicitudin. Aliquam sed porta augue, sed fringilla justo. Mor
     bi pretium vulputate ligula eget ultricies.
   end
-  - $Table(blue, red)
-  - $Table(1, 2, 3, 4, 5, 6)
+  - (blue, red)
+  - (1, 2, 3, 4, 5, 6)
 end
 /// End

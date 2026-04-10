@@ -556,7 +556,7 @@ let t = do
 end
 $t
 /// Output
-$Table(b, empty)
+(b, empty)
 /// End
 
 /// Test #507-2
@@ -566,7 +566,7 @@ let t = do
 end
 $t
 /// Output
-$Table(a: empty, c: a)
+(a: empty, c: a)
 /// End
 
 /// Test #508
@@ -692,7 +692,7 @@ with locale: none
     $(A+B)
 end
 /// Output
-$Table(x: 14, y: 1)
+(x: 14, y: 1)
 /// End
 
 /// Test #573
@@ -731,7 +731,7 @@ end
 run $quill()
 
 /// Output
-$Table(wing: macro<???>, quill: macro<???>)
+(wing: macro<???>, quill: macro<???>)
 /// End
 
 /// Test #597-1

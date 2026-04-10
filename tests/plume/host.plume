@@ -20,7 +20,7 @@ end
 run $Table.sort($t, compare: $compare)
 $t
 /// Output
-$Table(2, 3, 5)
+(2, 3, 5)
 /// End
 
 /// Test Table.sort 2
@@ -34,7 +34,7 @@ run $Table.sort($t, compare: $compare)
 $t
 
 /// Output
-$Table(5, 3, 2)
+(5, 3, 2)
 /// End
 
 /// Test wrong macro signature 1

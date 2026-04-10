@@ -4208,7 +4208,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(item 1, item 2)
+(item 1, item 2)
 </code></pre>
 </div>
 </details>
@@ -7147,7 +7147,7 @@ $t
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(2, 3, 5)
+(2, 3, 5)
 </code></pre>
 </div>
 </details>
@@ -7208,7 +7208,7 @@ $t
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(5, 3, 2)
+(5, 3, 2)
 </code></pre>
 </div>
 </details>
@@ -13652,7 +13652,7 @@ $t1
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(1, 2, 3)
+(1, 2, 3)
 </code></pre>
 </div>
 </details>
@@ -13706,7 +13706,7 @@ $t1
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table($Table(0, 2, 3), 2, 3)
+((0, 2, 3), 2, 3)
 </code></pre>
 </div>
 </details>
@@ -13821,7 +13821,7 @@ $t1
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table($Table(1, 2, 3), 2, 3)
+((1, 2, 3), 2, 3)
 </code></pre>
 </div>
 </details>
@@ -14940,7 +14940,7 @@ end
 </div>
 <h4>Output</h4>
 <pre><code>
-@Table
+do
   - Wing
   - Nib
   wing: nib
@@ -14954,8 +14954,8 @@ end
     \stempor sapien a sollicitudin. Aliquam sed porta augue, sed fringilla justo. Mor
     bi pretium vulputate ligula eget ultricies.
   end
-  - $Table(blue, red)
-  - $Table(1, 2, 3, 4, 5, 6)
+  - (blue, red)
+  - (1, 2, 3, 4, 5, 6)
 end
 </code></pre>
 </div>
@@ -15032,7 +15032,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(empty, color: macro&lt;color&gt;)
+(empty, color: macro&lt;color&gt;)
 </code></pre>
 </div>
 </details>
@@ -15081,7 +15081,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(macro&lt;Wing&gt;: 5)
+(macro&lt;Wing&gt;: 5)
 </code></pre>
 </div>
 </details>
@@ -15128,7 +15128,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(wing, sub: $Table(quill, nib))
+(wing, sub: (quill, nib))
 </code></pre>
 </div>
 </details>
@@ -15457,7 +15457,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(wing, nib, color: blue, quill)
+(wing, nib, color: blue, quill)
 </code></pre>
 </div>
 </details>
@@ -15503,7 +15503,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(3: z, 1: 5)
+(3: z, 1: 5)
 </code></pre>
 </div>
 </details>
@@ -15548,7 +15548,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(5, empty, z)
+(5, empty, z)
 </code></pre>
 </div>
 </details>
@@ -15593,7 +15593,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(5, 3000: z)
+(5, 3000: z)
 </code></pre>
 </div>
 </details>
@@ -16961,7 +16961,7 @@ $repr($text.partition(z))
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(a52, z, azz)
+(a52, z, azz)
 </code></pre>
 </div>
 </details>
@@ -17003,7 +17003,7 @@ $repr($text.partition([0-9]+, ?rich))
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(a, 52, zazz)
+(a, 52, zazz)
 </code></pre>
 </div>
 </details>
@@ -19603,7 +19603,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(1, a: $Table(1, 2))
+(1, a: (1, 2))
 </code></pre>
 </div>
 </details>
@@ -19643,7 +19643,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(a: $Table(1, 2))
+(a: (1, 2))
 </code></pre>
 </div>
 </details>
@@ -19684,7 +19684,7 @@ $repr($t)
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(1, a: $Table(1, 2))
+(1, a: (1, 2))
 </code></pre>
 </div>
 </details>
@@ -24830,7 +24830,7 @@ $t
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(b, empty)
+(b, empty)
 </code></pre>
 </div>
 </details>
@@ -24870,7 +24870,7 @@ $t
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(a: empty, c: a)
+(a: empty, c: a)
 </code></pre>
 </div>
 </details>
@@ -25332,7 +25332,7 @@ end
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(x: 14, y: 1)
+(x: 14, y: 1)
 </code></pre>
 </div>
 </details>
@@ -25496,7 +25496,7 @@ run $quill()
 </div>
 <h4>Output</h4>
 <pre><code>
-$Table(wing: macro&lt;???&gt;, quill: macro&lt;???&gt;)
+(wing: macro&lt;???&gt;, quill: macro&lt;???&gt;)
 </code></pre>
 </div>
 </details>
