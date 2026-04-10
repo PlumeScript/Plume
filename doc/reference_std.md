@@ -5,11 +5,12 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 ### Basic Functions
 
 *   `print(...items, ?pretty)`: A wrapper for the underlying lua `print` function.
-*   `type(x)`: Returns the type of `x` as a string: `"empty"`, `"table"`, `"number"`, or `"string"`.
-*   `tostring(x)`: Converts the value `x` to its string representation.
+*   `type(x)`: Returns the type of `x` as a string: `empty`, `table`, `number`, or `string`.
 *   `len(table)`: Returns the number of items in a table.
 *   `repr(x, ?pretty)`: Give a string representation of any object.
 *   `help(x)`: A shortcut for `print(plume.doc(x))`
+*   `Number(x)`: Convert to a number. Raise an error if fail.
+*   `String(x)`: Convert to a string.
 
 ### Table Manipulation
 
@@ -27,13 +28,13 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
     *   `Table.copy(table)`: Returns a superficial copy of `table`.
     *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
-    *   **Edge Cases:** Use this function specifically when creating empty tables (`table()`) or tables with a single element.
+    *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
 *   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 
 
-Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$table(a, b, ...)` and evaluates to the same result.
+Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$Table(a, b, ...)` and evaluates to the same result.
 
-Use `$table` specifically when creating empty tables or tables with a single element.
+Use `$Table` specifically when creating empty tables or tables with a single element.
 
 ### String manipulation
 
@@ -144,7 +145,7 @@ Plume balances performance and safety through its loading strategy:
 
 ### File System I/O
 
-Unlike `import`, the following functions do not use the `plume_path` resolution logic and expect direct file system paths.
+Unlike `import`, the following functions do not use the `plume.path` resolution logic and expect direct file system paths.
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
 *   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
