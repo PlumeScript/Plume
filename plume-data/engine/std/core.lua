@@ -45,6 +45,9 @@ return function (plume)
                             f.checkArgs.checkTypes[k] = {v}
                         end
                     end
+                    if f.checkArgs.checkTypesAll and type(f.checkArgs.checkTypesAll) == "string" then
+                        f.checkArgs.checkTypesAll = {f.checkArgs.checkTypesAll}
+                    end
                 end
                 Table[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
                     if f.checkArgs then
@@ -85,6 +88,9 @@ return function (plume)
                         f.checkArgs.checkTypes[k] = {v}
                     end
                 end
+                if f.checkArgs.checkTypesAll and type(f.checkArgs.checkTypesAll) == "string" then
+                    f.checkArgs.checkTypesAll = {f.checkArgs.checkTypesAll}
+                end
             end
             Table.table[name] = plume.obj.luaMacro(name, function(args)
 
@@ -94,7 +100,6 @@ return function (plume)
                     if not success then
                         return false, message
                     end
-                    
                 end
                 table.insert(shiftedArgs.table, args)
                 return f.method(unpack(shiftedArgs.table))

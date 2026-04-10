@@ -84,6 +84,19 @@ return function (plume)
                 local obj = args.table[1]
                 return true, plume.repr(obj, nil, args.table.pretty)
             end
+        },
+
+        min = {
+            checkArgs = {minArgs=1, signature="...numbers", checkTypesAll="number"},
+            method = function(args)
+                return true, math.min(unpack(args.table))
+            end
+        },
+        max = {
+            checkArgs = {minArgs=1, signature="...numbers", checkTypesAll="number"},
+            method = function(args)
+                return true, math.max(unpack(args.table))
+            end
         }
     }
 end

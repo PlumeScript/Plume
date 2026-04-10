@@ -11,6 +11,8 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `help(x)`: A shortcut for `print(plume.doc(x))`
 *   `Number(x)`: Convert to a number. Raise an error if fail.
 *   `String(x)`: Convert to a string.
+*   `min(...numbers)`
+*   `max(...numbers)`
 
 ### Table Manipulation
 
