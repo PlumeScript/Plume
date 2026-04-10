@@ -510,3 +510,47 @@ $t2
 /// Output
 $Table($Table($Table(...)))
 /// End
+
+/// Test pretty
+@repr(?pretty)
+  do
+    - Wing
+    - Nib
+    wing: nib
+    - do
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nec diam eget maximus. Donec vitae orci eu massa faucibus lobortis et ut nulla. Sed placerat velit eget ipsum convallis faucibus. Fusce a erat in dolor maximus accumsan. Vestibulum eget risus a odio dapibus pulvinar cursus vel mi. Etiam suscipit bibendum dapibus. Mauris eget porttitor urna. Donec ante magna, hendrerit vel tristique vitae, accumsan ut eros. Nulla malesuada eget felis quis auctor. Donec molestie tempor sapien a sollicitudin. Aliquam sed porta augue, sed fringilla justo. Morbi pretium vulputate ligula eget ultricies.
+
+    end
+    - do
+      - blue
+      - red
+    end
+    - do
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    end
+  end
+end
+/// Output
+@Table
+  - Wing
+  - Nib
+  wing: nib
+  - do
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nec diam eget
+    \smaximus. Donec vitae orci eu massa faucibus lobortis et ut nulla. Sed placerat\s
+    velit eget ipsum convallis faucibus. Fusce a erat in dolor maximus accumsan. Ves
+    tibulum eget risus a odio dapibus pulvinar cursus vel mi. Etiam suscipit bibendu
+    m dapibus. Mauris eget porttitor urna. Donec ante magna, hendrerit vel tristique
+    \svitae, accumsan ut eros. Nulla malesuada eget felis quis auctor. Donec molestie
+    \stempor sapien a sollicitudin. Aliquam sed porta augue, sed fringilla justo. Mor
+    bi pretium vulputate ligula eget ultricies.
+  end
+  - $Table(blue, red)
+  - $Table(1, 2, 3, 4, 5, 6)
+end
+/// End

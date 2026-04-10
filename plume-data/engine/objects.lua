@@ -123,15 +123,32 @@ return function(plume)
 		return n and n == math.floor(n) and n
 	end
 
-	local function reprTable(t, acc)
+	local function isShortTable(t)
+		local l = 0
+		for k, v in pairs(t.table) do
+			if type(k) == "table" or type(v) == "table" then
+				return false
+			end
+			if type(k) ~= "number" then
+				l = l + #tostring(k)
+			end
+			l = l + #tostring(v)
+		end
+
+		return l<80
+	end
+
+	local function reprTable(t, acc, pretty, indent)
 		acc[t] = true
 
 		local result = {}
 		local ordered = true
 		local lastIndex = 0
+		indent = indent or 0
 
+		pretty = pretty and not isShortTable(t)
 		for _, key in ipairs(t.keys) do
-			local value = plume.repr(t.table[key], acc)
+			local value = plume.repr(t.table[key], acc, pretty, indent+1)
 			local index = toint(key)
 			if index then
 				if ordered then
@@ -146,7 +163,10 @@ return function(plume)
 				end
 
 				if ordered then
-					table.insert(result,  value)
+					if pretty then
+						value = "- " .. value
+					end
+					table.insert(result, value)
 				else
 					table.insert(result, string.format("%s: %s", key, value))
 				end
@@ -155,14 +175,36 @@ return function(plume)
 				table.insert(result, string.format("%s: %s", key, value))
 			end
 		end
-		
-		return string.format("$Table(%s)", table.concat(result, ", "))
+		if pretty then
+			return string.format("@Table\n%s%s\n%send",
+				("  "):rep(indent+1),
+				table.concat(result, "\n"..("  "):rep(indent+1)),
+				("  "):rep(indent)
+			)
+		else
+			return string.format("$Table(%s)", table.concat(result, ", "))
+		end
 	end
 
-	function plume.repr(obj, acc)
+	local function reprObj(obj, pretty, indent)
+		indent = indent or 0
+		if type(obj) == "string" and pretty and #obj > 80 then
+			local result = {"do"}
+			for i=1, #obj/80+1 do
+				local line = obj:sub((i-1)*80+1, i*80)
+				line = line:gsub('^ ', '\\s'):gsub(' $', '\\s')
+				table.insert(result, line)
+			end
+			return table.concat(result, "\n"..("  "):rep(indent+1)) .. "\n"..("  "):rep(indent) .. "end"
+		else
+			return tostring(obj)
+		end
+	end
+
+	function plume.repr(obj, acc, pretty, indent)
 		acc = acc or {}
 		if type(obj) ~= "table" then
-			return tostring(obj)
+			return reprObj(obj, pretty, indent)
 		end
 
 		local t = obj.type
@@ -176,7 +218,7 @@ return function(plume)
 			if acc[obj] then
 				return "$Table(...)"
 			else
-				return reprTable(obj, acc)
+				return reprTable(obj, acc, pretty, indent)
 			end
 		else
 			return t.."Obj<"..(t.name or "???")..">"
