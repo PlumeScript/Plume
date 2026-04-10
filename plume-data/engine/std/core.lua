@@ -91,7 +91,8 @@ return function (plume)
 
     local function importLuaMacro(name, f)
         return plume.obj.luaMacro(name, function(args)
-            return pcall(f, unpack(args.table))
+            local success, result = pcall(f, unpack(args.table))
+            return success, result
         end)
     end
 

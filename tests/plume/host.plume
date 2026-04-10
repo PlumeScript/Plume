@@ -1,0 +1,79 @@
+/// Test simple host
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro(m)
+		<$m>
+	end
+end
+/// Output
+<A>bc<D>d<E>
+/// End
+
+/// Test wrong macro signature 1
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro(m, n)
+		<$m>
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `string.replace` must take exactly '1' argument, not '2'.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │@String.replace(?rich)                                                   │
+│      │^^^^^^^^^^^^^^^^^^^^^^                                                   │
+│    2 │ - AbcDdE                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong macro signature 2
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro()
+		
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `string.replace` must take exactly '1' argument, not '0'.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │@String.replace(?rich)                                                   │
+│      │^^^^^^^^^^^^^^^^^^^^^^                                                   │
+│    2 │ - AbcDdE                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong macro return value
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro(m)
+		$Table()
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `string.replace` must return a 'string' or a 'number', not     │
+│   a 'table'.                                                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │- [A-Z]                                                                  │
+│    4 │- macro(m)                                                               │
+│      │  ^^^^^^^^                                                               │
+│    5 │ $Table()                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
