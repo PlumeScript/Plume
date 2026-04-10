@@ -183,25 +183,6 @@ $len($t)
 2
 /// End
 
-// /// Test Table append 1
-// let t = $Table()
-// $Table.append($t)
-// /// Error
-// ╭────────────────────────────────────────────────────────────────────────────────╮
-// │ RUNTIME ERROR:                                                                 │
-// │ → Wrong number of positional arguments for macro 'append', 1 instead of        │
-// │   between 2 and inf.                                                           │
-// │   Usage: $append(Table t, [any item|...items])                                 │
-// ├────────────────────────────────────────────────────────────────────────────────┤
-// │                                                                                │
-// │  ↳ test.plume                                                                  │
-// │    1 │let t = $Table()                                                         │
-// │    2 │$Table.append($t)                                                        │
-// │      │ ^^^^^^^^^^^^^^^^                                                        │
-// │                                                                                │
-// ╰────────────────────────────────────────────────────────────────────────────────╯
-// /// End
-
 /// Test Table append 2
 $Table.append(a, b)
 /// Error
@@ -510,6 +491,15 @@ set t2[1][1] = 0
 $t1
 /// Output
 $Table($Table(1, 2, 3), 2, 3)
+/// End
+
+/// Test nested deepcopy
+let t1 = $Table()
+set t1[1] = $t1
+let t2 = $Table.deepcopy($t1)
+$t2
+/// Output
+$Table($Table($Table(...)))
 /// End
 
 /// Test nested deepcopy
