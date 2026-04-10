@@ -4632,7 +4632,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = _ret401
                                                     end
                                                 else
-                                                    ip = jump
+                                                    ip = jump - 1
                                                     jump = 0
                                                 end
                                             end

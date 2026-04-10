@@ -1,4 +1,4 @@
-/// Test simple host
+/// Test String.replace
 @String.replace(?rich)
 	- AbcDdE
 	- [A-Z]
@@ -8,6 +8,33 @@
 end
 /// Output
 <A>bc<D>d<E>
+/// End
+
+/// Test Table.sort 1
+let t = $Table(5, 2, 3)
+
+macro compare(a, b)
+	$(a<b)
+end
+
+run $Table.sort($t, compare: $compare)
+$t
+/// Output
+$Table(2, 3, 5)
+/// End
+
+/// Test Table.sort 2
+let t = $Table(5, 2, 3)
+
+macro compare(a, b)
+	$(a>b)
+end
+
+run $Table.sort($t, compare: $compare)
+$t
+
+/// Output
+$Table(5, 3, 2)
 /// End
 
 /// Test wrong macro signature 1
@@ -75,5 +102,35 @@ end
 │      │  ^^^^^^^^                                                               │
 │    5 │ $Table()                                                                │
 │                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test error in hosted
+let t = $Table(5, 2, 3)
+
+macro compare(a, b)
+	$a.wing
+end
+
+run $Table.sort($t, compare: $compare)
+$t
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unregistered key 'wing'.                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │macro compare(a, b)                                                      │
+│    4 │ $a.wing                                                                 │
+│      │   ^^^^^                                                                 │
+│    5 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    7 │run $Table.sort($t, compare: $compare)                                   │
+│      │     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                   │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

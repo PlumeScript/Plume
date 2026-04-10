@@ -208,16 +208,68 @@ return function (plume)
             return true, result
         end
     }
+
+    local function sortUpdate(context)
+        if context.j == context.i then
+            table.insert(context.result, context.source.table[context.i])
+            context.i = context.i + 1
+            context.j = 1
+        end
+
+        if context.i <= #context.source.table then
+            context.PLUME_CALLBACK = context.compare
+            context.PLUME_CALLBACK_ARGS = {
+                context.result[context.j],
+                context.source.table[context.i]
+            }
+        else
+            context.PLUME_CALLBACK = nil
+            context.source.table = context.result
+        end
+
+        return true
+    end
+
+    local function sortNext(context, value)
+        if value then
+            context.j = context.j + 1
+        else
+            table.insert(context.result, context.j, context.source.table[context.i])
+            context.i = context.i + 1
+            context.j = 1
+        end
+        return true
+    end
+
     Table.table.sort = {
         checkArgs = {
-            checkTypes = {"table"},
+            checkTypes = {"table", compare="macro"},
             signature = "table t",
-            named={self=true},
+            named={self=true, compare=true},
             args=1
         },
-        method = function (t)
-            table.sort(t.table)
-            return true
+        method = function (t, options)
+            local compare = options.table.compare
+            if compare and #t.table > 1 then
+                if compare.positionalParamCount ~= 2 then
+                    return false, string.format("Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.", compare.positionalParamCount)
+                end
+
+                local context = {
+                    type         = "hostContext",
+                    source       = t,
+                    compare      = compare,
+                    i            = 2,
+                    j            = 1,
+                    result       = {t.table[1]}, 
+                    HOST_UPDATE  = sortUpdate,
+                    HOST_NEXT    = sortNext
+                }
+                return true, context, true
+            else
+                table.sort(t.table)
+                return true
+            end
         end
     }
 

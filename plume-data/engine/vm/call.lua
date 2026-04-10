@@ -195,7 +195,7 @@ function HOST_NEXT(vm)
             _INJECTION_PUSH(vm, vm.plume.ops.END,   0, 0)
             _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0) -- Reinject HOST_UPDATE to clean host
         else
-            vm.ip = vm.jump
+            vm.ip = vm.jump-1
             vm.jump = 0
         end
     end
