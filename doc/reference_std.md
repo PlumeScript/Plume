@@ -87,6 +87,29 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 #### Test
 * `sign(n)`: Return `1`, `-1` or `0` depending of `n` sign.
 
+**Note:** `Number` methods operate directly on numeric values for formatting, rounding, and basic operations, while `Math` provides pure mathematical functions (trigonometry, logarithms) and universal constants.
+
+### Math
+
+_All trigonometry functions works in radians._
+
+#### Functions
+
+* `Math.cos(x)`
+* `Math.sin(x)`
+* `Math.tan(x)`
+* `Math.acos(x)`
+* `Math.asin(x)`
+* `Math.atan(x)`
+* `Math.atan2(x)`
+* `Math.log(x)`
+* `Math.log10(x)`
+
+#### Constants
+* `Math.pi`
+* `Math.e`
+* `Math.huge`
+
 ### Iterators
 
 *   `seq(start, stop)` or `seq(stop)`: Returns an inclusive iterator from `start` to `stop`. If only one argument is provided, `start` defaults to `1`.
