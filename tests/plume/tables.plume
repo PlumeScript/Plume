@@ -300,21 +300,21 @@ $(len((1, 2, 3)))
 let t = (1, a:(1, 2))
 $repr($t)
 /// Output
-$Table(1, a: $Table(1, 2))
+(1, a: (1, 2))
 /// End
 
 /// Test inline Table as inline Table value 2
 let t = (a:(1, 2))
 $repr($t)
 /// Output
-$Table(a: $Table(1, 2))
+(a: (1, 2))
 /// End
 
 /// Test inline Table as inline Table value 3
 let t = $((1, a:(1, 2)))
 $repr($t)
 /// Output
-$Table(1, a: $Table(1, 2))
+(1, a: (1, 2))
 /// End
 
 /// Test inline Table in as named arg

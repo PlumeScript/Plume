@@ -20,7 +20,7 @@ return function (plume)
             method = function(args, chunk)
                 local result = {}
                 for _, x in ipairs(args.table) do
-                    table.insert(result, plume.repr(x))
+                    table.insert(result, plume.repr(x, nil, args.table.pretty))
                 end
                 print(table.unpack(result))
                 return true
@@ -79,10 +79,10 @@ return function (plume)
         },
 
         repr = {
-            checkArgs = {args=1, signature="any obj"},
+            checkArgs = {args=1, signature="any obj", named={pretty=true}},
             method = function(args)
                 local obj = args.table[1]
-                return true, plume.repr(obj)
+                return true, plume.repr(obj, nil, args.table.pretty)
             end
         }
     }

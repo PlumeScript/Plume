@@ -4,18 +4,18 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 ### Basic Functions
 
-*   `print(...items)`: A wrapper for the underlying lua `print` function.
+*   `print(...items, ?pretty)`: A wrapper for the underlying lua `print` function.
 *   `type(x)`: Returns the type of `x` as a string: `"empty"`, `"table"`, `"number"`, or `"string"`.
 *   `tostring(x)`: Converts the value `x` to its string representation.
 *   `len(table)`: Returns the number of items in a table.
-*   `repr(x)`: Give a string representation of any object.
+*   `repr(x, ?pretty)`: Give a string representation of any object.
 *   `help(x)`: A shortcut for `print(plume.doc(x))`
 
 ### Table Manipulation
 
 *   **`Table`**:
     *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
-    *   `Table.sort(table)`: In place sort. Doesn't change keys order.
+    *   `Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. 
     *   `Table.append(table, item)`: Adds `item` to the end of the specified `table`.
     *   `Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
     *   `Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied.
@@ -52,7 +52,9 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 #### Manipulation
 *  `lower(s)`: Converts all characters in the string to lowercase.
 *  `upper(s)`: Converts all characters in the string to uppercase.
-*  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub.
+*  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. sub can be a `string`, or a macro that take one `match` parameter and return a `string`.
+*  `rep(s, count, sep:)`: Repeat the string `count`, separate with `sep` if provided.
+*  `sub(s, start, end)`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end.
 
 #### Search
 * `find(s, pattern, ?rich)`: Returns tthe first match, or empty if not found.

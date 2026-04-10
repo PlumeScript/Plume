@@ -72,15 +72,20 @@ function CONCAT_CALL (vm, arg1, arg2)
         CONCAT_TABLE(vm)
         _PUSH_CALLSTACK(vm, tocall)
         
-        local success, result = tocall.callable (_STACK_POP(vm.mainStack), vm.runtime, _STACK_GET(vm.fileStack), vm.ip)
+        local success, result, isHosted = tocall.callable (_STACK_POP(vm.mainStack), vm.runtime, _STACK_GET(vm.fileStack), vm.ip)
 
         if success then
-            _POP_CALLSTACK(vm)
+            
             if result == nil then
                 result = vm.empty
             end
             
             _STACK_PUSH(vm.mainStack, result)
+            if isHosted then
+                _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
+            else
+                _POP_CALLSTACK(vm)
+            end
         else
             _ERROR(vm, result)
         end
@@ -167,4 +172,57 @@ function RETURN(vm, arg1, arg2)
     _STACK_POP(vm.closureStack)
     table.remove(vm.runtime.callstack)
     JUMP(vm, 0, _STACK_POP(vm.macroStack)) -- return in the previous position
+end
+
+--- @opcode
+--! inline
+function HOST_NEXT(vm)
+    local value   = _STACK_POP(vm.mainStack)
+    local context = _STACK_GET(vm.mainStack)
+
+    local success, result = context:HOST_NEXT(value)
+
+    if not success then
+        _ERROR(vm, result)
+    -- An injection takes precedence over a JUMP.
+    -- This results in the JUMP RETURN being overwritten
+    -- by a new JUMP to the macro to be called, unless the jump is forced here.
+    elseif vm.jump>0  then
+        if vm.jump == #vm.bytecode then
+            -- Pretty dirty.
+            -- The implementation of injections is a bit shaky
+            -- and doesn't handle the end of bytecode very well.     
+            _INJECTION_PUSH(vm, vm.plume.ops.END,   0, 0)
+            _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0) -- Reinject HOST_UPDATE to clean host
+        else
+            vm.ip = vm.jump-1
+            vm.jump = 0
+        end
+    end
+end
+
+--- @opcode
+--! inline
+function HOST_UPDATE(vm)
+    local context = _STACK_GET(vm.mainStack)
+
+    local success, result = context:HOST_UPDATE()
+    if not success then
+        _ERROR(vm, result)
+    elseif context.PLUME_CALLBACK then
+        BEGIN_ACC(vm, 0, 0)
+        for _, value in ipairs(context.PLUME_CALLBACK_ARGS or {}) do
+            _STACK_PUSH(vm.mainStack, value)
+        end
+
+        _STACK_PUSH(vm.mainStack, context.PLUME_CALLBACK)
+        
+        _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
+        _INJECTION_PUSH(vm, vm.plume.ops.HOST_NEXT,   0, 0)
+        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
+    else
+        _POP_CALLSTACK(vm)
+        _STACK_POP(vm.mainStack)
+        _STACK_PUSH(vm.mainStack, context.RETURN_VALUE or vm.empty)
+    end
 end

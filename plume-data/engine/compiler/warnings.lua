@@ -72,6 +72,7 @@ return function (plume, context)
 
     function context.checkCallWarning(node)
     	local name  = plume.ast.get(node, "IDENTIFIER")
+    	local index = plume.ast.get(node, "INDEX") or plume.ast.get(node, "DIRECT_INDEX")
     	local call  = plume.ast.get(node, "CALL")
     	local bcall = plume.ast.get(node, "BLOCK_CALL")
 
@@ -85,7 +86,7 @@ return function (plume, context)
     				)
     			end
     		elseif bcall then
-    			if not plume.ast.get(node, "LIST_ITEM") then
+    			if not plume.ast.get(node, "LIST_ITEM") and not index then
     				plume.warning.throwWarning(
     					"Using the macro `@Table` for create a new table block, but a shorter alternative exists.",
     					"Consider writing `do ... end` instead of `@Table ... end`.",

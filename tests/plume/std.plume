@@ -183,7 +183,23 @@ $len($t)
 2
 /// End
 
-/// Test Table append
+/// Test Table append 2
+$Table.append(a, b)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'string' for parameter '1' of macro 'append'. Expected: 'table'.  │
+│   Usage: $append(Table t, [any item|...items])                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$Table.append(a, b)                                                      │
+│      │ ^^^^^^^^^^^^^^^^^^                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Table append 3
 let t = do
   - Wing
   - Nib
@@ -191,10 +207,30 @@ let t = do
 end
 $len($t)\n
 $Table.append($t, paint)
-$len($t)
+$len($t)\n
+$t[3]
 /// Output
 2
 3
+paint
+/// End
+
+/// Test Table append 4
+let t = do
+  - Wing
+  - Nib
+  quill: blue
+end
+$len($t)\n
+@Table.append($t)
+  - paint
+end
+$len($t)\n
+$t[3]
+/// Output
+2
+3
+paint
 /// End
 
 /// Test Table remove 1
@@ -331,7 +367,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$Table(wing, nib, color: blue, quill)
+(wing, nib, color: blue, quill)
 /// End
 
 /// Test repr 10
@@ -342,7 +378,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$Table(empty, color: macro<color>)
+(empty, color: macro<color>)
 /// End
 
 /// Test repr 11
@@ -353,7 +389,7 @@ end
 set t[Wing] = 5
 $repr($t)
 /// Output
-$Table(macro<Wing>: 5)
+(macro<Wing>: 5)
 /// End
 
 /// Test repr 12
@@ -366,7 +402,7 @@ let t = do
 end
 $repr($t)
 /// Output
-$Table(wing, sub: $Table(quill, nib))
+(wing, sub: (quill, nib))
 /// End
 
 /// Test repr 13
@@ -383,7 +419,7 @@ set t[1] = 5
 set t[3]  = z
 $repr($t)
 /// Output
-$Table(5, empty, z)
+(5, empty, z)
 /// End
 
 /// Test repr Table with holes 2
@@ -392,7 +428,7 @@ set t[1] = 5
 set t[3000]  = z
 $repr($t)
 /// Output
-$Table(5, 3000: z)
+(5, 3000: z)
 /// End
 
 /// Test repr Table not ordered
@@ -402,7 +438,7 @@ set t[1] = 5
 
 $repr($t)
 /// Output
-$Table(3: z, 1: 5)
+(3: z, 1: 5)
 /// End
 
 /// Test count
@@ -436,7 +472,7 @@ let t2 = $Table.copy($t1)
 set t2[1] = 0
 $t1
 /// Output
-$Table(1, 2, 3)
+(1, 2, 3)
 /// End
 
 /// Test copy 2
@@ -445,7 +481,7 @@ let t2 = $Table.copy($t1)
 set t2[1][1] = 0
 $t1
 /// Output
-$Table($Table(0, 2, 3), 2, 3)
+((0, 2, 3), 2, 3)
 /// End
 
 /// Test deepcopy
@@ -454,7 +490,7 @@ let t2 = $Table.deepcopy($t1)
 set t2[1][1] = 0
 $t1
 /// Output
-$Table($Table(1, 2, 3), 2, 3)
+((1, 2, 3), 2, 3)
 /// End
 
 /// Test nested deepcopy
@@ -464,4 +500,57 @@ let t2 = $Table.deepcopy($t1)
 $t2
 /// Output
 $Table($Table($Table(...)))
+/// End
+
+/// Test nested deepcopy
+let t1 = $Table()
+set t1[1] = $t1
+let t2 = $Table.deepcopy($t1)
+$t2
+/// Output
+$Table($Table($Table(...)))
+/// End
+
+/// Test pretty
+@repr(?pretty)
+  do
+    - Wing
+    - Nib
+    wing: nib
+    - do
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nec diam eget maximus. Donec vitae orci eu massa faucibus lobortis et ut nulla. Sed placerat velit eget ipsum convallis faucibus. Fusce a erat in dolor maximus accumsan. Vestibulum eget risus a odio dapibus pulvinar cursus vel mi. Etiam suscipit bibendum dapibus. Mauris eget porttitor urna. Donec ante magna, hendrerit vel tristique vitae, accumsan ut eros. Nulla malesuada eget felis quis auctor. Donec molestie tempor sapien a sollicitudin. Aliquam sed porta augue, sed fringilla justo. Morbi pretium vulputate ligula eget ultricies.
+
+    end
+    - do
+      - blue
+      - red
+    end
+    - do
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+    end
+  end
+end
+/// Output
+do
+  - Wing
+  - Nib
+  wing: nib
+  - do
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut congue nec diam eget
+    \smaximus. Donec vitae orci eu massa faucibus lobortis et ut nulla. Sed placerat\s
+    velit eget ipsum convallis faucibus. Fusce a erat in dolor maximus accumsan. Ves
+    tibulum eget risus a odio dapibus pulvinar cursus vel mi. Etiam suscipit bibendu
+    m dapibus. Mauris eget porttitor urna. Donec ante magna, hendrerit vel tristique
+    \svitae, accumsan ut eros. Nulla malesuada eget felis quis auctor. Donec molestie
+    \stempor sapien a sollicitudin. Aliquam sed porta augue, sed fringilla justo. Mor
+    bi pretium vulputate ligula eget ultricies.
+  end
+  - (blue, red)
+  - (1, 2, 3, 4, 5, 6)
+end
 /// End

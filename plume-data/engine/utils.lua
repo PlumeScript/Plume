@@ -50,6 +50,8 @@ return function (plume)
 
 		PUSH_CONTEXT POP_CONTEXT LOAD_CONTEXT
 
+		HOST_UPDATE HOST_NEXT
+
 		END
 ]]
 	local function makeNames(names)

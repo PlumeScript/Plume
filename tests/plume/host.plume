@@ -1,0 +1,136 @@
+/// Test String.replace
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro(m)
+		<$m>
+	end
+end
+/// Output
+<A>bc<D>d<E>
+/// End
+
+/// Test Table.sort 1
+let t = $Table(5, 2, 3)
+
+macro compare(a, b)
+	$(a<b)
+end
+
+run $Table.sort($t, compare: $compare)
+$t
+/// Output
+(2, 3, 5)
+/// End
+
+/// Test Table.sort 2
+let t = $Table(5, 2, 3)
+
+macro compare(a, b)
+	$(a>b)
+end
+
+run $Table.sort($t, compare: $compare)
+$t
+
+/// Output
+(5, 3, 2)
+/// End
+
+/// Test wrong macro signature 1
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro(m, n)
+		<$m>
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '2'.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │@String.replace(?rich)                                                   │
+│      │^^^^^^^^^^^^^^^^^^^^^^                                                   │
+│    2 │ - AbcDdE                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong macro signature 2
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro()
+		
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '0'.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │@String.replace(?rich)                                                   │
+│      │^^^^^^^^^^^^^^^^^^^^^^                                                   │
+│    2 │ - AbcDdE                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test wrong macro return value
+@String.replace(?rich)
+	- AbcDdE
+	- [A-Z]
+	- macro(m)
+		$Table()
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `String.replace` must return a 'string' or a 'number', not     │
+│   a 'table'.                                                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │- [A-Z]                                                                  │
+│    4 │- macro(m)                                                               │
+│      │  ^^^^^^^^                                                               │
+│    5 │ $Table()                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test error in hosted
+let t = $Table(5, 2, 3)
+
+macro compare(a, b)
+	$a.wing
+end
+
+run $Table.sort($t, compare: $compare)
+$t
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unregistered key 'wing'.                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │macro compare(a, b)                                                      │
+│    4 │ $a.wing                                                                 │
+│      │   ^^^^^                                                                 │
+│    5 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    7 │run $Table.sort($t, compare: $compare)                                   │
+│      │     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                   │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-Sparrow_39-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Version](https://img.shields.io/badge/version-Sparrow_40-blue.svg) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -121,3 +121,13 @@ Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking ch
 `Plume🪶` was born out of my need for a language suited to creating my course documents. Before arriving at the current version, it went through... a lot of experimentation.
 
 3 implmentations, from 2018 to 2026, from a scratchy home interpreter with AST manipulations to a custom WM, passing through a lua-transpilator.
+
+## Dependencies and Thanks
+
+This project stands on great open-source work:
+
+- **LuaJIT** (Mike Pall) - The JIT compiler that powers the Plume🪶 runtime [website](https://luajit.org/)
+- **LPEG** (Roberto Ierusalimschy et al.) - To write the Plume🪶 parser [website](https://www.inf.puc-rio.br/~roberto/lpeg/)
+- **lua-parser** (@thenumbernine/Christopher Moore) - AST manipulation and code transformation tools used to inline the VM. [repo](https://github.com/thenumbernine/lua-parser)
+
+All theses dependencies are MIT licensed.
