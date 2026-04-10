@@ -321,5 +321,23 @@ return function (plume)
         end
     }
 
+    Table.table.sum = {
+        checkArgs = {
+            checkTypesAll = "number",
+            signature = "...numbers",
+            checkTypes={self="table"},
+            named={self=true}
+        },
+        method = function (...)
+            local args = {...}
+            table.remove(args)
+            local r = 0
+            for _, x in ipairs(args) do
+                r = r + x
+            end
+            return true, r
+        end
+    }
+
     plume.std.Table = Table
 end

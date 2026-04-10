@@ -28,6 +28,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.count(table, ?named)`: Total number of elements (all keys or named keys only).
     *   `Table.entry(table, index)`: Returns the key and value at the given position in insertion order.
     *   `Table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
+    *   `Table.sum(...items)`
     *   `Table.copy(table)`: Returns a superficial copy of `table`.
     *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
     *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
