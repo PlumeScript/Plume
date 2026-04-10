@@ -25,8 +25,18 @@ return function (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
 
-    for _, Table in ipairs({plume.stdLua, plume.std.Table.table, plume.std.Math.table, plume.std.plume.table}) do
+    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume}) do
+        local Table
+        if source == plume.stdLua then
+            Table = plume.stdLua
+        else
+            Table = source.table
+        end
+
         for name, f in pairs(Table) do
+            if source ~= plume.stdLua then
+                table.insert(source.keys, name)
+            end
             if type(f) == "table" then
                 if f.checkArgs then
                     f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"

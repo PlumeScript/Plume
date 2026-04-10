@@ -14,14 +14,7 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local String = plume.obj.table (0, 14)
-	String.keys = {
-		"upper", "lower", "replace",
-		"isNumber",
-		"trim", "rtrim", "ltrim", "dedent", "collapse", "indent",
-		"find", "count", "startsWith", "endsWith", "contains",
-		"split", "lines", "findAll", "partition"
-	}
+	local String = plume.obj.table (0, 0)
 
 	-- Manipulation
 	String.table.upper = {

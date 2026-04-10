@@ -14,8 +14,8 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local Table = plume.obj.table (0, 10)
-    Table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join", "deepcopy"}
+	local Table = plume.obj.table (0, 0)
+    
     Table.table.remove = {
         checkArgs = {
             checkTypes = {"table"},
