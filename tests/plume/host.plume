@@ -21,7 +21,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Macro sub for `string.replace` must take exactly '1' argument, not '2'.      │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '2'.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -43,7 +43,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Macro sub for `string.replace` must take exactly '1' argument, not '0'.      │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '0'.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -65,7 +65,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Macro sub for `string.replace` must return a 'string' or a 'number', not     │
+│ → Macro sub for `String.replace` must return a 'string' or a 'number', not     │
 │   a 'table'.                                                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │

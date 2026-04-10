@@ -60,7 +60,7 @@ return function (plume)
 	local function replaceNext(context, value)
 		local t = type(value) == "table" and value.type or type(value)
 		if t ~= "string" and t ~= "number" and t ~= "empty" then
-			return false, string.format("Macro sub for `string.replace` must return a 'string' or a 'number', not a '%s'.", t)
+			return false, string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
 		end
 
 		if (type(value) ~= "table" or value.type ~= "empty") then
@@ -86,7 +86,7 @@ return function (plume)
 
 			if type(sub) ~= "string" then
 				if sub.positionalParamCount ~= 1 then
-					return false, string.format("Macro sub for `string.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
+					return false, string.format("Macro sub for `String.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
 				end
 
 				local context = {
