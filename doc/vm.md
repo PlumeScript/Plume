@@ -179,6 +179,12 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### RETURN
 
 
+#### HOST_NEXT
+
+
+#### HOST_UPDATE
+
+
 ### vm/closures.lua
 
 #### OPEN_UPVALUE
