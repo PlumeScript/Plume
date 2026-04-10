@@ -43,6 +43,12 @@ return function (plume)
 			return true, math.floor(x*10^digit + 0.5)*10^-digit
 		end
 	}
+	Number.table.abs = {
+		checkArgs = {checkTypes={"number"}, args=1, signature="number x", named={self=true}},
+		method = function (x)
+			return true, math.abs(x)
+		end
+	}
 	Number.table.clamp = {
 		checkArgs = {checkTypes={"number", "number", "number"}, args=3, signature="number x, number min, number max", named={self=true}},
 		method = function (x, min, max)

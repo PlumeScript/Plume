@@ -77,6 +77,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 `$Number.method($n)` and `$n.method()` are both valids way to call `method` on a number named `n`.
 
 #### Manipulation
+* `abs(n)`
 * `floor(n, digit: 0)`: Rounds the number down to the nearest integer or to the specified number of decimal places.
 * `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places.
 * `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
