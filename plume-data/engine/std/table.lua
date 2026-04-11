@@ -273,7 +273,7 @@ return function (plume)
         end
     }
 
-    local function copy(t, deep, nt)
+    function plume.stdUtils.copy(t, deep, nt)
         local nt = nt or plume.obj.table(#t.table, #t.keys)
 
         for _, key in ipairs(t.keys) do
@@ -284,7 +284,7 @@ return function (plume)
                     value = deep[rawvalue]
                 else
                     deep[rawvalue] = plume.obj.table(0, 0)
-                    value = copy(rawvalue, deep, deep[rawvalue])
+                    value = plume.stdUtils.copy(rawvalue, deep, deep[rawvalue])
                 end
             else
                 value = rawvalue
@@ -305,7 +305,7 @@ return function (plume)
             args=1
         },
         method = function (t)
-            return true, copy(t)
+            return true, plume.stdUtils.copy(t)
         end
     }
 
@@ -317,7 +317,7 @@ return function (plume)
             args=1
         },
         method = function (t)
-            return true, copy(t, {})
+            return true, plume.stdUtils.copy(t, {})
         end
     }
 

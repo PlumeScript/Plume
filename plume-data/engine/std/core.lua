@@ -17,13 +17,15 @@ return function (plume)
     require 'plume-data/engine/std/utils' (plume)
 
     plume.std = {}
+    plume.stdUtils = {}
     require 'plume-data/engine/std/plume'  (plume)
     require 'plume-data/engine/std/lua'    (plume)
     require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std/table'  (plume)
-    require 'plume-data/engine/std/math' (plume)
+    require 'plume-data/engine/std/math'   (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
+    require 'plume-data/engine/std/random' (plume)
 
     for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume}) do
         local Table

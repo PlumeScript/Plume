@@ -34,7 +34,6 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
 *   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 
-
 Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$Table(a, b, ...)` and evaluates to the same result.
 
 Use `$Table` specifically when creating empty tables or tables with a single element.
@@ -152,6 +151,24 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
 *   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
+
+### Random Generation
+
+*   `Random([seed])`: Creates a new random generator with optional seed. Returns an object holding internal state.
+    *   If no seed provided, uses current time automatically.
+    
+#### Generator Methods
+
+Assume `let random = $Random()`.
+
+* `random()`: Returns float between 0 and 1.
+* `random(max:)`: Integer in [0, max] inclusive (both bounds included).
+* `random(min:, max:)`: Integer in [min, max] inclusive (both bounds included).
+* `random.seed(seed)`: set the seed.
+* `random.choice(table)`: Random element from items list.
+* `random.pchoice(table: weight)`: Random key weighted by values.
+* `random.shuffle(table)`: Shuffle table in place
+* `random.sample(table, count:)` Returns count unique elements.
 
 ### Lua Integration
 

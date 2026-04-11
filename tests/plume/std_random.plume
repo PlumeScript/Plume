@@ -1,0 +1,78 @@
+/// Test random 1
+let random = $Random(0)
+$random()
+/// Output
+0.81429158095936
+/// End
+
+/// Test random 2
+let random = $Random(1)
+$random()
+/// Output
+0.55935485966474
+/// End
+
+/// Test seed
+let random = $Random(1)
+$random.seed(0)
+$random()
+/// Output
+0.81429158095936
+/// End
+
+/// Test random(max)
+let random = $Random(1)
+for i in seq(10)
+	$random(5)
+end
+/// Output
+3311145041
+/// End
+
+/// Test random(min, max)
+let random = $Random(1)
+for i in seq(10)
+	$random(4, 5)
+end
+/// Output
+5544455454
+/// End
+
+/// Test random.choice
+let random = $Random(1)
+let t = (1, 2, 3, 4, 5)
+for i in seq(10)
+	$random.choice($t)
+end
+/// Output
+3422245142
+/// End
+
+
+/// Test random.pchoice
+let random = $Random(0)
+let t = (a:5, b:5, c:1)
+for i in seq(40)
+	$random.pchoice($t)
+end
+/// Output
+bbbabbaaaaabaababbbbbcbacababbaacbbaabbb
+/// End
+
+/// Test random.shuffle
+let random = $Random(0)
+let t = (1, 2, 3, 4, 5)
+run $random.shuffle($t)
+$t
+/// Output
+(5, 1, 2, 3, 4)
+/// End
+
+/// Test random.sample
+let random = $Random(0)
+let t = (1, 2, 3, 4, 5)
+$random.sample($t, 3)
+/// Output
+(5, 1, 2)
+/// End
+
