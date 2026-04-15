@@ -145,12 +145,20 @@ Plume balances performance and safety through its loading strategy:
 1.  **Parsing/Compilation:** Occurs only once per file path. The resulting bytecode is cached.
 2.  **Execution (Chunking):** Occurs every time `import` or `use` is invoked. A new environment is initialized for each call.
 
-### File System I/O
+### System and I/O
 
+#### Read and write
 Unlike `import`, the following functions do not use the `plume.path` resolution logic and expect direct file system paths.
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
 *   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
+
+
+#### File system
+
+#### Environment and commands
+*   `os.execute(command)`: Executes a shell command and returns its exit status code.
+*   `os.getEnv(name)`: Retrieves the value of an environment variable by name.
 
 ### Random Generation
 
