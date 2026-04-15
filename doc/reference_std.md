@@ -153,8 +153,32 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
 *   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
 
+> **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
 
 #### File system
+
+**Creation**
+*   `os.Path([path])`: Return a `Path` table. Without `path` args, return the current directory.
+
+**Exploration**
+*   `Path.getChildren()`: If `Path` is a directory, return all it's children. You can also directly iterate over: `for path in Path`.
+*   `Path.isDirectory()`: Return `true` if `Path` is a directory.
+*   `Path.isFile()`: Return `true` if `Path` is a file.
+*   `Path.exists()`: Return `true` if `Path` exists.
+
+**Action**
+*   `Path.mkdir()`: Create a directory.
+*   `Path.touch()`: Create a file.
+*   `Path.remove()`: Remove a file or a directory.
+*   `Path.copy(dest)`: Copies a file to destination path. Return the new path.
+*   `Path.move(dest)`: Moves or renames a file/directory from source to destination. Return the new path.
+*   `Path.read()`: If `Path` is a file, return it's content.
+*   `Path.write(...content)`: If `Path` is a file or don't exists, write it.
+
+**Manipulation**
+*   `Path.getParent()`: Return the parent directory
+*   `Path.getName()`: Return the last path component as string.
+*   `String(Path)`: Get path as string
 
 #### Environment and commands
 *   `os.execute(command)`: Executes a shell command and returns its exit status code.

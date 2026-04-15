@@ -27,6 +27,7 @@ return function (plume)
     require 'plume-data/engine/std/number' (plume)
     require 'plume-data/engine/std/random' (plume)
     require 'plume-data/engine/std/os'     (plume)
+    require 'plume-data/engine/std/path'   (plume)
 
     for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os}) do
         local Table
