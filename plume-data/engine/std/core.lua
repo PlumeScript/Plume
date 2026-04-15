@@ -17,42 +17,64 @@ return function (plume)
     require 'plume-data/engine/std/utils' (plume)
 
     plume.std = {}
+    plume.stdUtils = {}
     require 'plume-data/engine/std/plume'  (plume)
     require 'plume-data/engine/std/lua'    (plume)
     require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std/table'  (plume)
+    require 'plume-data/engine/std/math'   (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
+    require 'plume-data/engine/std/random' (plume)
+    require 'plume-data/engine/std/os'     (plume)
+    require 'plume-data/engine/std/path'   (plume)
 
-    for _, Table in ipairs({plume.stdLua, plume.std.Table.table, plume.std.plume.table}) do
+    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os}) do
+        local Table
+        if source == plume.stdLua then
+            Table = plume.stdLua
+        else
+            Table = source.table
+        end
+
         for name, f in pairs(Table) do
-            if f.checkArgs then
-                f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
-                for k, v in pairs(f.checkArgs.checkTypes or {}) do
-                    if type(v) ~= "table" then
-                        f.checkArgs.checkTypes[k] = {v}
-                    end
-                end
+            if source ~= plume.stdLua then
+                table.insert(source.keys, name)
             end
-            Table[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
+            if type(f) == "table" then
                 if f.checkArgs then
-                    local success, message = plume.stdArgsCheck(name, args, f.checkArgs)
-                    if not success then
-                        return false, message
+                    f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
+                    for k, v in pairs(f.checkArgs.checkTypes or {}) do
+                        if type(v) ~= "table" then
+                            f.checkArgs.checkTypes[k] = {v}
+                        end
+                    end
+                    if f.checkArgs.checkTypesAll and type(f.checkArgs.checkTypesAll) == "string" then
+                        f.checkArgs.checkTypesAll = {f.checkArgs.checkTypesAll}
+                    end
+                end
+                Table[name] = plume.obj.luaMacro(name, function(args, runtime, filestack, ip)
+                    if f.checkArgs then
+                        local success, message = plume.stdArgsCheck(name, args, f.checkArgs)
+                        if not success then
+                            return false, message
+                        end
                     end
 
-                    
-                end
-
-                if Table == plume.stdLua then
-                    return f.method(args, runtime, filestack, ip)
-                elseif Table == plume.std.plume.table then
-                    return f.method(unpack(args.table))
-                elseif Table == plume.std.Table.table then
-                    table.insert(args.table, args)
-                    return f.method(unpack(args.table))
-                end
-            end)
+                    if Table == plume.stdLua then
+                        return f.method(args, runtime, filestack, ip)
+                    elseif Table == plume.std.plume.table then
+                        return f.method(unpack(args.table))
+                    elseif Table == plume.std.Math.table then
+                        return f.method(unpack(args.table))
+                    elseif Table == plume.std.os.table then
+                        return f.method(unpack(args.table))
+                    elseif Table == plume.std.Table.table then
+                        table.insert(args.table, args)
+                        return f.method(unpack(args.table))
+                    end
+                end)
+            end
         end
     end
 
@@ -72,6 +94,9 @@ return function (plume)
                         f.checkArgs.checkTypes[k] = {v}
                     end
                 end
+                if f.checkArgs.checkTypesAll and type(f.checkArgs.checkTypesAll) == "string" then
+                    f.checkArgs.checkTypesAll = {f.checkArgs.checkTypesAll}
+                end
             end
             Table.table[name] = plume.obj.luaMacro(name, function(args)
 
@@ -81,7 +106,6 @@ return function (plume)
                     if not success then
                         return false, message
                     end
-                    
                 end
                 table.insert(shiftedArgs.table, args)
                 return f.method(unpack(shiftedArgs.table))

@@ -14,8 +14,8 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local Table = plume.obj.table (0, 10)
-    Table.keys = {"append", "remove", "removeKey", "hasKey", "find", "findAll", "count", "entry", "join", "deepcopy"}
+	local Table = plume.obj.table (0, 0)
+    
     Table.table.remove = {
         checkArgs = {
             checkTypes = {"table"},
@@ -273,7 +273,7 @@ return function (plume)
         end
     }
 
-    local function copy(t, deep, nt)
+    function plume.stdUtils.copy(t, deep, nt)
         local nt = nt or plume.obj.table(#t.table, #t.keys)
 
         for _, key in ipairs(t.keys) do
@@ -284,7 +284,7 @@ return function (plume)
                     value = deep[rawvalue]
                 else
                     deep[rawvalue] = plume.obj.table(0, 0)
-                    value = copy(rawvalue, deep, deep[rawvalue])
+                    value = plume.stdUtils.copy(rawvalue, deep, deep[rawvalue])
                 end
             else
                 value = rawvalue
@@ -305,7 +305,7 @@ return function (plume)
             args=1
         },
         method = function (t)
-            return true, copy(t)
+            return true, plume.stdUtils.copy(t)
         end
     }
 
@@ -317,7 +317,25 @@ return function (plume)
             args=1
         },
         method = function (t)
-            return true, copy(t, {})
+            return true, plume.stdUtils.copy(t, {})
+        end
+    }
+
+    Table.table.sum = {
+        checkArgs = {
+            checkTypesAll = "number",
+            signature = "...numbers",
+            checkTypes={self="table"},
+            named={self=true}
+        },
+        method = function (...)
+            local args = {...}
+            table.remove(args)
+            local r = 0
+            for _, x in ipairs(args) do
+                r = r + x
+            end
+            return true, r
         end
     }
 

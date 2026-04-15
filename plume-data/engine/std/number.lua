@@ -14,12 +14,7 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	local Number = plume.obj.table (0, 7)
-
-	Number.keys = {
-		"floor", "ceil", "round", "clamp", "format", "localize",
-		"sign"
-	}
+	local Number = plume.obj.table (0, 0)
 
 	-- Manipulations
 	Number.table.floor = {
@@ -41,6 +36,12 @@ return function (plume)
 		method = function (x, options)
 			local digit = tonumber(options.table.digit or 0)
 			return true, math.floor(x*10^digit + 0.5)*10^-digit
+		end
+	}
+	Number.table.abs = {
+		checkArgs = {checkTypes={"number"}, args=1, signature="number x", named={self=true}},
+		method = function (x)
+			return true, math.abs(x)
 		end
 	}
 	Number.table.clamp = {

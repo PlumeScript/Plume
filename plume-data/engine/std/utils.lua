@@ -28,14 +28,14 @@ return function (plume)
 			end
 		end
 
-		if signature.checkTypes or signature.named then
+		if signature.checkTypes or signature.named or signature.checkTypesAll then
 			for key, value in pairs(args.table) do
 				if not tonumber(key)
 				and (not signature.named      or (not signature.named[key] and not signature.named["*"]))
 				and (not signature.checkTypes or not signature.checkTypes[key]) then
 					return false, plume.error.unknownParameterStd(key, name, signature.signature)
 				end
-				local exectedTypeTable = signature.checkTypes and signature.checkTypes[key]
+				local exectedTypeTable = signature.checkTypes and signature.checkTypes[key] or signature.checkTypesAll
 				local found = false
 				local t
 

@@ -5,11 +5,14 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 ### Basic Functions
 
 *   `print(...items, ?pretty)`: A wrapper for the underlying lua `print` function.
-*   `type(x)`: Returns the type of `x` as a string: `"empty"`, `"table"`, `"number"`, or `"string"`.
-*   `tostring(x)`: Converts the value `x` to its string representation.
+*   `type(x)`: Returns the type of `x` as a string: `empty`, `table`, `number`, or `string`.
 *   `len(table)`: Returns the number of items in a table.
 *   `repr(x, ?pretty)`: Give a string representation of any object.
 *   `help(x)`: A shortcut for `print(plume.doc(x))`
+*   `Number(x)`: Convert to a number. Raise an error if fail.
+*   `String(x)`: Convert to a string.
+*   `min(...numbers)`
+*   `max(...numbers)`
 
 ### Table Manipulation
 
@@ -25,15 +28,15 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.count(table, ?named)`: Total number of elements (all keys or named keys only).
     *   `Table.entry(table, index)`: Returns the key and value at the given position in insertion order.
     *   `Table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).
+    *   `Table.sum(...items)`
     *   `Table.copy(table)`: Returns a superficial copy of `table`.
     *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
-    *   **Edge Cases:** Use this function specifically when creating empty tables (`table()`) or tables with a single element.
+    *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
 *   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 
+Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$Table(a, b, ...)` and evaluates to the same result.
 
-Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$table(a, b, ...)` and evaluates to the same result.
-
-Use `$table` specifically when creating empty tables or tables with a single element.
+Use `$Table` specifically when creating empty tables or tables with a single element.
 
 ### String manipulation
 
@@ -77,6 +80,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 `$Number.method($n)` and `$n.method()` are both valids way to call `method` on a number named `n`.
 
 #### Manipulation
+* `abs(n)`
 * `floor(n, digit: 0)`: Rounds the number down to the nearest integer or to the specified number of decimal places.
 * `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places.
 * `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
@@ -86,6 +90,29 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 
 #### Test
 * `sign(n)`: Return `1`, `-1` or `0` depending of `n` sign.
+
+**Note:** `Number` methods operate directly on numeric values for formatting, rounding, and basic operations, while `Math` provides pure mathematical functions (trigonometry, logarithms) and universal constants.
+
+### Math
+
+_All trigonometry functions works in radians._
+
+#### Functions
+
+* `Math.cos(x)`
+* `Math.sin(x)`
+* `Math.tan(x)`
+* `Math.acos(x)`
+* `Math.asin(x)`
+* `Math.atan(x)`
+* `Math.atan2(x)`
+* `Math.log(x)`
+* `Math.log10(x)`
+
+#### Constants
+* `Math.pi`
+* `Math.e`
+* `Math.huge`
 
 ### Iterators
 
@@ -118,12 +145,62 @@ Plume balances performance and safety through its loading strategy:
 1.  **Parsing/Compilation:** Occurs only once per file path. The resulting bytecode is cached.
 2.  **Execution (Chunking):** Occurs every time `import` or `use` is invoked. A new environment is initialized for each call.
 
-### File System I/O
+### System and I/O
 
-Unlike `import`, the following functions do not use the `plume_path` resolution logic and expect direct file system paths.
+#### Read and write
+Unlike `import`, the following functions do not use the `plume.path` resolution logic and expect direct file system paths.
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
 *   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
+
+> **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
+
+#### File system
+
+**Creation**
+*   `os.Path([path])`: Return a `Path` table. Without `path` args, return the current directory.
+
+**Exploration**
+*   `Path.getChildren()`: If `Path` is a directory, return all it's children. You can also directly iterate over: `for path in Path`.
+*   `Path.isDirectory()`: Return `true` if `Path` is a directory.
+*   `Path.isFile()`: Return `true` if `Path` is a file.
+*   `Path.exists()`: Return `true` if `Path` exists.
+
+**Action**
+*   `Path.mkdir()`: Create a directory.
+*   `Path.touch()`: Create a file.
+*   `Path.remove()`: Remove a file or a directory.
+*   `Path.copy(dest)`: Copies a file to destination path. Return the new path.
+*   `Path.move(dest)`: Moves or renames a file/directory from source to destination. Return the new path.
+*   `Path.read()`: If `Path` is a file, return it's content.
+*   `Path.write(...content)`: If `Path` is a file or don't exists, write it.
+
+**Manipulation**
+*   `Path.getParent()`: Return the parent directory
+*   `Path.getName()`: Return the last path component as string.
+*   `String(Path)`: Get path as string
+
+#### Environment and commands
+*   `os.execute(command)`: Executes a shell command and returns its exit status code.
+*   `os.getEnv(name)`: Retrieves the value of an environment variable by name.
+
+### Random Generation
+
+*   `Random([seed])`: Creates a new random generator with optional seed. Returns an object holding internal state.
+    *   If no seed provided, uses current time automatically.
+    
+#### Generator Methods
+
+Assume `let random = $Random()`.
+
+* `random()`: Returns float between 0 and 1.
+* `random(max:)`: Integer in [0, max] inclusive (both bounds included).
+* `random(min:, max:)`: Integer in [min, max] inclusive (both bounds included).
+* `random.seed(seed)`: set the seed.
+* `random.choice(table)`: Random element from items list.
+* `random.pchoice(table: weight)`: Random key weighted by values.
+* `random.shuffle(table)`: Shuffle table in place
+* `random.sample(table, count:)` Returns count unique elements.
 
 ### Lua Integration
 
