@@ -133,3 +133,20 @@ $(5325423.55875).localize(fr)
 5 325 423,558 75
 /// End
 
+/// Test syntax #616-1
+$100
+/// Output
+100
+/// End
+
+/// Test syntax #616-2
+$1.5
+/// Output
+1.5
+/// End
+
+/// Test syntax #616-3
+$1.5.round()
+/// Output
+2
+/// End
