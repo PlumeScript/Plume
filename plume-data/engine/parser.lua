@@ -413,10 +413,11 @@ return function (plume)
         local continue = C("CONTINUE", K"continue")
 
         -- table
+        local ref      = idn * (s * K"as" * s * Ct("ALIAS", idn))^-1
         local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatementNLB" + P"-" * #lt) 
         local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbodynlb + #lt))
-                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os * lbodynlb)
-                        + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1)
+                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * ref * P":" *  os * lbodynlb)
+                        + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * ref) * (os * P"," * os * Ct("EMPTY_REF", ref))^-1
         local expand   = Ct("EXPAND", P"..." * evalBase) 
 
         local _do = Ct("DO", os * K"do" * body * _end)
