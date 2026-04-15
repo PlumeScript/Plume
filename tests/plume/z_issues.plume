@@ -757,3 +757,9 @@ a
 /// Output
 a
 /// End
+
+/// Test #682
+ref x, y, z
+/// Output
+$Table()
+/// End
