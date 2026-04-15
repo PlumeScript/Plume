@@ -170,3 +170,63 @@ $Wing()
 /// Output
 abc
 /// End
+
+/// Test Validator 1
+macro wing(Number x)
+  $(type(x))
+end
+
+$wing(1)
+/// Output
+number
+/// End
+
+/// Test Validator 2
+macro wing(Number x)
+  $(type(x))
+end
+
+let x = $(String(1))
+$(type(x))\n
+$(wing(x))
+/// Output
+string
+number
+/// End
+
+/// Test Validator 3
+macro wing(Number x: 0)
+  $(type(x))
+end
+
+let x = $(String(1))
+$(type(x))\n
+$(wing(x: x))
+/// Output
+string
+number
+/// End
+
+/// Test Validator 4
+macro wing(Number x: $String(0))
+  $(type(x))
+end
+
+$wing()
+/// Output
+number
+/// End
+
+/// Test Validator custom
+macro double(x)
+  $(2*x)
+end
+
+macro wing(double x)
+  $x
+end
+
+$wing(5)
+/// Output
+10
+/// End

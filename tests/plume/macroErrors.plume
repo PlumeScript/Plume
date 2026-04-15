@@ -477,3 +477,21 @@ $wing(b:, a)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test bad validator
+macro wing(idontexit x)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'idontexit', it isn't defined in the current scope.      │
+│   Only visibles variables can be used as validator.                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(idontexit x)                                                  │
+│      │           ^^^^^^^^^                                                     │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

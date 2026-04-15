@@ -164,7 +164,8 @@ return function (plume)
         local lt =  C("LINESTART", (os * S"\n")^1 * os) -- linestart
         local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
         -- strict identifier
-        local idns = C("IDENTIFIER", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0)
+        local _idns = (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0
+        local idns = C("IDENTIFIER", _idns)
         local idn = C("TRUE", K"true")   * -idns
         		  + C("FALSE", K"false") * -idns
         		  + C("EMPTY", K"empty") * -idns
@@ -336,6 +337,7 @@ return function (plume)
         -- macro & calls
         local paramDefaultValue =   os * P":" * os * Ct("BODY", V"inlinetable" + V"textic"^-1)
         local param      = Ct("PARAM",
+                                  (C("VALIDATOR", _idns) * s)^-1 *
                 			      idn * paramDefaultValue^-1
                     			+ Ct("VARIADIC", P"..." * idn * Et(plume.error.cannotSetVariadicDefaultValue, paramDefaultValue)^-1)
                     		) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
