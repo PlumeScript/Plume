@@ -337,10 +337,10 @@ return function (plume)
         -- macro & calls
         local paramDefaultValue =   os * P":" * os * Ct("BODY", V"inlinetable" + V"textic"^-1)
         local param      = Ct("PARAM",
-                                  (C("VALIDATOR", _idns) * s)^-1 *
+                                  (C("VALIDATOR", _idns) * s)^-1 * (
                 			      idn * paramDefaultValue^-1
                     			+ Ct("VARIADIC", P"..." * idn * Et(plume.error.cannotSetVariadicDefaultValue, paramDefaultValue)^-1)
-                    		) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
+                    		)) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"(" * os
