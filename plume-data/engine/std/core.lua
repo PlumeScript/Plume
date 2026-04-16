@@ -41,7 +41,7 @@ return function (plume)
             if source ~= plume.stdLua then
                 table.insert(source.keys, name)
             end
-            if type(f) == "table" then
+            if type(f) == "table" and not f.type then
                 if f.checkArgs then
                     f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
                     for k, v in pairs(f.checkArgs.checkTypes or {}) do

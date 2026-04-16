@@ -16,6 +16,8 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 ### Table Manipulation
 
+*   `List(table)`: return a table with only array part. If used as validator, raise an error if table contains a map element.
+*   `Map(table)`: return a table with only map part. If used as validator, raise an error if table contains a array element.
 *   **`Table`**:
     *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
     *   `Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. 

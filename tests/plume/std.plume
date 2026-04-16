@@ -554,3 +554,19 @@ do
   - (1, 2, 3, 4, 5, 6)
 end
 /// End
+
+/// Test List
+let t = (1, 2, a:x)
+
+$List($t)
+/// Output
+(1, 2)
+/// End
+
+/// Test Map
+let t = (1, 2, a:x)
+
+$Map($t)
+/// Output
+(a: x)
+/// End

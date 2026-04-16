@@ -99,4 +99,52 @@ return function (plume)
             end
         }
     }
+
+    plume.stdLua.List = plume.obj.table(0, 0)
+    plume.stdLua.List.meta = plume.obj.table(0, 0)
+    plume.stdLua.List.meta.keys = {"call", "validate"}
+    plume.stdLua.List.meta.table.call = plume.obj.luaMacro ("call", function(args)
+        local result = plume.obj.table(0, 0)
+        local t = args.table[1]
+        for k, v in ipairs(t.table) do
+            table.insert(result.keys, k)
+            table.insert(result.table, v)
+        end
+        return true, result
+    end)
+    plume.stdLua.List.meta.table.validate = plume.obj.luaMacro ("validate", function(args)
+        local t = args.table[1]
+        for _, k in ipairs(t.keys) do
+            if not tonumber(k) then
+                return false, string.format("Received extra named argument '%s', but extra arguments must be positional.", k)
+            end
+        end
+
+        return true, args
+    end)
+
+    plume.stdLua.Map = plume.obj.table(0, 0)
+    plume.stdLua.Map.meta = plume.obj.table(0, 0)
+    plume.stdLua.Map.meta.keys = {"call", "validate"}
+    plume.stdLua.Map.meta.table.call = plume.obj.luaMacro ("call", function(args)
+        local result = plume.obj.table(0, 0)
+        local t = args.table[1]
+        for _, k in ipairs(t.keys) do
+            if not tonumber(k) then
+                table.insert(result.keys, k)
+                result.table[k] = t.table[k]
+            end
+        end
+        return true, result
+    end)
+    plume.stdLua.Map.meta.table.validate = plume.obj.luaMacro ("validate", function(args)
+        local t = args.table[1]
+        for _, k in ipairs(t.keys) do
+            if tonumber(k) then
+                return false, "Received an extra positional argument, but extra arguments must be named."
+            end
+        end
+
+        return true, args
+    end)
 end
