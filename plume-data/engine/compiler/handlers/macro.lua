@@ -140,10 +140,10 @@ return function (plume, context, nodeHandlerTable)
 				end
 
 				if paramValidatorNode then
-					context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)        -- Prepare call
+					context.registerOP(paramNode, plume.ops.BEGIN_ACC, 0, 0)   -- Prepare call
 					context.registerOP(paramNode, plume.ops.LOAD_LOCAL, 0, i)  -- load value
 					context.nodeHandler(paramValidatorNode)                    -- Load validator
-					context.registerOP(node, plume.ops.CONCAT_CALL, 0, 0)      -- call
+					context.registerOP(paramNode, plume.ops.CONCAT_CALL, 1, 0) -- call
 					context.registerOP(paramNode, plume.ops.STORE_LOCAL, 0, i) -- save
 				end
 			end

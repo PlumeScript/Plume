@@ -32,6 +32,7 @@ function _POP_CALLSTACK(vm)
 end
 
 --- @opcode
+--- @param arg1 Flag, 1 for a validator flag
 --- Take the stack top to call, with all elements of the current frame as parameters.
 --- Stack the call result (or empty if nil)
 --- Handle macros and luaMacro
@@ -56,7 +57,7 @@ function CONCAT_CALL (vm, arg1, arg2)
             _PUSH_SELF(vm, self)
         end
 
-        _CALL_MACRO(vm, tocall)
+        _CALL_MACRO(vm, tocall, arg1==1)
         _STACK_PUSH(vm.closureStack, {})
 
     elseif t == "closure" then
@@ -120,48 +121,54 @@ end
 
 ---@param vm VM The virtual machine instance.
 ---@param chunk table The function chunk to call.
+---@param bool isValidator
 --! inline
-function _CALL_MACRO(vm, chunk)
-    local allocationCount = chunk.positionalParamCount + chunk.namedParamCount
-
-    if chunk.variadicOffset then
-        allocationCount = allocationCount + 1
-    end
-    
-    ENTER_SCOPE(vm, 0, chunk.localsCount) -- Create a new scope
-
-    -- Distribute arguments to locals and get the overflow table
-    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _CONCAT_TABLE(
-        vm,
-        chunk.positionalParamCount,
-        chunk.namedParamOffset,
-        chunk.variadicOffset
-    )
-
-    if tomanyPositionnalCounter>0 then
-        _ERROR(vm, vm.plume.error.wrongArgsCount(
-            chunk,
-            chunk.positionalParamCount+tomanyPositionnalCounter,
-            chunk.positionalParamCount
-        ))
-    elseif capturedCount < chunk.positionalParamCount then
-        _ERROR(vm, vm.plume.error.wrongArgsCount(
-            chunk,
-            capturedCount,
-            chunk.positionalParamCount
-        ))
-    elseif unknownNamed then
-        _ERROR(vm, vm.plume.error.unknownParameter(unknownNamed, chunk))
+function _CALL_MACRO(vm, chunk, isValidator)
+    if isValidator and chunk.positionalParamCount ~= 1 then
+        _ERROR(vm, vm.plume.error.wrongValidatorArgsCount(chunk, chunk.positionalParamCount))
     else
-        -- If the chunk expects a variadic argument, assign the table to the specific register
-        if chunk.variadicOffset then
-            _STACK_SET_FRAMED(vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
-        end
 
-        _PUSH_CALLSTACK(vm, chunk)
-        _STACK_POP_FRAME(vm.mainStack)        -- Clean stack from arguments
-        _STACK_PUSH(vm.macroStack, vm.ip + 1) -- Set the return pointer
-        JUMP(vm, 0, chunk.offset)             -- Jump to macro body  
+        local allocationCount = chunk.positionalParamCount + chunk.namedParamCount
+
+        if chunk.variadicOffset then
+            allocationCount = allocationCount + 1
+        end
+        
+        ENTER_SCOPE(vm, 0, chunk.localsCount) -- Create a new scope
+
+        -- Distribute arguments to locals and get the overflow table
+        local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _CONCAT_TABLE(
+            vm,
+            chunk.positionalParamCount,
+            chunk.namedParamOffset,
+            chunk.variadicOffset
+        )
+
+        if tomanyPositionnalCounter>0 then
+            _ERROR(vm, vm.plume.error.wrongArgsCount(
+                chunk,
+                chunk.positionalParamCount+tomanyPositionnalCounter,
+                chunk.positionalParamCount
+            ))
+        elseif capturedCount < chunk.positionalParamCount then
+            _ERROR(vm, vm.plume.error.wrongArgsCount(
+                chunk,
+                capturedCount,
+                chunk.positionalParamCount
+            ))
+        elseif unknownNamed then
+            _ERROR(vm, vm.plume.error.unknownParameter(unknownNamed, chunk))
+        else
+            -- If the chunk expects a variadic argument, assign the table to the specific register
+            if chunk.variadicOffset then
+                _STACK_SET_FRAMED(vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
+            end
+
+            _PUSH_CALLSTACK(vm, chunk)
+            _STACK_POP_FRAME(vm.mainStack)        -- Clean stack from arguments
+            _STACK_PUSH(vm.macroStack, vm.ip + 1) -- Set the return pointer
+            JUMP(vm, 0, chunk.offset)             -- Jump to macro body  
+        end
     end
 end
 

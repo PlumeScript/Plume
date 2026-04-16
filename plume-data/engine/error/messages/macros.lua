@@ -88,6 +88,15 @@ return function(plume)
 		return message
 	end
 
+	function plume.error.wrongValidatorArgsCount(macro, argCount)
+		local message = string.format(
+			"Macro '%s' cannot be used as validator: it take '%s' positional parameter%s instead of '1'.",
+			macro.name, argCount, argCount>1 and "s" or ""
+		)
+
+		return message
+	end
+
 	function plume.error.wrongArgsCountStd(macroName, argCount, minArgsCount, maxArgsCount, signature)
 		local signatureHint = ""
 		if signature then
