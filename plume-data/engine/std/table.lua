@@ -339,5 +339,17 @@ return function (plume)
         end
     }
 
+    Table.meta = plume.obj.table(0, 1)
+    Table.meta.keys = {"validate"}
+    Table.meta.table.validate = plume.obj.luaMacro ("call", function(args)
+        local x = args.table[1]
+        local t = type(x) == "table" and x.type or  type(x)
+        if t ~= "table" then
+            return false, string.format("Cannot convert '%s' to a table.", t)
+        else
+            return true, x
+        end
+    end)
+
     plume.std.Table = Table
 end

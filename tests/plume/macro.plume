@@ -230,3 +230,29 @@ $wing(5)
 /// Output
 10
 /// End
+
+/// Test Validator custom (via meta)
+let double = do
+  meta validate: macro(x)
+    $x$x
+  end
+end
+
+macro wing(double x)
+  $x
+end
+
+$wing(5)
+/// Output
+55
+/// End
+
+/// Test Table validator
+macro wing(Table x)
+  $len($x)
+end
+
+$wing((5, 6, 7))
+/// Output
+3
+/// End

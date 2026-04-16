@@ -1323,7 +1323,11 @@ return function (plume)
                                             local t = _ret115
                                             local self
                                             if t == "table" then
-                                                if tocall.meta and tocall.meta.table.call then
+                                                if arg1 == 1 and tocall.meta and tocall.meta.table.validate then
+                                                    self = tocall
+                                                    tocall = tocall.meta.table.validate
+                                                    t = tocall.type
+                                                elseif tocall.meta and tocall.meta.table.call then
                                                     self = tocall
                                                     tocall = tocall.meta.table.call
                                                     t = tocall.type
