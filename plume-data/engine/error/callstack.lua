@@ -71,6 +71,32 @@ return function(plume)
 		return errorCallstack
 	end
 
+	local function getValidator(node, infos)
+		local validator = plume.ast.get(node, "VALIDATOR")
+		if validator then
+			return true, validator
+		end
+		
+		for _, info in ipairs(infos.errorCallstack) do
+			if info.node then
+				validator = plume.ast.get(info.node, "VALIDATOR")
+				if validator then
+					return false, validator
+				end
+			end
+		end
+	end
+
+	local function handleValidator(node, infos)
+		local direct, validator = getValidator(node, infos)
+		if validator then
+			infos.message = string.format("Validator '%s' failed:\n%s", validator.content, infos.message)
+			if direct then -- remove redondant macro definition line
+				table.remove(infos.errorCallstack, 1)
+			end
+		end
+	end
+
 	function plume.error.getRuntimeErrorInfos(runtime, ip, message)
 		local infos
 
@@ -106,6 +132,7 @@ return function(plume)
 		end
 
 		infos.errorCallstack = simplifyErrorCallstack(infos.errorCallstack)
+		handleValidator(node, infos)
 
 		return infos
 	end

@@ -19,14 +19,19 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
-	function plume.error.useUnknownVariable(node, varName, ref, visiblesVariables)
+	function plume.error.useUnknownVariable(node, varName, ref, visiblesVariables, isValidator)
 		local refHint = ""
 		-- if ref then -- now, ref can be captured by closures
 		-- 	refHint = string.format("\n'ref%s' exists in parent scope, but a ref cannot be captured by macros.", varName)
 		-- 	plume.error.addContext(node, ref)
 		-- end
 		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, varName, visiblesVariables, true)
-		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.%s%s", varName, refHint, visiblesVariableHint)
+		local validatorHint = ""
+		if isValidator then
+			validatorHint = "\nOnly visibles variables can be used as validator."
+		end
+
+		local message = string.format("Cannot use variable '%s', it isn't defined in the current scope.%s%s%s", varName, refHint, visiblesVariableHint, validatorHint)
 		plume.error.throwCompilationError(node, message)
 	end
 

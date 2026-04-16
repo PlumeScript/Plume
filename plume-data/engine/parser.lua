@@ -164,7 +164,8 @@ return function (plume)
         local lt =  C("LINESTART", (os * S"\n")^1 * os) -- linestart
         local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
         -- strict identifier
-        local idns = C("IDENTIFIER", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0)
+        local _idns = (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0
+        local idns = C("IDENTIFIER", _idns)
         local idn = C("TRUE", K"true")   * -idns
         		  + C("FALSE", K"false") * -idns
         		  + C("EMPTY", K"empty") * -idns
@@ -309,6 +310,7 @@ return function (plume)
                     * (expr + E(plume.error.emptyExpr))
                 * (P")" + E(plume.error.missingClosingBracket))
                 + idn
+                + num
                 -- + E(plume.error.evalAlone)
             ) * V"evalOpperator"^0
         )
@@ -335,9 +337,10 @@ return function (plume)
         -- macro & calls
         local paramDefaultValue =   os * P":" * os * Ct("BODY", V"inlinetable" + V"textic"^-1)
         local param      = Ct("PARAM",
+                                  (C("VALIDATOR", _idns) * s)^-1 * (
                 			      idn * paramDefaultValue^-1
                     			+ Ct("VARIADIC", P"..." * idn * Et(plume.error.cannotSetVariadicDefaultValue, paramDefaultValue)^-1)
-                    		) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
+                    		)) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
                     		
         local paramlist  = Ct("PARAMLIST",
                 P"(" * os
@@ -413,10 +416,11 @@ return function (plume)
         local continue = C("CONTINUE", K"continue")
 
         -- table
+        local ref      = idn * (s * K"as" * s * Ct("ALIAS", idn))^-1
         local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatementNLB" + P"-" * #lt) 
         local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbodynlb + #lt))
-                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1 * P":" *  os * lbodynlb)
-                        + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * idn * (s * K"as" * s * Ct("ALIAS", idn))^-1)
+                        + Ct("HASH_ITEM", Ct("REF", K"ref"*s) * ref * P":" *  os * lbodynlb)
+                        + Ct("EMPTY_REF", Ct("REF", K"ref"*s) * ref) * (os * P"," * os * Ct("EMPTY_REF", ref))^0
         local expand   = Ct("EXPAND", P"..." * evalBase) 
 
         local _do = Ct("DO", os * K"do" * body * _end)

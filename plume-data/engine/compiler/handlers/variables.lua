@@ -21,7 +21,7 @@ return function (plume, context, nodeHandlerTable)
 		local varName = node.content
 		local var, ref = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables())
+			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables(), node.name == "VALIDATOR")
 		end
 		if var.source then
 			var.source.used = true
@@ -40,6 +40,7 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
 		end
 	end
+	nodeHandlerTable.VALIDATOR = nodeHandlerTable.IDENTIFIER
 
 	--- Analyzes a target node (variable or index) and prepares its internal structure
 	--- @param node node The main statement node

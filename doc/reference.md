@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Sparrow 41_
+_For version Sparrow 42_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -280,7 +280,7 @@ Macros are the primary way to create reusable logic in Plume. A macro is a block
 
 **Definition:**
 ```plume
-macro name(positional, named: defaultValue, ?flag, ...variadicArgs)
+macro name(positional1, validator positional2, named: defaultValue, ?flag, ...variadicArgs)
     ...
 end
 ```
@@ -293,6 +293,8 @@ A macro signature can include positional parameters, named parameters with defau
     *   Positional arguments are added as list items (e.g., `- "value"`).
     *   Named arguments are added as named items (e.g., `key: "value"`).
     *   The order of items in the table respects the order in which they were provided in the call.
+
+An argument may be preceded by a `validator` (see the relevant section).
 
 Macros support **closures**: they can access variables from their parent scopes, capturing the values at the point of definition. This allows macros to reference outer variables, parameters, and other macros defined in enclosing scopes.
 
@@ -344,6 +346,37 @@ end
     body content
 end
 ```
+
+**Validators**
+
+Macros can include type validators on their parameters to enforce constraints at call time. A validator is applied automatically before the parameter value enters the macro body, allowing early validation and transformation of arguments.
+
+_Syntax:_
+```plume
+macro name(validator ParameterName)
+    ...
+end
+```
+
+A validator declaration is syntactic sugar for an implicit assignment that calls the validator macro/function before entering the macro body:
+
+```plume
+// Previous code is a sugar for:
+macro name(ParameterName)
+    set ParameterName = $(validator(ParameterName))
+end
+```
+
+Note: variadic is treated as one `Table` argument.
+
+_Validator Requirements:_
+*   Must be an identifier (Validators cannot be expressions)
+*   Must reference a visible variable
+*   Must at least:
+    *   A macro accepting exactly one parameter. It receives the argument value and returns whatever it chooses (the caller is responsible for raising errors).
+    *   A table containing a `call` meta-field acts as an invokable object. The validator receives the first argument via standard invocation semantics.
+    *   A table with a `validate` meta-field is preferred for semantic clarity over generic callable tables. When both are present, **`validate` takes priority** over `call`.
+
 
 #### `leave`
 Exits the current execution block (macro or file) and immediately returns the value accumulated up to that point. It provides a mechanism for an early return, similar to a `return` statement in other languages.
