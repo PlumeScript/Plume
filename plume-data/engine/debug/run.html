@@ -99,12 +99,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	let stepCount = steps.length/4;
 
 	hideVMStep('vm-step-1');
+	updateStep('vm-step-1');
+
 	document.querySelector('.vm-step-select[data-target="0"]').classList.add('disable')
 	document.querySelector('#vm-step-1 .vm-step-select[data-target="1"]').classList.add('disable')
 	document.querySelector(`.vm-step-select[data-target="${stepCount+1}"]`).classList.add('disable')
-
-	updateStep('vm-step-1');
-
 });
 
 </script>
@@ -393,6 +392,11 @@ body {
 .frame-separator::after {
 	content: "-";
 	color: white;
+}
+
+.vm-error {
+	margin-top: 0.5rem;
+	color: red;
 }
 </style>
 

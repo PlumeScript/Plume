@@ -101,7 +101,8 @@ return function (plume)
 	local function renderExecution(log)
 		local result = {}
 		for i, vm in ipairs(log) do
-			table.insert(result, string.format("<div class='vm-step' id='vm-step-%i' data-ip=%i>", i, vm.ip))
+			if not vm.onlyError then
+				table.insert(result, string.format("<div class='vm-step' id='vm-step-%i' data-ip=%i>", i, vm.ip))
 				table.insert(result, string.format([[<div class='vm-step-title'>
 					Step %i on %i
 					<span class='vm-step-select' data-target=1> << </span>
@@ -138,6 +139,11 @@ return function (plume)
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
 				table.insert(result, "</div>")
+			end
+
+			if vm.error then
+				table.insert(result, string.format("<div class='vm-error'>%s</div>", vm.error:gsub('\n', '<br>')))
+			end
 
 			table.insert(result, "</div>")
 		end
@@ -200,26 +206,36 @@ return function (plume)
 
 		local success, result
 
-		data.ast      = plume.parse(data.code, data.filename)
+		success, result = pcall(plume.parse, data.code, data.filename)
 		
-		local runtime = plume.obj.runtime()
-		local chunk   = plume.obj.macro(data.filename, runtime)
-
-		success, result = pcall(plume.compileFile, data.code, data.filename, chunk, runtime)
-
 		if success then
-			data.bytecode = runtime.bytecode
-			data.mapping  = runtime.mapping
-			data.log = {}
-			plume.hook = hook(data.log)
-			plume.runDevFlag = true
-			success, result, ip = plume.run(runtime, chunk, fileParams)
+			data.ast = result
+			local runtime = plume.obj.runtime()
+			local chunk   = plume.obj.macro(data.filename, runtime)
 
-			if not success then
-				print(result)
+			success, result = pcall(plume.compileFile, data.code, data.filename, chunk, runtime)
+
+			if success then
+				data.bytecode = runtime.bytecode
+				data.mapping  = runtime.mapping
+				data.log = {}
+				plume.hook = hook(data.log)
+				plume.runDevFlag = true
+				success, result, ip = plume.run(runtime, chunk, fileParams)
+
+				if not success then
+					local last = data.log[#data.log]
+					last.error = plume.error.makeRuntimeError(runtime, ip, result)
+				end
+			else
+				data.ast = {code=data.code, bpos=1, epos=#data.code, name="", type=""}
+				data.bytecode = {}
+				data.log = {{error=result, onlyError=true}}
 			end
 		else
-			print(result)
+			data.ast = {code=data.code, bpos=1, epos=#data.code, name="", type=""}
+			data.bytecode = {}
+			data.log = {{error=result, onlyError=true}}
 		end
 
 		saveHTML(output..".html", data)
