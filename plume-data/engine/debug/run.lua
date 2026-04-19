@@ -20,6 +20,14 @@ return function (plume)
 		return node.name .. node.bpos .. "-" .. node.epos
 	end
 
+	function escape(str)
+		return str:gsub("&", "&amp;")
+				  :gsub("<", "&lt;")
+				  :gsub(">", "&gt;")
+				  :gsub('"', "&quot;")
+				  :gsub("'", "&#39;")
+	end
+
 	local function renderCode(node)
 		local result = {}
 		for x in node.code:gmatch('.') do
@@ -112,7 +120,7 @@ return function (plume)
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", plume.repr(vm.mainStack[i])))
+							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.mainStack[i]))))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
@@ -125,7 +133,7 @@ return function (plume)
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", plume.repr(vm.variableStack[i])))
+							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.variableStack[i]))))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
