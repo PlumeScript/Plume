@@ -167,7 +167,6 @@ body {
 #code-panel > * {
 	display: inline-block;
 	transition: background-color 0.1s ease, color 0.1s ease;
-	border-radius: 2px;
 	padding: 0 1px;
 	margin-bottom: -3px;
 }
@@ -228,8 +227,12 @@ body {
 .instruction:hover, .instruction.selected {
 	background-color: var(--highlight-bytecode) !important;
 	border-radius: 4px;
+	
+}
+.instruction:hover, .instruction.selected {
 	transform: translateX(2px);
 }
+
 
 
 .space, .tab {
@@ -271,8 +274,6 @@ body {
 	outline-offset: -2px;
 }
 
-/* === VM Steps Navigation & Stacks === */
-
 .vm-step {
 	display: none;
 }
@@ -297,7 +298,7 @@ body {
 	border-radius: 4px;
 	background-color: transparent;
 	transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-	margin-left: -3px; /* compense la padding pour aligner les boutons */
+	margin-left: -3px;
 }
 
 .vm-step-select:hover:not(.disable) {
@@ -317,8 +318,9 @@ body {
 
 .stack-view {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 0.5rem;
+	height: 2rem;
 }
 
 .stacks {
@@ -374,24 +376,26 @@ body {
 
 .vm-step-select:focus-visible {
 	outline: 2px solid #1e40af !important;
-	outline-offset: 1px;
+	outline-offset: 2px;
 }
 .frame-separator {
 	display: inline-block;
-	padding: 3px 8px;
+	margin: 5px;
 	background-color: var(--bg-primary);
 	border-radius: 4px;
 	font-size: 12px;
 	color: transparent; 
 	border-left: 3px solid #0f172a;
 	white-space: nowrap;
-	width: 0.1rem;
 	text-align: center;
+	background: black;
 }
 
 .frame-separator::after {
 	content: "-";
-	color: white;
+	color: black;
+	
+	font-size: 5%;
 }
 
 .vm-error {

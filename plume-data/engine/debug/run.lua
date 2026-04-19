@@ -104,7 +104,7 @@ return function (plume)
 			if not vm.onlyError then
 				table.insert(result, string.format("<div class='vm-step' id='vm-step-%i' data-ip=%i>", i, vm.ip))
 				table.insert(result, string.format([[<div class='vm-step-title'>
-					Step %i on %i
+					<span style='margin-right: 5px'>Step %i on %i</span>
 					<span class='vm-step-select' data-target=1> << </span>
 					<span class='vm-step-select' data-target=%i> < </span>
 					<span class='vm-step-select' data-target=%i> > </span>
