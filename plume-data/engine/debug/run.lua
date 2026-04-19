@@ -77,14 +77,60 @@ return function (plume)
 
 		for i, instr in ipairs(bytecode) do
 			local op    = bit.band(bit.rshift(instr, plume.OP_SHIFT), plume.MASK_OP)
-        	local arg1  = bit.band(bit.rshift(instr, plume.ARG1_SHIFT), plume.MASK_ARG1)
-        	local arg2  = bit.band(instr, plume.MASK_ARG2)
+			local arg1  = bit.band(bit.rshift(instr, plume.ARG1_SHIFT), plume.MASK_ARG1)
+			local arg2  = bit.band(instr, plume.MASK_ARG2)
 
-			table.insert(result, string.format("<div class='instruction' data-node='ast-node-%s'>", getNearestNode(i)))
+			table.insert(result, string.format("<div class='instruction' data-node='ast-node-%s' data-ip=%i>", getNearestNode(i), i))
 			table.insert(result, string.format("<div class='instruction-count'>%i</div>", i))
 			table.insert(result, string.format("<div class='instruction-name'>%s</div>", names[op]))
 			table.insert(result, string.format("<div class='instruction-arg'>%i</div>", arg1))
 			table.insert(result, string.format("<div class='instruction-arg'>%i</div>", arg2))
+			table.insert(result, "</div>")
+		end
+		return table.concat(result)
+	end
+
+	local function renderExecution(log)
+		local result = {}
+		for i, vm in ipairs(log) do
+			table.insert(result, string.format("<div class='vm-step' id='vm-step-%i' data-ip=%i>", i, vm.ip))
+				table.insert(result, string.format([[<div class='vm-step-title'>
+					Step %i on %i
+					<span class='vm-step-select' data-target=1> << </span>
+					<span class='vm-step-select' data-target=%i> < </span>
+					<span class='vm-step-select' data-target=%i> > </span>
+					<span class='vm-step-select' data-target=%i> >> </span>
+				</div>]], i, #log, i-1, i+1, #log))
+
+				table.insert(result, "<div class='stacks'>")
+					table.insert(result, "<div class='stack-view'>")
+						table.insert(result, "<div class='stack-title'>Main Stack</div>")
+						table.insert(result, "<div class='stack-content'>")
+						for i=1, vm.mainStack.pointer do
+							for _, j in ipairs(vm.mainStack.frames) do
+								if j==i and _>1  then
+									table.insert(result, string.format("<div class='frame-separator'></div>"))
+								end
+							end
+							table.insert(result, string.format("<div class='stack-element'>%s</div>", plume.repr(vm.mainStack[i])))
+						end
+						table.insert(result, "</div>")
+					table.insert(result, "</div>")
+					table.insert(result, "<div class='stack-view'>")
+						table.insert(result, "<div class='stack-title'>Variable Stack</div>")
+						table.insert(result, "<div class='stack-content'>")
+						for i=1, vm.variableStack.pointer do
+							for _, j in ipairs(vm.variableStack.frames) do
+								if j==i and _>1 then
+									table.insert(result, string.format("<div class='frame-separator'></div>"))
+								end
+							end
+							table.insert(result, string.format("<div class='stack-element'>%s</div>", plume.repr(vm.variableStack[i])))
+						end
+						table.insert(result, "</div>")
+					table.insert(result, "</div>")
+				table.insert(result, "</div>")
+
 			table.insert(result, "</div>")
 		end
 		return table.concat(result)
@@ -97,10 +143,12 @@ return function (plume)
 			<div id="code-panel" class="panel">%s</div>
 			<div id="ast-panel" class="panel">%s</div>
 			<div id="bytecode-panel" class="panel">%s</div>
+			<div id="execution-panel" class="panel">%s</div>
 		]],
 			renderCode(data.ast),
 			renderAST(data.ast),
-			renderBytecode(data.bytecode, data.mapping)
+			renderBytecode(data.bytecode, data.mapping),
+			renderExecution(data.log)
 		)
 	end
 
@@ -113,7 +161,27 @@ return function (plume)
 		fdest:close()
 	end
 
-	local function hook(vm)
+	function deepcopy(orig, seen)
+		seen = seen or {}
+		
+		if type(orig) ~= "table" or seen[orig] then
+			return orig
+		end
+		
+		local copy = {}
+		seen[orig] = copy
+		
+		for key, value in pairs(orig) do
+			copy[key] = deepcopy(value, seen)
+		end
+		
+		return copy
+	end
+
+	local function hook(log)
+		return function(vm)
+			table.insert(log, deepcopy(vm))
+		end
 	end
 
 	plume.debug.run = function (input, output)
@@ -134,9 +202,16 @@ return function (plume)
 		if success then
 			data.bytecode = runtime.bytecode
 			data.mapping  = runtime.mapping
+			data.log = {}
+			plume.hook = hook(data.log)
+			plume.runDevFlag = true
 			success, result, ip = plume.run(runtime, chunk, fileParams)
+
+			if not success then
+				print(result)
+			end
 		else
-			return false, result
+			print(result)
 		end
 
 		saveHTML(output..".html", data)
