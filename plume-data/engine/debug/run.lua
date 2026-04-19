@@ -113,6 +113,9 @@ return function (plume)
 		fdest:close()
 	end
 
+	local function hook(vm)
+	end
+
 	plume.debug.run = function (input, output)
 		local data = {}
 
