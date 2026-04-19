@@ -67,6 +67,9 @@ return function (plume)
 
 	plume.debug = {}
 
+	require 'plume-data/engine/debug/utils' (plume)
+	require 'plume-data/engine/debug/run'   (plume)
+
 	function plume.debug.invTable(t)
 		local result = {}
 		for k, v in pairs(t) do
@@ -331,4 +334,6 @@ return function (plume)
 		print(table.concat(show, "\n"))
 		
 	end
+
+	
 end

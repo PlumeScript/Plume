@@ -1,0 +1,239 @@
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+	const astPanel = document.querySelector('#ast-panel');
+	let codeElements =  Array.from(document.querySelectorAll('#code-panel > *'));
+
+	astPanel.addEventListener('mouseover', (e) => {
+		clearSelection()
+		const target = e.target.closest('.ast-node');
+
+		if (!target || !isDeepestNode(target)) return;
+
+		selectASTNode(target)
+	});
+
+	astPanel.addEventListener('mouseleave', () => {
+		clearSelection();
+	});
+
+	document.querySelectorAll('.instruction').forEach(x => {
+		x.addEventListener('mouseover', (e) => {
+			clearSelection();
+			const target = e.target.closest('.instruction');
+			const id = target.dataset.node;
+
+			const node = document.querySelector('#' + id);
+			if (node) {
+				node.classList.add('selected');
+				node.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				selectASTNode(node);
+			}
+		});
+		x.addEventListener('mouseleave', () => {
+			clearSelection();
+		});
+	});
+
+	function selectASTNode(target){
+		const bpos = parseInt(target.dataset.bpos);
+		const epos = parseInt(target.dataset.epos);
+
+		applySelection(bpos, epos);
+	};
+
+  	function isDeepestNode(node) {
+		return !node.querySelector(':hover .ast-node');
+  	}
+
+	function applySelection(startIndex, endIndex) {
+		let first = true;
+		for (let i = startIndex - 1; i < endIndex && i >= 0; i++) {
+			if (codeElements[i]) {
+				codeElements[i].classList.add('selected');
+				if (first) {
+					codeElements[i].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				}
+			}
+		}
+  	}
+
+	function clearSelection() {
+		document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+	}
+});
+
+</script>
+
+<style>
+:root {
+	--bg-primary: #f8fafc;
+	--bg-panel: #ffffff;
+	--border-color: #e2e8f0;
+	--text-primary: #1e293b;
+	--text-secondary: #64748b;
+	--highlight-source: rgba(59, 130, 246, 0.15);
+	--highlight-ast: rgba(234, 179, 8, 0.15);
+	--highlight-bytecode: rgba(244, 63, 94, 0.15);
+	--hover-source: #dbeafe;
+	--hover-ast: #fef3c7;
+	--hover-bytecode: #fce7f3;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'JetBrains Mono', 'Fira Code', monospace;
+	background: var(--bg-primary);
+	color: var(--text-primary);
+	line-height: 1.5;
+	min-height: 100vh;
+}
+
+#main {
+	display: flex;
+	gap: 2rem;
+	padding: 2rem;
+	max-width: 1600px;
+	margin: 0 auto;
+	align-items: stretch;
+}
+
+.panel {
+	flex: 1;
+	background: var(--bg-panel);
+	border-radius: 8px;
+	padding: 1.5rem;
+	overflow-x: auto;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 4px 32px rgba(0, 0, 0, 0.04);
+	border: 1px solid var(--border-color);
+	font-size: 13px;
+	max-height: 50vh;
+}
+
+#code-panel {
+	min-width: 25%;
+}
+
+#code-panel > * {
+	display: inline-block;
+	transition: background-color 0.1s ease, color 0.1s ease;
+	border-radius: 2px;
+	padding: 0 1px;
+	margin-bottom: -3px;
+}
+
+.ast-node-infos {
+	font-weight: 600;
+	color: var(--text-secondary);
+	letter-spacing: -0.5px;
+	display: block;
+	padding: 2px 4px;
+	margin-bottom: 1px;
+	border-radius: 3px;
+}
+
+.ast-node-children {
+	margin-left: 1rem;
+	border-left: 2px dashed var(--border-color);
+	padding-left: 0.75rem;
+}
+
+.instruction {
+	display: grid;
+	grid-template-columns: 3ch 20ch 2ch 2ch;
+	gap: 8px;
+	align-items: center;
+	margin-bottom: 1px;
+	transition: background-color 0.1s ease, transform 0.15s ease;
+	border-radius: 4px;
+	padding: 2px 6px;
+}
+
+.instruction-count {
+	color: var(--text-secondary);
+	font-size: 0.8em;
+	opacity: 0.7;
+}
+
+.instruction-name {
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: -0.3px;
+	min-width: 1ch;
+}
+
+.instruction-arg {
+	color: var(--text-secondary);
+	min-width: 2ch;
+}
+
+
+#code-panel > .selected, 
+.ast-node.selected .ast-node-infos {
+	background-color: #1d4ed8 !important;
+	color: white !important;
+	border-radius: 2px;
+	font-weight: 600;
+}
+
+.ast-node:hover:not(:has(.ast-node:hover)) .ast-node-infos {
+	background-color: var(--hover-ast);
+	box-shadow: inset 0 0 0 1px #f59e0b;
+}
+
+.instruction:hover {
+	background-color: var(--highlight-bytecode) !important;
+	border-radius: 4px;
+	transform: translateX(2px);
+}
+
+.space, .tab {
+	display: inline-block;
+	min-width: 1ch;
+}
+
+.space {
+	padding-left: 0.25rem;
+}
+
+.tab {
+	padding-left: 1.5rem;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--bg-primary);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #cbd5e1;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #94a3b8;
+}
+
+#code-panel > *:focus, 
+.ast-node:focus .ast-node-infos, 
+.instruction:focus {
+	outline: 2px solid #0f172a !important;
+	outline-offset: -2px;
+}
+
+</style>
+
+<body>
+	<div id="main">
+		%BODY%
+	</div>
+</body>

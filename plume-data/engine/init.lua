@@ -21,7 +21,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 local plume = {}
 plume._VERSION = "b43 (Sparrow Edition)"
 
-require 'plume-data/engine/debug_tools'   (plume)
+require 'plume-data/engine/debug/core'    (plume)
 require 'plume-data/engine/error/core'    (plume)
 require 'plume-data/engine/warning'       (plume)
 require 'plume-data/engine/utils'         (plume)
