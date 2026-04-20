@@ -206,23 +206,7 @@ Assume `let random = $Random()`.
 
 ### Lua Integration
 
-Plume provides a `lua` variable that acts as a bridge to the underlying Lua environment. This variable contains wrappers for essential Lua functions and libraries, allowing for advanced operations not covered by the Plume standard library.
-
-The `lua` table includes:
-*   **Module Loading**: `lua.require(path)` (used to load Lua modules, use same Path resolution as `import`).
-*   **System functions**: `lua.error`, `lua.assert`.
-*   **Libraries**:
-    *   `lua.string.*` (string manipulation)
-    *   `lua.math.*` (mathematical constants and functions)
-    *   `lua.os.*` (operating system facilities)
-    *   `lua.io.*` (input and output)
-
-**Important Note on Type Stability:**
-The automatic type conversion between Plume and Lua is currently considered **unstable**. This applies particularly to:
-*   **Tables**: Mapping between Plume tables and Lua tables.
-*   **Functionality**: Mapping between Plume macros and Lua functions.
-
-As a result, some features or data transfers may be entirely non-functional or unusable in the current version.
+* `lua.require(path)` (used to load Lua modules, use same Path resolution as `import`). Required file must return a function.
 
 ### Others
 *   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
