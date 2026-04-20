@@ -183,4 +183,9 @@ return function(plume)
 		local message = "`with` statement that returns a table must be the only elements in their block."
 		plume.error.throwSyntaxError(node, message)
 	end
+
+	function plume.error.cannotUseRef(node)
+		local message = "Cannot use `ref` inside inline table or inline macro call."
+		plume.error.throwSyntaxError(node, message)
+	end
 end
