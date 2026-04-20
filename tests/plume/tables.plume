@@ -244,7 +244,7 @@ $t.y
 /// Test ref change
 let t = do
 	ref x: 5
-	set x += 1
+	x: $(x+1)
 end
 $t.x
 /// Output

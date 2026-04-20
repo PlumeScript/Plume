@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">579 passed out of 579 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">580 passed out of 580 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -4044,7 +4044,7 @@ set locale = 5
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot set variable &#39;locale&#39;, it is a context variable. Use `with            │
-│   locale: value` instead.                                                      │
+│   locale: 5` instead.                                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -21768,7 +21768,7 @@ a1aaa
 <pre><code class="language-plume">
 let t = do
 	ref x: 5
-	set x += 1
+	x: $(x+1)
 end
 $t.x
 
@@ -21786,9 +21786,9 @@ $t.x
 <span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_REF        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; set x += 1</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_REF       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set x += 1</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+1</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x: $(x+1)</span>
 <span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">015</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
@@ -23768,7 +23768,7 @@ let if = 5
 </code></pre>
 </div>
 </details>
-<h2>z_issues: <span style="font-weight: normal;">68 passed out of 68 tests</span></h2>
+<h2>z_issues: <span style="font-weight: normal;">69 passed out of 69 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -27129,6 +27129,45 @@ end
 │      │^^^^^^^^^^^^                                                             │
 │    2 │    - a                                                                  │
 │                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #680 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+ref x
+
+set x = 5
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot set variable &#39;x&#39;, it is a reference.                                  │
+│    Use `x: 5` instead.                                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │set x = 5                                                                │
+│      │^^^^^^^^^                                                                │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │ref x                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>

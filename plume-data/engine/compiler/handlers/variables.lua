@@ -105,7 +105,7 @@ return function (plume, context, nodeHandlerTable)
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariable(node, name, source, rvar.node)
 				elseif rvar.isContext then
-					plume.error.setContextVariable(node, name)
+					plume.error.setContextVariable(node, name, plume.ast.get(node, "BODY"))
 				end
 			end
 			rvar.key = key
@@ -175,6 +175,10 @@ return function (plume, context, nodeHandlerTable)
 			
 		for i, var in ipairs(varlist) do
 			local uid = context.getUID()
+
+			if var.isRef then
+				plume.error.cannotSetRef(node, var.key, var.source.node, body)
+			end
 			
 			-- Handle optional parameters (skip storage if value is provided/peeked)
 			if isParam then

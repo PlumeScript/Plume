@@ -67,8 +67,9 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
-	function plume.error.setContextVariable(node, varName)
-		local message = string.format("Cannot set variable '%s', it is a context variable. Use `with %s: value` instead.", varName, varName)
+	function plume.error.setContextVariable(node, varName, value)
+		value = plume.error.getSourceCode(value)
+		local message = string.format("Cannot set variable '%s', it is a context variable. Use `with %s: %s` instead.", varName, varName, value)
 		plume.error.throwCompilationError(node, message)
 	end
 
@@ -90,6 +91,14 @@ return function(plume)
 
 	function plume.error.useExistingVariable(node, varName, use)
 		local message = string.format("Cannot define variable '%s' from lib '%s', it already exists in the current file scope.", varName, use)
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotSetRef(node, varName, definitionNode, value)
+		value = plume.error.getSourceCode(value)
+		local message = string.format("Cannot set variable '%s', it is a reference.\n Use `%s: %s` instead.", varName, varName, value)
+
+		plume.error.addContext(node, definitionNode)
 		plume.error.throwCompilationError(node, message)
 	end
 end
