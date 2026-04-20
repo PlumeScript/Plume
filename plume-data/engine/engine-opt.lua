@@ -2804,7 +2804,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret252, _ret253 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret252, _ret253 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end532
                                                         end
                                                         right = tonumber (right)
@@ -2833,7 +2833,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret249, _ret250 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret249, _ret250 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end530
                                                         end
                                                         left = tonumber (left)
@@ -2978,7 +2978,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret267, _ret268 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret267, _ret268 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end564
                                                         end
                                                         right = tonumber (right)
@@ -3007,7 +3007,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret264, _ret265 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret264, _ret265 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end562
                                                         end
                                                         left = tonumber (left)
@@ -3148,7 +3148,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret282, _ret283 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret282, _ret283 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end596
                                                         end
                                                         right = tonumber (right)
@@ -3177,7 +3177,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret279, _ret280 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret279, _ret280 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end594
                                                         end
                                                         left = tonumber (left)
@@ -3320,7 +3320,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret297, _ret298 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret297, _ret298 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end628
                                                         end
                                                         right = tonumber (right)
@@ -3349,7 +3349,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret294, _ret295 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret294, _ret295 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end626
                                                         end
                                                         left = tonumber (left)
@@ -3472,7 +3472,7 @@ return function (plume)
                                                 if tx == "string" then
                                                     if not tonumber (x)
                                                      then
-                                                        _ret301, _ret302 = nil, plume.error.cannotConvertToString (x)
+                                                        _ret301, _ret302 = x, plume.error.cannotConvertToString (x)
                                                         goto _inline_end633
                                                     end
                                                     x = tonumber (x)
@@ -3594,7 +3594,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret321, _ret322 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret321, _ret322 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end684
                                                         end
                                                         right = tonumber (right)
@@ -3623,7 +3623,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret318, _ret319 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret318, _ret319 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end682
                                                         end
                                                         left = tonumber (left)
@@ -3764,7 +3764,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret336, _ret337 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret336, _ret337 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end716
                                                         end
                                                         right = tonumber (right)
@@ -3793,7 +3793,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret333, _ret334 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret333, _ret334 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end714
                                                         end
                                                         left = tonumber (left)
@@ -3936,7 +3936,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret351, _ret352 = nil, plume.error.cannotConvertToString (right)
+                                                            _ret351, _ret352 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end748
                                                         end
                                                         right = tonumber (right)
@@ -3965,7 +3965,7 @@ return function (plume)
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret348, _ret349 = nil, plume.error.cannotConvertToString (left)
+                                                            _ret348, _ret349 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end746
                                                         end
                                                         left = tonumber (left)

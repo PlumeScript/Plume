@@ -143,7 +143,7 @@ return function (plume)
 		end)
 
 		obj.meta = plume.obj.table(0, 0)
-		obj.meta.keys = {"tostring"}
+		obj.meta.keys = {"tostring", div}
 		obj.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
 			local path = args.table.self.table.path
 			return true, path
@@ -166,6 +166,10 @@ return function (plume)
 
 			return makePath(path1 .. "/" .. path2)
 		end
+		obj.meta.table.div = plume.obj.luaMacro ("div", function(args)
+			return div(args.table[1], args.table[2])
+		end)
+
 		
 		return true, obj
 	end

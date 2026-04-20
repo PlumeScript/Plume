@@ -15,7 +15,7 @@ function _CHECK_NUMBER_META (vm, x)
     local nx
     if tx  == "string" then
         if not tonumber(x) then
-            return nil, vm.plume.error.cannotConvertToString(x)
+            return x, vm.plume.error.cannotConvertToString(x)
         end
         x = tonumber(x)
     elseif tx  ~= "number" then
