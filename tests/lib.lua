@@ -99,27 +99,53 @@ end
 --- Loads and parses all `.plume` test files from a given directory.
 -- @param directory The path to the directory containing test files.
 -- @return A table containing all parsed tests, organized by filename.
-function lib.loadTests(directory)
-    local allTests = {}
+function lib.loadTests(directory, allTests)
+    allTests = allTests or {}
     local path = directory:gsub("/*$", "") -- Remove trailing slash if present
 
     for filename in lfs.dir(path) do
-        if filename ~= "." and filename ~= ".." and filename:match("%.plume$") then
+        if filename ~= "." and filename ~= ".." then
             local fullPath = path .. "/" .. filename
-            local file, err = io.open(fullPath, "r")
+            filename = fullPath:gsub('^tests/', '')
 
-            if file then
-                local content = file:read("*a")
-                file:close()
+            if filename:match("%.plume$") then
                 
-                local parsedTests = parseTestFile(content)
-                if parsedTests then
-                    allTests[filename] = parsedTests
+                local file, err = io.open(fullPath, "r")
+                
+                if file then
+                    local content = file:read("*a")
+                    file:close()
+                    
+                    local parsedTests = parseTestFile(content)
+                    if parsedTests then
+                        allTests[filename] = parsedTests
+                    else
+                        allTests[filename] = { error = "Failed to parse file." }
+                    end
                 else
-                    allTests[filename] = { error = "Failed to parse file." }
+                    allTests[filename] = { error = "Failed to open file: " .. (err or "unknown error") }
                 end
-            else
-                allTests[filename] = { error = "Failed to open file: " .. (err or "unknown error") }
+            elseif filename:match('%.lua$') then
+                fullPath = fullPath:gsub('%.lua$', '')
+                allTests[filename] = require(fullPath)
+                for _, v in pairs(allTests[filename]) do
+                    v.lua = true
+                    v.expected = {output=normalizeOutput(v.output), error=v.error or false}
+                    local input = {}
+
+                    if v.command then
+                        table.insert(input, "plume " .. v.command)
+                    end
+                    if v.inputFile then
+                        table.insert(input, "// " .. v.inputFile.name .. "\n" .. v.inputFile.content)
+                    end
+
+                    if v.outputFile then
+                        v.expected.output = normalizeOutput(v.outputFile.content)
+                    end
+
+                    v.input = table.concat(input, "\n\n")
+                end
             end
         end
     end
@@ -150,86 +176,141 @@ function lib.executeTests(allTests, plumeEngine)
     for _, testsInfos in ipairs(getSortedListByKey(allTests)) do
         local filename = testsInfos.key
         local tests  = testsInfos.value
+
         if not tests.error then
             for _, test in ipairs(getSortedListByKey(tests)) do
                 local testName = test.key
                 local testData = test.value
-                for mode=1, 2 do
-                    -- Timeout implementation
-                    local start_time = os.clock()
-                    local function timeout_hook()
-                        if os.clock() - start_time > TIMEOUT_SECONDS then
-                            debug.sethook() -- Disable hook before erroring
-                            error("timeout")
-                        end
+
+                if testData.lua then
+                    local result, error
+
+                    if testData.inputFile then
+                        local f = io.open(testData.inputFile.name, "w")
+                        f:write(testData.inputFile.content)
+                        f:close()
                     end
-                    
-                    
 
-                    local runtime = plumeEngine.obj.runtime()
-                    local chunk   = plumeEngine.obj.macro("main", runtime)
-                    runtime.plume.table.path = ""
+                    if testData.command then
+                        local tmpout = "lua_stdout_" .. os.time()
+                        local tmperr = "lua_stderr_" .. os.time()
 
-                    plumeEngine.runDevFlag = mode==1
-                    testData.opt = mode==2
-
-                    plumeEngine.config = {color="never", errorStyle="fancy"}
-
-                    -- Set hook to run every 1,000,000 instructions
-                    debug.sethook(timeout_hook, "", 1000000)
-
-                    local x, y, z = xpcall(
-                        plumeEngine.execute,
-                        debug.traceback,
-                        testData.input,
-                        "test.plume",
-                        chunk,
-                        runtime
-                    )
-                    
-                    -- CRITICAL: Always disable the hook after the pcall completes
-                    debug.sethook()
-
-                    if not x and y == "timeout" then
-                        -- The test timed out
-                        testData.obtained = {
-                            output = string.format("TIMEOUT: Execution exceeded %d second(s).", TIMEOUT_SECONDS),
-                            bytecode = nil,
-                            error = true
-                        }
-                    else
-                        -- Standard execution path (success or other error)
-                        local success, result
-                        if x then
-                            success = y
-                            result = z
-                        else
-                            success = false
-                            result = y
-                        end
-
-                        if success then
-                            if result == plumeEngine.obj.empty then
-                                result = ""
-                            end
-                            result = plumeEngine.repr(result)
-                        end
-
-                        local bytecode_info = {
-                            is_multi = false,
-                            grid = runtime.bytecode and plumeEngine.debug.bytecodeGrid(runtime)
-                        }
+                        local p = io.popen(".\\plume " .. testData.command .. " > " .. tmpout .. " 2> " .. tmperr)
+                        p:close()
                         
-                        testData.obtained = {
-                            output = normalizeOutput(result),
-                            bytecode = bytecode_info,
-                            error = not success,
-                        }
+                        local stdout_file = io.open(tmpout, "r")
+                        local stderr_file = io.open(tmperr, "r")
+                        local stdout = stdout_file and stdout_file:read("*all") or ""
+                        local stderr = stderr_file and stderr_file:read("*all") or ""
+                        stdout_file:close()
+                        stderr_file:close()
+
+                        os.remove(tmpout)
+                        os.remove(tmperr)
+
+                        if #stderr > 0 then
+                            error = true
+                            result = stderr:gsub("[A-Z]:.-/([^/]-')", "%1") -- anonymize windows paths
+                        else
+                            error = false
+                            result = stdout
+                        end
                     end
 
-                    if mode == 1 then
-                        if testData.expected.error ~= testData.obtained.error or testData.expected.output ~= testData.obtained.output then
-                            break
+                    if testData.outputFile and not error then
+                        local f = io.open(testData.outputFile.name)
+                        result = f:read("*a")
+                        f:close()
+                    end
+
+                    testData.obtained = {
+                        output = normalizeOutput(result),
+                        bytecode = nil,
+                        error = error
+                    }
+
+                    if testData.inputFile then
+                        os.remove(testData.inputFile.name)
+                    end
+                    if testData.outputFile then
+                        os.remove(testData.outputFile.name)
+                    end
+                else
+                    for mode=1, 2 do
+                        -- Timeout implementation
+                        local start_time = os.clock()
+                        local function timeout_hook()
+                            if os.clock() - start_time > TIMEOUT_SECONDS then
+                                debug.sethook() -- Disable hook before erroring
+                                error("timeout")
+                            end
+                        end
+
+                        local runtime = plumeEngine.obj.runtime()
+                        local chunk   = plumeEngine.obj.macro("main", runtime)
+                        runtime.plume.table.path = ""
+
+                        plumeEngine.runDevFlag = mode==1
+                        testData.opt = mode==2
+
+                        plumeEngine.config = {color="never", errorStyle="fancy"}
+
+                        -- Set hook to run every 1,000,000 instructions
+                        debug.sethook(timeout_hook, "", 1000000)
+
+                        local x, y, z = xpcall(
+                            plumeEngine.execute,
+                            debug.traceback,
+                            testData.input,
+                            "test.plume",
+                            chunk,
+                            runtime
+                        )
+                        
+                        -- CRITICAL: Always disable the hook after the pcall completes
+                        debug.sethook()
+
+                        if not x and y == "timeout" then
+                            -- The test timed out
+                            testData.obtained = {
+                                output = string.format("TIMEOUT: Execution exceeded %d second(s).", TIMEOUT_SECONDS),
+                                bytecode = nil,
+                                error = true
+                            }
+                        else
+                            -- Standard execution path (success or other error)
+                            local success, result
+                            if x then
+                                success = y
+                                result = z
+                            else
+                                success = false
+                                result = y
+                            end
+
+                            if success then
+                                if result == plumeEngine.obj.empty then
+                                    result = ""
+                                end
+                                result = plumeEngine.repr(result)
+                            end
+
+                            local bytecode_info = {
+                                is_multi = false,
+                                grid = runtime.bytecode and plumeEngine.debug.bytecodeGrid(runtime)
+                            }
+                            
+                            testData.obtained = {
+                                output = normalizeOutput(result),
+                                bytecode = bytecode_info,
+                                error = not success,
+                            }
+                        end
+
+                        if mode == 1 then
+                            if testData.expected.error ~= testData.obtained.error or testData.expected.output ~= testData.obtained.output then
+                                break
+                            end
                         end
                     end
                 end
