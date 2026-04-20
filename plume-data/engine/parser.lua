@@ -241,10 +241,10 @@ return function (plume)
             {{"AND", "and"}},
             {{"NOT", "not"}, unary=true},
             {{"EQ", "=="}, {"NEQ", "!="}, {"LTE", "<="}, {"GTE", ">="}, {"LT", "<"}, {"GT", ">"}},
-            {{"NEG", "-"}, unary=true},
             {{"ADD", "+"}, {"SUB", "-"}},
             {{"MUL", "*"}, {"DIV", "/"}, {"MOD", "%"}},
             {{"POW", "^"}},
+            {{"NEG", "-"}, unary=true}
         }
 
         local function genALU()
