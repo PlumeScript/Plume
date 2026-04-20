@@ -773,9 +773,10 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │with wing: 1                                                             │
+│    3 │end                                                                      │
+│    4 │with wing: 1                                                             │
 │      │^^^^^^^^^^^^                                                             │
-│    2 │    - a                                                                  │
+│    5 │    - b                                                                  │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
@@ -784,6 +785,112 @@ end
 $(-2+1)
 /// Output
 -1
+/// End
+
+/// Test #647-1
+if "a"
+    \s
+elseif "big"
+    \s
+else
+    (wing: nib)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    (wing: nib)                                                          │
+│      │    ^^^^^^^^^^^                                                          │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-2
+if "a"
+    \s
+elseif "big"
+    (wing: nib)
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this       │
+│   elseif body is of type TABLE.                                                │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    (wing: nib)                                                          │
+│      │    ^^^^^^^^^^^                                                          │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-3
+if "a"
+    (wing: nib)
+elseif "big"
+    \s
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    \s                                                                   │
+│      │                                                                         │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-4
+if "a"
+    \s
+elseif "big"
+    \s
+else
+    with a: 5
+        - wing
+    end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    with a: 5                                                            │
+│      │    ^^^^^^^^^                                                            │
+│    7 │        - wing                                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test #680
