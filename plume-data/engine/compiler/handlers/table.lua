@@ -32,9 +32,6 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.INLINE_TABLE = function(node)
-		if node.parent and node.parent.type == "TEXT" then
-			plume.error.inlineTableMuseBeAlone(node)
-		end
 		context.accBlock()(node)
 	end
 	

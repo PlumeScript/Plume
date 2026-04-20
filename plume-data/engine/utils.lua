@@ -162,6 +162,9 @@ return function (plume)
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
 			local childType = plume.ast.markType(child, lastNode)
+			if child.name == "HASH_ITEM" then
+				print("!", childType, child.type)
+			end
 			
 			-- workaround for the case where child is an information,
 			-- not a proper child
@@ -193,11 +196,23 @@ return function (plume)
 					end
 				elseif node.type == "TEXT" and childType == "VALUE" then
 					node.type = "TEXT"
+				elseif node.type == "VALUE_TABLE" and childType == "VALUE_TABLE" then
+					if child.name == "INLINE_TABLE" then
+						plume.error.inlineTableMuseBeAlone(child)
+					elseif child.name == "WITH"  then
+						plume.error.withTableMuseBeAlone(child)
+					end
 				elseif childType ~= "EMPTY" and node.type ~= childType then
 					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
 						plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
 					else
-						plume.error.mixedBlock(lastNode, node.type, childType, child)
+						if lastNode.name == "INLINE_TABLE" then
+							plume.error.inlineTableMuseBeAlone(lastNode)
+						elseif lastNode.name == "WITH"  then
+							plume.error.withTableMuseBeAlone(child)
+						else
+							plume.error.mixedBlock(lastNode, node.type, childType, child)
+						end
 					end
 				end
 			end
@@ -230,9 +245,11 @@ return function (plume)
 			or node.name == "IF"
 			or node.name == "ELSE"
 			or node.name == "ELSEIF"
-			
 			or node.name == "BODY" then
 			return node.type
+		elseif node.name == "INLINE_TABLE" 
+			or (node.name == "WITH" and node.type == "TABLE") then
+			return "VALUE_TABLE"
 		elseif node.name == "MACRO" then
 			if plume.ast.get(node, "IDENTIFIER") then
 				return "EMPTY"
@@ -261,9 +278,7 @@ return function (plume)
 		    or node.name == "TRUE"
 
 		    or node.name == "WITH"
-		    or node.name == "DO"
-
-		    or node.name == "INLINE_TABLE" then
+		    or node.name == "DO" then
 			return "VALUE"
 		else
 			return "EMPTY"

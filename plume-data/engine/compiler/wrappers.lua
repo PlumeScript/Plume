@@ -48,7 +48,7 @@ return function (plume, context)
             else  
                 -- More or less a TEXT block with 1 element.
                 -- Don't use ACC_TEXT to prevent conversion to string
-                if node.type == "VALUE" then 
+                if node.type == "VALUE" or node.type == "VALUE_TABLE" then 
                     context.toggleConcatOff() 
                     f(node)
                     context.toggleConcatPop()

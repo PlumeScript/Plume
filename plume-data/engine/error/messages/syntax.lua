@@ -150,6 +150,15 @@ return function(plume)
 		if expected == "VALUE" then
 			expected = "TEXT"
 		end
+		if expected == "VALUE_TABLE" then
+			expected = "TABLE"
+		end
+		if found == "VALUE" then
+			found = "TEXT"
+		end
+		if found == "VALUE_TABLE" then
+			found = "TABLE"
+		end
 		local message = string.format("Invalid '%s' content in a '%s' block.\nThe previous branches of this if statement were of type %s, but this %s body is of type %s.\nAll branches of an if statement must be of the same type.", found, expected, expected, parentName:lower(), found)
 		plume.error.throwSyntaxError(node, message)
 	end
