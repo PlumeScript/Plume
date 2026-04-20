@@ -27,7 +27,10 @@ return function(plume)
 		if #related == 0 then
 			return ""
 		else
-			for _, name in ipairs(related) do
+			for i, name in ipairs(related) do
+				if visiblesVariables[name].source then
+					related[i] = visiblesVariables[name].source .. "." .. related[i]
+				end
 				plume.error.addContext(node, visiblesVariables[name].node)
 			end
 

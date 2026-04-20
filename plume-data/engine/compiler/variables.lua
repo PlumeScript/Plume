@@ -282,9 +282,16 @@ return function (plume, context)
 			end
 		end
 
-		for k in pairs(plume.std) do
+		for k, v in pairs(plume.std) do
 			if not result[k] then
 				result[k] = {}
+				if type(v) == "table" and v.table then
+					for kk in pairs(v.table) do
+						if not result[kk] then
+							result[kk] = {source=k}
+						end
+					end
+				end
 			end
 		end
 
