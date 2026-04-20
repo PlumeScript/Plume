@@ -14,70 +14,104 @@ If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 return function (plume)
-	function plume.debug.exportAST(ast)
-		local function exportAST(node)
-			local result = {
-				bpos = node.bpos,
-				epos = node.epos,
-				type = node.type,
-				name = node.name,
-				content = node.content,
-			}
-			if node.children then
-				result.children = {}
-				for _, child in pairs(node.children) do
-					table.insert(result.children, exportAST(child))
-				end
+	local function escapeString(s, maxlength)
+
+		if type(s) == "table" then
+			if s == plume.obj.empty then
+				s = "empty"
+			elseif s.type == "macro" then
+				s = "macro '" .. (s.name or "???") .. "'"
+			elseif s.type == "luaFunction" then
+				s = "luaFunction '" .. (s.name or "???") .. "'"
 			end
-			return result
 		end
-		return exportAST(ast)
+
+		s = tostring(s)
+		s = s:gsub('\n', '\\n'):gsub('\t', '\\t')
+
+		if #s >= (maxlength or 20)+5 then
+			s = s:sub(1, maxlength or 20) .. '[...]'
+		end
+
+		if s:match('^%s+$') then
+			s = '"' ..s .. '"'
+		end
+
+		return s
 	end
 
-	function plume.debug.tojson(data)
-		local function tojson(data, indent)
-			indent = indent or ""
-			local result = {}
-			local first = true
-			local isList = true
-			for k, v in pairs(data) do
-				if not tonumber(k) then
-					isList = false
-				end
-			end
+	function plume.debug.invTable(t)
+		local result = {}
+		for k, v in pairs(t) do
+			result[v] = k
+		end
+		return result
+	end
 
-			for k, v in pairs(data) do
-				if first then
-					table.insert(result, "\n")
-					first = false
-				end
+	local function getConstantInfos(num, runtime)
+		local obj = runtime.constants[num]
+		if not obj then
+			return
+		end
+		value = escapeString(obj, 30)
 
-				table.insert(result, indent)
-				if not isList then
-					table.insert(result,  '"' .. k .. '":')
+		return {value=value}
+	end
+
+	local OP_BITS   = 7
+	local ARG1_BITS = 5
+	local ARG2_BITS = 20
+	local ARG1_SHIFT = ARG2_BITS
+	local OP_SHIFT   = ARG1_BITS + ARG2_BITS
+	local MASK_OP   = bit.lshift(1, OP_BITS) - 1
+	local MASK_ARG1 = bit.lshift(1, ARG1_BITS) - 1
+	local MASK_ARG2 = bit.lshift(1, ARG2_BITS) - 1
+	local function getInstrInfos(instr, runtime)
+		local op   = bit.band(bit.rshift(instr, OP_SHIFT), MASK_OP)
+		local arg1 = bit.band(bit.rshift(instr, ARG1_SHIFT), MASK_ARG1)
+		local arg2 = bit.band(instr, MASK_ARG2)
+
+		local t = plume.debug.invTable(plume.ops)
+
+		local name = plume.debug.invTable(plume.ops)[op] or "NULL"
+		local constInfos
+		local value
+		constInfos = getConstantInfos(arg2, runtime)
+
+		if ("LOAD_CONSTANT"):match(name) then
+			value = constInfos.value
+		elseif ("CALL OPP_CONCAT ESCAPE EVAL_SHORT STORE_LOCAL LOAD_LOCAL JUMP_IF ACC_CALL JUMP_IF_NOT_EMPTY JUMP ENTER_FILE"):match(name) then
+			-- value = arg2
+		elseif ("LOAD_LEXICAL STORE_LEXICAL ENTER_SCOPE"):match(name) then
+			-- value = arg1 .. " " .. arg2
+		end
+
+		return {
+			op = op,
+			name = name,
+			arg1 = arg1,
+			arg2 = arg2,
+			value = value
+		}
+	end
+
+	function plume.debug.bytecodeGrid(runtime)
+		local result = {}
+		for ip, instr in ipairs(runtime.bytecode) do
+			local infos = getInstrInfos(instr, runtime)
+			local raw = string.format("%08X", instr)
+
+			local node = runtime.mapping[ip]
+			local content = ""
+			if node and node.code then
+				content = node.code:sub(node.bpos, node.epos)
+				if content:match('\n') then
+					content = content:match('^[^\n]*').."[...]"
 				end
-				if type(v) == "table" then
-					table.insert(result, tojson(v, indent .. "\t"))
-				elseif type(v) == "string" then
-					table.insert(result, '"' .. (v:gsub('"', '\\"'):gsub('\n', '\\n')) .. '"')
-				else
-					table.insert(result, v)
-				end
-				table.insert(result, ",\n")
 			end
 			
-			if not first then
-				table.remove(result)
-				table.insert(result, "\n")
-				table.insert(result, (indent:sub(1, -2)))
-			end
-
-			if isList then
-				return "["..table.concat(result).."]"
-			else
-				return "{"..table.concat(result).."}"
-			end
+			table.insert(result, {raw, infos.name, infos.arg1, infos.arg2, content})
 		end
-		return tojson(data, "\t")
+		return result
 	end
 end
