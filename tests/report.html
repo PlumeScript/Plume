@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">578 passed out of 578 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">589 passed out of 589 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -4044,7 +4044,7 @@ set locale = 5
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot set variable &#39;locale&#39;, it is a context variable. Use `with            │
-│   locale: value` instead.                                                      │
+│   locale: 5` instead.                                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -19049,7 +19049,7 @@ AZ5AB
 </code></pre>
 </div>
 </details>
-<h2>suggestions: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<h2>suggestions: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -19135,7 +19135,7 @@ $configurationParameterA
 </details>
 <details>
 <summary>
-<span class="status-icon status-pass">✓</span> suggestion std <em style='font-weight: normal'></em>
+<span class="status-icon status-pass">✓</span> suggestion std 1 <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
 <div class="code-grid">
@@ -19167,7 +19167,41 @@ $prnt
 </code></pre>
 </div>
 </details>
-<h2>syntaxErrors: <span style="font-weight: normal;">26 passed out of 26 tests</span></h2>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> suggestion std 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$floor(5.5)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable &#39;floor&#39;, it isn&#39;t defined in the current scope.          │
+│   Perhaps you mean &#39;Number.floor&#39;?                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$floor(5.5)                                                              │
+│      │ ^^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<h2>syntaxErrors: <span style="font-weight: normal;">29 passed out of 29 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -19888,6 +19922,105 @@ $(1
 │  ↳ test.plume                                                                  │
 │    1 │$(1                                                                      │
 │      │   ^                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> ref in inline 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+(ref y, x: 5)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Cannot use `ref` inside inline table or inline macro call.                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │(ref y, x: 5)                                                            │
+│      │ ^^^                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> ref in inline 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+(y, ref x: 5)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Cannot use `ref` inside inline table or inline macro call.                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │(y, ref x: 5)                                                            │
+│      │    ^^^                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> ref in macro call <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$double(ref y, x: 5)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Cannot use `ref` inside inline table or inline macro call.                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$double(ref y, x: 5)                                                     │
+│      │        ^^^                                                              │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -21768,7 +21901,7 @@ a1aaa
 <pre><code class="language-plume">
 let t = do
 	ref x: 5
-	set x += 1
+	x: $(x+1)
 end
 $t.x
 
@@ -21786,9 +21919,9 @@ $t.x
 <span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
 <span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_REF        </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; set x += 1</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_REF       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set x += 1</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x+1</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x: $(x+1)</span>
 <span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">015</span> <span class="bc-opcode">LEAVE_SCOPE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
@@ -23768,7 +23901,7 @@ let if = 5
 </code></pre>
 </div>
 </details>
-<h2>z_issues: <span style="font-weight: normal;">67 passed out of 67 tests</span></h2>
+<h2>z_issues: <span style="font-weight: normal;">74 passed out of 74 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -27090,6 +27223,294 @@ a
 <h4>Output</h4>
 <pre><code>
 a
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #617 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+with wing: 1
+    - a
+end
+with wing: 1
+    - b
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → `with` statement that returns a table must be the only elements in their     │
+│   block.                                                                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │end                                                                      │
+│    4 │with wing: 1                                                             │
+│      │^^^^^^^^^^^^                                                             │
+│    5 │    - b                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #620 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(-2+1)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -2</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">OP_ADD          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -2+1</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+-1
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #647-1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+if &quot;a&quot;
+    \s
+elseif &quot;big&quot;
+    \s
+else
+    (wing: nib)
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    (wing: nib)                                                          │
+│      │    ^^^^^^^^^^^                                                          │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #647-2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+if &quot;a&quot;
+    \s
+elseif &quot;big&quot;
+    (wing: nib)
+else
+    \s
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this       │
+│   elseif body is of type TABLE.                                                │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif &quot;big&quot;                                                             │
+│    4 │    (wing: nib)                                                          │
+│      │    ^^^^^^^^^^^                                                          │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #647-3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+if &quot;a&quot;
+    (wing: nib)
+elseif &quot;big&quot;
+    \s
+else
+    \s
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid &#39;TEXT&#39; content in a &#39;TABLE&#39; block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif &quot;big&quot;                                                             │
+│    4 │    \s                                                                   │
+│      │                                                                         │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #647-4 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+if &quot;a&quot;
+    \s
+elseif &quot;big&quot;
+    \s
+else
+    with a: 5
+        - wing
+    end
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid &#39;TABLE&#39; content in a &#39;TEXT&#39; block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    with a: 5                                                            │
+│      │    ^^^^^^^^^                                                            │
+│    7 │        - wing                                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #680 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+ref x
+
+set x = 5
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot set variable &#39;x&#39;, it is a reference.                                  │
+│    Use `x: 5` instead.                                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │set x = 5                                                                │
+│      │^^^^^^^^^                                                                │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │ref x                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
 </details>

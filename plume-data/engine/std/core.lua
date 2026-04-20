@@ -114,7 +114,8 @@ return function (plume)
     end
 
     local function importLuaMacro(name, f)
-        return plume.obj.luaMacro(name, function(args)
+        return plume.obj.luaMacro(name, function(args, runtime, _, ip)
+            plume.warning.runtimeWarning(string.format("Deprecated macro '%s', as all `lua.*` macros.\nWill be removed in edition 'Owl'.", name), "Use std instead.", runtime, ip, {614, 615, 649})
             local success, result = pcall(f, unpack(args.table))
             return success, result
         end)

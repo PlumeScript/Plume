@@ -27,7 +27,10 @@ return function(plume)
 		if #related == 0 then
 			return ""
 		else
-			for _, name in ipairs(related) do
+			for i, name in ipairs(related) do
+				if visiblesVariables[name].source then
+					related[i] = visiblesVariables[name].source .. "." .. related[i]
+				end
 				plume.error.addContext(node, visiblesVariables[name].node)
 			end
 
@@ -48,6 +51,19 @@ return function(plume)
 			return ""
 		else
 			return string.format("\nPerhaps you mean '%s'?", table.concat( related, "', '"):gsub(', ([^,]-)$', ' or %1'))
+		end
+	end
+
+	function plume.error.getSourceCode(node, size)
+		local size = size or 10
+		if node then
+			local result = node.code:sub(node.bpos, node.epos):gsub('^%s*', ''):gsub('%s*$', '')
+			if #result > size then
+				result = result:sub(1, size-3) .. "..."
+			end
+			return result
+		else
+			return "[value]"
 		end
 	end
 end

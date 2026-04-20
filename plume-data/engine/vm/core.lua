@@ -182,24 +182,7 @@ function _VM_DECODE_CURRENT_INSTRUCTION(vm)
 
     --! to-remove-begin
     if vm.plume.hook then
-        vm.plume.hook (
-            vm.chunk,
-            vm.tic,
-            vm.ip,
-            vm.jump,
-            instr,
-            op,
-            arg1,
-            arg2,
-            vm.mainStack,
-            vm.mainStack.pointer,
-            vm.mainStack.frames,
-            vm.mainStack.frames.pointer,
-            vm.variableStack,
-            vm.variableStack.pointer,
-            vm.variableStack.frames,
-            vm.variableStack.frames.pointer
-        )    
+        vm.plume.hook (vm)    
     end
     if vm.plume.runStatFlag then
         _STAT_REGISTER(vm, op)

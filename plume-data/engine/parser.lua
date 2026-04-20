@@ -241,10 +241,10 @@ return function (plume)
             {{"AND", "and"}},
             {{"NOT", "not"}, unary=true},
             {{"EQ", "=="}, {"NEQ", "!="}, {"LTE", "<="}, {"GTE", ">="}, {"LT", "<"}, {"GT", ">"}},
-            {{"NEG", "-"}, unary=true},
             {{"ADD", "+"}, {"SUB", "-"}},
             {{"MUL", "*"}, {"DIV", "/"}, {"MOD", "%"}},
             {{"POW", "^"}},
+            {{"NEG", "-"}, unary=true}
         }
 
         local function genALU()
@@ -350,11 +350,12 @@ return function (plume)
         -- local paramlistM = paramlist + E(plume.error.missingParamList)
         local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlist^-1 * body * _end)
 
-        local namedArg  =Ct("HASH_ITEM",
+        local namedArg  = (E(plume.error.cannotUseRef, K"ref") * s)^-1 * Ct("HASH_ITEM",
                             os * (idn + eval) * os * P":"
                             * os * Ct("BODY", (V"inlinetable" + V"textic")^-1)
                         )
         local arg       = namedArg	
+                        + E(plume.error.cannotUseRef, K"ref") * s * idn
         				+ sugarFlagCall(Ct("FLAG", os *"?"*idn))
                         + Ct("EXPAND", P"..."*evalBase)
                         + Ct("LIST_ITEM", V"inlinetable")

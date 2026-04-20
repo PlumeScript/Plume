@@ -758,6 +758,162 @@ a
 a
 /// End
 
+/// Test #617
+with wing: 1
+    - a
+end
+with wing: 1
+    - b
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → `with` statement that returns a table must be the only elements in their     │
+│   block.                                                                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │end                                                                      │
+│    4 │with wing: 1                                                             │
+│      │^^^^^^^^^^^^                                                             │
+│    5 │    - b                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #620
+$(-2+1)
+/// Output
+-1
+/// End
+
+/// Test #647-1
+if "a"
+    \s
+elseif "big"
+    \s
+else
+    (wing: nib)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    (wing: nib)                                                          │
+│      │    ^^^^^^^^^^^                                                          │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-2
+if "a"
+    \s
+elseif "big"
+    (wing: nib)
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this       │
+│   elseif body is of type TABLE.                                                │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    (wing: nib)                                                          │
+│      │    ^^^^^^^^^^^                                                          │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-3
+if "a"
+    (wing: nib)
+elseif "big"
+    \s
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    \s                                                                   │
+│      │                                                                         │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-4
+if "a"
+    \s
+elseif "big"
+    \s
+else
+    with a: 5
+        - wing
+    end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    with a: 5                                                            │
+│      │    ^^^^^^^^^                                                            │
+│    7 │        - wing                                                           │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #680
+ref x
+
+set x = 5
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot set variable 'x', it is a reference.                                  │
+│    Use `x: 5` instead.                                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │set x = 5                                                                │
+│      │^^^^^^^^^                                                                │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │ref x                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test #682
 ref x, y, z
 /// Output

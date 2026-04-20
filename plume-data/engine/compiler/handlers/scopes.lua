@@ -36,6 +36,10 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.WITH = function(node)
+		if node.parent and node.parent.type == "TEXT" and node.type == "TABLE" then
+			plume.error.withTableMuseBeAlone(node)
+		end
+
 		local body   = plume.ast.get(node, "BODY")
 		local params = plume.ast.get(node, "PARAMLIST")
 

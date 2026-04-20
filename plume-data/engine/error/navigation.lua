@@ -18,10 +18,15 @@ return function(plume)
 		for i=ip, 1, -1 do
 			node = runtime.mapping[i]
 			if node and node.bpos then
-				break
+				return node
 			end
 		end
-		return node
+		for i=ip+1, #runtime.bytecode do
+			node = runtime.mapping[i]
+			if node and node.bpos then
+				return node
+			end
+		end
 	end
 
 	function plume.error.getMacroSignature(macro)
