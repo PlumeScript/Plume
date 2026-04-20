@@ -154,10 +154,7 @@ return function (plume)
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
 			local childType = plume.ast.markType(child, lastNode)
-			if child.name == "HASH_ITEM" then
-				print("!", childType, child.type)
-			end
-			
+
 			-- workaround for the case where child is an information,
 			-- not a proper child
 			local avoid = child.name == "IDENTIFIER" and (
