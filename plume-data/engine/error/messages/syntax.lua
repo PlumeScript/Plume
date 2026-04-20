@@ -178,4 +178,9 @@ return function(plume)
 		local message = "Inline tables must be the only elements in their block."
 		plume.error.throwSyntaxError(node, message)
 	end
+
+	function plume.error.withTableMuseBeAlone(node)
+		local message = "`with` statement that returns a table must be the only elements in their block."
+		plume.error.throwSyntaxError(node, message)
+	end
 end
