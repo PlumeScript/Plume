@@ -101,20 +101,29 @@ return function(plume)
 		local infos
 
 		local node = plume.error.getNode(runtime, ip)
-		local nodeParent = plume.error.findNodeParentMacro(node)
 
-		if plume.lastErrorInfos then
-			infos = plume.lastErrorInfos
-			infos.errorCallstack = infos.errorCallstack or {}
-			table.insert(infos.errorCallstack, {node=node, parentMacro=nodeParent})
-		else 
+		if node then
+			local nodeParent = plume.error.findNodeParentMacro(node)
+
+			if plume.lastErrorInfos then
+				infos = plume.lastErrorInfos
+				infos.errorCallstack = infos.errorCallstack or {}
+				table.insert(infos.errorCallstack, {node=node, parentMacro=nodeParent})
+			else 
+				infos = {
+					header="RUNTIME ERROR:",
+					message=message,
+					errorCallstack={},
+				}
+				infos.sourceNode       = node
+				infos.sourceNodeParent = nodeParent
+			end
+		else
 			infos = {
 				header="RUNTIME ERROR:",
 				message=message,
 				errorCallstack={},
 			}
-			infos.sourceNode       = node
-			infos.sourceNodeParent = nodeParent
 		end
 		
 		if runtime.callstack then
@@ -132,7 +141,10 @@ return function(plume)
 		end
 
 		infos.errorCallstack = simplifyErrorCallstack(infos.errorCallstack)
-		handleValidator(node, infos)
+
+		if node then
+			handleValidator(node, infos)
+		end
 
 		return infos
 	end
