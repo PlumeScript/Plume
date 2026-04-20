@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b43 (Sparrow Edition)
+Plume🪶 b44 (Sparrow Edition)
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
@@ -19,7 +19,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 local plume = {}
-plume._VERSION = "b43 (Sparrow Edition)"
+plume._VERSION = "b44 (Sparrow Edition)"
 
 require 'plume-data/engine/debug/core'    (plume)
 require 'plume-data/engine/error/core'    (plume)
