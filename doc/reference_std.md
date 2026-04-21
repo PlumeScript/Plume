@@ -197,8 +197,8 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 Assume `let random = $Random()`.
 
 * `random()`: Returns float between 0 and 1.
-* `random(max:)`: Integer in [0, max] inclusive (both bounds included).
-* `random(min:, max:)`: Integer in [min, max] inclusive (both bounds included).
+* `random(max)`: Integer in [0, max] inclusive (both bounds included).
+* `random(min, max)`: Integer in [min, max] inclusive (both bounds included).
 * `random.seed(seed)`: set the seed.
 * `random.choice(table)`: Random element from items list.
 * `random.pchoice(table: weight)`: Random key weighted by values.
