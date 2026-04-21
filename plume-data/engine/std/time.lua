@@ -184,4 +184,10 @@ return function (plume)
 			return createDate({timestamp=os.time()})
 		end
 	}
+
+	local _
+	_, plume.std.Time.table.SECOND = createDuration(1)
+	_, plume.std.Time.table.MINUTE = createDuration(60)
+	_, plume.std.Time.table.DAY    = createDuration(86400)
+	_, plume.std.Time.table.WEEK   = createDuration(604800)
 end
