@@ -39,66 +39,51 @@ return function (plume)
 			local time = plume.obj.table(0, 0)
 			
 			time.keys = {
-				"year",
-				"month",
-				"day",
-				"hour",
-				"minute",
-				"second",
 				"timestamp",
 				"locale",
 				"zone",
 				"type"
 			}
 
-			function time:updateTimestamp()
+			function time:updateTimestamp(args)
 				self.table.timestamp = os.time({
-					year   = self.table.year,
-					month  = self.table.month,
-					day    = self.table.day
+					year   = args.year,
+					month  = args.month,
+					day    = args.day
 				})
 				if self.table.timestamp then
-					self:updateFromTimestamp()
 					return true
 				else
 					return false, "Cannot make a Date frome these parameters."
 				end
 			end
 
-			function time:updateFromTimestamp()
+			function time:getFromTimestamp()
 				local timestamp   = self.table.timestamp
-				self.table.year   = tonumber(os.date("%Y", timestamp))
-				self.table.month  = tonumber(os.date("%m", timestamp))
-				self.table.day    = tonumber(os.date("%d", timestamp))
-				self.table.hour   = tonumber(os.date("%H", timestamp))
-				self.table.minute = tonumber(os.date("%M", timestamp))
-				self.table.second = tonumber(os.date("%S", timestamp))
-				return true
+				return {
+					year   = tonumber(os.date("%Y", timestamp)),
+					month  = tonumber(os.date("%m", timestamp)),
+					day    = tonumber(os.date("%d", timestamp)),
+					hour   = tonumber(os.date("%H", timestamp)),
+					minute = tonumber(os.date("%M", timestamp)),
+					second = tonumber(os.date("%S", timestamp))
+				}
 			end
 
 			time.table.type      = "Date"
 
-			time.table.year      = args.year      or 1970
-			time.table.month     = args.month     or 1
-			time.table.day       = args.day       or 1
-			time.table.hour      = args.hour      or 0
-			time.table.minute    = args.minute    or 0
-			time.table.second    = args.second    or 0
-			time.table.timestamp = args.timestamp or 0
-
 			local success, result = true
-			if time.table.timestamp ~= 0 then
-				success, result = time:updateFromTimestamp()
-			elseif  time.table.year   ~= 1970 or
-					time.table.month  ~= 1 or
-					time.table.day    ~= 1 or
-					time.table.hour   ~= 0 or
-					time.table.minute ~= 0 or
-					time.table.second ~= 0 then
-				success, result = time:updateTimestamp()
+			if args.timestamp ~= 0 then
+				time.table.timestamp = args.timestamp
+			elseif  args.year   ~= 0 or
+					args.month  ~= 0 or
+					args.day    ~= 0 or
+					args.hour   ~= 0 or
+					args.minute ~= 0 or
+					args.second ~= 0 then
+				success, result = time:updateTimestamp(args)
 			else
 				time.table.timestamp = os.time()
-				success, result = time:updateFromTimestamp()
 			end
 
 			if not success then
@@ -106,10 +91,35 @@ return function (plume)
 			end
 
 			time.meta = plume.obj.table(0, 0)
-			time.meta.keys = {"tostring"}
+			time.meta.keys = {"tostring", "setindex", "getindex"}
 			time.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
 				local self = args.table.self
 				return true, os.date("%x", self.table.timestamp)
+			end)
+			time.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
+				local self   = args.table.self
+				local key    = args.table[1]
+				local value  = args.table[2]
+				local values = self:getFromTimestamp()
+
+				if not values[key] then
+					return true, value
+				end
+
+				values[key] = value
+				time:updateTimestamp(values)
+
+				return true
+			end)
+			time.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
+				local self = args.table.self
+				local key = args.table[1]
+				local values = self:getFromTimestamp()
+
+				if not values[key] then
+					return false, string.format("Unregistered key '%s'", key)
+				end
+				return true, values[key]
 			end)
 			
 			return true, time
