@@ -49,7 +49,22 @@ return function (plume)
 				return false, string.format("'%s' already exists, cannot create it.", path)
 			end
 
-			return lfs.mkdir(path)
+			local fullPath = ""
+			for frag in path:gmatch('[^/\\]+') do
+				if fullPath ~= "" or path:sub(1, 1) == "/" then
+					fullPath = fullPath .. "/"
+				end
+				fullPath = fullPath .. frag
+				local attr = lfs.attributes(fullPath)
+				if not attr then
+					local success, result = lfs.mkdir(fullPath)
+					if not success then
+						return false, result
+					end
+				end
+			end
+
+			return true
 		end)
 		obj.table.remove = plume.obj.luaMacro ("remove", function(args)
 			local path = args.table.self.table.path
