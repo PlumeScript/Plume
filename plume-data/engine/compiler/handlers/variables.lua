@@ -27,6 +27,7 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, var.offset)
 		elseif var.isContext then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(varName))
+			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset) -- default value
 			context.registerOP(node, plume.ops.LOAD_CONTEXT)
 		else
 			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)

@@ -4224,15 +4224,16 @@ $Wing()
 <span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">007</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 14</span>
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing()[...]</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing()[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
@@ -4376,37 +4377,27 @@ x = 654 237,458 9
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-with locale: fr
-  with locale: none
-    Voici un nombre: $(6543.56)
-  end
-end
+let context x = 5
+
+$x
 
 </code></pre>
 </div>
 <div>
 <h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; fr</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: none[...]</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; none</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: none[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; Voici un nombre: </span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 6543.56</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (6543.56)</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: none[...]</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
 <pre><code>
-Voici un nombre: 6543.56
+5
 </code></pre>
 </div>
 </details>
@@ -4480,34 +4471,38 @@ end
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
 <span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; fr</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: en[...]</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; en</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">024</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">025</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
-<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">029</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">030</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">032</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: fr[...]</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; fr</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: en[...]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; en</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>

@@ -63,13 +63,16 @@ function PUSH_CONTEXT(vm, arg1, arg2)
 end
 
 --! inline
-function _LOAD_CONTEXT(vm, name, nocheck)
+function _LOAD_CONTEXT(vm, name, nocheck, default)
     local top = _STACK_POS(vm.contextStack)
     for i = top, 1, -1 do
         local frame = _STACK_GET(vm.contextStack, i)
         if frame.name == name then
             return frame.value
         end
+    end
+    if default then
+        return default
     end
     if not nocheck then
         vm.plume.warning.runtimeWarning(
@@ -84,8 +87,9 @@ end
 --- @opcode
 --! inline
 function LOAD_CONTEXT(vm, arg1, arg2)
-    local name  = _STACK_POP(vm.mainStack)
-    _STACK_PUSH(vm.mainStack, _LOAD_CONTEXT(vm, name))
+    local default = _STACK_POP(vm.mainStack)
+    local name    = _STACK_POP(vm.mainStack)
+    _STACK_PUSH(vm.mainStack, _LOAD_CONTEXT(vm, name, false, default))
 end
 
 --- @opcode
