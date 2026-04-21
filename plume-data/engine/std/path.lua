@@ -8,6 +8,28 @@ Licensed under the MIT License — see LICENSE for details.
 return function (plume)
 	local lfs = require"lfs"
 
+	local function mkdirs(path, isFile)
+		local fullPath = ""
+		path = path:gsub('\\', '/')
+		for frag in path:gmatch('[^/]+') do
+			if fullPath ~= "" or path:sub(1, 1) == "/" then
+				fullPath = fullPath .. "/"
+			end
+			fullPath = fullPath .. frag
+			if isFile and path == fullPath then
+				break
+			end
+
+			local attr = lfs.attributes(fullPath)
+			if not attr then
+				local success, result = lfs.mkdir(fullPath)
+				if not success then
+					return false, result
+				end
+			end
+		end
+		return true
+	end
 
 	local function makePath(path)
 		local obj = plume.obj.table(0, 0)
@@ -49,22 +71,7 @@ return function (plume)
 				return false, string.format("'%s' already exists, cannot create it.", path)
 			end
 
-			local fullPath = ""
-			for frag in path:gmatch('[^/\\]+') do
-				if fullPath ~= "" or path:sub(1, 1) == "/" then
-					fullPath = fullPath .. "/"
-				end
-				fullPath = fullPath .. frag
-				local attr = lfs.attributes(fullPath)
-				if not attr then
-					local success, result = lfs.mkdir(fullPath)
-					if not success then
-						return false, result
-					end
-				end
-			end
-
-			return true
+			return mkdirs(path)
 		end)
 		obj.table.remove = plume.obj.luaMacro ("remove", function(args)
 			local path = args.table.self.table.path
@@ -139,6 +146,8 @@ return function (plume)
 		end)
 		obj.table.write = plume.obj.luaMacro ("write", function(args)
 			local path = args.table.self.table.path
+			local success, result = mkdirs(path, true)
+
 			local file = io.open(path, "w")
 			if not file then
 				return false, string.format("Cannot write '%s'", path)
