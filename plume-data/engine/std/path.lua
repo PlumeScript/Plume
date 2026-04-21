@@ -165,7 +165,7 @@ return function (plume)
 			if not success then
 				return false, result
 			end
-			
+
 			local file = io.open(path, "w")
 			if not file then
 				return false, string.format("Cannot touch '%s'", path)
@@ -182,6 +182,29 @@ return function (plume)
 					local _, childPath = makePath(path.."/"..child)
 					table.insert(result.table, childPath)
 					table.insert(result.keys, #result.table)
+				end
+			end
+			return true, result
+		end)
+		obj.table.walk = plume.obj.luaMacro ("walk", function(args)
+			local path = args.table.self.table.path
+			local result = plume.obj.table(0, 0)
+
+			local toExplore = {path}
+			local pos = 1
+			while pos <= #toExplore do
+				local path = toExplore[pos]
+				pos = pos + 1
+
+				for child in lfs.dir(path) do
+					if child ~= "." and child ~= ".." then
+						local childPath = path.."/"..child
+						local _, childPathObj = makePath(childPath)
+						table.insert(result.table, childPathObj)
+						table.insert(result.keys, #result.table)
+
+						table.insert(toExplore, childPath)
+					end
 				end
 			end
 			return true, result
