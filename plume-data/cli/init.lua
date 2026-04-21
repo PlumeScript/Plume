@@ -1,16 +1,8 @@
---[[This file is part of Plume
+--[[
+This file is part of Plume🪶
 
-Plume🪶 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
-
-Plume🪶 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Plume🪶.
-If not, see <https://www.gnu.org/licenses/>.
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
 ]]
 
 local help = [[
@@ -33,6 +25,9 @@ DESCRIPTION
 OPTIONS
     -i, --input <FILE>
         Specify the source file containing the Plume code to be processed.
+
+    -s, --string <SCRIPT>
+    	Execute the given string as a plume script.
 
     -o, --output <FILE>
         The destination file where the generated content will be saved.
@@ -72,7 +67,8 @@ local shortcut = {
 	["-i"]="--input",
 	["-o"]="--output",
 	["-h"]="--help",
-	["-v"]="--version"
+	["-v"]="--version",
+	["-s"]="--string"
 }
 
 local function winCheckTerminalCapabilities()
@@ -146,6 +142,11 @@ local function parseArgs()
 			if not args.inputFilename then
 				return
 			end
+		elseif content == "--string" then
+			args.inputString = getNext()
+			if not args.inputString then
+				return
+			end
 		elseif content == "--output" then
 			args.outputFilename = getNext()
 			if not args.outputFilename then
@@ -206,13 +207,18 @@ local function main()
 
 	package.path = arg[1].."/?.lua;" .. package.path
 	local plume = require "plume-data/engine/init"
-
 	if args.showHelp then
 		print((help:gsub('!VERSION!', plume._VERSION)))
 	elseif args.showVersion then
 		print("Plume🪶" .. plume._VERSION)
-	elseif args.inputFilename then
-		local success, result = plume.executeFile(args.inputFilename, nil, nil, args)
+	elseif args.inputFilename or args.inputString then
+		local success, result
+
+		if args.inputFilename then
+			success, result = plume.executeFile(args.inputFilename, nil, nil, args)
+		else
+			success, result = plume.executeString(args.inputString, "<input>",nil, nil, args)
+		end
 
 		if success then
 			result = plume.repr(result)

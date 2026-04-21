@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Sparrow 43_
+_For version Sparrow 44_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -424,9 +424,9 @@ let [const] key1, sourceKey as alias, key: default, ... from expression
 let param name [= value]
 
 // 5. Context Variable Declaration (EXPERIMENTAL - #571)
-let context name
+let context name [= value]
 // Declares a variable that acts as an immutable proxy to a context variable. The variable reflects the current value from the context stack at the point of access.
-// Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`.
+// Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`, or value if one is given.
 ```
 
 ```plume

@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b43 (Sparrow Edition)
+Plume🪶 b44 (Sparrow Edition)
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
@@ -19,7 +19,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 ]]
 
 local plume = {}
-plume._VERSION = "b43 (Sparrow Edition)"
+plume._VERSION = "b44 (Sparrow Edition)"
 
 require 'plume-data/engine/debug/core'    (plume)
 require 'plume-data/engine/error/core'    (plume)
@@ -69,7 +69,7 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 	end
 end
 
-function plume.executeFile(filename, runtime, fileParams, args)
+function plume.executeString(code, filename, runtime, fileParams, args)
 	-- Should be associated with a runtime
 	if args then
 		plume.config = plume.config or {}
@@ -77,9 +77,18 @@ function plume.executeFile(filename, runtime, fileParams, args)
 		plume.config.color = args.color
 	end
 
-	filename = plume.normalizePath(filename)
 	local runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
+
+	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)
+	if success then
+		plume.error.showWarnings()
+	end
+	return success, result
+end
+
+function plume.executeFile(filename, runtime, fileParams, args)
+	filename = plume.normalizePath(filename)
 
 	local f = io.open(filename)
 		if not f then
@@ -89,11 +98,7 @@ function plume.executeFile(filename, runtime, fileParams, args)
 		local code = f:read("*a")
 	f:close()
 
-	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)
-	if success then
-		plume.error.showWarnings()
-	end
-	return success, result
+	return plume.executeString(code, filename, runtime, fileParams, args)
 end
 
 plume.hook = nil -- A function call at each step of the vm

@@ -153,7 +153,7 @@ Plume balances performance and safety through its loading strategy:
 Unlike `import`, the following functions do not use the `plume.path` resolution logic and expect direct file system paths.
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
-*   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
+*   `write(path, ?append, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
 
 > **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
 
@@ -169,13 +169,14 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 *   `Path.exists()`: Return `true` if `Path` exists.
 
 **Action**
-*   `Path.mkdir()`: Create a directory.
+*   `Path.mkdir()`: Create a directory. Create parent directories.
 *   `Path.touch()`: Create a file.
 *   `Path.remove()`: Remove a file or a directory.
 *   `Path.copy(dest)`: Copies a file to destination path. Return the new path.
 *   `Path.move(dest)`: Moves or renames a file/directory from source to destination. Return the new path.
 *   `Path.read()`: If `Path` is a file, return it's content.
-*   `Path.write(...content)`: If `Path` is a file or don't exists, write it.
+*   `Path.write(?append, ...content)`: If `Path` is a file or don't exists, write it. Create parent directories.
+*   `Path.walk`: Return a table of all childs.
 
 **Manipulation**
 *   `Path.getParent()`: Return the parent directory
@@ -196,13 +197,65 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 Assume `let random = $Random()`.
 
 * `random()`: Returns float between 0 and 1.
-* `random(max:)`: Integer in [0, max] inclusive (both bounds included).
-* `random(min:, max:)`: Integer in [min, max] inclusive (both bounds included).
+* `random(max)`: Integer in [0, max] inclusive (both bounds included).
+* `random(min, max)`: Integer in [min, max] inclusive (both bounds included).
 * `random.seed(seed)`: set the seed.
 * `random.choice(table)`: Random element from items list.
 * `random.pchoice(table: weight)`: Random key weighted by values.
 * `random.shuffle(table)`: Shuffle table in place
 * `random.sample(table, count:)` Returns count unique elements.
+
+### Time manipulation
+
+*   `Time.now()`: same as `Time.date(timestamp: currentTimestamp)`.
+
+**Constructor**
+*   `Time.date(year: 1970, month: 1, day: 1, hour: 0, minute: 0, second: 0, zone:, locale:, timestamp: 0)`: Create a `Date` object. `zone` and `locale` default to context variables `timeZone` and `timeLocale`. Cannot use `timestamp` and `year, month, etc...` at the same time.
+*   `Time.duration(second)`: return a `Duration` object. In most case, you should use `Time.SECOND`, etc...
+
+**Constants (for duration arithmetic)**
+*   `Time.SECOND = 1`
+*   `Time.MINUTE = 60`
+*   `Time.HOUR   = 3600`
+*   `Time.DAY    = 86400`
+*   `Time.Week   = 604800`
+
+
+**Properties**
+All properties can be read or written. Writing one field automatically updates all other fields synchronously. Raises an error if the resulting date is invalid.
+
+*   `time.timestamp`: Unix timestamp (seconds since epoch)
+*   `time.year`, `month`, `day`, `hour`, `minute`, `second`
+*   `time.locale`: Locale for formatting and parsing
+*   `time.zone`: Time zone identifier or offset
+*   `duration.day`, `hour`, `minute`, `second`
+
+**Methods**
+
+Assume `let time = $Time()`
+
+*   `Time.parse(string, template:)`: Parse a string into a Time object. If no template provided, uses default format based on current locale context. Raises an error if the string cannot be parsed according to the template.
+*   `time.format(template:)`: Format the time as a string using the specified template. Uses `%` symbols (see below). Defaults to locale-specific format if no template is provided.
+
+**Available format symbols**
+
+| symbol | meaning | example output |
+|---|---|---|
+| %y | year (4 digits) | 2026 |
+| %m | month (1-12, zero-padded) | 04 |
+| %mm | month name (locale-aware) | April / Apr |
+| %d | day of month (1-31, zero-padded) | 20 |
+| %dd | day name (locale-aware) | Monday / Mon |
+| %h | hour (0-23, zero-padded) | 14 |
+| %min | minute (0-59, zero-padded) | 30 |
+| %s | second (0-59, zero-padded) | 45 |
+
+**Meta operations**
+
+*   `String(time)`: Same as `time.format()` with default locale template.
+*   `time1 + time2` ; `time1 - time2`: Add or subtract timestamps (returns a Time object).
+*   `time * number` ; `time / number`: Multiply or divide the underlying timestamp by a scalar value.
+
 
 ### Lua Integration
 

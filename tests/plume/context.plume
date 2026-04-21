@@ -81,6 +81,14 @@ $repr($t)
 (item 1, item 2)
 /// End
 
+/// Test default context
+let context x = 5
+
+$x
+/// Output
+5
+/// End
+
 /// Test cannot use context with const
 let const context locale
 /// Error

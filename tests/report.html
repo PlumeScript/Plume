@@ -98,9 +98,247 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">589 passed out of 589 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">598 passed out of 598 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
-<h2>arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
+<h2>cli/base.lua: <span style="font-weight: normal;">5 passed out of 5 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Wrong input <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -i in.plume -o out.plume
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+Error: the file &#39;in.plume&#39; don&#39;t exist or isn&#39;t readable.
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> io <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -i in.plume -o out.plume
+
+// in.plume
+$(1+1)
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+2
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> s <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$(1+1)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+2
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> s_error <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$(1+)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing &#39;)&#39; to close evaluation.                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ &lt;input&gt;                                                                     │
+│    1 │$(1+)                                                                    │
+│      │   ^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> version <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -v
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+Plume🪶b44 (Sparrow Edition)
+</code></pre>
+</div>
+</details>
+<h2>cli/io.lua: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> read <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$read(test)&quot;
+
+// test
+content
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+content
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> readError <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$read(test)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot read file &#39;test&#39;.                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ &lt;input&gt;                                                                     │
+│    1 │$read(test)                                                              │
+│      │ ^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> write <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$write(test, content)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+content
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> writeAppend <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$write(test, wing, ?append)&quot;
+
+// test
+content
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+contentwing
+</code></pre>
+</div>
+</details>
+<h2>plume/arithmetic: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -1197,7 +1435,7 @@ false
 </code></pre>
 </div>
 </details>
-<h2>block: <span style="font-weight: normal;">19 passed out of 19 tests</span></h2>
+<h2>plume/block: <span style="font-weight: normal;">19 passed out of 19 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -2166,7 +2404,7 @@ quill Bar baz
 </code></pre>
 </div>
 </details>
-<h2>branchs: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
+<h2>plume/branchs: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -2610,7 +2848,7 @@ end
 </code></pre>
 </div>
 </details>
-<h2>closures: <span style="font-weight: normal;">14 passed out of 14 tests</span></h2>
+<h2>plume/closures: <span style="font-weight: normal;">14 passed out of 14 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -3574,7 +3812,7 @@ Wing!Wing!
 </code></pre>
 </div>
 </details>
-<h2>coercion: <span style="font-weight: normal;">8 passed out of 8 tests</span></h2>
+<h2>plume/coercion: <span style="font-weight: normal;">8 passed out of 8 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -3882,7 +4120,7 @@ table
 </code></pre>
 </div>
 </details>
-<h2>constants: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
+<h2>plume/constants: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -4018,7 +4256,7 @@ Nib
 </code></pre>
 </div>
 </details>
-<h2>context: <span style="font-weight: normal;">11 passed out of 11 tests</span></h2>
+<h2>plume/context: <span style="font-weight: normal;">11 passed out of 11 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -4150,15 +4388,16 @@ $Wing()
 <span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">007</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
 <span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 13</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 14</span>
 <span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing()[...]</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing()[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
@@ -4302,37 +4541,27 @@ x = 654 237,458 9
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-with locale: fr
-  with locale: none
-    Voici un nombre: $(6543.56)
-  end
-end
+let context x = 5
+
+$x
 
 </code></pre>
 </div>
 <div>
 <h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; fr</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: none[...]</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; none</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: none[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; Voici un nombre: </span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 6543.56</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (6543.56)</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: none[...]</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
 <pre><code>
-Voici un nombre: 6543.56
+5
 </code></pre>
 </div>
 </details>
@@ -4406,34 +4635,38 @@ end
 <span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
 <span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">006</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; fr</span>
-<span class="bc-line-num">010</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">014</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: en[...]</span>
-<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; en</span>
-<span class="bc-line-num">018</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
-<span class="bc-line-num">019</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
-<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">022</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
-<span class="bc-line-num">024</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">025</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
-<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
-<span class="bc-line-num">029</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">030</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
-<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
-<span class="bc-line-num">032</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: fr[...]</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; fr</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; with locale: en[...]</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; en</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">PUSH_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [...]</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: en[...]</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">LOAD_CONTEXT    </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; locale</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">POP_CONTEXT     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; with locale: fr[...]</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
 </div>
 </div>
 <h4>Output</h4>
@@ -4481,7 +4714,7 @@ Voici un nombre: 6 543,56
 </code></pre>
 </div>
 </details>
-<h2>destructuration: <span style="font-weight: normal;">17 passed out of 17 tests</span></h2>
+<h2>plume/destructuration: <span style="font-weight: normal;">17 passed out of 17 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -5310,7 +5543,7 @@ b=mark
 </code></pre>
 </div>
 </details>
-<h2>do: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
+<h2>plume/do: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -5472,7 +5705,7 @@ Nib
 </code></pre>
 </div>
 </details>
-<h2>docstring: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<h2>plume/docstring: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -5618,7 +5851,7 @@ macro double
 </code></pre>
 </div>
 </details>
-<h2>errors: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
+<h2>plume/errors: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -7036,7 +7269,7 @@ let x = $y
 </code></pre>
 </div>
 </details>
-<h2>host: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
+<h2>plume/host: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -7472,7 +7705,7 @@ end
 </code></pre>
 </div>
 </details>
-<h2>loop: <span style="font-weight: normal;">12 passed out of 12 tests</span></h2>
+<h2>plume/loop: <span style="font-weight: normal;">12 passed out of 12 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -8156,7 +8389,7 @@ Iterate 4 times...
 </code></pre>
 </div>
 </details>
-<h2>luastd: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
+<h2>plume/luastd: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -8297,7 +8530,7 @@ $lua.string.gsub(azerty, [ae], .)
 </code></pre>
 </div>
 </details>
-<h2>macro: <span style="font-weight: normal;">22 passed out of 22 tests</span></h2>
+<h2>plume/macro: <span style="font-weight: normal;">22 passed out of 22 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -9561,7 +9794,7 @@ mark
 </code></pre>
 </div>
 </details>
-<h2>macroErrors: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
+<h2>plume/macroErrors: <span style="font-weight: normal;">31 passed out of 31 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -11069,7 +11302,7 @@ end
 </code></pre>
 </div>
 </details>
-<h2>meta: <span style="font-weight: normal;">24 passed out of 24 tests</span></h2>
+<h2>plume/meta: <span style="font-weight: normal;">24 passed out of 24 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -12240,7 +12473,7 @@ I&#39;m a table
 </code></pre>
 </div>
 </details>
-<h2>meta_errors: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
+<h2>plume/meta_errors: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -12599,7 +12832,7 @@ end
 </code></pre>
 </div>
 </details>
-<h2>module: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
+<h2>plume/module: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -13079,7 +13312,7 @@ $x
 </code></pre>
 </div>
 </details>
-<h2>number: <span style="font-weight: normal;">23 passed out of 23 tests</span></h2>
+<h2>plume/number: <span style="font-weight: normal;">23 passed out of 23 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -13918,7 +14151,7 @@ $1.5.round()
 </code></pre>
 </div>
 </details>
-<h2>run: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<h2>plume/run: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -14082,7 +14315,7 @@ $x
 </code></pre>
 </div>
 </details>
-<h2>std: <span style="font-weight: normal;">53 passed out of 53 tests</span></h2>
+<h2>plume/std: <span style="font-weight: normal;">53 passed out of 53 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -16821,7 +17054,7 @@ number
 </code></pre>
 </div>
 </details>
-<h2>std_errors: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
+<h2>plume/std_errors: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -17019,7 +17252,7 @@ $write(x, wing: blue)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter &#39;wing&#39; for macro &#39;write&#39;.                            │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17059,7 +17292,7 @@ $write()
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;write&#39;, 0 instead of         │
 │   between 1 and inf.                                                           │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17101,7 +17334,7 @@ $write($Table())
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong type &#39;table&#39; for parameter &#39;1&#39; of macro &#39;write&#39;. Expected: &#39;string&#39;.   │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17151,7 +17384,7 @@ $len($print)
 </code></pre>
 </div>
 </details>
-<h2>std_random: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
+<h2>plume/std_random: <span style="font-weight: normal;">9 passed out of 9 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -17623,7 +17856,7 @@ $random()
 </code></pre>
 </div>
 </details>
-<h2>string: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
+<h2>plume/string: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -19049,7 +19282,7 @@ AZ5AB
 </code></pre>
 </div>
 </details>
-<h2>suggestions: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
+<h2>plume/suggestions: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -19201,7 +19434,7 @@ $floor(5.5)
 </code></pre>
 </div>
 </details>
-<h2>syntaxErrors: <span style="font-weight: normal;">29 passed out of 29 tests</span></h2>
+<h2>plume/syntaxErrors: <span style="font-weight: normal;">29 passed out of 29 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -20198,7 +20431,7 @@ use lib(param: value, positional)
 </code></pre>
 </div>
 </details>
-<h2>table_macros: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
+<h2>plume/table_macros: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -20523,7 +20756,7 @@ quill
 </code></pre>
 </div>
 </details>
-<h2>tables: <span style="font-weight: normal;">34 passed out of 34 tests</span></h2>
+<h2>plume/tables: <span style="font-weight: normal;">34 passed out of 34 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -22161,7 +22394,7 @@ $(t[&quot;b&quot;]? or 1)
 </code></pre>
 </div>
 </details>
-<h2>text: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
+<h2>plume/text: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -23214,7 +23447,7 @@ Raw:
 </code></pre>
 </div>
 </details>
-<h2>variables: <span style="font-weight: normal;">16 passed out of 16 tests</span></h2>
+<h2>plume/variables: <span style="font-weight: normal;">16 passed out of 16 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -23901,7 +24134,7 @@ let if = 5
 </code></pre>
 </div>
 </details>
-<h2>z_issues: <span style="font-weight: normal;">74 passed out of 74 tests</span></h2>
+<h2>plume/z_issues: <span style="font-weight: normal;">74 passed out of 74 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>

@@ -1,16 +1,8 @@
---[[This file is part of Plume
+--[[
+This file is part of Plume🪶
 
-Plume🪶 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
-
-Plume🪶 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Plume🪶.
-If not, see <https://www.gnu.org/licenses/>.
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
 ]]
 
 --- @opcode
@@ -71,13 +63,16 @@ function PUSH_CONTEXT(vm, arg1, arg2)
 end
 
 --! inline
-function _LOAD_CONTEXT(vm, name, nocheck)
+function _LOAD_CONTEXT(vm, name, nocheck, default)
     local top = _STACK_POS(vm.contextStack)
     for i = top, 1, -1 do
         local frame = _STACK_GET(vm.contextStack, i)
         if frame.name == name then
             return frame.value
         end
+    end
+    if default then
+        return default
     end
     if not nocheck then
         vm.plume.warning.runtimeWarning(
@@ -92,8 +87,9 @@ end
 --- @opcode
 --! inline
 function LOAD_CONTEXT(vm, arg1, arg2)
-    local name  = _STACK_POP(vm.mainStack)
-    _STACK_PUSH(vm.mainStack, _LOAD_CONTEXT(vm, name))
+    local default = _STACK_POP(vm.mainStack)
+    local name    = _STACK_POP(vm.mainStack)
+    _STACK_PUSH(vm.mainStack, _LOAD_CONTEXT(vm, name, false, default))
 end
 
 --- @opcode

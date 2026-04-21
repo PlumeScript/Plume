@@ -1,16 +1,8 @@
---[[This file is part of Plume
+--[[
+This file is part of Plume🪶
 
-Plume🪶 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
-
-Plume🪶 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Plume🪶.
-If not, see <https://www.gnu.org/licenses/>.
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
@@ -162,10 +154,7 @@ return function (plume)
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
 			local childType = plume.ast.markType(child, lastNode)
-			if child.name == "HASH_ITEM" then
-				print("!", childType, child.type)
-			end
-			
+
 			-- workaround for the case where child is an information,
 			-- not a proper child
 			local avoid = child.name == "IDENTIFIER" and (

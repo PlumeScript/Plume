@@ -1,26 +1,40 @@
---[[This file is part of Plume
+--[[
+This file is part of Plume🪶
 
-Plume🪶 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
-
-Plume🪶 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Plume🪶.
-If not, see <https://www.gnu.org/licenses/>.
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
 	local lfs = require"lfs"
 
+	local function mkdirs(path, isFile)
+		local fullPath = ""
+		path = path:gsub('\\', '/')
+		for frag in path:gmatch('[^/]+') do
+			if fullPath ~= "" or path:sub(1, 1) == "/" then
+				fullPath = fullPath .. "/"
+			end
+			fullPath = fullPath .. frag
+			if isFile and path == fullPath then
+				break
+			end
+
+			local attr = lfs.attributes(fullPath)
+			if not attr then
+				local success, result = lfs.mkdir(fullPath)
+				if not success then
+					return false, result
+				end
+			end
+		end
+		return true
+	end
 
 	local function makePath(path)
 		local obj = plume.obj.table(0, 0)
 
-		obj.keys = {"path", "type", "isFile", "isDirectory", "exists", "getParent", "getName", "read", "write", "make", "remove", "touch"}
+		obj.keys = {"path", "type", "isFile", "isDirectory", "exists", "getParent", "getName", "read", "write", "make", "remove", "touch", "getChildren", "walk"}
 		obj.table.path = path or lfs.currentdir ()
 		obj.table.type = "Path"
 
@@ -57,7 +71,7 @@ return function (plume)
 				return false, string.format("'%s' already exists, cannot create it.", path)
 			end
 
-			return lfs.mkdir(path)
+			return mkdirs(path)
 		end)
 		obj.table.remove = plume.obj.luaMacro ("remove", function(args)
 			local path = args.table.self.table.path
@@ -122,26 +136,25 @@ return function (plume)
 
 		obj.table.read = plume.obj.luaMacro ("read", function(args)
 			local path = args.table.self.table.path
-			local file = io.open(path)
-			if not file then
-				return false, string.format("Cannot open '%s'", path)
-			end
-			local content = file:read("*a")
-			file:close()
-			return true, content
+			return plume.stdio.read(path)
 		end)
 		obj.table.write = plume.obj.luaMacro ("write", function(args)
 			local path = args.table.self.table.path
-			local file = io.open(path, "w")
-			if not file then
-				return false, string.format("Cannot write '%s'", path)
+			local success, result = mkdirs(path, true)
+			if not success then
+				return false, result
 			end
-			file:write(table.concat(args.table))
-			file:close()
-			return true
+
+			local append = args.table.append
+			return plume.stdio.write(path, table.concat(args.table), append)
 		end)
 		obj.table.touch = plume.obj.luaMacro ("touch", function(args)
 			local path = args.table.self.table.path
+			local success, result = mkdirs(path, true)
+			if not success then
+				return false, result
+			end
+
 			local file = io.open(path, "w")
 			if not file then
 				return false, string.format("Cannot touch '%s'", path)
@@ -149,9 +162,45 @@ return function (plume)
 			file:close()
 			return true
 		end)
+		obj.table.getChildren = plume.obj.luaMacro ("getChildren", function(args)
+			local path = args.table.self.table.path
+			local result = plume.obj.table(0, 0)
+
+			for child in lfs.dir(path) do
+				if child ~= "." and child ~= ".." then
+					local _, childPath = makePath(path.."/"..child)
+					table.insert(result.table, childPath)
+					table.insert(result.keys, #result.table)
+				end
+			end
+			return true, result
+		end)
+		obj.table.walk = plume.obj.luaMacro ("walk", function(args)
+			local path = args.table.self.table.path
+			local result = plume.obj.table(0, 0)
+
+			local toExplore = {path}
+			local pos = 1
+			while pos <= #toExplore do
+				local path = toExplore[pos]
+				pos = pos + 1
+
+				for child in lfs.dir(path) do
+					if child ~= "." and child ~= ".." then
+						local childPath = path.."/"..child
+						local _, childPathObj = makePath(childPath)
+						table.insert(result.table, childPathObj)
+						table.insert(result.keys, #result.table)
+
+						table.insert(toExplore, childPath)
+					end
+				end
+			end
+			return true, result
+		end)
 
 		obj.meta = plume.obj.table(0, 0)
-		obj.meta.keys = {"tostring"}
+		obj.meta.keys = {"tostring", div}
 		obj.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
 			local path = args.table.self.table.path
 			return true, path
@@ -174,6 +223,10 @@ return function (plume)
 
 			return makePath(path1 .. "/" .. path2)
 		end
+		obj.meta.table.div = plume.obj.luaMacro ("div", function(args)
+			return div(args.table[1], args.table[2])
+		end)
+
 		
 		return true, obj
 	end

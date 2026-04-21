@@ -1,16 +1,8 @@
---[[This file is part of Plume
+--[[
+This file is part of Plume🪶
 
-Plume🪶 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
-
-Plume🪶 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Plume🪶.
-If not, see <https://www.gnu.org/licenses/>.
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
@@ -18,6 +10,7 @@ return function (plume)
 
     plume.std = {}
     plume.stdUtils = {}
+    require 'plume-data/engine/std/io'     (plume)
     require 'plume-data/engine/std/plume'  (plume)
     require 'plume-data/engine/std/lua'    (plume)
     require 'plume-data/engine/std/vm'     (plume)
@@ -28,8 +21,9 @@ return function (plume)
     require 'plume-data/engine/std/random' (plume)
     require 'plume-data/engine/std/os'     (plume)
     require 'plume-data/engine/std/path'   (plume)
+    require 'plume-data/engine/std/time'   (plume)
 
-    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os}) do
+    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os, plume.std.Time}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua
@@ -69,6 +63,8 @@ return function (plume)
                         return f.method(unpack(args.table))
                     elseif Table == plume.std.os.table then
                         return f.method(unpack(args.table))
+                    elseif Table == plume.std.Time.table then
+                        return f.method(args.table)
                     elseif Table == plume.std.Table.table then
                         table.insert(args.table, args)
                         return f.method(unpack(args.table))

@@ -1,16 +1,8 @@
---[[This file is part of Plume
+--[[
+This file is part of Plume🪶
 
-Plume🪶 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
-
-Plume🪶 is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with Plume🪶.
-If not, see <https://www.gnu.org/licenses/>.
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume, context, nodeHandlerTable)
@@ -35,6 +27,7 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, var.offset)
 		elseif var.isContext then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(varName))
+			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset) -- default value
 			context.registerOP(node, plume.ops.LOAD_CONTEXT)
 		else
 			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
