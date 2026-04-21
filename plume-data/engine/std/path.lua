@@ -147,6 +147,9 @@ return function (plume)
 		obj.table.write = plume.obj.luaMacro ("write", function(args)
 			local path = args.table.self.table.path
 			local success, result = mkdirs(path, true)
+			if not success then
+				return false, result
+			end
 
 			local file = io.open(path, "w")
 			if not file then
@@ -158,6 +161,11 @@ return function (plume)
 		end)
 		obj.table.touch = plume.obj.luaMacro ("touch", function(args)
 			local path = args.table.self.table.path
+			local success, result = mkdirs(path, true)
+			if not success then
+				return false, result
+			end
+			
 			local file = io.open(path, "w")
 			if not file then
 				return false, string.format("Cannot touch '%s'", path)
