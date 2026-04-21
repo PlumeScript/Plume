@@ -153,7 +153,7 @@ Plume balances performance and safety through its loading strategy:
 Unlike `import`, the following functions do not use the `plume.path` resolution logic and expect direct file system paths.
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
-*   `write(path, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
+*   `write(path, ?append, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
 
 > **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
 
@@ -169,13 +169,13 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 *   `Path.exists()`: Return `true` if `Path` exists.
 
 **Action**
-*   `Path.mkdir()`: Create a directory.
+*   `Path.mkdir()`: Create a directory. Create parent directories.
 *   `Path.touch()`: Create a file.
 *   `Path.remove()`: Remove a file or a directory.
 *   `Path.copy(dest)`: Copies a file to destination path. Return the new path.
 *   `Path.move(dest)`: Moves or renames a file/directory from source to destination. Return the new path.
 *   `Path.read()`: If `Path` is a file, return it's content.
-*   `Path.write(...content)`: If `Path` is a file or don't exists, write it.
+*   `Path.write(?append, ...content)`: If `Path` is a file or don't exists, write it. Create parent directories.
 *   `Path.walk`: Return a table of all childs.
 
 **Manipulation**

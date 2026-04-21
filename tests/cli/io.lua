@@ -6,6 +6,17 @@ return {
 			content="content"
 		}
 	},
+	writeAppend = {
+		command = "-s \"$write(test, wing, ?append)\"",
+		inputFile = {
+			name="test",
+			content="content"
+		},
+		outputFile = {
+			name="test",
+			content="contentwing"
+		}
+	},
 	read = {
 		command = "-s \"$read(test)\"",
 		inputFile = {

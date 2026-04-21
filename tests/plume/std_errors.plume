@@ -43,7 +43,7 @@ $write()
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro 'write', 0 instead of         │
 │   between 1 and inf.                                                           │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -59,7 +59,7 @@ $write(x, wing: blue)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter 'wing' for macro 'write'.                            │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -75,7 +75,7 @@ $write($Table())
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong type 'table' for parameter '1' of macro 'write'. Expected: 'string'.   │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

@@ -144,8 +144,9 @@ return function (plume)
 			if not success then
 				return false, result
 			end
-			
-			return plume.stdio.write(path, table.concat(args.table))
+
+			local append = args.table.append
+			return plume.stdio.write(path, table.concat(args.table), append)
 		end)
 		obj.table.touch = plume.obj.luaMacro ("touch", function(args)
 			local path = args.table.self.table.path

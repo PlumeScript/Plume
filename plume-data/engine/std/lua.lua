@@ -29,11 +29,12 @@ return function (plume)
 
         -- io
         write = {
-            checkArgs = {checkTypes={"string"}, minArgs=1, maxArgs=math.huge, signature="string path, ...content"},
+            checkArgs = {checkTypes={"string"}, named={append=true}, minArgs=1, maxArgs=math.huge, signature="string path, ?append, ...content"},
             method = function(args)
                 local filename = args.table[1]
                 local content = table.concat(args.table, 2,  #args.table)
-                return plume.stdio.write(filename, content)
+                local append = args.table.append
+                return plume.stdio.write(filename, content, append)
             end
         },
 

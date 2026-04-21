@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">597 passed out of 597 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">598 passed out of 598 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">5 passed out of 5 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -229,7 +229,7 @@ Plume🪶b44 (Sparrow Edition)
 </code></pre>
 </div>
 </details>
-<h2>cli/io.lua: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<h2>cli/io.lua: <span style="font-weight: normal;">4 passed out of 4 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -309,6 +309,32 @@ plume -s &quot;$write(test, content)&quot;
 <h4>Output</h4>
 <pre><code>
 content
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> writeAppend <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$write(test, wing, ?append)&quot;
+
+// test
+content
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+contentwing
 </code></pre>
 </div>
 </details>
@@ -17226,7 +17252,7 @@ $write(x, wing: blue)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Unknown named parameter &#39;wing&#39; for macro &#39;write&#39;.                            │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17266,7 +17292,7 @@ $write()
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro &#39;write&#39;, 0 instead of         │
 │   between 1 and inf.                                                           │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17308,7 +17334,7 @@ $write($Table())
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong type &#39;table&#39; for parameter &#39;1&#39; of macro &#39;write&#39;. Expected: &#39;string&#39;.   │
-│   Usage: $write(string path, ...content)                                       │
+│   Usage: $write(string path, ?append, ...content)                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

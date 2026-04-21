@@ -7,8 +7,9 @@ Licensed under the MIT License — see LICENSE for details.
 
 return function (plume)
 	plume.stdio = {}
-	function plume.stdio.write(path, content)
-		local file = io.open(path, "w")
+	function plume.stdio.write(path, content, append)
+		local mode = append and "a" or "w"
+		local file = io.open(path, mode)
 			if not file then
 				return false, "Cannot write file '" .. path .. "'."
 			end
