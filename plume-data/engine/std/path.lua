@@ -34,7 +34,7 @@ return function (plume)
 	local function makePath(path)
 		local obj = plume.obj.table(0, 0)
 
-		obj.keys = {"path", "type", "isFile", "isDirectory", "exists", "getParent", "getName", "read", "write", "make", "remove", "touch"}
+		obj.keys = {"path", "type", "isFile", "isDirectory", "exists", "getParent", "getName", "read", "write", "make", "remove", "touch", "getChildren", "walk"}
 		obj.table.path = path or lfs.currentdir ()
 		obj.table.type = "Path"
 
