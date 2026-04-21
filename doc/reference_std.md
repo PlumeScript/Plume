@@ -206,10 +206,10 @@ Assume `let random = $Random()`.
 
 ### Time manipulation
 
-*   `Time.now()`: return current timestamp.
+*   `Time.now()`: same as `Time.date(timestamp: currentTimestamp)`.
 
 **Constructor**
-*   `Time.date(year:, month:, day:, hour:, minute:, second:, zone:, locale:, timestamp:)`: Create a `Date` object. If no arguments provided → current time. Unspecified fields default to zero (except when all are zero, which returns current time). Raises an error if the resulting date is invalid (e.g., month=13, day=32). `zone` and `locale` default to context variables `timeZone` and `timeLocale`. Cannot use `timestamp` and `year, month, etc...` at the same time.
+*   `Time.date(year: 1970, month: 1, day: 1, hour: 0, minute: 0, second: 0, zone:, locale:, timestamp: 0)`: Create a `Date` object. `zone` and `locale` default to context variables `timeZone` and `timeLocale`. Cannot use `timestamp` and `year, month, etc...` at the same time.
 *   `Time.duration(second)`: return a `Duration` object. In most case, you should use `Time.SECOND`, etc...
 
 **Constants (for duration arithmetic)**
