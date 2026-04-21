@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Sparrow 44_
+_For version Sparrow 45_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
