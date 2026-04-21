@@ -165,6 +165,19 @@ return function (plume)
 			file:close()
 			return true
 		end)
+		obj.table.getChildren = plume.obj.luaMacro ("getChildren", function(args)
+			local path = args.table.self.table.path
+			local result = plume.obj.table(0, 0)
+
+			for child in lfs.dir(path) do
+				if child ~= "." and child ~= ".." then
+					local _, childPath = makePath(path.."/"..child)
+					table.insert(result.table, childPath)
+					table.insert(result.keys, #result.table)
+				end
+			end
+			return true, result
+		end)
 
 		obj.meta = plume.obj.table(0, 0)
 		obj.meta.keys = {"tostring", div}
