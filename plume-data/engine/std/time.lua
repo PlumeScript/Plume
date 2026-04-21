@@ -6,7 +6,129 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
-	local function createDate (args)
+	local createDate, createDuration
+
+	local function getType(x)
+		return type(x) == "table" and x.table.type or type(x)
+	end
+
+	local function convert(t, v)
+		local r
+		if t == "number" or t == "string" and tonumber(v) then
+			r = tonumber(v)
+		elseif t == "Duration" then
+			r = v.value
+		elseif t == "Date" then
+			r = v.table.timestamp
+		else
+			return false, string.format("Cannot do arithmetic on '%s' value.", t)
+		end
+
+		return true, r
+	end
+
+	local ddadd = plume.obj.luaMacro("add", function(args)
+		local x = args.table[1]
+		local y = args.table[2]
+
+		local tx = getType(x)
+		local ty = getType(y)
+
+		local success, vx = convert(tx, x)
+		if not success then
+			return success, vx
+		end
+		local success, vy = convert(ty, y)
+		if not success then
+			return success, vy
+		end
+
+		local result = vx + vy
+
+		if tx ~= "Date" and ty ~= "Date" then
+			return createDuration(result)
+		else
+			return createDate({timestamp=result})
+		end
+	end)
+
+	local ddsub = plume.obj.luaMacro("sub", function(args)
+		local x = args.table[1]
+		local y = args.table[2]
+
+		local tx = getType(x)
+		local ty = getType(y)
+
+		local success, vx = convert(tx, x)
+		if not success then
+			return success, vx
+		end
+		local success, vy = convert(ty, y)
+		if not success then
+			return success, vy
+		end
+
+		local result = vx - vy
+
+		if tx ~= "Date" and ty ~= "Date" then
+			return createDuration(result)
+		else
+			return createDate({timestamp=result})
+		end
+	end)
+
+	local ddmul = plume.obj.luaMacro("mul", function(args)
+		local x = args.table[1]
+		local y = args.table[2]
+
+		local tx = getType(x)
+		local ty = getType(y)
+
+		if tx == "Date" or ty == "Date" then
+			return false, "Cannot multiply a 'Date' value."
+		end
+
+		local success, vx = convert(tx, x)
+		if not success then
+			return success, vx
+		end
+		local success, vy = convert(ty, y)
+		if not success then
+			return success, vy
+		end
+
+		local result = vx * vy
+
+		return createDuration(result)
+	end)
+
+	local dddiv = plume.obj.luaMacro("div", function(args)
+		local x = args.table[1]
+		local y = args.table[2]
+
+		local tx = getType(x)
+		local ty = getType(y)
+
+		if tx == "Date" or ty == "Date" then
+			return false, "Cannot divide a 'Date' value."
+		end
+
+		local success, vx = convert(tx, x)
+		if not success then
+			return success, vx
+		end
+		local success, vy = convert(ty, y)
+		if not success then
+			return success, vy
+		end
+
+		local result = vx / vy
+
+		return createDuration(result)
+	end)
+
+
+	function createDate (args)
 		local time = plume.obj.table(0, 0)
 		
 		time.keys = {
@@ -55,7 +177,7 @@ return function (plume)
 		end
 
 		time.meta = plume.obj.table(0, 0)
-		time.meta.keys = {"tostring", "setindex", "getindex"}
+		time.meta.keys = {"tostring", "setindex", "getindex", "add", "sub", "mul", "div"}
 		time.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
 			local self = args.table.self
 			return true, os.date("%x", self.table.timestamp)
@@ -85,11 +207,44 @@ return function (plume)
 			end
 			return true, values[key]
 		end)
+
+		time.meta.table.add = ddadd
+		time.meta.table.sub = ddsub
+		time.meta.table.mul = ddmul
+		time.meta.table.div = dddiv
+
+		time.meta.table.eq = plume.obj.luaMacro("eq", function(args)
+			local x = args.table[1]
+			local y = args.table[2]
+
+			local tx = getType(x)
+			local ty = getType(y)
+
+			if tx ~= "Date" or ty ~= "Date" then
+				return true, false
+			end
+
+			return true, x.table.timestamp == y.table.timestamp
+		end)
+
+		time.meta.table.lt = plume.obj.luaMacro("lt", function(args)
+			local x = args.table[1]
+			local y = args.table[2]
+
+			local tx = getType(x)
+			local ty = getType(y)
+
+			if tx ~= "Date" or ty ~= "Date" then
+				return false, string.format("Cannot compare 'Date' and '%s'", (tx ~= "Date" and tx or ty))
+			end
+
+			return true, x.table.timestamp < y.table.timestamp
+		end)
 		
 		return true, time
 	end
 
-	local function createDuration(s)
+	function createDuration(s)
 		local duration = plume.obj.table(0, 0)
 		duration.value = s
 
@@ -98,7 +253,7 @@ return function (plume)
 		duration.table.type = "Duration"
 
 		duration.meta = plume.obj.table(0, 0)
-		duration.meta.keys = {"tostring", "setindex", "getindex"}
+		duration.meta.keys = {"tostring", "setindex", "getindex", "add", "sub", "mul", "div"}
 		duration.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
 			local self = args.table.self
 			return true, self.value
@@ -126,6 +281,39 @@ return function (plume)
 			if not values[key] then
 				return false, string.format("Unregistered key '%s'", key)
 			end
+		end)
+
+		duration.meta.table.add = ddadd
+		duration.meta.table.sub = ddsub
+		duration.meta.table.mul = ddmul
+		duration.meta.table.div = dddiv
+
+		duration.meta.table.eq = plume.obj.luaMacro("eq", function(args)
+			local x = args.table[1]
+			local y = args.table[2]
+
+			local tx = getType(x)
+			local ty = getType(y)
+
+			if tx ~= "Duration" or ty ~= "Duration" then
+				return true, false
+			end
+
+			return true, x.value == y.value
+		end)
+
+		duration.meta.table.lt = plume.obj.luaMacro("lt", function(args)
+			local x = args.table[1]
+			local y = args.table[2]
+
+			local tx = getType(x)
+			local ty = getType(y)
+
+			if tx ~= "Duration" or ty ~= "Duration" then
+				return false, string.format("Cannot compare 'Duration' and '%s'", (tx ~= "Duration" and tx or ty))
+			end
+
+			return true, x.value < y.value
 		end)
 
 		return true, duration
