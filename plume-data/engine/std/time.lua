@@ -95,13 +95,13 @@ return function (plume)
 
 		duration.keys = {"type"}
 
-		duration.table.type      = "Duration"
+		duration.table.type = "Duration"
 
 		duration.meta = plume.obj.table(0, 0)
 		duration.meta.keys = {"tostring", "setindex", "getindex"}
 		duration.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
 			local self = args.table.self
-			return true, os.date("%x", self.table.timestamp)
+			return true, self.value
 		end)
 		duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
 			local self   = args.table.self
