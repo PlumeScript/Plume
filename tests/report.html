@@ -98,9 +98,9 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">592 passed out of 592 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">597 passed out of 597 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
-<h2>cli/base.lua: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<h2>cli/base.lua: <span style="font-weight: normal;">5 passed out of 5 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -153,6 +153,61 @@ $(1+1)
 </details>
 <details>
 <summary>
+<span class="status-icon status-pass">✓</span> s <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$(1+1)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+2
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> s_error <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$(1+)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing &#39;)&#39; to close evaluation.                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ &lt;input&gt;                                                                     │
+│    1 │$(1+)                                                                    │
+│      │   ^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
 <span class="status-icon status-pass">✓</span> version <em style='font-weight: normal'></em>
 </summary>
 <div class="test-content">
@@ -171,6 +226,89 @@ plume -v
 <h4>Output</h4>
 <pre><code>
 Plume🪶b44 (Sparrow Edition)
+</code></pre>
+</div>
+</details>
+<h2>cli/io.lua: <span style="font-weight: normal;">3 passed out of 3 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> read <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$read(test)&quot;
+
+// test
+content
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+content
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> readError <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$read(test)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot read file &#39;test&#39;.                                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ &lt;input&gt;                                                                     │
+│    1 │$read(test)                                                              │
+│      │ ^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> write <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+plume -s &quot;$write(test, content)&quot;
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+content
 </code></pre>
 </div>
 </details>
