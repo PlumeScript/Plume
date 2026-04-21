@@ -204,6 +204,57 @@ Assume `let random = $Random()`.
 * `random.shuffle(table)`: Shuffle table in place
 * `random.sample(table, count:)` Returns count unique elements.
 
+### Time manipulation
+
+*   `Time.now()`: return current timestamp.
+
+**Constructor**
+*   `Time.date(year:, month:, day:, hour:, minute:, second:, zone:, locale:, timestamp:)`: Create a `Date` object. If no arguments provided → current time. Unspecified fields default to zero (except when all are zero, which returns current time). Raises an error if the resulting date is invalid (e.g., month=13, day=32). `zone` and `locale` default to context variables `timeZone` and `timeLocale`. Cannot use `timestamp` and `year, month, etc...` at the same time.
+*   `Time.duration(second)`: return a `Duration` object. In most case, you should use `Time.SECOND`, etc...
+
+**Constants (for duration arithmetic)**
+*   `Time.SECOND = 1`
+*   `Time.MINUTE = 60`
+*   `Time.HOUR   = 3600`
+*   `Time.DAY    = 86400`
+*   `Time.Week   = 604800`
+
+
+**Properties**
+All properties can be read or written. Writing one field automatically updates all other fields synchronously. Raises an error if the resulting date is invalid.
+
+*   `time.timestamp`: Unix timestamp (seconds since epoch)
+*   `time.year`, `month`, `day`, `hour`, `minute`, `second`
+*   `locale`: Locale for formatting and parsing
+*   `zone`: Time zone identifier or offset
+
+**Methods**
+
+Assume `let time = $Time()`
+
+*   `Time.parse(string, template:)`: Parse a string into a Time object. If no template provided, uses default format based on current locale context. Raises an error if the string cannot be parsed according to the template.
+*   `time.format(template:)`: Format the time as a string using the specified template. Uses `%` symbols (see below). Defaults to locale-specific format if no template is provided.
+
+**Available format symbols**
+
+| symbol | meaning | example output |
+|---|---|---|
+| %y | year (4 digits) | 2026 |
+| %m | month (1-12, zero-padded) | 04 |
+| %mm | month name (locale-aware) | April / Apr |
+| %d | day of month (1-31, zero-padded) | 20 |
+| %dd | day name (locale-aware) | Monday / Mon |
+| %h | hour (0-23, zero-padded) | 14 |
+| %min | minute (0-59, zero-padded) | 30 |
+| %s | second (0-59, zero-padded) | 45 |
+
+**Meta operations**
+
+*   `String(time)`: Same as `time.format()` with default locale template.
+*   `time1 + time2` ; `time1 - time2`: Add or subtract timestamps (returns a Time object).
+*   `time * number` ; `time / number`: Multiply or divide the underlying timestamp by a scalar value.
+
+
 ### Lua Integration
 
 * `lua.require(path)` (used to load Lua modules, use same Path resolution as `import`). Required file must return a function.

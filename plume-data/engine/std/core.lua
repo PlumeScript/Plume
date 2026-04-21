@@ -20,8 +20,9 @@ return function (plume)
     require 'plume-data/engine/std/random' (plume)
     require 'plume-data/engine/std/os'     (plume)
     require 'plume-data/engine/std/path'   (plume)
+    require 'plume-data/engine/std/time'   (plume)
 
-    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os}) do
+    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os, plume.std.Time}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua
@@ -61,6 +62,8 @@ return function (plume)
                         return f.method(unpack(args.table))
                     elseif Table == plume.std.os.table then
                         return f.method(unpack(args.table))
+                    elseif Table == plume.std.Time.table then
+                        return f.method(args.table)
                     elseif Table == plume.std.Table.table then
                         table.insert(args.table, args)
                         return f.method(unpack(args.table))
