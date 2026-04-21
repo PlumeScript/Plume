@@ -175,7 +175,7 @@ return function (plume, context)
 		end
 
 		-- Cannot found variable ; check if it is a std/imported one
-		local value = (name == "plume" and context.runtime.plume) or plume.std[name] or context.importedVariables[name]
+		local value = context.importedVariables[name] or (name == "plume" and context.runtime.plume) or plume.std[name]
 		if value then
 			return {
 				isStd = true,
