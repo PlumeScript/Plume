@@ -225,8 +225,9 @@ All properties can be read or written. Writing one field automatically updates a
 
 *   `time.timestamp`: Unix timestamp (seconds since epoch)
 *   `time.year`, `month`, `day`, `hour`, `minute`, `second`
-*   `locale`: Locale for formatting and parsing
-*   `zone`: Time zone identifier or offset
+*   `time.locale`: Locale for formatting and parsing
+*   `time.zone`: Time zone identifier or offset
+*   `duration.day`, `hour`, `minute`, `second`
 
 **Methods**
 

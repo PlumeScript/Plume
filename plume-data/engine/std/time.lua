@@ -47,7 +47,6 @@ return function (plume)
 		if args.timestamp and args.timestamp ~= 0 then
 			time.table.timestamp = args.timestamp
 		else
-			print("!")
 			success, result = time:updateTimestamp(args)
 		end
 
@@ -90,6 +89,48 @@ return function (plume)
 		return true, time
 	end
 
+	local function createDuration(s)
+		local duration = plume.obj.table(0, 0)
+		duration.value = s
+
+		duration.keys = {"type"}
+
+		duration.table.type      = "Duration"
+
+		duration.meta = plume.obj.table(0, 0)
+		duration.meta.keys = {"tostring", "setindex", "getindex"}
+		duration.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
+			local self = args.table.self
+			return true, os.date("%x", self.table.timestamp)
+		end)
+		duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
+			local self   = args.table.self
+			local key    = args.table[1]
+			
+			return false, "Cannot edit 'duration' fields."
+		end)
+		duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
+			local self = args.table.self
+			local key = args.table[1]
+			
+			if key == "day" then
+				return true, self.value / 86400
+			elseif key == "hour" then
+				return true, self.value / 3600
+			elseif key == "minute" then
+				return true, self.value / 60
+			elseif key == "second" then
+				return true, self.value
+			end
+
+			if not values[key] then
+				return false, string.format("Unregistered key '%s'", key)
+			end
+		end)
+
+		return true, duration
+	end
+
 	plume.std.Time = plume.obj.table (0, 0)
 	plume.std.Time.table.date = {
 		checkArgs = {
@@ -120,6 +161,18 @@ return function (plume)
 			maxArgs=0
 		},
 		method = createDate
+	}
+
+	plume.std.Time.table.duration = {
+		checkArgs = {
+			signature="",
+			args=1,
+			named = {self=true},
+			checkTypes={"number"}
+		},
+		method = function(args)
+			return createDuration(args[1])
+		end
 	}
 
 	plume.std.Time.table.now = {
