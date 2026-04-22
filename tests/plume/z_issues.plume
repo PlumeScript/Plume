@@ -927,3 +927,11 @@ end
 /// Output
 12
 /// End
+
+/// Test #731
+use #context(a: 1)
+let context a
+$type($a)
+/// Output
+number
+/// End
