@@ -978,3 +978,25 @@ a
 /// Output
 a
 /// End
+
+/// Test #737-1
+let result
+
+with wing: 5
+    set result = $Table()
+end
+$result
+/// Output
+$Table()
+/// End
+
+/// Test #737-2
+let result
+
+do
+    set result = $Table()
+end
+$result
+/// Output
+$Table()
+/// End

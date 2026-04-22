@@ -239,6 +239,8 @@ return function (plume)
 		elseif node.name == "INLINE_TABLE" 
 			or (node.name == "WITH" and node.type == "TABLE") then
 			return "VALUE_TABLE"
+		elseif (node.name == "WITH" or node.name == "DO") and node.type == "EMPTY" then
+			return "EMPTY"
 		elseif node.name == "MACRO" then
 			if plume.ast.get(node, "IDENTIFIER") then
 				return "EMPTY"
