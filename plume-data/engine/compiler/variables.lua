@@ -37,7 +37,7 @@ return function (plume, context)
 	--- @param relativeScopeOffset number Frame offset between current scope and variable's scope (used to locate the correct scope frame)
 	--- @param ref string
 	--- @return table upvalueInfo Metadata for the upvalue
-	function context.registerUpvalue(name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref)
+	function context.registerUpvalue(name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref, isContext)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.macros[#context.macros - scopeDepth + 1]
 
@@ -55,7 +55,8 @@ return function (plume, context)
 					offset = #macro.upvalues+1,
 					localOffset = variableOffset, -- local offset to capture the variable
 					scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
-					isUpvalue = true
+					isUpvalue = true,
+					isContext = isContext
 				})
 				
 			end
@@ -148,10 +149,8 @@ return function (plume, context)
 				if scopeDepth > 0 then
 					if variable.isRef then
 						return context.registerUpvalue(name, nil, scopeDepth, i, relativeScopeOffset-i+1, variable.ref)
-					elseif variable.isContext then
-						return {isContext = true}
 					else
-						return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1)
+						return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1, nil, variable.isContext)
 					end
 				else
 					result = {

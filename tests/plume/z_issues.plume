@@ -935,3 +935,23 @@ $type($a)
 /// Output
 number
 /// End
+
+/// Test #733-1
+let context var = 1
+
+macro Wing()
+    $var
+end
+
+$Wing()
+/// Output
+1
+/// End
+
+/// Test #733-1
+use tests/plume/toimport/733
+
+$Wing()
+/// Output
+1
+/// End
