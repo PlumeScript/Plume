@@ -71,9 +71,6 @@ function STD_SEQ(vm, arg1, arg2)
     local stop  = tonumber(args[2])
     local step  = tonumber(args[3] or 1)
 
-    print(args[1], args[2], args[3])
-    print(type(args[1]), type(args[2]), args[3])
-
     _ASSERT_STD_TYPE(vm, "seq", 1, start, "number", signature)
 
     if not stop then

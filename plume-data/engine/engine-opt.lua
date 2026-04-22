@@ -4736,10 +4736,6 @@ return function (plume)
                                             local start = tonumber (args[1])
                                             local stop = tonumber (args[2])
                                             local step = tonumber (args[3] or 1)
-                                            print (args[1], args[2], args[3])
-                                            print (type (args[1])
-                                            , type (args[2])
-                                            , args[3])
                                             local _ret408
                                             do
                                                 local _ret409
