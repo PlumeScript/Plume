@@ -63,7 +63,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 *  `sub(s, start, end)`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end.
 
 #### Search
-* `find(s, pattern, ?rich)`: Returns tthe first match, or empty if not found.
+* `find(s, pattern, ?rich)`: Returns the first match, or empty if not found.
 * `contains(s, pattern, ?rich)`: Returns true if the pattern is found within the string.
 * `startsWith(s, pattern, ?rich)`: Returns true if the string begins with the pattern.
 * `endsWith(s, pattern, ?rich)`: Returns true if the string ends with the pattern.
