@@ -948,7 +948,7 @@ $Wing()
 1
 /// End
 
-/// Test #733-1
+/// Test #733-2
 use tests/plume/toimport/733
 
 $Wing()
