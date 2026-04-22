@@ -13,6 +13,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `String(x)`: Convert to a string.
 *   `min(...numbers)`
 *   `max(...numbers)`
+*   `attempt(macro, ...macroArgs)`: safe call.
 
 ### Table Manipulation
 

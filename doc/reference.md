@@ -26,6 +26,7 @@ To distinguish control flow and logic from text, Plume recognizes a set of **sta
 *   `$key:` (initiates a dynamic named table item, where key is an expression to be evaluated)
 *   `...` (expand a table)
 *   `@name` (initiates a block call)
+*   `raise`
 
 Anywhere else, these keywords are rendered as plain text.
 
@@ -1105,3 +1106,51 @@ The Plume parser ignores the following whitespace by default:
 *   Spaces surrounding operators or argument separators (`,`) in an evaluation context.
 
 To explicitly insert whitespace characters, use the escape sequences `\s`, `\t`, and `\n`.
+
+### Error Handling
+
+**Raising Errors**
+
+```plume
+raise <message>
+```
+
+Stops the current execution block and propagates an error with `<message>` as its value.
+`raise` terminates the macro or file entirely unless caught by a surrounding context.
+
+The message can be any expression evaluated in standard evaluation context:
+
+```plume
+if not user.exists()
+    raise User not found: ID $id
+end
+```
+
+**Catching Errors with `attempt`**
+
+The built-in function `attempt()` calls a macro or expression in protected mode and returns the result without halting execution:
+
+```plume
+attempts(myMacro, ...macroArgs)
+```
+
+Returns a table with two fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | `true` if no error occurred during execution; `false` otherwise |
+| `result` | any type | The macro's return value on success, or the error message string on failure |
+
+**Example:**
+
+```plume
+let outcome = $(attempt(getUser(id)))
+
+if outcome.success
+    // Use the returned user data
+    Welcome back, $outcome.result.name!
+else
+    // Handle the error gracefully
+    Faild with error "$outcome.result".
+end
+```
