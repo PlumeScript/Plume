@@ -955,3 +955,26 @@ $Wing()
 /// Output
 1
 /// End
+
+
+/// Test #734-1
+let nib = macro ()
+end
+with wing:5
+  $nib()
+end
+a
+/// Output
+a
+/// End
+
+/// Test #734-2
+let nib = macro ()
+end
+do
+  $nib()
+end
+a
+/// Output
+a
+/// End

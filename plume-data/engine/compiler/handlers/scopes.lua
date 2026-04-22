@@ -25,6 +25,10 @@ return function (plume, context, nodeHandlerTable)
 		context.scope(function()
 			context.accBlock()(body)
 		end)(body)
+
+		if context.checkIfCanConcat() then
+			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
+		end
 	end
 
 	nodeHandlerTable.WITH = function(node)
@@ -48,6 +52,10 @@ return function (plume, context, nodeHandlerTable)
 		
 		for _, child in ipairs(params.children) do
 			context.registerOP(node, plume.ops.POP_CONTEXT)
+		end
+
+		if context.checkIfCanConcat() then
+			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end
 end
