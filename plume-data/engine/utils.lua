@@ -150,6 +150,7 @@ return function (plume)
 
 		local nulldelta = 0
 		local lastNode = parentLastNode
+		local branchType
 
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
@@ -186,10 +187,14 @@ return function (plume)
 				elseif node.type == "TEXT" and childType == "VALUE" then
 					node.type = "TEXT"
 				elseif node.type == "VALUE_TABLE" and childType == "VALUE_TABLE" then
-					if child.name == "INLINE_TABLE" then
-						plume.error.inlineTableMuseBeAlone(child)
-					elseif child.name == "WITH"  then
-						plume.error.withTableMuseBeAlone(child)
+					if branchType and branchType ~= "EMPTY" then
+						if child.name == "INLINE_TABLE" then
+							plume.error.inlineTableMuseBeAlone(child)
+						elseif child.name == "WITH"  then
+							plume.error.withTableMuseBeAlone(child)
+						end
+					else
+						node.type = "VALUE_TABLE"
 					end
 				elseif childType ~= "EMPTY" and node.type ~= childType then
 					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
@@ -204,6 +209,7 @@ return function (plume)
 						end
 					end
 				end
+				branchType = node.type
 			end
 		end
 
