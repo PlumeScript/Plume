@@ -523,9 +523,7 @@ return function (plume)
             end
 
             if node.name == "IDENTIFIER" then
-                if not plume.checkIdentifier(node.content) then
-                    plume.error.wrongIdentifier(node, node.content)
-                end
+                plume.checkIdentifier(node, node.content)
             end
 
             if node.epos and node.epos > pos then
