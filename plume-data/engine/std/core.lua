@@ -155,4 +155,6 @@ return function (plume)
             return false, msg
         end
     end)
+
+    plume.std.attempt = plume.obj.table(0, 0)
 end
