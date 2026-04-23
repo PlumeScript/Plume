@@ -310,6 +310,9 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### POP_CONTEXT
 
 
+#### RAISE
+
+
 ### vm/std.lua
 
 #### STD_LEN

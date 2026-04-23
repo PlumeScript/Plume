@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">608 passed out of 608 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">610 passed out of 610 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">5 passed out of 5 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -5855,7 +5855,7 @@ macro double
 </code></pre>
 </div>
 </details>
-<h2>plume/errors: <span style="font-weight: normal;">32 passed out of 32 tests</span></h2>
+<h2>plume/errors: <span style="font-weight: normal;">34 passed out of 34 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -6803,6 +6803,121 @@ $wing()
 │  ↳ (same file)                                                                 │
 │    12 │$wing()                                                                 │
 │       │ ^^^^^^                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> custom error <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+raise Program fail.
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Program fail.</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">RAISE           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; raise Program fail.</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Program fail.                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raise Program fail.                                                      │
+│      │^^^^^^^^^^^^^^^^^^^                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> custom error with traceback <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro Wing()
+	raise Program fail.
+end
+
+macro Nib()
+	$Wing()
+end
+
+$Nib()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">OPEN_UPVALUE    </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 12</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Program fail.</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">RAISE           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; raise Program fail.</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Wing()[...]</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 20</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_UPVALUE    </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Wing</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Wing()</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro Nib()[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib()</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Nib</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Nib()</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">CLOSE_UPVALUE   </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Program fail.                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro Wing()                                                             │
+│    2 │ raise Program fail.                                                     │
+│      │ ^^^^^^^^^^^^^^^^^^^                                                     │
+│    3 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │macro Nib()                                                              │
+│    6 │ $Wing()                                                                 │
+│      │  ^^^^^^                                                                 │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    9 │$Nib()                                                                   │
+│      │ ^^^^^                                                                   │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>

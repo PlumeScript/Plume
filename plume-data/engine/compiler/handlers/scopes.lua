@@ -58,4 +58,11 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end
+
+	nodeHandlerTable.RAISE = function(node)
+		context.accBlock(function(node)
+			context.childrenHandler(node)
+		end)(node)
+		context.registerOP(node, plume.ops.RAISE)
+	end
 end

@@ -4671,10 +4671,6 @@ return function (plume)
                                             end
                                         end
                                     else
-                                        goto END
-                                    end
-                                else
-                                    if op < 67 then
                                         do
                                             local _ret403
                                             do
@@ -4684,10 +4680,27 @@ return function (plume)
                                                 goto _inline_end889
                                             end
                                             ::_inline_end889::
-                                            local t = _ret403.table[1]
+                                            local msg = _ret403
+                                            vmerr = msg
+                                        end
+                                    end
+                                else
+                                    if op < 67 then
+                                        goto END
+                                    else
+                                        do
                                             local _ret404
-                                            _ret404 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                            local tt = _ret404
+                                            do
+                                                mainStackPointer = mainStackPointer - 1
+                                                local value = mainStack[mainStackPointer + 1]
+                                                _ret404 = value
+                                                goto _inline_end892
+                                            end
+                                            ::_inline_end892::
+                                            local t = _ret404.table[1]
+                                            local _ret405
+                                            _ret405 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local tt = _ret405
                                             local result
                                             if tt == "table" then
                                                 result = #t.table
@@ -4700,47 +4713,47 @@ return function (plume)
                                             mainStack[mainStackPointer] = result
                                             table.remove (runtime.callstack)
                                         end
-                                    else
-                                        do
-                                            local _ret405
-                                            do
-                                                mainStackPointer = mainStackPointer - 1
-                                                local value = mainStack[mainStackPointer + 1]
-                                                _ret405 = value
-                                                goto _inline_end895
-                                            end
-                                            ::_inline_end895::
-                                            local t = _ret405.table[1]
-                                            local _ret406
-                                            _ret406 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                            mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret406
-                                            table.remove (runtime.callstack)
-                                        end
                                     end
                                 end
                             else
                                 if op < 70 then
                                     if op < 69 then
                                         do
-                                            local signature = "numbers stop|start, stop|start, stop, step"
-                                            local _ret407
+                                            local _ret406
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret407 = value
-                                                goto _inline_end900
+                                                _ret406 = value
+                                                goto _inline_end898
                                             end
-                                            ::_inline_end900::
-                                            local args = _ret407.table
+                                            ::_inline_end898::
+                                            local t = _ret406.table[1]
+                                            local _ret407
+                                            _ret407 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = _ret407
+                                            table.remove (runtime.callstack)
+                                        end
+                                    else
+                                        do
+                                            local signature = "numbers stop|start, stop|start, stop, step"
+                                            local _ret408
+                                            do
+                                                mainStackPointer = mainStackPointer - 1
+                                                local value = mainStack[mainStackPointer + 1]
+                                                _ret408 = value
+                                                goto _inline_end903
+                                            end
+                                            ::_inline_end903::
+                                            local args = _ret408.table
                                             local start = tonumber (args[1])
                                             local stop = tonumber (args[2])
                                             local step = tonumber (args[3] or 1)
-                                            local _ret408
+                                            local _ret409
                                             do
-                                                local _ret409
-                                                _ret409 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
-                                                local t = _ret409
+                                                local _ret410
+                                                _ret410 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
+                                                local t = _ret410
                                                 if t ~= "number" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -4748,22 +4761,22 @@ return function (plume)
                                                         end
                                                         vmerr = plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
-                                                    _ret408 = false
-                                                    goto _inline_end901
+                                                    _ret409 = false
+                                                    goto _inline_end904
                                                 end
-                                                _ret408 = true
-                                                goto _inline_end901
+                                                _ret409 = true
+                                                goto _inline_end904
                                             end
-                                            ::_inline_end901::
+                                            ::_inline_end904::
                                             if not stop then
                                                 stop = start
                                                 start = 1
                                             end
-                                            local _ret410
+                                            local _ret411
                                             do
-                                                local _ret411
-                                                _ret411 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
-                                                local t = _ret411
+                                                local _ret412
+                                                _ret412 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
+                                                local t = _ret412
                                                 if t ~= "number" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -4771,18 +4784,18 @@ return function (plume)
                                                         end
                                                         vmerr = plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
-                                                    _ret410 = false
-                                                    goto _inline_end904
+                                                    _ret411 = false
+                                                    goto _inline_end907
                                                 end
-                                                _ret410 = true
-                                                goto _inline_end904
+                                                _ret411 = true
+                                                goto _inline_end907
                                             end
-                                            ::_inline_end904::
-                                            local _ret412
+                                            ::_inline_end907::
+                                            local _ret413
                                             do
-                                                local _ret413
-                                                _ret413 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
-                                                local t = _ret413
+                                                local _ret414
+                                                _ret414 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
+                                                local t = _ret414
                                                 if t ~= "number" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -4790,35 +4803,37 @@ return function (plume)
                                                         end
                                                         vmerr = plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                     end
-                                                    _ret412 = false
-                                                    goto _inline_end907
+                                                    _ret413 = false
+                                                    goto _inline_end910
                                                 end
-                                                _ret412 = true
-                                                goto _inline_end907
+                                                _ret413 = true
+                                                goto _inline_end910
                                             end
-                                            ::_inline_end907::
+                                            ::_inline_end910::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", start = start - step, stop = stop, step = step, flag = ITER_SEQ}
                                             table.remove (runtime.callstack)
                                         end
-                                    else
+                                    end
+                                else
+                                    if op < 71 then
                                         do
-                                            local _ret414
+                                            local _ret415
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret414 = value
-                                                goto _inline_end913
+                                                _ret415 = value
+                                                goto _inline_end916
                                             end
-                                            ::_inline_end913::
-                                            local args = _ret414.table
-                                            local _ret415
+                                            ::_inline_end916::
+                                            local args = _ret415.table
+                                            local _ret416
                                             do
-                                                local _ret416
-                                                _ret416 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
-                                                local t = _ret416
+                                                local _ret417
+                                                _ret417 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local t = _ret417
                                                 if t ~= "table" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -4826,35 +4841,33 @@ return function (plume)
                                                         end
                                                         vmerr = plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)")
                                                     end
-                                                    _ret415 = false
-                                                    goto _inline_end914
+                                                    _ret416 = false
+                                                    goto _inline_end917
                                                 end
-                                                _ret415 = true
-                                                goto _inline_end914
+                                                _ret416 = true
+                                                goto _inline_end917
                                             end
-                                            ::_inline_end914::
+                                            ::_inline_end917::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named}
                                             table.remove (runtime.callstack)
                                         end
-                                    end
-                                else
-                                    if op < 71 then
+                                    else
                                         do
-                                            local _ret417
+                                            local _ret418
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret417 = value
-                                                goto _inline_end920
+                                                _ret418 = value
+                                                goto _inline_end923
                                             end
-                                            ::_inline_end920::
-                                            local args = _ret417.table
-                                            local _ret418
+                                            ::_inline_end923::
+                                            local args = _ret418.table
+                                            local _ret419
                                             do
-                                                local _ret419
-                                                _ret419 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
-                                                local t = _ret419
+                                                local _ret420
+                                                _ret420 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local t = _ret420
                                                 if t ~= "table" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -4862,35 +4875,41 @@ return function (plume)
                                                         end
                                                         vmerr = plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)")
                                                     end
-                                                    _ret418 = false
-                                                    goto _inline_end921
+                                                    _ret419 = false
+                                                    goto _inline_end924
                                                 end
-                                                _ret418 = true
-                                                goto _inline_end921
+                                                _ret419 = true
+                                                goto _inline_end924
                                             end
-                                            ::_inline_end921::
+                                            ::_inline_end924::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS}
                                             table.remove (runtime.callstack)
                                         end
-                                    else
+                                    end
+                                end
+                            end
+                        else
+                            if op < 76 then
+                                if op < 74 then
+                                    if op < 73 then
                                         do
-                                            local _ret420
+                                            local _ret421
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret420 = value
-                                                goto _inline_end927
+                                                _ret421 = value
+                                                goto _inline_end930
                                             end
-                                            ::_inline_end927::
-                                            local args = _ret420
+                                            ::_inline_end930::
+                                            local args = _ret421
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
-                                            local _ret421
+                                            local _ret422
                                             do
-                                                local _ret422
-                                                _ret422 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
-                                                local t = _ret422
+                                                local _ret423
+                                                _ret423 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
+                                                local t = _ret423
                                                 if t ~= "string" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -4898,14 +4917,14 @@ return function (plume)
                                                         end
                                                         vmerr = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
                                                     end
-                                                    _ret421 = false
-                                                    goto _inline_end928
+                                                    _ret422 = false
+                                                    goto _inline_end931
                                                 end
-                                                _ret421 = true
-                                                goto _inline_end928
+                                                _ret422 = true
+                                                goto _inline_end931
                                             end
-                                            ::_inline_end928::
-                                            local assertion = _ret421
+                                            ::_inline_end931::
+                                            local assertion = _ret422
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
                                                 if filename then
@@ -4940,10 +4959,10 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = chunk.offset
-                                                            local _ret423
-                                                            _ret423 = macroStackPointer
+                                                            local _ret424
+                                                            _ret424 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = _ret423
+                                                            injectionStack[injectionStackPointer] = _ret424
                                                         end
                                                     else
                                                         vmerr = err
@@ -4962,13 +4981,13 @@ return function (plume)
             end
             goto DISPATCH
         ::END::
-        local _ret424
+        local _ret425
         do
             local value = mainStack[mainStackPointer]
-            _ret424 = value
-            goto _inline_end941
+            _ret425 = value
+            goto _inline_end944
         end
-        ::_inline_end941::
-        return true, _ret424
+        ::_inline_end944::
+        return true, _ret425
     end
 end

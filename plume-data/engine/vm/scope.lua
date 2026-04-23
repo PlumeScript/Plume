@@ -97,3 +97,10 @@ end
 function POP_CONTEXT(vm, arg1, arg2)
     _STACK_POP(vm.contextStack)
 end
+
+--- @opcode
+--! inline
+function RAISE(vm, arg1, arg2)
+    local msg = _STACK_POP(vm.mainStack)
+    _ERROR (vm, msg)
+end

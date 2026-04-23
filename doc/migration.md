@@ -20,3 +20,5 @@ $("abc").sub(1, 2)
 ```
 
 _See Math, Random, Number and String tables for all methods_
+
+## `#185` `raise` cannot anymore be an identifier
