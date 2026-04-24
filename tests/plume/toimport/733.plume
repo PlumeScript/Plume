@@ -1,0 +1,5 @@
+let context a = 1
+
+Wing: macro()
+	$a
+end

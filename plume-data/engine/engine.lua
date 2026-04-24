@@ -305,26 +305,34 @@ return function (plume)
 									if op < 65 then
 										HOST_NEXT(vm, arg1, arg2)
 									else
-										goto END
+										RAISE(vm, arg1, arg2)
 									end
 								else
 									if op < 67 then
-										STD_LEN(vm, arg1, arg2)
+										goto END
 									else
-										STD_TYPE(vm, arg1, arg2)
+										STD_LEN(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
-										STD_SEQ(vm, arg1, arg2)
+										STD_TYPE(vm, arg1, arg2)
 									else
-										STD_ITEMS(vm, arg1, arg2)
+										STD_SEQ(vm, arg1, arg2)
 									end
 								else
 									if op < 71 then
-										STD_ENUMERATE(vm, arg1, arg2)
+										STD_ITEMS(vm, arg1, arg2)
 									else
+										STD_ENUMERATE(vm, arg1, arg2)
+									end
+								end
+							end
+						else
+							if op < 76 then
+								if op < 74 then
+									if op < 73 then
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

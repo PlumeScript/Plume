@@ -42,7 +42,7 @@ return function (plume)
 
 		PUSH_CONTEXT POP_CONTEXT LOAD_CONTEXT
 
-		HOST_UPDATE HOST_NEXT
+		HOST_UPDATE HOST_NEXT RAISE
 
 		END
 ]]
@@ -150,6 +150,7 @@ return function (plume)
 
 		local nulldelta = 0
 		local lastNode = parentLastNode
+		local branchType
 
 		for i, child in ipairs(node.children or {}) do
 			child.parent = node
@@ -186,10 +187,14 @@ return function (plume)
 				elseif node.type == "TEXT" and childType == "VALUE" then
 					node.type = "TEXT"
 				elseif node.type == "VALUE_TABLE" and childType == "VALUE_TABLE" then
-					if child.name == "INLINE_TABLE" then
-						plume.error.inlineTableMuseBeAlone(child)
-					elseif child.name == "WITH"  then
-						plume.error.withTableMuseBeAlone(child)
+					if branchType and branchType ~= "EMPTY" then
+						if child.name == "INLINE_TABLE" then
+							plume.error.inlineTableMuseBeAlone(child)
+						elseif child.name == "WITH"  then
+							plume.error.withTableMuseBeAlone(child)
+						end
+					else
+						node.type = "VALUE_TABLE"
 					end
 				elseif childType ~= "EMPTY" and node.type ~= childType then
 					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
@@ -204,6 +209,7 @@ return function (plume)
 						end
 					end
 				end
+				branchType = node.type
 			end
 		end
 
@@ -239,6 +245,8 @@ return function (plume)
 		elseif node.name == "INLINE_TABLE" 
 			or (node.name == "WITH" and node.type == "TABLE") then
 			return "VALUE_TABLE"
+		elseif (node.name == "WITH" or node.name == "DO") and node.type == "EMPTY" then
+			return "EMPTY"
 		elseif node.name == "MACRO" then
 			if plume.ast.get(node, "IDENTIFIER") then
 				return "EMPTY"
@@ -274,13 +282,18 @@ return function (plume)
 		end
 	end
 
-	function plume.checkIdentifier(identifier)
+	function plume.checkIdentifier(node, identifier)
 		for kw in ('if then elseif else while for do macro let set const param use raw run ref with'):gmatch('%S+') do
 			if identifier == kw then
-				return false
+				plume.error.wrongIdentifier(node, identifier)
 			end
 		end
-		return true
+
+		if identifier == "raise" then
+			plume.warning.throwWarning(
+				"Using `raise` as an identifier is deprecated, since it is now a keyword.\nThis will cause an error from edition 'Owl'.", nil, node, {185, 614, 742}
+			)
+		end
 	end
 
 	function plume.ast.labelMacro(ast)

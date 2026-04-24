@@ -124,7 +124,7 @@ return function (plume, context, nodeHandlerTable)
 				for name, value in pairs(args) do
 					context.contextVariableToClose = context.contextVariableToClose + 1
 					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
-					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(value))
+					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(tonumber(value) or value))
 					context.registerOP(node, plume.ops.PUSH_CONTEXT)
 				end
 			end

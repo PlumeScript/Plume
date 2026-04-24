@@ -919,3 +919,105 @@ ref x, y, z
 /// Output
 $Table()
 /// End
+
+/// Test #730
+for i in seq(1, String(2))
+    $i
+end
+/// Output
+12
+/// End
+
+/// Test #731
+use #context(a: 1)
+let context a
+$type($a)
+/// Output
+number
+/// End
+
+/// Test #733-1
+let context var = 1
+
+macro Wing()
+    $var
+end
+
+$Wing()
+/// Output
+1
+/// End
+
+/// Test #733-2
+use tests/plume/toimport/733
+
+$Wing()
+/// Output
+1
+/// End
+
+
+/// Test #734-1
+let nib = macro ()
+end
+with wing:5
+  $nib()
+end
+a
+/// Output
+a
+/// End
+
+/// Test #734-2
+let nib = macro ()
+end
+do
+  $nib()
+end
+a
+/// Output
+a
+/// End
+
+/// Test #737-1
+let result
+
+with wing: 5
+    set result = $Table()
+end
+$result
+/// Output
+$Table()
+/// End
+
+/// Test #737-2
+let result
+
+do
+    set result = $Table()
+end
+$result
+/// Output
+$Table()
+/// End
+
+/// Test #738-1
+if true
+    (1, 2, 3)
+else
+    (4, 5, 6)
+end
+/// Output
+(1, 2, 3)
+/// End
+
+/// Test #738-2
+if true
+    let x
+    (1, 2, 3)
+else
+    (4, 5, 6)
+end
+/// Output
+(1, 2, 3)
+/// End

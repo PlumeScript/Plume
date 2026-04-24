@@ -21,14 +21,20 @@ return function (plume, context, nodeHandlerTable)
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
 			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
+		elseif var.isContext then
+			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(varName))
+			-- default value
+			if var.isUpvalue then 
+				context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
+			else
+				context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
+			end
+			context.registerOP(node, plume.ops.LOAD_CONTEXT)
 		elseif var.isUpvalue then
 			context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
 		elseif var.isStd then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, var.offset)
-		elseif var.isContext then
-			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(varName))
-			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset) -- default value
-			context.registerOP(node, plume.ops.LOAD_CONTEXT)
+		
 		else
 			context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
 		end

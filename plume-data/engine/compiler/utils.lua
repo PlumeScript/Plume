@@ -15,10 +15,10 @@ return function (plume, context)
 	local uid = 0
 	--- Return each time a unique number
 	--- Used to name labels
-	---@return number
+	---@return string
 	function context.getUID()
 		uid = uid+1
-		return uid
+		return context.runtime.contextCount .. ":" .. uid
 	end
 
 	--- Register an opcode in the current chunk

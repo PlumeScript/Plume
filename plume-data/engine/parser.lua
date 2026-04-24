@@ -453,12 +453,14 @@ return function (plume)
                                 * (
                                       V"command"
                                     + Ct("RUN", K"run" * s * V"firstStatement")
+                                    + Ct("RAISE", K"raise" * s * V"firstStatement")
                                     + V"invalid"^-1 * (fakeAffectation^-1 * V"text" + fakeAffectation)
                                 ),
             firstStatementNLB = os * (-V"statementTerminator")
                                 * (
                                       V"commandStd"
                                     + Ct("RUN", K"run" * s * V"firstStatementNLB")
+                                    + Ct("RAISE", K"raise" * s * V"firstStatementNLB")
                                     + V"invalid"^-1 * V"text"
                                 ),
             statement    = lt * V"firstStatement",
@@ -521,9 +523,7 @@ return function (plume)
             end
 
             if node.name == "IDENTIFIER" then
-                if not plume.checkIdentifier(node.content) then
-                    plume.error.wrongIdentifier(node, node.content)
-                end
+                plume.checkIdentifier(node, node.content)
             end
 
             if node.epos and node.epos > pos then

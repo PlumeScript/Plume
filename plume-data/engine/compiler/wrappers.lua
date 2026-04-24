@@ -78,11 +78,14 @@ return function (plume, context)
 
                     if label then  
                         context.registerLabel(node, label)  
-                    end  
-                    if context.checkIfCanConcat() then
-                        context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
-                    else
-                        context.registerOP(nil, plume.ops.LOAD_EMPTY, 0, 0)
+                    end
+                    local parentName = node.parent and node.parent.name
+                    if parentName ~= "WITH" and parentName ~= "DO" then -- not the cleanest workaround
+                        if context.checkIfCanConcat() then
+                            context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
+                        else
+                            context.registerOP(nil, plume.ops.LOAD_EMPTY, 0, 0)
+                        end
                     end
                 end  
             end  

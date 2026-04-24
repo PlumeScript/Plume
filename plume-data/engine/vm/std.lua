@@ -67,9 +67,9 @@ function STD_SEQ(vm, arg1, arg2)
     local signature = "numbers stop|start, stop|start, stop, step"
 
     local args = _STACK_POP(vm.mainStack).table
-    local start = args[1]
-    local stop  = args[2]
-    local step  = args[3] or 1
+    local start = tonumber(args[1])
+    local stop  = tonumber(args[2])
+    local step  = tonumber(args[3] or 1)
 
     _ASSERT_STD_TYPE(vm, "seq", 1, start, "number", signature)
 

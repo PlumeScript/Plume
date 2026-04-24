@@ -57,6 +57,8 @@ return function(plume)
 	function plume.newCompilationContext(chunk, runtime)
 		local context = {}
 
+		runtime.contextCount = runtime.contextCount + 1
+
 		context.chunk = chunk
 		context.runtime = runtime
 
