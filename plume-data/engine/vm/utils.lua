@@ -17,7 +17,26 @@ end
 --- @return nil
 --! inline-keepret
 function _ERROR (vm, msg)
-    vm.err = msg
+    local safeCallIndex
+    for i = #vm.runtime.callstack, 1, -1 do
+        local call = vm.runtime.callstack[i]
+        if call.safe then
+            safeCallIndex = i
+        end
+    end
+
+    if safeCallIndex then
+        for i=#vm.runtime.callstack, safeCallIndex, -1 do
+            table.remove(vm.runtime.callstack)
+        end
+        local safeResult = vm.plume.obj.table(0, 2)
+        safeResult.keys = {"success", "result"}
+        safeResult.table.success = false
+        safeResult.table.result = msg
+        _STACK_PUSH(vm.mainStack, safeResult)
+    else
+        vm.err = msg
+    end
 end
 
 --- @param x any
