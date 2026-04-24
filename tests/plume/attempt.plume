@@ -1,0 +1,37 @@
+/// Test success
+macro double(x)
+  $(x*2)
+end
+
+$attempt($double, 2)
+/// Output
+(success: true, result: 4)
+/// End
+
+/// Test fail
+macro double(x)
+  $(x*2)
+end
+
+$attempt($double, a)
+/// Output
+(success: false, result: Cannot convert the string value 'a' to a number.)
+/// End
+
+/// Test fail - long callstack
+macro double(x)
+  $(x*2)
+end
+
+macro nib()
+  $double(a)
+end
+
+macro wing()
+  $nib()
+end
+
+$attempt($wing)
+/// Output
+(success: false, result: Cannot convert the string value 'a' to a number.)
+/// End
