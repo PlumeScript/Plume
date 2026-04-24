@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b45 (Sparrow Edition)
+Plume🪶 b46 (Sparrow Edition)
 Copyright (C) 2024-2026 Erwan Barbedor
 
 Check https://github.com/PlumeScript/Plume
