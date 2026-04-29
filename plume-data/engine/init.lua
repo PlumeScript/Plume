@@ -24,7 +24,7 @@ SOFTWARE.
 ]]
 
 local plume = {}
-plume._VERSION = "b45 (Sparrow Edition)"
+plume._VERSION = "b46 (Sparrow Edition)"
 
 require 'plume-data/engine/debug/core'    (plume)
 require 'plume-data/engine/error/core'    (plume)
