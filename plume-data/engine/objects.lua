@@ -31,6 +31,24 @@ return function(plume)
 		return t
 	end
 
+	function plume.obj.quickTable(source)
+		local t = plume.obj.table(#source, 0)
+
+		for k, v in ipairs(source) do
+			table.insert(t.table, v)
+			table.insert(t.keys, #t.table)
+		end
+
+		for k, v in pairs(source) do
+			if not tonumber(k) then
+				table.insert(t.keys, k)
+				table.insert(t.table, v)
+			end
+		end
+
+		return t
+	end
+
 	function plume.obj.macro(name, parent)
 		local t = {
 			type   = "macro",
