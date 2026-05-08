@@ -23,7 +23,7 @@ end
 local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
-	f = f:gsub('%"(.-)%", function %(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
+	f = f:gsub('%"([^"]+)%", function %(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
 		local postionalArgsName = {}
 		local allArgsName = {}
 		local argsType = {}
