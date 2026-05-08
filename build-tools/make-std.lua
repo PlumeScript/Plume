@@ -29,18 +29,44 @@ local function process(f)
 		local optnPositionalArgsCount = 0
 		local allArgsName = {}
 		local argsType = {}
-		for t, n in signature:gmatch('(%S+) (%S+)') do
-			n = n:gsub('%]$', '')
+		local variadic
+		for t, n in signature:gmatch('([^,%s]+) ([^,%s]+)') do
+			local isVariadic, isIgnored
+
+			n = n:gsub('%]$', ''):gsub('%)$', '')
+			if n:match('^%.%.%.') then
+				variadic = n
+				n = n:gsub('^%.%.%.', '')
+				isVariadic = true
+			end
+
+			if t:match('^%(') then
+				isIgnored = true
+			end
 			if t:match('^%[') then
 				optnPositionalArgs[n] = true
 				optnPositionalArgsCount = optnPositionalArgsCount+1
 			end
-			t = t:gsub('^%[', '')
-			table.insert(postionalArgsName, n)
-			table.insert(allArgsName, n)
-			if t ~= "any" then
-				argsType[n] = t
+			
+			t = t:gsub('^%[', ''):gsub('^%(', '')
+			if not isVariadic then
+				table.insert(postionalArgsName, n)
 			end
+			if not isIgnored then
+				table.insert(allArgsName, n)
+				if t ~= "any" then
+					argsType[n] = t
+				end
+			end
+		end
+
+		local signature = signature:gsub('%(', ''):gsub('%)', '') -- remove ignored syntax
+
+		local minArgCount = #postionalArgsName-optnPositionalArgsCount
+		local maxArgCount = #postionalArgsName
+
+		if variadic then
+			maxArgCount = "math.huge"
 		end
 
 		local checks = {"\n------------\n-- CHECKS --\n------------\n"}
@@ -52,7 +78,7 @@ local function process(f)
 				table.insert(checks, string.format(', %s\n', posList))
 				table.insert(checks,string.format(
 					'__s, __e, %s = plume.stdUnpackPositional(args, %s, %s, __name, __signature)\n',
-					posList, #postionalArgsName-optnPositionalArgsCount, #postionalArgsName
+					posList, minArgCount, maxArgCount
 				))
 			else
 				table.insert(checks, '__s, __e = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
