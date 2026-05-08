@@ -1044,4 +1044,560 @@ return function(plume)
 	    
 	    return true, random
 	end)
+	
+	local function replaceUpdate(context)
+		local s       = context.string
+		local pos     = context.pos
+		local pattern = context.pattern
+		local acc     = context.acc
+	
+		local bpos, epos = s:sub(pos, -1):find(pattern)
+	
+		if bpos then
+			context.PLUME_CALLBACK = context.macro
+			table.insert(acc, s:sub(pos, pos+bpos-2))
+			context.PLUME_CALLBACK_ARGS = {s:sub(pos+bpos-1, pos+epos-1)}
+			context.pos = context.pos+epos
+		else
+			context.PLUME_CALLBACK = nil
+			table.insert(acc, s:sub(pos, -1))
+			context.pos = #s+1
+			context.RETURN_VALUE = table.concat(acc)
+		end
+		return true
+	end
+	
+	local function replaceNext(context, value)
+		local t = type(value) == "table" and value.type or type(value)
+		if t ~= "string" and t ~= "number" and t ~= "empty" then
+			return false, string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
+		end
+	
+		if (type(value) ~= "table" or value.type ~= "empty") then
+			table.insert(context.acc, value)
+		end
+		return true
+	end
+	
+	plume.std.String = plume.obj.quickTable {
+	
+		-- Manipulation
+		upper = plume.obj.luaMacro("upper", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "upper"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, string.upper(s)
+		end),
+		lower = plume.obj.luaMacro("lower", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "lower"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, string.lower(s)
+		end),
+	
+		replace = plume.obj.luaMacro("replace", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "replace"
+			local __signature = "string s, string pattern, string sub, ?rich"
+			local __s, __e, self, s, pattern, sub
+			__s, __e, s, pattern, sub = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(sub, "string", "sub", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+				if type(sub) == "string" then
+					sub = sub:gsub("%%", "%%%%")
+				end
+			end
+	
+			if type(sub) ~= "string" then
+				if sub.positionalParamCount ~= 1 then
+					return false, string.format("Macro sub for `String.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
+				end
+	
+				local context = {
+					type         = "hostContext",
+					string       = s,
+					pattern      = pattern,
+					pos          = 1,
+					macro        = sub,
+					acc          = {},
+					HOST_UPDATE  = replaceUpdate,
+					HOST_NEXT    = replaceNext
+				}
+				return true, context, true
+			end
+	
+			return true, (s:gsub(pattern, sub))
+		end),
+	
+		-- Tests
+		isNumber = plume.obj.luaMacro("isNumber", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "isNumber"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if tonumber(s) then
+				return true, true
+			else
+				return true, false
+			end
+		end),
+	
+		-- Normalization
+		trim = plume.obj.luaMacro("trim", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "trim"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, (s:gsub('^%s*', ''):gsub('%s*$', ''))
+		end),
+		rtrim = plume.obj.luaMacro("rtrim", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "rtrim"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, (s:gsub('^%s*', ''))
+		end),
+		ltrim = plume.obj.luaMacro("ltrim", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "ltrim"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, (s:gsub('%s*$', ''))
+		end),
+		collapse = plume.obj.luaMacro("collapse", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "collapse"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, (s:gsub('%s+', ' '))
+		end),
+		dedent = plume.obj.luaMacro("dedent", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "dedent"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local firstIndent = s:match('^%s+')
+			return true, (s:gsub('^'..firstIndent, ''):gsub('\n'..firstIndent, '\n'))
+		end),
+		indent = plume.obj.luaMacro("indent", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "indent"
+			local __signature = "string s, string sep:\\t"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			local sep
+			if __s then __s, __e, self, sep = plume.stdUnpackNamed(args, {"self", "sep"}, __name, __signature) end
+			sep = sep or "\t"
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, sep..s:gsub('\n', '\n'..sep)
+		end),
+	
+		-- search
+		find = plume.obj.luaMacro("find", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "find"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			return true, (s:match(pattern) or plume.empty)
+		end),
+		contains = plume.obj.luaMacro("contains", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "contains"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			if s:match(pattern) then
+				return true, true
+			else
+				return true, false
+			end
+		end),
+		startsWidth = plume.obj.luaMacro("startsWidth", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "startsWidth"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			if s:match("^"..pattern) then
+				return true, true
+			else
+				return true, false
+			end
+		end),
+		endsWidth = plume.obj.luaMacro("endsWidth", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "endsWidth"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			if s:match(pattern.."$") then
+				return true, true
+			else
+				return true, false
+			end
+		end),
+		count = plume.obj.luaMacro("count", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "count"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			local count = 0
+			for x in s:gmatch(pattern) do
+				count = count + 1
+			end
+	
+			return true, count
+		end),
+	
+		-- table making
+		split = plume.obj.luaMacro("split", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "split"
+			local __signature = "string s, string sep:\\s, ?rich"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			local sep, rich
+			if __s then __s, __e, self, sep, rich = plume.stdUnpackNamed(args, {"self", "sep", "rich"}, __name, __signature) end
+			sep = sep or " "
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local t = plume.obj.table(0, 0)
+	
+			if not rich then
+				sep = sep:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			local pos = 1
+			for sub, _sep in s:gmatch('(.-)('..sep..")") do
+				table.insert(t.table, sub)
+				table.insert(t.keys, #t.table)
+				pos = pos + #sub + #_sep
+			end
+	
+			if pos <= #s then
+				table.insert(t.table, s:sub(pos, -1))
+				table.insert(t.keys, #t.table)
+			end
+	
+			return true, t
+		end),
+		lines = plume.obj.luaMacro("lines", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "lines"
+			local __signature = "string s"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local t = plume.obj.table(0, 0)
+	
+			local pos = 1
+			for sub in s:gmatch('(.-)\n') do
+				table.insert(t.table, sub)
+				table.insert(t.keys, #t.table)
+				pos = pos + #sub + 1
+			end
+	
+			if pos <= #s then
+				table.insert(t.table, s:sub(pos, -1))
+				table.insert(t.keys, #t.table)
+			end
+	
+			return true, t
+		end),
+		findAll = plume.obj.luaMacro("findAll", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "findAll"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+	
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			local t = plume.obj.table(0, 0)
+	
+			for sub in s:gmatch(pattern) do
+				table.insert(t.table, sub)
+				table.insert(t.keys, #t.table)
+			end
+	
+			return true, t
+		end),
+		partition = plume.obj.luaMacro("partition", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "partition"
+			local __signature = "string s, string pattern, ?rich"
+			local __s, __e, self, s, pattern
+			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local rich
+			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
+			rich = rich or false
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not rich then
+				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+			end
+	
+			local t = plume.obj.table(3, 0)
+			t.keys = {1, 2, 3}
+			t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
+	
+			return true, t
+		end),
+	
+		rep = plume.obj.luaMacro("rep", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "rep"
+			local __signature = "string s, number count, string sep:$empty"
+			local __s, __e, self, s, count
+			__s, __e, s, count = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local sep
+			if __s then __s, __e, self, sep = plume.stdUnpackNamed(args, {"self", "sep"}, __name, __signature) end
+			sep = sep or ""
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(count, "number", "count", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			count = tonumber(count)
+			local result = {}
+			for i=1, count do
+				table.insert(result, s)
+				if i<count then
+					table.insert(result, sep)
+				end
+			end
+	
+			return true, table.concat(result)
+		end),
+	
+		sub = plume.obj.luaMacro("sub", function (args)
+			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "sub"
+			local __signature = "string s, number startpos, number endpos"
+			local __s, __e, self, s, startpos, endpos
+			__s, __e, s, startpos, endpos = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(startpos, "number", "startpos", __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(endpos, "number", "endpos", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if epos == 1 then
+				epos = #s
+			end
+	
+			return true, s:sub(startpos, endpos)
+		end)
+	}
 end

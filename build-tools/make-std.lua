@@ -57,6 +57,10 @@ local function process(f)
 				n, value = n:match('([^:]+):(.*)')
 				if value == "" then
 					value = 'nil'
+				elseif value == "\\s" then
+					value = '" "'
+				elseif value == "$empty" then
+					value = '""'
 				elseif not tonumber(value) then
 					value = '"' .. value .. '"'
 				end
@@ -94,7 +98,8 @@ local function process(f)
 			end
 		end
 
-		local signature = signature:gsub('%(', ''):gsub('%)', '') -- remove ignored syntax
+		signature = signature:gsub('%(', ''):gsub('%)', '') -- remove ignored syntax
+		signature = signature:gsub('\\', '\\\\')
 
 		local minArgCount = #postionalArgsName-optnPositionalArgsCount
 		local maxArgCount = #postionalArgsName

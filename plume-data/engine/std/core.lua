@@ -14,7 +14,6 @@ return function (plume)
     -- require 'plume-data/engine/std/io'     (plume)
     require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std/table'  (plume)
-    require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/time'   (plume)
     require 'plume-data/engine/std'        (plume)
 
@@ -73,7 +72,7 @@ return function (plume)
         plume.std[name] = obj
     end
 
-    for _, Table in ipairs({plume.std.String}) do
+    for _, Table in ipairs({}) do
         for name, f in pairs(Table.table) do
             if f.checkArgs then
                 f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
