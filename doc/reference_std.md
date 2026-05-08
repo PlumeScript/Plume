@@ -154,7 +154,7 @@ Plume balances performance and safety through its loading strategy:
 Unlike `import`, the following functions do not use the `plume.path` resolution logic and expect direct file system paths.
 
 *   `read(path)`: Reads the content of the file at `path` and returns it as a string.
-*   `write(path, ?append, ...items)`: Writes the concatenated string representation of `items` to the file at `path`.
+*   `write(path, ?append, item)`: Writes `items` to the file at `path`.
 
 > **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
 
