@@ -12,7 +12,6 @@ return function (plume)
     plume.stdUtils = {}
     
     -- require 'plume-data/engine/std/io'     (plume)
-    require 'plume-data/engine/std/plume'  (plume)
     require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std/table'  (plume)
     require 'plume-data/engine/std/string' (plume)

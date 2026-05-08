@@ -613,18 +613,20 @@ return function(plume)
 		end)
 	}
 	
-	plume.std.Number.meta.table.call = plume.obj.luaMacro("Number", function(args)
-		local x = args.table[1]
-		if x == plume.obj.empty then
-			return false, "Cannot convert empty into number"
-		elseif type(x) == "number" then
-			return true, x
-		elseif tonumber(x) then
-			return true, tonumber(x)
-		else
-		   return false, string.format("Cannot convert %s into number", type(x))
-		end
-	end)
+	plume.std.Number.meta = plume.obj.quickTable {
+		call = plume.obj.luaMacro("Number", function(args)
+			local x = args.table[1]
+			if x == plume.obj.empty then
+				return false, "Cannot convert empty into number"
+			elseif type(x) == "number" then
+				return true, x
+			elseif tonumber(x) then
+				return true, tonumber(x)
+			else
+			   return false, string.format("Cannot convert %s into number", type(x))
+			end
+		end)
+	}
 	
 	plume.std.os = plume.obj.quickTable {
 	    getEnv = plume.obj.luaMacro("getEnv", function (args)
@@ -908,6 +910,27 @@ return function(plume)
 				------------
 	    return makePath(path)
 	end)
+	
+	-- plume.std.plume isn't loaded like other std table,
+	-- but copied at runtime creation
+	
+	plume.std.plume = plume.obj.quickTable {
+		doc = plume.obj.luaMacro("doc", function (args)
+			
+			------------
+			-- CHECKS --
+			------------
+			local __name      = "doc"
+			local __signature = "macro m"
+			local __s, __e, self, m
+			__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s then __s, __e = plume.stdCheckType(m, "macro", "m", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, "macro " .. (m.debugMacroName or m.name) .. "\n    " .. m.doc:gsub('\n', '\n    ') or ""
+		end)
+	}
 	
 	plume.std.Random = plume.obj.luaMacro("Random", function (args)
 		
