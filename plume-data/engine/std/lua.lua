@@ -4,89 +4,60 @@ This file is part of Plume🪶
 Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
-
-return function (plume)
     
-    plume.stdLua = {
-        print = {
-            method = function(args, chunk)
-                local result = {}
-                for _, x in ipairs(args.table) do
-                    table.insert(result, plume.repr(x, nil, args.table.pretty))
-                end
-                print(table.unpack(result))
-                return true
-            end
-        },
+plume.std.print = plume.obj.luaMacro("print", function(args)
+    local result = {}
+    for _, x in ipairs(args.table) do
+        table.insert(result, plume.repr(x, nil, args.table.pretty))
+    end
+    print(table.unpack(result))
+    return true
+end)
 
-        help = {
-            checkArgs = { checkTypes = {"macro"}, signature = "macro m", args = 1},
-            method = function(args)
-                print("macro " .. (args.table[1].debugMacroName or args.table[1].name) .. "\n    " .. args.table[1].doc:gsub('\n', '\n    ') or "")
-                return true
-            end
-        },
+plume.std.help = plume.obj.luaMacro("help", function (args)
+    --!signature macro macro
+    print("macro " .. (macro.debugMacroName or macro.name) .. "\n    " .. macro.doc:gsub('\n', '\n    ') or "")
+    return true
+end)
 
-        -- io
-        write = {
-            checkArgs = {checkTypes={"string"}, named={append=true}, minArgs=1, maxArgs=math.huge, signature="string path, ?append, ...content"},
-            method = function(args)
-                local filename = args.table[1]
-                local content = table.concat(args.table, 2,  #args.table)
-                local append = args.table.append
-                return plume.stdio.write(filename, content, append)
-            end
-        },
+-- io
+plume.std.write = plume.obj.luaMacro("write", function(args)
+    --!signature string filename, string content, ?append
+    return plume.stdio.write(filename, content, append)
+end)
 
-        read = {
-            checkArgs = {checkTypes={"string"}, args=1, signature="string path"},
-            method = function(args)
-                local filename = args.table[1]
-                return plume.stdio.read(filename)
-            end
-        },
+plume.std.read = plume.obj.luaMacro("read", function(args)
+    --!signature string filename
+    return plume.stdio.read(filename)
+end)
 
-        rawset = {
-            checkArgs = {checkTypes={"table", "string"}, args=3, signature="table t, string key, any value"},
-            method = function(args)
-                local obj   = args.table[1]
-                local key   = args.table[2]
-                local value = args.table[3]
+plume.std.rawset = plume.obj.luaMacro("rawset", function(args)
+    --!signature table obj, string key, any value
 
-                if not obj.table[key] then
-                    table.insert(obj.keys, key)
-                end
-                obj.table[key] = value
-                return true
-            end
-        },
+    if not obj.table[key] then
+        table.insert(obj.keys, key)
+    end
+    obj.table[key] = value
+    return true
+end)
 
-        repr = {
-            checkArgs = {args=1, signature="any obj", named={pretty=true}},
-            method = function(args)
-                local obj = args.table[1]
-                return true, plume.repr(obj, nil, args.table.pretty)
-            end
-        },
+plume.std.repr = plume.obj.luaMacro("repr", function(args)
+    --!signature any obj, ?pretty
+    return true, plume.repr(obj, nil, pretty)
+end)
 
-        min = {
-            checkArgs = {minArgs=1, signature="...numbers", checkTypesAll="number"},
-            method = function(args)
-                return true, math.min(unpack(args.table))
-            end
-        },
-        max = {
-            checkArgs = {minArgs=1, signature="...numbers", checkTypesAll="number"},
-            method = function(args)
-                return true, math.max(unpack(args.table))
-            end
-        }
-    }
+plume.std.min = plume.obj.luaMacro("min", function(args)
+    --!signature (number ...numbers)
+    return true, math.min(unpack(args.table))
+end)
+plume.std.max = plume.obj.luaMacro("max", function(args)
+    --!signature (number ...numbers)
+    return true, math.max(unpack(args.table))
+end)
 
-    plume.stdLua.List = plume.obj.table(0, 0)
-    plume.stdLua.List.meta = plume.obj.table(0, 0)
-    plume.stdLua.List.meta.keys = {"call", "validate"}
-    plume.stdLua.List.meta.table.call = plume.obj.luaMacro ("call", function(args)
+plume.std.List = plume.obj.table(0, 0)
+plume.std.List.meta = plume.obj.quickTable{
+    call = plume.obj.luaMacro ("call", function(args)
         local result = plume.obj.table(0, 0)
         local t = args.table[1]
         for k, v in ipairs(t.table) do
@@ -94,8 +65,8 @@ return function (plume)
             table.insert(result.table, v)
         end
         return true, result
-    end)
-    plume.stdLua.List.meta.table.validate = plume.obj.luaMacro ("validate", function(args)
+    end),
+    validate = plume.obj.luaMacro ("validate", function(args)
         local t = args.table[1]
         for _, k in ipairs(t.keys) do
             if not tonumber(k) then
@@ -105,11 +76,11 @@ return function (plume)
 
         return true, args
     end)
+}
 
-    plume.stdLua.Map = plume.obj.table(0, 0)
-    plume.stdLua.Map.meta = plume.obj.table(0, 0)
-    plume.stdLua.Map.meta.keys = {"call", "validate"}
-    plume.stdLua.Map.meta.table.call = plume.obj.luaMacro ("call", function(args)
+plume.std.Map = plume.obj.table(0, 0)
+plume.std.Map.meta = plume.obj.quickTable{
+    call = plume.obj.luaMacro ("call", function(args)
         local result = plume.obj.table(0, 0)
         local t = args.table[1]
         for _, k in ipairs(t.keys) do
@@ -119,8 +90,8 @@ return function (plume)
             end
         end
         return true, result
-    end)
-    plume.stdLua.Map.meta.table.validate = plume.obj.luaMacro ("validate", function(args)
+    end),
+    validate = plume.obj.luaMacro ("validate", function(args)
         local t = args.table[1]
         for _, k in ipairs(t.keys) do
             if tonumber(k) then
@@ -130,4 +101,4 @@ return function (plume)
 
         return true, args
     end)
-end
+}

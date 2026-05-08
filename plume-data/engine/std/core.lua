@@ -13,7 +13,6 @@ return function (plume)
     
     require 'plume-data/engine/std/io'     (plume)
     require 'plume-data/engine/std/plume'  (plume)
-    require 'plume-data/engine/std/lua'    (plume)
     require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std/table'  (plume)
     require 'plume-data/engine/std/math'   (plume)
@@ -22,7 +21,7 @@ return function (plume)
     require 'plume-data/engine/std/time'   (plume)
     require 'plume-data/engine/std'        (plume)
 
-    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.Time}) do
+    for _, source in ipairs({plume.std.Table, plume.std.Math, plume.std.plume, plume.std.Time}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua
@@ -73,9 +72,6 @@ return function (plume)
         end
     end
 
-    for name, obj in pairs(plume.stdLua) do
-        plume.std[name] = obj
-    end
     for name, obj in pairs(plume.stdVM) do
         plume.std[name] = obj
     end
