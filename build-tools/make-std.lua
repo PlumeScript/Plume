@@ -23,7 +23,7 @@ end
 local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
-	f = f:gsub('%"([^"]+)%", function %(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
+	f = f:gsub('%"([^"]+)%",%s*function%s*%(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
 		local postionalArgsName = {}
 		local optnPositionalArgs = {}
 		local optnPositionalArgsCount = 0
@@ -82,6 +82,10 @@ local function process(f)
 
 		return string.format('"%s", function (args)%s', name, checks)
 	end)
+
+	for m in f:gmatch('%-%-!signature[^\n]+') do
+		print(string.format("Warning: missed '%s'", m))
+	end
 
 	return f
 end
