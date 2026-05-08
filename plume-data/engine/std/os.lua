@@ -1,3 +1,10 @@
+--[[
+This file is part of Plume🪶
+
+Copyright © Erwan Barbedor
+Licensed under the MIT License — see LICENSE for details.
+]]
+
 plume.std.os = plume.obj.quickTable ({
     getEnv = plume.obj.luaMacro("getEnv", function (args)
         --!signature string name
