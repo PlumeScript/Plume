@@ -42,7 +42,7 @@ return function(plume)
 		for k, v in pairs(source) do
 			if not tonumber(k) then
 				table.insert(t.keys, k)
-				table.insert(t.table, v)
+				t.table[k] = v
 			end
 		end
 
