@@ -5,7 +5,7 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-plume.stdLua.Random = plume.obj.luaMacro("Random", function (args)
+plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	--!signature [number seed]
     
 
