@@ -55,7 +55,7 @@ plume.std.String = plume.obj.quickTable {
 
 	replace = plume.obj.luaMacro("replace", function (args)
 		--!override-self-plume.std.String
-		--!signature string s, string pattern, string sub, ?rich
+		--!signature string s, string pattern, string|macro sub, ?rich
 		if not rich then
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 			if type(sub) == "string" then

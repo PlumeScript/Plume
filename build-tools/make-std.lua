@@ -145,15 +145,28 @@ local function process(f)
 			for _, argName in ipairs(allArgsName) do
 				local expected = argsType[argName]
 				if expected then
-					if optnPositionalArgs[argName] then
-						table.insert(checks, string.format(
-							'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-							argName, argName, argName, expected, argName
-						))
+					if expected:match('|') then
+						local first = true
+						table.insert(checks, string.format("if __s and %s then\n\t", argName))
+						for m in expected:gmatch('[^|]+') do
+							if not first then
+								table.insert(checks, "\tif not __s then\n\t\t")
+							end
+							table.insert(checks, string.format(
+							'__s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature)\n',
+								argName, argName, m, argName
+							))
+							if first then
+								first = false
+							else
+								table.insert(checks, "\tend\n")
+							end
+						end
+						table.insert(checks, "end\n")
 					else
 						table.insert(checks, string.format(
-							'if __s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-							argName, argName, expected, argName
+						'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
+							argName, argName, argName, expected, argName
 						))
 					end
 				end

@@ -113,8 +113,8 @@ return function (plume)
 		end
 
 		if given == "string" and expected == "number" then
-			arg = tonumber(arg)
-			if arg then
+			if tonumber(arg) then
+				arg = tonumber(arg)
 				given = "number"
 			end
 		elseif given == "number" and expected == "string" then
@@ -127,7 +127,7 @@ return function (plume)
 		else
 			return false, plume.error.wrongArgTypeStd(
 				argName, name, given, expected, makeSignature(name, signature)
-			)
+			), arg
 		end
 	end
 
