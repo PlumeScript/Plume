@@ -23,7 +23,7 @@ end
 local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
-	f = f:gsub('%"(.-)%", function %(args%)%s*%-%-!signature ([^\n]+)', function(name, signature)
+	f = f:gsub('%"(.-)%", function %(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
 		local postionalArgsName = {}
 		local allArgsName = {}
 		local argsType = {}
@@ -35,7 +35,7 @@ local function process(f)
 			end
 		end
 
-		local checks = {"------------\n-- CHECKS --\n------------\n"}
+		local checks = {"\n------------\n-- CHECKS --\n------------\n"}
 			table.insert(checks, 'local __name      = "' .. name .. '"\n')
 			table.insert(checks, 'local __signature = "' .. signature .. '"\n')
 			table.insert(checks, 'local __s, __e')
@@ -62,10 +62,10 @@ local function process(f)
 
 			table.insert(checks, 'if not __s then return false, __e end\n')
 
-		table.insert(checks, '------------\n')
-		checks = (table.concat(checks):gsub('\n', '\n\t'))
+		table.insert(checks, '------------')
+		checks = (table.concat(checks):gsub('\n', '\n'..indent))
 
-		return string.format('"%s", function (args)\n\t%s', name, checks)
+		return string.format('"%s", function (args)%s', name, checks)
 	end)
 
 	return f
