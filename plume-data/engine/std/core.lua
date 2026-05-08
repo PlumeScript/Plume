@@ -10,6 +10,7 @@ return function (plume)
 
     plume.std = {}
     plume.stdUtils = {}
+    require 'plume-data/engine/std'        (plume)
     require 'plume-data/engine/std/io'     (plume)
     require 'plume-data/engine/std/plume'  (plume)
     require 'plume-data/engine/std/lua'    (plume)
@@ -19,11 +20,10 @@ return function (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
     require 'plume-data/engine/std/random' (plume)
-    require 'plume-data/engine/std/os'     (plume)
     require 'plume-data/engine/std/path'   (plume)
     require 'plume-data/engine/std/time'   (plume)
 
-    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.os, plume.std.Time}) do
+    for _, source in ipairs({plume.stdLua, plume.std.Table, plume.std.Math, plume.std.plume, plume.std.Time}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua
