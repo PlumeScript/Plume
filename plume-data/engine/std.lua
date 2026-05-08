@@ -8,7 +8,7 @@ Licensed under the MIT License — see LICENSE for details.
 return function(plume)
 	
 	
-	plume.std.os = plume.obj.quickTable ({
+	plume.std.os = plume.obj.quickTable {
 	    getEnv = plume.obj.luaMacro("getEnv", function (args)
 	        ------------
 	        -- CHECKS --
@@ -46,5 +46,5 @@ return function(plume)
 	    	end)
 	        return success, result
 	    end)
-	})
+	}
 end
