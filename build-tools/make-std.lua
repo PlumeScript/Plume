@@ -108,7 +108,7 @@ local function process(f)
 			maxArgCount = "math.huge"
 		end
 
-		local checks = {"\n------------\n-- CHECKS --\n------------\n"}
+		local checks = {}
 			table.insert(checks, 'local __name      = "' .. name .. '"\n')
 			table.insert(checks, 'local __signature = "' .. signature .. '"\n')
 			table.insert(checks, 'local __s, __e, self')

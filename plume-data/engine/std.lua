@@ -40,10 +40,6 @@ return function(plume)
 	end)
 	
 	plume.std.help = plume.obj.luaMacro("help", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "print"
 	    local __signature = "macro macro"
 	    local __s, __e, self, macro
@@ -58,10 +54,6 @@ return function(plume)
 	
 	-- io
 	plume.std.write = plume.obj.luaMacro("write", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "write"
 	    local __signature = "string filename, string content, ?append"
 	    local __s, __e, self, filename, content
@@ -77,10 +69,6 @@ return function(plume)
 	end)
 	
 	plume.std.read = plume.obj.luaMacro("read", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "read"
 	    local __signature = "string filename"
 	    local __s, __e, self, filename
@@ -93,10 +81,6 @@ return function(plume)
 	end)
 	
 	plume.std.rawset = plume.obj.luaMacro("rawset", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "rawset"
 	    local __signature = "table obj, string key, any value"
 	    local __s, __e, self, obj, key, value
@@ -115,10 +99,6 @@ return function(plume)
 	end)
 	
 	plume.std.repr = plume.obj.luaMacro("repr", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "repr"
 	    local __signature = "any obj, ?pretty"
 	    local __s, __e, self, obj
@@ -132,10 +112,6 @@ return function(plume)
 	end)
 	
 	plume.std.min = plume.obj.luaMacro("min", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "min"
 	    local __signature = "number ...numbers"
 	    local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, 0, __name, __signature)
@@ -145,10 +121,6 @@ return function(plume)
 	    return true, math.min(unpack(args.table))
 	end)
 	plume.std.max = plume.obj.luaMacro("max", function (args)
-	    
-	    ------------
-	    -- CHECKS --
-	    ------------
 	    local __name      = "max"
 	    local __signature = "number ...numbers"
 	    local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, 0, __name, __signature)
@@ -208,10 +180,6 @@ return function(plume)
 	
 	plume.std.Math = plume.obj.quickTable{
 	    sin = plume.obj.luaMacro("sin", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "sin"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -223,10 +191,6 @@ return function(plume)
 	        return true, math.sin(x)
 	    end),
 	    cos = plume.obj.luaMacro("cos", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "cos"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -238,10 +202,6 @@ return function(plume)
 	        return true, math.cos(x)
 	    end),
 	    tan = plume.obj.luaMacro("tan", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "tan"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -253,10 +213,6 @@ return function(plume)
 	        return true, math.tan(x)
 	    end),
 	    asin =  plume.obj.luaMacro("asin", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "asin"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -268,10 +224,6 @@ return function(plume)
 	        return true, math.asin(x)
 	    end),
 	    acos =  plume.obj.luaMacro("acos", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "acos"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -283,10 +235,6 @@ return function(plume)
 	        return true, math.acos(x)
 	    end),
 	    atan =  plume.obj.luaMacro("atan", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "atan"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -298,10 +246,6 @@ return function(plume)
 	        return true, math.atan(x)
 	    end),
 	    atan2 =  plume.obj.luaMacro("atan2", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "atan2"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -313,10 +257,6 @@ return function(plume)
 	        return true, math.atan2(x, y)
 	    end),
 	    sinh =  plume.obj.luaMacro("sinh", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "sinh"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -328,10 +268,6 @@ return function(plume)
 	        return true, math.sinh(x)
 	    end),
 	    cosh =  plume.obj.luaMacro("cosh", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "cosh"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -343,10 +279,6 @@ return function(plume)
 	        return true, math.cosh(x)
 	    end),
 	    tanh =  plume.obj.luaMacro("tanh", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "tanh"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -358,10 +290,6 @@ return function(plume)
 	        return true, math.tanh(x)
 	    end),
 	    log =  plume.obj.luaMacro("log", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "log"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -373,10 +301,6 @@ return function(plume)
 	        return true, math.log(x)
 	    end),
 	    log10 =  plume.obj.luaMacro("log10", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "log10"
 	        local __signature = "number x"
 	        local __s, __e, self, x
@@ -457,10 +381,6 @@ return function(plume)
 		-- Manipulations
 		floor = plume.obj.luaMacro("floor", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "floor"
 			local __signature = "number x, number digit:0"
 			local __s, __e, self, x
@@ -476,10 +396,6 @@ return function(plume)
 		end),
 		ceil = plume.obj.luaMacro("ceil", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "ceil"
 			local __signature = "number x, number digit:0"
 			local __s, __e, self, x
@@ -495,10 +411,6 @@ return function(plume)
 		end),
 		round = plume.obj.luaMacro("round", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "round"
 			local __signature = "number x, number digit:0"
 			local __s, __e, self, x
@@ -514,10 +426,6 @@ return function(plume)
 		end),
 		abs = plume.obj.luaMacro("abs", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "abs"
 			local __signature = "number x"
 			local __s, __e, self, x
@@ -530,10 +438,6 @@ return function(plume)
 		end),
 		clamp = plume.obj.luaMacro("clamp", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "clamp"
 			local __signature = "number x, number min, number max"
 			local __s, __e, self, x, min, max
@@ -548,10 +452,6 @@ return function(plume)
 		end),
 		format = plume.obj.luaMacro("format", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "format"
 			local __signature = "number x, string format, string locale:, string thousandsSeparator:, string decimalSeparator:, string thousandthsSeparator:"
 			local __s, __e, self, x, format
@@ -572,10 +472,6 @@ return function(plume)
 		end),
 		localize = plume.obj.luaMacro("format", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "format"
 			local __signature = "number x, string locale"
 			local __s, __e, self, x, locale
@@ -591,10 +487,6 @@ return function(plume)
 		-- Test
 		sign = plume.obj.luaMacro("sign", function (args)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "sign"
 			local __signature = "number x"
 			local __s, __e, self, x
@@ -630,10 +522,6 @@ return function(plume)
 	
 	plume.std.os = plume.obj.quickTable {
 	    getEnv = plume.obj.luaMacro("getEnv", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "getEnv"
 	        local __signature = "string name"
 	        local __s, __e, self, name
@@ -647,10 +535,6 @@ return function(plume)
 	
 	    -- Very basic implementation
 	    execute = plume.obj.luaMacro("execute", function (args)
-	        
-	        ------------
-	        -- CHECKS --
-	        ------------
 	        local __name      = "execute"
 	        local __signature = "string command"
 	        local __s, __e, self, command
@@ -896,11 +780,7 @@ return function(plume)
 	
 	table.insert(plume.std.os.keys, "Path")
 	plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args)
-	    
-				------------
-				-- CHECKS --
-				------------
-				local __name      = "isFile"
+	    local __name      = "isFile"
 				local __signature = "[string path]"
 				local __s, __e, self, path
 				__s, __e, path = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
@@ -916,10 +796,6 @@ return function(plume)
 	
 	plume.std.plume = plume.obj.quickTable {
 		doc = plume.obj.luaMacro("doc", function (args)
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "doc"
 			local __signature = "macro m"
 			local __s, __e, self, m
@@ -933,10 +809,6 @@ return function(plume)
 	}
 	
 	plume.std.Random = plume.obj.luaMacro("Random", function (args)
-		
-		------------
-		-- CHECKS --
-		------------
 		local __name      = "Random"
 		local __signature = "[number seed]"
 		local __s, __e, self, seed
@@ -1084,10 +956,6 @@ return function(plume)
 		-- Manipulation
 		upper = plume.obj.luaMacro("upper", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "upper"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1100,10 +968,6 @@ return function(plume)
 		end),
 		lower = plume.obj.luaMacro("lower", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "lower"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1117,10 +981,6 @@ return function(plume)
 	
 		replace = plume.obj.luaMacro("replace", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "replace"
 			local __signature = "string s, string pattern, string|macro sub, ?rich"
 			local __s, __e, self, s, pattern, sub
@@ -1169,10 +1029,6 @@ return function(plume)
 		-- Tests
 		isNumber = plume.obj.luaMacro("isNumber", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "isNumber"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1191,10 +1047,6 @@ return function(plume)
 		-- Normalization
 		trim = plume.obj.luaMacro("trim", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "trim"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1207,10 +1059,6 @@ return function(plume)
 		end),
 		rtrim = plume.obj.luaMacro("rtrim", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "rtrim"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1223,10 +1071,6 @@ return function(plume)
 		end),
 		ltrim = plume.obj.luaMacro("ltrim", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "ltrim"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1239,10 +1083,6 @@ return function(plume)
 		end),
 		collapse = plume.obj.luaMacro("collapse", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "collapse"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1255,10 +1095,6 @@ return function(plume)
 		end),
 		dedent = plume.obj.luaMacro("dedent", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "dedent"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1272,10 +1108,6 @@ return function(plume)
 		end),
 		indent = plume.obj.luaMacro("indent", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "indent"
 			local __signature = "string s, string sep:\\t"
 			local __s, __e, self, s
@@ -1293,10 +1125,6 @@ return function(plume)
 		-- search
 		find = plume.obj.luaMacro("find", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "find"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1316,10 +1144,6 @@ return function(plume)
 		end),
 		contains = plume.obj.luaMacro("contains", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "contains"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1343,10 +1167,6 @@ return function(plume)
 		end),
 		startsWidth = plume.obj.luaMacro("startsWidth", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "startsWidth"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1370,10 +1190,6 @@ return function(plume)
 		end),
 		endsWidth = plume.obj.luaMacro("endsWidth", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "endsWidth"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1397,10 +1213,6 @@ return function(plume)
 		end),
 		count = plume.obj.luaMacro("count", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "count"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1427,10 +1239,6 @@ return function(plume)
 		-- table making
 		split = plume.obj.luaMacro("split", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "split"
 			local __signature = "string s, string sep:\\s, ?rich"
 			local __s, __e, self, s
@@ -1465,10 +1273,6 @@ return function(plume)
 		end),
 		lines = plume.obj.luaMacro("lines", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "lines"
 			local __signature = "string s"
 			local __s, __e, self, s
@@ -1495,10 +1299,6 @@ return function(plume)
 		end),
 		findAll = plume.obj.luaMacro("findAll", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "findAll"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1526,10 +1326,6 @@ return function(plume)
 		end),
 		partition = plume.obj.luaMacro("partition", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "partition"
 			local __signature = "string s, string pattern, ?rich"
 			local __s, __e, self, s, pattern
@@ -1554,10 +1350,6 @@ return function(plume)
 	
 		rep = plume.obj.luaMacro("rep", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "rep"
 			local __signature = "string s, number count, string sep:$empty"
 			local __s, __e, self, s, count
@@ -1584,10 +1376,6 @@ return function(plume)
 	
 		sub = plume.obj.luaMacro("sub", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			
-			------------
-			-- CHECKS --
-			------------
 			local __name      = "sub"
 			local __signature = "string s, number startpos, number endpos"
 			local __s, __e, self, s, startpos, endpos
