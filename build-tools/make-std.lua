@@ -23,17 +23,46 @@ end
 local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
-	f = f:gsub('%"([^"]+)%",%s*function%s*%(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
+	f = f:gsub('%"([^"]+)%",%s*function%s*%(args%)\n(%s*)(.-)%-%-!signature ([^\n]+)', function(name, indent, left, signature)
 		local postionalArgsName = {}
+		local namedArgsName = {}
 		local optnPositionalArgs = {}
 		local optnPositionalArgsCount = 0
 		local allArgsName = {}
 		local argsType = {}
+		local canBeSelf = "nil"
 		local variadic
-		for t, n in signature:gmatch('([^,%s]+) ([^,%s]+)') do
+		for m in signature:gmatch('[^,]+') do
+			local isNamed = false
+			local value
+			local t, n = m:match('(%S+)%s+(%S+)')
+			if not n then
+				t = ""
+				n = m:match("%S+")
+			end
 			local isVariadic, isIgnored
 
 			n = n:gsub('%]$', ''):gsub('%)$', '')
+
+			if n:match('|self') then
+				n = n:gsub('|self', '')
+				canBeSelf = #postionalArgsName
+			end
+
+			if n:match('^%?') then
+				n = n:gsub('^%?', '')
+				isNamed = true
+				value = false
+			elseif n:match(':') then
+				n, value = n:match('([^:]+):(.*)')
+				if value == "" then
+					value = 'nil'
+				elseif not tonumber(value) then
+					value = '"' .. value .. '"'
+				end
+				isNamed = true
+			end
+
 			if n:match('^%.%.%.') then
 				variadic = n
 				n = n:gsub('^%.%.%.', '')
@@ -50,9 +79,14 @@ local function process(f)
 			
 			t = t:gsub('^%[', ''):gsub('^%(', '')
 			if not isVariadic then
-				table.insert(postionalArgsName, n)
+				if isNamed then
+					table.insert(namedArgsName, n)
+					namedArgsName[n] = value
+				else
+					table.insert(postionalArgsName, n)
+				end
 			end
-			if not isIgnored then
+			if not isIgnored and #t>0 then
 				table.insert(allArgsName, n)
 				if t ~= "any" then
 					argsType[n] = t
@@ -72,16 +106,35 @@ local function process(f)
 		local checks = {"\n------------\n-- CHECKS --\n------------\n"}
 			table.insert(checks, 'local __name      = "' .. name .. '"\n')
 			table.insert(checks, 'local __signature = "' .. signature .. '"\n')
-			table.insert(checks, 'local __s, __e')
+			table.insert(checks, 'local __s, __e, self')
 			if #postionalArgsName > 0 then
 				local posList = table.concat(postionalArgsName, ", ")
 				table.insert(checks, string.format(', %s\n', posList))
 				table.insert(checks,string.format(
-					'__s, __e, %s = plume.stdUnpackPositional(args, %s, %s, __name, __signature)\n',
+					'__s, __e, %s = plume.stdUnpackPositional(args, %s, %s,  __name, __signature)\n',
 					posList, minArgCount, maxArgCount
 				))
 			else
-				table.insert(checks, ' = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
+				table.insert(checks, ' = plume.stdUnpackPositional(args, 0, 0, 0, __name, __signature)\n')
+			end
+
+			if #namedArgsName > 0 then
+				local nList = table.concat(namedArgsName, ", ")
+				local nListCheck = {}
+				for _, key in ipairs(namedArgsName) do
+					table.insert(nListCheck, string.format('"%s"', key))
+				end
+				table.insert(checks, string.format('local %s\n', nList))
+				table.insert(checks, string.format(
+					'if __s then __s, __e, self, %s = plume.stdUnpackNamed(args, {"self", %s}, __name, __signature) end\n',
+					nList, table.concat(nListCheck, ", ")
+				))
+
+				for _, key in ipairs(namedArgsName) do
+					table.insert(checks, string.format("%s = %s or %s\n", key, key, namedArgsName[key]))
+				end
+			else
+				table.insert(checks, 'if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end\n')
 			end
 
 			for _, argName in ipairs(allArgsName) do
@@ -106,10 +159,12 @@ local function process(f)
 		table.insert(checks, '------------')
 		checks = (table.concat(checks):gsub('\n', '\n'..indent))
 
-		return string.format('"%s", function (args)%s', name, checks)
+		return string.format('"%s", function (args)\n%s%s%s', name, indent, left, checks)
 	end)
 
-	for m in f:gmatch('%-%-!signature[^\n]+') do
+	f = f:gsub('%-%-!override%-self%-(%S+)', 'if args.table.self and args.table.self ~= %1 then table.insert(args.table, 1, args.table.self) end')
+
+	for m in f:gmatch('%-%-![^\n]+') do
 		print(string.format("Warning: missed '%s'", m))
 	end
 
