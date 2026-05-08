@@ -147,13 +147,13 @@ local function process(f)
 				if expected then
 					if optnPositionalArgs[argName] then
 						table.insert(checks, string.format(
-							'if __s and %s then __s, __e = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-							argName, argName, expected, argName
+							'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
+							argName, argName, argName, expected, argName
 						))
 					else
 						table.insert(checks, string.format(
-							'if __s then __s, __e = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-							argName, expected, argName
+							'if __s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
+							argName, argName, expected, argName
 						))
 					end
 				end

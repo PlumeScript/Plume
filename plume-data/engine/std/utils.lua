@@ -111,8 +111,19 @@ return function (plume)
 		if given == "luaMacro" or given == "stdMacro" then
 			given = "macro"
 		end
+
+		if given == "string" and expected == "number" then
+			arg = tonumber(arg)
+			if arg then
+				given = "number"
+			end
+		elseif given == "number" and expected == "string" then
+			arg = tostring(arg)
+			given = "string"
+		end
+
 		if given == expected then
-			return true
+			return true, nil, arg
 		else
 			return false, plume.error.wrongArgTypeStd(
 				argName, name, given, expected, makeSignature(name, signature)

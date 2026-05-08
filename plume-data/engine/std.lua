@@ -49,7 +49,7 @@ return function(plume)
 	    local __s, __e, self, macro
 	    __s, __e, macro = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s then __s, __e = plume.stdCheckType(macro, "macro", "macro", __name, __signature) end
+	    if __s then __s, __e, macro = plume.stdCheckType(macro, "macro", "macro", __name, __signature) end
 	    if not __s then return false, __e end
 	    ------------
 	    print("macro " .. (macro.debugMacroName or macro.name) .. "\n    " .. macro.doc:gsub('\n', '\n    ') or "")
@@ -69,8 +69,8 @@ return function(plume)
 	    local append
 	    if __s then __s, __e, self, append = plume.stdUnpackNamed(args, {"self", "append"}, __name, __signature) end
 	    append = append or false
-	    if __s then __s, __e = plume.stdCheckType(filename, "string", "filename", __name, __signature) end
-	    if __s then __s, __e = plume.stdCheckType(content, "string", "content", __name, __signature) end
+	    if __s then __s, __e, filename = plume.stdCheckType(filename, "string", "filename", __name, __signature) end
+	    if __s then __s, __e, content = plume.stdCheckType(content, "string", "content", __name, __signature) end
 	    if not __s then return false, __e end
 	    ------------
 	    return plume.stdio.write(filename, content, append)
@@ -86,7 +86,7 @@ return function(plume)
 	    local __s, __e, self, filename
 	    __s, __e, filename = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s then __s, __e = plume.stdCheckType(filename, "string", "filename", __name, __signature) end
+	    if __s then __s, __e, filename = plume.stdCheckType(filename, "string", "filename", __name, __signature) end
 	    if not __s then return false, __e end
 	    ------------
 	    return plume.stdio.read(filename)
@@ -102,8 +102,8 @@ return function(plume)
 	    local __s, __e, self, obj, key, value
 	    __s, __e, obj, key, value = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s then __s, __e = plume.stdCheckType(obj, "table", "obj", __name, __signature) end
-	    if __s then __s, __e = plume.stdCheckType(key, "string", "key", __name, __signature) end
+	    if __s then __s, __e, obj = plume.stdCheckType(obj, "table", "obj", __name, __signature) end
+	    if __s then __s, __e, key = plume.stdCheckType(key, "string", "key", __name, __signature) end
 	    if not __s then return false, __e end
 	    ------------
 	
@@ -217,7 +217,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.sin(x)
@@ -232,7 +232,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.cos(x)
@@ -247,7 +247,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.tan(x)
@@ -262,7 +262,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.asin(x)
@@ -277,7 +277,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.acos(x)
@@ -292,7 +292,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.atan(x)
@@ -307,7 +307,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.atan2(x, y)
@@ -322,7 +322,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.sinh(x)
@@ -337,7 +337,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.cosh(x)
@@ -352,7 +352,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.tanh(x)
@@ -367,7 +367,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.log(x)
@@ -382,7 +382,7 @@ return function(plume)
 	        local __s, __e, self, x
 	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.log10(x)
@@ -468,8 +468,8 @@ return function(plume)
 			local digit
 			if __s then __s, __e, self, digit = plume.stdUnpackNamed(args, {"self", "digit"}, __name, __signature) end
 			digit = digit or 0
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(digit, "number", "digit", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, digit = plume.stdCheckType(digit, "number", "digit", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, math.floor(x*10^digit)*10^-digit
@@ -487,8 +487,8 @@ return function(plume)
 			local digit
 			if __s then __s, __e, self, digit = plume.stdUnpackNamed(args, {"self", "digit"}, __name, __signature) end
 			digit = digit or 0
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(digit, "number", "digit", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, digit = plume.stdCheckType(digit, "number", "digit", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, math.ceil(x*10^digit)*10^-digit
@@ -506,8 +506,8 @@ return function(plume)
 			local digit
 			if __s then __s, __e, self, digit = plume.stdUnpackNamed(args, {"self", "digit"}, __name, __signature) end
 			digit = digit or 0
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(digit, "number", "digit", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, digit = plume.stdCheckType(digit, "number", "digit", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, math.floor(x*10^digit + 0.5)*10^-digit
@@ -523,7 +523,7 @@ return function(plume)
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, math.abs(x)
@@ -539,9 +539,9 @@ return function(plume)
 			local __s, __e, self, x, min, max
 			__s, __e, x, min, max = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(min, "number", "min", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(max, "number", "max", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, min = plume.stdCheckType(min, "number", "min", __name, __signature) end
+			if __s then __s, __e, max = plume.stdCheckType(max, "number", "max", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, math.min(max, math.max(min, x))
@@ -562,8 +562,8 @@ return function(plume)
 			thousandsSeparator = thousandsSeparator or nil
 			decimalSeparator = decimalSeparator or nil
 			thousandthsSeparator = thousandthsSeparator or nil
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(format, "string", "format", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, format = plume.stdCheckType(format, "string", "format", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return plume.formatNumber(
@@ -581,8 +581,8 @@ return function(plume)
 			local __s, __e, self, x, locale
 			__s, __e, x, locale = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(locale, "string", "locale", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, locale = plume.stdCheckType(locale, "string", "locale", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return plume.formatNumber(x, "%s", locale)
@@ -600,7 +600,7 @@ return function(plume)
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+			if __s then __s, __e, x = plume.stdCheckType(x, "number", "x", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if x>0 then
@@ -639,7 +639,7 @@ return function(plume)
 	        local __s, __e, self, name
 	        __s, __e, name = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(name, "string", "name", __name, __signature) end
+	        if __s then __s, __e, name = plume.stdCheckType(name, "string", "name", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, os.getenv(name)
@@ -656,7 +656,7 @@ return function(plume)
 	        local __s, __e, self, command
 	        __s, __e, command = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s then __s, __e = plume.stdCheckType(command, "string", "command", __name, __signature) end
+	        if __s then __s, __e, command = plume.stdCheckType(command, "string", "command", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	    	local success, result = pcall(function()
@@ -905,7 +905,7 @@ return function(plume)
 				local __s, __e, self, path
 				__s, __e, path = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-				if __s and path then __s, __e = plume.stdCheckType(path, "string", "path", __name, __signature) end
+				if __s and path then __s, __e, path = plume.stdCheckType(path, "string", "path", __name, __signature) end
 				if not __s then return false, __e end
 				------------
 	    return makePath(path)
@@ -925,7 +925,7 @@ return function(plume)
 			local __s, __e, self, m
 			__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(m, "macro", "m", __name, __signature) end
+			if __s then __s, __e, m = plume.stdCheckType(m, "macro", "m", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, "macro " .. (m.debugMacroName or m.name) .. "\n    " .. m.doc:gsub('\n', '\n    ') or ""
@@ -942,7 +942,7 @@ return function(plume)
 		local __s, __e, self, seed
 		__s, __e, seed = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-		if __s and seed then __s, __e = plume.stdCheckType(seed, "number", "seed", __name, __signature) end
+		if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "seed", __name, __signature) end
 		if not __s then return false, __e end
 		------------
 	    
@@ -1093,7 +1093,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, string.upper(s)
@@ -1109,7 +1109,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, string.lower(s)
@@ -1128,9 +1128,9 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(sub, "string", "sub", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, sub = plume.stdCheckType(sub, "string", "sub", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1173,7 +1173,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if tonumber(s) then
@@ -1195,7 +1195,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, (s:gsub('^%s*', ''):gsub('%s*$', ''))
@@ -1211,7 +1211,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, (s:gsub('^%s*', ''))
@@ -1227,7 +1227,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, (s:gsub('%s*$', ''))
@@ -1243,7 +1243,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, (s:gsub('%s+', ' '))
@@ -1259,7 +1259,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			local firstIndent = s:match('^%s+')
@@ -1278,8 +1278,8 @@ return function(plume)
 			local sep
 			if __s then __s, __e, self, sep = plume.stdUnpackNamed(args, {"self", "sep"}, __name, __signature) end
 			sep = sep or "\t"
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, sep = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			return true, sep..s:gsub('\n', '\n'..sep)
@@ -1299,8 +1299,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1322,8 +1322,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1349,8 +1349,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1376,8 +1376,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1403,8 +1403,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1434,8 +1434,8 @@ return function(plume)
 			if __s then __s, __e, self, sep, rich = plume.stdUnpackNamed(args, {"self", "sep", "rich"}, __name, __signature) end
 			sep = sep or " "
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, sep = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			local t = plume.obj.table(0, 0)
@@ -1469,7 +1469,7 @@ return function(plume)
 			local __s, __e, self, s
 			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			local t = plume.obj.table(0, 0)
@@ -1501,8 +1501,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 	
@@ -1532,8 +1532,8 @@ return function(plume)
 			local rich
 			if __s then __s, __e, self, rich = plume.stdUnpackNamed(args, {"self", "rich"}, __name, __signature) end
 			rich = rich or false
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, pattern = plume.stdCheckType(pattern, "string", "pattern", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if not rich then
@@ -1560,9 +1560,9 @@ return function(plume)
 			local sep
 			if __s then __s, __e, self, sep = plume.stdUnpackNamed(args, {"self", "sep"}, __name, __signature) end
 			sep = sep or ""
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(count, "number", "count", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, count = plume.stdCheckType(count, "number", "count", __name, __signature) end
+			if __s then __s, __e, sep = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			count = tonumber(count)
@@ -1588,9 +1588,9 @@ return function(plume)
 			local __s, __e, self, s, startpos, endpos
 			__s, __e, s, startpos, endpos = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(s, "string", "s", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(startpos, "number", "startpos", __name, __signature) end
-			if __s then __s, __e = plume.stdCheckType(endpos, "number", "endpos", __name, __signature) end
+			if __s then __s, __e, s = plume.stdCheckType(s, "string", "s", __name, __signature) end
+			if __s then __s, __e, startpos = plume.stdCheckType(startpos, "number", "startpos", __name, __signature) end
+			if __s then __s, __e, endpos = plume.stdCheckType(endpos, "number", "endpos", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 			if epos == 1 then
