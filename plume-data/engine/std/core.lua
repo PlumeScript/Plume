@@ -15,13 +15,12 @@ return function (plume)
     require 'plume-data/engine/std/plume'  (plume)
     require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std/table'  (plume)
-    require 'plume-data/engine/std/math'   (plume)
     require 'plume-data/engine/std/string' (plume)
     require 'plume-data/engine/std/number' (plume)
     require 'plume-data/engine/std/time'   (plume)
     require 'plume-data/engine/std'        (plume)
 
-    for _, source in ipairs({plume.std.Table, plume.std.Math, plume.std.plume, plume.std.Time}) do
+    for _, source in ipairs({plume.std.Table, plume.std.plume, plume.std.Time}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua

@@ -197,6 +197,180 @@ return function(plume)
 	    end)
 	}
 	
+	plume.std.Math = plume.obj.quickTable{
+	    sin = plume.obj.luaMacro("sin", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "sin"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.sin(x)
+	    end),
+	    cos = plume.obj.luaMacro("cos", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "cos"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.cos(x)
+	    end),
+	    tan = plume.obj.luaMacro("tan", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "tan"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.tan(x)
+	    end),
+	    asin =  plume.obj.luaMacro("asin", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "asin"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.asin(x)
+	    end),
+	    acos =  plume.obj.luaMacro("acos", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "acos"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.acos(x)
+	    end),
+	    atan =  plume.obj.luaMacro("atan", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "atan"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.atan(x)
+	    end),
+	    atan2 =  plume.obj.luaMacro("atan2", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "atan2"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.atan2(x, y)
+	    end),
+	    sinh =  plume.obj.luaMacro("sinh", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "sinh"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.sinh(x)
+	    end),
+	    cosh =  plume.obj.luaMacro("cosh", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "cosh"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.cosh(x)
+	    end),
+	    tanh =  plume.obj.luaMacro("tanh", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "tanh"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.tanh(x)
+	    end),
+	    log =  plume.obj.luaMacro("log", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "log"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.log(x)
+	    end),
+	    log10 =  plume.obj.luaMacro("log10", function (args)
+	        ------------
+	        -- CHECKS --
+	        ------------
+	        local __name      = "log10"
+	        local __signature = "number x"
+	        local __s, __e, x
+	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1, __name, __signature)
+	        if __s then __s, __e = plume.stdUnpackNamed(args, nil, __name, __signature) end
+	        if __s then __s, __e = plume.stdCheckType(x, "number", "x", __name, __signature) end
+	        if not __s then return false, __e end
+	        ------------
+	        return true, math.log10(x)
+	    end),
+	    pi   = math.pi,
+	    e    = math.exp(1),
+	    huge = math.huge
+	}
+	
 	plume.std.os = plume.obj.quickTable {
 	    getEnv = plume.obj.luaMacro("getEnv", function (args)
 	        ------------
