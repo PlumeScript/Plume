@@ -81,7 +81,7 @@ local function process(f)
 					posList, minArgCount, maxArgCount
 				))
 			else
-				table.insert(checks, '__s, __e = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
+				table.insert(checks, ' = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
 			end
 
 			for _, argName in ipairs(allArgsName) do
