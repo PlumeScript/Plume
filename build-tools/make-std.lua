@@ -25,9 +25,17 @@ local function process(f)
 
 	f = f:gsub('%"([^"]+)%", function %(args%)\n(%s*)%-%-!signature ([^\n]+)', function(name, indent, signature)
 		local postionalArgsName = {}
+		local optnPositionalArgs = {}
+		local optnPositionalArgsCount = 0
 		local allArgsName = {}
 		local argsType = {}
 		for t, n in signature:gmatch('(%S+) (%S+)') do
+			n = n:gsub('%]$', '')
+			if t:match('^%[') then
+				optnPositionalArgs[n] = true
+				optnPositionalArgsCount = optnPositionalArgsCount+1
+			end
+			t = t:gsub('^%[', '')
 			table.insert(postionalArgsName, n)
 			table.insert(allArgsName, n)
 			if t ~= "any" then
@@ -44,7 +52,7 @@ local function process(f)
 				table.insert(checks, string.format(', %s\n', posList))
 				table.insert(checks,string.format(
 					'__s, __e, %s = plume.stdUnpackPositional(args, %s, %s, __name, __signature)\n',
-					posList, #postionalArgsName, #postionalArgsName
+					posList, #postionalArgsName-optnPositionalArgsCount, #postionalArgsName
 				))
 			else
 				table.insert(checks, '__s, __e = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
@@ -53,10 +61,17 @@ local function process(f)
 			for _, argName in ipairs(allArgsName) do
 				local expected = argsType[argName]
 				if expected then
-					table.insert(checks, string.format(
-						'if __s then __s, __e = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-						argName, expected, argName
-					))
+					if optnPositionalArgs[argName] then
+						table.insert(checks, string.format(
+							'if __s and %s then __s, __e = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
+							argName, argName, expected, argName
+						))
+					else
+						table.insert(checks, string.format(
+							'if __s then __s, __e = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
+							argName, expected, argName
+						))
+					end
 				end
 			end
 
