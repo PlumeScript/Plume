@@ -255,6 +255,7 @@ return function(plume)
 	
 			return makePath(path1 .. "/" .. path2)
 		end
+	
 		obj.meta = plume.obj.quickTable{
 			tostring = plume.obj.luaMacro ("tostring", function(args)
 				local path = args.table.self.table.path
@@ -268,4 +269,19 @@ return function(plume)
 		
 		return true, obj
 	end
+	
+	table.insert(plume.std.os.keys, "Path")
+	plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args)
+	    ------------
+	    -- CHECKS --
+	    ------------
+	    local __name      = "Path"
+	    local __signature = "[string path]"
+	    local __s, __e, path
+	    __s, __e, path = plume.stdUnpackPositional(args, 0, 1, __name, __signature)
+	    if __s and path then __s, __e = plume.stdCheckType(path, "string", "path", __name, __signature) end
+	    if not __s then return false, __e end
+	    ------------
+	    return makePath(path)
+	end)
 end
