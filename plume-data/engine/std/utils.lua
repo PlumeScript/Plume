@@ -79,6 +79,16 @@ return function (plume)
 
 	function plume.stdUnpackNamed(args, nameds, name, signature)
 		local result = {}
+
+		for _, key in ipairs(nameds) do
+			nameds[key] = true
+			if args.table[key] then
+				table.insert(result, args.table[key])
+			else
+				table.insert(result, false)
+			end
+		end
+
 		for _, key in ipairs(args.keys) do
 			if not tonumber(key) then
 				if nameds and nameds[key] then
@@ -88,6 +98,8 @@ return function (plume)
 				end
 			end
 		end
+
+
 		return true, nil, unpack(result)
 	end
 
