@@ -62,4 +62,28 @@ return function (plume)
 
 		return true
 	end
+
+	function plume.stdUnpackPositional (args, minArgs, maxArgs, name, signature)
+		if #args.table < minArgs or #args.table > maxArgs then
+			return false, plume.error.wrongArgsCountStd(
+					name, #args.table, minArgs, maxArgs, "`$"..name.."("..signature..")`"
+				)
+		end
+
+		return true, nil, unpack(args.table)
+	end
+
+	function plume.stdCheckType(arg, expected, argName, name, signature)
+		local given = type(arg)
+		if type(arg) == "table" and arg.type then
+			given = arg.type
+		end
+		if given == expected then
+			return true
+		else
+			return false, plume.error.wrongArgTypeStd(
+				argName, name, given, expected, "`$"..name.."("..signature..")`"
+			)
+		end
+	end
 end
