@@ -63,14 +63,32 @@ return function (plume)
 		return true
 	end
 
+	local function makeSignature(name, signature)
+		return  "`$"..name.."("..signature..")`"
+	end
+
 	function plume.stdUnpackPositional (args, minArgs, maxArgs, name, signature)
 		if #args.table < minArgs or #args.table > maxArgs then
 			return false, plume.error.wrongArgsCountStd(
-					name, #args.table, minArgs, maxArgs, "`$"..name.."("..signature..")`"
+					name, #args.table, minArgs, maxArgs, makeSignature(name, signature)
 				)
 		end
 
 		return true, nil, unpack(args.table)
+	end
+
+	function plume.stdUnpackNamed(args, nameds, name, signature)
+		local result = {}
+		for _, key in ipairs(args.keys) do
+			if not tonumber(key) then
+				if nameds and nameds[key] then
+					table.insert(result, args.table[key])
+				else
+					return false, plume.error.unknownParameterStd(key, name, makeSignature(name, signature))
+				end
+			end
+		end
+		return true, nil, unpack(result)
 	end
 
 	function plume.stdCheckType(arg, expected, argName, name, signature)
@@ -78,12 +96,17 @@ return function (plume)
 		if type(arg) == "table" and arg.type then
 			given = arg.type
 		end
+		if given == "luaMacro" or given == "stdMacro" then
+			given = "macro"
+		end
 		if given == expected then
 			return true
 		else
 			return false, plume.error.wrongArgTypeStd(
-				argName, name, given, expected, "`$"..name.."("..signature..")`"
+				argName, name, given, expected, makeSignature(name, signature)
 			)
 		end
 	end
+
+
 end
