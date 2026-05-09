@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b46 (Sparrow Edition)
+Plume🪶 b47 (Sparrow Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -24,7 +24,7 @@ SOFTWARE.
 ]]
 
 local plume = {}
-plume._VERSION = "b46 (Sparrow Edition)"
+plume._VERSION = "b47 (Sparrow Edition)"
 
 require 'plume-data/engine/debug/core'    (plume)
 require 'plume-data/engine/error/core'    (plume)
