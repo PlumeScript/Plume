@@ -48,7 +48,11 @@ end
 function plume.stdCheckType(arg, expected, argName, name, signature)
 	local given = type(arg)
 	if type(arg) == "table" and arg.type then
-		given = arg.type
+		if expected ~= "table" and arg.subtype then
+			given = arg.subtype
+		else
+			given = arg.type
+		end
 	end
 	if given == "luaMacro" or given == "stdMacro" then
 		given = "macro"
@@ -71,4 +75,4 @@ function plume.stdCheckType(arg, expected, argName, name, signature)
 			argName, name, given, expected, makeSignature(name, signature)
 		), arg
 	end
-	end
+end
