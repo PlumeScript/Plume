@@ -13,10 +13,9 @@ return function (plume)
     
     -- require 'plume-data/engine/std/io'     (plume)
     require 'plume-data/engine/std/vm'     (plume)
-    require 'plume-data/engine/std/time'   (plume)
     require 'plume-data/engine/std'        (plume)
 
-    for _, source in ipairs({plume.std.plume, plume.std.Time}) do
+    for _, source in ipairs({plume.std.plume}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua
