@@ -5,336 +5,239 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-return function (plume)
-	local Table = plume.obj.table (0, 0)
-    
-    Table.table.remove = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t[, string|number index]",
-            named={self=true},
-            minArgs=1,
-            maxArgs=2
-        },
-        method = function  (t, index)
-            --`Table` automatically passes all of the macro's arguments as its second argument
-            index = (type(index) == "number" and index) or #t.table
+local function sortUpdate(context)
+    if context.j == context.i then
+        table.insert(context.result, context.source.table[context.i])
+        context.i = context.i + 1
+        context.j = 1
+    end
 
-            for key, value in ipairs(t.keys) do
-                if value == index then
-                    table.remove(t.keys, key)
-                end
-            end
+    if context.i <= #context.source.table then
+        context.PLUME_CALLBACK = context.compare
+        context.PLUME_CALLBACK_ARGS = {
+            context.result[context.j],
+            context.source.table[context.i]
+        }
+    else
+        context.PLUME_CALLBACK = nil
+        context.source.table = context.result
+    end
 
-            return true, table.remove(t.table, index)
-        end
-    }
-    Table.table.append = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "Table t, [any item|...items]",
-            named={["*"]=true}
-        },
-        method = function  (t, ...)
-            local args = {...}
-            local options = table.remove(args)
-            
-            local arg
-            if #args == 1 then
-                arg = args[1]
+    return true
+end
+
+local function sortNext(context, value)
+    if value then
+        context.j = context.j + 1
+    else
+        table.insert(context.result, context.j, context.source.table[context.i])
+        context.i = context.i + 1
+        context.j = 1
+    end
+    return true
+end
+
+function plume.stdUtils.copy(t, deep, nt)
+    local nt = nt or plume.obj.table(#t.table, #t.keys)
+
+    for _, key in ipairs(t.keys) do
+        local rawvalue = t.table[key]
+        local value
+        if deep and type(rawvalue) == "table" and rawvalue.type == "table" then
+            if deep[rawvalue] then
+                value = deep[rawvalue]
             else
-                -- A very dirty fix to an outdated, but still-used, incorrect behavior.
-                arg = plume.obj.table(0, 0)
-                for _, key in ipairs(options.keys) do
-                    if key ~= "self" and key ~= 1 and options.table[key] ~= plume.obj.empty then
-                        local rkey = key
-                        if tonumber(key) then
-                            rkey = rkey - 1
-                        end
-                        arg.table[rkey] = options.table[key]
-                        table.insert(arg.keys, rkey)
+                deep[rawvalue] = plume.obj.table(0, 0)
+                value = plume.stdUtils.copy(rawvalue, deep, deep[rawvalue])
+            end
+        else
+            value = rawvalue
+        end
+
+        table.insert(nt.keys, key)
+        nt.table[key] = value
+    end
+
+    return nt
+end
+
+plume.std.Table = plume.obj.quickTable{
+    remove = plume.obj.luaMacro("remove", function(args)
+        --!signature table t, [string|number index]
+        --`Table` automatically passes all of the macro's arguments as its second argument
+        index = (type(index) == "number" and index) or #t.table
+
+        for key, value in ipairs(t.keys) do
+            if value == index then
+                table.remove(t.keys, key)
+            end
+        end
+
+        return true, table.remove(t.table, index)
+    end),
+    append = plume.obj.luaMacro("append", function(args, runtime, _, ip)
+        --!signature table t, (any ...items)
+        
+        local item
+        if #args.table == 2 then
+            item = args.table[2]
+        else
+            plume.warning.runtimeWarning(string.format("Deprecated `Table.append` usage.\nFrom edition 'Owl', `$Table.append` will take only one parameter.", name), "Do `$Table.append($t, $Table(a, b))` instead of `$Table.append($t, a, b)`", runtime, ip, {614, 654})
+            -- A very dirty fix to an outdated, but still-used, incorrect behavior.
+            item = plume.obj.table(0, 0)
+            for _, key in ipairs(args.keys) do
+                if key ~= "self" and key ~= 1 and args.table[key] ~= plume.obj.empty then
+                    local rkey = key
+                    if tonumber(key) then
+                        rkey = rkey - 1
                     end
+                    item.table[rkey] = args.table[key]
+                    table.insert(item.keys, rkey)
                 end
             end
-
-            table.insert(t.table, arg)
-            table.insert(t.keys, #t.table)
-            return true
         end
-    }
-    Table.table.join   = {
-        method = function  (...)
-            local args = {...}
-
-            local options = table.remove(args)
-            local sep = options.table.sep
-            if sep == plume.obj.empty then
-                sep = ""
-            end
-
-            if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
-                return false, plume.error.joinErrorHint()
-            end
-
-            for i, value in ipairs(args) do
-                if type(value) ~= "number" and type(value) ~= "string" then
-                    return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
-                end
-            end
-
-            return pcall(table.concat, args, sep)
+        table.insert(t.table, item)
+        table.insert(t.keys, #t.table)
+        return true
+    end),
+    join = plume.obj.luaMacro("join", function(args)
+        --!signature string sep:$empty, (string ...items)
+        if sep == plume.obj.empty then
+            sep = ""
         end
-    }
-    Table.table.removeKey = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "Table t, any key",
-            named={self=true},
-            args=2
-        },
-        method = function (t, key)
-            key = tonumber(key) or key
-            local index = 0
+
+        local args = args.table
+        if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
+            return false, plume.error.joinErrorHint()
+        end
+
+        for i, value in ipairs(args) do
+            if type(value) ~= "number" and type(value) ~= "string" then
+                return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
+            end
+        end
+
+        return pcall(table.concat, args, sep)
+    end),
+    removeKey = plume.obj.luaMacro("removeKey", function(args)
+        --!signature table t, any key
+        key = tonumber(key) or key
+        local index = 0
+        for k, v in ipairs(t.keys) do
+            if v == key then
+                index = k
+                break
+            end
+        end
+
+        t.table[key] = nil
+        table.remove(t.keys, index)
+        return true
+    end),
+    hasKey = plume.obj.luaMacro("hasKey", function(args)
+        --!signature table t, any key
+        key = tonumber(key) or key
+        for k, v in ipairs(t.keys) do
+            if v == key then
+                return true, true
+            end
+        end
+
+        return true, false
+    end),
+    find = plume.obj.luaMacro("find", function(args)
+        --!signature table t, any x
+        for k, v in ipairs(t.keys) do
+            if t.table[v] == x then
+                return true, v
+            end
+        end
+        return true, nil
+    end),
+    findAll = plume.obj.luaMacro("findAll", function(args)
+        --!signature table t, any x
+        local result = plume.obj.table(0, 0)
+        for k, v in ipairs(t.keys) do
+            if t.table[v] == x then
+                table.insert(result.table, v)
+                table.insert(result.keys, #result.table)
+            end
+        end
+
+        return true, result
+    end),
+    count = plume.obj.luaMacro("count", function(args)
+        --!signature table t, ?named
+        if named then
+            local count = 0
             for k, v in ipairs(t.keys) do
-                if v == key then
-                    index = k
-                    break
+                if not tonumber(v) then
+                    count = count + 1
                 end
             end
-
-            t.table[key] = nil
-            table.remove(t.keys, index)
-            return true
+            return true, count
+        else
+            return true, #t.keys
         end
-    }
-    Table.table.hasKey = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t, any key",
-            named={self=true},
-            args=2
-        },
-        method = function (t, key)
-            key = tonumber(key) or key
-            for k, v in ipairs(t.keys) do
-                if v == key then
-                    return true, true
-                end
+    end),
+    entry = plume.obj.luaMacro("entry", function(args)
+        --!signature table t, any index
+        local key = t.keys[index]
+        local result = plume.obj.table(2, 0)
+        result.table[1] = key
+        result.table[2] = t.table[key]
+        result.keys = {1, 2}
+        
+        return true, result
+    end),
+
+    sort = plume.obj.luaMacro("sort", function(args)
+        --!signature table t, macro compare:
+        if compare and #t.table > 1 then
+            if compare.positionalParamCount ~= 2 then
+                return false, string.format("Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.", compare.positionalParamCount)
             end
 
-            return true, false
-        end
-    }
-    Table.table.find = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t, any x",
-            named={self=true},
-            args=2
-        },
-        method = function (t, x)
-            for k, v in ipairs(t.keys) do
-                if t.table[v] == x then
-                    return true, v
-                end
-            end
-            return true, nil
-        end
-    }
-    Table.table.findAll = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t, any x",
-            named={self=true},
-            args=2
-        },
-        method = function (t, x)
-            local result = plume.obj.table(0, 0)
-            for k, v in ipairs(t.keys) do
-                if t.table[v] == x then
-                    table.insert(result.table, v)
-                    table.insert(result.keys, #result.table)
-                end
-            end
-
-            return true, result
-        end
-    }
-    Table.table.count = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t, ?named",
-            named={self=true, named=true},
-            args=1
-        },
-        method = function (t, options)
-            local named = options.table.named
-
-            if named then
-                local count = 0
-                for k, v in ipairs(t.keys) do
-                    if not tonumber(v) then
-                        count = count + 1
-                    end
-                end
-                return true, count
-            else
-                return true, #t.keys
-            end
-        end
-    }
-    Table.table.entry = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t, any index",
-            named={self=true},
-            args=2
-        },
-        method = function (t, index)
-            local key = t.keys[index]
-            local result = plume.obj.table(2, 0)
-            result.table[1] = key
-            result.table[2] = t.table[key]
-            result.keys = {1, 2}
-            
-            return true, result
-        end
-    }
-
-    local function sortUpdate(context)
-        if context.j == context.i then
-            table.insert(context.result, context.source.table[context.i])
-            context.i = context.i + 1
-            context.j = 1
-        end
-
-        if context.i <= #context.source.table then
-            context.PLUME_CALLBACK = context.compare
-            context.PLUME_CALLBACK_ARGS = {
-                context.result[context.j],
-                context.source.table[context.i]
+            local context = {
+                type         = "hostContext",
+                source       = t,
+                compare      = compare,
+                i            = 2,
+                j            = 1,
+                result       = {t.table[1]}, 
+                HOST_UPDATE  = sortUpdate,
+                HOST_NEXT    = sortNext
             }
+            return true, context, true
         else
-            context.PLUME_CALLBACK = nil
-            context.source.table = context.result
+            table.sort(t.table)
+            return true
         end
+    end),
 
-        return true
-    end
+    copy = plume.obj.luaMacro("copy", function(args)
+        --!signature table t
+        return true, plume.stdUtils.copy(t)
+    end),
 
-    local function sortNext(context, value)
-        if value then
-            context.j = context.j + 1
-        else
-            table.insert(context.result, context.j, context.source.table[context.i])
-            context.i = context.i + 1
-            context.j = 1
+    deepcopy = plume.obj.luaMacro("deepcopy", function(args)
+        --!signature table t
+        return true, plume.stdUtils.copy(t, {})
+    end),
+
+    sum = plume.obj.luaMacro("sum", function(args)
+        --!signature number ...numbers
+        local r = 0
+        for _, x in ipairs(numbers) do
+            r = r + x
         end
-        return true
-    end
+        return true, r
+    end)
+}
 
-    Table.table.sort = {
-        checkArgs = {
-            checkTypes = {"table", compare="macro"},
-            signature = "table t",
-            named={self=true, compare=true},
-            args=1
-        },
-        method = function (t, options)
-            local compare = options.table.compare
-            if compare and #t.table > 1 then
-                if compare.positionalParamCount ~= 2 then
-                    return false, string.format("Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.", compare.positionalParamCount)
-                end
-
-                local context = {
-                    type         = "hostContext",
-                    source       = t,
-                    compare      = compare,
-                    i            = 2,
-                    j            = 1,
-                    result       = {t.table[1]}, 
-                    HOST_UPDATE  = sortUpdate,
-                    HOST_NEXT    = sortNext
-                }
-                return true, context, true
-            else
-                table.sort(t.table)
-                return true
-            end
-        end
-    }
-
-    function plume.stdUtils.copy(t, deep, nt)
-        local nt = nt or plume.obj.table(#t.table, #t.keys)
-
-        for _, key in ipairs(t.keys) do
-            local rawvalue = t.table[key]
-            local value
-            if deep and type(rawvalue) == "table" and rawvalue.type == "table" then
-                if deep[rawvalue] then
-                    value = deep[rawvalue]
-                else
-                    deep[rawvalue] = plume.obj.table(0, 0)
-                    value = plume.stdUtils.copy(rawvalue, deep, deep[rawvalue])
-                end
-            else
-                value = rawvalue
-            end
-
-            table.insert(nt.keys, key)
-            nt.table[key] = value
-        end
-
-        return nt
-    end
-
-    Table.table.copy = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t",
-            named={self=true},
-            args=1
-        },
-        method = function (t)
-            return true, plume.stdUtils.copy(t)
-        end
-    }
-
-    Table.table.deepcopy = {
-        checkArgs = {
-            checkTypes = {"table"},
-            signature = "table t",
-            named={self=true},
-            args=1
-        },
-        method = function (t)
-            return true, plume.stdUtils.copy(t, {})
-        end
-    }
-
-    Table.table.sum = {
-        checkArgs = {
-            checkTypesAll = "number",
-            signature = "...numbers",
-            checkTypes={self="table"},
-            named={self=true}
-        },
-        method = function (...)
-            local args = {...}
-            table.remove(args)
-            local r = 0
-            for _, x in ipairs(args) do
-                r = r + x
-            end
-            return true, r
-        end
-    }
-
-    Table.meta = plume.obj.table(0, 1)
-    Table.meta.keys = {"validate"}
-    Table.meta.table.validate = plume.obj.luaMacro ("call", function(args)
-        local x = args.table[1]
+plume.std.Table.meta = plume.obj.quickTable{
+    validate = plume.obj.luaMacro ("call", function(args)
+        --!signature any x
         local t = type(x) == "table" and x.type or  type(x)
         if t ~= "table" then
             return false, string.format("Cannot convert '%s' to a table.", t)
@@ -342,6 +245,4 @@ return function (plume)
             return true, x
         end
     end)
-
-    plume.std.Table = Table
-end
+}

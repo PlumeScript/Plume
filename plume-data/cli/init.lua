@@ -55,12 +55,14 @@ ENVIRONMENT VARIABLES
         Sets the error style (fancy|auto|plain). Used when no CLI flag is provided.
     PLUME_COLOR
         Sets color output (always|auto|never). Used when no CLI flag is provided.
+    PLUME_PATH
+    	A list of path, separated by semicolon. Used to resolve `import`.
 
 VERSION
     !VERSION!
 
 LICENSE
-    Plume is licensed under the GNU General Public License v3 (GPLv3).
+    Plume is licensed under the MIT License.
 ]]
 
 local shortcut = {

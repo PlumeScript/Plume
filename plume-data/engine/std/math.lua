@@ -5,146 +5,56 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-return function (plume)
-	local Math = plume.obj.table (0, 10)
-    
-    Math.table.sin = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.sin(x)
-        end
-    }
-    Math.table.cos = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.cos(x)
-        end
-    }
-    Math.table.tan = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.tan(x)
-        end
-    }
-    Math.table.asin = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.asin(x)
-        end
-    }
-    Math.table.acos = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.acos(x)
-        end
-    }
-    Math.table.atan = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.atan(x)
-        end
-    }
-    Math.table.atan2 = {
-        checkArgs = {
-            checkTypes = {"number", "number"},
-            signature = "number x, number x",
-            named={self=true},
-            args=2,
-        },
-        method = function  (x, y)
-            return true, math.atan2(x, y)
-        end
-    }
-    Math.table.sinh = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.sinh(x)
-        end
-    }
-    Math.table.cosh = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.cosh(x)
-        end
-    }
-    Math.table.tanh = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.tanh(x)
-        end
-    }
-
-    Math.table.log = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.log(x)
-        end
-    }
-    Math.table.log10 = {
-        checkArgs = {
-            checkTypes = {"number"},
-            signature = "number x",
-            named={self=true},
-            args=1,
-        },
-        method = function  (x)
-            return true, math.log10(x)
-        end
-    }
-
-    Math.table.pi   = math.pi
-    Math.table.e    = math.exp(1)
-    Math.table.huge = math.huge
-
-    plume.std.Math = Math
-end
+plume.std.Math = plume.obj.quickTable{
+    sin = plume.obj.luaMacro("sin", function (args)
+        --!signature number x
+        return true, math.sin(x)
+    end),
+    cos = plume.obj.luaMacro("cos", function (args)
+        --!signature number x
+        return true, math.cos(x)
+    end),
+    tan = plume.obj.luaMacro("tan", function (args)
+        --!signature number x
+        return true, math.tan(x)
+    end),
+    asin =  plume.obj.luaMacro("asin", function (args)
+        --!signature number x
+        return true, math.asin(x)
+    end),
+    acos =  plume.obj.luaMacro("acos", function (args)
+        --!signature number x
+        return true, math.acos(x)
+    end),
+    atan =  plume.obj.luaMacro("atan", function (args)
+        --!signature number x
+        return true, math.atan(x)
+    end),
+    atan2 =  plume.obj.luaMacro("atan2", function (args)
+        --!signature number x
+        return true, math.atan2(x, y)
+    end),
+    sinh =  plume.obj.luaMacro("sinh", function (args)
+        --!signature number x
+        return true, math.sinh(x)
+    end),
+    cosh =  plume.obj.luaMacro("cosh", function (args)
+        --!signature number x
+        return true, math.cosh(x)
+    end),
+    tanh =  plume.obj.luaMacro("tanh", function (args)
+        --!signature number x
+        return true, math.tanh(x)
+    end),
+    log =  plume.obj.luaMacro("log", function (args)
+        --!signature number x
+        return true, math.log(x)
+    end),
+    log10 =  plume.obj.luaMacro("log10", function (args)
+        --!signature number x
+        return true, math.log10(x)
+    end),
+    pi   = math.pi,
+    e    = math.exp(1),
+    huge = math.huge
+}
