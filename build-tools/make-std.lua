@@ -26,10 +26,28 @@ return function(plume)
 end
 ]=]
 
+local function makeSignature(name, signature, options)
+	if (name == "call" or name == "validate") and options.meta then
+		return "`$"..options.meta.."("..signature..")`"
+	else
+		return  "`$"..name.."("..signature..")`"
+	end
+end
+
 local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
 	f = f:gsub('%"([^"]+)%",%s*function%s*%(args%)\n(%s*)(.-)%-%-!signature ([^\n]*)', function(name, indent, left, signature)
+
+		local options = {}
+		if signature:match('!') then
+			local rawoptions
+			signature, rawoptions = signature:match('^([^!]-)%s*!%s*([^!]-)$')
+
+			for k, v in rawoptions:gmatch('(%S+):(%S+)') do
+				options[k] = v
+			end
+		end
 
 		local postionalArgsName = {}
 		local namedArgsName = {}
@@ -108,6 +126,8 @@ local function process(f)
 		signature = signature:gsub('%(', ''):gsub('%)', '') -- remove ignored syntax
 		signature = signature:gsub('\\', '\\\\')
 
+		signature = makeSignature(name, signature, options)
+
 		local minArgCount = #postionalArgsName-optnPositionalArgsCount
 		local maxArgCount = #postionalArgsName
 
@@ -116,7 +136,11 @@ local function process(f)
 		end
 
 		local checks = {}
-			table.insert(checks, 'local __name      = "' .. name .. '"\n')
+			if name == "call" and options.meta then
+				table.insert(checks, 'local __name      = "' .. options.meta .. '"\n')
+			else
+				table.insert(checks, 'local __name      = "' .. name .. '"\n')
+			end
 			table.insert(checks, 'local __signature = "' .. signature .. '"\n')
 			table.insert(checks, 'local __s, __e, self')
 			if #postionalArgsName > 0 then

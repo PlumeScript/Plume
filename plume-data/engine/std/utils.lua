@@ -5,14 +5,10 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-local function makeSignature(name, signature)
-	return  "`$"..name.."("..signature..")`"
-end
-
 function plume.stdUnpackPositional (args, minArgs, maxArgs, name, signature)
 	if #args.table < minArgs or #args.table > maxArgs then
 		return false, plume.error.wrongArgsCountStd(
-				name, #args.table, minArgs, maxArgs, makeSignature(name, signature)
+				name, #args.table, minArgs, maxArgs, signature
 			)
 	end
 
@@ -36,7 +32,7 @@ function plume.stdUnpackNamed(args, nameds, name, signature)
 			if nameds and nameds[key] then
 				table.insert(result, args.table[key])
 			else
-				return false, plume.error.unknownParameterStd(key, name, makeSignature(name, signature))
+				return false, plume.error.unknownParameterStd(key, name, signature)
 			end
 		end
 	end
@@ -72,7 +68,7 @@ function plume.stdCheckType(arg, expected, argName, name, signature)
 		return true, nil, arg
 	else
 		return false, plume.error.wrongArgTypeStd(
-			argName, name, given, expected, makeSignature(name, signature)
+			argName, name, given, expected, signature
 		), arg
 	end
 end
