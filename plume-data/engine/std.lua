@@ -1707,7 +1707,7 @@ return function(plume)
 	
 	        return true, table.remove(t.table, index)
 	    end),
-	    append = plume.obj.luaMacro("append", function (args)
+	    append = plume.obj.luaMacro("append", function (args, runtime, _, ip)
 	        local __name      = "append"
 	        local __signature = "`$append(table t, any ...items)`"
 	        local __s, __e, self, t
@@ -1716,11 +1716,12 @@ return function(plume)
 	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
-	        table.remove(args.table, 1)
+	        
 	        local item
-	        if #args.table == 1 then
-	            item = args.table[1]
+	        if #args.table == 2 then
+	            item = args.table[2]
 	        else
+	            plume.warning.runtimeWarning(string.format("Deprecated `Table.append` usage.\nFrom edition 'Owl', `$Table.append` will take only one parameter.", name), "Do `$Table.append($t, $Table(a, b))` instead of `$Table.append($t, a, b)`", runtime, ip, {614, 654})
 	            -- A very dirty fix to an outdated, but still-used, incorrect behavior.
 	            item = plume.obj.table(0, 0)
 	            for _, key in ipairs(args.keys) do

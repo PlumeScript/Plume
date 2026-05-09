@@ -22,3 +22,7 @@ $("abc").sub(1, 2)
 _See Math, Random, Number and String tables for all methods_
 
 ## `#185` `raise` cannot anymore be an identifier
+
+## `#645` `Table.append` behavior change
+
+Do `$Table.append($t, $Table(a, b))` instead of `$Table.append($t, a, b)`
