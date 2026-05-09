@@ -37,7 +37,7 @@ end
 local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
-	f = f:gsub('%"([^"]+)%",%s*function%s*%(args%)\n(%s*)(.-)%-%-!signature ([^\n]*)', function(name, indent, left, signature)
+	f = f:gsub('%"([^"]+)%",%s*function%s*%(([^)]+)%)\n(%s*)(.-)%-%-!signature ([^\n]*)', function(name, args, indent, left, signature)
 
 		local options = {}
 		if signature:match('!') then
@@ -218,7 +218,7 @@ local function process(f)
 		table.insert(checks, '------------')
 		checks = (table.concat(checks):gsub('\n', '\n'..indent))
 
-		return string.format('"%s", function (args)\n%s%s%s', name, indent, left, checks)
+		return string.format('"%s", function (%s)\n%s%s%s', name, args, indent, left, checks)
 	end)
 
 	f = f:gsub('%-%-!override%-self%-(%S+)', 'if args.table.self and args.table.self ~= %1 then table.insert(args.table, 1, args.table.self) end')
