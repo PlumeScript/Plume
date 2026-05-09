@@ -11,7 +11,7 @@ Licensed under the MIT License — see LICENSE for details.
 return function(plume)
 	plume.std = {}
     plume.stdUtils = {}
-    
+
 	
 	
 	plume.stdio = {}
@@ -639,8 +639,13 @@ return function(plume)
 	local function makePath(path)
 		local obj = plume.obj.quickTable{
 			path = path or lfs.currentdir (),
-			type = "Path",
 			isFile = plume.obj.luaMacro ("isFile", function (args)
+				local __name      = "isFile"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
@@ -650,7 +655,13 @@ return function(plume)
 	
 				return true, attr.mode == "file"
 			end),
-			isDirectory = plume.obj.luaMacro ("isDirectory", function(args)
+			isDirectory = plume.obj.luaMacro ("isDirectory", function (args)
+				local __name      = "isDirectory"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
@@ -660,12 +671,24 @@ return function(plume)
 	
 				return true, attr.mode == "directory"
 			end),
-			exists = plume.obj.luaMacro ("exists", function(args)
+			exists = plume.obj.luaMacro ("exists", function (args)
+				local __name      = "exists"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 				return true, attr ~= nil
 			end),
-			make = plume.obj.luaMacro ("make", function(args)
+			make = plume.obj.luaMacro ("make", function (args)
+				local __name      = "make"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
@@ -675,7 +698,13 @@ return function(plume)
 	
 				return mkdirs(path)
 			end),
-			remove = plume.obj.luaMacro ("remove", function(args)
+			remove = plume.obj.luaMacro ("remove", function (args)
+				local __name      = "remove"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
@@ -690,9 +719,16 @@ return function(plume)
 				end
 	
 			end),
-			move = plume.obj.luaMacro ("move", function(args)
+			move = plume.obj.luaMacro ("move", function (args)
+				local __name      = "move"
+				local __signature = "string newpath"
+				local __s, __e, self, newpath
+				__s, __e, newpath = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and newpath then __s, __e, newpath = plume.stdCheckType(newpath, "string", "1", __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
-				local newpath = args.table[1]
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -702,7 +738,13 @@ return function(plume)
 				args.table.self.table.path = newpath
 				return os.rename(path, newpath)
 			end),
-			copy = plume.obj.luaMacro ("copy", function(args)
+			copy = plume.obj.luaMacro ("copy", function (args)
+				local __name      = "copy"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local newpath = args.table[1]
 	
@@ -722,7 +764,13 @@ return function(plume)
 				return makePath(newpath)
 			end),
 	
-			getParent = plume.obj.luaMacro ("getParent", function(args)
+			getParent = plume.obj.luaMacro ("getParent", function (args)
+				local __name      = "getParent"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 	
 				if path:match('[/\\]') then
@@ -731,25 +779,50 @@ return function(plume)
 					return false, "Cannot return parent of root"
 				end
 			end),
-			getName = plume.obj.luaMacro ("getName", function(args)
+			getName = plume.obj.luaMacro ("getName", function (args)
+				local __name      = "getName"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				return true, path:match('[^/\\]*$')
 			end),
-			read = plume.obj.luaMacro ("read", function(args)
+			read = plume.obj.luaMacro ("read", function (args)
+				local __name      = "read"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				return plume.stdio.read(path)
 			end),
-			write = plume.obj.luaMacro ("write", function(args)
+			write = plume.obj.luaMacro ("write", function (args)
+				local __name      = "write"
+				local __signature = "?append, string ...items"
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
+				local append
+				if __s then __s, __e, self, append = plume.stdUnpackNamed(args, {"self", "append"}, __name, __signature) end
+				append = append or false
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local success, result = mkdirs(path, true)
 				if not success then
 					return false, result
 				end
 	
-				local append = args.table.append
 				return plume.stdio.write(path, table.concat(args.table), append)
 			end),
-			touch = plume.obj.luaMacro ("touch", function(args)
+			touch = plume.obj.luaMacro ("touch", function (args)
+				local __name      = "touch"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local success, result = mkdirs(path, true)
 				if not success then
@@ -763,7 +836,13 @@ return function(plume)
 				file:close()
 				return true
 			end),
-			getChildren = plume.obj.luaMacro ("getChildren", function(args)
+			getChildren = plume.obj.luaMacro ("getChildren", function (args)
+				local __name      = "getChildren"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local result = plume.obj.table(0, 0)
 	
@@ -776,7 +855,13 @@ return function(plume)
 				end
 				return true, result
 			end),
-			walk = plume.obj.luaMacro ("walk", function(args)
+			walk = plume.obj.luaMacro ("walk", function (args)
+				local __name      = "walk"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				local result = plume.obj.table(0, 0)
 	
@@ -801,6 +886,8 @@ return function(plume)
 			end)
 		}
 	
+		obj.subtype = "Path"
+	
 		local function div(x1, x2)
 			local path1, path2
 	
@@ -820,13 +907,38 @@ return function(plume)
 		end
 	
 		obj.meta = plume.obj.quickTable{
-			tostring = plume.obj.luaMacro ("tostring", function(args)
+			tostring = plume.obj.luaMacro ("tostring", function (args)
+				local __name      = "tostring"
+				local __signature = ""
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local path = args.table.self.table.path
 				return true, path
 			end),
 	
-			div = plume.obj.luaMacro ("div", function(args)
-				return div(args.table[1], args.table[2])
+			div = plume.obj.luaMacro ("div", function (args)
+				local __name      = "div"
+				local __signature = "Path|string x, Path|string y"
+				local __s, __e, self, x, y
+				__s, __e, x, y = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and x then
+					__s, __e, x = plume.stdCheckType(x, "Path", "1", __name, __signature)
+					if not __s then
+						__s, __e, x = plume.stdCheckType(x, "string", "1", __name, __signature)
+					end
+				end
+				if __s and y then
+					__s, __e, y = plume.stdCheckType(y, "Path", "2", __name, __signature)
+					if not __s then
+						__s, __e, y = plume.stdCheckType(y, "string", "2", __name, __signature)
+					end
+				end
+				if not __s then return false, __e end
+				------------
+				return div(x, y)
 			end)
 		}
 		
@@ -835,14 +947,14 @@ return function(plume)
 	
 	table.insert(plume.std.os.keys, "Path")
 	plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args)
-	    local __name      = "isFile"
-				local __signature = "[string path]"
-				local __s, __e, self, path
-				__s, __e, path = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
-				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-				if __s and path then __s, __e, path = plume.stdCheckType(path, "string", "1", __name, __signature) end
-				if not __s then return false, __e end
-				------------
+	    local __name      = "Path"
+	    local __signature = "[string path]"
+	    local __s, __e, self, path
+	    __s, __e, path = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
+	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+	    if __s and path then __s, __e, path = plume.stdCheckType(path, "string", "1", __name, __signature) end
+	    if not __s then return false, __e end
+	    ------------
 	    return makePath(path)
 	end)
 	
@@ -2214,7 +2326,11 @@ return function(plume)
 	function plume.stdCheckType(arg, expected, argName, name, signature)
 		local given = type(arg)
 		if type(arg) == "table" and arg.type then
-			given = arg.type
+			if expected ~= "table" and arg.subtype then
+				given = arg.subtype
+			else
+				given = arg.type
+			end
 		end
 		if given == "luaMacro" or given == "stdMacro" then
 			given = "macro"
@@ -2237,7 +2353,7 @@ return function(plume)
 				argName, name, given, expected, makeSignature(name, signature)
 			), arg
 		end
-		end
+	end
 	
 	plume.stdVM = {}
 	local function registerLuaStdFunction(name, minArgs, maxArgs)

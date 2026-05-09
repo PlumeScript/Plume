@@ -1,0 +1,45 @@
+/// Test existing dir
+let path = $os.Path(tests)
+$path.isDirectory() - $path.isFile() - $path.exists()
+/// Output
+true - false - true
+/// End
+
+/// Test existing file
+let path = $os.Path(tests/plume/meta.plume)
+$path.isDirectory() - $path.isFile() - $path.exists()
+/// Output
+false - true - true
+/// End
+
+/// Test concat 1
+let path = $os.Path(tests)
+$(path / "wing") - $("wing" / path) - $(path / path)
+/// Output
+tests/wing - wing/tests - tests/tests
+/// End
+
+/// Test concat 2
+let path = $os.Path(tests)
+$String($(path / "wing/nib"))
+/// Output
+tests/wing/nib
+/// End
+
+/// Test concat error
+let path = $os.Path(tests)
+$(path / Math.sin)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'macro' for parameter '2' of macro 'div'. Expected: 'string'.     │
+│   Usage: `$div(Path|string x, Path|string y)`                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let path = $os.Path(tests)                                               │
+│    2 │$(path / Math.sin)                                                       │
+│      │  ^^^^^^^^^^^^^^^                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

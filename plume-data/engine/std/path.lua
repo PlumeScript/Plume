@@ -33,8 +33,8 @@ end
 local function makePath(path)
 	local obj = plume.obj.quickTable{
 		path = path or lfs.currentdir (),
-		type = "Path",
 		isFile = plume.obj.luaMacro ("isFile", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local attr = lfs.attributes(path)
 
@@ -45,6 +45,7 @@ local function makePath(path)
 			return true, attr.mode == "file"
 		end),
 		isDirectory = plume.obj.luaMacro ("isDirectory", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local attr = lfs.attributes(path)
 
@@ -55,11 +56,13 @@ local function makePath(path)
 			return true, attr.mode == "directory"
 		end),
 		exists = plume.obj.luaMacro ("exists", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local attr = lfs.attributes(path)
 			return true, attr ~= nil
 		end),
 		make = plume.obj.luaMacro ("make", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local attr = lfs.attributes(path)
 
@@ -70,6 +73,7 @@ local function makePath(path)
 			return mkdirs(path)
 		end),
 		remove = plume.obj.luaMacro ("remove", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local attr = lfs.attributes(path)
 
@@ -85,8 +89,8 @@ local function makePath(path)
 
 		end),
 		move = plume.obj.luaMacro ("move", function(args)
+			--!signature string newpath
 			local path = args.table.self.table.path
-			local newpath = args.table[1]
 			local attr = lfs.attributes(path)
 
 			if not attr then
@@ -97,6 +101,7 @@ local function makePath(path)
 			return os.rename(path, newpath)
 		end),
 		copy = plume.obj.luaMacro ("copy", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local newpath = args.table[1]
 
@@ -117,6 +122,7 @@ local function makePath(path)
 		end),
 
 		getParent = plume.obj.luaMacro ("getParent", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 
 			if path:match('[/\\]') then
@@ -126,24 +132,27 @@ local function makePath(path)
 			end
 		end),
 		getName = plume.obj.luaMacro ("getName", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			return true, path:match('[^/\\]*$')
 		end),
 		read = plume.obj.luaMacro ("read", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			return plume.stdio.read(path)
 		end),
 		write = plume.obj.luaMacro ("write", function(args)
+			--!signature ?append, (string ...items)
 			local path = args.table.self.table.path
 			local success, result = mkdirs(path, true)
 			if not success then
 				return false, result
 			end
 
-			local append = args.table.append
 			return plume.stdio.write(path, table.concat(args.table), append)
 		end),
 		touch = plume.obj.luaMacro ("touch", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local success, result = mkdirs(path, true)
 			if not success then
@@ -158,6 +167,7 @@ local function makePath(path)
 			return true
 		end),
 		getChildren = plume.obj.luaMacro ("getChildren", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local result = plume.obj.table(0, 0)
 
@@ -171,6 +181,7 @@ local function makePath(path)
 			return true, result
 		end),
 		walk = plume.obj.luaMacro ("walk", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			local result = plume.obj.table(0, 0)
 
@@ -195,6 +206,8 @@ local function makePath(path)
 		end)
 	}
 
+	obj.subtype = "Path"
+
 	local function div(x1, x2)
 		local path1, path2
 
@@ -215,12 +228,14 @@ local function makePath(path)
 
 	obj.meta = plume.obj.quickTable{
 		tostring = plume.obj.luaMacro ("tostring", function(args)
+			--!signature 
 			local path = args.table.self.table.path
 			return true, path
 		end),
 
 		div = plume.obj.luaMacro ("div", function(args)
-			return div(args.table[1], args.table[2])
+			--!signature Path|string x, Path|string y
+			return div(x, y)
 		end)
 	}
 	
