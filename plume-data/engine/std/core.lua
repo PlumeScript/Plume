@@ -12,7 +12,6 @@ return function (plume)
     plume.stdUtils = {}
     
     -- require 'plume-data/engine/std/io'     (plume)
-    require 'plume-data/engine/std/vm'     (plume)
     require 'plume-data/engine/std'        (plume)
 
     for _, source in ipairs({plume.std.plume}) do
