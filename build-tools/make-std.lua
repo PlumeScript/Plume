@@ -124,7 +124,10 @@ local function process(f)
 					posList, minArgCount, maxArgCount
 				))
 			else
-				table.insert(checks, ' = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
+				table.insert(checks, string.format(
+					' = plume.stdUnpackPositional(args, 0, %s, __name, __signature)\n', 
+					maxArgCount
+				))
 			end
 
 			if #namedArgsName > 0 then
