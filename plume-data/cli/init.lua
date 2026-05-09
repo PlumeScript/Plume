@@ -60,7 +60,7 @@ VERSION
     !VERSION!
 
 LICENSE
-    Plume is licensed under the GNU General Public License v3 (GPLv3).
+    Plume is licensed under the MIT License.
 ]]
 
 local shortcut = {
