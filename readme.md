@@ -122,6 +122,8 @@ Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking ch
 
 3 implmentations, from 2018 to 2026, from a scratchy home interpreter with AST manipulations to a custom WM, passing through a lua-transpilator.
 
+[Projet kaban](https://github.com/users/ErwanBarbedor/projects/2/views/1)
+
 ## Dependencies and Thanks
 
 This project stands on great open-source work:
