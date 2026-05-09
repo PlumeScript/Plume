@@ -13,11 +13,10 @@ return function (plume)
     
     -- require 'plume-data/engine/std/io'     (plume)
     require 'plume-data/engine/std/vm'     (plume)
-    require 'plume-data/engine/std/table'  (plume)
     require 'plume-data/engine/std/time'   (plume)
     require 'plume-data/engine/std'        (plume)
 
-    for _, source in ipairs({plume.std.Table, plume.std.plume, plume.std.Time}) do
+    for _, source in ipairs({plume.std.plume, plume.std.Time}) do
         local Table
         if source == plume.stdLua then
             Table = plume.stdLua
@@ -73,7 +72,7 @@ return function (plume)
     end
 
     for _, Table in ipairs({}) do
-        for name, f in pairs(Table.table) do
+        for name, f in pairs({}) do
             if f.checkArgs then
                 f.checkArgs.signature = "$" .. name .. "(" .. f.checkArgs.signature .. ")"
                 for k, v in pairs(f.checkArgs.checkTypes or {}) do
