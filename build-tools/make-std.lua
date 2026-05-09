@@ -21,7 +21,7 @@ Licensed under the MIT License — see LICENSE for details.
 return function(plume)
 	plume.std = {}
     plume.stdUtils = {}
-    
+
 	%s
 end
 ]=]
@@ -216,9 +216,7 @@ for filename in lfs.dir("plume-data/engine/std") do
 		local content = file:read("*a")
 		file:close()
 
-		if not content:match("return function %(plume%)") then
-			table.insert(result, process(content))
-		end
+		table.insert(result, process(content))
 	end
 end
 
