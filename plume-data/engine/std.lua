@@ -54,7 +54,9 @@ return function(plume)
 	    if __s and macro then __s, __e, macro = plume.stdCheckType(macro, "macro", "1", __name, __signature) end
 	    if not __s then return false, __e end
 	    ------------
-	    print("macro " .. (macro.debugMacroName or macro.name) .. "\n    " .. macro.doc:gsub('\n', '\n    ') or "")
+	    local name = macro.debugMacroName or macro.name
+	    local doc = macro.doc or ""
+	    print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
 	    return true
 	end)
 	
