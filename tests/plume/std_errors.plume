@@ -73,8 +73,7 @@ $write($Table(), y)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for parameter 'filename' of macro 'write'. Expected:      │
-│   'string'.                                                                    │
+│ → Wrong type 'table' for parameter '1' of macro 'write'. Expected: 'string'.   │
 │   Usage: `$write(string filename, string content, ?append)`                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │

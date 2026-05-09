@@ -145,7 +145,14 @@ local function process(f)
 				table.insert(checks, 'if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end\n')
 			end
 
+			local count = 0
 			for _, argName in ipairs(allArgsName) do
+				local checkArgName = argName
+				if not namedArgsName[argName] then
+					count = count + 1
+					checkArgName = count
+				end
+
 				local expected = argsType[argName]
 				if expected then
 					if expected:match('|') then
@@ -157,7 +164,7 @@ local function process(f)
 							end
 							table.insert(checks, string.format(
 							'__s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature)\n',
-								argName, argName, m, argName
+								argName, argName, m, checkArgName
 							))
 							if first then
 								first = false
@@ -169,7 +176,7 @@ local function process(f)
 					else
 						table.insert(checks, string.format(
 						'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-							argName, argName, argName, expected, argName
+							argName, argName, argName, expected, checkArgName
 						))
 					end
 				end
