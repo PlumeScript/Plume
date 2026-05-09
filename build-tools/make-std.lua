@@ -27,6 +27,7 @@ local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
 	f = f:gsub('%"([^"]+)%",%s*function%s*%(args%)\n(%s*)(.-)%-%-!signature ([^\n]+)', function(name, indent, left, signature)
+
 		local postionalArgsName = {}
 		local namedArgsName = {}
 		local optnPositionalArgs = {}
@@ -123,7 +124,7 @@ local function process(f)
 					posList, minArgCount, maxArgCount
 				))
 			else
-				table.insert(checks, ' = plume.stdUnpackPositional(args, 0, 0, 0, __name, __signature)\n')
+				table.insert(checks, ' = plume.stdUnpackPositional(args, 0, 0, __name, __signature)\n')
 			end
 
 			if #namedArgsName > 0 then
