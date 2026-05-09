@@ -58,8 +58,8 @@ end)
 plume.std.List = plume.obj.table(0, 0)
 plume.std.List.meta = plume.obj.quickTable{
     call = plume.obj.luaMacro ("call", function(args)
+        --!signature table t !meta:List
         local result = plume.obj.table(0, 0)
-        local t = args.table[1]
         for k, v in ipairs(t.table) do
             table.insert(result.keys, k)
             table.insert(result.table, v)
@@ -67,7 +67,7 @@ plume.std.List.meta = plume.obj.quickTable{
         return true, result
     end),
     validate = plume.obj.luaMacro ("validate", function(args)
-        local t = args.table[1]
+        --!signature table t !meta:List
         for _, k in ipairs(t.keys) do
             if not tonumber(k) then
                 return false, string.format("Received extra named argument '%s', but extra arguments must be positional.", k)
@@ -81,8 +81,8 @@ plume.std.List.meta = plume.obj.quickTable{
 plume.std.Map = plume.obj.table(0, 0)
 plume.std.Map.meta = plume.obj.quickTable{
     call = plume.obj.luaMacro ("call", function(args)
+        --!signature table t !meta:Map
         local result = plume.obj.table(0, 0)
-        local t = args.table[1]
         for _, k in ipairs(t.keys) do
             if not tonumber(k) then
                 table.insert(result.keys, k)
@@ -92,7 +92,7 @@ plume.std.Map.meta = plume.obj.quickTable{
         return true, result
     end),
     validate = plume.obj.luaMacro ("validate", function(args)
-        local t = args.table[1]
+        --!signature table t !meta:Map
         for _, k in ipairs(t.keys) do
             if tonumber(k) then
                 return false, "Received an extra positional argument, but extra arguments must be named."
