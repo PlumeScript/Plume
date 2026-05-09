@@ -7,8 +7,6 @@ Licensed under the MIT License — see LICENSE for details.
 
 plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	--!signature [number seed]
-    
-
     function _deriveSeed(seed, index)
 		seed = ((seed + index * 1234567) * 1103515245 + 12345) % 2147483647
 		if seed==0 then
@@ -38,15 +36,16 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
    	
     local random = plume.obj.quickTable{
 	    seed = plume.obj.luaMacro ("seed", function(args)
-	    	state = _deriveSeed(args.table[1] or os.time(), 1)
+	    	--!signature [number seed]
+	    	state = _deriveSeed(seed or os.time(), 1)
 	    	return true
 		end),
 	    choice = plume.obj.luaMacro ("choice", function(args)
-	    	local t = args.table[1]
+	    	--!signature table t
 	    	return true, t.table[_random_range(1, #t.table)]
 		end),
 		pchoice = plume.obj.luaMacro ("pchoice", function(args)
-			local t = args.table[1]
+			--!signature table t
 			local tw = 0
 			for _, k in ipairs(t.keys) do
 				local v = t.table[k]
@@ -67,12 +66,12 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
 			end
 		end),
 		shuffle = plume.obj.luaMacro ("shuffle", function(args)
-			shuffle(args.table[1])
+			--!signature table t
+			shuffle(t)
 	    	return true
 		end),
 		sample = plume.obj.luaMacro ("sample", function(args)
-			local t = args.table[1]
-			local count = args.table[2]
+			--!signature table t, number count
 			if count > #t.table then
 				return false, string.format("Cannot give a '%i'-size sample of a table with '%i' element%s.",
 					count, #t.table, "s" and #t.table>1 or "")

@@ -984,8 +984,6 @@ return function(plume)
 		if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
-	    
-	
 	    function _deriveSeed(seed, index)
 			seed = ((seed + index * 1234567) * 1103515245 + 12345) % 2147483647
 			if seed==0 then
@@ -1014,16 +1012,38 @@ return function(plume)
 		end
 	   	
 	    local random = plume.obj.quickTable{
-		    seed = plume.obj.luaMacro ("seed", function(args)
-		    	state = _deriveSeed(args.table[1] or os.time(), 1)
+		    seed = plume.obj.luaMacro ("seed", function (args)
+		    	local __name      = "seed"
+		    	local __signature = "[number seed]"
+		    	local __s, __e, self, seed
+		    	__s, __e, seed = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
+		    	if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		    	if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
+		    	if not __s then return false, __e end
+		    	------------
+		    	state = _deriveSeed(seed or os.time(), 1)
 		    	return true
 			end),
-		    choice = plume.obj.luaMacro ("choice", function(args)
-		    	local t = args.table[1]
+		    choice = plume.obj.luaMacro ("choice", function (args)
+		    	local __name      = "choice"
+		    	local __signature = "table t"
+		    	local __s, __e, self, t
+		    	__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		    	if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		    	if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+		    	if not __s then return false, __e end
+		    	------------
 		    	return true, t.table[_random_range(1, #t.table)]
 			end),
-			pchoice = plume.obj.luaMacro ("pchoice", function(args)
-				local t = args.table[1]
+			pchoice = plume.obj.luaMacro ("pchoice", function (args)
+				local __name      = "pchoice"
+				local __signature = "table t"
+				local __s, __e, self, t
+				__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				local tw = 0
 				for _, k in ipairs(t.keys) do
 					local v = t.table[k]
@@ -1043,13 +1063,28 @@ return function(plume)
 					end
 				end
 			end),
-			shuffle = plume.obj.luaMacro ("shuffle", function(args)
-				shuffle(args.table[1])
+			shuffle = plume.obj.luaMacro ("shuffle", function (args)
+				local __name      = "shuffle"
+				local __signature = "table t"
+				local __s, __e, self, t
+				__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				shuffle(t)
 		    	return true
 			end),
-			sample = plume.obj.luaMacro ("sample", function(args)
-				local t = args.table[1]
-				local count = args.table[2]
+			sample = plume.obj.luaMacro ("sample", function (args)
+				local __name      = "sample"
+				local __signature = "table t, number count"
+				local __s, __e, self, t, count
+				__s, __e, t, count = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+				if __s and count then __s, __e, count = plume.stdCheckType(count, "number", "2", __name, __signature) end
+				if not __s then return false, __e end
+				------------
 				if count > #t.table then
 					return false, string.format("Cannot give a '%i'-size sample of a table with '%i' element%s.",
 						count, #t.table, "s" and #t.table>1 or "")
