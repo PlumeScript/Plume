@@ -1772,7 +1772,7 @@ return function(plume)
 	
 	        return pcall(table.concat, args, sep)
 	    end),
-	    removeKey = plume.obj.luaMacro("removeKey", function (args)
+	    removeKey = plume.obj.luaMacro("removeKey", function (args, runtime, _, ip)
 	        local __name      = "removeKey"
 	        local __signature = "`$removeKey(table t, any key)`"
 	        local __s, __e, self, t, key
@@ -1788,6 +1788,14 @@ return function(plume)
 	                index = k
 	                break
 	            end
+	        end
+	
+	        if index == 0 then
+	            plume.warning.runtimeWarning(
+	                string.format("The key `%s` doesn't exist. This will raise an error from edition Owl.", key),
+	                "Check if key exists before removing it.",
+	                runtime, ip, {614, 772}
+	            )
 	        end
 	
 	        t.table[key] = nil
