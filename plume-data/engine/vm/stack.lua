@@ -18,7 +18,7 @@ function _STACK_GET(stack, index)
 	local value = stack[index or stack.pointer]
 	--! to-remove-begin
     if value == nil then
-        error("[VM] get nil from stack.")
+        _ERROR(vm, "[VM] get nil from stack.")
     end
     --! to-remove-end
 	return value
@@ -33,7 +33,7 @@ function _STACK_GET_OFFSET(stack, offset)
 	local value = stack[stack.pointer + offset]
 	--! to-remove-begin
     if value == nil then
-        error("[VM] get nil from stack.")
+        _ERROR(vm, "[VM] get nil from stack.")
     end
     --! to-remove-end
 	return value
@@ -65,7 +65,7 @@ function _STACK_POP(stack)
 	local value = stack[stack.pointer + 1]
 	--! to-remove-begin
     if value == nil then
-        error("[VM] get nil from stack.")
+        _ERROR(vm, "[VM] get nil from stack.")
     end
     --! to-remove-end
 	return value
@@ -79,7 +79,7 @@ function _STACK_PUSH(stack, value)
 	stack.pointer = stack.pointer + 1
 	--! to-remove-begin
     if value == nil then
-        error("[VM] push nil to stack.")
+        _ERROR(vm, "[VM] get nil from stack.")
     end
     --! to-remove-end
 	stack[stack.pointer] = value  

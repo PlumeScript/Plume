@@ -17,7 +17,7 @@ function LOAD_CONSTANT (vm, arg1, arg2)
 
     --! to-remove-begin
     if value == nil then
-        error("[VM] Try to load a nil value.")
+        _ERROR (vm, "[VM] Try to load a nil value.")
     end
     --! to-remove-end
 
