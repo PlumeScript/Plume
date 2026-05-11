@@ -12,8 +12,6 @@ Licensed under the MIT License — see LICENSE for details.
 --- @param runtime runtime The runtime to execute
 --! inline-nodo
 function _VM_INIT (plume, runtime, chunk, initFileParams)
-    require("table.new")
-
     local vm = {} --! to-remove
     
     -- to avoid context injection
@@ -112,17 +110,16 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     --=====================--
     -- Instruction format --
     --=====================--
-    vm.bit = require("bit")
     vm.OP_BITS    = vm.plume.OP_BITS
     vm.ARG1_BITS  = vm.plume.ARG1_BITS
     vm.ARG2_BITS  = vm.plume.ARG2_BITS
     vm.ARG1_SHIFT = vm.ARG2_BITS
     vm.OP_SHIFT   = vm.ARG1_BITS + vm.ARG2_BITS
-    vm.MASK_OP    = vm.bit.lshift(1, vm.OP_BITS) - 1
-    vm.MASK_ARG1  = vm.bit.lshift(1, vm.ARG1_BITS) - 1
-    vm.MASK_ARG2  = vm.bit.lshift(1, vm.ARG2_BITS) - 1
-    vm.band       = vm.bit.band
-    vm.rshift     = vm.bit.rshift
+    vm.MASK_OP    = bit.lshift(1, vm.OP_BITS) - 1
+    vm.MASK_ARG1  = bit.lshift(1, vm.ARG1_BITS) - 1
+    vm.MASK_ARG2  = bit.lshift(1, vm.ARG2_BITS) - 1
+    vm.band       = bit.band
+    vm.rshift     = bit.rshift
     ---------------------------
 
     --! to-remove-begin

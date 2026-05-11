@@ -5,5 +5,10 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-require "build-tools/make-engine-opt"
-require "build-tools/make-std"
+math.mod = math.fmod
+math.pow = function (x, y)
+	return x^y
+end
+math.atan2 = function (x, y)
+	return math.atan(y/x)
+end

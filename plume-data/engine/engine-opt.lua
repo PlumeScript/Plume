@@ -13,7 +13,6 @@ return function (plume)
             stats.ophist = ((stats.ophist % stats.histmask) * 128) + op
             stats.opseq[stats.ophist] = 1 + (stats.opseq[stats.ophist] or 0)
         end
-        require ("table.new")
         local runtime = runtime
         local bytecode = runtime.bytecode
         local constants = runtime.constants
@@ -51,7 +50,6 @@ return function (plume)
         local ITER_ITEMS = 2
         local ITER_ENUMS = 3
         local ITER_CUSTOM = 4
-        local bit = require ("bit")
         local OP_BITS = plume.OP_BITS
         local ARG1_BITS = plume.ARG1_BITS
         local ARG2_BITS = plume.ARG2_BITS

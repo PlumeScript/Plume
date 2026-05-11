@@ -23,6 +23,12 @@ SOFTWARE.
 
 ]]
 
+if _VERSION == "Lua 5.4" then
+	require 'plume-data/compat/wasmoon/init'
+else
+	require 'plume-data/compat/baseline/init'
+end
+
 local plume = {}
 plume._VERSION = "b47 (Sparrow Edition)"
 

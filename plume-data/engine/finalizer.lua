@@ -72,8 +72,6 @@ return function (plume)
 	    end
 	end
 
-    require"table.new"
-    local bit = require("bit")
 	local function encode(runtime)
 		if not runtime.bytecode then
 			runtime.bytecode = table.new(#runtime.linkedInstructions, 0)

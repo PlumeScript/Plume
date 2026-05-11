@@ -5,5 +5,7 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-require "build-tools/make-engine-opt"
-require "build-tools/make-std"
+lfs  = require "lfs"
+lpeg = require "lpeg"
+
+require "table.new"

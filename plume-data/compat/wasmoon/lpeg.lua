@@ -5,5 +5,4 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-require "build-tools/make-engine-opt"
-require "build-tools/make-std"
+lpeg = require "plume-data/compat/wasmoon/LuLPeg/lulpeg"

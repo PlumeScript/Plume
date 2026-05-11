@@ -324,7 +324,6 @@ return function (plume)
         return result
     end
 
-    local lfs = require "lfs"
 	function plume.normalizePath(path)
 	    if path:match("^/") or path:match("^[A-Za-z]:[/\\]") then 
 	        return path:gsub("\\", "/")

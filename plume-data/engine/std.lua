@@ -642,7 +642,7 @@ return function(plume)
 	    end)
 	}
 	
-	local lfs = require"lfs"
+	local lfsLoaded, lfs = pcall(require, "lfs")
 	
 	local function mkdirs(path, isFile)
 		local fullPath = ""
@@ -668,6 +668,9 @@ return function(plume)
 	end
 	
 	local function makePath(path)
+		if not lfsLoaded then
+			return false, "Cannot load lfs"
+		end
 		local obj = plume.obj.quickTable{
 			path = path or lfs.currentdir (),
 			isFile = plume.obj.luaMacro ("isFile", function (args)

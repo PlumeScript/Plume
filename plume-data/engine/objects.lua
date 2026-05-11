@@ -6,8 +6,6 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function(plume)
-	require "table.new"
-	
 	plume.obj = {}
 	plume.obj.empty = {type = "empty"}
 
