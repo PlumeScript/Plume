@@ -26,3 +26,7 @@ _See Math, Random, Number and String tables for all methods_
 ## `#645` `Table.append` behavior change
 
 Do `$Table.append($t, $Table(a, b))` instead of `$Table.append($t, a, b)`
+
+## `#772` Table.removeKey should raise an error if key is missing
+
+Check if the key exists before calling `Table.removeKey`. 
