@@ -133,4 +133,6 @@ This project stands on great open-source work:
 - **Lua File System** (Roberto Ierusalimschy et al.) [website](https://lunarmodules.github.io/luafilesystem)
 - **lua-parser** (@thenumbernine/Christopher Moore) - AST manipulation and code transformation tools used to inline the VM. [repo](https://github.com/thenumbernine/lua-parser)
 
-All theses dependencies are MIT licensed.
+*All theses dependencies are MIT licensed.*
+
+- **LuLPeg** (@pygy) - fallback for running in wasmoon. [repo](https://github.com/pygy/LuLPeg). Romantic license.
