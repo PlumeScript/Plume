@@ -1307,7 +1307,7 @@ return function (plume)
                                                         end
                                                         ::_inline_end215::
                                                         local key = _ret109
-                                                        local argOffset = nil and (nil)[key]
+                                                        local argOffset = nil
                                                         if argOffset then
                                                             if tag == "key" then
                                                                 do
@@ -2118,7 +2118,7 @@ return function (plume)
                                                                 end
                                                                 ::_inline_end375::
                                                                 local key = _ret176
-                                                                local argOffset = nil and (nil)[key]
+                                                                local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
@@ -2368,7 +2368,7 @@ return function (plume)
                                                                 end
                                                                 ::_inline_end346::
                                                                 local key = _ret163
-                                                                local argOffset = nil and (nil)[key]
+                                                                local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
@@ -2574,7 +2574,7 @@ return function (plume)
                                                                 end
                                                                 ::_inline_end328::
                                                                 local key = _ret151
-                                                                local argOffset = nil and (nil)[key]
+                                                                local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
@@ -2848,9 +2848,6 @@ return function (plume)
                                                             goto _inline_end466
                                                         end
                                                     end
-                                                    if not true then
-                                                        plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
-                                                    end
                                                     _ret203 = empty
                                                     goto _inline_end466
                                                 end
@@ -2876,9 +2873,6 @@ return function (plume)
                                                                 goto _inline_end469
                                                             end
                                                         end
-                                                        if not true then
-                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
-                                                        end
                                                         _ret206 = empty
                                                         goto _inline_end469
                                                     end
@@ -2901,9 +2895,6 @@ return function (plume)
                                                                 _ret209 = frame.value
                                                                 goto _inline_end472
                                                             end
-                                                        end
-                                                        if not true then
-                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret209 = empty
                                                         goto _inline_end472
@@ -2928,9 +2919,6 @@ return function (plume)
                                                                 goto _inline_end475
                                                             end
                                                         end
-                                                        if not true then
-                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
-                                                        end
                                                         _ret212 = empty
                                                         goto _inline_end475
                                                     end
@@ -2953,9 +2941,6 @@ return function (plume)
                                                                 _ret215 = frame.value
                                                                 goto _inline_end478
                                                             end
-                                                        end
-                                                        if not true then
-                                                            plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
                                                         _ret215 = empty
                                                         goto _inline_end478
@@ -5425,9 +5410,7 @@ return function (plume)
                                                     _ret402 = default
                                                     goto _inline_end915
                                                 end
-                                                if not false then
-                                                    plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
-                                                end
+                                                plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                 _ret402 = empty
                                                 goto _inline_end915
                                             end

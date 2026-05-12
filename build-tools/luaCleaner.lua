@@ -51,6 +51,16 @@ local function constantFolding(node)
 		if node[1].type == "number" then
 			return node[1]
 		end
+	elseif node.type == "and" then
+		if node[1].type == "nil" or node[1].type == "false" then
+			return node[1]
+		end
+		if node[2].type == "nil" or node[2].type == "false" then
+			return node[2]
+		end
+		if node[1].type == "true" then
+			return node[2]
+		end
 	elseif node.type == "eq" then
 		if node[1].type == "number" and node[2].type == "number" then
 			if node[1].value == node[2].value then
@@ -69,6 +79,12 @@ local function constantFolding(node)
 	elseif node.type == "sub" then
 		if node[2].type == "number" and node[2].value == "0" then
 			return node[1]
+		end
+	elseif node.type == "not" then
+		if node[1].type == "true" then
+			return ast._false()
+		elseif node[1].type == "false" or node[1].type == "nil" then
+			return ast._true()
 		end
 	elseif node.type == "concat" then
 		if node[1].type == "string" and node[2].type == "string" then

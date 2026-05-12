@@ -27,18 +27,7 @@ local tree
 
 if debug then
 	tree = optimizer.loadCode([[
-if false then
-	call1()
-elseif x==5 then
-	call0()
-else
-	call2()
-end
-if true then
-	call3()
-else
-	call4()
-end
+local value = not nil
 ]], false)
 else
 	tree = optimizer.loadCode('plume-data/engine/engine.lua', true)
