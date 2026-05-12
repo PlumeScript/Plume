@@ -80,6 +80,25 @@ local function constantFolding(node)
 	return node
 end
 
+
+local function removeUselessIf(node)
+	if node.type == "if" then
+		if node.cond.type == "false" or node.cond.type == "nil" then
+			if node.elseifs and #node.elseifs > 0 then
+				local first = table.remove(node.elseifs, 1)
+				return ast._if(first.cond, unpack(first), unpack(node.elseifs), node.elsestmt):traverse(removeUselessIf)
+			elseif node.elsestmt then
+				return ast._block(unpack(node.elsestmt))
+			else
+				return ast._block()
+			end
+		elseif node.cond.type == "true" then
+			return ast._block(unpack(node))
+		end
+	end
+	return node
+end
+
 local function removeUselessGoto(tree)
 	local count = {}
 	tree:traverse(function(node)
@@ -113,8 +132,10 @@ local function removeUselessGoto(tree)
 	return node
 end
 
+
 return {
 	removeUselessDo = removeUselessDo,
 	removeUselessGoto = removeUselessGoto,
-	constantFolding = constantFolding
+	removeUselessIf = removeUselessIf,
+	constantFolding = constantFolding,
 }

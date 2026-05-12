@@ -1259,10 +1259,8 @@ return function (plume)
                                                 _ret105 = mainStackPointer
                                                 local mainStackTop = _ret105
                                                 local variadicTable
-                                                if true then
-                                                    local max = mainStackTop - bufferOffset + 1
-                                                    variadicTable = plume.obj.table (max, max / 2)
-                                                end
+                                                local max = mainStackTop - bufferOffset + 1
+                                                variadicTable = plume.obj.table (max, max / 2)
                                                 local tomanyPositionalCounter = 0
                                                 local capturedCount = 0
                                                 local unknownNamed
@@ -2072,10 +2070,8 @@ return function (plume)
                                                         _ret172 = mainStackPointer
                                                         local mainStackTop = _ret172
                                                         local variadicTable
-                                                        if true then
-                                                            local max = mainStackTop - bufferOffset + 1
-                                                            variadicTable = plume.obj.table (max, max / 2)
-                                                        end
+                                                        local max = mainStackTop - bufferOffset + 1
+                                                        variadicTable = plume.obj.table (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -2324,10 +2320,8 @@ return function (plume)
                                                         _ret159 = mainStackPointer
                                                         local mainStackTop = _ret159
                                                         local variadicTable
-                                                        if true then
-                                                            local max = mainStackTop - bufferOffset + 1
-                                                            variadicTable = plume.obj.table (max, max / 2)
-                                                        end
+                                                        local max = mainStackTop - bufferOffset + 1
+                                                        variadicTable = plume.obj.table (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -2532,10 +2526,8 @@ return function (plume)
                                                         _ret147 = mainStackPointer
                                                         local mainStackTop = _ret147
                                                         local variadicTable
-                                                        if true then
-                                                            local max = mainStackTop - bufferOffset + 1
-                                                            variadicTable = plume.obj.table (max, max / 2)
-                                                        end
+                                                        local max = mainStackTop - bufferOffset + 1
+                                                        variadicTable = plume.obj.table (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -2856,10 +2848,6 @@ return function (plume)
                                                             goto _inline_end466
                                                         end
                                                     end
-                                                    if nil then
-                                                        _ret203 = nil
-                                                        goto _inline_end466
-                                                    end
                                                     if not true then
                                                         plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                     end
@@ -2888,10 +2876,6 @@ return function (plume)
                                                                 goto _inline_end469
                                                             end
                                                         end
-                                                        if nil then
-                                                            _ret206 = nil
-                                                            goto _inline_end469
-                                                        end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
@@ -2917,10 +2901,6 @@ return function (plume)
                                                                 _ret209 = frame.value
                                                                 goto _inline_end472
                                                             end
-                                                        end
-                                                        if nil then
-                                                            _ret209 = nil
-                                                            goto _inline_end472
                                                         end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
@@ -2948,10 +2928,6 @@ return function (plume)
                                                                 goto _inline_end475
                                                             end
                                                         end
-                                                        if nil then
-                                                            _ret212 = nil
-                                                            goto _inline_end475
-                                                        end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})
                                                         end
@@ -2977,10 +2953,6 @@ return function (plume)
                                                                 _ret215 = frame.value
                                                                 goto _inline_end478
                                                             end
-                                                        end
-                                                        if nil then
-                                                            _ret215 = nil
-                                                            goto _inline_end478
                                                         end
                                                         if not true then
                                                             plume.warning.runtimeWarning ("Empty context variable", "Consider declaring it with a default value: `let context var = <value>`", runtime, ip, {526})

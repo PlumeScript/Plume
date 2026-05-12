@@ -27,9 +27,17 @@ local tree
 
 if debug then
 	tree = optimizer.loadCode([[
-do
-    mainStackPointer = mainStackPointer + 1
-    mainStack[mainStackPointer] = constants[arg2]
+if false then
+	call1()
+elseif x==5 then
+	call0()
+else
+	call2()
+end
+if true then
+	call3()
+else
+	call4()
 end
 ]], false)
 else
@@ -55,6 +63,7 @@ tree = optimizer.loadCode(beautifier(tree), false)
 for i=1, 5 do
 	tree:traverse(cleaner.constantFolding)
 end
+tree:traverse(cleaner.removeUselessIf)
 tree:traverse(cleaner.removeUselessDo)
 tree = optimizer.loadCode(beautifier(tree), false)
 cleaner.removeUselessGoto(tree)
