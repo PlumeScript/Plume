@@ -117,28 +117,84 @@ end
 
 local function removeUselessGoto(tree)
 	local count = {}
-	tree:traverse(function(node)
-		for pos, child in ipairs(node) do
-			if child.type == "goto" then
-				if count[child.name] then
-					count[child.name] = count[child.name] + 1 
-				else
-					count[child.name] = 1 
-				end
-				if node[pos+1] and node[pos+1].type == "label" and node[pos+1].name == child.name then
-					child.adj = true
-					node[pos+1].adj = true
+	local marked = {}
+
+	tree:traverse(function(basenode)
+		local nodes = {basenode}
+
+		if basenode.elseifs then
+			nodes = {unpack(nodes), unpack(basenode.elseifs)}
+		end
+
+		table.insert(nodes, basenode.elsestmt)
+		for _, node in ipairs(nodes) do
+			if node then
+				for pos, child in ipairs(node) do
+					if child.type == "goto" then
+						if not marked[child] then -- Dirty patch: traverse should'nt touch a node twice
+							marked[child] = true
+							if count[child.name] then
+								count[child.name] = count[child.name] + 1 
+							else
+								count[child.name] = 1 
+							end
+						end
+
+						local nxt = node[pos+1]
+						local parent = node.parent
+						if not nxt and node.type == "do" and parent then
+							local index
+							for i, child in ipairs(node.parent) do
+								if child == node then
+									index = i
+									break
+								end
+							end
+
+							if not index and parent.type == "if" then
+								for _, _elseif in ipairs(parent.elseifs or {}) do
+									for i, child in ipairs(_elseif) do
+										if child == node then
+											index = i
+											parent = _elseif
+											break
+										end
+									end
+								end
+								for i, child in ipairs(parent.elsestmt or {}) do
+									if child == node then
+										index = i
+										parent = parent.elsestmt
+										break
+									end
+								end
+							end
+
+							if index then
+								nxt = parent[index+1]
+							end
+						end
+
+						local adj = nxt and nxt.type == "label" and nxt.name == child.name
+						if adj then
+							child.adj = true
+							nxt.adj = true
+						end
+					end
 				end
 			end
 		end
-		return node
+		return basenode
 	end)
 	
 	tree:traverse(function(node)
 		if node.type == "label" or node.type == "goto" then
 			if count[node.name] then
-				local unic = count[node.name] == 1
-				if node.adj and (unic or node.type == "goto") then
+
+				if node.adj and (count[node.name] == 1 or node.type == "goto") or count[node.name] == 0 then
+					if node.type == "goto" and not node.adj then
+						count[node.name] = count[node.name] - 1
+					end
 					return ast._block()
 				end
 			end

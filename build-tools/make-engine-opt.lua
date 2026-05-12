@@ -27,7 +27,11 @@ local tree
 
 if debug then
 	tree = optimizer.loadCode([[
-local value = not nil
+do
+	local x = 5
+	goto _inline_end32
+end
+::_inline_end32::
 ]], false)
 else
 	tree = optimizer.loadCode('plume-data/engine/engine.lua', true)
@@ -56,7 +60,6 @@ tree:traverse(cleaner.removeUselessIf)
 tree:traverse(cleaner.removeUselessDo)
 tree = optimizer.loadCode(beautifier(tree), false)
 cleaner.removeUselessGoto(tree)
-
 local finalCode = beautifier(tree)
 if debug then
 	print(finalCode)
