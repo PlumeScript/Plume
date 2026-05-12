@@ -115,6 +115,75 @@ local function removeUselessIf(node)
 	return node
 end
 
+local function findPosInList(l, node)
+	for i, child in ipairs(l) do
+		if child == node then
+			return i
+		end
+	end
+end
+
+local function getNodePos(node)
+	local parent = node.parent
+	
+	if not parent then
+		return
+	end
+
+	if parent.type == "if" then
+		local nxt = findPosInList(parent, node)
+		if nxt then
+			return parent, nxt
+		end
+		for _, _elseif in ipairs(parent.elseifs) do
+			local nxt = findPosInList(_elseif, node)
+			if nxt then
+				return _elseif, nxt
+			end
+		end
+		return parent.elsestmt, findPosInList(parent.elsestmt or {}, node)
+	else
+		return parent, findPosInList(parent, node)
+	end
+end
+
+local function getNextNode(node)
+	local parent, index = getNodePos(node)
+	if index then
+		return parent[index+1]
+	end
+end
+
+local function removeUselessLocalSplitA(node)
+	if node.type == "local" then
+		if node.exprs[1].type == "var" then
+			local nxt = getNextNode(node)
+
+			if nxt then
+				if nxt.type == "block" and nxt[1] then
+					nxt = nxt[1]
+				end
+
+				if nxt.type == "assign" then
+					if nxt.vars[1].name == node.exprs[1].name then
+						nxt.wrapLocal = true
+						return ast._block()
+					end
+				end
+			end
+		end
+	end
+	return node
+end
+
+local function removeUselessLocalSplitB(node)
+	if node.wrapLocal then
+		node.wrapLocal = nil
+		return ast._local({node})
+	end
+	return node
+end
+
 local function removeUselessGoto(tree)
 	local count = {}
 	local marked = {}
@@ -209,5 +278,8 @@ return {
 	removeUselessDo = removeUselessDo,
 	removeUselessGoto = removeUselessGoto,
 	removeUselessIf = removeUselessIf,
+	removeUselessLocalSplitA = removeUselessLocalSplitA,
+	removeUselessLocalSplitB = removeUselessLocalSplitB,
+
 	constantFolding = constantFolding,
 }

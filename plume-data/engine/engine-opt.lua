@@ -84,8 +84,7 @@ return function (plume)
                     local value = injectionStack[injectionStackPointer]
                     _ret12 = value
                 end
-                local _ret13
-                _ret13 = macroStackPointer
+                local _ret13 = macroStackPointer
                 _ret11 = injectionStackPointer > 0 and _ret12 == _ret13
             end
             if _ret11 then
@@ -198,8 +197,7 @@ return function (plume)
                                             local key = _ret17
                                             local _ret18
                                             do
-                                                local _ret19
-                                                _ret19 = mainStackFramesPointer
+                                                local _ret19 = mainStackFramesPointer
                                                 local _ret20
                                                 do
                                                     local value = mainStackFrames[_ret19 - arg1 or mainStackFramesPointer]
@@ -208,12 +206,10 @@ return function (plume)
                                                 local frameOffset = _ret20
                                                 local frameTop
                                                 if arg1 == 0 then
-                                                    local _ret21
-                                                    _ret21 = mainStackPointer
+                                                    local _ret21 = mainStackPointer
                                                     frameTop = _ret21
                                                 else
-                                                    local _ret22
-                                                    _ret22 = mainStackFramesPointer
+                                                    local _ret22 = mainStackFramesPointer
                                                     local _ret23
                                                     do
                                                         local value = mainStackFrames[_ret22 - arg1 + 1 or mainStackFramesPointer]
@@ -329,8 +325,7 @@ return function (plume)
                                             local value = _ret33
                                             local _ret34
                                             do
-                                                local _ret35
-                                                _ret35 = mainStackFramesPointer
+                                                local _ret35 = mainStackFramesPointer
                                                 local _ret36
                                                 do
                                                     local value = mainStackFrames[_ret35 - arg1 or mainStackFramesPointer]
@@ -339,12 +334,10 @@ return function (plume)
                                                 local frameOffset = _ret36
                                                 local frameTop
                                                 if arg1 == 0 then
-                                                    local _ret37
-                                                    _ret37 = mainStackPointer
+                                                    local _ret37 = mainStackPointer
                                                     frameTop = _ret37
                                                 else
-                                                    local _ret38
-                                                    _ret38 = mainStackFramesPointer
+                                                    local _ret38 = mainStackFramesPointer
                                                     local _ret39
                                                     do
                                                         local value = mainStackFrames[_ret38 - arg1 + 1 or mainStackFramesPointer]
@@ -463,8 +456,7 @@ return function (plume)
                                             local macro = _ret48
                                             if #macro.upvalues > 0 then
                                                 local macroClosure = {type = "closure", macro = macro, upvalues = {}}
-                                                local _ret49
-                                                _ret49 = mainStackPointer
+                                                local _ret49 = mainStackPointer
                                                 mainStack[_ret49] = macroClosure
                                                 for _, upvalueInfos in ipairs (macro.upvalues)
                                                  do
@@ -483,8 +475,7 @@ return function (plume)
                                                             upvalue.reference = mainStack
                                                             local _ret51
                                                             do
-                                                                local _ret52
-                                                                _ret52 = mainStackFramesPointer
+                                                                local _ret52 = mainStackFramesPointer
                                                                 local _ret53
                                                                 do
                                                                     local value = mainStackFrames[_ret52 - upvalueInfos.scopeOffset or mainStackFramesPointer]
@@ -493,12 +484,10 @@ return function (plume)
                                                                 local frameOffset = _ret53
                                                                 local frameTop
                                                                 if upvalueInfos.scopeOffset == 0 then
-                                                                    local _ret54
-                                                                    _ret54 = mainStackPointer
+                                                                    local _ret54 = mainStackPointer
                                                                     frameTop = _ret54
                                                                 else
-                                                                    local _ret55
-                                                                    _ret55 = mainStackFramesPointer
+                                                                    local _ret55 = mainStackFramesPointer
                                                                     local _ret56
                                                                     do
                                                                         local value = mainStackFrames[_ret55 - upvalueInfos.scopeOffset + 1 or mainStackFramesPointer]
@@ -615,8 +604,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret66
-                                                        _ret66 = mainStackPointer
+                                                        local _ret66 = mainStackPointer
                                                         local pos = _ret66
                                                         tagStack[pos] = "key"
                                                     end
@@ -629,8 +617,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 1
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret67
-                                                        _ret67 = macroStackPointer
+                                                        local _ret67 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret67
                                                     end
@@ -641,8 +628,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret68
-                                                        _ret68 = macroStackPointer
+                                                        local _ret68 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret68
                                                     end
@@ -698,8 +684,7 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                local _ret73
-                                                _ret73 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                                local _ret73 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                                 local tt = _ret73
                                                 if not tonumber (key)
                                                  then
@@ -760,8 +745,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret71
-                                                                _ret71 = mainStackPointer
+                                                                local _ret71 = mainStackPointer
                                                                 local pos = _ret71
                                                                 tagStack[pos] = "key"
                                                             end
@@ -774,8 +758,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret72
-                                                                _ret72 = macroStackPointer
+                                                                local _ret72 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret72
                                                             end
@@ -882,8 +865,7 @@ return function (plume)
                                                 _ret82 = value
                                             end
                                             local t = _ret82
-                                            local _ret83
-                                            _ret83 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local _ret83 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             local tt = _ret83
                                             if tt == "table" then
                                                 for _, item in ipairs (t.table)
@@ -900,8 +882,7 @@ return function (plume)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = key
                                                         do
-                                                            local _ret84
-                                                            _ret84 = mainStackPointer
+                                                            local _ret84 = mainStackPointer
                                                             local pos = _ret84
                                                             tagStack[pos] = "key"
                                                         end
@@ -959,8 +940,7 @@ return function (plume)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = "self"
                                             do
-                                                local _ret87
-                                                _ret87 = mainStackPointer
+                                                local _ret87 = mainStackPointer
                                                 local pos = _ret87
                                                 tagStack[pos] = "key"
                                             end
@@ -977,8 +957,7 @@ return function (plume)
                                                 _ret88 = value
                                             end
                                             local name = _ret88
-                                            local _ret89
-                                            _ret89 = mainStackPointer
+                                            local _ret89 = mainStackPointer
                                             local _ret90
                                             do
                                                 local value = mainStack[_ret89 - 1 or mainStackPointer]
@@ -1063,8 +1042,7 @@ return function (plume)
                                                     end
                                                 end
                                             end
-                                            local _ret95
-                                            _ret95 = mainStackPointer
+                                            local _ret95 = mainStackPointer
                                             local pos = _ret95
                                             tagStack[pos] = "metakey"
                                         end
@@ -1072,15 +1050,13 @@ return function (plume)
                                 else
                                     if op < 27 then
                                         do
-                                            local _ret96
-                                            _ret96 = mainStackPointer
+                                            local _ret96 = mainStackPointer
                                             local pos = _ret96
                                             tagStack[pos] = "key"
                                         end
                                     else
                                         do
-                                            local _ret97
-                                            _ret97 = variableStackPointer
+                                            local _ret97 = variableStackPointer
                                             variableStackFramesPointer = variableStackFramesPointer + 1
                                             variableStackFrames[variableStackFramesPointer] = _ret97 + 1 - arg1
                                             for i = 1, arg2 - arg1 do
@@ -1120,8 +1096,7 @@ return function (plume)
                                                 end
                                                 local frameOffset = _ret104
                                                 local bufferOffset = frameOffset
-                                                local _ret105
-                                                _ret105 = mainStackPointer
+                                                local _ret105 = mainStackPointer
                                                 local mainStackTop = _ret105
                                                 local variadicTable
                                                 local max = mainStackTop - bufferOffset + 1
@@ -1243,8 +1218,7 @@ return function (plume)
                                                 _ret111 = value
                                             end
                                             local start = _ret111
-                                            local _ret112
-                                            _ret112 = mainStackPointer
+                                            local _ret112 = mainStackPointer
                                             local stop = _ret112
                                             local acc_text = table.concat (mainStack, "", start, stop)
                                             mainStackPointer = start
@@ -1277,8 +1251,7 @@ return function (plume)
                                                 _ret114 = value
                                             end
                                             local tocall = _ret114
-                                            local _ret115
-                                            _ret115 = type (tocall) == "table" and (tocall == empty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
+                                            local _ret115 = type (tocall) == "table" and (tocall == empty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
                                             local t = _ret115
                                             local self
                                             if t == "table" then
@@ -1299,8 +1272,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret116
-                                                        _ret116 = mainStackPointer
+                                                        local _ret116 = mainStackPointer
                                                         local pos = _ret116
                                                         tagStack[pos] = "key"
                                                     end
@@ -1334,8 +1306,7 @@ return function (plume)
                                                         allocationCount = allocationCount + 1
                                                     end
                                                     do
-                                                        local _ret129
-                                                        _ret129 = variableStackPointer
+                                                        local _ret129 = variableStackPointer
                                                         variableStackFramesPointer = variableStackFramesPointer + 1
                                                         variableStackFrames[variableStackFramesPointer] = _ret129 + 1
                                                         for i = 1, tocall.localsCount do
@@ -1353,8 +1324,7 @@ return function (plume)
                                                         end
                                                         local frameOffset = _ret123
                                                         local bufferOffset = frameOffset
-                                                        local _ret124
-                                                        _ret124 = mainStackPointer
+                                                        local _ret124 = mainStackPointer
                                                         local mainStackTop = _ret124
                                                         local variadicTable
                                                         if tocall.variadicOffset then
@@ -1585,8 +1555,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret182
-                                                        _ret182 = mainStackPointer
+                                                        local _ret182 = mainStackPointer
                                                         local pos = _ret182
                                                         tagStack[pos] = "key"
                                                     end
@@ -1620,8 +1589,7 @@ return function (plume)
                                                         allocationCount = allocationCount + 1
                                                     end
                                                     do
-                                                        local _ret195
-                                                        _ret195 = variableStackPointer
+                                                        local _ret195 = variableStackPointer
                                                         variableStackFramesPointer = variableStackFramesPointer + 1
                                                         variableStackFrames[variableStackFramesPointer] = _ret195 + 1
                                                         for i = 1, tocall.macro.localsCount do
@@ -1639,8 +1607,7 @@ return function (plume)
                                                         end
                                                         local frameOffset = _ret189
                                                         local bufferOffset = frameOffset
-                                                        local _ret190
-                                                        _ret190 = mainStackPointer
+                                                        local _ret190 = mainStackPointer
                                                         local mainStackTop = _ret190
                                                         local variadicTable
                                                         if tocall.macro.variadicOffset then
@@ -1877,8 +1844,7 @@ return function (plume)
                                                         end
                                                         local frameOffset = _ret171
                                                         local bufferOffset = frameOffset
-                                                        local _ret172
-                                                        _ret172 = mainStackPointer
+                                                        local _ret172 = mainStackPointer
                                                         local mainStackTop = _ret172
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
@@ -2043,8 +2009,7 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = 0
-                                                            local _ret180
-                                                            _ret180 = macroStackPointer
+                                                            local _ret180 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = _ret180
                                                         end
@@ -2105,8 +2070,7 @@ return function (plume)
                                                         end
                                                         local frameOffset = _ret158
                                                         local bufferOffset = frameOffset
-                                                        local _ret159
-                                                        _ret159 = mainStackPointer
+                                                        local _ret159 = mainStackPointer
                                                         local mainStackTop = _ret159
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
@@ -2277,8 +2241,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret165
-                                                    _ret165 = macroStackPointer
+                                                    local _ret165 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret165
                                                 end
@@ -2295,8 +2258,7 @@ return function (plume)
                                                         end
                                                         local frameOffset = _ret146
                                                         local bufferOffset = frameOffset
-                                                        local _ret147
-                                                        _ret147 = mainStackPointer
+                                                        local _ret147 = mainStackPointer
                                                         local mainStackTop = _ret147
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
@@ -2436,8 +2398,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret140
-                                                    _ret140 = macroStackPointer
+                                                    local _ret140 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret140
                                                 end
@@ -2457,8 +2418,7 @@ return function (plume)
                                                     _ret130 = _ret132
                                                 end
                                                 local macro = _ret130
-                                                local _ret133
-                                                _ret133 = type (macro) == "table" and (macro == empty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
+                                                local _ret133 = type (macro) == "table" and (macro == empty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
                                                 local tmacro = _ret133
                                                 if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
                                                     do
@@ -2494,8 +2454,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = variableStackPointer + 1
-                                                    local _ret134
-                                                    _ret134 = macroStackPointer
+                                                    local _ret134 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret134
                                                 end
@@ -2506,8 +2465,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret135
-                                                    _ret135 = macroStackPointer
+                                                    local _ret135 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret135
                                                 end
@@ -2518,8 +2476,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = variableStackPointer + 1
-                                                    local _ret136
-                                                    _ret136 = macroStackPointer
+                                                    local _ret136 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret136
                                                 end
@@ -2530,8 +2487,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 1
-                                                    local _ret137
-                                                    _ret137 = macroStackPointer
+                                                    local _ret137 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret137
                                                 end
@@ -2568,18 +2524,15 @@ return function (plume)
                                                 _ret196 = value
                                             end
                                             local value = _ret196
-                                            local _ret197
-                                            _ret197 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
+                                            local _ret197 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
                                             local t = _ret197
                                             if value == empty then
-                                                local _ret198
-                                                _ret198 = mainStackPointer
+                                                local _ret198 = mainStackPointer
                                                 mainStack[_ret198] = ""
                                             elseif t == "number" then
                                                 local _ret203
                                                 do
-                                                    local _ret204
-                                                    _ret204 = contextStackPointer
+                                                    local _ret204 = contextStackPointer
                                                     local top = _ret204
                                                     for i = top, 1, -1 do
                                                         local _ret205
@@ -2600,8 +2553,7 @@ return function (plume)
                                                 if locale ~= empty and locale ~= "none" then
                                                     local _ret206
                                                     do
-                                                        local _ret207
-                                                        _ret207 = contextStackPointer
+                                                        local _ret207 = contextStackPointer
                                                         local top = _ret207
                                                         for i = top, 1, -1 do
                                                             local _ret208
@@ -2620,8 +2572,7 @@ return function (plume)
                                                     ::_inline_end469::
                                                     local _ret209
                                                     do
-                                                        local _ret210
-                                                        _ret210 = contextStackPointer
+                                                        local _ret210 = contextStackPointer
                                                         local top = _ret210
                                                         for i = top, 1, -1 do
                                                             local _ret211
@@ -2640,8 +2591,7 @@ return function (plume)
                                                     ::_inline_end472::
                                                     local _ret212
                                                     do
-                                                        local _ret213
-                                                        _ret213 = contextStackPointer
+                                                        local _ret213 = contextStackPointer
                                                         local top = _ret213
                                                         for i = top, 1, -1 do
                                                             local _ret214
@@ -2660,8 +2610,7 @@ return function (plume)
                                                     ::_inline_end475::
                                                     local _ret215
                                                     do
-                                                        local _ret216
-                                                        _ret216 = contextStackPointer
+                                                        local _ret216 = contextStackPointer
                                                         local top = _ret216
                                                         for i = top, 1, -1 do
                                                             local _ret217
@@ -2680,8 +2629,7 @@ return function (plume)
                                                     ::_inline_end478::
                                                     local success, result = plume.formatNumber (value, _ret215, locale, _ret212, _ret209, _ret206)
                                                     if success then
-                                                        local _ret218
-                                                        _ret218 = mainStackPointer
+                                                        local _ret218 = mainStackPointer
                                                         mainStack[_ret218] = result
                                                     else
                                                         do
@@ -2708,8 +2656,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret219
-                                                    _ret219 = mainStackPointer
+                                                    local _ret219 = mainStackPointer
                                                     mainStack[_ret219] = tostring (value)
                                                 end
                                             elseif t ~= "string" then
@@ -2728,8 +2675,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret200
-                                                        _ret200 = mainStackPointer
+                                                        local _ret200 = mainStackPointer
                                                         local pos = _ret200
                                                         tagStack[pos] = "key"
                                                     end
@@ -2742,14 +2688,12 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret201
-                                                        _ret201 = macroStackPointer
+                                                        local _ret201 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret201
                                                     end
                                                 elseif t == "boolean" then
-                                                    local _ret202
-                                                    _ret202 = mainStackPointer
+                                                    local _ret202 = mainStackPointer
                                                     mainStack[_ret202] = tostring (value)
                                                 else
                                                     do
@@ -2918,8 +2862,7 @@ return function (plume)
                                                 _ret232 = value
                                             end
                                             local obj = _ret232
-                                            local _ret233
-                                            _ret233 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
+                                            local _ret233 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
                                             local tobj = _ret233
                                             local iter, value, flag, macrocall
                                             local start = 0
@@ -2982,8 +2925,7 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = "self"
                                                 do
-                                                    local _ret234
-                                                    _ret234 = mainStackPointer
+                                                    local _ret234 = mainStackPointer
                                                     local pos = _ret234
                                                     tagStack[pos] = "key"
                                                 end
@@ -2996,8 +2938,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret235
-                                                    _ret235 = macroStackPointer
+                                                    local _ret235 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret235
                                                 end
@@ -3107,8 +3048,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret247
-                                                        _ret247 = mainStackPointer
+                                                        local _ret247 = mainStackPointer
                                                         local pos = _ret247
                                                         tagStack[pos] = "key"
                                                     end
@@ -3121,8 +3061,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = arg2
-                                                        local _ret246
-                                                        _ret246 = macroStackPointer
+                                                        local _ret246 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret246
                                                     end
@@ -3133,8 +3072,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret245
-                                                        _ret245 = macroStackPointer
+                                                        local _ret245 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret245
                                                     end
@@ -3179,8 +3117,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret251
-                                                _ret251 = leftNumber + rightNumber
+                                                local _ret251 = leftNumber + rightNumber
                                                 result = _ret251
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -3188,8 +3125,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret261, _ret262
                                                 do
-                                                    local _ret263
-                                                    _ret263 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret263 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret263
                                                     local nx
                                                     if tx == "string" then
@@ -3216,8 +3152,7 @@ return function (plume)
                                                 right, rerr = _ret261, _ret262
                                                 local _ret258, _ret259
                                                 do
-                                                    local _ret260
-                                                    _ret260 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret260 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret260
                                                     local nx
                                                     if tx == "string" then
@@ -3246,11 +3181,9 @@ return function (plume)
                                                     local _ret252
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret253
-                                                        _ret253 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret253 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret253
-                                                        local _ret254
-                                                        _ret254 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret254 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret254
                                                         if tleft == "table" and left.meta and left.meta.table.addr then
                                                             meta = left.meta.table.addr
@@ -3285,8 +3218,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret255
-                                                                _ret255 = mainStackPointer
+                                                                local _ret255 = mainStackPointer
                                                                 local pos = _ret255
                                                                 tagStack[pos] = "key"
                                                             end
@@ -3299,8 +3231,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret256
-                                                                _ret256 = macroStackPointer
+                                                                local _ret256 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret256
                                                             end
@@ -3333,8 +3264,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret257
-                                                    _ret257 = left + right
+                                                    local _ret257 = left + right
                                                     result = _ret257
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3364,8 +3294,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret266
-                                                _ret266 = leftNumber * rightNumber
+                                                local _ret266 = leftNumber * rightNumber
                                                 result = _ret266
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -3373,8 +3302,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret276, _ret277
                                                 do
-                                                    local _ret278
-                                                    _ret278 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret278 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret278
                                                     local nx
                                                     if tx == "string" then
@@ -3401,8 +3329,7 @@ return function (plume)
                                                 right, rerr = _ret276, _ret277
                                                 local _ret273, _ret274
                                                 do
-                                                    local _ret275
-                                                    _ret275 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret275 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret275
                                                     local nx
                                                     if tx == "string" then
@@ -3431,11 +3358,9 @@ return function (plume)
                                                     local _ret267
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret268
-                                                        _ret268 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret268 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret268
-                                                        local _ret269
-                                                        _ret269 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret269 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret269
                                                         if tleft == "table" and left.meta and left.meta.table.mulr then
                                                             meta = left.meta.table.mulr
@@ -3470,8 +3395,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret270
-                                                                _ret270 = mainStackPointer
+                                                                local _ret270 = mainStackPointer
                                                                 local pos = _ret270
                                                                 tagStack[pos] = "key"
                                                             end
@@ -3484,8 +3408,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret271
-                                                                _ret271 = macroStackPointer
+                                                                local _ret271 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret271
                                                             end
@@ -3518,8 +3441,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret272
-                                                    _ret272 = left * right
+                                                    local _ret272 = left * right
                                                     result = _ret272
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3545,8 +3467,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret281
-                                                _ret281 = leftNumber - rightNumber
+                                                local _ret281 = leftNumber - rightNumber
                                                 result = _ret281
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -3554,8 +3475,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret291, _ret292
                                                 do
-                                                    local _ret293
-                                                    _ret293 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret293 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret293
                                                     local nx
                                                     if tx == "string" then
@@ -3582,8 +3502,7 @@ return function (plume)
                                                 right, rerr = _ret291, _ret292
                                                 local _ret288, _ret289
                                                 do
-                                                    local _ret290
-                                                    _ret290 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret290 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret290
                                                     local nx
                                                     if tx == "string" then
@@ -3612,11 +3531,9 @@ return function (plume)
                                                     local _ret282
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret283
-                                                        _ret283 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret283 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret283
-                                                        local _ret284
-                                                        _ret284 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret284 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret284
                                                         if tleft == "table" and left.meta and left.meta.table.subr then
                                                             meta = left.meta.table.subr
@@ -3651,8 +3568,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret285
-                                                                _ret285 = mainStackPointer
+                                                                local _ret285 = mainStackPointer
                                                                 local pos = _ret285
                                                                 tagStack[pos] = "key"
                                                             end
@@ -3665,8 +3581,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret286
-                                                                _ret286 = macroStackPointer
+                                                                local _ret286 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret286
                                                             end
@@ -3699,8 +3614,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret287
-                                                    _ret287 = left - right
+                                                    local _ret287 = left - right
                                                     result = _ret287
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3728,8 +3642,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret296
-                                                _ret296 = leftNumber / rightNumber
+                                                local _ret296 = leftNumber / rightNumber
                                                 result = _ret296
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -3737,8 +3650,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret306, _ret307
                                                 do
-                                                    local _ret308
-                                                    _ret308 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret308 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret308
                                                     local nx
                                                     if tx == "string" then
@@ -3765,8 +3677,7 @@ return function (plume)
                                                 right, rerr = _ret306, _ret307
                                                 local _ret303, _ret304
                                                 do
-                                                    local _ret305
-                                                    _ret305 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret305 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret305
                                                     local nx
                                                     if tx == "string" then
@@ -3795,11 +3706,9 @@ return function (plume)
                                                     local _ret297
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret298
-                                                        _ret298 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret298 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret298
-                                                        local _ret299
-                                                        _ret299 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret299 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret299
                                                         if tleft == "table" and left.meta and left.meta.table.divr then
                                                             meta = left.meta.table.divr
@@ -3834,8 +3743,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret300
-                                                                _ret300 = mainStackPointer
+                                                                local _ret300 = mainStackPointer
                                                                 local pos = _ret300
                                                                 tagStack[pos] = "key"
                                                             end
@@ -3848,8 +3756,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret301
-                                                                _ret301 = macroStackPointer
+                                                                local _ret301 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret301
                                                             end
@@ -3882,8 +3789,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret302
-                                                    _ret302 = left / right
+                                                    local _ret302 = left / right
                                                     result = _ret302
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3902,8 +3808,7 @@ return function (plume)
                                             local err, meta
                                             local _ret310, _ret311
                                             do
-                                                local _ret312
-                                                _ret312 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                local _ret312 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                 local tx = _ret312
                                                 local nx
                                                 if tx == "string" then
@@ -3932,8 +3837,7 @@ return function (plume)
                                                 local _ret313
                                                 do
                                                     local meta, paramself
-                                                    local _ret314
-                                                    _ret314 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                    local _ret314 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                     if _ret314 == "table" and x.meta and x.meta.table.minus then
                                                         meta = x.meta.table.minus
                                                         paramself = x
@@ -3946,8 +3850,7 @@ return function (plume)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = "self"
                                                         do
-                                                            local _ret315
-                                                            _ret315 = mainStackPointer
+                                                            local _ret315 = mainStackPointer
                                                             local pos = _ret315
                                                             tagStack[pos] = "key"
                                                         end
@@ -3960,8 +3863,7 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = 0
-                                                            local _ret316
-                                                            _ret316 = macroStackPointer
+                                                            local _ret316 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = _ret316
                                                         end
@@ -3994,8 +3896,7 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                local _ret317
-                                                _ret317 = -x
+                                                local _ret317 = -x
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = _ret317
                                             end
@@ -4027,8 +3928,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret320
-                                                _ret320 = leftNumber % rightNumber
+                                                local _ret320 = leftNumber % rightNumber
                                                 result = _ret320
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -4036,8 +3936,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret330, _ret331
                                                 do
-                                                    local _ret332
-                                                    _ret332 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret332 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret332
                                                     local nx
                                                     if tx == "string" then
@@ -4064,8 +3963,7 @@ return function (plume)
                                                 right, rerr = _ret330, _ret331
                                                 local _ret327, _ret328
                                                 do
-                                                    local _ret329
-                                                    _ret329 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret329 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret329
                                                     local nx
                                                     if tx == "string" then
@@ -4094,11 +3992,9 @@ return function (plume)
                                                     local _ret321
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret322
-                                                        _ret322 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret322 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret322
-                                                        local _ret323
-                                                        _ret323 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret323 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret323
                                                         if tleft == "table" and left.meta and left.meta.table.modr then
                                                             meta = left.meta.table.modr
@@ -4133,8 +4029,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret324
-                                                                _ret324 = mainStackPointer
+                                                                local _ret324 = mainStackPointer
                                                                 local pos = _ret324
                                                                 tagStack[pos] = "key"
                                                             end
@@ -4147,8 +4042,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret325
-                                                                _ret325 = macroStackPointer
+                                                                local _ret325 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret325
                                                             end
@@ -4181,8 +4075,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret326
-                                                    _ret326 = left % right
+                                                    local _ret326 = left % right
                                                     result = _ret326
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -4208,8 +4101,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret335
-                                                _ret335 = leftNumber ^ rightNumber
+                                                local _ret335 = leftNumber ^ rightNumber
                                                 result = _ret335
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -4217,8 +4109,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret345, _ret346
                                                 do
-                                                    local _ret347
-                                                    _ret347 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret347 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret347
                                                     local nx
                                                     if tx == "string" then
@@ -4245,8 +4136,7 @@ return function (plume)
                                                 right, rerr = _ret345, _ret346
                                                 local _ret342, _ret343
                                                 do
-                                                    local _ret344
-                                                    _ret344 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret344 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret344
                                                     local nx
                                                     if tx == "string" then
@@ -4275,11 +4165,9 @@ return function (plume)
                                                     local _ret336
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret337
-                                                        _ret337 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret337 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret337
-                                                        local _ret338
-                                                        _ret338 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret338 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret338
                                                         if tleft == "table" and left.meta and left.meta.table.powr then
                                                             meta = left.meta.table.powr
@@ -4314,8 +4202,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret339
-                                                                _ret339 = mainStackPointer
+                                                                local _ret339 = mainStackPointer
                                                                 local pos = _ret339
                                                                 tagStack[pos] = "key"
                                                             end
@@ -4328,8 +4215,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret340
-                                                                _ret340 = macroStackPointer
+                                                                local _ret340 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret340
                                                             end
@@ -4362,8 +4248,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret341
-                                                    _ret341 = left ^ right
+                                                    local _ret341 = left ^ right
                                                     result = _ret341
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -4391,8 +4276,7 @@ return function (plume)
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret350
-                                                _ret350 = leftNumber < rightNumber
+                                                local _ret350 = leftNumber < rightNumber
                                                 result = _ret350
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
@@ -4400,8 +4284,7 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret360, _ret361
                                                 do
-                                                    local _ret362
-                                                    _ret362 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret362 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret362
                                                     local nx
                                                     if tx == "string" then
@@ -4428,8 +4311,7 @@ return function (plume)
                                                 right, rerr = _ret360, _ret361
                                                 local _ret357, _ret358
                                                 do
-                                                    local _ret359
-                                                    _ret359 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret359 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret359
                                                     local nx
                                                     if tx == "string" then
@@ -4458,11 +4340,9 @@ return function (plume)
                                                     local _ret351
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret352
-                                                        _ret352 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret352 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret352
-                                                        local _ret353
-                                                        _ret353 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret353 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret353
                                                         if tleft == "table" and left.meta and left.meta.table.ltr then
                                                             meta = left.meta.table.ltr
@@ -4497,8 +4377,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret354
-                                                                _ret354 = mainStackPointer
+                                                                local _ret354 = mainStackPointer
                                                                 local pos = _ret354
                                                                 tagStack[pos] = "key"
                                                             end
@@ -4511,8 +4390,7 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret355
-                                                                _ret355 = macroStackPointer
+                                                                local _ret355 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = _ret355
                                                             end
@@ -4545,8 +4423,7 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret356
-                                                    _ret356 = left < right
+                                                    local _ret356 = left < right
                                                     result = _ret356
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -4572,11 +4449,9 @@ return function (plume)
                                             local _ret365
                                             do
                                                 local meta, param1, param2, paramself
-                                                local _ret366
-                                                _ret366 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                local _ret366 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                 local tleft = _ret366
-                                                local _ret367
-                                                _ret367 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                local _ret367 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                 local tright = _ret367
                                                 if tleft == "table" and left.meta and left.meta.table.eqr then
                                                     meta = left.meta.table.eqr
@@ -4611,8 +4486,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret368
-                                                        _ret368 = mainStackPointer
+                                                        local _ret368 = mainStackPointer
                                                         local pos = _ret368
                                                         tagStack[pos] = "key"
                                                     end
@@ -4625,8 +4499,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret369
-                                                        _ret369 = macroStackPointer
+                                                        local _ret369 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret369
                                                     end
@@ -4676,8 +4549,7 @@ return function (plume)
                                             _ret373 = left
                                             ::_inline_end848::
                                             left = _ret373
-                                            local _ret374
-                                            _ret374 = left and right
+                                            local _ret374 = left and right
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret374
                                         end
@@ -4698,8 +4570,7 @@ return function (plume)
                                             _ret376 = x
                                             ::_inline_end854::
                                             x = _ret376
-                                            local _ret377
-                                            _ret377 = not x
+                                            local _ret377 = not x
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret377
                                         end
@@ -4737,8 +4608,7 @@ return function (plume)
                                             _ret381 = left
                                             ::_inline_end862::
                                             left = _ret381
-                                            local _ret382
-                                            _ret382 = left or right
+                                            local _ret382 = left or right
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret382
                                         end
@@ -4859,8 +4729,7 @@ return function (plume)
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
                                             end
-                                            local _ret394
-                                            _ret394 = fileStackPointer
+                                            local _ret394 = fileStackPointer
                                             if _ret394 == 0 then
                                                 do
                                                     injectionStackPointer = injectionStackPointer + 1
@@ -4869,8 +4738,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret393
-                                                    _ret393 = macroStackPointer
+                                                    local _ret393 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret393
                                                 end
@@ -4954,8 +4822,7 @@ return function (plume)
                                             local name = _ret401
                                             local _ret402
                                             do
-                                                local _ret403
-                                                _ret403 = contextStackPointer
+                                                local _ret403 = contextStackPointer
                                                 local top = _ret403
                                                 for i = top, 1, -1 do
                                                     local _ret404
@@ -5029,8 +4896,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret406
-                                                    _ret406 = macroStackPointer
+                                                    local _ret406 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret406
                                                 end
@@ -5041,8 +4907,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret407
-                                                    _ret407 = macroStackPointer
+                                                    local _ret407 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret407
                                                 end
@@ -5053,8 +4918,7 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret408
-                                                    _ret408 = macroStackPointer
+                                                    local _ret408 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = _ret408
                                                 end
@@ -5147,8 +5011,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret413
-                                                        _ret413 = macroStackPointer
+                                                        local _ret413 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret413
                                                     end
@@ -5159,8 +5022,7 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret414
-                                                        _ret414 = macroStackPointer
+                                                        local _ret414 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = _ret414
                                                     end
@@ -5215,8 +5077,7 @@ return function (plume)
                                                 _ret416 = value
                                             end
                                             local t = _ret416.table[1]
-                                            local _ret417
-                                            _ret417 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local _ret417 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             local tt = _ret417
                                             local result
                                             if tt == "table" then
@@ -5281,8 +5142,7 @@ return function (plume)
                                                 _ret419 = value
                                             end
                                             local t = _ret419.table[1]
-                                            local _ret420
-                                            _ret420 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local _ret420 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret420
                                             do
@@ -5319,8 +5179,7 @@ return function (plume)
                                             local step = tonumber (args[3] or 1)
                                             local _ret423
                                             do
-                                                local _ret424
-                                                _ret424 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
+                                                local _ret424 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
                                                 local t = _ret424
                                                 if t ~= "number" then
                                                     if not vmerr then
@@ -5362,8 +5221,7 @@ return function (plume)
                                             end
                                             local _ret425
                                             do
-                                                local _ret426
-                                                _ret426 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
+                                                local _ret426 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
                                                 local t = _ret426
                                                 if t ~= "number" then
                                                     if not vmerr then
@@ -5401,8 +5259,7 @@ return function (plume)
                                             ::_inline_end993::
                                             local _ret427
                                             do
-                                                local _ret428
-                                                _ret428 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
+                                                local _ret428 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
                                                 local t = _ret428
                                                 if t ~= "number" then
                                                     if not vmerr then
@@ -5474,8 +5331,7 @@ return function (plume)
                                             local args = _ret430.table
                                             local _ret431
                                             do
-                                                local _ret432
-                                                _ret432 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local _ret432 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
                                                 local t = _ret432
                                                 if t ~= "table" then
                                                     if not vmerr then
@@ -5543,8 +5399,7 @@ return function (plume)
                                             local args = _ret434.table
                                             local _ret435
                                             do
-                                                local _ret436
-                                                _ret436 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local _ret436 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
                                                 local t = _ret436
                                                 if t ~= "table" then
                                                     if not vmerr then
@@ -5620,8 +5475,7 @@ return function (plume)
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
                                             local _ret439
                                             do
-                                                local _ret440
-                                                _ret440 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
+                                                local _ret440 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
                                                 local t = _ret440
                                                 if t ~= "string" then
                                                     if not vmerr then
@@ -5692,8 +5546,7 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = chunk.offset
-                                                            local _ret441
-                                                            _ret441 = macroStackPointer
+                                                            local _ret441 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = _ret441
                                                         end

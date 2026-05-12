@@ -27,11 +27,14 @@ local tree
 
 if debug then
 	tree = optimizer.loadCode([[
-do
-	local x = 5
-	goto _inline_end32
+if a then
+	local x
+	x = 5
+else
+	local x
+	x = 5
+	local y = 7
 end
-::_inline_end32::
 ]], false)
 else
 	tree = optimizer.loadCode('plume-data/engine/engine.lua', true)
@@ -58,6 +61,8 @@ for i=1, 5 do
 end
 tree:traverse(cleaner.removeUselessIf)
 tree:traverse(cleaner.removeUselessDo)
+tree:traverse(cleaner.removeUselessLocalSplitA)
+tree:traverse(cleaner.removeUselessLocalSplitB)
 tree = optimizer.loadCode(beautifier(tree), false)
 cleaner.removeUselessGoto(tree)
 local finalCode = beautifier(tree)
