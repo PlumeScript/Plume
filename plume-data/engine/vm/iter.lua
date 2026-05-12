@@ -13,7 +13,7 @@ Licensed under the MIT License — see LICENSE for details.
 --- Raise an error if the object isn't a table.
 --! inline
 function GET_ITER (vm, arg1, arg2)
-    local obj = _STACK_POP(vm.mainStack)
+    local obj = _STACK_POP(vm, vm.mainStack)
     local tobj = _GET_TYPE(vm, obj)
     
     local iter, value, flag, macrocall
@@ -51,15 +51,15 @@ function GET_ITER (vm, arg1, arg2)
     --! to-remove-begin
     if not vm.err then -- only needed in dev mode, to prevent STACK_PUSH to crash
     --! to-remove-end
-        _STACK_PUSH(vm.mainStack, flag)
-        _STACK_PUSH(vm.mainStack, start) -- state
+        _STACK_PUSH(vm, vm.mainStack, flag)
+        _STACK_PUSH(vm, vm.mainStack, start) -- state
         if macrocall then -- call will add the value
             BEGIN_ACC(vm, 0, 0)
             _PUSH_SELF(vm, obj)
-            _STACK_PUSH(vm.mainStack, iter)
+            _STACK_PUSH(vm, vm.mainStack, iter)
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
         else
-            _STACK_PUSH(vm.mainStack, value)
+            _STACK_PUSH(vm, vm.mainStack, value)
         end
 
     --! to-remove-begin
@@ -75,9 +75,9 @@ end
 --- @param arg2 number Offset of the loop end
 --! inline
 function FOR_ITER (vm, arg1, arg2)
-    local obj   = _STACK_GET_FRAMED(vm.variableStack, 0, 0)
-    local state = _STACK_GET_FRAMED(vm.variableStack, 1, 0)
-    local flag  = _STACK_GET_FRAMED(vm.variableStack, 2, 0)
+    local obj   = _STACK_GET_FRAMED(vm, vm.variableStack, 0, 0)
+    local state = _STACK_GET_FRAMED(vm, vm.variableStack, 1, 0)
+    local flag  = _STACK_GET_FRAMED(vm, vm.variableStack, 2, 0)
 
     local result, call
     if flag == vm.flag.ITER_TABLE then
@@ -132,7 +132,7 @@ function FOR_ITER (vm, arg1, arg2)
 
             BEGIN_ACC(vm, 0, 0)
             _PUSH_SELF(vm, obj)
-            _STACK_PUSH(vm.mainStack, iter)
+            _STACK_PUSH(vm, vm.mainStack, iter)
 
 
             _INJECTION_PUSH(vm, vm.plume.ops.JUMP_FOR, 0, arg2)
@@ -144,12 +144,12 @@ function FOR_ITER (vm, arg1, arg2)
 
     if not call then
         -- Save state. Offset 1 for local var #2
-        _STACK_SET_FRAMED(vm.variableStack, 1, 0, state)
+        _STACK_SET_FRAMED(vm, vm.variableStack, 1, 0, state)
 
         if result == vm.empty then
             JUMP (vm, 0, arg2)
         else
-            _STACK_PUSH(vm.mainStack, result)
+            _STACK_PUSH(vm, vm.mainStack, result)
         end
     end
 end
@@ -160,9 +160,9 @@ end
 --- @param arg2 jump offset
 --! inline
 function JUMP_FOR (vm, arg1, arg2)
-    local test = _STACK_GET(vm.mainStack)
+    local test = _STACK_GET(vm, vm.mainStack)
     if not _CHECK_BOOL (vm, test) then
-        _STACK_POP(vm.mainStack)
+        _STACK_POP(vm, vm.mainStack)
         JUMP(vm, 0, arg2)
     end
 end

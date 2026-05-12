@@ -353,6 +353,6 @@ goto DISPATCH		::END::
 			end
 		end
 		--! to-remove-end
-		return true, _STACK_GET(vm.mainStack)
+		return true, _STACK_GET(vm, vm.mainStack)
 	end
 end

@@ -29,7 +29,7 @@ end
 --- @opcode
 --! inline
 function STD_LEN(vm, arg1, arg2)
-	local t = _STACK_POP(vm.mainStack).table[1]
+	local t = _STACK_POP(vm, vm.mainStack).table[1]
 	local tt = _GET_TYPE(vm, t)
     local result
 
@@ -44,7 +44,7 @@ function STD_LEN(vm, arg1, arg2)
     --! to-remove-begin
     if not vm.err then -- only needed in dev mode, to prevent STACK_PUSH to crash
     --! to-remove-end
-        _STACK_PUSH(vm.mainStack, result)
+        _STACK_PUSH(vm, vm.mainStack, result)
     --! to-remove-begin
     end
     --! to-remove-end
@@ -55,8 +55,8 @@ end
 --- @opcode
 --! inline
 function STD_TYPE(vm, arg1, arg2)
-    local t = _STACK_POP(vm.mainStack).table[1]
-    _STACK_PUSH(vm.mainStack, _GET_TYPE(vm, t))
+    local t = _STACK_POP(vm, vm.mainStack).table[1]
+    _STACK_PUSH(vm, vm.mainStack, _GET_TYPE(vm, t))
 
     _POP_CALLSTACK(vm)
 end
@@ -66,7 +66,7 @@ end
 function STD_SEQ(vm, arg1, arg2)
     local signature = "numbers stop|start, stop|start, stop, step"
 
-    local args = _STACK_POP(vm.mainStack).table
+    local args = _STACK_POP(vm, vm.mainStack).table
     local start = tonumber(args[1])
     local stop  = tonumber(args[2])
     local step  = tonumber(args[3] or 1)
@@ -84,7 +84,7 @@ function STD_SEQ(vm, arg1, arg2)
     start = tonumber(start)
     stop = tonumber(stop)
 
-    _STACK_PUSH(vm.mainStack, {
+    _STACK_PUSH(vm, vm.mainStack, {
         type = "stdIterator",
         start=start-step, --FOR_ITER increment state before using it
         stop=stop,
@@ -98,11 +98,11 @@ end
 --- @opcode
 --! inline
 function STD_ITEMS(vm, arg1, arg2)
-    local args = _STACK_POP(vm.mainStack).table
+    local args = _STACK_POP(vm, vm.mainStack).table
     
     _ASSERT_STD_TYPE(vm, "items", 1, args[1],  "table", "table t")
 
-    _STACK_PUSH(vm.mainStack, {
+    _STACK_PUSH(vm, vm.mainStack, {
         type = "stdIterator",
         ref  = args[1],
         flag = vm.flag.ITER_ITEMS,
@@ -115,11 +115,11 @@ end
 --- @opcode
 --! inline
 function STD_ENUMERATE(vm, arg1, arg2)
-    local args = _STACK_POP(vm.mainStack).table
+    local args = _STACK_POP(vm, vm.mainStack).table
 
     _ASSERT_STD_TYPE(vm, "enumerate", 1, args[1],  "table", "table t")
 
-    _STACK_PUSH(vm.mainStack, {
+    _STACK_PUSH(vm, vm.mainStack, {
         type = "stdIterator",
         ref = args[1],
         flag = vm.flag.ITER_ENUMS
@@ -131,7 +131,7 @@ end
 --- @opcode
 --! inline
 function STD_IMPORT(vm, arg1, arg2)
-    local args = _STACK_POP(vm.mainStack)
+    local args = _STACK_POP(vm, vm.mainStack)
 
     local firstFilename = vm.runtime.files[1].name
     local lastFilename  = vm.runtime.files[vm.fileStack[vm.fileStack.pointer]].name
@@ -173,8 +173,8 @@ function STD_IMPORT(vm, arg1, arg2)
                 end
 
                 -- prepare stack and jumps
-                _STACK_PUSH(vm.fileStack, chunk.fileID)
-                _STACK_PUSH(vm.macroStack, vm.ip + 1)
+                _STACK_PUSH(vm, vm.fileStack, chunk.fileID)
+                _STACK_PUSH(vm, vm.macroStack, vm.ip + 1)
                 -- ENTER_SCOPE is already the first file instruction
                 _INJECTION_PUSH(vm, vm.plume.ops.JUMP, 0, chunk.offset)
             else

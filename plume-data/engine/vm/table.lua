@@ -10,14 +10,14 @@ Licensed under the MIT License — see LICENSE for details.
 --- @param arg1 number Number of hash slot to allocate
 --! inline
 function TABLE_NEW (vm, arg1, arg2)
-    _STACK_PUSH(vm.mainStack, table.new(0, arg1))
+    _STACK_PUSH(vm, vm.mainStack, table.new(0, arg1))
 end
 
 --- @opcode
 --- Mark the last element of the stack as a key
 --! inline
 function TAG_KEY(vm, arg1, arg2)
-    local pos = _STACK_POS(vm.mainStack)
+    local pos = _STACK_POS(vm, vm.mainStack)
     vm.tagStack[pos] = "key"
 end
 
@@ -25,13 +25,13 @@ end
 --- Mark the last element of the stack as a meta-key
 --! inline
 function TAG_META_KEY(vm, arg1, arg2)
-    local name = _STACK_GET(vm.mainStack)
-    local value = _STACK_GET(vm.mainStack, _STACK_POS(vm.mainStack)-1)
+    local name = _STACK_GET(vm, vm.mainStack)
+    local value = _STACK_GET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack)-1)
     local valid, err = _META_CHECK(vm, name, value)
     if not valid then
         _ERROR(vm, err)
     end
-    local pos = _STACK_POS(vm.mainStack)
+    local pos = _STACK_POS(vm, vm.mainStack)
     vm.tagStack[pos] = "metakey"
 end
 
@@ -41,10 +41,10 @@ end
 --- @param arg2 number 1 if the key should be registered as metafield
 --! inline
 function TABLE_SET_ACC (vm, arg1, arg2)
-    local t = _STACK_GET_FRAMED(vm.mainStack)
+    local t = _STACK_GET_FRAMED(vm, vm.mainStack)
     
-    table.insert(t, _STACK_POP(vm.mainStack)) -- key
-    table.insert(t, _STACK_POP(vm.mainStack)) -- value
+    table.insert(t, _STACK_POP(vm, vm.mainStack)) -- key
+    table.insert(t, _STACK_POP(vm, vm.mainStack)) -- value
     table.insert(t, arg2==1)                  -- is meta
 end
 
@@ -53,9 +53,9 @@ end
 --- Set the table.key to value
 --! inline
 function TABLE_SET_META (vm, arg1, arg2)
-    local t     = _STACK_POP(vm.mainStack)
-    local key   = _STACK_POP(vm.mainStack)
-    local value = _STACK_POP(vm.mainStack)
+    local t     = _STACK_POP(vm, vm.mainStack)
+    local key   = _STACK_POP(vm, vm.mainStack)
+    local value = _STACK_POP(vm, vm.mainStack)
     t.meta.table[key] = value
 end
 
@@ -66,8 +66,8 @@ end
 --- @param arg1 number 1 if "safe mode" (return empty if key not exit), 0 else (raise error if key not exist)
 --! inline
 function TABLE_INDEX (vm, arg1, arg2)
-    local t   = _STACK_POP(vm.mainStack)
-    local key = _STACK_POP(vm.mainStack)
+    local t   = _STACK_POP(vm, vm.mainStack)
+    local key = _STACK_POP(vm, vm.mainStack)
     key = tonumber(key) or key
 
     if key == vm.empty then
@@ -99,16 +99,16 @@ function TABLE_INDEX (vm, arg1, arg2)
         else
             local value = t.table[key]
             if value ~= nil then
-                _STACK_PUSH(vm.mainStack, value)
+                _STACK_PUSH(vm, vm.mainStack, value)
             else
                 if arg1 == 1 then
                     LOAD_EMPTY(vm)
                 elseif t.meta.table.getindex then
                     local meta = t.meta.table.getindex
                     BEGIN_ACC(vm, 0, 0)
-                    _STACK_PUSH(vm.mainStack, key)
+                    _STACK_PUSH(vm, vm.mainStack, key)
                     _PUSH_SELF(vm, t)
-                    _STACK_PUSH(vm.mainStack, meta)
+                    _STACK_PUSH(vm, vm.mainStack, meta)
                     _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
                 else
                     _ERROR (vm, vm.plume.error.unregisteredKey(t, key))
@@ -123,8 +123,8 @@ end
 --- in the current accumulation table
 --! inline
 function _PUSH_SELF(vm, self)
-    _STACK_PUSH(vm.mainStack, self)
-    _STACK_PUSH(vm.mainStack, "self")
+    _STACK_PUSH(vm, vm.mainStack, self)
+    _STACK_PUSH(vm, vm.mainStack, "self")
     TAG_KEY(vm)
 end
 
@@ -133,15 +133,15 @@ end
 --- Insert self | table in the call arguments
 --! inline
 function CALL_INDEX_REGISTER_SELF (vm, arg1, arg2)
-    local t = _STACK_POP(vm.mainStack)
-    local index = _STACK_POP(vm.mainStack)
+    local t = _STACK_POP(vm, vm.mainStack)
+    local index = _STACK_POP(vm, vm.mainStack)
     
     
-    _STACK_PUSH(vm.mainStack, t)
-    _STACK_PUSH(vm.mainStack, "self")
+    _STACK_PUSH(vm, vm.mainStack, t)
+    _STACK_PUSH(vm, vm.mainStack, "self")
     TAG_KEY(vm)
-    _STACK_PUSH(vm.mainStack, index)
-    _STACK_PUSH(vm.mainStack, t)
+    _STACK_PUSH(vm, vm.mainStack, index)
+    _STACK_PUSH(vm, vm.mainStack, t)
 end
 
 --- @opcode
@@ -153,13 +153,13 @@ function TABLE_SET (vm, arg1, arg2)
     local t, key, value
 
     if arg1 == 1 then
-        value = _STACK_POP(vm.mainStack)
-        key   = _STACK_POP(vm.mainStack)
-        t     = _STACK_POP(vm.mainStack)
+        value = _STACK_POP(vm, vm.mainStack)
+        key   = _STACK_POP(vm, vm.mainStack)
+        t     = _STACK_POP(vm, vm.mainStack)
     else
-        t     = _STACK_POP(vm.mainStack)
-        key   = _STACK_POP(vm.mainStack)
-        value = _STACK_POP(vm.mainStack)
+        t     = _STACK_POP(vm, vm.mainStack)
+        key   = _STACK_POP(vm, vm.mainStack)
+        value = _STACK_POP(vm, vm.mainStack)
     end
     local meta
     key = tonumber(key) or key
@@ -173,15 +173,15 @@ function TABLE_SET (vm, arg1, arg2)
             t.table[key] = vm.empty 
 
             -- table & key
-            _STACK_PUSH(vm.mainStack, t)
-            _STACK_PUSH(vm.mainStack, key)
+            _STACK_PUSH(vm, vm.mainStack, t)
+            _STACK_PUSH(vm, vm.mainStack, key)
 
             -- value
             BEGIN_ACC(vm, 0, 0)
-            _STACK_PUSH(vm.mainStack, key)
-            _STACK_PUSH(vm.mainStack, value)
+            _STACK_PUSH(vm, vm.mainStack, key)
+            _STACK_PUSH(vm, vm.mainStack, value)
             _PUSH_SELF(vm, t)
-            _STACK_PUSH(vm.mainStack, meta)
+            _STACK_PUSH(vm, vm.mainStack, meta)
 
             _INJECTION_PUSH(vm, vm.plume.ops.TABLE_SET, 1, 0)   -- set
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0) -- call
@@ -199,17 +199,17 @@ end
 --- Put all hash item on the stack
 --! inline
 function TABLE_EXPAND (vm, arg1, arg2)
-    local t  = _STACK_POP(vm.mainStack)
+    local t  = _STACK_POP(vm, vm.mainStack)
     local tt = _GET_TYPE(vm, t)
     if tt == "table" then
         for _, item in ipairs(t.table) do
-            _STACK_PUSH(vm.mainStack, item)
+            _STACK_PUSH(vm, vm.mainStack, item)
         end
 
         for _, key in ipairs(t.keys) do
             if not tonumber(key) then
-                _STACK_PUSH(vm.mainStack, t.table[key])
-                _STACK_PUSH(vm.mainStack, key)
+                _STACK_PUSH(vm, vm.mainStack, t.table[key])
+                _STACK_PUSH(vm, vm.mainStack, key)
                 TAG_KEY(vm)
             end
         end

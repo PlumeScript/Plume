@@ -9,7 +9,7 @@ Licensed under the MIT License — see LICENSE for details.
 --- Create a new accumulation frame
 --! inline
 function BEGIN_ACC(vm, arg1, arg2)
-    _STACK_PUSH(
+    _STACK_PUSH(vm, 
         vm.mainStack.frames,
         vm.mainStack.pointer+1
     )
@@ -18,7 +18,7 @@ end
 --- Close the current frame
 --! inline
 function _END_ACC (vm)
-    _STACK_POP(vm.mainStack.frames)
+    _STACK_POP(vm, vm.mainStack.frames)
 end
 
 --- @opcode
@@ -27,12 +27,12 @@ end
 --- and stack the concatenation for theses elements
 --! inline
 function CONCAT_TEXT (vm, arg1, arg2)
-    local start = _STACK_GET(vm.mainStack.frames)
-    local stop  = _STACK_POS(vm.mainStack)
+    local start = _STACK_GET(vm, vm.mainStack.frames)
+    local stop  = _STACK_POS(vm, vm.mainStack)
     
     local acc_text = table.concat(vm.mainStack, "", start, stop)
-    _STACK_MOVE(vm.mainStack, start)
-    _STACK_SET (vm.mainStack, start, acc_text)
+    _STACK_MOVE(vm, vm.mainStack, start)
+    _STACK_SET(vm, vm.mainStack, start, acc_text)
     _END_ACC(vm)
 end
 
@@ -47,8 +47,8 @@ function CONCAT_TABLE(vm)
     -- Treat all arguments as variadic by asking for 0 positional variables and 0 named variables
     local resultTable = _CONCAT_TABLE(vm, 0, nil, true)
 
-    _STACK_POP_FRAME(vm.mainStack) -- Clean stack from arguments
-    _STACK_PUSH(vm.mainStack, resultTable) -- Push the resulting table onto the stack
+    _STACK_POP_FRAME(vm, vm.mainStack) -- Clean stack from arguments
+    _STACK_PUSH(vm, vm.mainStack, resultTable) -- Push the resulting table onto the stack
 
     return resultTable
 end
@@ -60,9 +60,9 @@ end
 function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
     local argsOffset   = 1
     
-    local frameOffset  = _STACK_GET(vm.mainStack.frames)
+    local frameOffset  = _STACK_GET(vm, vm.mainStack.frames)
     local bufferOffset = frameOffset
-    local mainStackTop = _STACK_POS(vm.mainStack)
+    local mainStackTop = _STACK_POS(vm, vm.mainStack)
 
     local variadicTable
     -- Heuristic allocation: assume worst case (all items are part of the table)
@@ -77,12 +77,12 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
 
     while bufferOffset <= mainStackTop do
         local tag = vm.tagStack[bufferOffset+1]
-        local value = _STACK_GET(vm.mainStack, bufferOffset)
+        local value = _STACK_GET(vm, vm.mainStack, bufferOffset)
         -- Positional Argument
         if tag == nil then
             if argsOffset <= posParamCount then
                 -- Assign to local variable register
-                _STACK_SET_FRAMED(vm.variableStack, argsOffset-1, 0, value)
+                _STACK_SET_FRAMED(vm, vm.variableStack, argsOffset-1, 0, value)
                 capturedCount = capturedCount+1
             elseif variadicTable then
                 -- Surplus → Insert into variadic table
@@ -99,13 +99,13 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
         -- Named Argument or Meta Key
         else
             bufferOffset = bufferOffset + 1
-            local key = _STACK_GET(vm.mainStack, bufferOffset)
+            local key = _STACK_GET(vm, vm.mainStack, bufferOffset)
             -- Check if this key corresponds to a declared named parameter
             local argOffset = namedParamOffset and (namedParamOffset)[key]
             if argOffset then
                 if tag == "key" then
                     -- Assign to local variable register
-                    _STACK_SET_FRAMED(vm.variableStack, argOffset-1, 0, value)
+                    _STACK_SET_FRAMED(vm, vm.variableStack, argOffset-1, 0, value)
                 else
                     _ERROR(vm, vm.plume.error.cannotUseMetaKey)
                 end
@@ -139,11 +139,11 @@ end
 --- to convert it, else throw an error.
 --! inline
 function CHECK_IS_TEXT (vm, arg1, arg2)
-    local value = _STACK_GET(vm.mainStack)
+    local value = _STACK_GET(vm, vm.mainStack)
     local t     = _GET_TYPE(vm, value)
 
     if value == vm.empty then
-        _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), "")
+        _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), "")
     elseif t == "number" then
         local locale = _LOAD_CONTEXT(vm, "locale", true)
 
@@ -158,24 +158,24 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
             )
     
             if success then
-                _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), result)
+                _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), result)
             else
                 _ERROR(vm, result)
             end
         else
-            _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), tostring(value))
+            _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), tostring(value))
         end
     elseif t ~= "string" then
         local meta = t == "table" and value.meta.table.tostring
         if  meta then
-            _STACK_POP(vm.mainStack)
+            _STACK_POP(vm, vm.mainStack)
 
             BEGIN_ACC(vm, 0, 0)
             _PUSH_SELF(vm, value)
-            _STACK_PUSH(vm.mainStack, meta)
+            _STACK_PUSH(vm, vm.mainStack, meta)
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
         elseif t == "boolean" then
-            _STACK_SET(vm.mainStack, _STACK_POS(vm.mainStack), tostring(value))
+            _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), tostring(value))
         else
             _ERROR (vm, vm.plume.error.cannotConcatValue(t))
         end
