@@ -273,7 +273,8 @@ local function applyInsertExprs (node)
 end
 
 
-return {
+local optimizer
+optimizer = {
 	loadCode = loadCode,
 	applyCommands = applyCommands,
 	applyInsertBefore=applyInsertBefore,
@@ -318,5 +319,24 @@ return {
 			end
 		end
 		return node
+	end,
+
+	optimize = function (tree)
+		tree:traverse(optimizer.inlineRequire)
+		tree:traverse(optimizer.renameRun)
+		tree:traverse(optimizer.saveFunctionsToInline)
+		tree:traverse(optimizer.inlineFunctions)
+		tree:traverse(optimizer.applyInsertBefore)
+		tree:traverse(optimizer.applyInsertExprs)
+		tree:traverse(optimizer.inlineIndex)
+		tree:traverse(optimizer.inlineIndex)
+		tree:traverse(optimizer.inlineIndex)
+		tree:traverse(optimizer.tolocal)
+
+		optimizer.checkUselessFunctions()
+
+		return tree
 	end
 }
+
+return optimizer

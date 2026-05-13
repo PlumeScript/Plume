@@ -9,6 +9,8 @@ Licensed under the MIT License — see LICENSE for details.
 -- But it makes the code look nicer.
 
 local ast = require "parser.lua.ast"
+local optimizer = require"luaOptimizer"
+local beautifier = require "luaBeautifier"
 
 local function isEmpty(node)
 	for _, child in ipairs(node) do
@@ -281,5 +283,17 @@ return {
 	removeUselessLocalSplitA = removeUselessLocalSplitA,
 	removeUselessLocalSplitB = removeUselessLocalSplitB,
 
-	constantFolding = constantFolding,
+	clean = function(tree)
+		tree = optimizer.loadCode(beautifier(tree), false)
+		for i=1, 5 do
+			tree:traverse(constantFolding)
+		end
+		tree:traverse(removeUselessIf)
+		tree:traverse(removeUselessDo)
+		tree:traverse(removeUselessLocalSplitA)
+		tree:traverse(removeUselessLocalSplitB)
+		tree = optimizer.loadCode(beautifier(tree), false)
+		removeUselessGoto(tree)
+		return tree
+	end
 }
