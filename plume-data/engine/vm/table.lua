@@ -109,12 +109,20 @@ function TABLE_INDEX (vm, arg1, arg2)
                     _STACK_PUSH(vm, vm.mainStack, key)
                     _PUSH_SELF(vm, t)
                     _STACK_PUSH(vm, vm.mainStack, meta)
+                    _INJECTION_PUSH(vm, vm.plume.ops.TABLE_INDEX_CHECK_IS_NIL, 0, 0)
                     _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
                 else
                     _ERROR (vm, vm.plume.error.unregisteredKey(t, key))
                 end
             end
         end
+    end
+end
+
+function TABLE_INDEX_CHECK_IS_NIL(vm)
+    local top = _STACK_GET(vm, vm.mainStack)
+    if top == vm.empty then
+        vm.plume.warning.runtimeWarning("User-defined getindex returns empty. From edition `Owl`, this will lead to an error", "Use safe index `wing.nib?` instead of `wing.nib` if you want safe access.", vm.runtime, vm.jump, {614, 717})
     end
 end
 
