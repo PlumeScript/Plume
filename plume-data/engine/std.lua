@@ -332,11 +332,12 @@ return function(plume)
 	    end),
 	    atan2 =  plume.obj.luaMacro("atan2", function (args)
 	        local __name      = "atan2"
-	        local __signature = "`$atan2(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+	        local __signature = "`$atan2(number x, number y)`"
+	        local __s, __e, self, x, y
+	        __s, __e, x, y = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+	        if __s and y then __s, __e, y = plume.stdCheckType(y, "number", "2", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
 	        return true, math.atan2(x, y)
@@ -641,7 +642,7 @@ return function(plume)
 	    end)
 	}
 	
-	local lfs = require"lfs"
+	local lfsLoaded, lfs = pcall(require, "lfs")
 	
 	local function mkdirs(path, isFile)
 		local fullPath = ""
@@ -667,6 +668,9 @@ return function(plume)
 	end
 	
 	local function makePath(path)
+		if not lfsLoaded then
+			return false, "Cannot load lfs"
+		end
 		local obj = plume.obj.quickTable{
 			path = path or lfs.currentdir (),
 			isFile = plume.obj.luaMacro ("isFile", function (args)
@@ -1768,7 +1772,7 @@ return function(plume)
 	
 	        return pcall(table.concat, args, sep)
 	    end),
-	    removeKey = plume.obj.luaMacro("removeKey", function (args)
+	    removeKey = plume.obj.luaMacro("removeKey", function (args, runtime, _, ip)
 	        local __name      = "removeKey"
 	        local __signature = "`$removeKey(table t, any key)`"
 	        local __s, __e, self, t, key
@@ -1784,6 +1788,14 @@ return function(plume)
 	                index = k
 	                break
 	            end
+	        end
+	
+	        if index == 0 then
+	            plume.warning.runtimeWarning(
+	                string.format("The key `%s` doesn't exist. This will raise an error from edition Owl.", key),
+	                "Check if key exists before removing it.",
+	                runtime, ip, {614, 772}
+	            )
 	        end
 	
 	        t.table[key] = nil

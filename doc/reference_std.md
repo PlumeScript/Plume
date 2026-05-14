@@ -24,7 +24,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. 
     *   `Table.append(table, item)`: Adds `item` to the end of the specified `table`.
     *   `Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
-    *   `Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied.
+    *   `Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied. Raise an error if `table.key` doesn't exist.
     *   `Table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.
     *   `Table.find(table, v)`: Search for a `k` such that `table[k] = v` and return the first found. Return `empty` if not found.
     *   `Table.findAll(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.

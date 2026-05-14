@@ -64,14 +64,14 @@ function _HANDLE_META_BIN (vm, left, right, name)
 
     if meta then
         BEGIN_ACC(vm, 0, 0)
-        _STACK_PUSH(vm.mainStack, param1)
+        _STACK_PUSH(vm, vm.mainStack, param1)
         if param2 then
-            _STACK_PUSH(vm.mainStack, param2)
+            _STACK_PUSH(vm, vm.mainStack, param2)
         end
 
         _PUSH_SELF(vm, paramself)
 
-        _STACK_PUSH(vm.mainStack, meta)
+        _STACK_PUSH(vm, vm.mainStack, meta)
         _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
     end
 
@@ -94,7 +94,7 @@ function _HANDLE_META_UN (vm, x, name)
     if meta then
         BEGIN_ACC(vm, 0, 0)
         _PUSH_SELF(vm, paramself)
-        _STACK_PUSH(vm.mainStack, meta)
+        _STACK_PUSH(vm, vm.mainStack, meta)
         _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
     end
 
@@ -106,13 +106,13 @@ end
 --- @param op function Operation to apply
 --! inline
 function _BIN_OP_BOOL (vm, op)
-    local right = _STACK_POP(vm.mainStack)
-    local left  = _STACK_POP(vm.mainStack)
+    local right = _STACK_POP(vm, vm.mainStack)
+    local left  = _STACK_POP(vm, vm.mainStack)
 
     right = _CHECK_BOOL (vm, right)
     left  = _CHECK_BOOL (vm, left)
 
-    _STACK_PUSH(vm.mainStack, op(left, right))
+    _STACK_PUSH(vm, vm.mainStack, op(left, right))
 end
 
 --- Unstack 1 value, apply an boolean operation, stack the result.
@@ -120,9 +120,9 @@ end
 --- @param op function Operation to apply
 --! inline
 function _UN_OP_BOOL (vm, op)
-    local x = _STACK_POP(vm.mainStack)
+    local x = _STACK_POP(vm, vm.mainStack)
     x = _CHECK_BOOL (vm, x)
-    _STACK_PUSH(vm.mainStack, op(x))
+    _STACK_PUSH(vm, vm.mainStack, op(x))
 end
 
 --- `_BIN_OP_NUMBER` isn't an opcode, but tag as opcode for be integrated in the documentation.
@@ -134,8 +134,8 @@ end
 --- @param name string Name used to find meta macro and debug messages
 --! inline
 function _BIN_OP_NUMBER (vm, op, name)
-    local right = _STACK_POP(vm.mainStack)
-    local left  = _STACK_POP(vm.mainStack)
+    local right = _STACK_POP(vm, vm.mainStack)
+    local left  = _STACK_POP(vm, vm.mainStack)
 
     local rightNumber = tonumber(right)
     local leftNumber = tonumber(left)
@@ -143,7 +143,7 @@ function _BIN_OP_NUMBER (vm, op, name)
     -- Only number
     if rightNumber and leftNumber then
         result = op(leftNumber, rightNumber)
-        _STACK_PUSH(vm.mainStack, result)
+        _STACK_PUSH(vm, vm.mainStack, result)
     else
 
         local rerr, lerr
@@ -160,7 +160,7 @@ function _BIN_OP_NUMBER (vm, op, name)
         -- table with tonumber metafield
         else
             result = op(left, right)
-            _STACK_PUSH(vm.mainStack, result)
+            _STACK_PUSH(vm, vm.mainStack, result)
         end
 
         
@@ -172,7 +172,7 @@ end
 --- @param name string Name used to find meta macro and debug messages
 --! inline
 function _UN_OP_NUMBER (vm, op, name)
-    local x = _STACK_POP(vm.mainStack)
+    local x = _STACK_POP(vm, vm.mainStack)
     local err, meta
 
     x, err = _CHECK_NUMBER_META (vm, x)
@@ -183,7 +183,7 @@ function _UN_OP_NUMBER (vm, op, name)
              _ERROR(vm, err)
         end
     else
-        _STACK_PUSH(vm.mainStack, op(x))
+        _STACK_PUSH(vm, vm.mainStack, op(x))
     end
 end
 
@@ -302,15 +302,15 @@ end
 --- return the comparison between theses two numbers.
 --! inline
 function OP_EQ (vm, arg1, arg2)
-    local right = _STACK_POP(vm.mainStack)
-    local left  = _STACK_POP(vm.mainStack)
+    local right = _STACK_POP(vm, vm.mainStack)
+    local left  = _STACK_POP(vm, vm.mainStack)
 
     local meta  = _HANDLE_META_BIN (vm, left, right, "eq")
 
     if not meta then
         -- `(false)` instead of `false` preventing make-engine-opt optimization
         local result = left == right or tonumber(left) and tonumber(left) == tonumber(right) or (false)
-        _STACK_PUSH(vm.mainStack, result)  
+        _STACK_PUSH(vm, vm.mainStack, result)  
     end
 
     

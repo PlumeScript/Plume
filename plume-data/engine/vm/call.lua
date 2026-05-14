@@ -23,12 +23,12 @@ function _POP_CALLSTACK(vm)
     local call = table.remove(vm.runtime.callstack)
 
     if call and call.safe then
-        local result = _STACK_POP(vm.mainStack)
+        local result = _STACK_POP(vm, vm.mainStack)
         local safeResult = vm.plume.obj.table(0, 2)
         safeResult.keys = {"success", "result"}
         safeResult.table.success = true
         safeResult.table.result = result
-        _STACK_PUSH(vm.mainStack, safeResult)
+        _STACK_PUSH(vm, vm.mainStack, safeResult)
     end
 end
 
@@ -40,7 +40,7 @@ end
 --- Handle macros and luaMacro
 --! inline
 function CONCAT_CALL (vm, arg1, arg2)
-    local tocall = _STACK_POP(vm.mainStack)
+    local tocall = _STACK_POP(vm, vm.mainStack)
     local t = _GET_TYPE(vm, tocall)
     local self
 
@@ -64,7 +64,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
 
         _CALL_MACRO(vm, tocall, arg1==1, arg2==1)
-        _STACK_PUSH(vm.closureStack, {})
+        _STACK_PUSH(vm, vm.closureStack, {})
 
     elseif t == "closure" then
         if self then
@@ -72,14 +72,14 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
 
         _CALL_MACRO(vm, tocall.macro, arg1==1, arg2==1)
-        _STACK_PUSH(vm.closureStack, tocall.upvalues)
+        _STACK_PUSH(vm, vm.closureStack, tocall.upvalues)
 
     -- Std functions defined in lua or user lua functions
     elseif t == "luaMacro" then
         CONCAT_TABLE(vm)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
         
-        local success, result, isHosted = tocall.callable (_STACK_POP(vm.mainStack), vm.runtime, _STACK_GET(vm.fileStack), vm.ip)
+        local success, result, isHosted = tocall.callable (_STACK_POP(vm, vm.mainStack), vm.runtime, _STACK_GET(vm, vm.fileStack), vm.ip)
 
         if success then
             
@@ -87,7 +87,7 @@ function CONCAT_CALL (vm, arg1, arg2)
                 result = vm.empty
             end
             
-            _STACK_PUSH(vm.mainStack, result)
+            _STACK_PUSH(vm, vm.mainStack, result)
             if isHosted then
                 _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
             else
@@ -114,14 +114,14 @@ function CONCAT_CALL (vm, arg1, arg2)
     -- CHECK_IS_TEXT do exactly the same thing as tostring
     elseif tocall == vm.plume.std.String then
 
-        local value = _STACK_POP(vm.mainStack)
-        _STACK_POP_FRAME(vm.mainStack)
-        _STACK_PUSH(vm.mainStack, value)
+        local value = _STACK_POP(vm, vm.mainStack)
+        _STACK_POP_FRAME(vm, vm.mainStack)
+        _STACK_PUSH(vm, vm.mainStack, value)
         -- Should check for to many arguments, instead of ignoring them
         _INJECTION_PUSH(vm, vm.plume.ops.CHECK_IS_TEXT, 0, 0)
 
     elseif tocall == vm.plume.std.attempt then
-        local macro = _STACK_GET_FRAMED(vm.mainStack, 0)
+        local macro = _STACK_GET_FRAMED(vm, vm.mainStack, 0)
         local tmacro = _GET_TYPE(vm, macro)
 
         if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
@@ -129,7 +129,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
 
         vm.mainStack.frames[vm.mainStack.frames.pointer] = vm.mainStack.frames[vm.mainStack.frames.pointer] + 1 -- skip the macro
-        _STACK_PUSH(vm.mainStack, macro) -- and add it at the end
+        _STACK_PUSH(vm, vm.mainStack, macro) -- and add it at the end
 
         -- Workaround to remove remaining macro value
         -- without altering call return value
@@ -185,12 +185,12 @@ function _CALL_MACRO(vm, chunk, isValidator, safe)
         else
             -- If the chunk expects a variadic argument, assign the table to the specific register
             if chunk.variadicOffset then
-                _STACK_SET_FRAMED(vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
+                _STACK_SET_FRAMED(vm, vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
             end
 
             _PUSH_CALLSTACK(vm, chunk, safe)
-            _STACK_POP_FRAME(vm.mainStack)        -- Clean stack from arguments
-            _STACK_PUSH(vm.macroStack, vm.ip + 1) -- Set the return pointer
+            _STACK_POP_FRAME(vm, vm.mainStack)        -- Clean stack from arguments
+            _STACK_PUSH(vm, vm.macroStack, vm.ip + 1) -- Set the return pointer
             JUMP(vm, 0, chunk.offset)             -- Jump to macro body  
         end
     end
@@ -200,16 +200,16 @@ end
 --! inline
 function RETURN(vm, arg1, arg2)
     LEAVE_SCOPE(vm, 0, 0) -- close macro scope
-    _STACK_POP(vm.closureStack)
+    _STACK_POP(vm, vm.closureStack)
     _POP_CALLSTACK(vm)
-    JUMP(vm, 0, _STACK_POP(vm.macroStack)) -- return in the previous position
+    JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
 end
 
 --- @opcode
 --! inline
 function HOST_NEXT(vm)
-    local value   = _STACK_POP(vm.mainStack)
-    local context = _STACK_GET(vm.mainStack)
+    local value   = _STACK_POP(vm, vm.mainStack)
+    local context = _STACK_GET(vm, vm.mainStack)
 
     local success, result = context:HOST_NEXT(value)
 
@@ -235,7 +235,7 @@ end
 --- @opcode
 --! inline
 function HOST_UPDATE(vm)
-    local context = _STACK_GET(vm.mainStack)
+    local context = _STACK_GET(vm, vm.mainStack)
 
     local success, result = context:HOST_UPDATE()
     if not success then
@@ -243,17 +243,17 @@ function HOST_UPDATE(vm)
     elseif context.PLUME_CALLBACK then
         BEGIN_ACC(vm, 0, 0)
         for _, value in ipairs(context.PLUME_CALLBACK_ARGS or {}) do
-            _STACK_PUSH(vm.mainStack, value)
+            _STACK_PUSH(vm, vm.mainStack, value)
         end
 
-        _STACK_PUSH(vm.mainStack, context.PLUME_CALLBACK)
+        _STACK_PUSH(vm, vm.mainStack, context.PLUME_CALLBACK)
         
         _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
         _INJECTION_PUSH(vm, vm.plume.ops.HOST_NEXT,   0, 0)
         _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
     else
         _POP_CALLSTACK(vm)
-        _STACK_POP(vm.mainStack)
-        _STACK_PUSH(vm.mainStack, context.RETURN_VALUE or vm.empty)
+        _STACK_POP(vm, vm.mainStack)
+        _STACK_PUSH(vm, vm.mainStack, context.RETURN_VALUE or vm.empty)
     end
 end

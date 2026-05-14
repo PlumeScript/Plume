@@ -19,6 +19,7 @@ return function (plume)
 		TABLE_SET_META
 		TABLE_SET_ACC
 		TABLE_EXPAND
+		TABLE_INDEX_CHECK_IS_NIL
 
 		CALL_INDEX_REGISTER_SELF
 
@@ -324,7 +325,6 @@ return function (plume)
         return result
     end
 
-    local lfs = require "lfs"
 	function plume.normalizePath(path)
 	    if path:match("^/") or path:match("^[A-Za-z]:[/\\]") then 
 	        return path:gsub("\\", "/")

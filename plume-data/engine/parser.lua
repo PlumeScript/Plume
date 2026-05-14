@@ -9,8 +9,6 @@ return function (plume)
     local warningBuffer
 
     local function buildGrammar()
-        local lpeg = require "lpeg"
-
         local S, R, P, V, Cp = lpeg.S, lpeg.R, lpeg.P, lpeg.V, lpeg.Cp
 
         local function C(name, pattern)

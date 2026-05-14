@@ -27,9 +27,13 @@ local tree
 
 if debug then
 	tree = optimizer.loadCode([[
-do
-    mainStackPointer = mainStackPointer + 1
-    mainStack[mainStackPointer] = constants[arg2]
+if a then
+	local x
+	x = 5
+else
+	local x
+	x = 5
+	local y = 7
 end
 ]], false)
 else
@@ -37,27 +41,8 @@ else
 end
 
 -- printTable(tree)
-
-tree:traverse(optimizer.inlineRequire)
-tree:traverse(optimizer.renameRun)
-tree:traverse(optimizer.saveFunctionsToInline)
-tree:traverse(optimizer.inlineFunctions)
-tree:traverse(optimizer.applyInsertBefore)
-tree:traverse(optimizer.applyInsertExprs)
-tree:traverse(optimizer.inlineIndex)
-tree:traverse(optimizer.inlineIndex)
-tree:traverse(optimizer.inlineIndex)
-tree:traverse(optimizer.tolocal)
-
-optimizer.checkUselessFunctions()
-
-tree = optimizer.loadCode(beautifier(tree), false)
-for i=1, 5 do
-	tree:traverse(cleaner.constantFolding)
-end
-tree:traverse(cleaner.removeUselessDo)
-tree = optimizer.loadCode(beautifier(tree), false)
-cleaner.removeUselessGoto(tree)
+tree = optimizer.optimize(tree)
+tree = cleaner.clean(tree)
 
 local finalCode = beautifier(tree)
 if debug then

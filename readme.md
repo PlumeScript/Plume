@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-Sparrow_46-blue.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
+![Version](https://img.shields.io/badge/version-Sparrow_47-blue.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
 
 ## Introduction
 
@@ -122,6 +122,8 @@ Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking ch
 
 3 implmentations, from 2018 to 2026, from a scratchy home interpreter with AST manipulations to a custom WM, passing through a lua-transpilator.
 
+[Projet kaban](https://github.com/users/ErwanBarbedor/projects/2/views/1)
+
 ## Dependencies and Thanks
 
 This project stands on great open-source work:
@@ -131,4 +133,6 @@ This project stands on great open-source work:
 - **Lua File System** (Roberto Ierusalimschy et al.) [website](https://lunarmodules.github.io/luafilesystem)
 - **lua-parser** (@thenumbernine/Christopher Moore) - AST manipulation and code transformation tools used to inline the VM. [repo](https://github.com/thenumbernine/lua-parser)
 
-All theses dependencies are MIT licensed.
+*All theses dependencies are MIT licensed.*
+
+- **LuLPeg** (@pygy) - fallback for running in wasmoon. [repo](https://github.com/pygy/LuLPeg). Romantic license.

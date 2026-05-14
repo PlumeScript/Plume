@@ -12,11 +12,11 @@ Licensed under the MIT License — see LICENSE for details.
 --- @param arg2 variable offset
 --! inline
 function STORE_LOCAL (vm, arg1, arg2)
-    _STACK_SET_FRAMED(
+    _STACK_SET_FRAMED(vm, 
         vm.variableStack,
         arg2-1,
         -arg1,
-        _STACK_POP(vm.mainStack)
+        _STACK_POP(vm, vm.mainStack)
     )
 end
 
@@ -25,7 +25,7 @@ end
 --- Used to remove a value at stack top.
 --! inline
 function STORE_VOID (vm, arg1, arg2)
-    _STACK_POP(vm.mainStack)
+    _STACK_POP(vm, vm.mainStack)
 end
 
 --- @opcode
@@ -34,8 +34,8 @@ end
 --- @param arg1 Scope offset
 --! inline
 function STORE_REF (vm, arg1, arg2)
-    local key   = _STACK_POP(vm.mainStack)
-    local value = _STACK_POP(vm.mainStack)
+    local key   = _STACK_POP(vm, vm.mainStack)
+    local value = _STACK_POP(vm, vm.mainStack)
 
-    _STACK_SET(vm.mainStack, _GET_REF_POS(vm, key, arg1), value)
+    _STACK_SET(vm, vm.mainStack, _GET_REF_POS(vm, key, arg1), value)
 end

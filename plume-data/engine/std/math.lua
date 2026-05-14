@@ -31,7 +31,7 @@ plume.std.Math = plume.obj.quickTable{
         return true, math.atan(x)
     end),
     atan2 =  plume.obj.luaMacro("atan2", function (args)
-        --!signature number x
+        --!signature number x, number y
         return true, math.atan2(x, y)
     end),
     sinh =  plume.obj.luaMacro("sinh", function (args)

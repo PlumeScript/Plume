@@ -17,11 +17,11 @@ function LOAD_CONSTANT (vm, arg1, arg2)
 
     --! to-remove-begin
     if value == nil then
-        error("[VM] Try to load a nil value.")
+        _ERROR (vm, "[VM] Try to load a nil value.")
     end
     --! to-remove-end
 
-    _STACK_PUSH(vm.mainStack, value)
+    _STACK_PUSH(vm, vm.mainStack, value)
 end
 
 --- @opcode
@@ -30,9 +30,9 @@ end
 --- @param arg2 Variable offset
 --! inline
 function LOAD_LOCAL (vm, arg1, arg2)
-    _STACK_PUSH(
+    _STACK_PUSH(vm, 
         vm.mainStack,
-        _STACK_GET_FRAMED(vm.variableStack, arg2 - 1, -arg1)
+        _STACK_GET_FRAMED(vm, vm.variableStack, arg2 - 1, -arg1)
     )
 end
 
@@ -42,13 +42,13 @@ end
 --- @param arg1 Scope offset
 --! inline
 function LOAD_REF (vm, arg1, arg2)
-    local key = _STACK_POP(vm.mainStack)
+    local key = _STACK_POP(vm, vm.mainStack)
     local pos = _GET_REF_POS(vm, key, arg1)
 
     if pos then
-        _STACK_PUSH(vm.mainStack, _STACK_GET(vm.mainStack, pos))
+        _STACK_PUSH(vm, vm.mainStack, _STACK_GET(vm, vm.mainStack, pos))
     else
-        _STACK_PUSH(vm.mainStack, vm.plume.obj.empty)
+        _STACK_PUSH(vm, vm.mainStack, vm.plume.obj.empty)
     end
 end
 
@@ -56,19 +56,19 @@ end
 --- Stack 1, `true`
 --! inline
 function LOAD_TRUE (vm, arg1, arg2)
-    _STACK_PUSH(vm.mainStack, true)
+    _STACK_PUSH(vm, vm.mainStack, true)
 end
 
 --- @opcode
 --- Stack 1, `false`
 --! inline
 function LOAD_FALSE (vm, arg1, arg2)
-    _STACK_PUSH(vm.mainStack, false)
+    _STACK_PUSH(vm, vm.mainStack, false)
 end
 
 --- @opcode
 --- Stack 1, `empty`
 --! inline
 function LOAD_EMPTY (vm, arg1, arg2)
-    _STACK_PUSH(vm.mainStack, vm.empty)
+    _STACK_PUSH(vm, vm.mainStack, vm.empty)
 end

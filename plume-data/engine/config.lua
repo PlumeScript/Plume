@@ -9,7 +9,6 @@ return function(plume)
 	------------------------
     -- Instruction format --
     ------------------------
-    local bit = require("bit")
     plume.OP_BITS   = 7
     plume.ARG1_BITS = 5
     plume.ARG2_BITS = 20

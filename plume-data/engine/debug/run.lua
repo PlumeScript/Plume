@@ -70,7 +70,6 @@ return function (plume)
 			return 0
 		end
 
-		local bit   = require "bit"
 		local names =  plume.debug.invTable(plume.ops)
 
 		local result = {}

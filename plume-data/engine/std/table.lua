@@ -119,7 +119,7 @@ plume.std.Table = plume.obj.quickTable{
 
         return pcall(table.concat, args, sep)
     end),
-    removeKey = plume.obj.luaMacro("removeKey", function(args)
+    removeKey = plume.obj.luaMacro("removeKey", function(args, runtime, _, ip)
         --!signature table t, any key
         key = tonumber(key) or key
         local index = 0
@@ -128,6 +128,14 @@ plume.std.Table = plume.obj.quickTable{
                 index = k
                 break
             end
+        end
+
+        if index == 0 then
+            plume.warning.runtimeWarning(
+                string.format("The key `%s` doesn't exist. This will raise an error from edition Owl.", key),
+                "Check if key exists before removing it.",
+                runtime, ip, {614, 772}
+            )
         end
 
         t.table[key] = nil

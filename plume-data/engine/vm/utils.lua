@@ -33,7 +33,7 @@ function _ERROR (vm, msg)
         safeResult.keys = {"success", "result"}
         safeResult.table.success = false
         safeResult.table.result = msg
-        _STACK_PUSH(vm.mainStack, safeResult)
+        _STACK_PUSH(vm, vm.mainStack, safeResult)
     else
         vm.err = msg
     end
@@ -54,17 +54,17 @@ end
 --- @param offset number
 --! inline
 function _GET_REF_POS(vm, key, offset)
-    local frameOffset  = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-offset)
+    local frameOffset  = _STACK_GET(vm, vm.mainStack.frames, _STACK_POS(vm, vm.mainStack.frames)-offset)
     local frameTop
     if offset == 0 then
-        frameTop = _STACK_POS(vm.mainStack)
+        frameTop = _STACK_POS(vm, vm.mainStack)
     else
-        frameTop = _STACK_GET(vm.mainStack.frames, _STACK_POS(vm.mainStack.frames)-offset+1)
+        frameTop = _STACK_GET(vm, vm.mainStack.frames, _STACK_POS(vm, vm.mainStack.frames)-offset+1)
     end
 
     for i = frameTop, frameOffset, -1 do
         if vm.tagStack[i] == "key" then
-            if _STACK_GET(vm.mainStack, i) == key then
+            if _STACK_GET(vm, vm.mainStack, i) == key then
                 return i-1
             end
         end

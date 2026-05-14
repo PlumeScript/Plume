@@ -74,7 +74,10 @@ local shortcut = {
 }
 
 local function winCheckTerminalCapabilities()
-    local ffi = require("ffi")
+    local ffiLoaded, ffi = pcall(require, "ffi")
+    if not ffiLoaded then
+    	return false, false
+    end
 
     ffi.cdef[[
         typedef void* HANDLE;
