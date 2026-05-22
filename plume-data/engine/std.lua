@@ -2288,9 +2288,7 @@ return function(plume)
 				return true, self.value / 60
 			elseif key == "second" then
 				return true, self.value
-			end
-	
-			if not values[key] then
+			else
 				return false, string.format("Unregistered key '%s'", key)
 			end
 		end)
