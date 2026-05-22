@@ -151,7 +151,7 @@ plume.std.String = plume.obj.quickTable {
 			return true, false
 		end
 	end),
-	startsWidth = plume.obj.luaMacro("startsWidth", function (args)
+	startsWith = plume.obj.luaMacro("startsWith", function (args)
 		--!override-self-plume.std.String
 		--!signature string s, string pattern, ?rich
 		if not rich then
@@ -164,7 +164,7 @@ plume.std.String = plume.obj.quickTable {
 			return true, false
 		end
 	end),
-	endsWidth = plume.obj.luaMacro("endsWidth", function (args)
+	endsWith = plume.obj.luaMacro("endsWith", function (args)
 		--!override-self-plume.std.String
 		--!signature string s, string pattern, ?rich
 		if not rich then

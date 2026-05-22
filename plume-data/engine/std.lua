@@ -1421,10 +1421,10 @@ return function(plume)
 				return true, false
 			end
 		end),
-		startsWidth = plume.obj.luaMacro("startsWidth", function (args)
+		startsWith = plume.obj.luaMacro("startsWith", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			local __name      = "startsWidth"
-			local __signature = "`$startsWidth(string s, string pattern, ?rich)`"
+			local __name      = "startsWith"
+			local __signature = "`$startsWith(string s, string pattern, ?rich)`"
 			local __s, __e, self, s, pattern
 			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 			local rich
@@ -1444,10 +1444,10 @@ return function(plume)
 				return true, false
 			end
 		end),
-		endsWidth = plume.obj.luaMacro("endsWidth", function (args)
+		endsWith = plume.obj.luaMacro("endsWith", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			local __name      = "endsWidth"
-			local __signature = "`$endsWidth(string s, string pattern, ?rich)`"
+			local __name      = "endsWith"
+			local __signature = "`$endsWith(string s, string pattern, ?rich)`"
 			local __s, __e, self, s, pattern
 			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 			local rich
