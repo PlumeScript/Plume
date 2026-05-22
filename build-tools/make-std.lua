@@ -51,6 +51,7 @@ local function process(f)
 
 		local postionalArgsName = {}
 		local namedArgsName = {}
+		local variadicArgsCheck = {}
 		local optnPositionalArgs = {}
 		local optnPositionalArgsCount = 0
 		local allArgsName = {}
@@ -107,7 +108,9 @@ local function process(f)
 			end
 			
 			t = t:gsub('^%[', ''):gsub('^%(', '')
-			if not isVariadic then
+			if isVariadic then
+				variadicArgsCheck[n] = true
+			else
 				if isNamed then
 					table.insert(namedArgsName, n)
 					namedArgsName[n] = value
@@ -178,24 +181,31 @@ local function process(f)
 
 			local count = 0
 			for _, argName in ipairs(allArgsName) do
-				local checkArgName = argName
+				local checkArgName = '"'..argName..'"'
+				local checkArgVar  = argName
 				if not namedArgsName[argName] then
 					count = count + 1
-					checkArgName = count
+					checkArgName = '"'..count..'"'
 				end
 
 				local expected = argsType[argName]
 				if expected then
+					if variadicArgsCheck[argName] then
+						table.insert(checks, "for __i, __a in ipairs(args.table) do\n\t")
+						checkArgVar =  "__a"
+						checkArgName = "__i"
+					end
+
 					if expected:match('|') then
 						local first = true
-						table.insert(checks, string.format("if __s and %s then\n\t", argName))
+						table.insert(checks, string.format("if __s and %s then\n\t", checkArgVar))
 						for m in expected:gmatch('[^|]+') do
 							if not first then
 								table.insert(checks, "\tif not __s then\n\t\t")
 							end
 							table.insert(checks, string.format(
-							'__s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature)\n',
-								argName, argName, m, checkArgName
+							'__s, __e, %s = plume.stdCheckType(%s, "%s", %s, __name, __signature)\n',
+								checkArgVar, checkArgVar, m, checkArgName
 							))
 							if first then
 								first = false
@@ -206,9 +216,13 @@ local function process(f)
 						table.insert(checks, "end\n")
 					else
 						table.insert(checks, string.format(
-						'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", "%s", __name, __signature) end\n',
-							argName, argName, argName, expected, checkArgName
+						'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", %s, __name, __signature) end\n',
+							checkArgVar, checkArgVar, checkArgVar, expected, checkArgName
 						))
+					end
+
+					if variadicArgsCheck[argName] then
+						table.insert(checks, "end\n")
 					end
 				end
 			end
