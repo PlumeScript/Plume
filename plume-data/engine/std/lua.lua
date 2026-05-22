@@ -49,11 +49,11 @@ plume.std.repr = plume.obj.luaMacro("repr", function(args)
 end)
 
 plume.std.min = plume.obj.luaMacro("min", function(args)
-    --!signature (number ...numbers)
+    --!signature number ...numbers
     return true, math.min(unpack(args.table))
 end)
 plume.std.max = plume.obj.luaMacro("max", function(args)
-    --!signature (number ...numbers)
+    --!signature number ...numbers
     return true, math.max(unpack(args.table))
 end)
 

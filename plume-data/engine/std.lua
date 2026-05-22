@@ -124,6 +124,9 @@ return function(plume)
 	    local __signature = "`$min(number ...numbers)`"
 	    local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+	    for __i, __a in ipairs(args.table) do
+	    	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+	    end
 	    if not __s then return false, __e end
 	    ------------
 	    return true, math.min(unpack(args.table))
@@ -133,6 +136,9 @@ return function(plume)
 	    local __signature = "`$max(number ...numbers)`"
 	    local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+	    for __i, __a in ipairs(args.table) do
+	    	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+	    end
 	    if not __s then return false, __e end
 	    ------------
 	    return true, math.max(unpack(args.table))
@@ -1979,7 +1985,9 @@ return function(plume)
 	        local __signature = "`$sum(number ...numbers)`"
 	        local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and numbers then __s, __e, numbers = plume.stdCheckType(numbers, "number", "1", __name, __signature) end
+	        for __i, __a in ipairs(args.table) do
+	        	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+	        end
 	        if not __s then return false, __e end
 	        ------------
 	        local r = 0
