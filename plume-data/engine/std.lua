@@ -2455,7 +2455,7 @@ return function(plume)
 		if type(arg) == "table" and arg.type then
 			if expected ~= "table" and arg.subtype then
 				given = arg.subtype
-			elseif expected ~= "table" and arg.table.type then
+			elseif expected ~= "table" and arg.table and arg.table.type then
 				given = arg.table.type
 			else
 				given = arg.type
