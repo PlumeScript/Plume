@@ -209,6 +209,7 @@ Assume `let random = $Random()`.
 ### Time manipulation
 
 *   `Time.now()`: same as `Time.date(timestamp: currentTimestamp)`.
+*   `Time.sleep(duration)`: duration can be `number` or `duration`
 
 **Constructor**
 *   `Time.date(year: 1970, month: 1, day: 1, hour: 0, minute: 0, second: 0, zone:, locale:, timestamp: 0)`: Create a `Date` object. `zone` and `locale` default to context variables `timeZone` and `timeLocale`. Cannot use `timestamp` and `year, month, etc...` at the same time.

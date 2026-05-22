@@ -26,6 +26,11 @@ local function convert(t, v)
 	return true, r
 end
 
+local function sleep(s)
+	local t = os.clock()
+	while os.clock() - t <= s do end
+end
+
 local ddadd = plume.obj.luaMacro("add", function(args)
 	local x = args.table[1]
 	local y = args.table[2]
@@ -338,5 +343,15 @@ plume.std.Time = plume.obj.quickTable{
 	SECOND = ignoreSuccess(createDuration(1)),
 	MINUTE = ignoreSuccess(createDuration(60)),
 	DAY    = ignoreSuccess(createDuration(86400)),
-	WEEK   = ignoreSuccess(createDuration(604800))
+	WEEK   = ignoreSuccess(createDuration(604800)),
+
+	sleep =  plume.obj.luaMacro("sleep", function (args)
+		--!signature number|Duration s
+		if type(s) == "table" then
+			s = s.value
+		end
+
+		sleep(s)
+		return true
+	end)
 }

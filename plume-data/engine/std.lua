@@ -2037,6 +2037,11 @@ return function(plume)
 		return true, r
 	end
 	
+	local function sleep(s)
+		local t = os.clock()
+		while os.clock() - t <= s do end
+	end
+	
 	local ddadd = plume.obj.luaMacro("add", function (args)
 		local x = args.table[1]
 		local y = args.table[2]
@@ -2385,7 +2390,29 @@ return function(plume)
 		SECOND = ignoreSuccess(createDuration(1)),
 		MINUTE = ignoreSuccess(createDuration(60)),
 		DAY    = ignoreSuccess(createDuration(86400)),
-		WEEK   = ignoreSuccess(createDuration(604800))
+		WEEK   = ignoreSuccess(createDuration(604800)),
+	
+		sleep =  plume.obj.luaMacro("sleep", function (args)
+			local __name      = "sleep"
+			local __signature = "`$sleep(number|Duration s)`"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and s then
+				__s, __e, s = plume.stdCheckType(s, "number", "1", __name, __signature)
+				if not __s then
+					__s, __e, s = plume.stdCheckType(s, "Duration", "1", __name, __signature)
+				end
+			end
+			if not __s then return false, __e end
+			------------
+			if type(s) == "table" then
+				s = s.value
+			end
+	
+			sleep(s)
+			return true
+		end)
 	}
 	
 	
@@ -2430,6 +2457,8 @@ return function(plume)
 		if type(arg) == "table" and arg.type then
 			if expected ~= "table" and arg.subtype then
 				given = arg.subtype
+			elseif expected ~= "table" and arg.table.type then
+				given = arg.table.type
 			else
 				given = arg.type
 			end
