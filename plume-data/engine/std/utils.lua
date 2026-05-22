@@ -46,6 +46,8 @@ function plume.stdCheckType(arg, expected, argName, name, signature)
 	if type(arg) == "table" and arg.type then
 		if expected ~= "table" and arg.subtype then
 			given = arg.subtype
+		elseif expected ~= "table" and arg.table.type then
+			given = arg.table.type
 		else
 			given = arg.type
 		end
