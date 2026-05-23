@@ -124,6 +124,9 @@ return function(plume)
 	    local __signature = "`$min(number ...numbers)`"
 	    local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+	    for __i, __a in ipairs(args.table) do
+	    	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+	    end
 	    if not __s then return false, __e end
 	    ------------
 	    return true, math.min(unpack(args.table))
@@ -133,6 +136,9 @@ return function(plume)
 	    local __signature = "`$max(number ...numbers)`"
 	    local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+	    for __i, __a in ipairs(args.table) do
+	    	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+	    end
 	    if not __s then return false, __e end
 	    ------------
 	    return true, math.max(unpack(args.table))
@@ -667,6 +673,26 @@ return function(plume)
 		return true
 	end
 	
+	local function rmdir(path)
+		for child in lfs.dir(path) do
+			if child ~= "." and child ~= ".." then
+				child = path .. "/" .. child
+				local attr = lfs.attributes(child)
+				local success, result
+				
+				if attr.mode == "directory" then
+					success, result = rmdir(child)
+				else
+					success, result = os.remove(child)
+				end
+				if not success then
+					return success, result
+				end
+			end
+		end
+		return lfs.rmdir(path)
+	end
+	
 	local function makePath(path)
 		if not lfsLoaded then
 			return false, "Cannot load lfs"
@@ -749,7 +775,7 @@ return function(plume)
 				if attr.mode == "file" then
 					return os.remove(path)
 				else
-					return lfs.rmdir(path)
+					return rmdir(path)
 				end
 	
 			end),
@@ -1401,10 +1427,10 @@ return function(plume)
 				return true, false
 			end
 		end),
-		startsWidth = plume.obj.luaMacro("startsWidth", function (args)
+		startsWith = plume.obj.luaMacro("startsWith", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			local __name      = "startsWidth"
-			local __signature = "`$startsWidth(string s, string pattern, ?rich)`"
+			local __name      = "startsWith"
+			local __signature = "`$startsWith(string s, string pattern, ?rich)`"
 			local __s, __e, self, s, pattern
 			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 			local rich
@@ -1424,10 +1450,10 @@ return function(plume)
 				return true, false
 			end
 		end),
-		endsWidth = plume.obj.luaMacro("endsWidth", function (args)
+		endsWith = plume.obj.luaMacro("endsWith", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
-			local __name      = "endsWidth"
-			local __signature = "`$endsWidth(string s, string pattern, ?rich)`"
+			local __name      = "endsWith"
+			local __signature = "`$endsWith(string s, string pattern, ?rich)`"
 			local __s, __e, self, s, pattern
 			__s, __e, s, pattern = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 			local rich
@@ -1959,7 +1985,9 @@ return function(plume)
 	        local __signature = "`$sum(number ...numbers)`"
 	        local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and numbers then __s, __e, numbers = plume.stdCheckType(numbers, "number", "1", __name, __signature) end
+	        for __i, __a in ipairs(args.table) do
+	        	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+	        end
 	        if not __s then return false, __e end
 	        ------------
 	        local r = 0
@@ -2007,6 +2035,11 @@ return function(plume)
 		end
 	
 		return true, r
+	end
+	
+	local function sleep(s)
+		local t = os.clock()
+		while os.clock() - t <= s do end
 	end
 	
 	local ddadd = plume.obj.luaMacro("add", function (args)
@@ -2255,9 +2288,7 @@ return function(plume)
 				return true, self.value / 60
 			elseif key == "second" then
 				return true, self.value
-			end
-	
-			if not values[key] then
+			else
 				return false, string.format("Unregistered key '%s'", key)
 			end
 		end)
@@ -2357,7 +2388,29 @@ return function(plume)
 		SECOND = ignoreSuccess(createDuration(1)),
 		MINUTE = ignoreSuccess(createDuration(60)),
 		DAY    = ignoreSuccess(createDuration(86400)),
-		WEEK   = ignoreSuccess(createDuration(604800))
+		WEEK   = ignoreSuccess(createDuration(604800)),
+	
+		sleep =  plume.obj.luaMacro("sleep", function (args)
+			local __name      = "sleep"
+			local __signature = "`$sleep(number|Duration s)`"
+			local __s, __e, self, s
+			__s, __e, s = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and s then
+				__s, __e, s = plume.stdCheckType(s, "number", "1", __name, __signature)
+				if not __s then
+					__s, __e, s = plume.stdCheckType(s, "Duration", "1", __name, __signature)
+				end
+			end
+			if not __s then return false, __e end
+			------------
+			if type(s) == "table" then
+				s = s.value
+			end
+	
+			sleep(s)
+			return true
+		end)
 	}
 	
 	
@@ -2402,6 +2455,8 @@ return function(plume)
 		if type(arg) == "table" and arg.type then
 			if expected ~= "table" and arg.subtype then
 				given = arg.subtype
+			elseif expected ~= "table" and arg.table and arg.table.type then
+				given = arg.table.type
 			else
 				given = arg.type
 			end

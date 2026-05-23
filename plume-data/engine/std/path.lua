@@ -30,6 +30,26 @@ local function mkdirs(path, isFile)
 	return true
 end
 
+local function rmdir(path)
+	for child in lfs.dir(path) do
+		if child ~= "." and child ~= ".." then
+			child = path .. "/" .. child
+			local attr = lfs.attributes(child)
+			local success, result
+			
+			if attr.mode == "directory" then
+				success, result = rmdir(child)
+			else
+				success, result = os.remove(child)
+			end
+			if not success then
+				return success, result
+			end
+		end
+	end
+	return lfs.rmdir(path)
+end
+
 local function makePath(path)
 	if not lfsLoaded then
 		return false, "Cannot load lfs"
@@ -87,7 +107,7 @@ local function makePath(path)
 			if attr.mode == "file" then
 				return os.remove(path)
 			else
-				return lfs.rmdir(path)
+				return rmdir(path)
 			end
 
 		end),
