@@ -686,7 +686,7 @@ macro Vect(x, y)
     end
 end
     
-with locale: none
+with (locale: none)
     let A = $Vect(1, 0.5) 
     let B = $Vect(7, 0.5)
     $(A+B)
@@ -736,7 +736,7 @@ run $quill()
 
 /// Test #597-1
 macro wing
-   with x: y
+   with (x: y)
    end
 end
 
@@ -759,10 +759,10 @@ a
 /// End
 
 /// Test #617
-with wing: 1
+with (wing: 1)
     - a
 end
-with wing: 1
+with (wing: 1)
     - b
 end
 /// Error
@@ -774,8 +774,8 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    3 │end                                                                      │
-│    4 │with wing: 1                                                             │
-│      │^^^^^^^^^^^^                                                             │
+│    4 │with (wing: 1)                                                           │
+│      │^^^^^^^^^^^^^^                                                           │
 │    5 │    - b                                                                  │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -871,7 +871,7 @@ if "a"
 elseif "big"
     \s
 else
-    with a: 5
+    with (a: 5)
         - wing
     end
 end
@@ -960,7 +960,7 @@ $Wing()
 /// Test #734-1
 let nib = macro ()
 end
-with wing:5
+with (wing:5)
   $nib()
 end
 a
@@ -982,7 +982,7 @@ a
 /// Test #737-1
 let result
 
-with wing: 5
+with (wing: 5)
     set result = $Table()
 end
 $result

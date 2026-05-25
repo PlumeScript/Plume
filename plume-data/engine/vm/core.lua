@@ -98,6 +98,8 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.runtime.localStack.pointer = 0
     vm.contextStack         = table.new(2^8, 0)
     vm.contextStack.pointer = 0
+    vm.contextStackCache         = table.new(2^8, 0)
+    vm.contextStackCache.pointer = 0
 
     -- flag
     vm.flag = {}

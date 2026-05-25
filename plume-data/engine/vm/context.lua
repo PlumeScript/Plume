@@ -15,9 +15,25 @@ end
 --- @opcode
 --! inline
 function PUSH_CONTEXT(vm, arg1, arg2)
-    local value = _STACK_POP(vm, vm.mainStack)
-    local name  = _STACK_POP(vm, vm.mainStack)
-    _STACK_PUSH(vm, vm.contextStack, {name=name, value=value})
+    local values = _STACK_POP(vm, vm.mainStack)
+
+    local cache = {}
+    _STACK_PUSH(vm, vm.contextStackCache, cache)
+    -- add: check if is a table
+    for _, var in ipairs(values.keys) do
+        local value = values.table[var]
+        var:push(value)
+        table.insert(cache, var)
+    end
+end
+
+--- @opcode
+--! inline
+function POP_CONTEXT(vm, arg1, arg2)
+    local cache = _STACK_POP(vm, vm.contextStackCache)
+    for _, var in ipairs(cache) do
+        var:pop()
+    end
 end
 
 --! inline
@@ -50,8 +66,3 @@ function LOAD_CONTEXT(vm, arg1, arg2)
     _STACK_PUSH(vm, vm.mainStack, _LOAD_CONTEXT(vm, name, false, default))
 end
 
---- @opcode
---! inline
-function POP_CONTEXT(vm, arg1, arg2)
-    _STACK_POP(vm, vm.contextStack)
-end

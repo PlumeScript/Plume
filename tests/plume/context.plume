@@ -1,33 +1,25 @@
 /// Test simple context
-with locale: fr
-  Voici un nombre: $(6543.56)
+let context wing
+with ($wing: blue)
+  $wing()
 end
 /// Output
-Voici un nombre: 6 543,56
+blue
 /// End
 
 /// Test nested context
-with locale: fr
-  with locale: en
-    Here is a number: $(6543.56)
+let context wing
+with ($wing: blue)
+  with ($wing: red)
+    $wing()
   end
 end
 /// Output
-Here is a number: 6,543.56
-/// End
-
-/// Test default context 1
-with locale: fr
-  with locale: none
-    Voici un nombre: $(6543.56)
-  end
-end
-/// Output
-Voici un nombre: 6543.56
+red
 /// End
 
 /// Test context from file
-with locale: fr
+with (locale: fr)
   $import(tests/plume/toimport/numbers)
 end
 /// Output
@@ -44,13 +36,13 @@ Voici un nombre: 6 543,56
 
 /// Test read context
 let context locale
-$locale\n
-with locale: fr
-  $locale\n
-  with locale: en
-    $locale\n
+$locale(\n
+with ($locale: fr)
+  $locale(\n
+  with ($locale: en)
+    $locale(\n
   end
-  $locale
+  $locale()
 end
 /// Output
 fr
@@ -70,9 +62,10 @@ fr
 /// End
 
 /// Test context block 1
+let context wing
 let t = do
   - item 1
-  - with locale: fr
+  - with ($wing: red)
     item 2
   end
 end

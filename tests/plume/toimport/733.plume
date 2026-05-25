@@ -1,5 +1,5 @@
 let context a = 1
 
 Wing: macro()
-	$a
+	$a()
 end

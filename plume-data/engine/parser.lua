@@ -425,7 +425,12 @@ return function (plume)
                   + Ct("RAW", os * K"raw"   *  C("TEXT", (P"\n"+-1) * (P(1)-P"end")^0)   * (P"end"   + E(plume.error.missingEnd, -P(1))))
 
         local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
-        local with = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
+        local oldwith = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
+
+        local with = Ct('WITH',
+        K"with" * os * Ct("PARAMLIST", inlinetable + eval)
+            * body
+        * _end)
 
         -- Warning
         local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") / function(x)
