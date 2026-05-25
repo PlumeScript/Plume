@@ -428,9 +428,17 @@ return function (plume)
         local oldwith = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
 
         local with = Ct('WITH',
-        K"with" * os * Ct("PARAMLIST", inlinetable + eval)
-            * body
-        * _end)
+        K"with" * os * (
+            Ct("PARAMLIST", inlinetable + eval)
+            --- Will be removed in edition Owl #614, #817
+            + Ct("OLD_PARAMLIST", with_param * (os * P"," * os * with_param)^0) / function(x)
+                x.warning = "From edition 'Owl', `with` will only accept `INLINE_LIST`."
+                x.warningHint = "Write `with (a: b)` instead of `with a: b`."
+                x.issues = {614, 817}
+                return x
+            end
+            ---------------------------------------------
+        ) * body * _end)
 
         -- Warning
         local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") / function(x)

@@ -21,6 +21,16 @@ return function (plume, context, nodeHandlerTable)
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
 			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
+		--- Will be removed in edition Owl #614, #817
+		elseif var.isContext then
+			context.registerOP(node, plume.ops.BEGIN_ACC)
+			if var.isUpvalue then 
+				context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
+			else
+				context.registerOP(node, plume.ops.LOAD_LOCAL, 0, var.offset)
+			end
+			context.registerOP(node, plume.ops.CONCAT_CALL)
+		---------------------------------------------
 		elseif var.isUpvalue then
 			context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
 		elseif var.isStd then
@@ -154,6 +164,10 @@ return function (plume, context, nodeHandlerTable)
 					context.registerOP(var.ref, plume.ops.LOAD_EMPTY, 0, 0)
 					context.registerOP(var.ref, plume.ops.CREATE_CONTEXT, 0, 0)
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
+					--- Will be removed in edition Owl #614, #817
+					context.registerOP(var.ref, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.key))
+					context.registerOP(var.ref, plume.ops.COMPAT_CONTEXT_GLOBAL_CACHE, 0, var.offset)
+					----------------------------------------------
 				end
 			end
 
@@ -244,6 +258,10 @@ return function (plume, context, nodeHandlerTable)
 				elseif isContext then
 					context.registerOP(var.ref, plume.ops.CREATE_CONTEXT, 0, 0)
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
+					--- Will be removed in edition Owl #614, #817
+					context.registerOP(var.ref, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.key))
+					context.registerOP(var.ref, plume.ops.COMPAT_CONTEXT_GLOBAL_CACHE, 0, var.offset)
+					----------------------------------------------
 				else
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
 				end
