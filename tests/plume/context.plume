@@ -19,7 +19,7 @@ red
 /// End
 
 /// Test context from file
-with (locale: fr)
+with ($plume.locale: fr)
   $import(tests/plume/toimport/numbers)
 end
 /// Output
@@ -36,11 +36,11 @@ Voici un nombre: 6 543,56
 
 /// Test read context
 let context locale
-$locale(\n
+$locale()\n
 with ($locale: fr)
-  $locale(\n
+  $locale()\n
   with ($locale: en)
-    $locale(\n
+    $locale()\n
   end
   $locale()
 end

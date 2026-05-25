@@ -112,7 +112,7 @@ $(5325423.55875).format(%s, locale: custom, decimalSeparator: ??, thousandsSepar
 /// End
 
 /// Test local context 1
-with locale: custom, localeDecimalSeparator: ??, localeThousandsSeparator:--
+with ($plume.locale: custom, $plume.localeDecimalSeparator: ??, $plume.localeThousandsSeparator:--)
   Here is a number: $(5325423.55875)
 end
 /// Output
@@ -120,7 +120,7 @@ Here is a number: 5--325--423??55875
 /// End
 
 /// Test local context 2
-with locale: custom, localeNumberFormat: <%020d>
+with ($plume.locale: custom, $plume.localeNumberFormat: <%020d>)
   Here is a number: $(5325423.55875)
 end
 /// Output
