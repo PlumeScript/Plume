@@ -34,3 +34,11 @@ User-defined `getindex` metamacro that returns `empty` will raise an index error
 ## `#772` Table.removeKey should raise an error if key is missing
 
 Check if the key exists before calling `Table.removeKey`. 
+
+## `#801` context rework
+
+*	Context are now full variables instead of keys.
+*	Write `with ($x: 5)` instead of `with x: 5`.
+*	Write `with ($plume.locale: fr)` instead of `with locale: fr`
+*	Write `let context x;...;$x()` instead of `let context x;...;$x`
+*	`use #context` only works for `plume.*` context variables.
