@@ -127,6 +127,22 @@ return function(plume)
 		}
 	end
 
+	function plume.obj.context(default)
+		return {
+			values = {default},
+			push = function(self, value)
+				table.append(self.values, self.value)
+			end,
+			pop = function(self)
+				table.remove(self.values)
+			end,
+			get = function(self)
+				return self.values[#self.values]
+			end,
+			type = "context"
+		}
+	end
+
 	local function toint(x)
 		local n = tonumber(x)
 		return n and n == math.floor(n) and n

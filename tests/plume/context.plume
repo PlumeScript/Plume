@@ -16,7 +16,7 @@ end
 Here is a number: 6,543.56
 /// End
 
-/// Test default context
+/// Test default context 1
 with locale: fr
   with locale: none
     Voici un nombre: $(6543.56)
@@ -81,10 +81,10 @@ $repr($t)
 (item 1, item 2)
 /// End
 
-/// Test default context
+/// Test default context 2
 let context x = 5
 
-$x
+$x()
 /// Output
 5
 /// End

@@ -931,7 +931,7 @@ end
 /// Test #731
 use #context(a: 1)
 let context a
-$type($a)
+$type($a())
 /// Output
 number
 /// End
@@ -940,7 +940,7 @@ number
 let context var = 1
 
 macro Wing()
-    $var
+    $var()
 end
 
 $Wing()
