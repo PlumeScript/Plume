@@ -269,6 +269,10 @@ return function(plume)
 	
 	plume.std.attempt = plume.obj.table(0, 0)
 	
+	plume.std.Context = plume.obj.luaMacro("Context", function(args)
+	    return true, plume.obj.context(args.table[1])
+	end)
+	
 	plume.std.Math = plume.obj.quickTable{
 	    sin = plume.obj.luaMacro("sin", function (args)
 	        local __name      = "sin"

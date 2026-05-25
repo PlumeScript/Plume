@@ -735,7 +735,7 @@ run $quill()
 /// End
 
 /// Test #597-1
-let context x
+let x = $Context()
 macro wing
    with ($x: y)
    end
@@ -931,7 +931,7 @@ end
 
 
 /// Test #733-1
-let context var = 1
+let var = $Context(1)
 
 macro Wing()
     $var()
@@ -952,7 +952,7 @@ $Wing()
 
 
 /// Test #734-1
-let context wing
+let wing = $Context()
 let nib = macro ()
 end
 with ($wing:5)
@@ -976,7 +976,7 @@ a
 
 /// Test #737-1
 let result
-let context wing
+let wing = $Context()
 with ($wing: 5)
     set result = $Table()
 end

@@ -142,7 +142,7 @@ return function(plume)
 				table.remove(self.values)
 			end,
 			get = function(self)
-				return self.values[#self.values]
+				return self.values[#self.values] or plume.obj.empty
 			end,
 			type = "context"
 		}

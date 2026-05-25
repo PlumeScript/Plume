@@ -1,5 +1,5 @@
 /// Test simple context
-let context wing
+let wing = $Context()
 with ($wing: blue)
   $wing()
 end
@@ -8,7 +8,7 @@ blue
 /// End
 
 /// Test nested context
-let context wing
+let wing = $Context()
 with ($wing: blue)
   with ($wing: red)
     $wing()
@@ -35,7 +35,7 @@ Voici un nombre: 6 543,56
 
 
 /// Test read context
-let context locale
+let locale = $Context()
 $locale()\n
 with ($locale: fr)
   $locale()\n
@@ -61,7 +61,7 @@ fr
 /// End
 
 /// Test context block 1
-let context wing
+let wing  = $Context()
 let t = do
   - item 1
   - with ($wing: red)
@@ -74,58 +74,9 @@ $repr($t)
 /// End
 
 /// Test default context 2
-let context x = 5
+let x = $Context(5)
 
 $x()
 /// Output
 5
-/// End
-
-/// Test cannot use context with const
-let const context locale
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Variable cannot be both const and context                                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let const context locale                                                 │
-│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test cannot use context with param
-let param context locale
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Variable cannot be both const and context                                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let param context locale                                                 │
-│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test cannot set context
-let context locale
-set locale = 5
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot set variable 'locale', it is a context variable. Use `with            │
-│   locale: 5` instead.                                                          │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let context locale                                                       │
-│    2 │set locale = 5                                                           │
-│      │^^^^^^^^^^^^^^                                                           │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-
 /// End

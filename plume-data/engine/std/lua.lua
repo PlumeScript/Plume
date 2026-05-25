@@ -153,3 +153,7 @@ plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runt
 end)
 
 plume.std.attempt = plume.obj.table(0, 0)
+
+plume.std.Context = plume.obj.luaMacro("Context", function(args)
+    return true, plume.obj.context(args.table[1])
+end)

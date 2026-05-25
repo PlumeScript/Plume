@@ -365,7 +365,16 @@ return function (plume)
         local lbodynlb = Ct("BODY", V"firstStatementNLB")
         local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
                        + C("MUL", P"*") + C("DIV", P"/"))
-        local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1 * (s * C("CONTEXT", K"context"))^-1
+        local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1 
+             --- Will be removed in edition Owl #614, #817
+            * (s * C("CONTEXT", K"context")/ function(x)
+                x.warning = "From edition 'Owl', `context` keyword will be removed."
+                x.warningHint = "Write `let x = $Context()` instead of `let context x`."
+                x.issues = {614, 818}
+                return x
+            end
+                )^-1
+        --------------------------------------------------
         
 
         --- Common identifier
