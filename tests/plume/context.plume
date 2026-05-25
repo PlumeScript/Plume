@@ -52,9 +52,8 @@ fr
 
 /// Test context & closure
 use #context(locale: fr)
-let context locale
 macro Wing()
-  $locale
+  $plume.locale()
 end
 $Wing()
 /// Output

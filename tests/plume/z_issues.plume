@@ -929,13 +929,6 @@ end
 12
 /// End
 
-/// Test #731
-use #context(a: 1)
-let context a
-$type($a())
-/// Output
-number
-/// End
 
 /// Test #733-1
 let context var = 1
