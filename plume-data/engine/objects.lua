@@ -131,7 +131,7 @@ return function(plume)
 		return {
 			values = {default},
 			push = function(self, value)
-				table.append(self.values, self.value)
+				table.insert(self.values, value)
 			end,
 			pop = function(self)
 				table.remove(self.values)
