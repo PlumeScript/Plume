@@ -21,15 +21,6 @@ return function (plume, context, nodeHandlerTable)
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
 			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
-		elseif var.isContext then
-			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(varName))
-			-- default value
-			if var.isUpvalue then 
-				context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
-			else
-				context.registerOP(node, plume.ops.LOAD_LOCAL, var.frameOffset, var.offset)
-			end
-			context.registerOP(node, plume.ops.LOAD_CONTEXT)
 		elseif var.isUpvalue then
 			context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
 		elseif var.isStd then
@@ -158,6 +149,14 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isContext boolean True if a bind to context
 	local function generateAssignmentBytecode(node, varlist, body, isLet, isParam, isFrom, compound, isBodyStacked, isContext)
 		if not (body or isBodyStacked) then
+			if isContext then
+				for _, var in ipairs(varlist) do
+					context.registerOP(var.ref, plume.ops.LOAD_EMPTY, 0, 0)
+					context.registerOP(var.ref, plume.ops.CREATE_CONTEXT, 0, 0)
+					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
+				end
+			end
+
 			return
 		end
 
@@ -171,7 +170,7 @@ return function (plume, context, nodeHandlerTable)
 		if not compound and not isBodyStacked then
 			context.scope(context.accBlock())(body)
 		end
-			
+		
 		for i, var in ipairs(varlist) do
 			local uid = context.getUID()
 
@@ -242,6 +241,9 @@ return function (plume, context, nodeHandlerTable)
 					context.registerOP(node, plume.ops.STORE_UPVALUE, 0, var.offset)
 				elseif not isLet and var.frameOffset > 0 then
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, var.frameOffset, var.offset)
+				elseif isContext then
+					context.registerOP(var.ref, plume.ops.CREATE_CONTEXT, 0, 0)
+					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
 				else
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
 				end
