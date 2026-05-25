@@ -98,9 +98,12 @@ return function (plume, context)
     end
 
     -- Chekc for warnings emmited during parsing
-    function context.checkForWarnings(node)
+    function context.checkForWarnings(node, rec)
     	if node.warning then
             plume.warning.throwWarning(node.warning, node.warningHint, node, node.issues)
     	end
+    	for _, child in ipairs(node.children or {}) do
+	    	context.checkForWarnings(child, false)
+	    end
     end
 end
