@@ -80,7 +80,7 @@ function plume.execute(code, filename, chunk, runtime, fileParams)
 	end
 end
 
-function plume.executeString(code, filename, runtime, fileParams, args)
+function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 	-- Should be associated with a runtime
 	if args then
 		plume.config = plume.config or {}
@@ -92,13 +92,13 @@ function plume.executeString(code, filename, runtime, fileParams, args)
 	local chunk   = plume.obj.macro(filename, runtime)
 
 	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)
-	if success then
+	if success and isMain then
 		plume.error.showWarnings()
 	end
 	return success, result
 end
 
-function plume.executeFile(filename, runtime, fileParams, args)
+function plume.executeFile(filename, runtime, fileParams, args, isMain)
 	filename = plume.normalizePath(filename)
 
 	local f = io.open(filename)
@@ -109,7 +109,7 @@ function plume.executeFile(filename, runtime, fileParams, args)
 		local code = f:read("*a")
 	f:close()
 
-	return plume.executeString(code, filename, runtime, fileParams, args)
+	return plume.executeString(code, filename, runtime, fileParams, args, isMain)
 end
 
 plume.hook = nil -- A function call at each step of the vm
