@@ -102,8 +102,10 @@ return function (plume, context)
     	if node.warning then
             plume.warning.throwWarning(node.warning, node.warningHint, node, node.issues)
     	end
-    	for _, child in ipairs(node.children or {}) do
-	    	context.checkForWarnings(child, false)
-	    end
+    	if rec then
+	    	for _, child in ipairs(node.children or {}) do
+		    	context.checkForWarnings(child, false)
+		    end
+		end
     end
 end
