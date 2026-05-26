@@ -12,17 +12,21 @@ function CREATE_CONTEXT(vm, arg1, arg2)
     _STACK_PUSH(vm, vm.mainStack, vm.plume.obj.context(defaultValue))
 end
 
+--- Will be removed in edition Owl #614, #817
 --- @opcode
 --! inline
 function COMPAT_CONTEXT_GLOBAL_CACHE(vm, arg1, arg2)
+
     local offset = arg2
     local name   = _STACK_POP(vm, vm.mainStack)
+    
     if vm.globalStackCache[name] then
         _STACK_SET(vm, vm.variableStack, offset, vm.globalStackCache[name])
     else  
         vm.globalStackCache[name] = _STACK_GET(vm, vm.variableStack, offset)
     end
 end
+---------------------------------------------
 
 --- @opcode
 --! inline

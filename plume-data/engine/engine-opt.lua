@@ -53,7 +53,7 @@ return function (plume)
         empty = plume.obj.empty
         runtime.localStack = table.new (2 ^ 8, 0)
         runtime.localStack.pointer = 0
-        local globalStackCache = table.new (0, 2 ^ 8)
+        globalStackCache = globalStackCache or table.new (0, 2 ^ 8)
         local contextStackCache = table.new (2 ^ 8, 0)
         contextStackCache.pointer = 0
         local flag = {}

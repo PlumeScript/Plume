@@ -126,10 +126,13 @@ return function (plume, context, nodeHandlerTable)
 				for name, value in pairs(args) do
 					local var = context.runtime.plume.table[name]
 					if not var then
-						plume.error.wrongDirectiveArgs(node, "context", name, checkArgs)
+						-- plume.error.wrongDirectiveArgs(node, "context", name, checkArgs)
+						--- Will be removed in edition Owl #614, #817
+						plume.warning.throwWarning("From edition `Owl`, this will lead to an error.", "`use #context` support only `plume.*` variables.", node, {614, 801})
+						var = name
+						---------------------------------------------
 					end
 					t[var] = value
-					print(var, value)
 				end
 
 				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(plume.obj.quickTable(t)))
