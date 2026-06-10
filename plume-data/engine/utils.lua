@@ -284,16 +284,10 @@ return function (plume)
 	end
 
 	function plume.checkIdentifier(node, identifier)
-		for kw in ('if then elseif else while for do macro let set const param use raw run ref with'):gmatch('%S+') do
+		for kw in ('if then elseif else while for do macro let set const param use raw run ref with raise'):gmatch('%S+') do
 			if identifier == kw then
 				plume.error.wrongIdentifier(node, identifier)
 			end
-		end
-
-		if identifier == "raise" then
-			plume.warning.throwWarning(
-				"Using `raise` as an identifier is deprecated, since it is now a keyword.\nThis will cause an error from edition 'Owl'.", nil, node, {185, 614, 742}
-			)
 		end
 	end
 
