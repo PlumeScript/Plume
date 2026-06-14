@@ -112,11 +112,7 @@ plume.std.Table = plume.obj.quickTable{
         end
 
         if index == 0 then
-            plume.warning.runtimeWarning(
-                string.format("The key `%s` doesn't exist. This will raise an error from edition Owl.", key),
-                "Check if key exists before removing it.",
-                runtime, ip, {614, 772}
-            )
+            return false, plume.error.cannotRemoveNotfoundKey(key)
         end
 
         t.table[key] = nil
