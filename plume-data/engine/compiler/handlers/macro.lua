@@ -44,6 +44,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.upvalueMap = {}
 		macroObj.node = node
 		macroObj.doc  = doc
+		macroObj.contextToClose = 0
 		table.insert(context.macros, macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
@@ -167,6 +168,13 @@ return function (plume, context, nodeHandlerTable)
 
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
+		
+		if macro then
+			for _=1, macro.contextToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+		end
+
 		local uid = macro and macro.uid
 		if uid then
 			context.registerGoto(node, "macro_body_end_" .. uid)
