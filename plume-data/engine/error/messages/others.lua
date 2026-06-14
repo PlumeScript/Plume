@@ -48,4 +48,13 @@ return function(plume)
 	function plume.error.cannotUseMetaKey()
 		return "Cannot use a meta key for a macro named argument."
 	end
+
+	function plume.error.wrongContextType(var)
+		local t = type(var)
+		if t == "table" then
+			t = var.type
+		end
+
+		return string.format("Cannot use a '%s' as contextual variable. Use `$Context()` to create one.", t)
+	end
 end

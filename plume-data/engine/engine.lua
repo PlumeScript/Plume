@@ -306,27 +306,27 @@ return function (plume)
 									if op < 65 then
 										CREATE_CONTEXT(vm, arg1, arg2)
 									else
-										COMPAT_CONTEXT_GLOBAL_CACHE(vm, arg1, arg2)
+										HOST_UPDATE(vm, arg1, arg2)
 									end
 								else
 									if op < 67 then
-										HOST_UPDATE(vm, arg1, arg2)
-									else
 										HOST_NEXT(vm, arg1, arg2)
+									else
+										RAISE(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
-										RAISE(vm, arg1, arg2)
-									else
 										goto END
+									else
+										STD_LEN(vm, arg1, arg2)
 									end
 								else
 									if op < 71 then
-										STD_LEN(vm, arg1, arg2)
-									else
 										STD_TYPE(vm, arg1, arg2)
+									else
+										STD_SEQ(vm, arg1, arg2)
 									end
 								end
 							end
@@ -334,14 +334,12 @@ return function (plume)
 							if op < 76 then
 								if op < 74 then
 									if op < 73 then
-										STD_SEQ(vm, arg1, arg2)
-									else
 										STD_ITEMS(vm, arg1, arg2)
+									else
+										STD_ENUMERATE(vm, arg1, arg2)
 									end
 								else
 									if op < 75 then
-										STD_ENUMERATE(vm, arg1, arg2)
-									else
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

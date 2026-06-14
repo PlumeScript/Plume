@@ -215,9 +215,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### CREATE_CONTEXT
 
 
-#### COMPAT_CONTEXT_GLOBAL_CACHE
-
-
 #### PUSH_CONTEXT
 
 

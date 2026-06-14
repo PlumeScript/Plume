@@ -39,24 +39,8 @@ return function (plume, context, nodeHandlerTable)
 		local body   = plume.ast.get(node, "BODY")
 		local params = plume.ast.get(node, "PARAMLIST")
 
-		if not params then
-			--- Will be removed in edition Owl #614, #817
-			local params = plume.ast.get(node, "OLD_PARAMLIST")
-			context.registerOP(node, plume.ops.BEGIN_ACC)
-			for _, child in ipairs(params.children) do
-				local name  = plume.ast.get(child, "IDENTIFIER").content
-				local value = plume.ast.get(child, "VALUE")
-				
-				context.accBlock()(value)
-				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
-				context.registerOP(node, plume.ops.TAG_KEY)
-				
-			end
-			context.registerOP(node, plume.ops.CONCAT_TABLE)
-			---------------------------------------------
-		else
-			context.childrenHandler(params)
-		end
+		context.childrenHandler(params)
+
 		context.registerOP(node, plume.ops.PUSH_CONTEXT)
 
 		context.accBlock()(body)

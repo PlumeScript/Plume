@@ -365,16 +365,7 @@ return function (plume)
         local lbodynlb = Ct("BODY", V"firstStatementNLB")
         local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
                        + C("MUL", P"*") + C("DIV", P"/"))
-        local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1 
-             --- Will be removed in edition Owl #614, #817
-            * (s * C("CONTEXT", K"context")/ function(x)
-                x.warning = "From edition 'Owl', `context` keyword will be removed."
-                x.warningHint = "Write `let x = $Context()` instead of `let context x`."
-                x.issues = {614, 818}
-                return x
-            end
-                )^-1
-        --------------------------------------------------
+        local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1
         
 
         --- Common identifier
@@ -439,14 +430,6 @@ return function (plume)
         local with = Ct('WITH',
         K"with" * os * (
             Ct("PARAMLIST", inlinetable + eval)
-            --- Will be removed in edition Owl #614, #817
-            + Ct("OLD_PARAMLIST", with_param * (os * P"," * os * with_param)^0) / function(x)
-                x.warning = "From edition 'Owl', `with` will only accept `INLINE_LIST`."
-                x.warningHint = "Write `with (a: b)` instead of `with a: b`."
-                x.issues = {614, 817}
-                return x
-            end
-            ---------------------------------------------
         ) * body * _end)
 
         -- Warning
