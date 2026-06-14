@@ -38,7 +38,7 @@ local function sortNext(context, value)
 end
 
 function plume.stdUtils.copy(t, deep, nt)
-	local nt = nt or plume.obj.table(#t.table, #t.keys)
+	nt = nt or plume.obj.table(#t.table, #t.keys)
 
 	for _, key in ipairs(t.keys) do
 		local rawvalue = t.table[key]

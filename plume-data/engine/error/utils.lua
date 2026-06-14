@@ -55,7 +55,7 @@ return function(plume)
 	end
 
 	function plume.error.getSourceCode(node, size)
-		local size = size or 10
+		size = size or 10
 		if node then
 			local result = node.code:sub(node.bpos, node.epos):gsub('^%s*', ''):gsub('%s*$', '')
 			if #result > size then

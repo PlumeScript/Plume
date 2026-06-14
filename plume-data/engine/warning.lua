@@ -73,12 +73,12 @@ return function (plume)
 	--- @param ip number instruction pointer identifying the call site
 	--- @param issues table Identifier for the issue (e.g., GitHub issue number).
 	function plume.warning.deprecatedRuntime(version, description, help, runtime, ip, issues)
-		local msg, help = deprecatedMessage(version, description, help)
-		plume.warning.runtimeWarning(msg, help, runtime, ip, issues)
+		local msg, helpmsg = deprecatedMessage(version, description, help)
+		plume.warning.runtimeWarning(msg, helpmsg, runtime, ip, issues)
 	end
 	function plume.warning.deprecatedCompilationTime(node, version, description, help, issues)
-		local msg, help = deprecatedMessage(version, description, help)
-		plume.warning.throwWarning(msg, help, node, issues)
+		local msg, helpmsg = deprecatedMessage(version, description, help)
+		plume.warning.throwWarning(msg, helpmsg, node, issues)
 	end
 
 	--- Wraps a function to emit a deprecation warning upon first call.

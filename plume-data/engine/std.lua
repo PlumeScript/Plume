@@ -1234,7 +1234,10 @@ return function(plume)
 	
 			if type(sub) ~= "string" then
 				if sub.positionalParamCount ~= 1 then
-					return false, string.format("Macro sub for `String.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
+					return false, string.format(
+						"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
+						sub.positionalParamCount
+					)
 				end
 	
 				local context = {
@@ -1650,7 +1653,7 @@ return function(plume)
 	end
 	
 	function plume.stdUtils.copy(t, deep, nt)
-		local nt = nt or plume.obj.table(#t.table, #t.keys)
+		nt = nt or plume.obj.table(#t.table, #t.keys)
 	
 		for _, key in ipairs(t.keys) do
 			local rawvalue = t.table[key]
@@ -1874,7 +1877,10 @@ return function(plume)
 			------------
 			if compare and #t.table > 1 then
 				if compare.positionalParamCount ~= 2 then
-					return false, string.format("Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.", compare.positionalParamCount)
+					return false, string.format(
+						"Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.",
+						compare.positionalParamCount
+					)
 				end
 	
 				local context = {
@@ -1987,11 +1993,13 @@ return function(plume)
 		local tx = getType(x)
 		local ty = getType(y)
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+		
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2012,11 +2020,13 @@ return function(plume)
 		local tx = getType(x)
 		local ty = getType(y)
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+	
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2041,11 +2051,13 @@ return function(plume)
 			return false, "Cannot multiply a 'Date' value."
 		end
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+	
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2066,11 +2078,13 @@ return function(plume)
 			return false, "Cannot divide a 'Date' value."
 		end
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+	
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end

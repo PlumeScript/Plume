@@ -88,7 +88,7 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 		plume.config.color = args.color
 	end
 
-	local runtime = runtime or plume.obj.runtime()
+	runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 
 	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)

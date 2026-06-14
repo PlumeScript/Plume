@@ -38,11 +38,13 @@ local ddadd = plume.obj.luaMacro("add", function(args)
 	local tx = getType(x)
 	local ty = getType(y)
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+	
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -63,11 +65,13 @@ local ddsub = plume.obj.luaMacro("sub", function(args)
 	local tx = getType(x)
 	local ty = getType(y)
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -92,11 +96,13 @@ local ddmul = plume.obj.luaMacro("mul", function(args)
 		return false, "Cannot multiply a 'Date' value."
 	end
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -117,11 +123,13 @@ local dddiv = plume.obj.luaMacro("div", function(args)
 		return false, "Cannot divide a 'Date' value."
 	end
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
