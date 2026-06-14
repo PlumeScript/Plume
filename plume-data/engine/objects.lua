@@ -89,7 +89,7 @@ return function(plume)
 		}
 
 		local pathTable = plume.obj.table(0, 0)
-		for path in os.getenv("PLUME_PATH"):gmatch('[^;]+') do
+		for path in (os.getenv("PLUME_PATH") or ""):gmatch('[^;]+') do
 			local i = #pathTable.table + 1
 			table.insert(pathTable.keys, i)
 			pathTable.table[i] = path
