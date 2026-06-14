@@ -267,6 +267,6 @@ end
 
 table.insert(plume.std.os.keys, "Path")
 plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args)
-    --!signature [string path]
-    return makePath(path)
+	--!signature [string path]
+	return makePath(path)
 end)

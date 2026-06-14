@@ -67,9 +67,9 @@ return function (plume)
 	end
 
 	local function checkPartSize(instructions, offset, value, name, max)
-	    if value > max then
-	    	plume.error.instructionFieldOverflow(findNode(instructions, offset), name, value, max)
-	    end
+		if value > max then
+			plume.error.instructionFieldOverflow(findNode(instructions, offset), name, value, max)
+		end
 	end
 
 	local function encode(runtime)

@@ -261,8 +261,8 @@ return function (plume, context)
 	function context.getAllVisiblesVariables()
 		local result = {}
 		local passMacroScope = false
-    	for i=#context.scopes, 1, -1 do
-    		if i == context.roots[#context.roots]-1 then
+		for i=#context.scopes, 1, -1 do
+			if i == context.roots[#context.roots]-1 then
 				passMacroScope = true
 			end
 			local current = context.scopes[i]
@@ -297,5 +297,5 @@ return function (plume, context)
 		end
 
 		return result
-    end
+	end
 end

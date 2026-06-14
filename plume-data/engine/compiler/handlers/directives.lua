@@ -39,7 +39,7 @@ return function (plume, context, nodeHandlerTable)
 		-- Same path resolver as `import`
 		local filename, searchPaths = plume.getFilenameFromPath(path, false, context.runtime, context.chunk.name, context.chunk.name )
 		if not filename then
-            plume.error.compilationCannotOpenFile(pathNode, path, searchPaths)
+			plume.error.compilationCannotOpenFile(pathNode, path, searchPaths)
 		end
 
 		-- Prevent cyclical import
@@ -53,24 +53,24 @@ return function (plume, context, nodeHandlerTable)
 		
 
 		local success, result = plume.executeFile(filename, context.runtime, fileParams)
-        if not success then
-            plume.error.cannotExecuteFile(pathNode, path, result)
-        end
+		if not success then
+			plume.error.cannotExecuteFile(pathNode, path, result)
+		end
 
-        local t = type(result) == "table" and result.type or type(result)
-        if t ~= "table" then
-        	plume.error.fileMustReturnATable(pathNode, path, t)
-        end
+		local t = type(result) == "table" and result.type or type(result)
+		if t ~= "table" then
+			plume.error.fileMustReturnATable(pathNode, path, t)
+		end
 
-        for _, key in ipairs(result.keys) do
+		for _, key in ipairs(result.keys) do
 			if context.scopes[#context.scopes][key] then
 				plume.error.useExistingVariable(pathNode, key, path)
 			end
 			context.importedVariables[key] = result.table[key]
-        end
+		end
 
-        table.remove(plume.currentUseProcessing)
-        return result
+		table.remove(plume.currentUseProcessing)
+		return result
 	end
 
 	local directivesHandler
