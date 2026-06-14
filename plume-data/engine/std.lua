@@ -1028,9 +1028,8 @@ return function(plume)
 		end
 	
 		local function shuffle(t)
-			for _=1, #t.table do
-				local i = _random_range(1, #t.table)
-				local j = _random_range(1, #t.table)
+			for i = #t.table, 1, -1 do
+				local j = _random_range(1, i)
 	
 				t.table[i], t.table[j] = t.table[j], t.table[i]
 			end
