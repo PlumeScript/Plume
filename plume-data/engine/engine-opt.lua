@@ -1346,10 +1346,6 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local allocationCount = tocall.positionalParamCount + tocall.namedParamCount
-                                                    if tocall.variadicOffset then
-                                                        allocationCount = allocationCount + 1
-                                                    end
                                                     do
                                                         local _ret131 = variableStackPointer
                                                         variableStackFramesPointer = variableStackFramesPointer + 1
@@ -1629,10 +1625,6 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local allocationCount = tocall.macro.positionalParamCount + tocall.macro.namedParamCount
-                                                    if tocall.macro.variadicOffset then
-                                                        allocationCount = allocationCount + 1
-                                                    end
                                                     do
                                                         local _ret210 = variableStackPointer
                                                         variableStackFramesPointer = variableStackFramesPointer + 1

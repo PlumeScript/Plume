@@ -164,14 +164,7 @@ end
 function _CALL_MACRO(vm, chunk, isValidator, safe)
     if isValidator and chunk.positionalParamCount ~= 1 then
         _ERROR(vm, vm.plume.error.wrongValidatorArgsCount(chunk, chunk.positionalParamCount))
-    else
-
-        local allocationCount = chunk.positionalParamCount + chunk.namedParamCount
-
-        if chunk.variadicOffset then
-            allocationCount = allocationCount + 1
-        end
-        
+    else   
         ENTER_SCOPE(vm, 0, chunk.localsCount) -- Create a new scope
 
         -- Distribute arguments to locals and get the overflow table
