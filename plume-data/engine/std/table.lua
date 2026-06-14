@@ -214,9 +214,17 @@ plume.std.Table = plume.obj.quickTable{
 	end),
 
 	sum = plume.obj.luaMacro("sum", function(args)
-		--!signature number ...numbers
+		--!signature (number ...items)
+
+		if args.table and #args.table == 1 and type(args.table[1]) == "table" and args.table[1].type == "table" then
+			return false, plume.error.sumErrorHint()
+		end
+
 		local r = 0
-		for _, x in ipairs(numbers) do
+		for i, x in ipairs(args.table) do
+			if not tonumber(x) then
+				return false, plume.error.wrongArgTypeStd(i, "sum", type(x), "number", "$table.sum(number ...items)")
+			end
 			r = r + x
 		end
 		return true, r

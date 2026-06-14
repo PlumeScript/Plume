@@ -11,6 +11,11 @@ return function(plume)
 			 .."Did you write `Table.join($t)` instead of `Table.join(...t)`?"
 	end
 
+	function plume.error.sumErrorHint()
+		return "Wrong type 'table' for parameter '1' of macro 'sum'.\n"
+			 .."Did you write `Table.sum($t)` instead of `Table.sum(...t)`?"
+	end
+
 	function plume.error.cannotRemoveNotfoundKey(key)
 		return string.format("The key '%s' does not exist and therefore cannot be deleted.", key)
 	end

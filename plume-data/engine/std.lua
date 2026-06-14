@@ -1926,16 +1926,21 @@ return function(plume)
 	
 		sum = plume.obj.luaMacro("sum", function (args)
 			local __name      = "sum"
-			local __signature = "`$sum(number ...numbers)`"
+			local __signature = "`$sum(number ...items)`"
 			local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			for __i, __a in ipairs(args.table) do
-				if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
-			end
 			if not __s then return false, __e end
 			------------
+	
+			if args.table and #args.table == 1 and type(args.table[1]) == "table" and args.table[1].type == "table" then
+				return false, plume.error.sumErrorHint()
+			end
+	
 			local r = 0
-			for _, x in ipairs(numbers) do
+			for i, x in ipairs(args.table) do
+				if not tonumber(x) then
+					return false, plume.error.wrongArgTypeStd(i, "sum", type(x), "number", "$table.sum(number ...items)")
+				end
 				r = r + x
 			end
 			return true, r
