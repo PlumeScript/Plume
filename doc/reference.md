@@ -761,7 +761,7 @@ Any escape sequence not listed above is treated as an error.
 
 By default, every expression in Plume, including macro calls, contributes its return value to the current accumulation block. This can be undesirable for macros that are executed solely for their side-effects (e.g., printing to the console, writing to a file).
 
-To execute a macro call without its return value affecting the accumulation context, prefix the call with the `do` keyword. The `do` statement ensures the macro is executed, but its return value is discarded.
+To execute a macro call without its return value affecting the accumulation context, prefix the call with the `run` keyword. The `run` statement ensures the macro is executed, but its return value is discarded.
 
 ```plume
 let myTable = @Table
