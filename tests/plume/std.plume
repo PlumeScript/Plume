@@ -189,7 +189,7 @@ $Table.append(a, b)
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong type 'string' for parameter '1' of macro 'append'. Expected: 'table'.  │
-│   Usage: `$append(table t, any ...items)`                                      │
+│   Usage: `$append(table t, any item)`                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

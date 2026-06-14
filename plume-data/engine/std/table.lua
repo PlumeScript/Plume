@@ -76,26 +76,7 @@ plume.std.Table = plume.obj.quickTable{
         return true, table.remove(t.table, index)
     end),
     append = plume.obj.luaMacro("append", function(args, runtime, _, ip)
-        --!signature table t, (any ...items)
-        
-        local item
-        if #args.table == 2 then
-            item = args.table[2]
-        else
-            plume.warning.runtimeWarning(string.format("Deprecated `Table.append` usage.\nFrom edition 'Owl', `$Table.append` will take only one parameter.", name), "Do `$Table.append($t, $Table(a, b))` instead of `$Table.append($t, a, b)`", runtime, ip, {614, 654})
-            -- A very dirty fix to an outdated, but still-used, incorrect behavior.
-            item = plume.obj.table(0, 0)
-            for _, key in ipairs(args.keys) do
-                if key ~= "self" and key ~= 1 and args.table[key] ~= plume.obj.empty then
-                    local rkey = key
-                    if tonumber(key) then
-                        rkey = rkey - 1
-                    end
-                    item.table[rkey] = args.table[key]
-                    table.insert(item.keys, rkey)
-                end
-            end
-        end
+        --!signature table t, (any item)
         table.insert(t.table, item)
         table.insert(t.keys, #t.table)
         return true
