@@ -259,7 +259,7 @@ return function (plume)
 			if plume.ast.get(node, "IDENTIFIER") then
 				return "EMPTY"
 			else
-				return "VALUE"
+				return "VALUE_MACRO"
 			end
 		elseif node.name == "ADD"
 			or node.name == "SUB"

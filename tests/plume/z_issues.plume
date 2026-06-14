@@ -1016,3 +1016,26 @@ end
 /// Output
 (1, 2, 3)
 /// End
+
+/// Test #846
+macro ()
+end
+
+a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'VALUE_MACRO' block.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'VALUE_MACRO'.           │
+│    1 │macro ()                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │end                                                                      │
+│                                                                                │
+│    But you try to add a 'TEXT' element.                                        │
+│    4 │a                                                                        │
+│      │^                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
