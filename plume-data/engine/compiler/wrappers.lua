@@ -100,7 +100,7 @@ return function (plume, context)
     function context.enterScope(lets, isFile)
         if lets then
             context.registerOP(nil, plume.ops.ENTER_SCOPE, 0, lets)
-        else
+        -- else
             -- Each macro open a scope, but it is handled by plume.run
         end
 
@@ -125,7 +125,7 @@ return function (plume, context)
         
         if includeOP then
             context.registerOP(nil, plume.ops.LEAVE_SCOPE, 0, 0)
-        else
+        -- else
             -- For macro, LEAVE_SCOPE is handled by RETURN
         end
         

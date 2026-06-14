@@ -337,12 +337,11 @@ return function (plume)
 		
 		local parts = {}
 		for part in string.gmatch(result, "[^/]+") do
-			if part == "." then
-			elseif part == ".." then
+			if part == ".." then
 				if #parts > 0 and parts[#parts] ~= "" then
 					table.remove(parts)
 				end
-			else
+			elseif part ~= "." then
 				table.insert(parts, part)
 			end
 		end
