@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Sparrow 48_
+_For version Owl 49_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -426,17 +426,18 @@ let param name [= value]
 
 // 5. Context Variable Declaration (EXPERIMENTAL - #571)
 let context name [= value]
-// Declares a variable that acts as an immutable proxy to a context variable. The variable reflects the current value from the context stack at the point of access.
+// Declares a variable that acts as an immutable proxy to a context variable. Call it return the current value from the context stack at the point of access.
 // Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`, or value if one is given.
 ```
 
 ```plume
+let context locale
+
 macro greet()
-    let context locale
-    Message in $locale.
+    Message in $locale().
 end
 
-with locale: en
+with ($locale: en)
     $greet()  // Output: Message in en.
 end
 ```
@@ -808,7 +809,7 @@ This creates an immutable proxy that reads from the context stack. The value is 
 The `with` statement pushes one or more values onto the context stack for the duration of a block:
 
 ```plume
-with name1: value1, name2: value2, ...
+with ($name1: value1, $name2: value2, ...)
     ...
 end
 ```
@@ -816,15 +817,16 @@ end
 **Example:**
 
 ```plume
-macro greet()
-    let context locale
-    Message in $locale.
+let context locale
+
+macro greet() 
+    Message in $locale().
 end
 
-with locale: en
+with (locale: en)
     $greet()       // Output: Message in en.
     
-    with locale: fr
+    with (locale: fr)
         $greet()   // Output: Message in fr.
     end
     

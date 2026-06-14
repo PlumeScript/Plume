@@ -121,12 +121,18 @@ return function (plume, context, nodeHandlerTable)
 
 		context = {
 			method = function(node, args)
+				context.contextVariableToClose = context.contextVariableToClose + 1
+				local t = {}
 				for name, value in pairs(args) do
-					context.contextVariableToClose = context.contextVariableToClose + 1
-					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
-					context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(tonumber(value) or value))
-					context.registerOP(node, plume.ops.PUSH_CONTEXT)
+					local var = context.runtime.plume.table[name]
+					if not var then
+						plume.error.wrongDirectiveArgs(node, "context", name, checkArgs)
+					end
+					t[var] = value
 				end
+
+				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(plume.obj.quickTable(t)))
+				context.registerOP(node, plume.ops.PUSH_CONTEXT)
 			end
 		}
 	}

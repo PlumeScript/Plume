@@ -1,7 +1,7 @@
 return {
 	version = {
 		command = "-v",
-		output  = "Plume🪶b48 (Sparrow Edition)"
+		output  = "Plume🪶b49 (Owl Edition)"
 	},
 	io = {
 		command   = "-i in.plume -o out.plume",

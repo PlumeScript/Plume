@@ -1,33 +1,25 @@
 /// Test simple context
-with locale: fr
-  Voici un nombre: $(6543.56)
+let wing = $Context()
+with ($wing: blue)
+  $wing()
 end
 /// Output
-Voici un nombre: 6 543,56
+blue
 /// End
 
 /// Test nested context
-with locale: fr
-  with locale: en
-    Here is a number: $(6543.56)
+let wing = $Context()
+with ($wing: blue)
+  with ($wing: red)
+    $wing()
   end
 end
 /// Output
-Here is a number: 6,543.56
-/// End
-
-/// Test default context
-with locale: fr
-  with locale: none
-    Voici un nombre: $(6543.56)
-  end
-end
-/// Output
-Voici un nombre: 6543.56
+red
 /// End
 
 /// Test context from file
-with locale: fr
+with ($plume.locale: fr)
   $import(tests/plume/toimport/numbers)
 end
 /// Output
@@ -43,14 +35,14 @@ Voici un nombre: 6 543,56
 
 
 /// Test read context
-let context locale
-$locale\n
-with locale: fr
-  $locale\n
-  with locale: en
-    $locale\n
+let locale = $Context()
+$locale()\n
+with ($locale: fr)
+  $locale()\n
+  with ($locale: en)
+    $locale()\n
   end
-  $locale
+  $locale()
 end
 /// Output
 fr
@@ -60,9 +52,8 @@ fr
 
 /// Test context & closure
 use #context(locale: fr)
-let context locale
 macro Wing()
-  $locale
+  $plume.locale()
 end
 $Wing()
 /// Output
@@ -70,9 +61,10 @@ fr
 /// End
 
 /// Test context block 1
+let wing  = $Context()
 let t = do
   - item 1
-  - with locale: fr
+  - with ($wing: red)
     item 2
   end
 end
@@ -81,59 +73,10 @@ $repr($t)
 (item 1, item 2)
 /// End
 
-/// Test default context
-let context x = 5
+/// Test default context 2
+let x = $Context(5)
 
-$x
+$x()
 /// Output
 5
-/// End
-
-/// Test cannot use context with const
-let const context locale
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Variable cannot be both const and context                                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let const context locale                                                 │
-│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test cannot use context with param
-let param context locale
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Variable cannot be both const and context                                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let param context locale                                                 │
-│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test cannot set context
-let context locale
-set locale = 5
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot set variable 'locale', it is a context variable. Use `with            │
-│   locale: 5` instead.                                                          │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let context locale                                                       │
-│    2 │set locale = 5                                                           │
-│      │^^^^^^^^^^^^^^                                                           │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-
 /// End

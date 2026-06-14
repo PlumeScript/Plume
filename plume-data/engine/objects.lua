@@ -78,8 +78,8 @@ return function(plume)
 	end
 
 	local function makePlumeTable()
-		local result = plume.obj.table(0, 1)
-		result.keys = {"path"}
+		local result = plume.obj.table(0, 2)
+		result.keys = {"path", "locale", "localeNumberFormat", "localeThousandsSeparator", "localeDecimalSeparator", "localeThousandthsSeparator"}
 
 		local pathTable = plume.obj.table(0, 0)
 		for path in os.getenv("PLUME_PATH"):gmatch('[^;]+') do
@@ -93,6 +93,11 @@ return function(plume)
 			result.table[key] = plume.std.plume.table[key]
 		end
 
+		result.table.locale = plume.obj.context('none')
+		result.table.localeNumberFormat = plume.obj.context(plume.obj.empty)
+		result.table.localeThousandsSeparator =  plume.obj.context(plume.obj.empty)
+		result.table.localeDecimalSeparator =  plume.obj.context(plume.obj.empty)
+		result.table.localeThousandthsSeparator =  plume.obj.context(plume.obj.empty)
 		return result
 	end
 
@@ -124,6 +129,22 @@ return function(plume)
 			cache                = {},
 			contextCount         = 0, -- used to generate a unique UID for each compilation
 			plume                = makePlumeTable()
+		}
+	end
+
+	function plume.obj.context(default)
+		return {
+			values = {default},
+			push = function(self, value)
+				table.insert(self.values, value)
+			end,
+			pop = function(self)
+				table.remove(self.values)
+			end,
+			get = function(self)
+				return self.values[#self.values] or plume.obj.empty
+			end,
+			type = "context"
 		}
 	end
 

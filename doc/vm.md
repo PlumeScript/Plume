@@ -210,6 +210,20 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### CLOSURE
 
 
+### vm/context.lua
+
+#### CREATE_CONTEXT
+
+
+#### PUSH_CONTEXT
+
+
+#### POP_CONTEXT
+
+
+#### LOAD_CONTEXT
+
+
 ### vm/iter.lua
 
 #### GET_ITER
@@ -299,15 +313,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 
 
 #### FILE_INIT_PARAMS
-
-
-#### PUSH_CONTEXT
-
-
-#### LOAD_CONTEXT
-
-
-#### POP_CONTEXT
 
 
 #### RAISE

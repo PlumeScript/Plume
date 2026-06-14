@@ -14,6 +14,10 @@ return function(plume)
 		return "Cannot use empty as key."
 	end
 
+	function plume.error.getindexReturnsEmpty()
+		return "User-defined getindex returns empty"
+	end
+
 	function plume.error.unregisteredKey(t, key)
 		local index = tonumber(key)
 		if index and math.floor(index) == index then
@@ -47,5 +51,14 @@ return function(plume)
 
 	function plume.error.cannotUseMetaKey()
 		return "Cannot use a meta key for a macro named argument."
+	end
+
+	function plume.error.wrongContextType(var)
+		local t = type(var)
+		if t == "table" then
+			t = var.type
+		end
+
+		return string.format("Cannot use a '%s' as contextual variable. Use `$Context()` to create one.", t)
 	end
 end

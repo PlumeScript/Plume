@@ -39,20 +39,13 @@ return function (plume, context, nodeHandlerTable)
 		local body   = plume.ast.get(node, "BODY")
 		local params = plume.ast.get(node, "PARAMLIST")
 
-		for _, child in ipairs(params.children) do
-			local name = plume.ast.get(child, "IDENTIFIER").content
-			local value = plume.ast.get(child, "VALUE")
-			
-			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(name))
-			context.accBlock()(value)
-			context.registerOP(node, plume.ops.PUSH_CONTEXT)
-		end
+		context.childrenHandler(params)
+
+		context.registerOP(node, plume.ops.PUSH_CONTEXT)
 
 		context.accBlock()(body)
 		
-		for _, child in ipairs(params.children) do
-			context.registerOP(node, plume.ops.POP_CONTEXT)
-		end
+		context.registerOP(node, plume.ops.POP_CONTEXT)
 
 		if context.checkIfCanConcat() then
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)

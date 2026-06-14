@@ -18,6 +18,7 @@ return function (plume)
 		require "plume-data/engine/vm/alu"
 		require "plume-data/engine/vm/call"
 		require "plume-data/engine/vm/closures"
+		require "plume-data/engine/vm/context"
 		require "plume-data/engine/vm/core"
 		require "plume-data/engine/vm/injection"
 		require "plume-data/engine/vm/iter"
@@ -303,29 +304,29 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
-										HOST_UPDATE(vm, arg1, arg2)
+										CREATE_CONTEXT(vm, arg1, arg2)
 									else
-										HOST_NEXT(vm, arg1, arg2)
+										HOST_UPDATE(vm, arg1, arg2)
 									end
 								else
 									if op < 67 then
-										RAISE(vm, arg1, arg2)
+										HOST_NEXT(vm, arg1, arg2)
 									else
-										goto END
+										RAISE(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
-										STD_LEN(vm, arg1, arg2)
+										goto END
 									else
-										STD_TYPE(vm, arg1, arg2)
+										STD_LEN(vm, arg1, arg2)
 									end
 								else
 									if op < 71 then
-										STD_SEQ(vm, arg1, arg2)
+										STD_TYPE(vm, arg1, arg2)
 									else
-										STD_ITEMS(vm, arg1, arg2)
+										STD_SEQ(vm, arg1, arg2)
 									end
 								end
 							end
@@ -333,8 +334,12 @@ return function (plume)
 							if op < 76 then
 								if op < 74 then
 									if op < 73 then
-										STD_ENUMERATE(vm, arg1, arg2)
+										STD_ITEMS(vm, arg1, arg2)
 									else
+										STD_ENUMERATE(vm, arg1, arg2)
+									end
+								else
+									if op < 75 then
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

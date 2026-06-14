@@ -33,6 +33,7 @@ return function(plume)
 	local function makeDirectiveSignature(directiveName, checkArgs, showAcceptedValues)
 		local result = {"use #", directiveName, "("}
 		local keys = {}
+		checkArgs = checkArgs or {}
 		for key, _ in pairs(checkArgs) do
 			table.insert(keys, key)
 		end

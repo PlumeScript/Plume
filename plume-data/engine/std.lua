@@ -220,39 +220,7 @@ return function(plume)
 	    end)
 	}
 	
-	local function importLuaMacro(name, f)
-	    return plume.obj.luaMacro(name, function(args, runtime, _, ip)
-	        plume.warning.runtimeWarning(string.format("Deprecated macro '%s', as all `lua.*` macros.\nWill be removed in edition 'Owl'.", name), "Use std instead.", runtime, ip, {614, 615, 649})
-	        local success, result = pcall(f, unpack(args.table))
-	        return success, result
-	    end)
-	end
-	
-	local function importLuaTable(name, t)
-	    local result = plume.obj.table(0, 0)
-	
-	    for k, v in pairs(t) do
-	        table.insert(result.keys, k)
-	        if type(v) == "table" then
-	            v = importLuaTable(k, v)
-	        elseif type(v) == "function" then
-	            v = importLuaMacro(k, v)
-	        end
-	        result.table[k] = v
-	    end
-	
-	    return result
-	end
-	
 	plume.std.lua = plume.obj.table(0, 0)
-	
-	for name in ("assert error"):gmatch("%S+") do
-	    plume.std.lua.table[name] = importLuaMacro(name, _G[name])
-	end
-	
-	for name in ("string math os io"):gmatch("%S+") do
-	    plume.std.lua.table[name] = importLuaTable(name, _G[name])
-	end
 	
 	plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
 	    local firstFilename = runtime.files[1].name
@@ -268,6 +236,10 @@ return function(plume)
 	end)
 	
 	plume.std.attempt = plume.obj.table(0, 0)
+	
+	plume.std.Context = plume.obj.luaMacro("Context", function(args)
+	    return true, plume.obj.context(args.table[1])
+	end)
 	
 	plume.std.Math = plume.obj.quickTable{
 	    sin = plume.obj.luaMacro("sin", function (args)
@@ -1741,32 +1713,13 @@ return function(plume)
 	    end),
 	    append = plume.obj.luaMacro("append", function (args, runtime, _, ip)
 	        local __name      = "append"
-	        local __signature = "`$append(table t, any ...items)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, math.huge,  __name, __signature)
+	        local __signature = "`$append(table t, any item)`"
+	        local __s, __e, self, t, item
+	        __s, __e, t, item = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
 	        if not __s then return false, __e end
 	        ------------
-	        
-	        local item
-	        if #args.table == 2 then
-	            item = args.table[2]
-	        else
-	            plume.warning.runtimeWarning(string.format("Deprecated `Table.append` usage.\nFrom edition 'Owl', `$Table.append` will take only one parameter.", name), "Do `$Table.append($t, $Table(a, b))` instead of `$Table.append($t, a, b)`", runtime, ip, {614, 654})
-	            -- A very dirty fix to an outdated, but still-used, incorrect behavior.
-	            item = plume.obj.table(0, 0)
-	            for _, key in ipairs(args.keys) do
-	                if key ~= "self" and key ~= 1 and args.table[key] ~= plume.obj.empty then
-	                    local rkey = key
-	                    if tonumber(key) then
-	                        rkey = rkey - 1
-	                    end
-	                    item.table[rkey] = args.table[key]
-	                    table.insert(item.keys, rkey)
-	                end
-	            end
-	        end
 	        table.insert(t.table, item)
 	        table.insert(t.keys, #t.table)
 	        return true
@@ -1817,11 +1770,7 @@ return function(plume)
 	        end
 	
 	        if index == 0 then
-	            plume.warning.runtimeWarning(
-	                string.format("The key `%s` doesn't exist. This will raise an error from edition Owl.", key),
-	                "Check if key exists before removing it.",
-	                runtime, ip, {614, 772}
-	            )
+	            return false, plume.error.cannotRemoveNotfoundKey(key)
 	        end
 	
 	        t.table[key] = nil

@@ -220,9 +220,9 @@ local function main()
 		local success, result
 
 		if args.inputFilename then
-			success, result = plume.executeFile(args.inputFilename, nil, nil, args)
+			success, result = plume.executeFile(args.inputFilename, nil, nil, args, true)
 		else
-			success, result = plume.executeString(args.inputString, "<input>",nil, nil, args)
+			success, result = plume.executeString(args.inputString, "<input>",nil, nil, args, true)
 		end
 
 		if success then

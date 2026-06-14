@@ -105,39 +105,7 @@ plume.std.Map.meta = plume.obj.quickTable{
     end)
 }
 
-local function importLuaMacro(name, f)
-    return plume.obj.luaMacro(name, function(args, runtime, _, ip)
-        plume.warning.runtimeWarning(string.format("Deprecated macro '%s', as all `lua.*` macros.\nWill be removed in edition 'Owl'.", name), "Use std instead.", runtime, ip, {614, 615, 649})
-        local success, result = pcall(f, unpack(args.table))
-        return success, result
-    end)
-end
-
-local function importLuaTable(name, t)
-    local result = plume.obj.table(0, 0)
-
-    for k, v in pairs(t) do
-        table.insert(result.keys, k)
-        if type(v) == "table" then
-            v = importLuaTable(k, v)
-        elseif type(v) == "function" then
-            v = importLuaMacro(k, v)
-        end
-        result.table[k] = v
-    end
-
-    return result
-end
-
 plume.std.lua = plume.obj.table(0, 0)
-
-for name in ("assert error"):gmatch("%S+") do
-    plume.std.lua.table[name] = importLuaMacro(name, _G[name])
-end
-
-for name in ("string math os io"):gmatch("%S+") do
-    plume.std.lua.table[name] = importLuaTable(name, _G[name])
-end
 
 plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
     local firstFilename = runtime.files[1].name
@@ -153,3 +121,7 @@ plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runt
 end)
 
 plume.std.attempt = plume.obj.table(0, 0)
+
+plume.std.Context = plume.obj.luaMacro("Context", function(args)
+    return true, plume.obj.context(args.table[1])
+end)

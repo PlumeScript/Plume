@@ -107,6 +107,12 @@ function CONCAT_CALL (vm, arg1, arg2)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
         _INJECTION_PUSH(vm, tocall.opcode, 0, 0)
 
+    -- Contextal variables
+    elseif t == "context" then
+        CONCAT_TABLE(vm)
+        _STACK_POP(vm, vm.mainStack) -- Remove args
+        _STACK_PUSH(vm, vm.mainStack, tocall:get())
+
     -- @table ... end just return the accumulated table
     elseif tocall == vm.plume.std.Table then
         CONCAT_TABLE(vm)
