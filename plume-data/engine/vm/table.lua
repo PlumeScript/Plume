@@ -119,10 +119,11 @@ function TABLE_INDEX (vm, arg1, arg2)
     end
 end
 
+--! inline
 function TABLE_INDEX_CHECK_IS_NIL(vm)
     local top = _STACK_GET(vm, vm.mainStack)
     if top == vm.empty then
-        vm.plume.warning.runtimeWarning("User-defined getindex returns empty. From edition `Owl`, this will lead to an error", "Use safe index `wing.nib?` instead of `wing.nib` if you want safe access.", vm.runtime, vm.jump, {614, 717})
+       _ERROR(vm, vm.plume.error.getindexReturnsEmpty())
     end
 end
 
