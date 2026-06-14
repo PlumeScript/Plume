@@ -6,8 +6,6 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
-	local warningBuffer
-
 	local function buildGrammar()
 		local S, R, P, V, Cp = lpeg.S, lpeg.R, lpeg.P, lpeg.V, lpeg.Cp
 
@@ -244,7 +242,7 @@ return function (plume)
 			for deep, opps in ipairs(opplist) do
 				local rule
 				for i, opp in ipairs(opps) do
-					local name, pattern, unary = opp[1], opp[2], opp[3]
+					local name, pattern = opp[1], opp[2]
 
 					local opprule
 					if pattern:match('^[a-z]+$') then
@@ -289,7 +287,6 @@ return function (plume)
 			local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
 			local access = Ct("EVAL", primary * evalOpperator^1)
 
-			local terminal = num + access + safeidn + quote
 			rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
 
 			return rules
@@ -430,9 +427,6 @@ return function (plume)
 				  		* (P"]end"  + E(plume.error.missingEnd, -P(1))))
 				  + Ct("RAW", os * K"raw"   *  C("TEXT", (P"\n"+-1) * (P(1)-P"end")^0)
 				  		* (P"end"   + E(plume.error.missingEnd, -P(1))))
-
-		local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
-		local oldwith = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
 
 		local with = Ct('WITH',
 		K"with" * os * (

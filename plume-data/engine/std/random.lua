@@ -26,7 +26,7 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	end
 
 	local function shuffle(t)
-		for k=1, #t.table do
+		for _=1, #t.table do
 			local i = _random_range(1, #t.table)
 			local j = _random_range(1, #t.table)
 

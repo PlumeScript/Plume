@@ -260,9 +260,6 @@ function createDuration(s)
 		return true, self.value
 	end)
 	duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
-		local self   = args.table.self
-		local key    = args.table[1]
-		
 		return false, "Cannot edit 'duration' fields."
 	end)
 	duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
@@ -318,7 +315,7 @@ function createDuration(s)
 	return true, duration
 end
 
-local function ignoreSuccess(x, y)
+local function ignoreSuccess(_, y)
 	return y
 end
 

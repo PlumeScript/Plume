@@ -32,7 +32,7 @@ return function(plume)
 	function plume.obj.quickTable(source)
 		local t = plume.obj.table(#source, 0)
 
-		for k, v in ipairs(source) do
+		for _, v in ipairs(source) do
 			table.insert(t.table, v)
 			table.insert(t.keys, #t.table)
 		end
@@ -196,7 +196,7 @@ return function(plume)
 					if index < lastIndex or index > lastIndex+2 then
 						ordered = false
 					else
-						for i=1, index-lastIndex-1 do
+						for _=1, index-lastIndex-1 do
 							table.insert(result,  "empty")
 						end
 						lastIndex = index

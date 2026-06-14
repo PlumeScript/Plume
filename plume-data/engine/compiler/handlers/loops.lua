@@ -40,9 +40,6 @@ return function (plume, context, nodeHandlerTable)
 		local body       = plume.ast.get(node, "BODY")
 		local uid = context.getUID()
 		
-		local next = context.registerConstant("next")
-		local iter = context.registerConstant("iter")
-		
 		context.toggleConcatOff() -- Prevent iterator to be converted to string
 		context.childrenHandler(iterator) -- Evaluate the iterator expression
 		context.toggleConcatPop()

@@ -1041,7 +1041,7 @@ return function (plume)
                                                 end
                                                 if expectedParamCount then
                                                     if macro.positionalParamCount ~= expectedParamCount then
-                                                        _ret93, _ret94 = false, plume.error.wrongArgsCountMetaDefinition (macro, name, macro.positionalParamCount, expectedParamCount)
+                                                        _ret93, _ret94 = false, plume.error.wrongArgsCountMetaDefinition (name, macro.positionalParamCount, expectedParamCount)
                                                         goto _inline_end195
                                                     end
                                                     if macro.namedParamCount > 1 then
@@ -3221,7 +3221,6 @@ return function (plume)
                                                 do
                                                     local _ret263 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret263
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -3248,7 +3247,6 @@ return function (plume)
                                                 do
                                                     local _ret260 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret260
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
@@ -3394,7 +3392,6 @@ return function (plume)
                                                 do
                                                     local _ret278 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret278
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -3421,7 +3418,6 @@ return function (plume)
                                                 do
                                                     local _ret275 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret275
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
@@ -3569,7 +3565,6 @@ return function (plume)
                                                 do
                                                     local _ret293 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret293
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -3596,7 +3591,6 @@ return function (plume)
                                                 do
                                                     local _ret290 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret290
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
@@ -3742,7 +3736,6 @@ return function (plume)
                                                 do
                                                     local _ret308 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret308
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -3769,7 +3762,6 @@ return function (plume)
                                                 do
                                                     local _ret305 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret305
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
@@ -3908,7 +3900,6 @@ return function (plume)
                                             do
                                                 local _ret312 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                 local tx = _ret312
-                                                local nx
                                                 if tx == "string" then
                                                     if not tonumber (x)
                                                      then
@@ -4028,7 +4019,6 @@ return function (plume)
                                                 do
                                                     local _ret332 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret332
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -4055,7 +4045,6 @@ return function (plume)
                                                 do
                                                     local _ret329 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret329
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
@@ -4203,7 +4192,6 @@ return function (plume)
                                                 do
                                                     local _ret347 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret347
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -4230,7 +4218,6 @@ return function (plume)
                                                 do
                                                     local _ret344 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret344
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
@@ -4376,7 +4363,6 @@ return function (plume)
                                                 do
                                                     local _ret362 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret362
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
@@ -4403,7 +4389,6 @@ return function (plume)
                                                 do
                                                     local _ret359 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret359
-                                                    local nx
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then

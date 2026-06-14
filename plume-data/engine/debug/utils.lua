@@ -63,7 +63,7 @@ return function (plume)
 		local arg1 = bit.band(bit.rshift(instr, ARG1_SHIFT), MASK_ARG1)
 		local arg2 = bit.band(instr, MASK_ARG2)
 
-		local t = plume.debug.invTable(plume.ops)
+		-- local t = plume.debug.invTable(plume.ops)
 
 		local name = plume.debug.invTable(plume.ops)[op] or "NULL"
 		local constInfos

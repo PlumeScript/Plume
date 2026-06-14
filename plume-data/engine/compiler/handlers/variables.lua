@@ -11,9 +11,9 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node table The current AST node
 	nodeHandlerTable.IDENTIFIER = function(node)
 		local varName = node.content
-		local var, ref = context.getVariable(varName)
+		local var = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables(), node.name == "VALIDATOR")
+			plume.error.useUnknownVariable(node, varName, context.getAllVisiblesVariables(), node.name == "VALIDATOR")
 		end
 		if var.source then
 			var.source.used = true
@@ -42,7 +42,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isContext boolean True if a bind to context
 	--- @return table rvar The resolved variable object containing scope information and metadata
 	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext, isLoopVariable)
-		local rvar, isRef
+		local rvar
 		
 		----------------------------------------------------------
 		--- Case 1: Variable assignment
@@ -99,7 +99,7 @@ return function (plume, context, nodeHandlerTable)
 			else
 				rvar, ref = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknownVariable(node, name, ref, context.getAllVisiblesVariables())
+					plume.error.setUnknownVariable(node, name, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariable(node, name, source, rvar.node)
 				elseif rvar.isContext then

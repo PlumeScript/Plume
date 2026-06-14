@@ -75,7 +75,7 @@ plume.std.Table = plume.obj.quickTable{
 
 		return true, table.remove(t.table, index)
 	end),
-	append = plume.obj.luaMacro("append", function(args, runtime, _, ip)
+	append = plume.obj.luaMacro("append", function(args)
 		--!signature table t, (any item)
 		table.insert(t.table, item)
 		table.insert(t.keys, #t.table)
@@ -100,7 +100,7 @@ plume.std.Table = plume.obj.quickTable{
 
 		return pcall(table.concat, args, sep)
 	end),
-	removeKey = plume.obj.luaMacro("removeKey", function(args, runtime, _, ip)
+	removeKey = plume.obj.luaMacro("removeKey", function(args)
 		--!signature table t, any key
 		key = tonumber(key) or key
 		local index = 0
@@ -122,7 +122,7 @@ plume.std.Table = plume.obj.quickTable{
 	hasKey = plume.obj.luaMacro("hasKey", function(args)
 		--!signature table t, any key
 		key = tonumber(key) or key
-		for k, v in ipairs(t.keys) do
+		for _, v in ipairs(t.keys) do
 			if v == key then
 				return true, true
 			end
@@ -132,7 +132,7 @@ plume.std.Table = plume.obj.quickTable{
 	end),
 	find = plume.obj.luaMacro("find", function(args)
 		--!signature table t, any x
-		for k, v in ipairs(t.keys) do
+		for _, v in ipairs(t.keys) do
 			if t.table[v] == x then
 				return true, v
 			end
@@ -142,7 +142,7 @@ plume.std.Table = plume.obj.quickTable{
 	findAll = plume.obj.luaMacro("findAll", function(args)
 		--!signature table t, any x
 		local result = plume.obj.table(0, 0)
-		for k, v in ipairs(t.keys) do
+		for _, v in ipairs(t.keys) do
 			if t.table[v] == x then
 				table.insert(result.table, v)
 				table.insert(result.keys, #result.table)
@@ -155,7 +155,7 @@ plume.std.Table = plume.obj.quickTable{
 		--!signature table t, ?named
 		if named then
 			local count = 0
-			for k, v in ipairs(t.keys) do
+			for _, v in ipairs(t.keys) do
 				if not tonumber(v) then
 					count = count + 1
 				end

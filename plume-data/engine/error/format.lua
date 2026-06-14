@@ -244,12 +244,7 @@ return function(plume)
 				makeLine{formatText(infos.label, neutral), indent=SOURCE_FILENAME_INDENT+2+indent}
 			end
 
-			local lastNoLine
 			for _, noLine in ipairs(infos.selectedNoLines) do
-				-- if lastNoLine and lastNoLine < noLine - 1 then
-				-- 	makeSourceLine{"...", "", indent=indent}
-				-- end
-
 				local line = infos.lines[noLine]
 				local indicator
 				if noLine == infos.sourceNoLine then
@@ -306,9 +301,9 @@ return function(plume)
 				table.insert(nodesInfos.traceback, infos)
 			end
 		end
-		for i, infos in ipairs(plume.warning.cache) do
+		for _, infos in ipairs(plume.warning.cache) do
 			warningInfos = {message=infos.message, help=infos.help, issues=infos.issues}
-			for j, node in ipairs(infos.nodes) do
+			for _, node in ipairs(infos.nodes) do
 				table.insert(warningInfos, plume.error.getNodeLinesContext(node, false, false))
 				nodesInfos.warnings.count = nodesInfos.warnings.count + 1
 			end

@@ -6,8 +6,6 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
-	local nodeID = {}
-	local nid = 0
 	local function getNodeID(node)
 		return node.name .. node.bpos .. "-" .. node.epos
 	end
@@ -154,8 +152,6 @@ return function (plume)
 	end
 
 	local function makeBody(data)
-		nid = 0
-
 		return string.format([[
 			<div id="code-panel" class="panel">%s</div>
 			<div id="ast-panel" class="panel">%s</div>

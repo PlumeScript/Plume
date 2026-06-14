@@ -419,7 +419,7 @@ return function(plume)
 			if thousandsSeparator then
 				thousandsSeparator = thousandsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 				integerPart = integerPart:gsub("(.)(...)$", "%1"..thousandsSeparator.."%2")
-				for i=1, #integerPart do
+				for _=1, #integerPart do
 					integerPart = integerPart:gsub(
 						"([0-9])([0-9][0-9][0-9])"..thousandsSeparator,
 						"%1"..thousandsSeparator.."%2"..thousandsSeparator
@@ -432,7 +432,7 @@ return function(plume)
 				if thousandthsSeparator then
 					thousandthsSeparator = thousandthsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 					decimalPart = decimalPart:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2")
-					for i=1, #integerPart do
+					for _=1, #integerPart do
 						decimalPart = decimalPart:gsub(
 							thousandthsSeparator.."([0-9][0-9][0-9])([0-9])",
 							"%1"..thousandthsSeparator.."%2"..thousandthsSeparator
@@ -1041,7 +1041,7 @@ return function(plume)
 		end
 	
 		local function shuffle(t)
-			for k=1, #t.table do
+			for _=1, #t.table do
 				local i = _random_range(1, #t.table)
 				local j = _random_range(1, #t.table)
 	
@@ -1469,7 +1469,7 @@ return function(plume)
 			end
 	
 			local count = 0
-			for x in s:gmatch(pattern) do
+			for _ in s:gmatch(pattern) do
 				count = count + 1
 			end
 	
@@ -1717,7 +1717,7 @@ return function(plume)
 	
 			return true, table.remove(t.table, index)
 		end),
-		append = plume.obj.luaMacro("append", function (args, runtime, _, ip)
+		append = plume.obj.luaMacro("append", function (args)
 			local __name      = "append"
 			local __signature = "`$append(table t, any item)`"
 			local __s, __e, self, t, item
@@ -1757,7 +1757,7 @@ return function(plume)
 	
 			return pcall(table.concat, args, sep)
 		end),
-		removeKey = plume.obj.luaMacro("removeKey", function (args, runtime, _, ip)
+		removeKey = plume.obj.luaMacro("removeKey", function (args)
 			local __name      = "removeKey"
 			local __signature = "`$removeKey(table t, any key)`"
 			local __s, __e, self, t, key
@@ -1793,7 +1793,7 @@ return function(plume)
 			if not __s then return false, __e end
 			------------
 			key = tonumber(key) or key
-			for k, v in ipairs(t.keys) do
+			for _, v in ipairs(t.keys) do
 				if v == key then
 					return true, true
 				end
@@ -1810,7 +1810,7 @@ return function(plume)
 			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			for k, v in ipairs(t.keys) do
+			for _, v in ipairs(t.keys) do
 				if t.table[v] == x then
 					return true, v
 				end
@@ -1827,7 +1827,7 @@ return function(plume)
 			if not __s then return false, __e end
 			------------
 			local result = plume.obj.table(0, 0)
-			for k, v in ipairs(t.keys) do
+			for _, v in ipairs(t.keys) do
 				if t.table[v] == x then
 					table.insert(result.table, v)
 					table.insert(result.keys, #result.table)
@@ -1849,7 +1849,7 @@ return function(plume)
 			------------
 			if named then
 				local count = 0
-				for k, v in ipairs(t.keys) do
+				for _, v in ipairs(t.keys) do
 					if not tonumber(v) then
 						count = count + 1
 					end
@@ -2226,9 +2226,6 @@ return function(plume)
 			return true, self.value
 		end)
 		duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
-			local self   = args.table.self
-			local key    = args.table[1]
-			
 			return false, "Cannot edit 'duration' fields."
 		end)
 		duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
@@ -2284,7 +2281,7 @@ return function(plume)
 		return true, duration
 	end
 	
-	local function ignoreSuccess(x, y)
+	local function ignoreSuccess(_, y)
 		return y
 	end
 	

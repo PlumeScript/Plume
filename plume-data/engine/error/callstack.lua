@@ -126,7 +126,6 @@ return function(plume)
 					node = plume.error.getNode(runtime, source.ip)
 				end
 				if node then
-					local parentMacro = runtime.callstack[i-1]
 					table.insert(infos.errorCallstack, {node=node, parentMacro=plume.error.findNodeParentMacro(node)})
 				end
 			end

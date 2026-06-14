@@ -39,7 +39,7 @@ function _META_CHECK (vm, name, obj)
 	if expectedParamCount then
 		if macro.positionalParamCount ~= expectedParamCount then
 			return false, vm.plume.error.wrongArgsCountMetaDefinition(
-				macro, name, macro.positionalParamCount, expectedParamCount
+				name, macro.positionalParamCount, expectedParamCount
 			)
 		end
 		if macro.namedParamCount > 1 then -- 1 for self

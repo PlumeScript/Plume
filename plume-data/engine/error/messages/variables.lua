@@ -11,12 +11,7 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
-	function plume.error.useUnknownVariable(node, varName, ref, visiblesVariables, isValidator)
-		local refHint = ""
-		-- if ref then -- now, ref can be captured by closures
-		-- 	refHint = string.format("\n'ref%s' exists in parent scope, but a ref cannot be captured by macros.", varName)
-		-- 	plume.error.addContext(node, ref)
-		-- end
+	function plume.error.useUnknownVariable(node, varName, visiblesVariables, isValidator)
 		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, varName, visiblesVariables, true)
 		local validatorHint = ""
 		if isValidator then
@@ -24,22 +19,17 @@ return function(plume)
 		end
 
 		local message = string.format(
-			"Cannot use variable '%s', it isn't defined in the current scope.%s%s%s",
-			varName, refHint, visiblesVariableHint, validatorHint
+			"Cannot use variable '%s', it isn't defined in the current scope.%s%s",
+			varName, visiblesVariableHint, validatorHint
 		)
 		plume.error.throwCompilationError(node, message)
 	end
 
-	function plume.error.setUnknownVariable(node, varName, ref, visiblesVariables)
-		local refHint = ""
-		-- if ref then -- now, ref can be captured by closures
-		-- 	refHint = string.format("\n'ref %s' exists in parent scope, but a ref cannot be captured by macros.", varName)
-		-- 	plume.error.addContext(node, ref)
-		-- end
+	function plume.error.setUnknownVariable(node, varName, visiblesVariables)
 		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, varName, visiblesVariables, false)
 		local message = string.format(
-			"Cannot set variable '%s', it isn't defined in the current scope.%s%s",
-			varName, refHint, visiblesVariableHint
+			"Cannot set variable '%s', it isn't defined in the current scope.%s",
+			varName, visiblesVariableHint
 		)
 		plume.error.throwCompilationError(node, message)
 	end

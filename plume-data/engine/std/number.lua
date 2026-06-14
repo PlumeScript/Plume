@@ -44,7 +44,7 @@ plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSepa
 		if thousandsSeparator then
 			thousandsSeparator = thousandsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 			integerPart = integerPart:gsub("(.)(...)$", "%1"..thousandsSeparator.."%2")
-			for i=1, #integerPart do
+			for _=1, #integerPart do
 				integerPart = integerPart:gsub(
 					"([0-9])([0-9][0-9][0-9])"..thousandsSeparator,
 					"%1"..thousandsSeparator.."%2"..thousandsSeparator
@@ -57,7 +57,7 @@ plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSepa
 			if thousandthsSeparator then
 				thousandthsSeparator = thousandthsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 				decimalPart = decimalPart:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2")
-				for i=1, #integerPart do
+				for _=1, #integerPart do
 					decimalPart = decimalPart:gsub(
 						thousandthsSeparator.."([0-9][0-9][0-9])([0-9])",
 						"%1"..thousandthsSeparator.."%2"..thousandthsSeparator

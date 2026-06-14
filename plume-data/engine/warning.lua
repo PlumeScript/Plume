@@ -58,7 +58,7 @@ return function (plume)
 		plume.warning.throwWarning(msg, help, node, issues)
 	end
 
-	local function deprecatedMessage(version, description, help, issues)
+	local function deprecatedMessage(version, description, help)
 		help = "  "..help:gsub('\n', '\n  ')
 		return string.format("%s will be removed in edition %s.", description, version), help
 	end
@@ -73,11 +73,11 @@ return function (plume)
 	--- @param ip number instruction pointer identifying the call site
 	--- @param issues table Identifier for the issue (e.g., GitHub issue number).
 	function plume.warning.deprecatedRuntime(version, description, help, runtime, ip, issues)
-		local msg, help = deprecatedMessage(version, description, help, issues)
+		local msg, help = deprecatedMessage(version, description, help)
 		plume.warning.runtimeWarning(msg, help, runtime, ip, issues)
 	end
 	function plume.warning.deprecatedCompilationTime(node, version, description, help, issues)
-		local msg, help = deprecatedMessage(version, description, help, issues)
+		local msg, help = deprecatedMessage(version, description, help)
 		plume.warning.throwWarning(msg, help, node, issues)
 	end
 

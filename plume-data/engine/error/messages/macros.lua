@@ -108,7 +108,7 @@ return function(plume)
 		end
 	end
 
-	function plume.error.wrongArgsCountMetaDefinition(macro, macroName, argCount, expectedArgsCount)
+	function plume.error.wrongArgsCountMetaDefinition(macroName, argCount, expectedArgsCount)
 		local message = string.format(
 			"Wrong number of positional parameters for meta-macro '%s', %s instead of %s.",
 			macroName, argCount, expectedArgsCount

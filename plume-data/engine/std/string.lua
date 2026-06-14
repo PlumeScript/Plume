@@ -185,7 +185,7 @@ plume.std.String = plume.obj.quickTable {
 		end
 
 		local count = 0
-		for x in s:gmatch(pattern) do
+		for _ in s:gmatch(pattern) do
 			count = count + 1
 		end
 
