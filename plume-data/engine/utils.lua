@@ -60,7 +60,14 @@ return function (plume)
 	plume.ops = makeNames(plume.ops_names)
 
 	plume.validMetaNames = {}
-	for name in ("add addr addl mul mull mulr div divr divl sub subr subl mod modr modl pow powl powr eq lt minus call getindex setindex iter next tostring validate"):gmatch("%S+") do
+	for name in ([[
+		add addr addl mul mull mulr
+		div divr divl sub subr subl mod modr modl
+		pow powl powr
+		eq lt minus
+		call getindex setindex
+		iter next tostring validate
+	]]):gmatch("%S+") do
 		plume.validMetaNames[name] = true
 	end
 

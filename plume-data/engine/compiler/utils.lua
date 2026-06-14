@@ -112,7 +112,8 @@ return function (plume, context)
 	end
 
 	--- Collects comments that appear before the given node within its parent's children list.
-	--- Iterates through all sibling nodes preceding the target node and gathers COMMENT tokens, ignoring those separated by a significant newline (anything other than LINESTART).
+	--- Iterates through all sibling nodes preceding the target node and gathers COMMENT tokens,
+	---- ignoring those separated by a significant newline (anything other than LINESTART).
 	--- @param node node to get adjacent comments
 	--- @return string Concatenated comment strings separated by newlines (`\n`).
 	function context.collectComments(node)

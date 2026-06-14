@@ -34,10 +34,13 @@ return function (plume, context)
 	--- @param variableOffset number Stack offset of the variable within its defining scope
 	--- @param scopeDepth number Number of macro boundaries between current position and the variable's defining scope (≥1)
 	--- @param currentScopeIndex number Index in context.scopes where the variable is defined
-	--- @param relativeScopeOffset number Frame offset between current scope and variable's scope (used to locate the correct scope frame)
+	--- @param relativeScopeOffset number Frame offset between current scope and variable's scope
+	--- (used to locate the correct scope frame)
 	--- @param ref string
 	--- @return table upvalueInfo Metadata for the upvalue
-	function context.registerUpvalue(name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref, isContext)
+	function context.registerUpvalue(
+		name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref, isContext
+	)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.macros[#context.macros - scopeDepth + 1]
 
@@ -106,10 +109,22 @@ return function (plume, context)
 	function context.manageUpvalues(upvalues)
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
-				context.registerOP(paramNode, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset), "scope_begin_" .. upvalues.uid)
-				context.registerOP(paramNode, plume.ops.OPEN_REF_UPVALUE, 0, 0, "scope_begin_" .. upvalues.uid)
+				context.registerOP(paramNode,
+					plume.ops.LOAD_CONSTANT,
+					0, context.registerConstant(infos.offset),
+					"scope_begin_" .. upvalues.uid
+				)
+				context.registerOP(paramNode,
+					plume.ops.OPEN_REF_UPVALUE,
+					0, 0,
+					"scope_begin_" .. upvalues.uid
+				)
 			else
-				context.registerOP(paramNode, plume.ops.OPEN_UPVALUE, 0, infos.offset, "scope_begin_" .. upvalues.uid)
+				context.registerOP(paramNode,
+					plume.ops.OPEN_UPVALUE,
+					0, infos.offset,
+					"scope_begin_" .. upvalues.uid
+				)
 			end
 		end
 		for _, infos in ipairs(upvalues) do
@@ -148,9 +163,24 @@ return function (plume, context)
 				
 				if scopeDepth > 0 then
 					if variable.isRef then
-						return context.registerUpvalue(name, nil, scopeDepth, i, relativeScopeOffset-i+1, variable.ref)
+						return context.registerUpvalue(
+							name,
+							nil,
+							scopeDepth,
+							i,
+							relativeScopeOffset-i+1,
+							variable.ref
+						)
 					else
-						return context.registerUpvalue(name, variable.offset, scopeDepth, i, relativeScopeOffset-i+1, nil, variable.isContext)
+						return context.registerUpvalue(
+							name,
+							variable.offset,
+							scopeDepth,
+							i,
+							relativeScopeOffset-i+1,
+							nil,
+							variable.isContext
+						)
 					end
 				else
 					result = {

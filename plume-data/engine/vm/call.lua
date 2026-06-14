@@ -79,7 +79,12 @@ function CONCAT_CALL (vm, arg1, arg2)
         CONCAT_TABLE(vm)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
         
-        local success, result, isHosted = tocall.callable (_STACK_POP(vm, vm.mainStack), vm.runtime, _STACK_GET(vm, vm.fileStack), vm.ip)
+        local success, result, isHosted = tocall.callable (
+            _STACK_POP(vm, vm.mainStack),
+            vm.runtime,
+            _STACK_GET(vm, vm.fileStack),
+            vm.ip
+        )
 
         if success then
             
@@ -134,8 +139,11 @@ function CONCAT_CALL (vm, arg1, arg2)
             _ERROR(vm, string.format("`attempt` first argument must be a macro, not a '%s'.", tmacro))
         end
 
-        vm.mainStack.frames[vm.mainStack.frames.pointer] = vm.mainStack.frames[vm.mainStack.frames.pointer] + 1 -- skip the macro
-        _STACK_PUSH(vm, vm.mainStack, macro) -- and add it at the end
+        -- skip the macro
+        local pointer = vm.mainStack.frames.pointer
+        vm.mainStack.frames[pointer] = vm.mainStack.frames[pointer] + 1
+        -- and add it at the end
+        _STACK_PUSH(vm, vm.mainStack, macro)
 
         -- Workaround to remove remaining macro value
         -- without altering call return value

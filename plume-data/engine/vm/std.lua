@@ -19,7 +19,9 @@ function _ASSERT_STD_TYPE(vm, macroName, argPos, value, expected, signature)
             if t == "nil" then
                 t = "empty"
             end
-            _ERROR(vm, vm.plume.error.wrongArgTypeStd(argPos, macroName, t, expected, "$"..macroName.."("..signature..")"))
+            _ERROR(vm, vm.plume.error.wrongArgTypeStd(
+                argPos, macroName, t, expected, "$"..macroName.."("..signature..")"
+            ))
         end
         return false
     end

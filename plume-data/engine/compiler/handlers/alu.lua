@@ -80,7 +80,10 @@ return function (plume, context, nodeHandlerTable)
 			if child.name == "CALL" or child.name == "BLOCK_CALL" then
 				context.registerOP(node, plume.ops.CONCAT_CALL)
 				context.accBlockDeep = context.accBlockDeep - 1
-			elseif child.name == "INDEX" or child.name == "DIRECT_INDEX" or child.name == "SAFE_INDEX" or child.name == "SAFE_DIRECT_INDEX" then
+			elseif child.name == "INDEX"
+			or child.name == "DIRECT_INDEX"
+			or child.name == "SAFE_INDEX"
+			or child.name == "SAFE_DIRECT_INDEX" then
 				local safeFlag = 0
 				if child.name == "SAFE_INDEX" or child.name == "SAFE_DIRECT_INDEX" then
 					safeFlag = 1

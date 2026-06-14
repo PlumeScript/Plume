@@ -79,7 +79,14 @@ return function(plume)
 
 	local function makePlumeTable()
 		local result = plume.obj.table(0, 2)
-		result.keys = {"path", "locale", "localeNumberFormat", "localeThousandsSeparator", "localeDecimalSeparator", "localeThousandthsSeparator"}
+		result.keys = {
+			"path",
+			"locale",
+			"localeNumberFormat",
+			"localeThousandsSeparator",
+			"localeDecimalSeparator",
+			"localeThousandthsSeparator"
+		}
 
 		local pathTable = plume.obj.table(0, 0)
 		for path in os.getenv("PLUME_PATH"):gmatch('[^;]+') do

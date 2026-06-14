@@ -37,7 +37,13 @@ return function (plume, context, nodeHandlerTable)
 		end
 
 		-- Same path resolver as `import`
-		local filename, searchPaths = plume.getFilenameFromPath(path, false, context.runtime, context.chunk.name, context.chunk.name )
+		local filename, searchPaths = plume.getFilenameFromPath(
+			path,
+			false,
+			context.runtime,
+			context.chunk.name,
+			context.chunk.name
+		)
 		if not filename then
 			plume.error.compilationCannotOpenFile(pathNode, path, searchPaths)
 		end

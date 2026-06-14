@@ -40,8 +40,14 @@ return function (plume)
 	local function renderAST(node)
 		local result = {}
 		local nid = getNodeID(node)
-		table.insert(result, string.format("<div class='ast-node' id='ast-node-%s' data-bpos=%i data-epos=%i>", nid, node.bpos, node.epos))
-		table.insert(result, string.format("<div class='ast-node-infos'>%s (%s)</div>", node.name, node.type))
+		table.insert(result, string.format(
+			"<div class='ast-node' id='ast-node-%s' data-bpos=%i data-epos=%i>",
+			nid, node.bpos, node.epos
+		))
+		table.insert(result, string.format(
+			"<div class='ast-node-infos'>%s (%s)</div>",
+			node.name, node.type
+		))
 		
 		if node.children and #node.children > 0 then
 			table.insert(result, "<div class='ast-node-children'>")
@@ -79,7 +85,10 @@ return function (plume)
 			local arg1  = bit.band(bit.rshift(instr, plume.ARG1_SHIFT), plume.MASK_ARG1)
 			local arg2  = bit.band(instr, plume.MASK_ARG2)
 
-			table.insert(result, string.format("<div class='instruction' data-node='ast-node-%s' data-ip=%i>", getNearestNode(i), i))
+			table.insert(result, string.format(
+				"<div class='instruction' data-node='ast-node-%s' data-ip=%i>",
+				getNearestNode(i), i)
+			)
 			table.insert(result, string.format("<div class='instruction-count'>%i</div>", i))
 			table.insert(result, string.format("<div class='instruction-name'>%s</div>", names[op]))
 			table.insert(result, string.format("<div class='instruction-arg'>%i</div>", arg1))
@@ -125,7 +134,10 @@ return function (plume)
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.variableStack[i]))))
+							table.insert(result, string.format(
+								"<div class='stack-element'>%s</div>",
+								escape(plume.repr(vm.variableStack[i]))
+							))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")

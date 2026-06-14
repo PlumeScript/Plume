@@ -51,7 +51,11 @@ return function (plume, context)
 							var.node, {381, 473}
 						)
 					end
-				elseif not var.isConst and not var.modified and not var.isLoopVariable and not var.isMacro and not var.isMacroParam then
+				elseif not var.isConst
+				and not var.modified
+				and not var.isLoopVariable
+				and not var.isMacro
+				and not var.isMacroParam then
 					plume.warning.throwWarning(
 						"Non-constant variables that are never modified.",
 						"Consider making them constants.",
@@ -80,7 +84,8 @@ return function (plume, context)
 			if call then
 				if #call.children >= 2 then
 					plume.warning.throwWarning(
-						"Using the macro `$Table` for create a new table, but a shorter alternative exists for any table with at least 2 elements.",
+						"Using the macro `$Table` for create a new table,"
+						.."but a shorter alternative exists for any table with at least 2 elements.",
 						string.format("Consider writing `%s`.", getCode(call)),
 						node, {381, 607}
 					)

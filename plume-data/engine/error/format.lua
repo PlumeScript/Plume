@@ -401,11 +401,17 @@ return function(plume)
 						if not USE_SIMPLE then makeLine{""} end
 					end
 				elseif infos.repeatedBlockBegin then
-					makeLine{string.format("! This block is repeated %s times:", infos.repeatedBlockBegin), indent=SOURCE_FILENAME_INDENT}
+					makeLine{
+						string.format("! This block is repeated %s times:", infos.repeatedBlockBegin),
+						indent=SOURCE_FILENAME_INDENT
+					}
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 				elseif infos.repeated then
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
-					makeLine{string.format("↳(previous block is repeated %s more times)", infos.repeated), indent=SOURCE_FILENAME_INDENT}
+					makeLine{
+						string.format("↳(previous block is repeated %s more times)", infos.repeated),
+						indent=SOURCE_FILENAME_INDENT
+					}
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 					if i < #nodesInfos.traceback then
 						if not USE_SIMPLE then makeLine{""} end
@@ -431,8 +437,19 @@ return function(plume)
 				end
 			end
 
-			makeLine{string.format(focusless(" %s WARNING%s "), nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
-			makeLine{formatText("  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. "),  indent=HEADER_INDENT, lineIndentDelta=2}
+			makeLine{
+				string.format(
+					focusless(" %s WARNING%s "),
+					nodesInfos.warnings.count,
+					nodesInfos.warnings.count>1 and "S" or ""
+				), 
+				indent=HEADER_INDENT
+			}
+			makeLine{
+				formatText("  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. "), 
+				indent=HEADER_INDENT,
+				lineIndentDelta=2
+			}
 			if not USE_SIMPLE then
 				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			end
@@ -450,7 +467,11 @@ return function(plume)
 				}
 				makeLine{focus("! ")..formatText(warningInfos.message),  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
 				if warningInfos.help then
-					makeLine{focus("(i) ") .. formatText((warningInfos.help:gsub('^%s*', ''))),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
+					makeLine{
+						focus("(i) ") .. formatText((warningInfos.help:gsub('^%s*', ''))),
+						indent=SOURCE_CODE_INDENT,
+						lineIndentDelta=4
+					}
 				end
 				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do

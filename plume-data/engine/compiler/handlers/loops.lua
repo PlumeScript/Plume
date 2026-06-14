@@ -19,7 +19,12 @@ return function (plume, context, nodeHandlerTable)
 		context.toggleConcatPop()
 		context.registerGoto(node, "while_end_"..uid, "JUMP_IF_NOT")
 
-		table.insert(context.loops, {begin_label="while_begin_"..uid, end_label="while_end_"..uid}) -- Informations used by break/continue
+		-- Informations used by break/continue
+		table.insert(context.loops, {
+			begin_label="while_begin_"..uid,
+			end_label="while_end_"..uid
+		}) 
+		
 		context.scope()(body)
 		table.remove(context.loops)
 

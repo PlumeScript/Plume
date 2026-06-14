@@ -80,7 +80,11 @@ return function (plume)
 		local instructionsCount = #runtime.linkedInstructions
 
 		if bytecodeSize + instructionsCount > plume.MASK_ARG2 then
-			plume.error.toManyInstructions(findNode(runtime.linkedInstructions, instructionsCount), bytecodeSize + instructionsCount, plume.MASK_ARG2)
+			plume.error.toManyInstructions(
+				findNode(runtime.linkedInstructions, instructionsCount),
+				bytecodeSize + instructionsCount,
+				plume.MASK_ARG2
+			)
 		end
 
 		for offset=1, instructionsCount do

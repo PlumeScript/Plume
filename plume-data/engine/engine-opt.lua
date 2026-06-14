@@ -2624,7 +2624,8 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                mainStackFrames[mainStackFramesPointer] = mainStackFrames[mainStackFramesPointer] + 1
+                                                local pointer = mainStackFramesPointer
+                                                mainStackFrames[pointer] = mainStackFrames[pointer] + 1
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = macro
                                                 do

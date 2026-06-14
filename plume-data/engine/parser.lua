@@ -176,7 +176,8 @@ return function (plume)
 			+ E(plume.error.useDoesNotAcceptPositionalArgs, libidn)
 		)
 		local libparamlist = os * (P"("*P")" + P"(" * os * libparam * os * (P"," * os * libparam)^0 * os * ")")^-1
-		local libname = Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * libparamlist) + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
+		local libname = Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * libparamlist)
+					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
 		local use = K"use" * s * libname * (os*P","*os*libname)^0
 
 		----------
@@ -351,7 +352,10 @@ return function (plume)
 						+ Ct("LIST_ITEM", V"inlinetable")
 						+ Ct("LIST_ITEM", V"textic")
 
-		local call      = Ct("CALL", P"(" * os * arg^-1 * (os * P"," * os * arg)^0 * (os * P")" + E(plume.error.missingClosingBracketArgList)))
+		local call      = Ct("CALL", P"("
+							* os * arg^-1 * (os * P"," * os * arg)^0 * (os
+						* P")"
+						+ E(plume.error.missingClosingBracketArgList)))
 
 		local blockName = idn * (index + directindex)^0
 		local blockStart = Ct("EVAL", P"@" * blockName * os
@@ -420,9 +424,12 @@ return function (plume)
 
 		-- Deepness 0, 1 and 2 hardcoded.
 		-- Should handle more case (#401)
-		local raw = Ct("RAW", os * K"raw[[" *  C("TEXT", (P"\n"+-1) * (P(1)-P"]]end")^0) * (P"]]end" + E(plume.error.missingEnd, -P(1))))
-				  + Ct("RAW", os * K"raw["  *  C("TEXT", (P"\n"+-1) * (P(1)-P"]end")^0)  * (P"]end"  + E(plume.error.missingEnd, -P(1))))
-				  + Ct("RAW", os * K"raw"   *  C("TEXT", (P"\n"+-1) * (P(1)-P"end")^0)   * (P"end"   + E(plume.error.missingEnd, -P(1))))
+		local raw = Ct("RAW", os * K"raw[[" *  C("TEXT", (P"\n"+-1) * (P(1)-P"]]end")^0)
+						* (P"]]end" + E(plume.error.missingEnd, -P(1))))
+				  + Ct("RAW", os * K"raw["  *  C("TEXT", (P"\n"+-1) * (P(1)-P"]end")^0)
+				  		* (P"]end"  + E(plume.error.missingEnd, -P(1))))
+				  + Ct("RAW", os * K"raw"   *  C("TEXT", (P"\n"+-1) * (P(1)-P"end")^0)
+				  		* (P"end"   + E(plume.error.missingEnd, -P(1))))
 
 		local with_param = Ct("PARAM", idn * os * P":" * os * Ct("VALUE", V"textnc"))
 		local oldwith = Ct("WITH", K"with" * os * Ct("PARAMLIST", with_param * (os * P"," * os * with_param)^0) * body * _end)
@@ -433,7 +440,8 @@ return function (plume)
 		) * body * _end)
 
 		-- Warning
-		local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") / function(x)
+		local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") /
+		function(x)
 			x.warning = "This is plain text, not an assignement."
 			if x.content:match('[%+%-%*%/]') then
 				x.warningHint = string.format("Do you mean `set %s ...` ?", x.content)
@@ -468,7 +476,9 @@ return function (plume)
 								),
 			statement    = lt * V"firstStatement",
 
-			commandStd =  _if + _while + _for + _break + continue + macro + _do + block + let + set + leave + inlinetable + expand + use + raw + with,
+			commandStd =  _if + _while + _for + _break + continue + macro
+						  + _do + block + let + set + leave + inlinetable
+						  + expand + use + raw + with,
 			-- Only at line start
 			commandLB = listitem + hashitem,
 
@@ -478,7 +488,9 @@ return function (plume)
 			textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
 			textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
 			textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
-			textic = (escaped + eval + C("TEXT", P"$") + V"comment" + C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic")^1,
+			textic = (escaped + eval + C("TEXT", P"$") + V"comment"
+						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic"
+					)^1,
 
 			comment  = os * (
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)

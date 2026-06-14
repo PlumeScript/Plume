@@ -52,7 +52,8 @@ return function(plume)
 	end
 
 	function plume.error.evalAlone(node)
-		local message = "'$' must be followed by a variable name or an expression in parentheses.\nIf you want to write the '$' character, write '\\$'."
+		local message = "'$' must be followed by a variable name or an expression in parentheses.\n"
+					  .."If you want to write the '$' character, write '\\$'."
 		node.errorbpos = node.bpos-1
 		plume.error.throwSyntaxError(node, message)
 	end
@@ -108,7 +109,8 @@ return function(plume)
 	end
 
 	function plume.error.letExistingSelfVariable(node)
-		local message = "Cannot define variable 'self', it already exists in the current scope.\n'self' is an implicit variable used to store the call table."
+		local message = "Cannot define variable 'self', it already exists in the current scope.\n"
+						.. "'self' is an implicit variable used to store the call table."
 		plume.error.throwCompilationError(node, message)
 	end
 
@@ -151,7 +153,12 @@ return function(plume)
 		if found == "VALUE_TABLE" then
 			found = "TABLE"
 		end
-		local message = string.format("Invalid '%s' content in a '%s' block.\nThe previous branches of this if statement were of type %s, but this %s body is of type %s.\nAll branches of an if statement must be of the same type.", found, expected, expected, parentName:lower(), found)
+		local message = string.format(
+			"Invalid '%s' content in a '%s' block.\n"
+			.."The previous branches of this if statement were of type %s, but this %s body is of type %s.\n"
+			.."All branches of an if statement must be of the same type.",
+			found, expected, expected, parentName:lower(), found
+		)
 		plume.error.throwSyntaxError(node, message)
 	end
 
@@ -159,7 +166,10 @@ return function(plume)
 		local message = "The arguments of 'use' are read at compile time and must therefore be plain text."
 		if isImport then
 			message = string.format(
-				"%s\nTo import '%s' with dynamic parameters, use instead:\n    |let %s = $import(%s, %s: %s)\n    |...\n    |$lib.someMethod()",
+				"%s\nTo import '%s' with dynamic parameters, use instead:\n"
+				.. "    |let %s = $import(%s, %s: %s)\n"
+				.. "    |...\n"
+				.. "    |$lib.someMethod()",
 				message, libName, libName, libName, paramName, paramValue
 			)
 		end
