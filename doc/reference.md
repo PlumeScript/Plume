@@ -854,7 +854,7 @@ Context variables should be used sparingly. They are appropriate for:
 
 #### Built-in Context Variable: `locale`
 
-Plume defines a built-in context variable named `locael` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `locale` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
+Plume defines a built-in context variable named `locale` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `locale` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
 
 ```plume
 with locale: fr
@@ -992,7 +992,7 @@ use mylib
     ```plume
     // svg-utils.plume
     // Prevent automatic number formatting in this library
-    use #context(local: none)
+    use #context(locale: none)
     
     macro circle(x, y, r)
         <circle cx="$(x)" cy="$(y)" r="$(r)" />
