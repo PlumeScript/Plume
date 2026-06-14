@@ -10,10 +10,10 @@ return function (plume)
 		local offset = 0
 		while offset < #runtime.instructions do
 			offset = offset + 1
-			local instr = runtime.instructions[offset]
-			local insert = runtime.insert[instr.label]
-			if instr.label and insert then
-				for _, newInstr in ipairs(insert) do
+			local instr    = runtime.instructions[offset]
+			local toinsert = runtime.insert[instr.label]
+			if instr.label and toinsert then
+				for _, newInstr in ipairs(toinsert) do
 					offset = offset + 1
 					table.insert(runtime.instructions, offset, newInstr)
 				end

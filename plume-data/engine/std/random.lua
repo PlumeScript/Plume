@@ -7,12 +7,12 @@ Licensed under the MIT License — see LICENSE for details.
 
 plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	--!signature [number seed]
-	function _deriveSeed(seed, index)
-		seed = ((seed + index * 1234567) * 1103515245 + 12345) % 2147483647
-		if seed==0 then
+	function _deriveSeed(oldseed, index)
+		local newseed = ((oldseed + index * 1234567) * 1103515245 + 12345) % 2147483647
+		if newseed == 0 then
 			return 1
 		else
-			return seed
+			return newseed
 		end
 	end
 	local state = _deriveSeed(args.table[1] or os.time(), 1)
@@ -36,8 +36,8 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	
 	local random = plume.obj.quickTable{
 		seed = plume.obj.luaMacro ("seed", function(args)
-			--!signature [number seed]
-			state = _deriveSeed(seed or os.time(), 1)
+			--!signature [number newseed]
+			state = _deriveSeed(newseed or os.time(), 1)
 			return true
 		end),
 		choice = plume.obj.luaMacro ("choice", function(args)

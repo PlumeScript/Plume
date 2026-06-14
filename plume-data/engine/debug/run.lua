@@ -113,28 +113,28 @@ return function (plume)
 					table.insert(result, "<div class='stack-view'>")
 						table.insert(result, "<div class='stack-title'>Main Stack</div>")
 						table.insert(result, "<div class='stack-content'>")
-						for i=1, vm.mainStack.pointer do
-							for _, j in ipairs(vm.mainStack.frames) do
-								if j==i and _>1  then
+						for j=1, vm.mainStack.pointer do
+							for k, f in ipairs(vm.mainStack.frames) do
+								if f==j and k>1  then
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.mainStack[i]))))
+							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.mainStack[j]))))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
 					table.insert(result, "<div class='stack-view'>")
 						table.insert(result, "<div class='stack-title'>Variable Stack</div>")
 						table.insert(result, "<div class='stack-content'>")
-						for i=1, vm.variableStack.pointer do
-							for _, j in ipairs(vm.variableStack.frames) do
-								if j==i and _>1 then
+						for j=1, vm.variableStack.pointer do
+							for k, f in ipairs(vm.variableStack.frames) do
+								if f==j and k>1  then
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
 							table.insert(result, string.format(
 								"<div class='stack-element'>%s</div>",
-								escape(plume.repr(vm.variableStack[i]))
+								escape(plume.repr(vm.variableStack[j]))
 							))
 						end
 						table.insert(result, "</div>")

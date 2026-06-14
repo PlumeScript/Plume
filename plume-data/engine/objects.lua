@@ -214,8 +214,8 @@ return function(plume)
 				end
 			else
 				valueCount = valueCount + 1
-				local key = plume.repr(key, acc)
-				table.insert(result, string.format("%s: %s", key, value))
+				local rkey = plume.repr(key, acc)
+				table.insert(result, string.format("%s: %s", rkey, value))
 			end
 		end
 		

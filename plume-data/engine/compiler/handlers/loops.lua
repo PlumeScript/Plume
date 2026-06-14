@@ -37,7 +37,7 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.FOR = function(node)
 		local varlist = plume.ast.get(node, "VARLIST")
 		local iterator   = plume.ast.get(node, "ITERATOR")
-		local body       = plume.ast.get(node, "BODY")
+		local mainBody   = plume.ast.get(node, "BODY")
 		local uid = context.getUID()
 		
 		context.toggleConcatOff() -- Prevent iterator to be converted to string
@@ -75,7 +75,7 @@ return function (plume, context, nodeHandlerTable)
 				context.childrenHandler(body)
 				table.remove(context.loops)
 				context.registerLabel(node, "for_loop_end_"..uid)
-			end, #varlist.children)(body)
+			end, #varlist.children)(mainBody)
 
 			context.registerGoto (node, "for_begin_"..uid)
 			context.registerLabel(node, "for_end_"..uid)

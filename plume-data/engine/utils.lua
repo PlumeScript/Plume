@@ -104,7 +104,7 @@ return function (plume)
 	end
 
 	function plume.ast.set(node, key, value, mindeep, maxdeep)
-		plume.ast.browse(node, function(node) node[key] = value end, mindeep, maxdeep)
+		plume.ast.browse(node, function(childnode) childnode[key] = value end, mindeep, maxdeep)
 	end
 
 	-- return the first child with given name
@@ -112,9 +112,9 @@ return function (plume)
 		mindeep = mindeep or 1
 		maxdeep = maxdeep or 1
 		local result
-		plume.ast.browse(node, function(node)
-			if node.name==name then
-				result = node
+		plume.ast.browse(node, function(childnode)
+			if childnode.name==name then
+				result = childnode
 				return "STOP"
 			end
 		end, mindeep, maxdeep)
@@ -126,9 +126,9 @@ return function (plume)
 		mindeep = mindeep or 1
 		maxdeep = maxdeep or 1
 		local result = {}
-		plume.ast.browse(node, function(node)
-			if node.name==name then
-				table.insert(result, node)
+		plume.ast.browse(node, function(childnode)
+			if childnode.name==name then
+				table.insert(result, childnode)
 			end
 		end, mindeep, maxdeep)
 

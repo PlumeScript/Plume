@@ -22,8 +22,8 @@ return function(plume)
 		local index = tonumber(key)
 		if index and math.floor(index) == index then
 			local largestIndex = 0
-			for _, key in ipairs(t.keys) do
-				largestIndex = math.max(largestIndex, tonumber(key) or 0)
+			for _, testkey in ipairs(t.keys) do
+				largestIndex = math.max(largestIndex, tonumber(testkey) or 0)
 			end
 
 			local hole = false

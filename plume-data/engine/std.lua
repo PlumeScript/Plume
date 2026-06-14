@@ -675,8 +675,10 @@ return function(plume)
 		if not lfsLoaded then
 			return false, "Cannot load lfs"
 		end
+		path = path or lfs.currentdir ()
+	
 		local obj = plume.obj.quickTable{
-			path = path or lfs.currentdir (),
+			path = path,
 			isFile = plume.obj.luaMacro ("isFile", function (args)
 				local __name      = "isFile"
 				local __signature = "`$isFile()`"
@@ -684,7 +686,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -700,7 +701,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -716,7 +716,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 				return true, attr ~= nil
 			end),
@@ -727,7 +726,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if attr then
@@ -743,7 +741,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -766,7 +763,6 @@ return function(plume)
 				if __s and newpath then __s, __e, newpath = plume.stdCheckType(newpath, "string", "1", __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -783,7 +779,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local newpath = args.table[1]
 	
 				local src = io.open(path)
@@ -809,7 +804,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 	
 				if path:match('[/\\]') then
 					return makePath(path:gsub('[/\\][^/\\]*$', ''))
@@ -824,7 +818,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				return true, path:match('[^/\\]*$')
 			end),
 			read = plume.obj.luaMacro ("read", function (args)
@@ -834,7 +827,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				return plume.stdio.read(path)
 			end),
 			write = plume.obj.luaMacro ("write", function (args)
@@ -846,7 +838,6 @@ return function(plume)
 				append = append or false
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local success, result = mkdirs(path, true)
 				if not success then
 					return false, result
@@ -861,7 +852,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local success, result = mkdirs(path, true)
 				if not success then
 					return false, result
@@ -881,7 +871,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local result = plume.obj.table(0, 0)
 	
 				for child in lfs.dir(path) do
@@ -900,18 +889,17 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local result = plume.obj.table(0, 0)
 	
 				local toExplore = {path}
 				local pos = 1
 				while pos <= #toExplore do
-					local path = toExplore[pos]
+					local currentPath = toExplore[pos]
 					pos = pos + 1
 	
-					for child in lfs.dir(path) do
+					for child in lfs.dir(currentPath) do
 						if child ~= "." and child ~= ".." then
-							local childPath = path.."/"..child
+							local childPath = currentPath.."/"..child
 							local _, childPathObj = makePath(childPath)
 							table.insert(result.table, childPathObj)
 							table.insert(result.keys, #result.table)
@@ -952,7 +940,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				return true, path
 			end),
 	
@@ -1022,12 +1009,12 @@ return function(plume)
 		if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
-		function _deriveSeed(seed, index)
-			seed = ((seed + index * 1234567) * 1103515245 + 12345) % 2147483647
-			if seed==0 then
+		function _deriveSeed(oldseed, index)
+			local newseed = ((oldseed + index * 1234567) * 1103515245 + 12345) % 2147483647
+			if newseed == 0 then
 				return 1
 			else
-				return seed
+				return newseed
 			end
 		end
 		local state = _deriveSeed(args.table[1] or os.time(), 1)
@@ -1052,14 +1039,14 @@ return function(plume)
 		local random = plume.obj.quickTable{
 			seed = plume.obj.luaMacro ("seed", function (args)
 				local __name      = "seed"
-				local __signature = "`$seed([number seed])`"
-				local __s, __e, self, seed
-				__s, __e, seed = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
+				local __signature = "`$seed([number newseed])`"
+				local __s, __e, self, newseed
+				__s, __e, newseed = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-				if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
+				if __s and newseed then __s, __e, newseed = plume.stdCheckType(newseed, "number", "1", __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				state = _deriveSeed(seed or os.time(), 1)
+				state = _deriveSeed(newseed or os.time(), 1)
 				return true
 			end),
 			choice = plume.obj.luaMacro ("choice", function (args)

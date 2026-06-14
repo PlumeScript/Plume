@@ -121,12 +121,15 @@ return function(plume)
 		if runtime.callstack then
 			for i=#runtime.callstack, 1, -1 do
 				local source = runtime.callstack[i]
-				local node
+				local currentNode
 				if source.macro.type == "macro" or source.macro.type == "luaMacro" and i>1 then
-					node = plume.error.getNode(runtime, source.ip)
+					currentNode = plume.error.getNode(runtime, source.ip)
 				end
-				if node then
-					table.insert(infos.errorCallstack, {node=node, parentMacro=plume.error.findNodeParentMacro(node)})
+				if currentNode then
+					table.insert(infos.errorCallstack, {
+						node=currentNode,
+						parentMacro=plume.error.findNodeParentMacro(currentNode)
+					})
 				end
 			end
 		end

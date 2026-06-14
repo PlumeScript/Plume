@@ -25,8 +25,8 @@ return function(plume)
 			end
 
 			if not zero then
-				for i, v in ipairs(ops) do
-					ops[i] = opsNames[v]
+				for i, vv in ipairs(ops) do
+					ops[i] = opsNames[vv]
 				end
 
 				total = total + v
