@@ -58,7 +58,7 @@ return function(plume)
 	end
 
 	function plume.error.wrongDirectiveArgs(node, directiveName, argName, checkArgs)
-		message = string.format("Unknown arg '%s' for directive '#%s'.\nUsage: `%s`",
+		local message = string.format("Unknown arg '%s' for directive '#%s'.\nUsage: `%s`",
 			argName, directiveName,
 			makeDirectiveSignature(directiveName, checkArgs)
 		)
@@ -66,7 +66,7 @@ return function(plume)
 	end
 
 	function plume.error.wrongDirectiveArgsValue(node, directiveName, argName, checkArgs, value)
-		message = string.format("Unknown value '%s' for arg '%s' of directive '#%s'.\nUsage: `%s`",
+		local message = string.format("Unknown value '%s' for arg '%s' of directive '#%s'.\nUsage: `%s`",
 			value, argName, directiveName,
 			makeDirectiveSignature(directiveName, checkArgs, argName)
 		)
@@ -74,7 +74,7 @@ return function(plume)
 	end
 
 	function plume.error.cycleWithUse(node, filenames)
-		message = string.format("Cycle in use: %s", table.concat(filenames, " -> "))
+		local message = string.format("Cycle in use: %s", table.concat(filenames, " -> "))
 		plume.error.throwCompilationError(node, message)
 	end
 end

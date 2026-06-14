@@ -119,7 +119,7 @@ return function (plume, context, nodeHandlerTable)
 					end
 				else
 					if macroObj.namedParamCount > 0 then
-						if flag then
+						if passFlag then
 							plume.error.cannotAddPositionalAfterFlag(paramNode)
 						else
 							plume.error.cannotAddPositionalAfterNamed(paramNode)

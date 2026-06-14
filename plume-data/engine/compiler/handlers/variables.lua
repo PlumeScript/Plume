@@ -83,6 +83,7 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
+				local definitionVar
 				rvar, definitionVar = context.registerVariable(node, name, {
 					isConst=isConst,
 					isParam=isParam,
@@ -97,7 +98,7 @@ return function (plume, context, nodeHandlerTable)
 					end
 				end
 			else
-				rvar, ref = context.getVariable(name)
+				rvar = context.getVariable(name)
 				if not rvar then
 					plume.error.setUnknownVariable(node, name, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then

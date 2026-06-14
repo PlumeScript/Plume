@@ -132,7 +132,7 @@ return function (plume, context, nodeHandlerTable)
 				for name, value in pairs(args) do
 					local var = context.runtime.plume.table[name]
 					if not var then
-						plume.error.wrongDirectiveArgs(node, "context", name, checkArgs)
+						plume.error.wrongDirectiveArgs(node, "context", name)
 					end
 					t[var] = value
 				end

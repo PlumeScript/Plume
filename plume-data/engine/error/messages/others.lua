@@ -44,7 +44,7 @@ return function(plume)
 
 			return string.format("Invalid index '%s'.\n%s",  key, hint)
 		else
-			hint = plume.error.makeVisibleKeysHint(key, t.keys)
+			local hint = plume.error.makeVisibleKeysHint(key, t.keys)
 			return string.format("Unregistered key '%s'.%s",  key, hint)
 		end
 	end

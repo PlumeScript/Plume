@@ -10,7 +10,7 @@ return function (plume)
 		local offset = 0
 		while offset < #runtime.instructions do
 			offset = offset + 1
-			instr = runtime.instructions[offset]
+			local instr = runtime.instructions[offset]
 			local insert = runtime.insert[instr.label]
 			if instr.label and insert then
 				for _, newInstr in ipairs(insert) do
@@ -27,7 +27,7 @@ return function (plume)
 		local labels = {}
 		local removedCount = 0
 		for offset=1, #runtime.instructions do
-			instr = runtime.instructions[offset]
+			local instr = runtime.instructions[offset]
 			if instr.label then
 				labels[instr.label] = offset - removedCount
 				removedCount = removedCount + 1
@@ -36,7 +36,7 @@ return function (plume)
 
 		local removedOffset = 0
 		for offset=1, #runtime.instructions do
-			instr = runtime.instructions[offset]
+			local instr = runtime.instructions[offset]
 			offset = offset-removedOffset
 			if instr.label then
 				removedOffset = removedOffset + 1
@@ -88,7 +88,7 @@ return function (plume)
 		end
 
 		for offset=1, instructionsCount do
-			instr = runtime.linkedInstructions[offset]
+			local instr = runtime.linkedInstructions[offset]
 
 			checkPartSize(runtime.linkedInstructions, offset, instr[1], "OP",   2^plume.OP_BITS-1)
 			checkPartSize(runtime.linkedInstructions, offset, instr[2], "ARG1", 2^plume.ARG1_BITS-1)

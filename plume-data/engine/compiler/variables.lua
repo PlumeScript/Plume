@@ -109,18 +109,18 @@ return function (plume, context)
 	function context.manageUpvalues(upvalues)
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
-				context.registerOP(paramNode,
+				context.registerOP(nil,
 					plume.ops.LOAD_CONSTANT,
 					0, context.registerConstant(infos.offset),
 					"scope_begin_" .. upvalues.uid
 				)
-				context.registerOP(paramNode,
+				context.registerOP(nil,
 					plume.ops.OPEN_REF_UPVALUE,
 					0, 0,
 					"scope_begin_" .. upvalues.uid
 				)
 			else
-				context.registerOP(paramNode,
+				context.registerOP(nil,
 					plume.ops.OPEN_UPVALUE,
 					0, infos.offset,
 					"scope_begin_" .. upvalues.uid
@@ -129,10 +129,10 @@ return function (plume, context)
 		end
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
-				context.registerOP(paramNode, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset))
-				context.registerOP(paramNode, plume.ops.CLOSE_REF_UPVALUE, 0, 0)
+				context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset))
+				context.registerOP(nil, plume.ops.CLOSE_REF_UPVALUE, 0, 0)
 			else
-				context.registerOP(paramNode, plume.ops.CLOSE_UPVALUE, 0, infos.offset)
+				context.registerOP(nil, plume.ops.CLOSE_UPVALUE, 0, infos.offset)
 			end
 		end
 	end

@@ -115,7 +115,7 @@ plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runt
 	if filename then
 		return true, dofile(filename)(plume) 
 	else
-		msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
+		local msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
 		return false, msg
 	end
 end)

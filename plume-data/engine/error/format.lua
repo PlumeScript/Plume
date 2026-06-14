@@ -257,7 +257,7 @@ return function(plume)
 
 					indicator = (" "):rep(infos.sourceLinePosBegin-1-#startspace) .. ("^"):rep(infos.sourceLen)
 					if #indicator >= MAX_WIDTH*3/4 then
-						delta     = #indicator - MAX_WIDTH*3/4
+						local delta     = #indicator - MAX_WIDTH*3/4
 						indicator = indicator:sub(delta, -1)
 						line      = "..."..line:sub(delta+3, -1)
 					end
@@ -277,8 +277,6 @@ return function(plume)
 						makeSourceLine{indicator, "", indent=indent}
 					end
 				end
-
-				lastNoLine = noLine
 			end
 		end
 
@@ -302,7 +300,7 @@ return function(plume)
 			end
 		end
 		for _, infos in ipairs(plume.warning.cache) do
-			warningInfos = {message=infos.message, help=infos.help, issues=infos.issues}
+			local warningInfos = {message=infos.message, help=infos.help, issues=infos.issues}
 			for _, node in ipairs(infos.nodes) do
 				table.insert(warningInfos, plume.error.getNodeLinesContext(node, false, false))
 				nodesInfos.warnings.count = nodesInfos.warnings.count + 1

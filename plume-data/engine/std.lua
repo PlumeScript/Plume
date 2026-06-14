@@ -230,7 +230,7 @@ return function(plume)
 		if filename then
 			return true, dofile(filename)(plume) 
 		else
-			msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
+			local msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
 			return false, msg
 		end
 	end)
@@ -1626,10 +1626,6 @@ return function(plume)
 			if __s and endpos then __s, __e, endpos = plume.stdCheckType(endpos, "number", "3", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			if epos == 1 then
-				epos = #s
-			end
-	
 			return true, s:sub(startpos, endpos)
 		end)
 	}

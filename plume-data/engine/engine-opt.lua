@@ -3212,7 +3212,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret251 = leftNumber + rightNumber
-                                                result = _ret251
+                                                local result = _ret251
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -3357,7 +3357,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret257 = left + right
-                                                    result = _ret257
+                                                    local result = _ret257
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -3383,7 +3383,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret266 = leftNumber * rightNumber
-                                                result = _ret266
+                                                local result = _ret266
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -3528,7 +3528,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret272 = left * right
-                                                    result = _ret272
+                                                    local result = _ret272
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -3556,7 +3556,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret281 = leftNumber - rightNumber
-                                                result = _ret281
+                                                local result = _ret281
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -3701,7 +3701,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret287 = left - right
-                                                    result = _ret287
+                                                    local result = _ret287
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -3727,7 +3727,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret296 = leftNumber / rightNumber
-                                                result = _ret296
+                                                local result = _ret296
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -3872,7 +3872,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret302 = left / right
-                                                    result = _ret302
+                                                    local result = _ret302
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -4010,7 +4010,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret320 = leftNumber % rightNumber
-                                                result = _ret320
+                                                local result = _ret320
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -4155,7 +4155,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret326 = left % right
-                                                    result = _ret326
+                                                    local result = _ret326
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -4183,7 +4183,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret335 = leftNumber ^ rightNumber
-                                                result = _ret335
+                                                local result = _ret335
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -4328,7 +4328,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret341 = left ^ right
-                                                    result = _ret341
+                                                    local result = _ret341
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -4354,7 +4354,7 @@ return function (plume)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret350 = leftNumber < rightNumber
-                                                result = _ret350
+                                                local result = _ret350
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
@@ -4499,7 +4499,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret356 = left < right
-                                                    result = _ret356
+                                                    local result = _ret356
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end

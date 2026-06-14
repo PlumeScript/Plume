@@ -141,7 +141,7 @@ function _BIN_OP_NUMBER (vm, op, name)
 
     -- Only number
     if rightNumber and leftNumber then
-        result = op(leftNumber, rightNumber)
+        local result = op(leftNumber, rightNumber)
         _STACK_PUSH(vm, vm.mainStack, result)
     else
 
@@ -158,7 +158,7 @@ function _BIN_OP_NUMBER (vm, op, name)
             end
         -- table with tonumber metafield
         else
-            result = op(left, right)
+            local result = op(left, right)
             _STACK_PUSH(vm, vm.mainStack, result)
         end
 

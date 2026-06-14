@@ -110,7 +110,7 @@ return function (plume, context)
 
         local uid = context.getUID()
         -- Used to open upvalues
-        context.registerLabel(node, "scope_begin_" .. uid)
+        context.registerLabel(nil, "scope_begin_" .. uid)
 
         table.insert(context.scopes, {})
         table.insert(context.scopesUp, {uid=uid})

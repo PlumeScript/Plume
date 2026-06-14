@@ -203,7 +203,7 @@ return function (plume)
 		data.filename = input
 		data.code = io.open(input):read('*a')
 
-		local success, result
+		local success, result, ip
 
 		success, result = pcall(plume.parse, data.code, data.filename)
 		
@@ -220,7 +220,7 @@ return function (plume)
 				data.log = {}
 				plume.hook = hook(data.log)
 				plume.runDevFlag = true
-				success, result, ip = plume.run(runtime, chunk, fileParams)
+				success, result, ip = plume.run(runtime, chunk)
 
 				if not success then
 					local last = data.log[#data.log]

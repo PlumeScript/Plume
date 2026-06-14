@@ -45,7 +45,7 @@ return function (plume)
 		if not obj then
 			return
 		end
-		value = escapeString(obj, 30)
+		local value = escapeString(obj, 30)
 
 		return {value=value}
 	end
