@@ -1009,7 +1009,7 @@ return function(plume)
 		if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
-		function _deriveSeed(oldseed, index)
+		local function _deriveSeed(oldseed, index)
 			local newseed = ((oldseed + index * 1234567) * 1103515245 + 12345) % 2147483647
 			if newseed == 0 then
 				return 1
@@ -1019,11 +1019,11 @@ return function(plume)
 		end
 		local state = _deriveSeed(args.table[1] or os.time(), 1)
 	
-		function _random()
+		local function _random()
 			state = ((state * 48271) % 2147483647)
 			return (state / 2147483647)
 		end
-		function _random_range(a, b)
+		local function _random_range(a, b)
 			return math.floor(_random() * (b-a+1) + a)
 		end
 	
