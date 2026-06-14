@@ -390,13 +390,9 @@ return function (plume)
 					if type(dir) == "string" then
 						dir = formatDir(dir)
 						table.insert(basedirs, dir)
-					else
-						-- Should raise an error?
 					end
 				end
 			end
-		else
-			-- Should raise an error?
 		end
 		table.insert(basedirs, root)
 		table.insert(basedirs, "")
