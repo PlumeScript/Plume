@@ -180,7 +180,10 @@ plume.std.Table = plume.obj.quickTable{
 		--!signature table t, macro compare:
 		if compare and #t.table > 1 then
 			if compare.positionalParamCount ~= 2 then
-				return false, string.format("Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.", compare.positionalParamCount)
+				return false, string.format(
+					"Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.",
+					compare.positionalParamCount
+				)
 			end
 
 			local context = {

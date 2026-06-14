@@ -65,7 +65,10 @@ plume.std.String = plume.obj.quickTable {
 
 		if type(sub) ~= "string" then
 			if sub.positionalParamCount ~= 1 then
-				return false, string.format("Macro sub for `String.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
+				return false, string.format(
+					"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
+					sub.positionalParamCount
+				)
 			end
 
 			local context = {
