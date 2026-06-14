@@ -345,6 +345,7 @@ plume.std.Time = plume.obj.quickTable{
 
 	SECOND = ignoreSuccess(createDuration(1)),
 	MINUTE = ignoreSuccess(createDuration(60)),
+	HOUR   = ignoreSuccess(createDuration(3600)),
 	DAY    = ignoreSuccess(createDuration(86400)),
 	WEEK   = ignoreSuccess(createDuration(604800)),
 
