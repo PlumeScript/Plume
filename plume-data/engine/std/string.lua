@@ -107,12 +107,12 @@ plume.std.String = plume.obj.quickTable {
 	rtrim = plume.obj.luaMacro("rtrim", function (args)
 		--!override-self-plume.std.String
 		--!signature string s
-		return true, (s:gsub('^%s*', ''))
+		return true, (s:gsub('%s*$', ''))
 	end),
 	ltrim = plume.obj.luaMacro("ltrim", function (args)
 		--!override-self-plume.std.String
 		--!signature string s
-		return true, (s:gsub('%s*$', ''))
+		return true, (s:gsub('^%s*', ''))
 	end),
 	collapse = plume.obj.luaMacro("collapse", function (args)
 		--!override-self-plume.std.String

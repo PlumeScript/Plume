@@ -1297,7 +1297,7 @@ return function(plume)
 			if __s and s then __s, __e, s = plume.stdCheckType(s, "string", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, (s:gsub('^%s*', ''))
+			return true, (s:gsub('%s*$', ''))
 		end),
 		ltrim = plume.obj.luaMacro("ltrim", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
@@ -1309,7 +1309,7 @@ return function(plume)
 			if __s and s then __s, __e, s = plume.stdCheckType(s, "string", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, (s:gsub('%s*$', ''))
+			return true, (s:gsub('^%s*', ''))
 		end),
 		collapse = plume.obj.luaMacro("collapse", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
