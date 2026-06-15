@@ -1135,3 +1135,40 @@ $i
 /// Output
 6
 /// End
+
+/// Test #856-3
+let i = 5
+
+while true
+    if true
+        if true
+            let j = 70
+            set i += 1
+            break
+        end
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test #856-4
+let i = 5
+
+while true
+    if true
+        if false
+        else
+            let j = 70
+            set i += 1
+            break
+        end
+    end
+end
+
+$i
+/// Output
+6
+/// End
