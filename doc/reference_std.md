@@ -140,7 +140,7 @@ The `import` statement follows a specific lookup order to locate files:
 3.  **File Patterns:** For any given directory, Plume looks for `[path].plume` and `[path]/init.plume`
 
 **Environment and Path Management:**
-*   The initial `plume.path` is populated from the `PLUME_PATH` environment variable (paths are separated by commas).
+*   The initial `plume.path` is populated from the `PLUME_PATH` environment variable (paths are separated by semicolons).
 *   You can add, remove or replace by editing the `plume.path` table.
 
 #### Module Lifecycle and Performance

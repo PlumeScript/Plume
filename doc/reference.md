@@ -1111,7 +1111,7 @@ end
 The built-in function `attempt()` calls a macro or expression in protected mode and returns the result without halting execution:
 
 ```plume
-attempts(myMacro, ...macroArgs)
+attempt(myMacro, ...macroArgs)
 ```
 
 Returns a table with two fields:
