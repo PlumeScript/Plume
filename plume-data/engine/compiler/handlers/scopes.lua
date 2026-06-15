@@ -53,6 +53,13 @@ return function (plume, context, nodeHandlerTable)
 		end
 
 		context.accBlock()(body)
+
+		if macro then
+			macro.contextToClose = macro.contextToClose - 1
+		end
+		if loop and loop.contextToClose then
+			loop.contextToClose  = loop.contextToClose - 1
+		end
 		
 		context.registerOP(node, plume.ops.POP_CONTEXT)
 

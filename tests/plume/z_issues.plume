@@ -1184,6 +1184,26 @@ $i
 6
 /// End
 
+/// Test #857
+let a = $Context(a)
+
+
+macro Wing()
+    while true
+        with ($a: b)
+            $a()
+            break
+        end
+    end
+    leave
+end
+$a()
+$Wing()
+$a()
+/// Output
+aba
+/// End
+
 /// Test #862
 let a = $Context(a)
 
