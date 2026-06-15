@@ -95,14 +95,14 @@ return function (plume, context, nodeHandlerTable)
 	-----------------------------------------------------------	
 	nodeHandlerTable.CONTINUE = function(node)
 		local loop = context.getLast 'loops'
-		if not loop or not loop.begin_label then
+		if not loop or loop.insideMacro then
 			plume.error.cannotUseContinueOutsideLoop(node)
 		end
 		context.registerGoto (node, loop.begin_label)
 	end
 	nodeHandlerTable.BREAK = function(node)
 		local loop = context.getLast 'loops'
-		if not loop or not loop.end_label then
+		if not loop or loop.insideMacro then
 			plume.error.cannotUseBreakOutsideLoop(node)
 		end
 		for _ = 1, loop.contextToClose do

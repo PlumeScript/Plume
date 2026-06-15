@@ -68,7 +68,13 @@ return function (plume, context, nodeHandlerTable)
 
 		context.file(function ()
 			context.enterScope(nil)
-			table.insert(context.loops, {})
+
+			--- Used to prevent break inside a macro inside a loop
+			local lastLoop = context.getLast "loops"
+			if lastLoop then
+				lastLoop.insideMacro = true
+			end
+
 			-------------------------------------------------------------
 			--- Count arguments, save variadic offset
 			--- and evaluate default value when optionnal args are empty.
@@ -155,6 +161,10 @@ return function (plume, context, nodeHandlerTable)
 			macroObj.localsCount = #context.getCurrentScope()
 
 			context.leaveScope(nil)
+
+			if lastLoop then
+				lastLoop.insideMacro = false
+			end
 			
 		end) ()
 		context.registerOP(node, plume.ops.RETURN, 0, 0)
