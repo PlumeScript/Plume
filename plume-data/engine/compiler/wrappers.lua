@@ -140,10 +140,22 @@ return function (plume, context)
         f = f or context.childrenHandler  
         return function (node)
             local lets = context.countLocals(node) + (internVar or 0)
-            if lets>0 then  
+            if lets>0 then
+                -------------------------------------------
+                --- In case break jumping over LEAVE_SCOPE
+                local loop = context.getLast "loops"
+                if loop then
+                    loop.scopeToClose = loop.scopeToClose+1
+                end
+                -------------------------------------------
+
                 context.enterScope(lets)
                 f(node)  
                 context.leaveScope(true)
+
+                if loop then
+                    loop.scopeToClose = loop.scopeToClose-1
+                end
             else  
                 f(node)  
             end  

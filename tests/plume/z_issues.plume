@@ -1103,3 +1103,35 @@ $i
 /// Output
 6
 /// End
+
+/// Test #856-1
+let a = 5
+
+for i in seq(5)
+    if true
+        let j = 70
+        set a += 1
+        break
+    end
+end
+
+$a
+/// Output
+6
+/// End
+
+/// Test #856-2
+let i = 5
+
+while true
+    if true
+        let j = 70
+        set i += 1
+        break
+    end
+end
+
+$i
+/// Output
+6
+/// End
