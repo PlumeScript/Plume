@@ -33,6 +33,7 @@ function _ERROR (vm, msg)
         safeResult.keys = {"success", "result"}
         safeResult.table.success = false
         safeResult.table.result = msg
+        RETURN(vm)
         _STACK_PUSH(vm, vm.mainStack, safeResult)
     else
         vm.err = msg
