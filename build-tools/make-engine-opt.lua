@@ -37,7 +37,7 @@ else
 end
 ]], false)
 else
-	tree = optimizer.loadCode('plume-data/engine/engine.lua', true)
+	tree = optimizer.loadCode('plume-data/engine/generated/engine.lua', true)
 end
 
 -- printTable(tree)
@@ -60,7 +60,7 @@ Licensed under the MIT License — see LICENSE for details.
 ]=] .. finalCode
 
 
-	local f = io.open('plume-data/engine/engine-opt.lua', 'w')
+	local f = io.open('plume-data/engine/generated/engine-opt.lua', 'w')
 		f:write(finalCode)
 	f:close()
 end
