@@ -65,6 +65,19 @@ return function (plume, context, nodeHandlerTable)
 		context.accBlock(function(node)
 			context.childrenHandler(node)
 		end)(node)
+
+		local macro = context.getLast "macros"
+		local loop  = context.getLast "loops"
+		if loop then
+			for _ = 1, loop.contextToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+		end
+		if macro then
+			for _ = 1, macro.contextToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+		end
 		context.registerOP(node, plume.ops.RAISE)
 	end
 end

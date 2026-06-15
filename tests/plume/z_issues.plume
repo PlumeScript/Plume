@@ -1183,3 +1183,18 @@ $i
 /// Output
 6
 /// End
+
+/// Test #862
+let a = $Context(a)
+
+macro wing()
+    with ($a: b)
+        raise Error!
+    end
+end
+
+let result = $attempt($wing)
+$a()
+/// Output
+a
+/// End
