@@ -139,19 +139,15 @@ function CONCAT_CALL (vm, arg1, arg2)
             _ERROR(vm, string.format("`attempt` first argument must be a macro, not a '%s'.", tmacro))
         end
 
-        -- skip the macro
-        local pointer = vm.mainStack.frames.pointer
-        vm.mainStack.frames[pointer] = vm.mainStack.frames[pointer] + 1
-        -- and add it at the end
-        _STACK_PUSH(vm, vm.mainStack, macro)
+        -- Macro should be at the end
+        local frameBegin = _STACK_GET(vm, vm.mainStack.frames)
+        local frameEnd   = _STACK_POS(vm, vm.mainStack)
+        for i = frameBegin, frameEnd-1 do
+            vm.mainStack[i] = vm.mainStack[i+1]
+        end
+        vm.mainStack[frameEnd] = macro
 
-        -- Workaround to remove remaining macro value
-        -- without altering call return value
-        _INJECTION_PUSH(vm, vm.plume.ops.LOAD_LOCAL, 0, vm.variableStack.pointer+1)
-        _INJECTION_PUSH(vm, vm.plume.ops.STORE_VOID, 0, 0)
-        _INJECTION_PUSH(vm, vm.plume.ops.STORE_LOCAL, 0, vm.variableStack.pointer+1)
-
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1) -- call it
+        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1)
     else
         _ERROR (vm, vm.plume.error.cannotCallValue(t))
     end

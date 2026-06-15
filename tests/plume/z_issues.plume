@@ -1090,6 +1090,17 @@ $a()
 aba
 /// End
 
+/// Test #854
+macro wing(a)
+    raise Error!
+end
+
+a
+let result = $attempt($wing, a)
+/// Output
+a
+/// End
+
 /// Test #855
 let i = 5
 
