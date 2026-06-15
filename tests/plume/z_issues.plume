@@ -1089,3 +1089,17 @@ $a()
 /// Output
 aba
 /// End
+
+/// Test #855
+let i = 5
+
+while i < 10
+    let j = 70
+    set i += 1
+    break
+end
+
+$i
+/// Output
+6
+/// End

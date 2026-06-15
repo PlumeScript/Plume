@@ -24,13 +24,23 @@ return function (plume, context, nodeHandlerTable)
 			begin_label    = "while_begin_"..uid,
 			end_label      = "while_end_"..uid,
 			contextToClose = 0
-		}) 
-		
-		context.scope()(body)
-		table.remove(context.loops)
+		})
+
+		local lets = context.countLocals(body)
+		if lets>0 then
+			context.enterScope(lets)
+		end
+			
+		context.childrenHandler(body)
 
 		context.registerGoto(node, "while_begin_"..uid)
 		context.registerLabel(node, "while_end_"..uid)
+
+		if lets>0 then
+			context.leaveScope(true)
+		end
+
+		table.remove(context.loops)
 	end
 
 	--- For create two scopes: one that lives the iterator,
