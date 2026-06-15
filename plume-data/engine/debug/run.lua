@@ -197,7 +197,7 @@ return function (plume)
 		end
 	end
 
-	plume.debug.run = function (input, output)
+	plume.debug.executeFile = function (input, output)
 		local data = {}
 
 		data.filename = input
