@@ -1017,6 +1017,7 @@ end
 (1, 2, 3)
 /// End
 
+
 /// Test #846
 macro ()
 end
@@ -1025,11 +1026,11 @@ a
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TEXT' content in a 'VALUE_MACRO' block.                             │
+│ → Invalid 'TEXT' content in a 'MACRO' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    Reading this line, Plume assumes the block type is 'VALUE_MACRO'.           │
+│    Reading this line, Plume assumes the block type is 'MACRO'.                 │
 │    1 │macro ()                                                                 │
 │      │^^^^^^^^                                                                 │
 │    2 │end                                                                      │

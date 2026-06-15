@@ -128,6 +128,21 @@ return function(plume)
 		if expected == "VALUE" then
 			expected = "TEXT"
 		end
+		if expected == "VALUE_TABLE" then
+			expected = "TABLE"
+		end
+		if expected == "VALUE_MACRO" then
+			expected = "MACRO"
+		end
+		if found == "VALUE" then
+			found = "TEXT"
+		end
+		if found == "VALUE_TABLE" then
+			found = "TABLE"
+		end
+		if found == "VALUE_MACRO" then
+			found = "MACRO"
+		end
 		local message = string.format("Invalid '%s' content in a '%s' block.", found, expected)
 		
 		node.errorLabel = string.format("Reading this line, Plume assumes the block type is '%s'.", expected)
@@ -147,11 +162,17 @@ return function(plume)
 		if expected == "VALUE_TABLE" then
 			expected = "TABLE"
 		end
+		if expected == "VALUE_MACRO" then
+			expected = "MACRO"
+		end
 		if found == "VALUE" then
 			found = "TEXT"
 		end
 		if found == "VALUE_TABLE" then
 			found = "TABLE"
+		end
+		if found == "VALUE_MACRO" then
+			found = "MACRO"
 		end
 		local message = string.format(
 			"Invalid '%s' content in a '%s' block.\n"
