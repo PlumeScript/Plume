@@ -21,8 +21,9 @@ return function (plume, context, nodeHandlerTable)
 
 		-- Informations used by break/continue
 		table.insert(context.loops, {
-			begin_label="while_begin_"..uid,
-			end_label="while_end_"..uid
+			begin_label    = "while_begin_"..uid,
+			end_label      = "while_end_"..uid,
+			contextToClose = 0
 		}) 
 		
 		context.scope()(body)
@@ -67,11 +68,14 @@ return function (plume, context, nodeHandlerTable)
 					}
 				)
 				
+				-- Informations used by break/continue
 				table.insert(context.loops, {
-					begin_label="for_loop_end_"..uid,
-					end_label="for_end_"..uid,
-					leave=true
-				}) -- Informations used by break/continue
+					begin_label    = "for_loop_end_"..uid,
+					end_label      = "for_end_"..uid,
+					leave          = true,
+					contextToClose = 0
+				})
+
 				context.childrenHandler(body)
 				table.remove(context.loops)
 				context.registerLabel(node, "for_loop_end_"..uid)
@@ -90,16 +94,19 @@ return function (plume, context, nodeHandlerTable)
 	--- BREAK/CONTINUE are just goto to the last loop end/begin
 	-----------------------------------------------------------	
 	nodeHandlerTable.CONTINUE = function(node)
-		local loop = context.getLast'loops'
+		local loop = context.getLast 'loops'
 		if not loop or not loop.begin_label then
 			plume.error.cannotUseContinueOutsideLoop(node)
 		end
 		context.registerGoto (node, loop.begin_label)
 	end
 	nodeHandlerTable.BREAK = function(node)
-		local loop = context.getLast'loops'
+		local loop = context.getLast 'loops'
 		if not loop or not loop.end_label then
 			plume.error.cannotUseBreakOutsideLoop(node)
+		end
+		for _ = 1, loop.contextToClose do
+			context.registerOP(node, plume.ops.POP_CONTEXT)
 		end
 		if loop.leave then
 			context.registerOP(nil, plume.ops.LEAVE_SCOPE)

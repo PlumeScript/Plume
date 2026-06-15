@@ -1057,3 +1057,35 @@ $a()
 /// Output
 aba
 /// End
+
+/// Test #853-1
+let a = $Context(a)
+
+$a()
+for i in seq(10)
+    with ($a: b)
+        $a()
+        break
+    end
+end
+
+$a()
+/// Output
+aba
+/// End
+
+/// Test #853-2
+let a = $Context(a)
+
+$a()
+while true
+    with ($a: b)
+        $a()
+        break
+    end
+end
+
+$a()
+/// Output
+aba
+/// End

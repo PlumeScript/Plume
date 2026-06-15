@@ -44,8 +44,12 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.PUSH_CONTEXT)
 
 		local macro = context.getLast "macros"
+		local loop  = context.getLast "loops"
 		if macro then
 			macro.contextToClose = macro.contextToClose + 1
+		end
+		if loop and loop.contextToClose then
+			loop.contextToClose  = loop.contextToClose + 1
 		end
 
 		context.accBlock()(body)
