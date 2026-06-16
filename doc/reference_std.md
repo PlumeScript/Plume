@@ -108,7 +108,7 @@ _All trigonometry functions works in radians._
 * `Math.acos(x)`
 * `Math.asin(x)`
 * `Math.atan(x)`
-* `Math.atan2(x)`
+* `Math.atan2(x, y)`
 * `Math.log(x)`
 * `Math.log10(x)`
 
@@ -220,7 +220,7 @@ Assume `let random = $Random()`.
 *   `Time.MINUTE = 60`
 *   `Time.HOUR   = 3600`
 *   `Time.DAY    = 86400`
-*   `Time.Week   = 604800`
+*   `Time.WEEK   = 604800`
 
 
 **Properties**
