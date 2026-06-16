@@ -2111,9 +2111,12 @@ return function(plume)
 	
 		function time:updateTimestamp(args)
 			self.table.timestamp = os.time({
-				year   = args.year or 1970,
-				month  = args.month or 1,
-				day    = args.day or 1
+				year   = args.table.year or 1970,
+				month  = args.table.month or 1,
+				day    = args.table.day or 1,
+				hour   = args.table.hour or 1,
+				min    = args.table.minute or 0,
+				sec    = args.table.second or 0
 			})
 			if self.table.timestamp then
 				return true
@@ -2289,25 +2292,25 @@ return function(plume)
 	plume.std.Time = plume.obj.quickTable{
 		date = plume.obj.luaMacro("date", function(args)
 			local __name      = "add"
-		local __signature = "`$add(number year: 0, number month: 0, number day: 0, number year: 0, number year: 0, number year: 0, string zone:, string locale:, number timestamp: 0)`"
+		local __signature = "`$add(number year: 1970, number month: 1, number day: 1, number hour: 1, number minute: 0, number second: 0, string zone:, string locale:, number timestamp: 0)`"
 		local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
-		local year, month, day, year, year, year, zone, locale, timestamp
-		if __s then __s, __e, self, year, month, day, year, year, year, zone, locale, timestamp = plume.stdUnpackNamed(args, {"self", "year", "month", "day", "year", "year", "year", "zone", "locale", "timestamp"}, __name, __signature) end
+		local year, month, day, hour, minute, second, zone, locale, timestamp
+		if __s then __s, __e, self, year, month, day, hour, minute, second, zone, locale, timestamp = plume.stdUnpackNamed(args, {"self", "year", "month", "day", "hour", "minute", "second", "zone", "locale", "timestamp"}, __name, __signature) end
 		year = year or nil
 		month = month or nil
 		day = day or nil
-		year = year or nil
-		year = year or nil
-		year = year or nil
+		hour = hour or nil
+		minute = minute or nil
+		second = second or nil
 		zone = zone or nil
 		locale = locale or nil
 		timestamp = timestamp or nil
 		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
 		if __s and month then __s, __e, month = plume.stdCheckType(month, "number", "month", __name, __signature) end
 		if __s and day then __s, __e, day = plume.stdCheckType(day, "number", "day", __name, __signature) end
-		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
-		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
-		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
+		if __s and hour then __s, __e, hour = plume.stdCheckType(hour, "number", "hour", __name, __signature) end
+		if __s and minute then __s, __e, minute = plume.stdCheckType(minute, "number", "minute", __name, __signature) end
+		if __s and second then __s, __e, second = plume.stdCheckType(second, "number", "second", __name, __signature) end
 		if __s and zone then __s, __e, zone = plume.stdCheckType(zone, "string", "zone", __name, __signature) end
 		if __s and locale then __s, __e, locale = plume.stdCheckType(locale, "string", "locale", __name, __signature) end
 		if __s and timestamp then __s, __e, timestamp = plume.stdCheckType(timestamp, "number", "timestamp", __name, __signature) end

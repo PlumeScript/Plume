@@ -152,9 +152,12 @@ function createDate (args)
 
 	function time:updateTimestamp(args)
 		self.table.timestamp = os.time({
-			year   = args.year or 1970,
-			month  = args.month or 1,
-			day    = args.day or 1
+			year   = args.table.year or 1970,
+			month  = args.table.month or 1,
+			day    = args.table.day or 1,
+			hour   = args.table.hour or 1,
+			min    = args.table.minute or 0,
+			sec    = args.table.second or 0
 		})
 		if self.table.timestamp then
 			return true
@@ -329,7 +332,7 @@ end
 
 plume.std.Time = plume.obj.quickTable{
 	date = plume.obj.luaMacro("date", function(args)
-		--!signature number year: 0, number month: 0, number day: 0, number year: 0, number year: 0, number year: 0, string zone:, string locale:, number timestamp: 0
+		--!signature number year: 1970, number month: 1, number day: 1, number hour: 1, number minute: 0, number second: 0, string zone:, string locale:, number timestamp: 0
 		return createDate(args)
 	end),
 	
