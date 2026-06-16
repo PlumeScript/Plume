@@ -83,7 +83,7 @@ local function makePath(path)
 			local attr = lfs.attributes(path)
 			return true, attr ~= nil
 		end),
-		make = plume.obj.luaMacro ("make", function(args)
+		mkdir = plume.obj.luaMacro ("mkdir", function(args)
 			--!signature 
 			local attr = lfs.attributes(path)
 

@@ -719,9 +719,9 @@ return function(plume)
 				local attr = lfs.attributes(path)
 				return true, attr ~= nil
 			end),
-			make = plume.obj.luaMacro ("make", function (args)
-				local __name      = "make"
-				local __signature = "`$make()`"
+			mkdir = plume.obj.luaMacro ("mkdir", function (args)
+				local __name      = "mkdir"
+				local __signature = "`$mkdir()`"
 				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
