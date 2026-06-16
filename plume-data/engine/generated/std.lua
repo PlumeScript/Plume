@@ -35,349 +35,349 @@ return function(plume)
 		file:close()
 		return true, content
 	end
-	    
+		
 	plume.std.print = plume.obj.luaMacro("print", function (args)
-	    local result = {}
-	    for _, x in ipairs(args.table) do
-	        table.insert(result, plume.repr(x, nil, args.table.pretty))
-	    end
-	    print(table.unpack(result))
-	    return true
+		local result = {}
+		for _, x in ipairs(args.table) do
+			table.insert(result, plume.repr(x, nil, args.table.pretty))
+		end
+		print(table.unpack(result))
+		return true
 	end)
 	
 	plume.std.help = plume.obj.luaMacro("help", function (args)
-	    local __name      = "print"
-	    local __signature = "`$print(macro macro)`"
-	    local __s, __e, self, macro
-	    __s, __e, macro = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s and macro then __s, __e, macro = plume.stdCheckType(macro, "macro", "1", __name, __signature) end
-	    if not __s then return false, __e end
-	    ------------
-	    local name = macro.debugMacroName or macro.name
-	    local doc = macro.doc or ""
-	    print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
-	    return true
+		local __name      = "print"
+		local __signature = "`$print(macro macro)`"
+		local __s, __e, self, macro
+		__s, __e, macro = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and macro then __s, __e, macro = plume.stdCheckType(macro, "macro", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		local name = macro.debugMacroName or macro.name
+		local doc = macro.doc or ""
+		print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
+		return true
 	end)
 	
 	-- io
 	plume.std.write = plume.obj.luaMacro("write", function (args)
-	    local __name      = "write"
-	    local __signature = "`$write(string filename, string content, ?append)`"
-	    local __s, __e, self, filename, content
-	    __s, __e, filename, content = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	    local append
-	    if __s then __s, __e, self, append = plume.stdUnpackNamed(args, {"self", "append"}, __name, __signature) end
-	    append = append or false
-	    if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "1", __name, __signature) end
-	    if __s and content then __s, __e, content = plume.stdCheckType(content, "string", "2", __name, __signature) end
-	    if not __s then return false, __e end
-	    ------------
-	    return plume.stdio.write(filename, content, append)
+		local __name      = "write"
+		local __signature = "`$write(string filename, string content, ?append)`"
+		local __s, __e, self, filename, content
+		__s, __e, filename, content = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+		local append
+		if __s then __s, __e, self, append = plume.stdUnpackNamed(args, {"self", "append"}, __name, __signature) end
+		append = append or false
+		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "1", __name, __signature) end
+		if __s and content then __s, __e, content = plume.stdCheckType(content, "string", "2", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		return plume.stdio.write(filename, content, append)
 	end)
 	
 	plume.std.read = plume.obj.luaMacro("read", function (args)
-	    local __name      = "read"
-	    local __signature = "`$read(string filename)`"
-	    local __s, __e, self, filename
-	    __s, __e, filename = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "1", __name, __signature) end
-	    if not __s then return false, __e end
-	    ------------
-	    return plume.stdio.read(filename)
+		local __name      = "read"
+		local __signature = "`$read(string filename)`"
+		local __s, __e, self, filename
+		__s, __e, filename = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		return plume.stdio.read(filename)
 	end)
 	
 	plume.std.rawset = plume.obj.luaMacro("rawset", function (args)
-	    local __name      = "rawset"
-	    local __signature = "`$rawset(table obj, string key, any value)`"
-	    local __s, __e, self, obj, key, value
-	    __s, __e, obj, key, value = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
-	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s and obj then __s, __e, obj = plume.stdCheckType(obj, "table", "1", __name, __signature) end
-	    if __s and key then __s, __e, key = plume.stdCheckType(key, "string", "2", __name, __signature) end
-	    if not __s then return false, __e end
-	    ------------
+		local __name      = "rawset"
+		local __signature = "`$rawset(table obj, string key, any value)`"
+		local __s, __e, self, obj, key, value
+		__s, __e, obj, key, value = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and obj then __s, __e, obj = plume.stdCheckType(obj, "table", "1", __name, __signature) end
+		if __s and key then __s, __e, key = plume.stdCheckType(key, "string", "2", __name, __signature) end
+		if not __s then return false, __e end
+		------------
 	
-	    if not obj.table[key] then
-	        table.insert(obj.keys, key)
-	    end
-	    obj.table[key] = value
-	    return true
+		if not obj.table[key] then
+			table.insert(obj.keys, key)
+		end
+		obj.table[key] = value
+		return true
 	end)
 	
 	plume.std.repr = plume.obj.luaMacro("repr", function (args)
-	    local __name      = "repr"
-	    local __signature = "`$repr(any obj, ?pretty)`"
-	    local __s, __e, self, obj
-	    __s, __e, obj = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	    local pretty
-	    if __s then __s, __e, self, pretty = plume.stdUnpackNamed(args, {"self", "pretty"}, __name, __signature) end
-	    pretty = pretty or false
-	    if not __s then return false, __e end
-	    ------------
-	    return true, plume.repr(obj, nil, pretty)
+		local __name      = "repr"
+		local __signature = "`$repr(any obj, ?pretty)`"
+		local __s, __e, self, obj
+		__s, __e, obj = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		local pretty
+		if __s then __s, __e, self, pretty = plume.stdUnpackNamed(args, {"self", "pretty"}, __name, __signature) end
+		pretty = pretty or false
+		if not __s then return false, __e end
+		------------
+		return true, plume.repr(obj, nil, pretty)
 	end)
 	
 	plume.std.min = plume.obj.luaMacro("min", function (args)
-	    local __name      = "min"
-	    local __signature = "`$min(number ...numbers)`"
-	    local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
-	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    for __i, __a in ipairs(args.table) do
-	    	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
-	    end
-	    if not __s then return false, __e end
-	    ------------
-	    return true, math.min(unpack(args.table))
+		local __name      = "min"
+		local __signature = "`$min(number ...numbers)`"
+		local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		for __i, __a in ipairs(args.table) do
+			if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+		end
+		if not __s then return false, __e end
+		------------
+		return true, math.min(unpack(args.table))
 	end)
 	plume.std.max = plume.obj.luaMacro("max", function (args)
-	    local __name      = "max"
-	    local __signature = "`$max(number ...numbers)`"
-	    local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
-	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    for __i, __a in ipairs(args.table) do
-	    	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
-	    end
-	    if not __s then return false, __e end
-	    ------------
-	    return true, math.max(unpack(args.table))
+		local __name      = "max"
+		local __signature = "`$max(number ...numbers)`"
+		local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		for __i, __a in ipairs(args.table) do
+			if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
+		end
+		if not __s then return false, __e end
+		------------
+		return true, math.max(unpack(args.table))
 	end)
 	
 	plume.std.List = plume.obj.table(0, 0)
 	plume.std.List.meta = plume.obj.quickTable{
-	    call = plume.obj.luaMacro ("call", function (args)
-	        local __name      = "List"
-	        local __signature = "`$List(table t)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        local result = plume.obj.table(0, 0)
-	        for k, v in ipairs(t.table) do
-	            table.insert(result.keys, k)
-	            table.insert(result.table, v)
-	        end
-	        return true, result
-	    end),
-	    validate = plume.obj.luaMacro ("validate", function (args)
-	        local __name      = "validate"
-	        local __signature = "`$List(table t)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        for _, k in ipairs(t.keys) do
-	            if not tonumber(k) then
-	                return false, string.format("Received extra named argument '%s', but extra arguments must be positional.", k)
-	            end
-	        end
+		call = plume.obj.luaMacro ("call", function (args)
+			local __name      = "List"
+			local __signature = "`$List(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local result = plume.obj.table(0, 0)
+			for k, v in ipairs(t.table) do
+				table.insert(result.keys, k)
+				table.insert(result.table, v)
+			end
+			return true, result
+		end),
+		validate = plume.obj.luaMacro ("validate", function (args)
+			local __name      = "validate"
+			local __signature = "`$List(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			for _, k in ipairs(t.keys) do
+				if not tonumber(k) then
+					return false, string.format("Received extra named argument '%s', but extra arguments must be positional.", k)
+				end
+			end
 	
-	        return true, args
-	    end)
+			return true, args
+		end)
 	}
 	
 	plume.std.Map = plume.obj.table(0, 0)
 	plume.std.Map.meta = plume.obj.quickTable{
-	    call = plume.obj.luaMacro ("call", function (args)
-	        local __name      = "Map"
-	        local __signature = "`$Map(table t)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        local result = plume.obj.table(0, 0)
-	        for _, k in ipairs(t.keys) do
-	            if not tonumber(k) then
-	                table.insert(result.keys, k)
-	                result.table[k] = t.table[k]
-	            end
-	        end
-	        return true, result
-	    end),
-	    validate = plume.obj.luaMacro ("validate", function (args)
-	        local __name      = "validate"
-	        local __signature = "`$Map(table t)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        for _, k in ipairs(t.keys) do
-	            if tonumber(k) then
-	                return false, "Received an extra positional argument, but extra arguments must be named."
-	            end
-	        end
+		call = plume.obj.luaMacro ("call", function (args)
+			local __name      = "Map"
+			local __signature = "`$Map(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local result = plume.obj.table(0, 0)
+			for _, k in ipairs(t.keys) do
+				if not tonumber(k) then
+					table.insert(result.keys, k)
+					result.table[k] = t.table[k]
+				end
+			end
+			return true, result
+		end),
+		validate = plume.obj.luaMacro ("validate", function (args)
+			local __name      = "validate"
+			local __signature = "`$Map(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			for _, k in ipairs(t.keys) do
+				if tonumber(k) then
+					return false, "Received an extra positional argument, but extra arguments must be named."
+				end
+			end
 	
-	        return true, args
-	    end)
+			return true, args
+		end)
 	}
 	
 	plume.std.lua = plume.obj.table(0, 0)
 	
 	plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
-	    local firstFilename = runtime.files[1].name
-	    local lastFilename  = runtime.files[fileID].name
+		local firstFilename = runtime.files[1].name
+		local lastFilename  = runtime.files[fileID].name
 	
-	    local filename, searchPaths = plume.getFilenameFromPath(args.table[1], true, runtime, firstFilename, lastFilename)
-	    if filename then
-	        return true, dofile(filename)(plume) 
-	    else
-	        msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
-	        return false, msg
-	    end
+		local filename, searchPaths = plume.getFilenameFromPath(args.table[1], true, runtime, firstFilename, lastFilename)
+		if filename then
+			return true, dofile(filename)(plume) 
+		else
+			local msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
+			return false, msg
+		end
 	end)
 	
 	plume.std.attempt = plume.obj.table(0, 0)
 	
 	plume.std.Context = plume.obj.luaMacro("Context", function(args)
-	    return true, plume.obj.context(args.table[1])
+		return true, plume.obj.context(args.table[1])
 	end)
 	
 	plume.std.Math = plume.obj.quickTable{
-	    sin = plume.obj.luaMacro("sin", function (args)
-	        local __name      = "sin"
-	        local __signature = "`$sin(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.sin(x)
-	    end),
-	    cos = plume.obj.luaMacro("cos", function (args)
-	        local __name      = "cos"
-	        local __signature = "`$cos(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.cos(x)
-	    end),
-	    tan = plume.obj.luaMacro("tan", function (args)
-	        local __name      = "tan"
-	        local __signature = "`$tan(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.tan(x)
-	    end),
-	    asin =  plume.obj.luaMacro("asin", function (args)
-	        local __name      = "asin"
-	        local __signature = "`$asin(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.asin(x)
-	    end),
-	    acos =  plume.obj.luaMacro("acos", function (args)
-	        local __name      = "acos"
-	        local __signature = "`$acos(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.acos(x)
-	    end),
-	    atan =  plume.obj.luaMacro("atan", function (args)
-	        local __name      = "atan"
-	        local __signature = "`$atan(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.atan(x)
-	    end),
-	    atan2 =  plume.obj.luaMacro("atan2", function (args)
-	        local __name      = "atan2"
-	        local __signature = "`$atan2(number x, number y)`"
-	        local __s, __e, self, x, y
-	        __s, __e, x, y = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if __s and y then __s, __e, y = plume.stdCheckType(y, "number", "2", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.atan2(x, y)
-	    end),
-	    sinh =  plume.obj.luaMacro("sinh", function (args)
-	        local __name      = "sinh"
-	        local __signature = "`$sinh(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.sinh(x)
-	    end),
-	    cosh =  plume.obj.luaMacro("cosh", function (args)
-	        local __name      = "cosh"
-	        local __signature = "`$cosh(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.cosh(x)
-	    end),
-	    tanh =  plume.obj.luaMacro("tanh", function (args)
-	        local __name      = "tanh"
-	        local __signature = "`$tanh(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.tanh(x)
-	    end),
-	    log =  plume.obj.luaMacro("log", function (args)
-	        local __name      = "log"
-	        local __signature = "`$log(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.log(x)
-	    end),
-	    log10 =  plume.obj.luaMacro("log10", function (args)
-	        local __name      = "log10"
-	        local __signature = "`$log10(number x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, math.log10(x)
-	    end),
-	    pi   = math.pi,
-	    e    = math.exp(1),
-	    huge = math.huge
+		sin = plume.obj.luaMacro("sin", function (args)
+			local __name      = "sin"
+			local __signature = "`$sin(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.sin(x)
+		end),
+		cos = plume.obj.luaMacro("cos", function (args)
+			local __name      = "cos"
+			local __signature = "`$cos(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.cos(x)
+		end),
+		tan = plume.obj.luaMacro("tan", function (args)
+			local __name      = "tan"
+			local __signature = "`$tan(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.tan(x)
+		end),
+		asin =  plume.obj.luaMacro("asin", function (args)
+			local __name      = "asin"
+			local __signature = "`$asin(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.asin(x)
+		end),
+		acos =  plume.obj.luaMacro("acos", function (args)
+			local __name      = "acos"
+			local __signature = "`$acos(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.acos(x)
+		end),
+		atan =  plume.obj.luaMacro("atan", function (args)
+			local __name      = "atan"
+			local __signature = "`$atan(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.atan(x)
+		end),
+		atan2 =  plume.obj.luaMacro("atan2", function (args)
+			local __name      = "atan2"
+			local __signature = "`$atan2(number x, number y)`"
+			local __s, __e, self, x, y
+			__s, __e, x, y = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if __s and y then __s, __e, y = plume.stdCheckType(y, "number", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.atan2(x, y)
+		end),
+		sinh =  plume.obj.luaMacro("sinh", function (args)
+			local __name      = "sinh"
+			local __signature = "`$sinh(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.sinh(x)
+		end),
+		cosh =  plume.obj.luaMacro("cosh", function (args)
+			local __name      = "cosh"
+			local __signature = "`$cosh(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.cosh(x)
+		end),
+		tanh =  plume.obj.luaMacro("tanh", function (args)
+			local __name      = "tanh"
+			local __signature = "`$tanh(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.tanh(x)
+		end),
+		log =  plume.obj.luaMacro("log", function (args)
+			local __name      = "log"
+			local __signature = "`$log(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.log(x)
+		end),
+		log10 =  plume.obj.luaMacro("log10", function (args)
+			local __name      = "log10"
+			local __signature = "`$log10(number x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, math.log10(x)
+		end),
+		pi   = math.pi,
+		e    = math.exp(1),
+		huge = math.huge
 	}
 	
 	plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator)
@@ -419,8 +419,11 @@ return function(plume)
 			if thousandsSeparator then
 				thousandsSeparator = thousandsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 				integerPart = integerPart:gsub("(.)(...)$", "%1"..thousandsSeparator.."%2")
-				for i=1, #integerPart do
-					integerPart = integerPart:gsub("([0-9])([0-9][0-9][0-9])"..thousandsSeparator, "%1"..thousandsSeparator.."%2"..thousandsSeparator)
+				for _=1, #integerPart do
+					integerPart = integerPart:gsub(
+						"([0-9])([0-9][0-9][0-9])"..thousandsSeparator,
+						"%1"..thousandsSeparator.."%2"..thousandsSeparator
+					)
 				end
 			end
 			result = integerPart
@@ -429,8 +432,11 @@ return function(plume)
 				if thousandthsSeparator then
 					thousandthsSeparator = thousandthsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 					decimalPart = decimalPart:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2")
-					for i=1, #integerPart do
-						decimalPart = decimalPart:gsub(thousandthsSeparator.."([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2"..thousandthsSeparator)
+					for _=1, #integerPart do
+						decimalPart = decimalPart:gsub(
+							thousandthsSeparator.."([0-9][0-9][0-9])([0-9])",
+							"%1"..thousandthsSeparator.."%2"..thousandthsSeparator
+						)
 					end
 				end
 	
@@ -585,39 +591,39 @@ return function(plume)
 	}
 	
 	plume.std.os = plume.obj.quickTable {
-	    getEnv = plume.obj.luaMacro("getEnv", function (args)
-	        local __name      = "getEnv"
-	        local __signature = "`$getEnv(string name)`"
-	        local __s, __e, self, name
-	        __s, __e, name = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and name then __s, __e, name = plume.stdCheckType(name, "string", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, os.getenv(name)
-	    end),
+		getEnv = plume.obj.luaMacro("getEnv", function (args)
+			local __name      = "getEnv"
+			local __signature = "`$getEnv(string name)`"
+			local __s, __e, self, name
+			__s, __e, name = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and name then __s, __e, name = plume.stdCheckType(name, "string", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, os.getenv(name)
+		end),
 	
-	    -- Very basic implementation
-	    execute = plume.obj.luaMacro("execute", function (args)
-	        local __name      = "execute"
-	        local __signature = "`$execute(string command)`"
-	        local __s, __e, self, command
-	        __s, __e, command = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and command then __s, __e, command = plume.stdCheckType(command, "string", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	    	local success, result = pcall(function()
-	    	    local h = io.popen(command)
-	    		if not h then
-	    			return nil
-	    		end
-	    		local r = h:read("*a")
-	    		h:close()
-	    		return r
-	    	end)
-	        return success, result
-	    end)
+		-- Very basic implementation
+		execute = plume.obj.luaMacro("execute", function (args)
+			local __name      = "execute"
+			local __signature = "`$execute(string command)`"
+			local __s, __e, self, command
+			__s, __e, command = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and command then __s, __e, command = plume.stdCheckType(command, "string", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local success, result = pcall(function()
+				local h = io.popen(command)
+				if not h then
+					return nil
+				end
+				local r = h:read("*a")
+				h:close()
+				return r
+			end)
+			return success, result
+		end)
 	}
 	
 	local lfsLoaded, lfs = pcall(require, "lfs")
@@ -669,8 +675,10 @@ return function(plume)
 		if not lfsLoaded then
 			return false, "Cannot load lfs"
 		end
+		path = path or lfs.currentdir ()
+	
 		local obj = plume.obj.quickTable{
-			path = path or lfs.currentdir (),
+			path = path,
 			isFile = plume.obj.luaMacro ("isFile", function (args)
 				local __name      = "isFile"
 				local __signature = "`$isFile()`"
@@ -678,7 +686,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -694,7 +701,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -710,18 +716,16 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 				return true, attr ~= nil
 			end),
-			make = plume.obj.luaMacro ("make", function (args)
-				local __name      = "make"
-				local __signature = "`$make()`"
+			mkdir = plume.obj.luaMacro ("mkdir", function (args)
+				local __name      = "mkdir"
+				local __signature = "`$mkdir()`"
 				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if attr then
@@ -737,7 +741,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -760,7 +763,6 @@ return function(plume)
 				if __s and newpath then __s, __e, newpath = plume.stdCheckType(newpath, "string", "1", __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local attr = lfs.attributes(path)
 	
 				if not attr then
@@ -777,7 +779,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local newpath = args.table[1]
 	
 				local src = io.open(path)
@@ -803,7 +804,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 	
 				if path:match('[/\\]') then
 					return makePath(path:gsub('[/\\][^/\\]*$', ''))
@@ -818,7 +818,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				return true, path:match('[^/\\]*$')
 			end),
 			read = plume.obj.luaMacro ("read", function (args)
@@ -828,7 +827,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				return plume.stdio.read(path)
 			end),
 			write = plume.obj.luaMacro ("write", function (args)
@@ -840,7 +838,6 @@ return function(plume)
 				append = append or false
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local success, result = mkdirs(path, true)
 				if not success then
 					return false, result
@@ -855,7 +852,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local success, result = mkdirs(path, true)
 				if not success then
 					return false, result
@@ -875,7 +871,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local result = plume.obj.table(0, 0)
 	
 				for child in lfs.dir(path) do
@@ -894,18 +889,17 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				local result = plume.obj.table(0, 0)
 	
 				local toExplore = {path}
 				local pos = 1
 				while pos <= #toExplore do
-					local path = toExplore[pos]
+					local currentPath = toExplore[pos]
 					pos = pos + 1
 	
-					for child in lfs.dir(path) do
+					for child in lfs.dir(currentPath) do
 						if child ~= "." and child ~= ".." then
-							local childPath = path.."/"..child
+							local childPath = currentPath.."/"..child
 							local _, childPathObj = makePath(childPath)
 							table.insert(result.table, childPathObj)
 							table.insert(result.keys, #result.table)
@@ -946,7 +940,6 @@ return function(plume)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
 				------------
-				local path = args.table.self.table.path
 				return true, path
 			end),
 	
@@ -979,15 +972,15 @@ return function(plume)
 	
 	table.insert(plume.std.os.keys, "Path")
 	plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args)
-	    local __name      = "Path"
-	    local __signature = "`$Path([string path])`"
-	    local __s, __e, self, path
-	    __s, __e, path = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
-	    if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	    if __s and path then __s, __e, path = plume.stdCheckType(path, "string", "1", __name, __signature) end
-	    if not __s then return false, __e end
-	    ------------
-	    return makePath(path)
+		local __name      = "Path"
+		local __signature = "`$Path([string path])`"
+		local __s, __e, self, path
+		__s, __e, path = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and path then __s, __e, path = plume.stdCheckType(path, "string", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		return makePath(path)
 	end)
 	
 	-- plume.std.plume isn't loaded like other std table,
@@ -1016,56 +1009,55 @@ return function(plume)
 		if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
-	    function _deriveSeed(seed, index)
-			seed = ((seed + index * 1234567) * 1103515245 + 12345) % 2147483647
-			if seed==0 then
+		local function _deriveSeed(oldseed, index)
+			local newseed = ((oldseed + index * 1234567) * 1103515245 + 12345) % 2147483647
+			if newseed == 0 then
 				return 1
 			else
-				return seed
+				return newseed
 			end
 		end
 		local state = _deriveSeed(args.table[1] or os.time(), 1)
 	
-	    function _random()
-	    	state = ((state * 48271) % 2147483647)
+		local function _random()
+			state = ((state * 48271) % 2147483647)
 			return (state / 2147483647)
-	    end
-	    function _random_range(a, b)
+		end
+		local function _random_range(a, b)
 			return math.floor(_random() * (b-a+1) + a)
-	    end
+		end
 	
-	    local function shuffle(t)
-			for k=1, #t.table do
-				local i = _random_range(1, #t.table)
-				local j = _random_range(1, #t.table)
+		local function shuffle(t)
+			for i = #t.table, 1, -1 do
+				local j = _random_range(1, i)
 	
 				t.table[i], t.table[j] = t.table[j], t.table[i]
 			end
 		end
-	   	
-	    local random = plume.obj.quickTable{
-		    seed = plume.obj.luaMacro ("seed", function (args)
-		    	local __name      = "seed"
-		    	local __signature = "`$seed([number seed])`"
-		    	local __s, __e, self, seed
-		    	__s, __e, seed = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
-		    	if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-		    	if __s and seed then __s, __e, seed = plume.stdCheckType(seed, "number", "1", __name, __signature) end
-		    	if not __s then return false, __e end
-		    	------------
-		    	state = _deriveSeed(seed or os.time(), 1)
-		    	return true
+		
+		local random = plume.obj.quickTable{
+			seed = plume.obj.luaMacro ("seed", function (args)
+				local __name      = "seed"
+				local __signature = "`$seed([number newseed])`"
+				local __s, __e, self, newseed
+				__s, __e, newseed = plume.stdUnpackPositional(args, 0, 1,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and newseed then __s, __e, newseed = plume.stdCheckType(newseed, "number", "1", __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				state = _deriveSeed(newseed or os.time(), 1)
+				return true
 			end),
-		    choice = plume.obj.luaMacro ("choice", function (args)
-		    	local __name      = "choice"
-		    	local __signature = "`$choice(table t)`"
-		    	local __s, __e, self, t
-		    	__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-		    	if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-		    	if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-		    	if not __s then return false, __e end
-		    	------------
-		    	return true, t.table[_random_range(1, #t.table)]
+			choice = plume.obj.luaMacro ("choice", function (args)
+				local __name      = "choice"
+				local __signature = "`$choice(table t)`"
+				local __s, __e, self, t
+				__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				return true, t.table[_random_range(1, #t.table)]
 			end),
 			pchoice = plume.obj.luaMacro ("pchoice", function (args)
 				local __name      = "pchoice"
@@ -1105,7 +1097,7 @@ return function(plume)
 				if not __s then return false, __e end
 				------------
 				shuffle(t)
-		    	return true
+				return true
 			end),
 			sample = plume.obj.luaMacro ("sample", function (args)
 				local __name      = "sample"
@@ -1127,28 +1119,28 @@ return function(plume)
 				for i=#t.table, count+1, -1 do
 					for j, key in ipairs(t.keys) do
 						if key==i then
-		    				t.keys[j] = nil
-		    				break
-		    			end
+							t.keys[j] = nil
+							break
+						end
 					end
 					t.table[i] = nil
 				end
-		    	return true, t
+				return true, t
 			end)
 		}
 		random.meta = plume.obj.quickTable{
 			call = plume.obj.luaMacro ("call", function(args)
 				if #args.table == 0 then
-		        	return true, _random()
-		        elseif #args.table == 1 then
-		        	return true, _random_range(0, args.table[1])
-		        elseif #args.table == 2 then
-		        	return true, _random_range(args.table[1], args.table[2])
-		        end
+					return true, _random()
+				elseif #args.table == 1 then
+					return true, _random_range(0, args.table[1])
+				elseif #args.table == 2 then
+					return true, _random_range(args.table[1], args.table[2])
+				end
 			end)
 		}
-	    
-	    return true, random
+		
+		return true, random
 	end)
 	
 	local function replaceUpdate(context)
@@ -1241,7 +1233,10 @@ return function(plume)
 	
 			if type(sub) ~= "string" then
 				if sub.positionalParamCount ~= 1 then
-					return false, string.format("Macro sub for `String.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
+					return false, string.format(
+						"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
+						sub.positionalParamCount
+					)
 				end
 	
 				local context = {
@@ -1301,7 +1296,7 @@ return function(plume)
 			if __s and s then __s, __e, s = plume.stdCheckType(s, "string", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, (s:gsub('^%s*', ''))
+			return true, (s:gsub('%s*$', ''))
 		end),
 		ltrim = plume.obj.luaMacro("ltrim", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
@@ -1313,7 +1308,7 @@ return function(plume)
 			if __s and s then __s, __e, s = plume.stdCheckType(s, "string", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, (s:gsub('%s*$', ''))
+			return true, (s:gsub('^%s*', ''))
 		end),
 		collapse = plume.obj.luaMacro("collapse", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
@@ -1463,7 +1458,7 @@ return function(plume)
 			end
 	
 			local count = 0
-			for x in s:gmatch(pattern) do
+			for _ in s:gmatch(pattern) do
 				count = count + 1
 			end
 	
@@ -1620,349 +1615,353 @@ return function(plume)
 			if __s and endpos then __s, __e, endpos = plume.stdCheckType(endpos, "number", "3", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			if epos == 1 then
-				epos = #s
-			end
-	
 			return true, s:sub(startpos, endpos)
 		end)
 	}
 	
 	local function sortUpdate(context)
-	    if context.j == context.i then
-	        table.insert(context.result, context.source.table[context.i])
-	        context.i = context.i + 1
-	        context.j = 1
-	    end
+		if context.j == context.i then
+			table.insert(context.result, context.source.table[context.i])
+			context.i = context.i + 1
+			context.j = 1
+		end
 	
-	    if context.i <= #context.source.table then
-	        context.PLUME_CALLBACK = context.compare
-	        context.PLUME_CALLBACK_ARGS = {
-	            context.result[context.j],
-	            context.source.table[context.i]
-	        }
-	    else
-	        context.PLUME_CALLBACK = nil
-	        context.source.table = context.result
-	    end
+		if context.i <= #context.source.table then
+			context.PLUME_CALLBACK = context.compare
+			context.PLUME_CALLBACK_ARGS = {
+				context.result[context.j],
+				context.source.table[context.i]
+			}
+		else
+			context.PLUME_CALLBACK = nil
+			context.source.table = context.result
+		end
 	
-	    return true
+		return true
 	end
 	
 	local function sortNext(context, value)
-	    if value then
-	        context.j = context.j + 1
-	    else
-	        table.insert(context.result, context.j, context.source.table[context.i])
-	        context.i = context.i + 1
-	        context.j = 1
-	    end
-	    return true
+		if value then
+			context.j = context.j + 1
+		else
+			table.insert(context.result, context.j, context.source.table[context.i])
+			context.i = context.i + 1
+			context.j = 1
+		end
+		return true
 	end
 	
 	function plume.stdUtils.copy(t, deep, nt)
-	    local nt = nt or plume.obj.table(#t.table, #t.keys)
+		nt = nt or plume.obj.table(#t.table, #t.keys)
 	
-	    for _, key in ipairs(t.keys) do
-	        local rawvalue = t.table[key]
-	        local value
-	        if deep and type(rawvalue) == "table" and rawvalue.type == "table" then
-	            if deep[rawvalue] then
-	                value = deep[rawvalue]
-	            else
-	                deep[rawvalue] = plume.obj.table(0, 0)
-	                value = plume.stdUtils.copy(rawvalue, deep, deep[rawvalue])
-	            end
-	        else
-	            value = rawvalue
-	        end
+		for _, key in ipairs(t.keys) do
+			local rawvalue = t.table[key]
+			local value
+			if deep and type(rawvalue) == "table" and rawvalue.type == "table" then
+				if deep[rawvalue] then
+					value = deep[rawvalue]
+				else
+					deep[rawvalue] = plume.obj.table(0, 0)
+					value = plume.stdUtils.copy(rawvalue, deep, deep[rawvalue])
+				end
+			else
+				value = rawvalue
+			end
 	
-	        table.insert(nt.keys, key)
-	        nt.table[key] = value
-	    end
+			table.insert(nt.keys, key)
+			nt.table[key] = value
+		end
 	
-	    return nt
+		return nt
 	end
 	
 	plume.std.Table = plume.obj.quickTable{
-	    remove = plume.obj.luaMacro("remove", function (args)
-	        local __name      = "remove"
-	        local __signature = "`$remove(table t, [string|number index])`"
-	        local __s, __e, self, t, index
-	        __s, __e, t, index = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if __s and index then
-	        	__s, __e, index = plume.stdCheckType(index, "string", "2", __name, __signature)
-	        	if not __s then
-	        		__s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature)
-	        	end
-	        end
-	        if not __s then return false, __e end
-	        ------------
-	        --`Table` automatically passes all of the macro's arguments as its second argument
-	        index = (type(index) == "number" and index) or #t.table
+		remove = plume.obj.luaMacro("remove", function (args)
+			local __name      = "remove"
+			local __signature = "`$remove(table t, [string|number index])`"
+			local __s, __e, self, t, index
+			__s, __e, t, index = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and index then
+				__s, __e, index = plume.stdCheckType(index, "string", "2", __name, __signature)
+				if not __s then
+					__s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature)
+				end
+			end
+			if not __s then return false, __e end
+			------------
+			--`Table` automatically passes all of the macro's arguments as its second argument
+			index = (type(index) == "number" and index) or #t.table
 	
-	        for key, value in ipairs(t.keys) do
-	            if value == index then
-	                table.remove(t.keys, key)
-	            end
-	        end
+			for key, value in ipairs(t.keys) do
+				if value == index then
+					table.remove(t.keys, key)
+				end
+			end
 	
-	        return true, table.remove(t.table, index)
-	    end),
-	    append = plume.obj.luaMacro("append", function (args, runtime, _, ip)
-	        local __name      = "append"
-	        local __signature = "`$append(table t, any item)`"
-	        local __s, __e, self, t, item
-	        __s, __e, t, item = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        table.insert(t.table, item)
-	        table.insert(t.keys, #t.table)
-	        return true
-	    end),
-	    join = plume.obj.luaMacro("join", function (args)
-	        local __name      = "join"
-	        local __signature = "`$join(string sep:$empty, string ...items)`"
-	        local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
-	        local sep
-	        if __s then __s, __e, self, sep = plume.stdUnpackNamed(args, {"self", "sep"}, __name, __signature) end
-	        sep = sep or ""
-	        if __s and sep then __s, __e, sep = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        if sep == plume.obj.empty then
-	            sep = ""
-	        end
+			return true, table.remove(t.table, index)
+		end),
+		append = plume.obj.luaMacro("append", function (args)
+			local __name      = "append"
+			local __signature = "`$append(table t, any item)`"
+			local __s, __e, self, t, item
+			__s, __e, t, item = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			table.insert(t.table, item)
+			table.insert(t.keys, #t.table)
+			return true
+		end),
+		join = plume.obj.luaMacro("join", function (args)
+			local __name      = "join"
+			local __signature = "`$join(string sep:$empty, string ...items)`"
+			local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
+			local sep
+			if __s then __s, __e, self, sep = plume.stdUnpackNamed(args, {"self", "sep"}, __name, __signature) end
+			sep = sep or ""
+			if __s and sep then __s, __e, sep = plume.stdCheckType(sep, "string", "sep", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if sep == plume.obj.empty then
+				sep = ""
+			end
 	
-	        local args = args.table
-	        if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
-	            return false, plume.error.joinErrorHint()
-	        end
+			local args = args.table
+			if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
+				return false, plume.error.joinErrorHint()
+			end
 	
-	        for i, value in ipairs(args) do
-	            if type(value) ~= "number" and type(value) ~= "string" then
-	                return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
-	            end
-	        end
+			for i, value in ipairs(args) do
+				if type(value) ~= "number" and type(value) ~= "string" then
+					return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
+				end
+			end
 	
-	        return pcall(table.concat, args, sep)
-	    end),
-	    removeKey = plume.obj.luaMacro("removeKey", function (args, runtime, _, ip)
-	        local __name      = "removeKey"
-	        local __signature = "`$removeKey(table t, any key)`"
-	        local __s, __e, self, t, key
-	        __s, __e, t, key = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        key = tonumber(key) or key
-	        local index = 0
-	        for k, v in ipairs(t.keys) do
-	            if v == key then
-	                index = k
-	                break
-	            end
-	        end
+			return pcall(table.concat, args, sep)
+		end),
+		removeKey = plume.obj.luaMacro("removeKey", function (args)
+			local __name      = "removeKey"
+			local __signature = "`$removeKey(table t, any key)`"
+			local __s, __e, self, t, key
+			__s, __e, t, key = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			key = tonumber(key) or key
+			local index = 0
+			for k, v in ipairs(t.keys) do
+				if v == key then
+					index = k
+					break
+				end
+			end
 	
-	        if index == 0 then
-	            return false, plume.error.cannotRemoveNotfoundKey(key)
-	        end
+			if index == 0 then
+				return false, plume.error.cannotRemoveNotfoundKey(key)
+			end
 	
-	        t.table[key] = nil
-	        table.remove(t.keys, index)
-	        return true
-	    end),
-	    hasKey = plume.obj.luaMacro("hasKey", function (args)
-	        local __name      = "hasKey"
-	        local __signature = "`$hasKey(table t, any key)`"
-	        local __s, __e, self, t, key
-	        __s, __e, t, key = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        key = tonumber(key) or key
-	        for k, v in ipairs(t.keys) do
-	            if v == key then
-	                return true, true
-	            end
-	        end
+			t.table[key] = nil
+			table.remove(t.keys, index)
+			return true
+		end),
+		hasKey = plume.obj.luaMacro("hasKey", function (args)
+			local __name      = "hasKey"
+			local __signature = "`$hasKey(table t, any key)`"
+			local __s, __e, self, t, key
+			__s, __e, t, key = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			key = tonumber(key) or key
+			for _, v in ipairs(t.keys) do
+				if v == key then
+					return true, true
+				end
+			end
 	
-	        return true, false
-	    end),
-	    find = plume.obj.luaMacro("find", function (args)
-	        local __name      = "find"
-	        local __signature = "`$find(table t, any x)`"
-	        local __s, __e, self, t, x
-	        __s, __e, t, x = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        for k, v in ipairs(t.keys) do
-	            if t.table[v] == x then
-	                return true, v
-	            end
-	        end
-	        return true, nil
-	    end),
-	    findAll = plume.obj.luaMacro("findAll", function (args)
-	        local __name      = "findAll"
-	        local __signature = "`$findAll(table t, any x)`"
-	        local __s, __e, self, t, x
-	        __s, __e, t, x = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        local result = plume.obj.table(0, 0)
-	        for k, v in ipairs(t.keys) do
-	            if t.table[v] == x then
-	                table.insert(result.table, v)
-	                table.insert(result.keys, #result.table)
-	            end
-	        end
+			return true, false
+		end),
+		find = plume.obj.luaMacro("find", function (args)
+			local __name      = "find"
+			local __signature = "`$find(table t, any x)`"
+			local __s, __e, self, t, x
+			__s, __e, t, x = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			for _, v in ipairs(t.keys) do
+				if t.table[v] == x then
+					return true, v
+				end
+			end
+			return true, nil
+		end),
+		findAll = plume.obj.luaMacro("findAll", function (args)
+			local __name      = "findAll"
+			local __signature = "`$findAll(table t, any x)`"
+			local __s, __e, self, t, x
+			__s, __e, t, x = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local result = plume.obj.table(0, 0)
+			for _, v in ipairs(t.keys) do
+				if t.table[v] == x then
+					table.insert(result.table, v)
+					table.insert(result.keys, #result.table)
+				end
+			end
 	
-	        return true, result
-	    end),
-	    count = plume.obj.luaMacro("count", function (args)
-	        local __name      = "count"
-	        local __signature = "`$count(table t, ?named)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        local named
-	        if __s then __s, __e, self, named = plume.stdUnpackNamed(args, {"self", "named"}, __name, __signature) end
-	        named = named or false
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        if named then
-	            local count = 0
-	            for k, v in ipairs(t.keys) do
-	                if not tonumber(v) then
-	                    count = count + 1
-	                end
-	            end
-	            return true, count
-	        else
-	            return true, #t.keys
-	        end
-	    end),
-	    entry = plume.obj.luaMacro("entry", function (args)
-	        local __name      = "entry"
-	        local __signature = "`$entry(table t, any index)`"
-	        local __s, __e, self, t, index
-	        __s, __e, t, index = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        local key = t.keys[index]
-	        local result = plume.obj.table(2, 0)
-	        result.table[1] = key
-	        result.table[2] = t.table[key]
-	        result.keys = {1, 2}
-	        
-	        return true, result
-	    end),
+			return true, result
+		end),
+		count = plume.obj.luaMacro("count", function (args)
+			local __name      = "count"
+			local __signature = "`$count(table t, ?named)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			local named
+			if __s then __s, __e, self, named = plume.stdUnpackNamed(args, {"self", "named"}, __name, __signature) end
+			named = named or false
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if named then
+				local count = 0
+				for _, v in ipairs(t.keys) do
+					if not tonumber(v) then
+						count = count + 1
+					end
+				end
+				return true, count
+			else
+				return true, #t.keys
+			end
+		end),
+		entry = plume.obj.luaMacro("entry", function (args)
+			local __name      = "entry"
+			local __signature = "`$entry(table t, any index)`"
+			local __s, __e, self, t, index
+			__s, __e, t, index = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local key = t.keys[index]
+			local result = plume.obj.table(2, 0)
+			result.table[1] = key
+			result.table[2] = t.table[key]
+			result.keys = {1, 2}
+			
+			return true, result
+		end),
 	
-	    sort = plume.obj.luaMacro("sort", function (args)
-	        local __name      = "sort"
-	        local __signature = "`$sort(table t, macro compare:)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        local compare
-	        if __s then __s, __e, self, compare = plume.stdUnpackNamed(args, {"self", "compare"}, __name, __signature) end
-	        compare = compare or nil
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if __s and compare then __s, __e, compare = plume.stdCheckType(compare, "macro", "compare", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        if compare and #t.table > 1 then
-	            if compare.positionalParamCount ~= 2 then
-	                return false, string.format("Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.", compare.positionalParamCount)
-	            end
+		sort = plume.obj.luaMacro("sort", function (args)
+			local __name      = "sort"
+			local __signature = "`$sort(table t, macro compare:)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			local compare
+			if __s then __s, __e, self, compare = plume.stdUnpackNamed(args, {"self", "compare"}, __name, __signature) end
+			compare = compare or nil
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and compare then __s, __e, compare = plume.stdCheckType(compare, "macro", "compare", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if compare and #t.table > 1 then
+				if compare.positionalParamCount ~= 2 then
+					return false, string.format(
+						"Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.",
+						compare.positionalParamCount
+					)
+				end
 	
-	            local context = {
-	                type         = "hostContext",
-	                source       = t,
-	                compare      = compare,
-	                i            = 2,
-	                j            = 1,
-	                result       = {t.table[1]}, 
-	                HOST_UPDATE  = sortUpdate,
-	                HOST_NEXT    = sortNext
-	            }
-	            return true, context, true
-	        else
-	            table.sort(t.table)
-	            return true
-	        end
-	    end),
+				local context = {
+					type         = "hostContext",
+					source       = t,
+					compare      = compare,
+					i            = 2,
+					j            = 1,
+					result       = {t.table[1]}, 
+					HOST_UPDATE  = sortUpdate,
+					HOST_NEXT    = sortNext
+				}
+				return true, context, true
+			else
+				table.sort(t.table)
+				return true
+			end
+		end),
 	
-	    copy = plume.obj.luaMacro("copy", function (args)
-	        local __name      = "copy"
-	        local __signature = "`$copy(table t)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, plume.stdUtils.copy(t)
-	    end),
+		copy = plume.obj.luaMacro("copy", function (args)
+			local __name      = "copy"
+			local __signature = "`$copy(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, plume.stdUtils.copy(t)
+		end),
 	
-	    deepcopy = plume.obj.luaMacro("deepcopy", function (args)
-	        local __name      = "deepcopy"
-	        local __signature = "`$deepcopy(table t)`"
-	        local __s, __e, self, t
-	        __s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        return true, plume.stdUtils.copy(t, {})
-	    end),
+		deepcopy = plume.obj.luaMacro("deepcopy", function (args)
+			local __name      = "deepcopy"
+			local __signature = "`$deepcopy(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, plume.stdUtils.copy(t, {})
+		end),
 	
-	    sum = plume.obj.luaMacro("sum", function (args)
-	        local __name      = "sum"
-	        local __signature = "`$sum(number ...numbers)`"
-	        local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        for __i, __a in ipairs(args.table) do
-	        	if __s and __a then __s, __e, __a = plume.stdCheckType(__a, "number", __i, __name, __signature) end
-	        end
-	        if not __s then return false, __e end
-	        ------------
-	        local r = 0
-	        for _, x in ipairs(numbers) do
-	            r = r + x
-	        end
-	        return true, r
-	    end)
+		sum = plume.obj.luaMacro("sum", function (args)
+			local __name      = "sum"
+			local __signature = "`$sum(number ...items)`"
+			local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if not __s then return false, __e end
+			------------
+	
+			if args.table and #args.table == 1 and type(args.table[1]) == "table" and args.table[1].type == "table" then
+				return false, plume.error.sumErrorHint()
+			end
+	
+			local r = 0
+			for i, x in ipairs(args.table) do
+				if not tonumber(x) then
+					return false, plume.error.wrongArgTypeStd(i, "sum", type(x), "number", "$table.sum(number ...items)")
+				end
+				r = r + x
+			end
+			return true, r
+		end)
 	}
 	
 	plume.std.Table.meta = plume.obj.quickTable{
-	    validate = plume.obj.luaMacro ("call", function (args)
-	        local __name      = "call"
-	        local __signature = "`$call(any x)`"
-	        local __s, __e, self, x
-	        __s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-	        if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-	        if not __s then return false, __e end
-	        ------------
-	        local t = type(x) == "table" and x.type or  type(x)
-	        if t ~= "table" then
-	            return false, string.format("Cannot convert '%s' to a table.", t)
-	        else
-	            return true, x
-	        end
-	    end)
+		validate = plume.obj.luaMacro ("call", function (args)
+			local __name      = "call"
+			local __signature = "`$call(any x)`"
+			local __s, __e, self, x
+			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local t = type(x) == "table" and x.type or  type(x)
+			if t ~= "table" then
+				return false, string.format("Cannot convert '%s' to a table.", t)
+			else
+				return true, x
+			end
+		end)
 	}
 	
 	local createDate, createDuration
@@ -1998,11 +1997,13 @@ return function(plume)
 		local tx = getType(x)
 		local ty = getType(y)
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+		
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2023,11 +2024,13 @@ return function(plume)
 		local tx = getType(x)
 		local ty = getType(y)
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+	
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2052,11 +2055,13 @@ return function(plume)
 			return false, "Cannot multiply a 'Date' value."
 		end
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+	
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2077,11 +2082,13 @@ return function(plume)
 			return false, "Cannot divide a 'Date' value."
 		end
 	
-		local success, vx = convert(tx, x)
+		local success, vx, vy
+	
+		success, vx = convert(tx, x)
 		if not success then
 			return success, vx
 		end
-		local success, vy = convert(ty, y)
+		success, vy = convert(ty, y)
 		if not success then
 			return success, vy
 		end
@@ -2104,9 +2111,12 @@ return function(plume)
 	
 		function time:updateTimestamp(args)
 			self.table.timestamp = os.time({
-				year   = args.year or 1970,
-				month  = args.month or 1,
-				day    = args.day or 1
+				year   = args.table.year or 1970,
+				month  = args.table.month or 1,
+				day    = args.table.day or 1,
+				hour   = args.table.hour or 1,
+				min    = args.table.minute or 0,
+				sec    = args.table.second or 0
 			})
 			if self.table.timestamp then
 				return true
@@ -2220,9 +2230,6 @@ return function(plume)
 			return true, self.value
 		end)
 		duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
-			local self   = args.table.self
-			local key    = args.table[1]
-			
 			return false, "Cannot edit 'duration' fields."
 		end)
 		duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
@@ -2278,32 +2285,32 @@ return function(plume)
 		return true, duration
 	end
 	
-	local function ignoreSuccess(x, y)
+	local function ignoreSuccess(_, y)
 		return y
 	end
 	
 	plume.std.Time = plume.obj.quickTable{
 		date = plume.obj.luaMacro("date", function(args)
 			local __name      = "add"
-		local __signature = "`$add(number year: 0, number month: 0, number day: 0, number year: 0, number year: 0, number year: 0, string zone:, string locale:, number timestamp: 0)`"
+		local __signature = "`$add(number year: 1970, number month: 1, number day: 1, number hour: 1, number minute: 0, number second: 0, string zone:, string locale:, number timestamp: 0)`"
 		local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
-		local year, month, day, year, year, year, zone, locale, timestamp
-		if __s then __s, __e, self, year, month, day, year, year, year, zone, locale, timestamp = plume.stdUnpackNamed(args, {"self", "year", "month", "day", "year", "year", "year", "zone", "locale", "timestamp"}, __name, __signature) end
+		local year, month, day, hour, minute, second, zone, locale, timestamp
+		if __s then __s, __e, self, year, month, day, hour, minute, second, zone, locale, timestamp = plume.stdUnpackNamed(args, {"self", "year", "month", "day", "hour", "minute", "second", "zone", "locale", "timestamp"}, __name, __signature) end
 		year = year or nil
 		month = month or nil
 		day = day or nil
-		year = year or nil
-		year = year or nil
-		year = year or nil
+		hour = hour or nil
+		minute = minute or nil
+		second = second or nil
 		zone = zone or nil
 		locale = locale or nil
 		timestamp = timestamp or nil
 		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
 		if __s and month then __s, __e, month = plume.stdCheckType(month, "number", "month", __name, __signature) end
 		if __s and day then __s, __e, day = plume.stdCheckType(day, "number", "day", __name, __signature) end
-		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
-		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
-		if __s and year then __s, __e, year = plume.stdCheckType(year, "number", "year", __name, __signature) end
+		if __s and hour then __s, __e, hour = plume.stdCheckType(hour, "number", "hour", __name, __signature) end
+		if __s and minute then __s, __e, minute = plume.stdCheckType(minute, "number", "minute", __name, __signature) end
+		if __s and second then __s, __e, second = plume.stdCheckType(second, "number", "second", __name, __signature) end
 		if __s and zone then __s, __e, zone = plume.stdCheckType(zone, "string", "zone", __name, __signature) end
 		if __s and locale then __s, __e, locale = plume.stdCheckType(locale, "string", "locale", __name, __signature) end
 		if __s and timestamp then __s, __e, timestamp = plume.stdCheckType(timestamp, "number", "timestamp", __name, __signature) end
@@ -2336,6 +2343,7 @@ return function(plume)
 	
 		SECOND = ignoreSuccess(createDuration(1)),
 		MINUTE = ignoreSuccess(createDuration(60)),
+		HOUR   = ignoreSuccess(createDuration(3600)),
 		DAY    = ignoreSuccess(createDuration(86400)),
 		WEEK   = ignoreSuccess(createDuration(604800)),
 	
@@ -2465,6 +2473,6 @@ return function(plume)
 	registerLuaStdFunction("import", 1)
 	
 	for name, obj in pairs(plume.stdVM) do
-	    plume.std[name] = obj
+		plume.std[name] = obj
 	end
 end

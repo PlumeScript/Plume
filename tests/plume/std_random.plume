@@ -65,7 +65,7 @@ let t = (1, 2, 3, 4, 5)
 run $random.shuffle($t)
 $t
 /// Output
-(5, 1, 2, 3, 4)
+(2, 1, 4, 3, 5)
 /// End
 
 /// Test random.sample
@@ -73,6 +73,6 @@ let random = $Random(0)
 let t = (1, 2, 3, 4, 5)
 $random.sample($t, 3)
 /// Output
-(5, 1, 2)
+(2, 1, 4)
 /// End
 

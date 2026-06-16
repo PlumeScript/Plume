@@ -30,7 +30,7 @@ $(" a ").trim()
 $(" a ").rtrim()
 ---
 /// Output
----a ---
+--- a---
 /// End
 
 /// Test ltrim
@@ -38,7 +38,7 @@ $(" a ").rtrim()
 $(" a ").ltrim()
 ---
 /// Output
---- a---
+---a ---
 /// End
 
 /// Test dedent

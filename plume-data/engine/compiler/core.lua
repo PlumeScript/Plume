@@ -32,8 +32,8 @@ return function(plume)
 		context.nodeHandler(ast) 
 
 		-- Close context
-		for i=1, context.contextVariableToClose do
-			context.registerOP(node, plume.ops.POP_CONTEXT)
+		for _=1, context.contextVariableToClose do
+			context.registerOP(nil, plume.ops.POP_CONTEXT)
 		end
 
 		-- Save file offset

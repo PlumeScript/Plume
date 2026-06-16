@@ -48,7 +48,7 @@ return function (plume, context)
             else  
                 -- More or less a TEXT block with 1 element.
                 -- Don't use ACC_TEXT to prevent conversion to string
-                if node.type == "VALUE" or node.type == "VALUE_TABLE" then 
+                if node.type == "VALUE" or node.type == "VALUE_TABLE" or node.type == "VALUE_MACRO" then 
                     context.toggleConcatOff() 
                     f(node)
                     context.toggleConcatPop()
@@ -100,7 +100,7 @@ return function (plume, context)
     function context.enterScope(lets, isFile)
         if lets then
             context.registerOP(nil, plume.ops.ENTER_SCOPE, 0, lets)
-        else
+        -- else
             -- Each macro open a scope, but it is handled by plume.run
         end
 
@@ -110,7 +110,7 @@ return function (plume, context)
 
         local uid = context.getUID()
         -- Used to open upvalues
-        context.registerLabel(node, "scope_begin_" .. uid)
+        context.registerLabel(nil, "scope_begin_" .. uid)
 
         table.insert(context.scopes, {})
         table.insert(context.scopesUp, {uid=uid})
@@ -125,7 +125,7 @@ return function (plume, context)
         
         if includeOP then
             context.registerOP(nil, plume.ops.LEAVE_SCOPE, 0, 0)
-        else
+        -- else
             -- For macro, LEAVE_SCOPE is handled by RETURN
         end
         
@@ -140,10 +140,22 @@ return function (plume, context)
         f = f or context.childrenHandler  
         return function (node)
             local lets = context.countLocals(node) + (internVar or 0)
-            if lets>0 then  
+            if lets>0 then
+                -------------------------------------------
+                --- In case break jumping over LEAVE_SCOPE
+                local loop = context.getLast "loops"
+                if loop then
+                    loop.scopeToClose = loop.scopeToClose+1
+                end
+                -------------------------------------------
+
                 context.enterScope(lets)
                 f(node)  
                 context.leaveScope(true)
+
+                if loop then
+                    loop.scopeToClose = loop.scopeToClose-1
+                end
             else  
                 f(node)  
             end  

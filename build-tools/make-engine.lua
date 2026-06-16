@@ -154,6 +154,6 @@ end]]
 local result = {header, import, init, dispatch, labels, footer}
 
 
-local f = io.open("plume-data/engine/engine.lua", "w")
+local f = io.open("plume-data/engine/generated/engine.lua", "w")
 	f:write(table.concat( result, ""))
 f:close()

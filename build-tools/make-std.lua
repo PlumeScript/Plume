@@ -261,6 +261,6 @@ end
 
 
 result = string.format(template, (table.concat(result):gsub('\n', '\n\t')))
-local out = io.open("plume-data/engine/std.lua", "w")
+local out = io.open("plume-data/engine/generated/std.lua", "w")
 	out:write(result)
 out:close()

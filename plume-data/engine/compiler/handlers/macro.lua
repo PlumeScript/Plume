@@ -44,6 +44,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.upvalueMap = {}
 		macroObj.node = node
 		macroObj.doc  = doc
+		macroObj.contextToClose = 0
 		table.insert(context.macros, macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
@@ -67,7 +68,13 @@ return function (plume, context, nodeHandlerTable)
 
 		context.file(function ()
 			context.enterScope(nil)
-			table.insert(context.loops, {})
+
+			--- Used to prevent break inside a macro inside a loop
+			local lastLoop = context.getLast "loops"
+			if lastLoop then
+				lastLoop.insideMacro = true
+			end
+
 			-------------------------------------------------------------
 			--- Count arguments, save variadic offset
 			--- and evaluate default value when optionnal args are empty.
@@ -119,7 +126,7 @@ return function (plume, context, nodeHandlerTable)
 					end
 				else
 					if macroObj.namedParamCount > 0 then
-						if flag then
+						if passFlag then
 							plume.error.cannotAddPositionalAfterFlag(paramNode)
 						else
 							plume.error.cannotAddPositionalAfterNamed(paramNode)
@@ -154,6 +161,10 @@ return function (plume, context, nodeHandlerTable)
 			macroObj.localsCount = #context.getCurrentScope()
 
 			context.leaveScope(nil)
+
+			if lastLoop then
+				lastLoop.insideMacro = false
+			end
 			
 		end) ()
 		context.registerOP(node, plume.ops.RETURN, 0, 0)
@@ -167,6 +178,13 @@ return function (plume, context, nodeHandlerTable)
 
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
+		
+		if macro then
+			for _=1, macro.contextToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+		end
+
 		local uid = macro and macro.uid
 		if uid then
 			context.registerGoto(node, "macro_body_end_" .. uid)

@@ -17,7 +17,7 @@ return function(plume)
 		local noLine = 1
 		local sourceNoLine
 		local sourceLinePosBegin
-		for line in (node.code.."\n"):gmatch('[^\n]*\n') do
+		for line in (code.."\n"):gmatch('[^\n]*\n') do
 			if not sourceNoLine and currentPos + #line > bpos then
 				sourceNoLine = noLine
 				sourceLinePosBegin = bpos - currentPos + 1

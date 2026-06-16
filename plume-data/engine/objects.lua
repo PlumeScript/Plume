@@ -32,7 +32,7 @@ return function(plume)
 	function plume.obj.quickTable(source)
 		local t = plume.obj.table(#source, 0)
 
-		for k, v in ipairs(source) do
+		for _, v in ipairs(source) do
 			table.insert(t.table, v)
 			table.insert(t.keys, #t.table)
 		end
@@ -79,10 +79,17 @@ return function(plume)
 
 	local function makePlumeTable()
 		local result = plume.obj.table(0, 2)
-		result.keys = {"path", "locale", "localeNumberFormat", "localeThousandsSeparator", "localeDecimalSeparator", "localeThousandthsSeparator"}
+		result.keys = {
+			"path",
+			"locale",
+			"localeNumberFormat",
+			"localeThousandsSeparator",
+			"localeDecimalSeparator",
+			"localeThousandthsSeparator"
+		}
 
 		local pathTable = plume.obj.table(0, 0)
-		for path in os.getenv("PLUME_PATH"):gmatch('[^;]+') do
+		for path in (os.getenv("PLUME_PATH") or ""):gmatch('[^;]+') do
 			local i = #pathTable.table + 1
 			table.insert(pathTable.keys, i)
 			pathTable.table[i] = path
@@ -189,7 +196,7 @@ return function(plume)
 					if index < lastIndex or index > lastIndex+2 then
 						ordered = false
 					else
-						for i=1, index-lastIndex-1 do
+						for _=1, index-lastIndex-1 do
 							table.insert(result,  "empty")
 						end
 						lastIndex = index
@@ -207,8 +214,8 @@ return function(plume)
 				end
 			else
 				valueCount = valueCount + 1
-				local key = plume.repr(key, acc)
-				table.insert(result, string.format("%s: %s", key, value))
+				local rkey = plume.repr(key, acc)
+				table.insert(result, string.format("%s: %s", rkey, value))
 			end
 		end
 		

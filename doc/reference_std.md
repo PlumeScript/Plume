@@ -108,7 +108,7 @@ _All trigonometry functions works in radians._
 * `Math.acos(x)`
 * `Math.asin(x)`
 * `Math.atan(x)`
-* `Math.atan2(x)`
+* `Math.atan2(x, y)`
 * `Math.log(x)`
 * `Math.log10(x)`
 
@@ -140,7 +140,7 @@ The `import` statement follows a specific lookup order to locate files:
 3.  **File Patterns:** For any given directory, Plume looks for `[path].plume` and `[path]/init.plume`
 
 **Environment and Path Management:**
-*   The initial `plume.path` is populated from the `PLUME_PATH` environment variable (paths are separated by commas).
+*   The initial `plume.path` is populated from the `PLUME_PATH` environment variable (paths are separated by semicolons).
 *   You can add, remove or replace by editing the `plume.path` table.
 
 #### Module Lifecycle and Performance
@@ -220,7 +220,7 @@ Assume `let random = $Random()`.
 *   `Time.MINUTE = 60`
 *   `Time.HOUR   = 3600`
 *   `Time.DAY    = 86400`
-*   `Time.Week   = 604800`
+*   `Time.WEEK   = 604800`
 
 
 **Properties**

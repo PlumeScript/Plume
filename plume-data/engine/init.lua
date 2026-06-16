@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b49 (Owl Edition)
+Plume🪶 b50 (Owl Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,21 +30,22 @@ else
 end
 
 local plume = {}
-plume._VERSION = "b49 (Owl Edition)"
+plume._VERSION = "b50 (Owl Edition)"
 
-require 'plume-data/engine/debug/core'    (plume)
-require 'plume-data/engine/error/core'    (plume)
-require 'plume-data/engine/warning'       (plume)
-require 'plume-data/engine/utils'         (plume)
-require 'plume-data/engine/objects'       (plume)
-require 'plume-data/engine/std'           (plume)
-require 'plume-data/engine/parser'        (plume)
-require 'plume-data/engine/compiler/core' (plume)
-require 'plume-data/engine/engine'        (plume)
-require 'plume-data/engine/engine-opt'    (plume)
-require 'plume-data/engine/finalizer'     (plume)
-require 'plume-data/engine/config'        (plume)
-require 'plume-data/engine/profiler'      (plume)
+require 'plume-data/engine/debug/core'           (plume)
+require 'plume-data/engine/error/core'           (plume)
+require 'plume-data/engine/warning'              (plume)
+require 'plume-data/engine/utils'                (plume)
+require 'plume-data/engine/objects'              (plume)
+
+require 'plume-data/engine/parser'               (plume)
+require 'plume-data/engine/compiler/core'        (plume)
+require 'plume-data/engine/generated/std'        (plume)
+require 'plume-data/engine/generated/engine'     (plume)
+require 'plume-data/engine/generated/engine-opt' (plume)
+require 'plume-data/engine/finalizer'            (plume)
+require 'plume-data/engine/config'               (plume)
+require 'plume-data/engine/profiler'             (plume)
 
 function plume.run(runtime, chunk, fileParams)
 	if plume.runStatFlag then
@@ -88,7 +89,7 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 		plume.config.color = args.color
 	end
 
-	local runtime = runtime or plume.obj.runtime()
+	runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 
 	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)

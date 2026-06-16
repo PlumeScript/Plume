@@ -244,12 +244,7 @@ return function(plume)
 				makeLine{formatText(infos.label, neutral), indent=SOURCE_FILENAME_INDENT+2+indent}
 			end
 
-			local lastNoLine
 			for _, noLine in ipairs(infos.selectedNoLines) do
-				-- if lastNoLine and lastNoLine < noLine - 1 then
-				-- 	makeSourceLine{"...", "", indent=indent}
-				-- end
-
 				local line = infos.lines[noLine]
 				local indicator
 				if noLine == infos.sourceNoLine then
@@ -262,7 +257,7 @@ return function(plume)
 
 					indicator = (" "):rep(infos.sourceLinePosBegin-1-#startspace) .. ("^"):rep(infos.sourceLen)
 					if #indicator >= MAX_WIDTH*3/4 then
-						delta     = #indicator - MAX_WIDTH*3/4
+						local delta     = #indicator - MAX_WIDTH*3/4
 						indicator = indicator:sub(delta, -1)
 						line      = "..."..line:sub(delta+3, -1)
 					end
@@ -282,8 +277,6 @@ return function(plume)
 						makeSourceLine{indicator, "", indent=indent}
 					end
 				end
-
-				lastNoLine = noLine
 			end
 		end
 
@@ -306,9 +299,9 @@ return function(plume)
 				table.insert(nodesInfos.traceback, infos)
 			end
 		end
-		for i, infos in ipairs(plume.warning.cache) do
-			warningInfos = {message=infos.message, help=infos.help, issues=infos.issues}
-			for j, node in ipairs(infos.nodes) do
+		for _, infos in ipairs(plume.warning.cache) do
+			local warningInfos = {message=infos.message, help=infos.help, issues=infos.issues}
+			for _, node in ipairs(infos.nodes) do
 				table.insert(warningInfos, plume.error.getNodeLinesContext(node, false, false))
 				nodesInfos.warnings.count = nodesInfos.warnings.count + 1
 			end
@@ -401,11 +394,17 @@ return function(plume)
 						if not USE_SIMPLE then makeLine{""} end
 					end
 				elseif infos.repeatedBlockBegin then
-					makeLine{string.format("! This block is repeated %s times:", infos.repeatedBlockBegin), indent=SOURCE_FILENAME_INDENT}
+					makeLine{
+						string.format("! This block is repeated %s times:", infos.repeatedBlockBegin),
+						indent=SOURCE_FILENAME_INDENT
+					}
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 				elseif infos.repeated then
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
-					makeLine{string.format("↳(previous block is repeated %s more times)", infos.repeated), indent=SOURCE_FILENAME_INDENT}
+					makeLine{
+						string.format("↳(previous block is repeated %s more times)", infos.repeated),
+						indent=SOURCE_FILENAME_INDENT
+					}
 					makeLine{"↳...", indent=SOURCE_FILENAME_INDENT}
 					if i < #nodesInfos.traceback then
 						if not USE_SIMPLE then makeLine{""} end
@@ -431,8 +430,19 @@ return function(plume)
 				end
 			end
 
-			makeLine{string.format(focusless(" %s WARNING%s "), nodesInfos.warnings.count, nodesInfos.warnings.count>1 and "S" or ""),  indent=HEADER_INDENT}
-			makeLine{formatText("  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. "),  indent=HEADER_INDENT, lineIndentDelta=2}
+			makeLine{
+				string.format(
+					focusless(" %s WARNING%s "),
+					nodesInfos.warnings.count,
+					nodesInfos.warnings.count>1 and "S" or ""
+				), 
+				indent=HEADER_INDENT
+			}
+			makeLine{
+				formatText("  Add `use #warning(mode: ignore[, issues: xxx yyy])` to ignore warnings. "), 
+				indent=HEADER_INDENT,
+				lineIndentDelta=2
+			}
 			if not USE_SIMPLE then
 				table.insert(result, neutral(BORDER_L.. BORDER_H:rep(MAX_WIDTH) .. BORDER_R))
 			end
@@ -450,7 +460,11 @@ return function(plume)
 				}
 				makeLine{focus("! ")..formatText(warningInfos.message),  indent=SOURCE_CODE_INDENT, lineIndentDelta=2}
 				if warningInfos.help then
-					makeLine{focus("(i) ") .. formatText((warningInfos.help:gsub('^%s*', ''))),  indent=SOURCE_CODE_INDENT, lineIndentDelta=4}
+					makeLine{
+						focus("(i) ") .. formatText((warningInfos.help:gsub('^%s*', ''))),
+						indent=SOURCE_CODE_INDENT,
+						lineIndentDelta=4
+					}
 				end
 				if not USE_SIMPLE then makeLine{""} end
 				for j, infos in ipairs(warningInfos) do

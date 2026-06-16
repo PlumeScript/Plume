@@ -38,11 +38,13 @@ local ddadd = plume.obj.luaMacro("add", function(args)
 	local tx = getType(x)
 	local ty = getType(y)
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+	
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -63,11 +65,13 @@ local ddsub = plume.obj.luaMacro("sub", function(args)
 	local tx = getType(x)
 	local ty = getType(y)
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -92,11 +96,13 @@ local ddmul = plume.obj.luaMacro("mul", function(args)
 		return false, "Cannot multiply a 'Date' value."
 	end
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -117,11 +123,13 @@ local dddiv = plume.obj.luaMacro("div", function(args)
 		return false, "Cannot divide a 'Date' value."
 	end
 
-	local success, vx = convert(tx, x)
+	local success, vx, vy
+
+	success, vx = convert(tx, x)
 	if not success then
 		return success, vx
 	end
-	local success, vy = convert(ty, y)
+	success, vy = convert(ty, y)
 	if not success then
 		return success, vy
 	end
@@ -144,9 +152,12 @@ function createDate (args)
 
 	function time:updateTimestamp(args)
 		self.table.timestamp = os.time({
-			year   = args.year or 1970,
-			month  = args.month or 1,
-			day    = args.day or 1
+			year   = args.table.year or 1970,
+			month  = args.table.month or 1,
+			day    = args.table.day or 1,
+			hour   = args.table.hour or 1,
+			min    = args.table.minute or 0,
+			sec    = args.table.second or 0
 		})
 		if self.table.timestamp then
 			return true
@@ -260,9 +271,6 @@ function createDuration(s)
 		return true, self.value
 	end)
 	duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
-		local self   = args.table.self
-		local key    = args.table[1]
-		
 		return false, "Cannot edit 'duration' fields."
 	end)
 	duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
@@ -318,13 +326,13 @@ function createDuration(s)
 	return true, duration
 end
 
-local function ignoreSuccess(x, y)
+local function ignoreSuccess(_, y)
 	return y
 end
 
 plume.std.Time = plume.obj.quickTable{
 	date = plume.obj.luaMacro("date", function(args)
-		--!signature number year: 0, number month: 0, number day: 0, number year: 0, number year: 0, number year: 0, string zone:, string locale:, number timestamp: 0
+		--!signature number year: 1970, number month: 1, number day: 1, number hour: 1, number minute: 0, number second: 0, string zone:, string locale:, number timestamp: 0
 		return createDate(args)
 	end),
 	
@@ -340,6 +348,7 @@ plume.std.Time = plume.obj.quickTable{
 
 	SECOND = ignoreSuccess(createDuration(1)),
 	MINUTE = ignoreSuccess(createDuration(60)),
+	HOUR   = ignoreSuccess(createDuration(3600)),
 	DAY    = ignoreSuccess(createDuration(86400)),
 	WEEK   = ignoreSuccess(createDuration(604800)),
 

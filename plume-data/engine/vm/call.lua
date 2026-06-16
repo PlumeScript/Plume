@@ -79,7 +79,12 @@ function CONCAT_CALL (vm, arg1, arg2)
         CONCAT_TABLE(vm)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
         
-        local success, result, isHosted = tocall.callable (_STACK_POP(vm, vm.mainStack), vm.runtime, _STACK_GET(vm, vm.fileStack), vm.ip)
+        local success, result, isHosted = tocall.callable (
+            _STACK_POP(vm, vm.mainStack),
+            vm.runtime,
+            _STACK_GET(vm, vm.fileStack),
+            vm.ip
+        )
 
         if success then
             
@@ -134,16 +139,15 @@ function CONCAT_CALL (vm, arg1, arg2)
             _ERROR(vm, string.format("`attempt` first argument must be a macro, not a '%s'.", tmacro))
         end
 
-        vm.mainStack.frames[vm.mainStack.frames.pointer] = vm.mainStack.frames[vm.mainStack.frames.pointer] + 1 -- skip the macro
-        _STACK_PUSH(vm, vm.mainStack, macro) -- and add it at the end
+        -- Macro should be at the end
+        local frameBegin = _STACK_GET(vm, vm.mainStack.frames)
+        local frameEnd   = _STACK_POS(vm, vm.mainStack)
+        for i = frameBegin, frameEnd-1 do
+            vm.mainStack[i] = vm.mainStack[i+1]
+        end
+        vm.mainStack[frameEnd] = macro
 
-        -- Workaround to remove remaining macro value
-        -- without altering call return value
-        _INJECTION_PUSH(vm, vm.plume.ops.LOAD_LOCAL, 0, vm.variableStack.pointer+1)
-        _INJECTION_PUSH(vm, vm.plume.ops.STORE_VOID, 0, 0)
-        _INJECTION_PUSH(vm, vm.plume.ops.STORE_LOCAL, 0, vm.variableStack.pointer+1)
-
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1) -- call it
+        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1)
     else
         _ERROR (vm, vm.plume.error.cannotCallValue(t))
     end
@@ -156,14 +160,7 @@ end
 function _CALL_MACRO(vm, chunk, isValidator, safe)
     if isValidator and chunk.positionalParamCount ~= 1 then
         _ERROR(vm, vm.plume.error.wrongValidatorArgsCount(chunk, chunk.positionalParamCount))
-    else
-
-        local allocationCount = chunk.positionalParamCount + chunk.namedParamCount
-
-        if chunk.variadicOffset then
-            allocationCount = allocationCount + 1
-        end
-        
+    else   
         ENTER_SCOPE(vm, 0, chunk.localsCount) -- Create a new scope
 
         -- Distribute arguments to locals and get the overflow table

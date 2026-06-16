@@ -11,9 +11,9 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node table The current AST node
 	nodeHandlerTable.IDENTIFIER = function(node)
 		local varName = node.content
-		local var, ref = context.getVariable(varName)
+		local var = context.getVariable(varName)
 		if not var then
-			plume.error.useUnknownVariable(node, varName, ref, context.getAllVisiblesVariables(), node.name == "VALIDATOR")
+			plume.error.useUnknownVariable(node, varName, context.getAllVisiblesVariables(), node.name == "VALIDATOR")
 		end
 		if var.source then
 			var.source.used = true
@@ -42,7 +42,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isContext boolean True if a bind to context
 	--- @return table rvar The resolved variable object containing scope information and metadata
 	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext, isLoopVariable)
-		local rvar, isRef
+		local rvar
 		
 		----------------------------------------------------------
 		--- Case 1: Variable assignment
@@ -50,7 +50,10 @@ return function (plume, context, nodeHandlerTable)
 		--- `set name = value`
 		--- `let key [as name] [:defaultValue] from `
 		----------------------------------------------------------
-		if varNode.name == "IDENTIFIER" or varNode.name == "ALIAS" or varNode.name == "DEFAULT" or varNode.name == "ALIAS_DEFAULT" then
+		if varNode.name == "IDENTIFIER"
+		or varNode.name == "ALIAS"
+		or varNode.name == "DEFAULT"
+		or varNode.name == "ALIAS_DEFAULT" then
 			local key, name, default
 			
 			-- Extracting names and keys based on node type
@@ -80,7 +83,13 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
-				rvar, definitionVar = context.registerVariable(node, name, {isConst=isConst, isParam=isParam, isContext=isContext, isLoopVariable=isLoopVariable})
+				local definitionVar
+				rvar, definitionVar = context.registerVariable(node, name, {
+					isConst=isConst,
+					isParam=isParam,
+					isContext=isContext,
+					isLoopVariable=isLoopVariable
+				})
 				if not rvar then
 					if definitionVar.isSelf then
 						plume.error.letExistingSelfVariable(node)
@@ -89,9 +98,9 @@ return function (plume, context, nodeHandlerTable)
 					end
 				end
 			else
-				rvar, ref = context.getVariable(name)
+				rvar = context.getVariable(name)
 				if not rvar then
-					plume.error.setUnknownVariable(node, name, ref, context.getAllVisiblesVariables())
+					plume.error.setUnknownVariable(node, name, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariable(node, name, source, rvar.node)
 				elseif rvar.isContext then
@@ -147,7 +156,9 @@ return function (plume, context, nodeHandlerTable)
 	--- @param compound table Node representing compound operators like +=
 	--- @param isBodyStacked boolean True if the value is already on the stack
 	--- @param isContext boolean True if a bind to context
-	local function generateAssignmentBytecode(node, varlist, body, isLet, isParam, isFrom, compound, isBodyStacked, isContext)
+	local function generateAssignmentBytecode(
+		node, varlist, body, isLet, isParam, isFrom, compound, isBodyStacked, isContext
+	)
 		if not (body or isBodyStacked) then
 			if isContext then
 				for _, var in ipairs(varlist) do
@@ -291,7 +302,16 @@ return function (plume, context, nodeHandlerTable)
 			if options.isLoopVariable or #nodevarlist.children>1 then
 				parentNode = varNode
 			end
-			local rvar = resolveAssignmentTarget(parentNode, varNode, options.isLet, options.isConst, options.isParam, options.isFrom, options.isContext, options.isLoopVariable)
+			local rvar = resolveAssignmentTarget(
+				parentNode,
+				varNode,
+				options.isLet,
+				options.isConst,
+				options.isParam,
+				options.isFrom,
+				options.isContext,
+				options.isLoopVariable
+			)
 			table.insert(varlist, rvar)
 		end
 

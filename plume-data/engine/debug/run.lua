@@ -6,8 +6,6 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
-	local nodeID = {}
-	local nid = 0
 	local function getNodeID(node)
 		return node.name .. node.bpos .. "-" .. node.epos
 	end
@@ -40,8 +38,14 @@ return function (plume)
 	local function renderAST(node)
 		local result = {}
 		local nid = getNodeID(node)
-		table.insert(result, string.format("<div class='ast-node' id='ast-node-%s' data-bpos=%i data-epos=%i>", nid, node.bpos, node.epos))
-		table.insert(result, string.format("<div class='ast-node-infos'>%s (%s)</div>", node.name, node.type))
+		table.insert(result, string.format(
+			"<div class='ast-node' id='ast-node-%s' data-bpos=%i data-epos=%i>",
+			nid, node.bpos, node.epos
+		))
+		table.insert(result, string.format(
+			"<div class='ast-node-infos'>%s (%s)</div>",
+			node.name, node.type
+		))
 		
 		if node.children and #node.children > 0 then
 			table.insert(result, "<div class='ast-node-children'>")
@@ -79,7 +83,10 @@ return function (plume)
 			local arg1  = bit.band(bit.rshift(instr, plume.ARG1_SHIFT), plume.MASK_ARG1)
 			local arg2  = bit.band(instr, plume.MASK_ARG2)
 
-			table.insert(result, string.format("<div class='instruction' data-node='ast-node-%s' data-ip=%i>", getNearestNode(i), i))
+			table.insert(result, string.format(
+				"<div class='instruction' data-node='ast-node-%s' data-ip=%i>",
+				getNearestNode(i), i)
+			)
 			table.insert(result, string.format("<div class='instruction-count'>%i</div>", i))
 			table.insert(result, string.format("<div class='instruction-name'>%s</div>", names[op]))
 			table.insert(result, string.format("<div class='instruction-arg'>%i</div>", arg1))
@@ -106,26 +113,29 @@ return function (plume)
 					table.insert(result, "<div class='stack-view'>")
 						table.insert(result, "<div class='stack-title'>Main Stack</div>")
 						table.insert(result, "<div class='stack-content'>")
-						for i=1, vm.mainStack.pointer do
-							for _, j in ipairs(vm.mainStack.frames) do
-								if j==i and _>1  then
+						for j=1, vm.mainStack.pointer do
+							for k, f in ipairs(vm.mainStack.frames) do
+								if f==j and k>1  then
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.mainStack[i]))))
+							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.mainStack[j]))))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
 					table.insert(result, "<div class='stack-view'>")
 						table.insert(result, "<div class='stack-title'>Variable Stack</div>")
 						table.insert(result, "<div class='stack-content'>")
-						for i=1, vm.variableStack.pointer do
-							for _, j in ipairs(vm.variableStack.frames) do
-								if j==i and _>1 then
+						for j=1, vm.variableStack.pointer do
+							for k, f in ipairs(vm.variableStack.frames) do
+								if f==j and k>1  then
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.variableStack[i]))))
+							table.insert(result, string.format(
+								"<div class='stack-element'>%s</div>",
+								escape(plume.repr(vm.variableStack[j]))
+							))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
@@ -142,8 +152,6 @@ return function (plume)
 	end
 
 	local function makeBody(data)
-		nid = 0
-
 		return string.format([[
 			<div id="code-panel" class="panel">%s</div>
 			<div id="ast-panel" class="panel">%s</div>
@@ -189,13 +197,13 @@ return function (plume)
 		end
 	end
 
-	plume.debug.run = function (input, output)
+	plume.debug.executeFile = function (input, output)
 		local data = {}
 
 		data.filename = input
 		data.code = io.open(input):read('*a')
 
-		local success, result
+		local success, result, ip
 
 		success, result = pcall(plume.parse, data.code, data.filename)
 		
@@ -212,7 +220,7 @@ return function (plume)
 				data.log = {}
 				plume.hook = hook(data.log)
 				plume.runDevFlag = true
-				success, result, ip = plume.run(runtime, chunk, fileParams)
+				success, result, ip = plume.run(runtime, chunk)
 
 				if not success then
 					local last = data.log[#data.log]

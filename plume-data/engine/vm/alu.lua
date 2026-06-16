@@ -12,7 +12,6 @@ Licensed under the MIT License — see LICENSE for details.
 --! inline
 function _CHECK_NUMBER_META (vm, x)
     local tx = _GET_TYPE(vm, x)
-    local nx
     if tx  == "string" then
         if not tonumber(x) then
             return x, vm.plume.error.cannotConvertToString(x)
@@ -142,7 +141,7 @@ function _BIN_OP_NUMBER (vm, op, name)
 
     -- Only number
     if rightNumber and leftNumber then
-        result = op(leftNumber, rightNumber)
+        local result = op(leftNumber, rightNumber)
         _STACK_PUSH(vm, vm.mainStack, result)
     else
 
@@ -159,7 +158,7 @@ function _BIN_OP_NUMBER (vm, op, name)
             end
         -- table with tonumber metafield
         else
-            result = op(left, right)
+            local result = op(left, right)
             _STACK_PUSH(vm, vm.mainStack, result)
         end
 

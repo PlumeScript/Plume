@@ -7,62 +7,62 @@ Licensed under the MIT License — see LICENSE for details.
 
 local help = [[
 NAME
-    Plume🪶 - a textual programming language for complex content generation
+	Plume🪶 - a textual programming language for complex content generation
 
 SYNOPSIS
-    plume [OPTIONS]
+	plume [OPTIONS]
 
 DESCRIPTION
-    Plume is a textual programming language designed to fuse templating
-    with imperative logic through a paradigm of contextual accumulation.
-    It allows for the creation of expressive Domain-Specific Languages (DSLs) 
-    where code and content are structured as a single unit.
+	Plume is a textual programming language designed to fuse templating
+	with imperative logic through a paradigm of contextual accumulation.
+	It allows for the creation of expressive Domain-Specific Languages (DSLs) 
+	where code and content are structured as a single unit.
 
-    The plume CLI tool executes Plume scripts, processing input files and
-    generating formatted text output based on the logic defined within
-    the script.
+	The plume CLI tool executes Plume scripts, processing input files and
+	generating formatted text output based on the logic defined within
+	the script.
 
 OPTIONS
-    -i, --input <FILE>
-        Specify the source file containing the Plume code to be processed.
+	-i, --input <FILE>
+		Specify the source file containing the Plume code to be processed.
 
-    -s, --string <SCRIPT>
-    	Execute the given string as a plume script.
+	-s, --string <SCRIPT>
+		Execute the given string as a plume script.
 
-    -o, --output <FILE>
-        The destination file where the generated content will be saved.
-        If this option is omitted, the output is printed directly to stdout.
+	-o, --output <FILE>
+		The destination file where the generated content will be saved.
+		If this option is omitted, the output is printed directly to stdout.
 
-    --error-style <fancy|auto|plain>
-        Sets the visual style of compilation errors. 'fancy' uses Unicode 
-        borders and symbols, 'plain' uses ASCII only for compatibility, 
-        and 'auto' detects terminal capabilities.
-        Default: auto
+	--error-style <fancy|auto|plain>
+		Sets the visual style of compilation errors. 'fancy' uses Unicode 
+		borders and symbols, 'plain' uses ASCII only for compatibility, 
+		and 'auto' detects terminal capabilities.
+		Default: auto
 
-    --color <always|auto|never>
-        Controls color output in the terminal. 'always' forces colors, 
-        'never' disables them, and 'auto' detects if stdout is a TTY.
-        Default: auto
+	--color <always|auto|never>
+		Controls color output in the terminal. 'always' forces colors, 
+		'never' disables them, and 'auto' detects if stdout is a TTY.
+		Default: auto
 
-    -h, --help
-        Display this help message and terminate immediately.
+	-h, --help
+		Display this help message and terminate immediately.
 
-    -v, --version
-        Display the current Plume version using the Edition-Build scheme.
+	-v, --version
+		Display the current Plume version using the Edition-Build scheme.
 
 ENVIRONMENT VARIABLES
-    PLUME_ERROR_STYLE
-        Sets the error style (fancy|auto|plain). Used when no CLI flag is provided.
-    PLUME_COLOR
-        Sets color output (always|auto|never). Used when no CLI flag is provided.
-    PLUME_PATH
-    	A list of path, separated by semicolon. Used to resolve `import`.
+	PLUME_ERROR_STYLE
+		Sets the error style (fancy|auto|plain). Used when no CLI flag is provided.
+	PLUME_COLOR
+		Sets color output (always|auto|never). Used when no CLI flag is provided.
+	PLUME_PATH
+		A list of path, separated by semicolon. Used to resolve `import`.
 
 VERSION
-    !VERSION!
+	!VERSION!
 
 LICENSE
-    Plume is licensed under the MIT License.
+	Plume is licensed under the MIT License.
 ]]
 
 local shortcut = {
@@ -74,42 +74,42 @@ local shortcut = {
 }
 
 local function winCheckTerminalCapabilities()
-    local ffiLoaded, ffi = pcall(require, "ffi")
-    if not ffiLoaded then
-    	return false, false
-    end
+	local ffiLoaded, ffi = pcall(require, "ffi")
+	if not ffiLoaded then
+		return false, false
+	end
 
-    ffi.cdef[[
-        typedef void* HANDLE;
-        int GetConsoleMode(HANDLE hConsoleOutput, unsigned int * lpMode);
-        int SetConsoleMode(HANDLE hConsoleOutput, unsigned int dwMode);
-        HANDLE GetStdHandle(int nStdHandle);
-        unsigned int GetConsoleOutputCP();
-    ]]
+	ffi.cdef[[
+		typedef void* HANDLE;
+		int GetConsoleMode(HANDLE hConsoleOutput, unsigned int * lpMode);
+		int SetConsoleMode(HANDLE hConsoleOutput, unsigned int dwMode);
+		HANDLE GetStdHandle(int nStdHandle);
+		unsigned int GetConsoleOutputCP();
+	]]
 
-    local STD_OUTPUT_HANDLE = -11
-    local ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
-    local CP_UTF8 = 65001
+	local STD_OUTPUT_HANDLE = -11
+	local ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
+	local CP_UTF8 = 65001
 
-    local stdout = ffi.C.GetStdHandle(STD_OUTPUT_HANDLE)
-    if stdout == nil or stdout == ffi.cast("HANDLE", -1) then
-        return false, false
-    end
+	local stdout = ffi.C.GetStdHandle(STD_OUTPUT_HANDLE)
+	if stdout == nil or stdout == ffi.cast("HANDLE", -1) then
+		return false, false
+	end
 
-    local mode = ffi.new("unsigned int[1]")
-    local ansi_supported = false
-    
-    if ffi.C.GetConsoleMode(stdout, mode) ~= 0 then
-        local new_mode = mode[0] or ENABLE_VIRTUAL_TERMINAL_PROCESSING
-        if ffi.C.SetConsoleMode(stdout, new_mode) ~= 0 then
-            ansi_supported = true
-        end
-    end
+	local mode = ffi.new("unsigned int[1]")
+	local ansi_supported = false
+	
+	if ffi.C.GetConsoleMode(stdout, mode) ~= 0 then
+		local new_mode = mode[0] or ENABLE_VIRTUAL_TERMINAL_PROCESSING
+		if ffi.C.SetConsoleMode(stdout, new_mode) ~= 0 then
+			ansi_supported = true
+		end
+	end
 
-    local current_cp = ffi.C.GetConsoleOutputCP()
-    local unicode_supported = (current_cp == CP_UTF8)
+	local current_cp = ffi.C.GetConsoleOutputCP()
+	local unicode_supported = (current_cp == CP_UTF8)
 
-    return ansi_supported, unicode_supported
+	return ansi_supported, unicode_supported
 end
 
 local function getErrorStyle()

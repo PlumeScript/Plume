@@ -60,9 +60,16 @@ return function (plume)
 	plume.ops = makeNames(plume.ops_names)
 
 	plume.validMetaNames = {}
-	for name in ("add addr addl mul mull mulr div divr divl sub subr subl mod modr modl pow powl powr eq lt minus call getindex setindex iter next tostring validate"):gmatch("%S+") do
-        plume.validMetaNames[name] = true
-    end
+	for name in ([[
+		add addr addl mul mull mulr
+		div divr divl sub subr subl mod modr modl
+		pow powl powr
+		eq lt minus
+		call getindex setindex
+		iter next tostring validate
+	]]):gmatch("%S+") do
+		plume.validMetaNames[name] = true
+	end
 
 	-- AST
 	plume.ast = {}
@@ -97,7 +104,7 @@ return function (plume)
 	end
 
 	function plume.ast.set(node, key, value, mindeep, maxdeep)
-		plume.ast.browse(node, function(node) node[key] = value end, mindeep, maxdeep)
+		plume.ast.browse(node, function(childnode) childnode[key] = value end, mindeep, maxdeep)
 	end
 
 	-- return the first child with given name
@@ -105,9 +112,9 @@ return function (plume)
 		mindeep = mindeep or 1
 		maxdeep = maxdeep or 1
 		local result
-		plume.ast.browse(node, function(node)
-			if node.name==name then
-				result = node
+		plume.ast.browse(node, function(childnode)
+			if childnode.name==name then
+				result = childnode
 				return "STOP"
 			end
 		end, mindeep, maxdeep)
@@ -119,9 +126,9 @@ return function (plume)
 		mindeep = mindeep or 1
 		maxdeep = maxdeep or 1
 		local result = {}
-		plume.ast.browse(node, function(node)
-			if node.name==name then
-				table.insert(result, node)
+		plume.ast.browse(node, function(childnode)
+			if childnode.name==name then
+				table.insert(result, childnode)
 			end
 		end, mindeep, maxdeep)
 
@@ -160,7 +167,7 @@ return function (plume)
 			-- workaround for the case where child is an information,
 			-- not a proper child
 			local avoid = child.name == "IDENTIFIER" and (
-			    	node.name ~= "EVAL"
+					node.name ~= "EVAL"
 					and node.name ~= "LIST_ITEM"
 					and node.name ~= "BODY"
 			) or child.name == "NULL" or child.name == "LINESTART"
@@ -252,7 +259,7 @@ return function (plume)
 			if plume.ast.get(node, "IDENTIFIER") then
 				return "EMPTY"
 			else
-				return "VALUE"
+				return "VALUE_MACRO"
 			end
 		elseif node.name == "ADD"
 			or node.name == "SUB"
@@ -268,15 +275,15 @@ return function (plume)
 			or node.name == "LTE"
 			or node.name == "GTE"
 
-		    or node.name == "AND"
-		    or node.name == "NOT"
-		    or node.name == "OR"
+			or node.name == "AND"
+			or node.name == "NOT"
+			or node.name == "OR"
 
-		    or node.name == "FALSE"
-		    or node.name == "TRUE"
+			or node.name == "FALSE"
+			or node.name == "TRUE"
 
-		    or node.name == "WITH"
-		    or node.name == "DO" then
+			or node.name == "WITH"
+			or node.name == "DO" then
 			return "VALUE"
 		else
 			return "EMPTY"
@@ -305,121 +312,116 @@ return function (plume)
 	end
 
 	local function formatDir(s)
-        local result = s:gsub('\\', '/')
-        if result ~= "" and not result:match('/$') then
-            result = result .. "/"
-        end
-        return result
-    end
-    local function formatDirFromFilename(s)
-        local result = formatDir(s:gsub('/[^/]+$', ''))
-        if result ~= "" and not result:match('/$') then
-            result = result .. "/"
-        end
-        return result
-    end
-
-	function plume.normalizePath(path)
-	    if path:match("^/") or path:match("^[A-Za-z]:[/\\]") then 
-	        return path:gsub("\\", "/")
-	    end
-	    
-	    local cwd = plume.debugForcedRoot or lfs.currentdir()
-	    
-	    local result = cwd:gsub("\\", "/") .. "/" .. path:gsub("\\", "/")
-	    
-	    local parts = {}
-	    for part in string.gmatch(result, "[^/]+") do
-	        if part == "." then
-	        elseif part == ".." then
-	            if #parts > 0 and parts[#parts] ~= "" then
-	                table.remove(parts)
-	            end
-	        else
-	            table.insert(parts, part)
-	        end
-	    end
-
-	    local normalized = table.concat(parts, "/")
-	    
-	    if parts[1] and string.match(parts[1], "^[A-Za-z]:$") then
-	        local drive = table.remove(parts, 1)
-	        normalized = drive .. "/" .. table.concat(parts, "/")
-	    end
-	    
-	    while string.match(normalized, "//+") do 
-	        normalized = string.gsub(normalized, "//+", "/") 
-	    end
-	    
-	    return normalized:gsub("/$", "")
+		local result = s:gsub('\\', '/')
+		if result ~= "" and not result:match('/$') then
+			result = result .. "/"
+		end
+		return result
+	end
+	local function formatDirFromFilename(s)
+		local result = formatDir(s:gsub('/[^/]+$', ''))
+		if result ~= "" and not result:match('/$') then
+			result = result .. "/"
+		end
+		return result
 	end
 
-    local pathTemplates = {
-        "%base%%path%.%ext%",
-        "%base%%path%/init.%ext%",
-    }
-    
-    function plume.getFilenameFromPath(path, lua, runtime, firstFilename, lastFilename)
-        path = path:gsub('\\', '/')
-        
-        local root
-        if path:match('^%.+/') or path == "." then
-            root = formatDirFromFilename(lastFilename)
-        else
-            root = formatDirFromFilename(firstFilename)
-        end
+	function plume.normalizePath(path)
+		if path:match("^/") or path:match("^[A-Za-z]:[/\\]") then 
+			return path:gsub("\\", "/")
+		end
+		
+		local cwd = plume.debugForcedRoot or lfs.currentdir()
+		
+		local result = cwd:gsub("\\", "/") .. "/" .. path:gsub("\\", "/")
+		
+		local parts = {}
+		for part in string.gmatch(result, "[^/]+") do
+			if part == ".." then
+				if #parts > 0 and parts[#parts] ~= "" then
+					table.remove(parts)
+				end
+			elseif part ~= "." then
+				table.insert(parts, part)
+			end
+		end
 
-        local ext
-        if lua then
-            ext = "lua"
-        else
-            ext = "plume"
-        end
+		local normalized = table.concat(parts, "/")
+		
+		if parts[1] and string.match(parts[1], "^[A-Za-z]:$") then
+			local drive = table.remove(parts, 1)
+			normalized = drive .. "/" .. table.concat(parts, "/")
+		end
+		
+		while string.match(normalized, "//+") do 
+			normalized = string.gsub(normalized, "//+", "/") 
+		end
+		
+		return normalized:gsub("/$", "")
+	end
 
-        local basedirs = {}
-        local env = runtime.plume.table.path
-        if type(env) == "table" and env.type == "table" then
-	        if env then
-	            for _, dir in ipairs(env.table) do
-	            	if type(dir) == "string" then
-		                dir = formatDir(dir)
-		                table.insert(basedirs, dir)
-		            else
-		            	-- Should raise an error?
-		            end
-	            end
-	        end
-	    else
-	    	-- Should raise an error?
-	    end
-        table.insert(basedirs, root)
-        table.insert(basedirs, "")
+	local pathTemplates = {
+		"%base%%path%.%ext%",
+		"%base%%path%/init.%ext%",
+	}
+	
+	function plume.getFilenameFromPath(path, lua, runtime, firstFilename, lastFilename)
+		path = path:gsub('\\', '/')
+		
+		local root
+		if path:match('^%.+/') or path == "." then
+			root = formatDirFromFilename(lastFilename)
+		else
+			root = formatDirFromFilename(firstFilename)
+		end
 
-        local searchPaths = {}
-        for _, base in ipairs(basedirs) do
-            for _, template in ipairs(pathTemplates) do
-                template = template:gsub('%%base%%', base)
-                template = template:gsub('%%path%%', path)
-                template = template:gsub('%%ext%%', ext)
+		local ext
+		if lua then
+			ext = "lua"
+		else
+			ext = "plume"
+		end
 
-                template = plume.normalizePath(template)
+		local basedirs = {}
+		local env = runtime.plume.table.path
+		if type(env) == "table" and env.type == "table" then
+			if env then
+				for _, dir in ipairs(env.table) do
+					if type(dir) == "string" then
+						dir = formatDir(dir)
+						table.insert(basedirs, dir)
+					end
+				end
+			end
+		end
+		table.insert(basedirs, root)
+		table.insert(basedirs, "")
 
-                table.insert(searchPaths, template)
-            end
-        end
+		local searchPaths = {}
+		for _, base in ipairs(basedirs) do
+			for _, template in ipairs(pathTemplates) do
+				template = template:gsub('%%base%%', base)
+				template = template:gsub('%%path%%', path)
+				template = template:gsub('%%ext%%', ext)
 
-        for _, search in ipairs(searchPaths) do
-            local f = io.open(search)
-            if f then
-                f:close()
-                return search
-            end
-        end
-        
-        return nil, searchPaths
-    end
+				template = plume.normalizePath(template)
 
-    function plume.stdShiftArgs(cls, args)
+				table.insert(searchPaths, template)
+			end
+		end
+
+		for _, search in ipairs(searchPaths) do
+			local f = io.open(search)
+			if f then
+				f:close()
+				return search
+			end
+		end
+		
+		return nil, searchPaths
+	end
+
+	function plume.stdShiftArgs(cls, args)
 		local self = args.table.self
 		if self == cls then -- called with `cls.method(string)` instead of `cls.method()`
 			return args

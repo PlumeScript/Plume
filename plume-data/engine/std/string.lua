@@ -65,7 +65,10 @@ plume.std.String = plume.obj.quickTable {
 
 		if type(sub) ~= "string" then
 			if sub.positionalParamCount ~= 1 then
-				return false, string.format("Macro sub for `String.replace` must take exactly '1' argument, not '%i'.", sub.positionalParamCount)
+				return false, string.format(
+					"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
+					sub.positionalParamCount
+				)
 			end
 
 			local context = {
@@ -104,12 +107,12 @@ plume.std.String = plume.obj.quickTable {
 	rtrim = plume.obj.luaMacro("rtrim", function (args)
 		--!override-self-plume.std.String
 		--!signature string s
-		return true, (s:gsub('^%s*', ''))
+		return true, (s:gsub('%s*$', ''))
 	end),
 	ltrim = plume.obj.luaMacro("ltrim", function (args)
 		--!override-self-plume.std.String
 		--!signature string s
-		return true, (s:gsub('%s*$', ''))
+		return true, (s:gsub('^%s*', ''))
 	end),
 	collapse = plume.obj.luaMacro("collapse", function (args)
 		--!override-self-plume.std.String
@@ -185,7 +188,7 @@ plume.std.String = plume.obj.quickTable {
 		end
 
 		local count = 0
-		for x in s:gmatch(pattern) do
+		for _ in s:gmatch(pattern) do
 			count = count + 1
 		end
 
@@ -284,10 +287,6 @@ plume.std.String = plume.obj.quickTable {
 	sub = plume.obj.luaMacro("sub", function (args)
 		--!override-self-plume.std.String
 		--!signature string s, number startpos, number endpos
-		if epos == 1 then
-			epos = #s
-		end
-
 		return true, s:sub(startpos, endpos)
 	end)
 }

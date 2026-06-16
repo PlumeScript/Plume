@@ -42,97 +42,98 @@ return function (plume, context)
 	end
 
 	--- Return the last scope of context.scopes
-    --- @return table
-    function context.getCurrentScope()  
-        return context.scopes[#context.scopes]  
-    end
+	--- @return table
+	function context.getCurrentScope()  
+		return context.scopes[#context.scopes]  
+	end
 
-    --- Utils to set/check if the current block is a TEXT one
-    function context.toggleConcatOn()
-    	table.insert(context.concats, true)
-    end
-    function context.toggleConcatOff()
-    	table.insert(context.concats, false)
-    end
-    function context.toggleConcatPop()
-    	table.remove(context.concats)
-    end
-    function context.checkIfCanConcat()
-    	return context.getLast"concats"
-    end
+	--- Utils to set/check if the current block is a TEXT one
+	function context.toggleConcatOn()
+		table.insert(context.concats, true)
+	end
+	function context.toggleConcatOff()
+		table.insert(context.concats, false)
+	end
+	function context.toggleConcatPop()
+		table.remove(context.concats)
+	end
+	function context.checkIfCanConcat()
+		return context.getLast"concats"
+	end
 
-    --- Calculating number of declared local variables
-    --- @param node node
-    --- @return number
-    function context.countLocals(node)
-    	local lets      = plume.ast.getAll(node, "LET") 
-    	local hashItems = plume.ast.getAll(node, "HASH_ITEM")
+	--- Calculating number of declared local variables
+	--- @param node node
+	--- @return number
+	function context.countLocals(node)
+		local lets      = plume.ast.getAll(node, "LET") 
+		local hashItems = plume.ast.getAll(node, "HASH_ITEM")
 
-    	local count = #plume.ast.getAll(node, "MACRO")
-    	for _, let in ipairs(lets) do
-    		count = count + #plume.ast.get(let, "VARLIST").children
-    	end
-    	for _, hashItem in ipairs(hashItems) do
-    		if plume.ast.get(hashItem, "REF") then
-	    		count = count + 1
-	    	end
-    	end
-    	return count
-    end
+		local count = #plume.ast.getAll(node, "MACRO")
+		for _, let in ipairs(lets) do
+			count = count + #plume.ast.get(let, "VARLIST").children
+		end
+		for _, hashItem in ipairs(hashItems) do
+			if plume.ast.get(hashItem, "REF") then
+				count = count + 1
+			end
+		end
+		return count
+	end
 
-    function context.checkArgsOrder(node)
-    	local firstNamed, firstFlag, firstVariadic
-    	for _, child in ipairs(node.children) do
-    		if child.name == "LIST_ITEM" then
-    			if firstFlag then
-    				plume.error.cannotAddPositionalAfterFlag(child, true)
-    			elseif firstNamed then
-    				plume.error.cannotAddPositionalAfterNamed(child, true)
-    			elseif firstVariadic then
-    				plume.error.cannotAddPositionalAfterVariadic(child, true)
-    			end
-    		elseif child.name == "HASH_ITEM" then
-    			if child.isFlag then
-    				firstFlag = true
-    				if firstVariadic then
-    					plume.error.cannotAddFlagAfterVariadic(child, true)
-    				end
-    			else
-    				firstNamed = true
-    				if firstFlag then
-    					plume.error.cannotAddNamedAfterFlag(child, true)
-    				elseif firstVariadic then
-    					plume.error.cannotAddNamedAfterVariadic(child, true)
-    				end
-    			end
-    		elseif child.name == "EXPAND" then
-    			firstVariadic = true
-    		end
-    	end
-    end
+	function context.checkArgsOrder(node)
+		local firstNamed, firstFlag, firstVariadic
+		for _, child in ipairs(node.children) do
+			if child.name == "LIST_ITEM" then
+				if firstFlag then
+					plume.error.cannotAddPositionalAfterFlag(child, true)
+				elseif firstNamed then
+					plume.error.cannotAddPositionalAfterNamed(child, true)
+				elseif firstVariadic then
+					plume.error.cannotAddPositionalAfterVariadic(child, true)
+				end
+			elseif child.name == "HASH_ITEM" then
+				if child.isFlag then
+					firstFlag = true
+					if firstVariadic then
+						plume.error.cannotAddFlagAfterVariadic(child, true)
+					end
+				else
+					firstNamed = true
+					if firstFlag then
+						plume.error.cannotAddNamedAfterFlag(child, true)
+					elseif firstVariadic then
+						plume.error.cannotAddNamedAfterVariadic(child, true)
+					end
+				end
+			elseif child.name == "EXPAND" then
+				firstVariadic = true
+			end
+		end
+	end
 
-    --- Collects comments that appear before the given node within its parent's children list.
-	--- Iterates through all sibling nodes preceding the target node and gathers COMMENT tokens, ignoring those separated by a significant newline (anything other than LINESTART).
+	--- Collects comments that appear before the given node within its parent's children list.
+	--- Iterates through all sibling nodes preceding the target node and gathers COMMENT tokens,
+	---- ignoring those separated by a significant newline (anything other than LINESTART).
 	--- @param node node to get adjacent comments
 	--- @return string Concatenated comment strings separated by newlines (`\n`).
 	function context.collectComments(node)
-    	local parent = node.parent
-    	if not parent then
-    		return ""
-    	end
+		local parent = node.parent
+		if not parent then
+			return ""
+		end
 
-    	local result = {}
-    	local currentpos = 1
-    	while currentpos<#parent.children and parent.children[currentpos] ~= node do
-    		local child = parent.children[currentpos]
-    		if child.name == "COMMENT" then
-    			table.insert(result, child.content)
-    		elseif child.name ~= "LINESTART" or child.content:match('\n.-\n') then
-    			result = {}
-    		end
-    		currentpos = currentpos + 1
-    	end
+		local result = {}
+		local currentpos = 1
+		while currentpos<#parent.children and parent.children[currentpos] ~= node do
+			local child = parent.children[currentpos]
+			if child.name == "COMMENT" then
+				table.insert(result, child.content)
+			elseif child.name ~= "LINESTART" or child.content:match('\n.-\n') then
+				result = {}
+			end
+			currentpos = currentpos + 1
+		end
 
-    	return table.concat(result, "\n")
-    end
+		return table.concat(result, "\n")
+	end
 end

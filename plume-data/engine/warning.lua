@@ -30,19 +30,19 @@ return function (plume)
 		plume.warning.any = true
 
 		if mode == "strict" then
-	    	plume.error.strictWarningError (node, msg)
-	    end
+			plume.error.strictWarningError (node, msg)
+		end
 
-	    if not plume.warning.cache[msg] then
-	    	table.insert(plume.warning.cache, {nodes={}, message=msg, help=help, issues=issues})
-	       	plume.warning.cache[msg] = #plume.warning.cache
-	    end
+		if not plume.warning.cache[msg] then
+			table.insert(plume.warning.cache, {nodes={}, message=msg, help=help, issues=issues})
+			plume.warning.cache[msg] = #plume.warning.cache
+		end
 
-	    local index = plume.warning.cache[msg]
+		local index = plume.warning.cache[msg]
 
-	    if not plume.warning.cache[index].nodes[node] then
-		    plume.warning.cache[index].nodes[node] = true
-		    table.insert(plume.warning.cache[index].nodes, node)
+		if not plume.warning.cache[index].nodes[node] then
+			plume.warning.cache[index].nodes[node] = true
+			table.insert(plume.warning.cache[index].nodes, node)
 		end
 	end
 
@@ -54,13 +54,13 @@ return function (plume)
 	--- @param ip number instruction pointer identifying the call site
 	--- @param issues table Identifier for the issue (e.g., GitHub issue number).
 	function plume.warning.runtimeWarning(msg, help, runtime, ip, issues)
-	    local node = plume.error.getNode(runtime, ip)
-	    plume.warning.throwWarning(msg, help, node, issues)
+		local node = plume.error.getNode(runtime, ip)
+		plume.warning.throwWarning(msg, help, node, issues)
 	end
 
-	local function deprecatedMessage(version, description, help, issues)
+	local function deprecatedMessage(version, description, help)
 		help = "  "..help:gsub('\n', '\n  ')
-	    return string.format("%s will be removed in edition %s.", description, version), help
+		return string.format("%s will be removed in edition %s.", description, version), help
 	end
 
 	--- Emits a deprecation warning for features scheduled for removal.
@@ -73,21 +73,21 @@ return function (plume)
 	--- @param ip number instruction pointer identifying the call site
 	--- @param issues table Identifier for the issue (e.g., GitHub issue number).
 	function plume.warning.deprecatedRuntime(version, description, help, runtime, ip, issues)
-		local msg, help = deprecatedMessage(version, description, help, issues)
-	    plume.warning.runtimeWarning(msg, help, runtime, ip, issues)
+		local msg, helpmsg = deprecatedMessage(version, description, help)
+		plume.warning.runtimeWarning(msg, helpmsg, runtime, ip, issues)
 	end
 	function plume.warning.deprecatedCompilationTime(node, version, description, help, issues)
-	    local msg, help = deprecatedMessage(version, description, help, issues)
-	    plume.warning.throwWarning(msg, help, node, issues)
+		local msg, helpmsg = deprecatedMessage(version, description, help)
+		plume.warning.throwWarning(msg, helpmsg, node, issues)
 	end
 
 	--- Wraps a function to emit a deprecation warning upon first call.
-    --- @param version string target version for removal (e.g., "Lark")
+	--- @param version string target version for removal (e.g., "Lark")
 	--- @param description string description of the deprecated feature
 	--- @param help string migration instructions or alternatives
-    --- @param issues table Identifier for the issue (e.g., GitHub issue number).
-    --- @param f function The original function to be wrapped.
-    --- @return function A new function that executes `f` after emitting the deprecation warning.
+	--- @param issues table Identifier for the issue (e.g., GitHub issue number).
+	--- @param f function The original function to be wrapped.
+	--- @return function A new function that executes `f` after emitting the deprecation warning.
 	function plume.warning.deprecatedFunctionRuntime(version, description, help, issues, f)
 		return function (args, runtime, _, ip)
 			plume.warning.deprecatedRuntime(version, description, help, runtime, ip, issues)

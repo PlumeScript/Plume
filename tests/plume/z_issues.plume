@@ -1016,3 +1016,206 @@ end
 /// Output
 (1, 2, 3)
 /// End
+
+
+/// Test #846
+macro ()
+end
+
+a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'MACRO' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'MACRO'.                 │
+│    1 │macro ()                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │end                                                                      │
+│                                                                                │
+│    But you try to add a 'TEXT' element.                                        │
+│    4 │a                                                                        │
+│      │^                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+
+/// Test #847
+let a = $Context(a)
+
+macro Wing()
+    with ($a: b)
+        $a()
+        leave
+    end
+end
+
+$a()
+$Wing()
+$a()
+/// Output
+aba
+/// End
+
+/// Test #853-1
+let a = $Context(a)
+
+$a()
+for i in seq(10)
+    with ($a: b)
+        $a()
+        break
+    end
+end
+
+$a()
+/// Output
+aba
+/// End
+
+/// Test #853-2
+let a = $Context(a)
+
+$a()
+while true
+    with ($a: b)
+        $a()
+        break
+    end
+end
+
+$a()
+/// Output
+aba
+/// End
+
+/// Test #854
+macro wing(a)
+    raise Error!
+end
+
+a
+let result = $attempt($wing, a)
+/// Output
+a
+/// End
+
+/// Test #855
+let i = 5
+
+while i < 10
+    let j = 70
+    set i += 1
+    break
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test #856-1
+let a = 5
+
+for i in seq(5)
+    if true
+        let j = 70
+        set a += 1
+        break
+    end
+end
+
+$a
+/// Output
+6
+/// End
+
+/// Test #856-2
+let i = 5
+
+while true
+    if true
+        let j = 70
+        set i += 1
+        break
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test #856-3
+let i = 5
+
+while true
+    if true
+        if true
+            let j = 70
+            set i += 1
+            break
+        end
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test #856-4
+let i = 5
+
+while true
+    if true
+        if false
+        else
+            let j = 70
+            set i += 1
+            break
+        end
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test #857
+let a = $Context(a)
+
+
+macro Wing()
+    while true
+        with ($a: b)
+            $a()
+            break
+        end
+    end
+    leave
+end
+$a()
+$Wing()
+$a()
+/// Output
+aba
+/// End
+
+/// Test #862
+let a = $Context(a)
+
+macro wing()
+    with ($a: b)
+        raise Error!
+    end
+end
+
+let result = $attempt($wing)
+$a()
+/// Output
+a
+/// End

@@ -27,11 +27,11 @@ return function(plume)
 		if #related == 0 then
 			return ""
 		else
-			for i, name in ipairs(related) do
-				if visiblesVariables[name].source then
-					related[i] = visiblesVariables[name].source .. "." .. related[i]
+			for i, relatedName in ipairs(related) do
+				if visiblesVariables[relatedName].source then
+					related[i] = visiblesVariables[relatedName].source .. "." .. related[i]
 				end
-				plume.error.addContext(node, visiblesVariables[name].node)
+				plume.error.addContext(node, visiblesVariables[relatedName].node)
 			end
 
 			return string.format("\nPerhaps you mean '%s'?", table.concat( related, "', '"):gsub(', ([^,]-)$', ' or %1'))
@@ -40,9 +40,9 @@ return function(plume)
 
 	function plume.error.makeVisibleKeysHint(key, rawKeys)
 		local keys = {}
-		for _, key in ipairs(rawKeys) do
-			if not tonumber(key) then
-				table.insert(keys, key)
+		for _, rawKey in ipairs(rawKeys) do
+			if not tonumber(rawKey) then
+				table.insert(keys, rawKey)
 			end
 		end
 		local related = plume.error.suggestIdentifiers(key, keys, 2, 3)
@@ -55,7 +55,7 @@ return function(plume)
 	end
 
 	function plume.error.getSourceCode(node, size)
-		local size = size or 10
+		size = size or 10
 		if node then
 			local result = node.code:sub(node.bpos, node.epos):gsub('^%s*', ''):gsub('%s*$', '')
 			if #result > size then

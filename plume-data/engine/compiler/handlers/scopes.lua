@@ -43,7 +43,23 @@ return function (plume, context, nodeHandlerTable)
 
 		context.registerOP(node, plume.ops.PUSH_CONTEXT)
 
+		local macro = context.getLast "macros"
+		local loop  = context.getLast "loops"
+		if macro then
+			macro.contextToClose = macro.contextToClose + 1
+		end
+		if loop and loop.contextToClose then
+			loop.contextToClose  = loop.contextToClose + 1
+		end
+
 		context.accBlock()(body)
+
+		if macro then
+			macro.contextToClose = macro.contextToClose - 1
+		end
+		if loop and loop.contextToClose then
+			loop.contextToClose  = loop.contextToClose - 1
+		end
 		
 		context.registerOP(node, plume.ops.POP_CONTEXT)
 
@@ -56,6 +72,19 @@ return function (plume, context, nodeHandlerTable)
 		context.accBlock(function(node)
 			context.childrenHandler(node)
 		end)(node)
+
+		local macro = context.getLast "macros"
+		local loop  = context.getLast "loops"
+		if loop then
+			for _ = 1, loop.contextToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+		end
+		if macro then
+			for _ = 1, macro.contextToClose do
+				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+		end
 		context.registerOP(node, plume.ops.RAISE)
 	end
 end

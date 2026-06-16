@@ -1,6 +1,6 @@
 # Plume Technical Documentation
 
-_For version Owl 49_
+_For version Owl 50_
 
 This document provides a technical specification of the Plume programming language. It assumes the reader has prior programming experience. For a guided introduction, you may prefer to start with the dedicated tutorial (WIP).
 
@@ -424,27 +424,7 @@ let [const] key1, sourceKey as alias, key: default, ... from expression
 // 4. Parameter Declaration
 let param name [= value]
 
-// 5. Context Variable Declaration (EXPERIMENTAL - #571)
-let context name [= value]
-// Declares a variable that acts as an immutable proxy to a context variable. Call it return the current value from the context stack at the point of access.
-// Unlike standard variables, a context variable reads its value dynamically from a global context stack. If no value has been pushed onto the stack, the variable evaluates to `empty`, or value if one is given.
-```
 
-```plume
-let context locale
-
-macro greet()
-    Message in $locale().
-end
-
-with ($locale: en)
-    $greet()  // Output: Message in en.
-end
-```
-
-**Rules:**
-*   The `context` keyword creates an immutable binding. The variable cannot be reassigned with `set`.
-*   The value is resolved at access time, not at declaration time.
 ```
 
 **1. Multiple Declaration**
@@ -761,7 +741,7 @@ Any escape sequence not listed above is treated as an error.
 
 By default, every expression in Plume, including macro calls, contributes its return value to the current accumulation block. This can be undesirable for macros that are executed solely for their side-effects (e.g., printing to the console, writing to a file).
 
-To execute a macro call without its return value affecting the accumulation context, prefix the call with the `do` keyword. The `do` statement ensures the macro is executed, but its return value is discarded.
+To execute a macro call without its return value affecting the accumulation context, prefix the call with the `run` keyword. The `run` statement ensures the macro is executed, but its return value is discarded.
 
 ```plume
 let myTable = @Table
@@ -796,13 +776,13 @@ Context variables provide a mechanism for passing implicit parameters through ne
 
 #### Declaration
 
-A context variable is declared using the `let context` syntax:
+A context variable is declared using the `Context` macro:
 
 ```plume
-let context name
+let var =$Context([value])
 ```
 
-This creates an immutable proxy that reads from the context stack. The value is resolved at each access, reflecting the most recently pushed value.
+You can access the current value via calling it: `$var()`
 
 #### Setting Context: `with` Statement
 
@@ -817,16 +797,16 @@ end
 **Example:**
 
 ```plume
-let context locale
+let locale = $Context()
 
 macro greet() 
     Message in $locale().
 end
 
-with (locale: en)
+with ($locale: en)
     $greet()       // Output: Message in en.
     
-    with (locale: fr)
+    with ($locale: fr)
         $greet()   // Output: Message in fr.
     end
     
@@ -840,8 +820,6 @@ $greet()           // Output: Message in .
 
 *   **Stack Semantics:** Context values are pushed onto a stack. Nested `with` blocks shadow outer values, and the stack is restored when exiting a block.
 *   **Scope Independence:** A macro can read a context variable even if it was not passed as an argument, provided it declares the context binding.
-*   **Immutability:** The `let context` binding cannot be reassigned. The variable always reflects the current stack value.
-*   **Default Value:** If no `with` statement has pushed a value for a context variable, it evaluates to `empty`.
 
 #### Use Cases and Cautions
 
@@ -852,23 +830,23 @@ Context variables should be used sparingly. They are appropriate for:
 
 **Trade-off:** While context variables reduce parameter passing overhead, they can make data flow less explicit. Use them judiciously.
 
-#### Built-in Context Variable: `locale`
+#### Built-in Context Variable: `plume.locale`
 
-Plume defines a built-in context variable named `locael` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `locale` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
+Plume defines a built-in context variable named `plume.locale` that controls automatic number formatting. When a number is concatenated into text, Plume checks the current value of `plume.locale` and applies locale-specific formatting (e.g., thousands separators, decimal markers).
 
 ```plume
-with locale: fr
+with ($plume.locale: fr)
     The value is $(1000.5).
 end
 // Output: The value is 1 000,5.
 
-with locale: en
+with ($plume.locale: en)
     The value is $(1000.5).
 end
 // Output: The value is 1,000.5.
 ```
 
-If `locale` is not set, is `none` or is `empty`, numbers are concatenated without formatting.
+If `plume.locale` is not set, is `none` or is `empty`, numbers are concatenated without formatting.
 
 **Disabling Formatting:**
 
@@ -992,7 +970,7 @@ use mylib
     ```plume
     // svg-utils.plume
     // Prevent automatic number formatting in this library
-    use #context(local: none)
+    use #context(locale: none)
     
     macro circle(x, y, r)
         <circle cx="$(x)" cy="$(y)" r="$(r)" />
@@ -1133,7 +1111,7 @@ end
 The built-in function `attempt()` calls a macro or expression in protected mode and returns the result without halting execution:
 
 ```plume
-attempts(myMacro, ...macroArgs)
+attempt(myMacro, ...macroArgs)
 ```
 
 Returns a table with two fields:
