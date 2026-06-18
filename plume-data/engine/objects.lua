@@ -256,7 +256,7 @@ return function(plume)
 			return reprObj(obj, pretty, indent)
 		end
 
-		local t = obj.type
+		local t = obj.type or "???"
 		if t == "empty" then
 			return "empty"
 		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
