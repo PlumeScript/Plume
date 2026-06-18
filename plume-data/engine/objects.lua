@@ -33,12 +33,20 @@ return function(plume)
 		local t = plume.obj.table(#source, 0)
 
 		for _, v in ipairs(source) do
+			if type(v) == "table" and not v.type then
+				v = plume.obj.quickTable(v)
+			end
+
 			table.insert(t.table, v)
 			table.insert(t.keys, #t.table)
 		end
 
 		for k, v in pairs(source) do
 			if not tonumber(k) then
+				if type(v) == "table" and not v.type then
+					v = plume.obj.quickTable(v)
+				end
+			
 				table.insert(t.keys, k)
 				t.table[k] = v
 			end
