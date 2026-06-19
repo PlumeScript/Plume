@@ -175,7 +175,10 @@ return function (plume)
 			if avoid then
 				nulldelta = nulldelta + 1
 			else
-				if child.name == "BODY" and node.name == "WITH" then
+				if (node.name == "LIST_ITEM" or node.name == "HASH_ITEM")
+				and (childType == "VALUE_MACRO" or childType == "VALUE_TABLE") then
+					node.type = "VALUE"
+				elseif child.name == "BODY" and node.name == "WITH" then
 					node.type = child.type
 				elseif node.type == "EMPTY" then
 					if childType == "TEXT"

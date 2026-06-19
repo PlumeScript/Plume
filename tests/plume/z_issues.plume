@@ -1219,3 +1219,23 @@ $a()
 /// Output
 a
 /// End
+
+/// Test #874-1
+let x = a
+
+$x: macro()
+    y
+end
+
+/// Output
+(a: macro<???>)
+/// End
+
+/// Test #874-2
+let x = a
+
+$x: (5, 2, 3)
+
+/// Output
+(a: (5, 2, 3))
+/// End
