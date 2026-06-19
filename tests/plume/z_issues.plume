@@ -1239,3 +1239,45 @@ $x: (5, 2, 3)
 /// Output
 (a: (5, 2, 3))
 /// End
+
+/// Test #875-1
+macro wing()
+    a
+    for i in seq(2)
+        leave
+    end
+end
+$wing()
+/// Output
+a
+/// End
+
+/// Test #875-2
+macro wing()
+    a
+    for i in seq(2)
+        if true
+            leave
+        end
+    end
+end
+$wing()
+/// Output
+a
+/// End
+
+/// Test #875-3
+if true
+    macro wing()
+        a
+        for i in seq(2)
+            if true
+                leave
+            end
+        end
+    end
+    $wing()
+end
+/// Output
+a
+/// End
