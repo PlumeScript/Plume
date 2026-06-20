@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">636 passed out of 636 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">664 passed out of 664 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">5 passed out of 5 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -17239,6 +17239,1361 @@ $type($(1+1))
 table
 string
 number
+</code></pre>
+</div>
+</details>
+<h2>plume/std/table: <span style="font-weight: normal;">28 passed out of 28 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> List <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, a: b)
+$List($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; List($t)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; List</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; List($t)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(1, 2)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> List as validator <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(List t)
+	$t
+end
+let t = (1, 2, a: b)
+$wing($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 14</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; List t</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; List t</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; List</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">1 0</span> <span class="bc-info">; List t</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; List t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro wing(List t)[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, a: b)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing($t)</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing($t)</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator &#39;List&#39; failed:                                                     │
+│   Received extra named argument &#39;a&#39;, but extra arguments must be positional.   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(List t)                                                       │
+│      │           ^^^^^^                                                        │
+│    2 │ $t                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │$wing($t)                                                                │
+│      │ ^^^^^^^^                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Map <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, a: b)
+$Map($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Map($t)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Map</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Map($t)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(a: b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Map as validator <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro wing(Map t)
+	$t
+end
+let t = (1, 2, a: b)
+$wing($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 14</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Map t</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Map t</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Map</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">1 0</span> <span class="bc-info">; Map t</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; Map t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro wing(Map t)[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, a: b)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing($t)</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; wing</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; wing($t)</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator &#39;Map&#39; failed:                                                      │
+│   Received an extra positional argument, but extra arguments must be named.    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(Map t)                                                        │
+│      │           ^^^^^                                                         │
+│    2 │ $t                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │$wing($t)                                                                │
+│      │ ^^^^^^^^                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> append <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, 5, 4, a: b)
+run $Table.append($t, 5)
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, 5, 4, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.append($t, 5)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; append</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .append</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .append</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.append($t, 5)</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.append($t, 5)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(1, 2, 5, 4, a: b, 5)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> copy <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, (3, 4))
+let t2 = $Table.copy($t)
+set t[1] = 0
+set t[3][1] = 0
+$t2
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, (3, 4))</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (3, 4)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.copy($t)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; copy</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .copy</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .copy</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.copy($t)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t2</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[1] = 0</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [3]</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[3][1] = 0</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t2</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(1, 2, (0, 4))
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> count 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.count($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count($t)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; count</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .count</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .count</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count($t)</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+2
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> count 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.count($t, ?named)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count($t, ?named)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_TRUE       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?named</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; named</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; ?named</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; count</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .count</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .count</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count($t, ?named)</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+1
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> custom sort <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro comp(x, y)
+	$(x&gt;y)
+end
+let t = (1, 2, 5, 4)
+run $Table.sort($t, compare: $comp)
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x&gt;y</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro comp(x, y)[...]</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, 5, 4)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t, compare: $comp)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; compare</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; compare: $comp</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; sort</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t, compare: $comp)</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.sort($t, compare: $comp)</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(5, 4, 2, 1)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> custom sort doesn&#39;t alter map <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+macro comp(x, y)
+	$(x&gt;y)
+end
+let t = (1, 2, 5, 4, a: b)
+run $Table.sort($t, compare: $comp)
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">CLOSURE         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; y</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x&gt;y</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">RETURN          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; macro comp(x, y)[...]</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, 5, 4, a: b)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t, compare: $comp)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; comp</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; compare</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; compare: $comp</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; sort</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t, compare: $comp)</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.sort($t, compare: $comp)</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(5, 4, 2, 1, a: b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> deepcopy <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, (3, 4))
+let t2 = $Table.deepcopy($t)
+set t[1] = 0
+set t[3][1] = 0
+$t2
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, (3, 4))</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (3, 4)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.deepcopy($t)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; deepcopy</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .deepcopy</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .deepcopy</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.deepcopy($t)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t2</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[1] = 0</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; [3]</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">TABLE_SET       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; set t[3][1] = 0</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; t2</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(1, 2, (3, 4))
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> entry <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.entry($t, 2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.entry($t, 2)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; entry</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .entry</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .entry</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.entry($t, 2)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(a, b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> find 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.find($t, b)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find($t, b)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; find</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find($t, b)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+a
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> find 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.find($t, a)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find($t, a)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; find</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find($t, a)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> findAll <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b, c: b)
+$Table.findAll($t, b)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b, c: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; c: b</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.findAll($t, b)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; findAll</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .findAll</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.findAll($t, b)</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(a, c)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> hasKey 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.hasKey($t, a)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.hasKey($t, a)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; hasKey</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .hasKey</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .hasKey</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.hasKey($t, a)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> hasKey 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.hasKey($t, b)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.hasKey($t, b)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; hasKey</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .hasKey</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .hasKey</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.hasKey($t, b)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+false
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> hasKey 3 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.hasKey($t, 1)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.hasKey($t, 1)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; hasKey</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .hasKey</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .hasKey</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.hasKey($t, 1)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> join 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$Table.join(1, 2, 3)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.join(1, 2, 3)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.join(1, 2, 3)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+123
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> join 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$Table.join(1, 2, 3, sep: ;)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.join(1, 2, 3, sep: ;)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; ;</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; sep</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; sep: ;</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; join</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .join</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.join(1, 2, 3, sep: ;)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+1;2;3
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> remove 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, 5, 4, a: b)
+$Table.remove($t)\n
+Table\: $repr($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, 5, 4, a: b)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.remove($t)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; remove</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .remove</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .remove</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.remove($t)</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.remove($t)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">; :</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span> <span class="bc-info">;  </span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 13</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+4
+Table: (1, 2, 5, a: b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> remove 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 3, 5, 4, a: b)
+$Table.remove($t, 2)\n
+Table\: $repr($t)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 3, 5, 4, a: b)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.remove($t, 2)</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; remove</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .remove</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .remove</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.remove($t, 2)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.remove($t, 2)</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span> <span class="bc-info">; :</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 13</span> <span class="bc-info">;  </span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 14</span> <span class="bc-info">; repr</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; repr($t)</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+3
+Table: (1, 5, 4, a: b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> removeKey 1 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+run $Table.removeKey($t, a)\n
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.removeKey($t, a)\n</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, a)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; removeKey</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .removeKey</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .removeKey</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, a)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, a)</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.removeKey($t, a)\n</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+$Table(1)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> removeKey 2 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+run $Table.removeKey($t, 1)\n
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.removeKey($t, 1)\n</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, 1)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; removeKey</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .removeKey</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .removeKey</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, 1)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, 1)</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.removeKey($t, 1)\n</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(a: b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> removeKey error <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, a: b)
+$Table.removeKey($t, b)\n
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, a: b)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, b)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; removeKey</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .removeKey</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .removeKey</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, b)</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.removeKey($t, b)</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → The key &#39;b&#39; does not exist and therefore cannot be deleted.                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = (1, a: b)                                                        │
+│    2 │$Table.removeKey($t, b)\n                                                │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> sort <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, 5, 4)
+run $Table.sort($t)
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, 5, 4)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t)</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; sort</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t)</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.sort($t)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(1, 2, 4, 5)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> sort doesn&#39;t alter map <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = (1, 2, 5, 4, a: b)
+run $Table.sort($t)
+$t
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (1, 2, 5, 4, a: b)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a: b</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_TABLE    </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; sort</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sort</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sort($t)</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $Table.sort($t)</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(1, 2, 4, 5, a: b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> sum <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$Table.sum(1, 2, 3)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sum(1, 2, 3)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; sum</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sum</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sum</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.sum(1, 2, 3)</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+6
 </code></pre>
 </div>
 </details>

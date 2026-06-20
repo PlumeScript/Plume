@@ -1,0 +1,265 @@
+/// Test List
+let t = (1, 2, a: b)
+$List($t)
+/// Output
+(1, 2)
+/// End
+
+/// Test Map
+let t = (1, 2, a: b)
+$Map($t)
+/// Output
+(a: b)
+/// End
+
+/// Test List as validator
+macro wing(List t)
+	$t
+end
+let t = (1, 2, a: b)
+$wing($t)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'List' failed:                                                     │
+│   Received extra named argument 'a', but extra arguments must be positional.   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(List t)                                                       │
+│      │           ^^^^^^                                                        │
+│    2 │ $t                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │$wing($t)                                                                │
+│      │ ^^^^^^^^                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Map as validator
+macro wing(Map t)
+	$t
+end
+let t = (1, 2, a: b)
+$wing($t)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'Map' failed:                                                      │
+│   Received an extra positional argument, but extra arguments must be named.    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(Map t)                                                        │
+│      │           ^^^^^                                                         │
+│    2 │ $t                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │$wing($t)                                                                │
+│      │ ^^^^^^^^                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test sort
+let t = (1, 2, 5, 4)
+run $Table.sort($t)
+$t
+/// Output
+(1, 2, 4, 5)
+/// End
+
+/// Test sort doesn't alter map
+let t = (1, 2, 5, 4, a: b)
+run $Table.sort($t)
+$t
+/// Output
+(1, 2, 4, 5, a: b)
+/// End
+
+/// Test custom sort
+macro comp(x, y)
+	$(x>y)
+end
+let t = (1, 2, 5, 4)
+run $Table.sort($t, compare: $comp)
+$t
+/// Output
+(5, 4, 2, 1)
+/// End
+
+/// Test custom sort doesn't alter map
+macro comp(x, y)
+	$(x>y)
+end
+let t = (1, 2, 5, 4, a: b)
+run $Table.sort($t, compare: $comp)
+$t
+/// Output
+(5, 4, 2, 1, a: b)
+/// End
+
+/// Test append
+let t = (1, 2, 5, 4, a: b)
+run $Table.append($t, 5)
+$t
+/// Output
+(1, 2, 5, 4, a: b, 5)
+/// End
+
+
+/// Test remove 1
+let t = (1, 2, 5, 4, a: b)
+$Table.remove($t)\n
+Table\: $repr($t)
+/// Output
+4
+Table: (1, 2, 5, a: b)
+/// End
+
+/// Test remove 2
+let t = (1, 3, 5, 4, a: b)
+$Table.remove($t, 2)\n
+Table\: $repr($t)
+/// Output
+3
+Table: (1, 5, 4, a: b)
+/// End
+
+/// Test removeKey 1
+let t = (1, a: b)
+run $Table.removeKey($t, a)\n
+$t
+/// Output
+$Table(1)
+/// End
+
+/// Test removeKey 2
+let t = (1, a: b)
+run $Table.removeKey($t, 1)\n
+$t
+/// Output
+(a: b)
+/// End
+
+/// Test removeKey error
+let t = (1, a: b)
+$Table.removeKey($t, b)\n
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → The key 'b' does not exist and therefore cannot be deleted.                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = (1, a: b)                                                        │
+│    2 │$Table.removeKey($t, b)\n                                                │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test hasKey 1
+let t = (1, a: b)
+$Table.hasKey($t, a)
+/// Output
+true
+/// End
+
+/// Test hasKey 2
+let t = (1, a: b)
+$Table.hasKey($t, b)
+/// Output
+false
+/// End
+
+/// Test hasKey 3
+let t = (1, a: b)
+$Table.hasKey($t, 1)
+/// Output
+true
+/// End
+
+/// Test find 1
+let t = (1, a: b)
+$Table.find($t, b)
+/// Output
+a
+/// End
+
+/// Test find 2
+let t = (1, a: b)
+$Table.find($t, a)
+/// Output
+/// End
+
+/// Test findAll
+let t = (1, a: b, c: b)
+$Table.findAll($t, b)
+/// Output
+(a, c)
+/// End
+
+/// Test count 1
+let t = (1, a: b)
+$Table.count($t)
+/// Output
+2
+/// End
+
+/// Test count 2
+let t = (1, a: b)
+$Table.count($t, ?named)
+/// Output
+1
+/// End
+
+/// Test entry
+let t = (1, a: b)
+$Table.entry($t, 2)
+/// Output
+(a, b)
+/// End
+
+/// Test join 1
+$Table.join(1, 2, 3)
+/// Output
+123
+/// End
+
+/// Test join 2
+$Table.join(1, 2, 3, sep: ;)
+/// Output
+1;2;3
+/// End
+
+/// Test sum
+$Table.sum(1, 2, 3)
+/// Output
+6
+/// End
+
+/// Test copy
+let t = (1, 2, (3, 4))
+let t2 = $Table.copy($t)
+set t[1] = 0
+set t[3][1] = 0
+$t2
+/// Output
+(1, 2, (0, 4))
+/// End
+
+/// Test deepcopy
+let t = (1, 2, (3, 4))
+let t2 = $Table.deepcopy($t)
+set t[1] = 0
+set t[3][1] = 0
+$t2
+/// Output
+(1, 2, (3, 4))
+/// End
