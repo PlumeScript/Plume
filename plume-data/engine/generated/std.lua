@@ -1232,10 +1232,12 @@ return function(plume)
 			end
 	
 			if type(sub) ~= "string" then
-				if sub.positionalParamCount ~= 1 then
+				-- In case of closure - we should have an api for that
+				local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
+				if positionalParamCount ~= 1 then
 					return false, string.format(
 						"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
-						sub.positionalParamCount
+						positionalParamCount
 					)
 				end
 	
@@ -1875,10 +1877,12 @@ return function(plume)
 			if not __s then return false, __e end
 			------------
 			if compare and #t.table > 1 then
-				if compare.positionalParamCount ~= 2 then
+				-- In case of closure - we should have an api for that
+				local positionalParamCount = compare.positionalParamCount or compare.macro.positionalParamCount
+				if positionalParamCount ~= 2 then
 					return false, string.format(
 						"Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.",
-						compare.positionalParamCount
+						positionalParamCount
 					)
 				end
 	
@@ -2418,7 +2422,7 @@ return function(plume)
 				given = arg.type
 			end
 		end
-		if given == "luaMacro" or given == "stdMacro" then
+		if given == "luaMacro" or given == "stdMacro" or given == "closure" then
 			given = "macro"
 		end
 	

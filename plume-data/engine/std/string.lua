@@ -64,10 +64,12 @@ plume.std.String = plume.obj.quickTable {
 		end
 
 		if type(sub) ~= "string" then
-			if sub.positionalParamCount ~= 1 then
+			-- In case of closure - we should have an api for that
+			local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
+			if positionalParamCount ~= 1 then
 				return false, string.format(
 					"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
-					sub.positionalParamCount
+					positionalParamCount
 				)
 			end
 

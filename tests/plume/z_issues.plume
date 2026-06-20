@@ -1281,3 +1281,46 @@ end
 /// Output
 a
 /// End
+
+/// Test #876-1
+let x = x
+macro rep(a)
+    $x
+end
+
+$("aaa").replace(a, $rep)
+/// Output
+xxx
+/// End
+
+/// Test #876-2
+let x = x
+macro rep()
+    $x
+end
+
+$("aaa").replace(a, $rep)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '0'.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │end                                                                      │
+│    6 │$("aaa").replace(a, $rep)                                                │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #876-3
+let x = 5
+macro comp(a, b)
+    $(x>a)
+end
+
+let t = (1, 2, 3)
+$Table.sort($t, compare: $comp)
+/// Output
+/// End

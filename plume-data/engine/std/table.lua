@@ -179,10 +179,12 @@ plume.std.Table = plume.obj.quickTable{
 	sort = plume.obj.luaMacro("sort", function(args)
 		--!signature table t, macro compare:
 		if compare and #t.table > 1 then
-			if compare.positionalParamCount ~= 2 then
+			-- In case of closure - we should have an api for that
+			local positionalParamCount = compare.positionalParamCount or compare.macro.positionalParamCount
+			if positionalParamCount ~= 2 then
 				return false, string.format(
 					"Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.",
-					compare.positionalParamCount
+					positionalParamCount
 				)
 			end
 

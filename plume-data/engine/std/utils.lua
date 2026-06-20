@@ -52,7 +52,7 @@ function plume.stdCheckType(arg, expected, argName, name, signature)
 			given = arg.type
 		end
 	end
-	if given == "luaMacro" or given == "stdMacro" then
+	if given == "luaMacro" or given == "stdMacro" or given == "closure" then
 		given = "macro"
 	end
 
