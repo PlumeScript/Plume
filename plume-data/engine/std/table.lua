@@ -67,13 +67,21 @@ end
 
 plume.std.Table = plume.obj.quickTable{
 	remove = plume.obj.luaMacro("remove", function(args)
-		--!signature table t, [string|number index]
-		--`Table` automatically passes all of the macro's arguments as its second argument
+		--!signature table t, [number index]
 		index = (type(index) == "number" and index) or #t.table
 
-		for key, value in ipairs(t.keys) do
-			if value == index then
-				table.remove(t.keys, key)
+		for keyIndex, keyValue in ipairs(t.keys) do
+			if keyValue == index then
+				table.remove(t.keys, keyIndex)
+
+				if tonumber(keyValue) then
+					for shiftedKeyIndex, shiftedKeyValue in ipairs(t.keys) do
+						if tonumber(shiftedKeyValue) and shiftedKeyValue > keyValue then
+							t.keys[shiftedKeyIndex] = shiftedKeyValue-1
+						end
+					end
+				end
+				break
 			end
 		end
 

@@ -1684,25 +1684,28 @@ return function(plume)
 	plume.std.Table = plume.obj.quickTable{
 		remove = plume.obj.luaMacro("remove", function (args)
 			local __name      = "remove"
-			local __signature = "`$remove(table t, [string|number index])`"
+			local __signature = "`$remove(table t, [number index])`"
 			local __s, __e, self, t, index
 			__s, __e, t, index = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-			if __s and index then
-				__s, __e, index = plume.stdCheckType(index, "string", "2", __name, __signature)
-				if not __s then
-					__s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature)
-				end
-			end
+			if __s and index then __s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			--`Table` automatically passes all of the macro's arguments as its second argument
 			index = (type(index) == "number" and index) or #t.table
 	
-			for key, value in ipairs(t.keys) do
-				if value == index then
-					table.remove(t.keys, key)
+			for keyIndex, keyValue in ipairs(t.keys) do
+				if keyValue == index then
+					table.remove(t.keys, keyIndex)
+	
+					if tonumber(keyValue) then
+						for shiftedKeyIndex, shiftedKeyValue in ipairs(t.keys) do
+							if tonumber(shiftedKeyValue) and shiftedKeyValue > keyValue then
+								t.keys[shiftedKeyIndex] = shiftedKeyValue-1
+							end
+						end
+					end
+					break
 				end
 			end
 	
