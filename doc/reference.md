@@ -850,11 +850,11 @@ If `plume.locale` is not set, is `none` or is `empty`, numbers are concatenated 
 
 **Disabling Formatting:**
 
-To prevent automatic formatting in contexts where raw numbers are required (e.g., generating SVG coordinates, JSON output), set `locale` to `none`:
+To prevent automatic formatting in contexts where raw numbers are required (e.g., generating SVG coordinates, JSON output), use directive `rawNumbers`:
 
 ```plume
 // SVG library - coordinates must remain unformatted
-use #context(locale: none)
+use #rawNumbers
 
 macro circle(x, y, r)
     <circle cx="$(x)" cy="$(y)" r="$(r)" />
@@ -976,6 +976,10 @@ use mylib
         <circle cx="$(x)" cy="$(y)" r="$(r)" />
     end
     ```
+*   **rawNumbers**
+    During concatenation, prevents the implicit call to `localize` on numbers.
+    Applies only to the current file.
+
 ### Metatables
 
 #### Metatables and Operator Overloading

@@ -80,3 +80,28 @@ $x()
 /// Output
 5
 /// End
+
+/// Test raw numbers 1
+use #context(locale: fr)
+use #rawNumbers
+
+\s$(1005.5)
+/// Output
+1005.5
+/// End
+
+/// Test raw numbers 2
+use #context(locale: fr)
+use #rawNumbers
+$import(tests/plume/toimport/numberlocal)
+/// Output
+x is 5 200,6!
+/// End
+
+/// Test raw numbers 2
+use #context(locale: fr)
+let m = $import(tests/plume/toimport/numberraw)
+$m()
+/// Output
+x is 5200.6!
+/// End

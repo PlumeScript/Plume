@@ -140,6 +140,15 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(plume.obj.quickTable(t)))
 				context.registerOP(node, plume.ops.PUSH_CONTEXT)
 			end
+		},
+
+		rawNumbers = {
+			method = function(node, args)
+				for name, _ in pairs(args) do
+					plume.error.wrongDirectiveArgs(node, "context", name)
+				end
+				context.chunk.flagRawNumbers = true
+			end
 		}
 	}
 
