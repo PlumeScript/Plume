@@ -1636,7 +1636,11 @@ return function(plume)
 			}
 		else
 			context.PLUME_CALLBACK = nil
-			context.source.table = context.result
+			for _, key in ipairs(context.source.keys) do
+				if tonumber(key) then
+					context.source.table[key] = context.result[key]
+				end
+			end
 		end
 	
 		return true
