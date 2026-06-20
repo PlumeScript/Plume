@@ -277,6 +277,12 @@ return function(plume)
 			else
 				return reprTable(obj, acc, pretty, indent)
 			end
+		elseif t == "context" then
+			local values = {}
+			for _, value in ipairs(obj.values) do
+				table.insert(values, plume.repr(value))
+			end
+			return string.format("Context<%s>", table.concat(values, ", "))
 		else
 			return t.."Obj<"..(t.name or "???")..">"
 		end
