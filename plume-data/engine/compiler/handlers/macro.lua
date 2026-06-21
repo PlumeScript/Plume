@@ -45,6 +45,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.node = node
 		macroObj.doc  = doc
 		macroObj.contextToClose = 0
+		macroObj.scopeDeep = #context.scopes+1
 		table.insert(context.macros, macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
@@ -182,6 +183,11 @@ return function (plume, context, nodeHandlerTable)
 		if macro then
 			for _=1, macro.contextToClose do
 				context.registerOP(node, plume.ops.POP_CONTEXT)
+			end
+
+			-- Close inner scopes
+			for i = macro.scopeDeep+1, #context.scopes do
+				context.registerOP(node, plume.ops.LEAVE_SCOPE)
 			end
 		end
 

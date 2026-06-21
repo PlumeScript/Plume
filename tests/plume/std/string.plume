@@ -1,0 +1,359 @@
+/// Test trim
+let x = \s\s\sx\s\s\s
+-$x-\n
+-$x.trim()-
+/// Output
+-   x   -
+-x-
+/// End
+
+/// Test ltrim
+let x = \s\s\sx\s\s\s
+-$x-\n
+-$x.ltrim()-
+/// Output
+-   x   -
+-x   -
+/// End
+
+/// Test rtrim
+let x = \s\s\sx\s\s\s
+-$x-\n
+-$x.rtrim()-
+/// Output
+-   x   -
+-   x-
+/// End
+
+/// Test indent
+let x = \if true then\n\tdo something\nend
+```\n
+$x.indent()\n
+```
+/// Output
+```
+	if true then
+		do something
+	end
+```
+/// End
+
+/// Test dedent
+let x = \t\if true then\n\t\tdo something\n\tend
+```\n
+$x.dedent()\n
+```
+/// Output
+```
+if true then
+	do something
+end
+```
+/// End
+
+/// Test collapse
+let x = \sx\s\s\sx
+$x.collapse()
+/// Output
+x x
+/// End
+
+/// Test lower
+let x = azZ
+$x.lower()
+/// Output
+azz
+/// End
+
+/// Test upper
+let x = azZ
+$x.upper()
+/// Output
+AZZ
+/// End
+
+/// Test replace
+let x = aba
+$x.replace(a, z)
+/// Output
+zbz
+/// End
+
+/// Test replace rich
+let x = aBa
+$x.replace([a-z], z, ?rich)
+/// Output
+zBz
+/// End
+
+/// Test replace custom
+macro rep(x)
+	$x$x
+end
+
+let x = aBc
+$x.replace([a-z], $rep, ?rich)
+/// Output
+aaBcc
+/// End
+
+/// Test rep
+$String.rep(x, 5, sep: y)
+/// Output
+xyxyxyxyx
+/// End
+
+/// Test sub 1
+
+let x= aBc
+$x.sub(1, 2)
+/// Output
+aB
+/// End
+
+/// Test sub 2
+let x = aBc
+$x.sub(2, -1)
+/// Output
+Bc
+/// End
+
+/// Test find
+let x = aBc
+$x.find(B)
+/// Output
+B
+/// End
+
+/// Test find rich
+let x = aBc
+$x.find([A-Z], ?rich)
+/// Output
+B
+/// End
+
+/// Test find none
+let x = aBc
+<$x.find(z)>
+/// Output
+<>
+/// End
+
+/// Test contains
+let x = aBc
+if x.contains("B")
+    yes
+else
+    no
+end
+\n
+if x.contains("z")
+    yes
+else
+    no
+end
+/// Output
+yes
+no
+/// End
+
+/// Test contains rich
+let x = a1c
+if x.contains("[0-9]", ?rich)
+    yes
+else
+    no
+end
+/// Output
+yes
+/// End
+
+/// Test startsWith
+let x = aBc
+if x.startsWith("aB")
+    yes
+else
+    no
+end
+\n
+if x.startsWith("B")
+    yes
+else
+    no
+end
+/// Output
+yes
+no
+/// End
+
+/// Test startsWith rich
+let x = Abc
+if x.startsWith("[A-Z]", ?rich)
+    yes
+else
+    no
+end
+/// Output
+yes
+/// End
+
+/// Test endsWith
+let x = aBc
+if x.endsWith("Bc")
+    yes
+else
+    no
+end
+\n
+if x.endsWith("aB")
+    yes
+else
+    no
+end
+/// Output
+yes
+no
+/// End
+
+/// Test endsWith rich
+let x = abC
+if x.endsWith("[A-Z]", ?rich)
+    yes
+else
+    no
+end
+/// Output
+yes
+/// End
+
+/// Test count
+let x = aaaa
+$x.count(aa)
+/// Output
+2
+/// End
+
+/// Test count rich
+let x = a1b2c3
+$x.count([0-9], ?rich)
+/// Output
+3
+/// End
+
+/// Test isNumber true
+let x = $("12.5")
+if x.isNumber()
+    yes
+else
+    no
+end
+/// Output
+yes
+/// End
+
+/// Test isNumber false
+let x = $("12a")
+if x.isNumber()
+    yes
+else
+    no
+end
+/// Output
+no
+/// End
+
+/// Test split default
+let x = a\sb\sc
+let parts = $x.split()
+for part in parts
+	[$part]\n
+end
+/// Output
+[a]
+[b]
+[c]
+/// End
+
+/// Test split custom sep
+let x = a|b|c
+let parts = $x.split(sep: |)
+for part in parts
+	[$part]\n
+end
+/// Output
+[a]
+[b]
+[c]
+/// End
+
+/// Test split rich
+let x = a1b2c3d
+let parts = $x.split(sep:[0-9], ?rich)
+for part in parts
+	[$part]\n
+end
+/// Output
+[a]
+[b]
+[c]
+[d]
+/// End
+
+/// Test lines
+let x = a\nb\nc
+let parts = $x.lines()
+for part in parts
+	[$part]\n
+end
+/// Output
+[a]
+[b]
+[c]
+/// End
+
+/// Test findAll
+let x = ababa
+let matches = $x.findAll(ba)
+for match in matches
+	[$match]\n
+end
+/// Output
+[ba]
+[ba]
+/// End
+
+/// Test findAll rich
+let x = a1b2c3
+let matches = $x.findAll([0-9], ?rich)
+for match in matches
+	[$match]\n
+end
+/// Output
+[1]
+[2]
+[3]
+/// End
+
+/// Test partition
+let x = a=b=c
+let parts = $x.partition(=)
+for part in parts
+	[$part]\n
+end
+/// Output
+[a]
+[=]
+[b=c]
+/// End
+
+/// Test partition rich
+let x = ab1cd
+let parts = $x.partition([0-9], ?rich)
+for part in parts
+	[$part]\n
+end
+/// Output
+[ab]
+[1]
+[cd]
+/// End

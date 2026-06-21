@@ -1,0 +1,7 @@
+use #rawNumbers
+
+macro ()
+	let x = 5200.6
+
+	x is $x!
+end

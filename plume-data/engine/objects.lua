@@ -33,12 +33,20 @@ return function(plume)
 		local t = plume.obj.table(#source, 0)
 
 		for _, v in ipairs(source) do
+			if type(v) == "table" and not v.type then
+				v = plume.obj.quickTable(v)
+			end
+
 			table.insert(t.table, v)
 			table.insert(t.keys, #t.table)
 		end
 
 		for k, v in pairs(source) do
 			if not tonumber(k) then
+				if type(v) == "table" and not v.type then
+					v = plume.obj.quickTable(v)
+				end
+			
 				table.insert(t.keys, k)
 				t.table[k] = v
 			end
@@ -100,7 +108,7 @@ return function(plume)
 			result.table[key] = plume.std.plume.table[key]
 		end
 
-		result.table.locale = plume.obj.context('none')
+		result.table.locale = plume.obj.context(plume.obj.empty)
 		result.table.localeNumberFormat = plume.obj.context(plume.obj.empty)
 		result.table.localeThousandsSeparator =  plume.obj.context(plume.obj.empty)
 		result.table.localeDecimalSeparator =  plume.obj.context(plume.obj.empty)
@@ -256,7 +264,7 @@ return function(plume)
 			return reprObj(obj, pretty, indent)
 		end
 
-		local t = obj.type
+		local t = obj.type or "???"
 		if t == "empty" then
 			return "empty"
 		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
@@ -269,6 +277,12 @@ return function(plume)
 			else
 				return reprTable(obj, acc, pretty, indent)
 			end
+		elseif t == "context" then
+			local values = {}
+			for _, value in ipairs(obj.values) do
+				table.insert(values, plume.repr(value))
+			end
+			return string.format("Context<%s>", table.concat(values, ", "))
 		else
 			return t.."Obj<"..(t.name or "???")..">"
 		end

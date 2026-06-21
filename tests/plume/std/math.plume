@@ -1,0 +1,123 @@
+/// Test Math.cos zero
+$Math.cos(0).round()
+/// Output
+1
+/// End
+
+/// Test Math.cos pi
+$Math.cos($Math.pi).round()
+/// Output
+-1
+/// End
+
+/// Test Math.sin zero
+$Math.sin(0).round()
+/// Output
+0
+/// End
+
+/// Test Math.sin pi half
+$Math.sin($(Math.pi / 2)).round()
+/// Output
+1
+/// End
+
+/// Test Math.tan zero
+$Math.tan(0).round()
+/// Output
+0
+/// End
+
+/// Test Math.tan pi quarter
+$Math.tan($(Math.pi / 4)).round()
+/// Output
+1
+/// End
+
+/// Test Math.acos
+$Math.acos(1).round()
+/// Output
+0
+/// End
+
+/// Test Math.acos zero
+$Math.acos(0).round(digit: 4)
+/// Output
+1.5708
+/// End
+
+/// Test Math.asin zero
+$Math.asin(0).round()
+/// Output
+0
+/// End
+
+/// Test Math.asin one
+$Math.asin(1).round(digit: 4)
+/// Output
+1.5708
+/// End
+
+/// Test Math.atan zero
+$Math.atan(0).round()
+/// Output
+0
+/// End
+
+/// Test Math.atan one
+$Math.atan(1).round(digit: 4)
+/// Output
+0.7854
+/// End
+
+/// Test Math.atan2 diagonal
+$Math.atan2(1, 1).round(digit: 4)
+/// Output
+0.7854
+/// End
+
+/// Test Math.log one
+$Math.log(1).round()
+/// Output
+0
+/// End
+
+/// Test Math.log e
+$Math.log($Math.e).round()
+/// Output
+1
+/// End
+
+/// Test Math.log10 one
+$Math.log10(1).round()
+/// Output
+0
+/// End
+
+/// Test Math.log10 thousand
+$Math.log10(1000).round()
+/// Output
+3
+/// End
+
+/// Test $Math.pi
+$Math.pi.round(digit: 5)
+/// Output
+3.14159
+/// End
+
+/// Test Math.e
+$Math.e.round(digit: 5)
+/// Output
+2.71828
+/// End
+
+/// Test Math.huge
+if Math.huge > 10 ^ 300
+    huge
+else
+    not huge
+end
+/// Output
+huge
+/// End

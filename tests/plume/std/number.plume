@@ -1,0 +1,134 @@
+/// Test Number convert
+$Number(42)\n
+$Number($String(3.5))
+/// Output
+42
+3.5
+/// End
+
+/// Test abs
+let n = -7
+
+$n.abs()\n
+$Number.abs($n)
+/// Output
+7
+7
+/// End
+
+/// Test floor
+$Number.floor(12.987)\n
+$Number.floor(12.987, digit: 2)
+/// Output
+12
+12.98
+/// End
+
+/// Test floor negative
+$Number.floor(-1.2)
+/// Output
+-2
+/// End
+
+/// Test ceil
+$Number.ceil(12.981)\n
+$Number.ceil(12.981, digit: 2)
+/// Output
+13
+12.99
+/// End
+
+/// Test ceil negative
+$Number.ceil(-1.2)
+/// Output
+-1
+/// End
+
+/// Test round
+$Number.round(12.984, digit: 2)\n
+$Number.round(12.986, digit: 2)
+/// Output
+12.98
+12.99
+/// End
+
+/// Test round integer
+$Number.round(12.4)\n
+$Number.round(12.6)
+/// Output
+12
+13
+/// End
+
+/// Test clamp
+$Number.clamp(-2, 0, 10)\n
+$Number.clamp(5, 0, 10)\n
+$Number.clamp(12, 0, 10)
+/// Output
+0
+5
+10
+/// End
+
+/// Test clamp method
+let n = 12
+$n.clamp(0, 10)
+/// Output
+10
+/// End
+
+/// Test sign
+$Number.sign(-3)\n
+$Number.sign(0)\n
+$Number.sign(3)
+/// Output
+-1
+0
+1
+/// End
+
+/// Test localize default
+$Number.localize(1055.2)\n
+with ($plume.locale: fr)
+	$Number.localize(1055.2)
+end
+/// Output
+1055.2
+1 055,2
+/// End
+
+/// Test localize en
+$Number.localize(1055.2, en)
+/// Output
+1,055.2
+/// End
+
+/// Test localize fr
+$Number.localize(1055.2, fr)
+/// Output
+1 055,2
+/// End
+
+/// Test format simple
+$Number.format(1055.2, %.2f)
+/// Output
+1055.20
+/// End
+
+/// Test format en
+$Number.format(1055.2, %.2f, locale: en)
+/// Output
+1,055.20
+/// End
+
+/// Test format fr
+$Number.format(1055.2, %.2f, locale: fr)
+/// Output
+1 055,20
+/// End
+
+/// Test format integer
+$Number.format(42, %04d)
+/// Output
+0042
+/// End

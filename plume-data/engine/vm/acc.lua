@@ -133,6 +133,22 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
     return variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
 end
 
+--! inline
+function _GET_CURRENT_FILE(vm)
+    local lastfile
+    local files = vm.runtime.files
+    local ip    = vm.ip
+    for _, file in ipairs(files) do
+        if file.offset > ip then
+            break
+        end
+
+        lastfile = file
+    end
+
+    return lastfile
+end
+
 --- @opcode
 --- Check if stack top can be concatened
 --- Get stack top. If neither empty, number or string, try
@@ -147,8 +163,9 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
     elseif t == "number" then
         local plumeTable =vm.runtime.plume.table
         local locale = plumeTable.locale:get()
+        local file = _GET_CURRENT_FILE(vm)
 
-        if locale ~= vm.empty and locale ~= "none" then
+        if locale ~= vm.empty and locale ~= "none" and not file.flagRawNumbers then
             local success, result = vm.plume.formatNumber(
                 value, 
                 plumeTable.localeNumberFormat:get(),

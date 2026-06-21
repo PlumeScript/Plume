@@ -392,7 +392,7 @@ return function(plume)
 		end
 	
 		local result = string.format(format, x)
-		if locale then
+		if locale and locale ~= plume.obj.empty then
 			local integerPart, decimalPart
 			if result:gmatch('%.') then
 				integerPart = result:match('^[^%.]+')
@@ -540,17 +540,20 @@ return function(plume)
 				x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator
 			)
 		end),
-		localize = plume.obj.luaMacro("format", function (args)
+		localize = plume.obj.luaMacro("format", function (args, runtime)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
 			local __name      = "format"
-			local __signature = "`$format(number x, string locale)`"
+			local __signature = "`$format(number x, [string locale])`"
 			local __s, __e, self, x, locale
-			__s, __e, x, locale = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			__s, __e, x, locale = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if __s and locale then __s, __e, locale = plume.stdCheckType(locale, "string", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if not locale then
+				locale = runtime.plume.table.locale:get()
+			end
 			return plume.formatNumber(x, "%s", locale)
 		end),
 	
@@ -1232,10 +1235,12 @@ return function(plume)
 			end
 	
 			if type(sub) ~= "string" then
-				if sub.positionalParamCount ~= 1 then
+				-- In case of closure - we should have an api for that
+				local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
+				if positionalParamCount ~= 1 then
 					return false, string.format(
 						"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
-						sub.positionalParamCount
+						positionalParamCount
 					)
 				end
 	
@@ -1634,7 +1639,11 @@ return function(plume)
 			}
 		else
 			context.PLUME_CALLBACK = nil
-			context.source.table = context.result
+			for _, key in ipairs(context.source.keys) do
+				if tonumber(key) then
+					context.source.table[key] = context.result[key]
+				end
+			end
 		end
 	
 		return true
@@ -1678,25 +1687,28 @@ return function(plume)
 	plume.std.Table = plume.obj.quickTable{
 		remove = plume.obj.luaMacro("remove", function (args)
 			local __name      = "remove"
-			local __signature = "`$remove(table t, [string|number index])`"
+			local __signature = "`$remove(table t, [number index])`"
 			local __s, __e, self, t, index
 			__s, __e, t, index = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
-			if __s and index then
-				__s, __e, index = plume.stdCheckType(index, "string", "2", __name, __signature)
-				if not __s then
-					__s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature)
-				end
-			end
+			if __s and index then __s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			--`Table` automatically passes all of the macro's arguments as its second argument
 			index = (type(index) == "number" and index) or #t.table
 	
-			for key, value in ipairs(t.keys) do
-				if value == index then
-					table.remove(t.keys, key)
+			for keyIndex, keyValue in ipairs(t.keys) do
+				if keyValue == index then
+					table.remove(t.keys, keyIndex)
+	
+					if tonumber(keyValue) then
+						for shiftedKeyIndex, shiftedKeyValue in ipairs(t.keys) do
+							if tonumber(shiftedKeyValue) and shiftedKeyValue > keyValue then
+								t.keys[shiftedKeyIndex] = shiftedKeyValue-1
+							end
+						end
+					end
+					break
 				end
 			end
 	
@@ -1875,10 +1887,12 @@ return function(plume)
 			if not __s then return false, __e end
 			------------
 			if compare and #t.table > 1 then
-				if compare.positionalParamCount ~= 2 then
+				-- In case of closure - we should have an api for that
+				local positionalParamCount = compare.positionalParamCount or compare.macro.positionalParamCount
+				if positionalParamCount ~= 2 then
 					return false, string.format(
 						"Macro compare for `Table.sort` must take exactly '2' arguments, not '%i'.",
-						compare.positionalParamCount
+						positionalParamCount
 					)
 				end
 	
@@ -2418,7 +2432,7 @@ return function(plume)
 				given = arg.type
 			end
 		end
-		if given == "luaMacro" or given == "stdMacro" then
+		if given == "luaMacro" or given == "stdMacro" or given == "closure" then
 			given = "macro"
 		end
 	

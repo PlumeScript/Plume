@@ -1,0 +1,152 @@
+/// Test Random seed reproducibility
+let r1 = $Random(12345)
+let r2 = $Random(12345)
+
+let a1 = $r1()
+let a2 = $r1()
+let b1 = $r2()
+let b2 = $r2()
+
+$(a1 == b1)\n
+$(a2 == b2)
+/// Output
+true
+true
+/// End
+
+/// Test Random call
+let random = $Random(12345)
+$random()
+/// Output
+0.6204671988359
+/// End
+
+/// Test Random max
+let random = $Random(12345)
+let x = $random(10)
+
+$(x >= 0 and x <= 10)\n
+$(x.floor() == x)
+/// Output
+true
+true
+/// End
+
+/// Test Random min max
+let random = $Random(12345)
+let x = $random(5, 10)
+
+$(x >= 5 and x <= 10)\n
+$(x.floor() == x)
+/// Output
+true
+true
+/// End
+
+/// Test Random seed
+let random = $Random(999)
+
+let a = $random()
+let b = $random()
+
+run $random.seed(999)
+
+let c = $random()
+let d = $random()
+
+$(a == c)\n
+$(b == d)
+/// Output
+true
+true
+/// End
+
+/// Test Random choice
+let random = $Random(12345)
+
+let items = @Table
+    - only
+end
+
+$random.choice($items)
+/// Output
+only
+/// End
+
+/// Test Random choice seeded
+let random = $Random(12345)
+
+let items = @Table
+    - red
+    - green
+    - blue
+end
+
+$random.choice($items)
+/// Output
+green
+/// End
+
+/// Test Random pchoice deterministic
+let random = $Random(12345)
+
+let weights = @Table
+    red: 0
+    green: 1
+    blue: 0
+end
+
+$random.pchoice($weights)
+/// Output
+green
+/// End
+
+/// Test Random pchoice seeded
+let random = $Random(12345)
+
+let weights = @Table
+    red: 1
+    green: 2
+    blue: 3
+end
+
+$random.pchoice($weights)
+/// Output
+blue
+/// End
+
+
+/// Test Random shuffle seeded
+let random = $Random(12345)
+
+let items = @Table
+    - a
+    - b
+    - c
+    - d
+end
+
+run $random.shuffle($items)
+
+$items
+/// Output
+(d, a, b, c)
+/// End
+
+/// Test Random sample seeded
+let random = $Random(12345)
+
+let items = @Table
+    - a
+    - b
+    - c
+    - d
+    - e
+end
+
+let sample = $random.sample($items, 3)
+
+$sample
+/// Output
+(a, e, b)
+/// End

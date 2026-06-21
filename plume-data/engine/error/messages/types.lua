@@ -7,7 +7,13 @@ Licensed under the MIT License — see LICENSE for details.
 
 return function(plume)
 	function plume.error.cannotConcatValue(t)
-		return string.format("Cannot concat a '%s' value.", t)
+		local hint = ""
+
+		if t == "context" then
+			hint = "\n(i) Use `$varname()` instead of `$varname`"
+		end
+
+		return string.format("Cannot concat a '%s' value.%s", t, hint)
 	end
 
 	function plume.error.cannotCallValue(t)

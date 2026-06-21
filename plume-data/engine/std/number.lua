@@ -17,7 +17,7 @@ plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSepa
 	end
 
 	local result = string.format(format, x)
-	if locale then
+	if locale and locale ~= plume.obj.empty then
 		local integerPart, decimalPart
 		if result:gmatch('%.') then
 			integerPart = result:match('^[^%.]+')
@@ -106,9 +106,12 @@ plume.std.Number = plume.obj.quickTable{
 			x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator
 		)
 	end),
-	localize = plume.obj.luaMacro("format", function (args)
+	localize = plume.obj.luaMacro("format", function (args, runtime)
 		--!override-self-plume.std.Number
-		--!signature number x, string locale
+		--!signature number x, [string locale]
+		if not locale then
+			locale = runtime.plume.table.locale:get()
+		end
 		return plume.formatNumber(x, "%s", locale)
 	end),
 
