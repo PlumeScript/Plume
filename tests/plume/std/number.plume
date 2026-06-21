@@ -87,6 +87,16 @@ $Number.sign(3)
 1
 /// End
 
+/// Test localize default
+$Number.localize(1055.2)\n
+with ($plume.locale: fr)
+	$Number.localize(1055.2)
+end
+/// Output
+1055.2
+1 055,2
+/// End
+
 /// Test localize en
 $Number.localize(1055.2, en)
 /// Output

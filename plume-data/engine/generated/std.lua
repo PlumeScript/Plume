@@ -540,17 +540,20 @@ return function(plume)
 				x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator
 			)
 		end),
-		localize = plume.obj.luaMacro("format", function (args)
+		localize = plume.obj.luaMacro("format", function (args, runtime)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
 			local __name      = "format"
-			local __signature = "`$format(number x, string locale)`"
+			local __signature = "`$format(number x, [string locale])`"
 			local __s, __e, self, x, locale
-			__s, __e, x, locale = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			__s, __e, x, locale = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if __s and locale then __s, __e, locale = plume.stdCheckType(locale, "string", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if not locale then
+				locale = runtime.plume.table.locale:get()
+			end
 			return plume.formatNumber(x, "%s", locale)
 		end),
 	
