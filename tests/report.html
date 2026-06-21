@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">651 passed out of 651 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">663 passed out of 663 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">5 passed out of 5 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -15715,6 +15715,794 @@ $Number.sign(3)
 -1
 0
 1
+</code></pre>
+</div>
+</details>
+<h2>plume/std/random: <span style="font-weight: normal;">12 passed out of 12 tests</span></h2>
+<div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random call <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+$random()
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+0.6204671988359
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random choice <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let items = @Table
+    - only
+end
+
+$random.choice($items)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; only</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.choice($items)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; choice</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .choice</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .choice</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.choice($items)</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+only
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random choice seeded <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let items = @Table
+    - red
+    - green
+    - blue
+end
+
+$random.choice($items)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; red</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; green</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; blue</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.choice($items)</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; choice</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .choice</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .choice</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.choice($items)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+green
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random max <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+let x = $random(10)
+
+$(x &gt;= 0 and x &lt;= 10)\n
+$(x.floor() == x)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random(10)</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random(10)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &gt;= 0</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &gt;= 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">JUMP_IF_NOT_PEEK</span> <span class="bc-arg">0 24</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &lt;= 10</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &lt;= 10</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">OP_AND          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &gt;= 0 and x &lt;= 10</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (x &gt;= 0 and x &lt;= 10)</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x.floor()</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; floor</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .floor</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .floor</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x.floor()</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x.floor() == x</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (x.floor() == x)</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random min max <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+let x = $random(5, 10)
+
+$(x &gt;= 5 and x &lt;= 10)\n
+$(x.floor() == x)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random(5, 10)</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random(5, 10)</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &gt;= 5</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &gt;= 5</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">JUMP_IF_NOT_PEEK</span> <span class="bc-arg">0 25</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &lt;= 10</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &lt;= 10</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">OP_AND          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x &gt;= 5 and x &lt;= 10</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (x &gt;= 5 and x &lt;= 10)</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x.floor()</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; floor</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .floor</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .floor</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x.floor()</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; x</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; x.floor() == x</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (x.floor() == x)</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random pchoice deterministic <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let weights = @Table
+    red: 0
+    green: 1
+    blue: 0
+end
+
+$random.pchoice($weights)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; red</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; red: 0</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; green</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; green: 1</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 0</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; blue</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; blue: 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; weights</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.pchoice($weights)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; weights</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; pchoice</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .pchoice</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .pchoice</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.pchoice($weights)</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+green
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random pchoice seeded <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let weights = @Table
+    red: 1
+    green: 2
+    blue: 3
+end
+
+$random.pchoice($weights)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 1</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; red</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; red: 1</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; green</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; green: 2</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; blue</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">TAG_KEY         </span> <span class="bc-arg">0 0</span> <span class="bc-info">; blue: 3</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; weights</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.pchoice($weights)</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; weights</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; pchoice</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .pchoice</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .pchoice</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.pchoice($weights)</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+blue
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random sample seeded <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let items = @Table
+    - a
+    - b
+    - c
+    - d
+    - e
+end
+
+let sample = $random.sample($items, 3)
+
+$sample
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; d</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; e</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.sample($items, 3)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; sample</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sample</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .sample</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.sample($items, 3)</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; sample</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; sample</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(a, e, b)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random seed <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(999)
+
+let a = $random()
+let b = $random()
+
+run $random.seed(999)
+
+let c = $random()
+let d = $random()
+
+$(a == c)\n
+$(b == d)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 5</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(999)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 999</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(999)</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.seed(999)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 999</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; seed</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .seed</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .seed</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.seed(999)</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $random.seed(999)</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 4</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random()</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 5</span> <span class="bc-info">; d</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 4</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a == c</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (a == c)</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 5</span> <span class="bc-info">; d</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; b == d</span>
+<span class="bc-line-num">041</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (b == d)</span>
+<span class="bc-line-num">042</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">043</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random seed reproducibility <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let r1 = $Random(12345)
+let r2 = $Random(12345)
+
+let a1 = $r1()
+let a2 = $r1()
+let b1 = $r2()
+let b2 = $r2()
+
+$(a1 == b1)\n
+$(a2 == b2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 6</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; r1</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; r2</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r1()</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; r1</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r1()</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a1</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r1()</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; r1</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r1()</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 4</span> <span class="bc-info">; a2</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r2()</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; r2</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r2()</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b1</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r2()</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; r2</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; r2()</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 6</span> <span class="bc-info">; b2</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a1</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 5</span> <span class="bc-info">; b1</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a1 == b1</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (a1 == b1)</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 4</span> <span class="bc-info">; a2</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 6</span> <span class="bc-info">; b2</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a2 == b2</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (a2 == b2)</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random shuffle preserves items <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let items = @Table
+    - a
+    - b
+    - c
+    - d
+end
+
+run $random.shuffle($items)
+
+$(Table.count(items) == 4)\n
+$(Table.find(items, &quot;a&quot;) != empty)\n
+$(Table.find(items, &quot;b&quot;) != empty)\n
+$(Table.find(items, &quot;c&quot;) != empty)\n
+$(Table.find(items, &quot;d&quot;) != empty)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; d</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.shuffle($items)</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; shuffle</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .shuffle</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .shuffle</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.shuffle($items)</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $random.shuffle($items)</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count(items)</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; count</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .count</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .count</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count(items)</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; 4</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.count(items) == 4</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (Table.count(items) == 4)</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;a&quot;)</span>
+<span class="bc-line-num">037</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">038</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">039</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span> <span class="bc-info">; find</span>
+<span class="bc-line-num">040</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">041</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">042</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">043</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;a&quot;)</span>
+<span class="bc-line-num">044</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; empty</span>
+<span class="bc-line-num">045</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;a&quot;) != empty</span>
+<span class="bc-line-num">046</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;a&quot;) != empty</span>
+<span class="bc-line-num">047</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (Table.find(items, &quot;a&quot;) != empty)</span>
+<span class="bc-line-num">048</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">049</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;b&quot;)</span>
+<span class="bc-line-num">050</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">051</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">052</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span> <span class="bc-info">; find</span>
+<span class="bc-line-num">053</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">054</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">055</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">056</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;b&quot;)</span>
+<span class="bc-line-num">057</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; empty</span>
+<span class="bc-line-num">058</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;b&quot;) != empty</span>
+<span class="bc-line-num">059</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;b&quot;) != empty</span>
+<span class="bc-line-num">060</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (Table.find(items, &quot;b&quot;) != empty)</span>
+<span class="bc-line-num">061</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">062</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;c&quot;)</span>
+<span class="bc-line-num">063</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">064</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">065</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span> <span class="bc-info">; find</span>
+<span class="bc-line-num">066</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">067</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">068</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">069</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;c&quot;)</span>
+<span class="bc-line-num">070</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; empty</span>
+<span class="bc-line-num">071</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;c&quot;) != empty</span>
+<span class="bc-line-num">072</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;c&quot;) != empty</span>
+<span class="bc-line-num">073</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (Table.find(items, &quot;c&quot;) != empty)</span>
+<span class="bc-line-num">074</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span>
+<span class="bc-line-num">075</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;d&quot;)</span>
+<span class="bc-line-num">076</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">077</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; d</span>
+<span class="bc-line-num">078</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 12</span> <span class="bc-info">; find</span>
+<span class="bc-line-num">079</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">080</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">081</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .find</span>
+<span class="bc-line-num">082</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;d&quot;)</span>
+<span class="bc-line-num">083</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; empty</span>
+<span class="bc-line-num">084</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;d&quot;) != empty</span>
+<span class="bc-line-num">085</span> <span class="bc-opcode">OP_NOT          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Table.find(items, &quot;d&quot;) != empty</span>
+<span class="bc-line-num">086</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; (Table.find(items, &quot;d&quot;) != empty)</span>
+<span class="bc-line-num">087</span> <span class="bc-opcode">CONCAT_TEXT     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">088</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+true
+true
+true
+true
+true
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> Random shuffle seeded <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let random = $Random(12345)
+
+let items = @Table
+    - a
+    - b
+    - c
+    - d
+end
+
+run $random.shuffle($items)
+
+$items
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 2</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 12345</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Random</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Random(12345)</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; a</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 4</span> <span class="bc-info">; b</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 5</span> <span class="bc-info">; c</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 6</span> <span class="bc-info">; d</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 7</span> <span class="bc-info">; Table</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; @Table[...]</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.shuffle($items)</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 8</span> <span class="bc-info">; shuffle</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; random</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .shuffle</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .shuffle</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; random.shuffle($items)</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">STORE_VOID      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; run $random.shuffle($items)</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 2</span> <span class="bc-info">; items</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+(d, a, b, c)
 </code></pre>
 </div>
 </details>
