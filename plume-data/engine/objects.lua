@@ -108,7 +108,7 @@ return function(plume)
 			result.table[key] = plume.std.plume.table[key]
 		end
 
-		result.table.locale = plume.obj.context('none')
+		result.table.locale = plume.obj.context(plume.obj.empty)
 		result.table.localeNumberFormat = plume.obj.context(plume.obj.empty)
 		result.table.localeThousandsSeparator =  plume.obj.context(plume.obj.empty)
 		result.table.localeDecimalSeparator =  plume.obj.context(plume.obj.empty)

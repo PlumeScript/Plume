@@ -392,7 +392,7 @@ return function(plume)
 		end
 	
 		local result = string.format(format, x)
-		if locale then
+		if locale and locale ~= plume.obj.empty then
 			local integerPart, decimalPart
 			if result:gmatch('%.') then
 				integerPart = result:match('^[^%.]+')
