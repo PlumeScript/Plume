@@ -174,11 +174,19 @@ function STD_IMPORT(vm, arg1, arg2)
                     end
                 end
 
-                -- prepare stack and jumps
-                _STACK_PUSH(vm, vm.fileStack, chunk.fileID)
-                _STACK_PUSH(vm, vm.macroStack, vm.ip + 1)
-                -- ENTER_SCOPE is already the first file instruction
-                _INJECTION_PUSH(vm, vm.plume.ops.JUMP, 0, chunk.offset)
+                local cacheId = vm.plume.getModuleCacheId(filename, vm.fileParams)
+                local result = vm.runtime.cache.results[cacheId]
+
+                if result then
+                    _STACK_PUSH(vm, vm.mainStack, result)
+                else
+                    chunk.cacheId = cacheId
+                    -- prepare stack and jumps
+                    _STACK_PUSH(vm, vm.fileStack, chunk.fileID)
+                    _STACK_PUSH(vm, vm.macroStack, vm.ip + 1)
+                    -- ENTER_SCOPE is already the first file instruction
+                    _INJECTION_PUSH(vm, vm.plume.ops.JUMP, 0, chunk.offset)
+                end
             else
                 _ERROR(vm, err)
             end

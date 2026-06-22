@@ -433,4 +433,13 @@ return function (plume)
 			return args
 		end
 	end
+
+	function plume.getModuleCacheId(filename, fileparam)
+		local result = {filename}
+		for _, paramInfos in ipairs(fileparam) do
+			table.insert(result, tostring(paramInfos.value))
+		end
+
+		return table.concat(result, "?")
+	end
 end

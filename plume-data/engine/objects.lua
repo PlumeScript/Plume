@@ -141,7 +141,7 @@ return function(plume)
 			mapping              = {},
 			callstack            = {},
 			files                = {},
-			cache                = {chunks={}},
+			cache                = {chunks={}, results={}},
 			contextCount         = 0, -- used to generate a unique UID for each compilation
 			plume                = makePlumeTable()
 		}
