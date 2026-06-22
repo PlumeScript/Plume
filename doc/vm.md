@@ -212,16 +212,10 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 
 ### vm/context.lua
 
-#### CREATE_CONTEXT
-
-
 #### PUSH_CONTEXT
 
 
 #### POP_CONTEXT
-
-
-#### LOAD_CONTEXT
 
 
 ### vm/iter.lua
