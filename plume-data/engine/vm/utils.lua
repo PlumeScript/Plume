@@ -78,11 +78,13 @@ function _GET_CURRENT_FILE(vm)
     local files = vm.runtime.files
     local ip    = vm.ip
     for _, file in ipairs(files) do
-        if file.offset and file.offset > ip then
-            break
+        if file.offset then
+            if file.offset <= ip then
+                if not lastfile or file.offset > lastfile.offset then
+                    lastfile = file
+                end
+            end
         end
-
-        lastfile = file
     end
 
     return lastfile

@@ -3907,10 +3907,13 @@ return function (plume)
                                                     local ip = ip
                                                     for _, file in ipairs (files)
                                                      do
-                                                        if file.offset and file.offset > ip then
-                                                            break
+                                                        if file.offset then
+                                                            if file.offset <= ip then
+                                                                if not lastfile or file.offset > lastfile.offset then
+                                                                    lastfile = file
+                                                                end
+                                                            end
                                                         end
-                                                        lastfile = file
                                                     end
                                                     _ret337 = lastfile
                                                 end
@@ -6495,10 +6498,13 @@ return function (plume)
                                                 local ip = ip
                                                 for _, file in ipairs (files)
                                                  do
-                                                    if file.offset and file.offset > ip then
-                                                        break
+                                                    if file.offset then
+                                                        if file.offset <= ip then
+                                                            if not lastfile or file.offset > lastfile.offset then
+                                                                lastfile = file
+                                                            end
+                                                        end
                                                     end
-                                                    lastfile = file
                                                 end
                                                 _ret556 = lastfile
                                             end
@@ -7680,10 +7686,13 @@ return function (plume)
                                                 local ip = ip
                                                 for _, file in ipairs (files)
                                                  do
-                                                    if file.offset and file.offset > ip then
-                                                        break
+                                                    if file.offset then
+                                                        if file.offset <= ip then
+                                                            if not lastfile or file.offset > lastfile.offset then
+                                                                lastfile = file
+                                                            end
+                                                        end
                                                     end
-                                                    lastfile = file
                                                 end
                                                 _ret638 = lastfile
                                             end
