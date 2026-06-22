@@ -7774,7 +7774,7 @@ return function (plume)
                                                          do
                                                             local offset = chunk.namedParamOffset[key]
                                                             if offset then
-                                                                table.insert (fileParams, {offset = offset, value = args.table[key]})
+                                                                table.insert (fileParams, {offset = offset, key = key, value = args.table[key]})
                                                             end
                                                         end
                                                         local cacheId = plume.getModuleCacheId (filename, fileParams)

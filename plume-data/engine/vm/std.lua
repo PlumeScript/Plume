@@ -170,7 +170,7 @@ function STD_IMPORT(vm, arg1, arg2)
                 for _, key in ipairs(args.keys) do
                     local offset = chunk.namedParamOffset[key]
                     if offset then
-                        table.insert(vm.fileParams, {offset=offset, value=args.table[key]})
+                        table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
                     end
                 end
 

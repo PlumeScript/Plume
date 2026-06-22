@@ -25,6 +25,7 @@ return function (plume, context, nodeHandlerTable)
 		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
 
 		local fileParams = {}
+		local fileParamsForCache = {}
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
 			local keyNode = plume.ast.get(param, "KEY")
 			local valueNode = plume.ast.get(param, "VALUE")
@@ -33,6 +34,7 @@ return function (plume, context, nodeHandlerTable)
 
 			if key then
 				fileParams[key] = value
+				table.insert(fileParamsForCache, {key=key, value=value})
 			end
 		end
 
@@ -57,10 +59,16 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end
 		
+		local cacheId = plume.getModuleCacheId(filename, fileParamsForCache)
+        local result  = context.runtime.cache.results[cacheId]
 
-		local success, result = plume.executeFile(filename, context.runtime, fileParams)
-		if not success then
-			plume.error.cannotExecuteFile(pathNode, path, result)
+        if not result then
+			local success
+			success, result = plume.executeFile(filename, context.runtime, fileParams)
+			if not success then
+				plume.error.cannotExecuteFile(pathNode, path, result)
+			end
+			 context.runtime.cache.results[cacheId] = result
 		end
 
 		local t = type(result) == "table" and result.type or type(result)
