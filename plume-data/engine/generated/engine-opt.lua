@@ -7801,11 +7801,15 @@ return function (plume)
                                                                 table.insert (fileParams, {offset = offset, key = key, value = args.table[key]})
                                                             end
                                                         end
-                                                        local cacheId = plume.getModuleCacheId (filename, fileParams)
+                                                        local cacheId, paramMutableWarning = plume.getModuleCacheId (filename, fileParams)
                                                         local result = runtime.cache.results[cacheId]
                                                         if result and currentFile.futureFlagImportCache then
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = result
+                                                            if paramMutableWarning then
+                                                                plume.warning.runtimeWarning (string.format ("Import call skipped (cached).\nAny modifications of the mutable parameter `%s` will be ignored.", paramMutableWarning)
+                                                                , nil, runtime, ip, {890})
+                                                            end
                                                         else
                                                             chunk.cacheId = cacheId
                                                             fileStackPointer = fileStackPointer + 1

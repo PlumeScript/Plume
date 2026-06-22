@@ -174,11 +174,14 @@ function STD_IMPORT(vm, arg1, arg2)
                     end
                 end
 
-                local cacheId = vm.plume.getModuleCacheId(filename, vm.fileParams)
+                local cacheId, paramMutableWarning = vm.plume.getModuleCacheId(filename, vm.fileParams)
                 local result = vm.runtime.cache.results[cacheId]
 
                 if result and currentFile.futureFlagImportCache then
                     _STACK_PUSH(vm, vm.mainStack, result)
+                    if paramMutableWarning then
+                        vm.plume.warning.runtimeWarning(string.format("Import call skipped (cached).\nAny modifications of the mutable parameter `%s` will be ignored.", paramMutableWarning), nil, vm.runtime, vm.ip, {890})
+                    end
                 else
                     chunk.cacheId = cacheId
                     -- prepare stack and jumps

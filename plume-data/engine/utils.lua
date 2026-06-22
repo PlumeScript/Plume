@@ -436,13 +436,20 @@ return function (plume)
 
 	function plume.getModuleCacheId(filename, fileparam)
 		local result = {plume.normalizePath(filename)}
+		local mutableWarning
 		for _, paramInfos in ipairs(fileparam) do
 			table.insert(result,
 				(tostring(paramInfos.key):gsub('%?', '??'):gsub(':', '::'))
 				.. ':'
 				.. tostring(paramInfos.value):gsub('%?', '??'):gsub(':', '::')
 			)
+
+			if type(paramInfos.value) == "table" and not mutableWarning then
+				if paramInfos.value.type == "table" then
+					mutableWarning = paramInfos.key
+				end
+			end
 		end
-		return table.concat(result, "?")
+		return table.concat(result, "?"), mutableWarning
 	end
 end
