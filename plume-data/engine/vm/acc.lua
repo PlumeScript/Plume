@@ -133,22 +133,6 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
     return variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
 end
 
---! inline
-function _GET_CURRENT_FILE(vm)
-    local lastfile
-    local files = vm.runtime.files
-    local ip    = vm.ip
-    for _, file in ipairs(files) do
-        if file.offset > ip then
-            break
-        end
-
-        lastfile = file
-    end
-
-    return lastfile
-end
-
 --- @opcode
 --- Check if stack top can be concatened
 --- Get stack top. If neither empty, number or string, try

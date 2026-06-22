@@ -71,3 +71,19 @@ function _GET_REF_POS(vm, key, offset)
         end
     end
 end
+
+--! inline
+function _GET_CURRENT_FILE(vm)
+    local lastfile
+    local files = vm.runtime.files
+    local ip    = vm.ip
+    for _, file in ipairs(files) do
+        if file.offset > ip then
+            break
+        end
+
+        lastfile = file
+    end
+
+    return lastfile
+end
