@@ -62,7 +62,7 @@ return function (plume, context, nodeHandlerTable)
 		local cacheId = plume.getModuleCacheId(filename, fileParamsForCache)
         local result  = context.runtime.cache.results[cacheId]
 
-        if not result then
+        if not result or not context.chunk.futureFlagImportCache then
 			local success
 			success, result = plume.executeFile(filename, context.runtime, fileParams)
 			if not success then

@@ -137,7 +137,7 @@ function STD_IMPORT(vm, arg1, arg2)
 
     local firstFilename = vm.runtime.files[1].name
     local lastFilename  = vm.runtime.files[vm.fileStack[vm.fileStack.pointer]].name
-
+    local currentFile   = _GET_CURRENT_FILE(vm)
 
     local assertion = _ASSERT_STD_TYPE(vm, "import", 1, args.table[1],  "string", "string path, ...params")
 
@@ -177,7 +177,7 @@ function STD_IMPORT(vm, arg1, arg2)
                 local cacheId = vm.plume.getModuleCacheId(filename, vm.fileParams)
                 local result = vm.runtime.cache.results[cacheId]
 
-                if result then
+                if result and currentFile.futureFlagImportCache then
                     _STACK_PUSH(vm, vm.mainStack, result)
                 else
                     chunk.cacheId = cacheId
