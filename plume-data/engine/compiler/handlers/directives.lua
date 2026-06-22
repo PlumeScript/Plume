@@ -61,7 +61,6 @@ return function (plume, context, nodeHandlerTable)
 		
 		local cacheId = plume.getModuleCacheId(filename, fileParamsForCache)
         local result  = context.runtime.cache.results[cacheId]
-
         if not result or not context.chunk.futureFlagImportCache then
 			local success
 			success, result = plume.executeFile(filename, context.runtime, fileParams)
@@ -157,6 +156,17 @@ return function (plume, context, nodeHandlerTable)
 				end
 				context.chunk.flagRawNumbers = true
 			end
+		},
+
+		future = {
+			checkArgs = {
+				importCache  = {true}
+			},
+			method = function(node, args)
+				if args.importCache then
+					context.chunk.futureFlagImportCache = true
+				end
+			end
 		}
 	}
 
@@ -187,7 +197,12 @@ return function (plume, context, nodeHandlerTable)
 			local valueNode = plume.ast.get(option, "VALUE")
 			local key = keyNode and keyNode.content
 
-			local value = getRawValue(valueNode)
+			local value
+			if valueNode then
+				value = getRawValue(valueNode)
+			else
+				value = true
+			end
 
 			if handler.checkArgs then
 				if not handler.checkArgs[key] then
