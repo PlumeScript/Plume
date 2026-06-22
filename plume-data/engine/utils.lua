@@ -435,7 +435,7 @@ return function (plume)
 	end
 
 	function plume.getModuleCacheId(filename, fileparam)
-		local result = {filename}
+		local result = {plume.normalizePath(filename)}
 		for _, paramInfos in ipairs(fileparam) do
 			table.insert(result,
 				(tostring(paramInfos.key):gsub('%?', '??'):gsub(':', '::'))
