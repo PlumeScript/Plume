@@ -674,9 +674,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.cannotUseEmptyAsKey ()
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.cannotUseEmptyAsKey ())
                                                             do
                                                                 do
                                                                     local _ret71
@@ -704,9 +703,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret73
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -758,9 +756,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.cannotIndexValue (tt)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.cannotIndexValue (tt))
                                                                 do
                                                                     do
                                                                         local _ret75
@@ -788,9 +785,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret77
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -872,9 +868,8 @@ return function (plume)
                                                                         table.remove (runtime.callstack)
                                                                     end
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = false
-                                                                    safeResult.table.result = plume.error.unregisteredKey (t, key)
+                                                                    safeResult:setItem ("success", false)
+                                                                    safeResult:setItem ("result", plume.error.unregisteredKey (t, key))
                                                                     do
                                                                         do
                                                                             local _ret82
@@ -902,9 +897,8 @@ return function (plume)
                                                                                 end
                                                                                 local result = _ret84
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = true
-                                                                                safeResult.table.result = result
+                                                                                safeResult:setItem ("success", true)
+                                                                                safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
                                                                             end
@@ -1040,9 +1034,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = plume.error.cannotExpandValue (tt)
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", plume.error.cannotExpandValue (tt))
                                                         do
                                                             do
                                                                 local _ret98
@@ -1070,9 +1063,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret100
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -1121,9 +1113,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = plume.error.getindexReturnsEmpty ()
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", plume.error.getindexReturnsEmpty ())
                                                         do
                                                             do
                                                                 local _ret103
@@ -1151,9 +1142,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret105
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -1289,9 +1279,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = err
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", err)
                                                         do
                                                             do
                                                                 local _ret117
@@ -1319,9 +1308,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret119
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -1421,11 +1409,7 @@ return function (plume)
                                                             end
                                                             capturedCount = capturedCount + 1
                                                         elseif variadicTable then
-                                                            local key = #variadicTable.table + 1
-                                                            if not variadicTable.table[key] then
-                                                                table.insert (variadicTable.keys, key)
-                                                            end
-                                                            variadicTable.table[key] = value
+                                                            variadicTable:addItem (value)
                                                         else
                                                             tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                         end
@@ -1463,9 +1447,8 @@ return function (plume)
                                                                             table.remove (runtime.callstack)
                                                                         end
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = false
-                                                                        safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                        safeResult:setItem ("success", false)
+                                                                        safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                         do
                                                                             do
                                                                                 local _ret135
@@ -1493,9 +1476,8 @@ return function (plume)
                                                                                     end
                                                                                     local result = _ret137
                                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                                    safeResult.keys = {"success", "result"}
-                                                                                    safeResult.table.success = true
-                                                                                    safeResult.table.result = result
+                                                                                    safeResult:setItem ("success", true)
+                                                                                    safeResult:setItem ("result", result)
                                                                                     mainStackPointer = mainStackPointer + 1
                                                                                     mainStack[mainStackPointer] = safeResult
                                                                                 end
@@ -1518,12 +1500,9 @@ return function (plume)
                                                         else
                                                             if variadicTable then
                                                                 if tag == "key" then
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:setItem (key, value)
                                                                 elseif tag == "metakey" then
-                                                                    variadicTable.meta.table[key] = value
+                                                                    variadicTable:setMetaItem (key, value)
                                                                 end
                                                             elseif not unknownNamed then
                                                                 unknownNamed = key
@@ -1630,9 +1609,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount))
                                                             do
                                                                 do
                                                                     local _ret147
@@ -1660,9 +1638,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret149
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -1731,11 +1708,7 @@ return function (plume)
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
-                                                                    local key = #variadicTable.table + 1
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:addItem (value)
                                                                 else
                                                                     tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
@@ -1773,9 +1746,8 @@ return function (plume)
                                                                                     table.remove (runtime.callstack)
                                                                                 end
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = false
-                                                                                safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                                safeResult:setItem ("success", false)
+                                                                                safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
                                                                                         local _ret178
@@ -1803,9 +1775,8 @@ return function (plume)
                                                                                             end
                                                                                             local result = _ret180
                                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                                            safeResult.keys = {"success", "result"}
-                                                                                            safeResult.table.success = true
-                                                                                            safeResult.table.result = result
+                                                                                            safeResult:setItem ("success", true)
+                                                                                            safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
@@ -1828,12 +1799,9 @@ return function (plume)
                                                                 else
                                                                     if variadicTable then
                                                                         if tag == "key" then
-                                                                            if not variadicTable.table[key] then
-                                                                                table.insert (variadicTable.keys, key)
-                                                                            end
-                                                                            variadicTable.table[key] = value
+                                                                            variadicTable:setItem (key, value)
                                                                         elseif tag == "metakey" then
-                                                                            variadicTable.meta.table[key] = value
+                                                                            variadicTable:setMetaItem (key, value)
                                                                         end
                                                                     elseif not unknownNamed then
                                                                         unknownNamed = key
@@ -1860,9 +1828,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
                                                                 do
                                                                     do
                                                                         local _ret151
@@ -1890,9 +1857,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret153
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -1925,9 +1891,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
                                                                 do
                                                                     do
                                                                         local _ret159
@@ -1955,9 +1920,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret161
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -1990,9 +1954,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.unknownParameter (unknownNamed, tocall)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.unknownParameter (unknownNamed, tocall))
                                                                 do
                                                                     do
                                                                         local _ret155
@@ -2020,9 +1983,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret157
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -2067,9 +2029,8 @@ return function (plume)
                                                                         table.remove (runtime.callstack)
                                                                     end
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = false
-                                                                    safeResult.table.result = plume.error.stackOverflow ()
+                                                                    safeResult:setItem ("success", false)
+                                                                    safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                     do
                                                                         do
                                                                             local _ret164
@@ -2097,9 +2058,8 @@ return function (plume)
                                                                                 end
                                                                                 local result = _ret166
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = true
-                                                                                safeResult.table.result = result
+                                                                                safeResult:setItem ("success", true)
+                                                                                safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
                                                                             end
@@ -2161,9 +2121,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount))
                                                             do
                                                                 do
                                                                     local _ret285
@@ -2191,9 +2150,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret287
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -2262,11 +2220,7 @@ return function (plume)
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
-                                                                    local key = #variadicTable.table + 1
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:addItem (value)
                                                                 else
                                                                     tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
@@ -2304,9 +2258,8 @@ return function (plume)
                                                                                     table.remove (runtime.callstack)
                                                                                 end
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = false
-                                                                                safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                                safeResult:setItem ("success", false)
+                                                                                safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
                                                                                         local _ret316
@@ -2334,9 +2287,8 @@ return function (plume)
                                                                                             end
                                                                                             local result = _ret318
                                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                                            safeResult.keys = {"success", "result"}
-                                                                                            safeResult.table.success = true
-                                                                                            safeResult.table.result = result
+                                                                                            safeResult:setItem ("success", true)
+                                                                                            safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
@@ -2359,12 +2311,9 @@ return function (plume)
                                                                 else
                                                                     if variadicTable then
                                                                         if tag == "key" then
-                                                                            if not variadicTable.table[key] then
-                                                                                table.insert (variadicTable.keys, key)
-                                                                            end
-                                                                            variadicTable.table[key] = value
+                                                                            variadicTable:setItem (key, value)
                                                                         elseif tag == "metakey" then
-                                                                            variadicTable.meta.table[key] = value
+                                                                            variadicTable:setMetaItem (key, value)
                                                                         end
                                                                     elseif not unknownNamed then
                                                                         unknownNamed = key
@@ -2391,9 +2340,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
                                                                 do
                                                                     do
                                                                         local _ret289
@@ -2421,9 +2369,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret291
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -2456,9 +2403,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
                                                                 do
                                                                     do
                                                                         local _ret297
@@ -2486,9 +2432,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret299
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -2521,9 +2466,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.unknownParameter (unknownNamed, tocall.macro)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.unknownParameter (unknownNamed, tocall.macro))
                                                                 do
                                                                     do
                                                                         local _ret293
@@ -2551,9 +2495,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret295
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -2598,9 +2541,8 @@ return function (plume)
                                                                         table.remove (runtime.callstack)
                                                                     end
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = false
-                                                                    safeResult.table.result = plume.error.stackOverflow ()
+                                                                    safeResult:setItem ("success", false)
+                                                                    safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                     do
                                                                         do
                                                                             local _ret302
@@ -2628,9 +2570,8 @@ return function (plume)
                                                                                 end
                                                                                 local result = _ret304
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = true
-                                                                                safeResult.table.result = result
+                                                                                safeResult:setItem ("success", true)
+                                                                                safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
                                                                             end
@@ -2707,11 +2648,7 @@ return function (plume)
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
-                                                                    local key = #variadicTable.table + 1
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:addItem (value)
                                                                 else
                                                                     tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
@@ -2749,9 +2686,8 @@ return function (plume)
                                                                                     table.remove (runtime.callstack)
                                                                                 end
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = false
-                                                                                safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                                safeResult:setItem ("success", false)
+                                                                                safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
                                                                                         local _ret266
@@ -2779,9 +2715,8 @@ return function (plume)
                                                                                             end
                                                                                             local result = _ret268
                                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                                            safeResult.keys = {"success", "result"}
-                                                                                            safeResult.table.success = true
-                                                                                            safeResult.table.result = result
+                                                                                            safeResult:setItem ("success", true)
+                                                                                            safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
@@ -2804,12 +2739,9 @@ return function (plume)
                                                                 else
                                                                     if variadicTable then
                                                                         if tag == "key" then
-                                                                            if not variadicTable.table[key] then
-                                                                                table.insert (variadicTable.keys, key)
-                                                                            end
-                                                                            variadicTable.table[key] = value
+                                                                            variadicTable:setItem (key, value)
                                                                         elseif tag == "metakey" then
-                                                                            variadicTable.meta.table[key] = value
+                                                                            variadicTable:setMetaItem (key, value)
                                                                         end
                                                                     elseif not unknownNamed then
                                                                         unknownNamed = key
@@ -2850,9 +2782,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.stackOverflow ()
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.stackOverflow ())
                                                             do
                                                                 do
                                                                     local _ret272
@@ -2880,9 +2811,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret274
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -2944,9 +2874,8 @@ return function (plume)
                                                                 end
                                                                 local result = _ret279
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = true
-                                                                safeResult.table.result = result
+                                                                safeResult:setItem ("success", true)
+                                                                safeResult:setItem ("result", result)
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
                                                             end
@@ -2966,9 +2895,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = result
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", result)
                                                             do
                                                                 do
                                                                     local _ret280
@@ -2996,9 +2924,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret282
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -3059,11 +2986,7 @@ return function (plume)
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
-                                                                    local key = #variadicTable.table + 1
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:addItem (value)
                                                                 else
                                                                     tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
@@ -3101,9 +3024,8 @@ return function (plume)
                                                                                     table.remove (runtime.callstack)
                                                                                 end
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = false
-                                                                                safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                                safeResult:setItem ("success", false)
+                                                                                safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
                                                                                         local _ret241
@@ -3131,9 +3053,8 @@ return function (plume)
                                                                                             end
                                                                                             local result = _ret243
                                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                                            safeResult.keys = {"success", "result"}
-                                                                                            safeResult.table.success = true
-                                                                                            safeResult.table.result = result
+                                                                                            safeResult:setItem ("success", true)
+                                                                                            safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
@@ -3156,12 +3077,9 @@ return function (plume)
                                                                 else
                                                                     if variadicTable then
                                                                         if tag == "key" then
-                                                                            if not variadicTable.table[key] then
-                                                                                table.insert (variadicTable.keys, key)
-                                                                            end
-                                                                            variadicTable.table[key] = value
+                                                                            variadicTable:setItem (key, value)
                                                                         elseif tag == "metakey" then
-                                                                            variadicTable.meta.table[key] = value
+                                                                            variadicTable:setMetaItem (key, value)
                                                                         end
                                                                     elseif not unknownNamed then
                                                                         unknownNamed = key
@@ -3202,9 +3120,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.wrongArgsCountStd (tocall.name, #args.table, tocall.minArgs, tocall.maxArgs)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.wrongArgsCountStd (tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
                                                             do
                                                                 do
                                                                     local _ret247
@@ -3232,9 +3149,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret249
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -3269,9 +3185,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.stackOverflow ()
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.stackOverflow ())
                                                             do
                                                                 do
                                                                     local _ret251
@@ -3299,9 +3214,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret253
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -3373,11 +3287,7 @@ return function (plume)
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
-                                                                    local key = #variadicTable.table + 1
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:addItem (value)
                                                                 else
                                                                     tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
@@ -3415,9 +3325,8 @@ return function (plume)
                                                                                     table.remove (runtime.callstack)
                                                                                 end
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = false
-                                                                                safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                                safeResult:setItem ("success", false)
+                                                                                safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
                                                                                         local _ret224
@@ -3445,9 +3354,8 @@ return function (plume)
                                                                                             end
                                                                                             local result = _ret226
                                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                                            safeResult.keys = {"success", "result"}
-                                                                                            safeResult.table.success = true
-                                                                                            safeResult.table.result = result
+                                                                                            safeResult:setItem ("success", true)
+                                                                                            safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
@@ -3470,12 +3378,9 @@ return function (plume)
                                                                 else
                                                                     if variadicTable then
                                                                         if tag == "key" then
-                                                                            if not variadicTable.table[key] then
-                                                                                table.insert (variadicTable.keys, key)
-                                                                            end
-                                                                            variadicTable.table[key] = value
+                                                                            variadicTable:setItem (key, value)
                                                                         elseif tag == "metakey" then
-                                                                            variadicTable.meta.table[key] = value
+                                                                            variadicTable:setMetaItem (key, value)
                                                                         end
                                                                     elseif not unknownNamed then
                                                                         unknownNamed = key
@@ -3550,11 +3455,7 @@ return function (plume)
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
-                                                                    local key = #variadicTable.table + 1
-                                                                    if not variadicTable.table[key] then
-                                                                        table.insert (variadicTable.keys, key)
-                                                                    end
-                                                                    variadicTable.table[key] = value
+                                                                    variadicTable:addItem (value)
                                                                 else
                                                                     tomanyPositionalCounter = tomanyPositionalCounter + 1
                                                                 end
@@ -3592,9 +3493,8 @@ return function (plume)
                                                                                     table.remove (runtime.callstack)
                                                                                 end
                                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                                safeResult.keys = {"success", "result"}
-                                                                                safeResult.table.success = false
-                                                                                safeResult.table.result = plume.error.cannotUseMetaKey
+                                                                                safeResult:setItem ("success", false)
+                                                                                safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
                                                                                         local _ret208
@@ -3622,9 +3522,8 @@ return function (plume)
                                                                                             end
                                                                                             local result = _ret210
                                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                                            safeResult.keys = {"success", "result"}
-                                                                                            safeResult.table.success = true
-                                                                                            safeResult.table.result = result
+                                                                                            safeResult:setItem ("success", true)
+                                                                                            safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
@@ -3647,12 +3546,9 @@ return function (plume)
                                                                 else
                                                                     if variadicTable then
                                                                         if tag == "key" then
-                                                                            if not variadicTable.table[key] then
-                                                                                table.insert (variadicTable.keys, key)
-                                                                            end
-                                                                            variadicTable.table[key] = value
+                                                                            variadicTable:setItem (key, value)
                                                                         elseif tag == "metakey" then
-                                                                            variadicTable.meta.table[key] = value
+                                                                            variadicTable:setMetaItem (key, value)
                                                                         end
                                                                     elseif not unknownNamed then
                                                                         unknownNamed = key
@@ -3740,9 +3636,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
                                                             do
                                                                 do
                                                                     local _ret188
@@ -3770,9 +3665,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret190
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -3829,9 +3723,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = plume.error.cannotCallValue (t)
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", plume.error.cannotCallValue (t))
                                                         do
                                                             do
                                                                 local _ret322
@@ -3859,9 +3752,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret324
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -3940,9 +3832,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = result
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", result)
                                                                 do
                                                                     do
                                                                         local _ret339
@@ -3970,9 +3861,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret341
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -4046,9 +3936,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.cannotConcatValue (t)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.cannotConcatValue (t))
                                                             do
                                                                 do
                                                                     local _ret333
@@ -4076,9 +3965,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret335
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -4282,9 +4170,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = plume.error.cannotIterateValue (tobj)
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", plume.error.cannotIterateValue (tobj))
                                                         do
                                                             do
                                                                 local _ret358
@@ -4312,9 +4199,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret360
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -4436,8 +4322,8 @@ return function (plume)
                                                     result = empty
                                                 else
                                                     result = plume.obj.table (2, 0)
-                                                    result.table[1] = state
-                                                    result.table[2] = obj.ref.table[state]
+                                                    result:addItem (state)
+                                                    result:addItem (obj.ref.table[state])
                                                 end
                                             elseif flag == ITER_ITEMS then
                                                 state = state + 1
@@ -4451,8 +4337,8 @@ return function (plume)
                                                     result = empty
                                                 else
                                                     result = plume.obj.table (2, 0)
-                                                    result.table[1] = obj.ref.keys[state]
-                                                    result.table[2] = obj.ref.table[result.table[1]]
+                                                    result:addItem (obj.ref.keys[state])
+                                                    result:addItem (obj.ref.table[result.table[1]])
                                                 end
                                             elseif flag == ITER_CUSTOM then
                                                 local iter = obj.meta.table.next
@@ -4674,9 +4560,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret385
@@ -4704,9 +4589,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret387
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -4887,9 +4771,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret404
@@ -4917,9 +4800,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret406
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -5102,9 +4984,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret423
@@ -5132,9 +5013,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret425
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -5315,9 +5195,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret442
@@ -5345,9 +5224,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret444
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -5471,9 +5349,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = err
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", err)
                                                             do
                                                                 do
                                                                     local _ret461
@@ -5501,9 +5378,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret463
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -5682,9 +5558,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret474
@@ -5712,9 +5587,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret476
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -5897,9 +5771,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret493
@@ -5927,9 +5800,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret495
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -6110,9 +5982,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = lerr or rerr
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
                                                                         local _ret512
@@ -6140,9 +6011,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret514
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -6419,9 +6289,8 @@ return function (plume)
                                                     end
                                                     local result = _ret548
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -6462,9 +6331,8 @@ return function (plume)
                                                     end
                                                     local result = _ret552
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -6569,9 +6437,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.wrongContextType (var)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.wrongContextType (var))
                                                             do
                                                                 do
                                                                     local _ret560
@@ -6599,9 +6466,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret562
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
@@ -6681,9 +6547,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = result
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", result)
                                                         do
                                                             do
                                                                 local _ret566
@@ -6711,9 +6576,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret568
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -6787,9 +6651,8 @@ return function (plume)
                                                         end
                                                         local result = _ret574
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = true
-                                                        safeResult.table.result = result
+                                                        safeResult:setItem ("success", true)
+                                                        safeResult:setItem ("result", result)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
                                                     end
@@ -6836,9 +6699,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = result
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", result)
                                                         do
                                                             do
                                                                 local _ret577
@@ -6866,9 +6728,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret579
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -6939,9 +6800,8 @@ return function (plume)
                                                         table.remove (runtime.callstack)
                                                     end
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = false
-                                                    safeResult.table.result = msg
+                                                    safeResult:setItem ("success", false)
+                                                    safeResult:setItem ("result", msg)
                                                     do
                                                         do
                                                             local _ret584
@@ -6969,9 +6829,8 @@ return function (plume)
                                                                 end
                                                                 local result = _ret586
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = true
-                                                                safeResult.table.result = result
+                                                                safeResult:setItem ("success", true)
+                                                                safeResult:setItem ("result", result)
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
                                                             end
@@ -7027,9 +6886,8 @@ return function (plume)
                                                             table.remove (runtime.callstack)
                                                         end
                                                         local safeResult = plume.obj.table (0, 2)
-                                                        safeResult.keys = {"success", "result"}
-                                                        safeResult.table.success = false
-                                                        safeResult.table.result = plume.error.hasNoLen (tt)
+                                                        safeResult:setItem ("success", false)
+                                                        safeResult:setItem ("result", plume.error.hasNoLen (tt))
                                                         do
                                                             do
                                                                 local _ret590
@@ -7057,9 +6915,8 @@ return function (plume)
                                                                     end
                                                                     local result = _ret592
                                                                     local safeResult = plume.obj.table (0, 2)
-                                                                    safeResult.keys = {"success", "result"}
-                                                                    safeResult.table.success = true
-                                                                    safeResult.table.result = result
+                                                                    safeResult:setItem ("success", true)
+                                                                    safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
@@ -7092,9 +6949,8 @@ return function (plume)
                                                     end
                                                     local result = _ret594
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -7125,9 +6981,8 @@ return function (plume)
                                                     end
                                                     local result = _ret597
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -7168,9 +7023,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
                                                                     do
                                                                         local _ret601
@@ -7198,9 +7052,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret603
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7252,9 +7105,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
                                                                     do
                                                                         local _ret607
@@ -7282,9 +7134,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret609
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7332,9 +7183,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
                                                                     do
                                                                         local _ret613
@@ -7362,9 +7212,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret615
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7405,9 +7254,8 @@ return function (plume)
                                                     end
                                                     local result = _ret617
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -7450,9 +7298,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)")
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)"))
                                                                 do
                                                                     do
                                                                         local _ret621
@@ -7480,9 +7327,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret623
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7521,9 +7367,8 @@ return function (plume)
                                                     end
                                                     local result = _ret625
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -7560,9 +7405,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)")
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)"))
                                                                 do
                                                                     do
                                                                         local _ret629
@@ -7590,9 +7434,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret631
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7631,9 +7474,8 @@ return function (plume)
                                                     end
                                                     local result = _ret633
                                                     local safeResult = plume.obj.table (0, 2)
-                                                    safeResult.keys = {"success", "result"}
-                                                    safeResult.table.success = true
-                                                    safeResult.table.result = result
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
@@ -7692,9 +7534,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                 do
                                                                     do
                                                                         local _ret638
@@ -7722,9 +7563,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret640
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7815,9 +7655,8 @@ return function (plume)
                                                                     table.remove (runtime.callstack)
                                                                 end
                                                                 local safeResult = plume.obj.table (0, 2)
-                                                                safeResult.keys = {"success", "result"}
-                                                                safeResult.table.success = false
-                                                                safeResult.table.result = err
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", err)
                                                                 do
                                                                     do
                                                                         local _ret643
@@ -7845,9 +7684,8 @@ return function (plume)
                                                                             end
                                                                             local result = _ret645
                                                                             local safeResult = plume.obj.table (0, 2)
-                                                                            safeResult.keys = {"success", "result"}
-                                                                            safeResult.table.success = true
-                                                                            safeResult.table.result = result
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
@@ -7881,9 +7719,8 @@ return function (plume)
                                                                 table.remove (runtime.callstack)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
-                                                            safeResult.keys = {"success", "result"}
-                                                            safeResult.table.success = false
-                                                            safeResult.table.result = plume.error.cannotOpenFile (args[1], searchPaths)
+                                                            safeResult:setItem ("success", false)
+                                                            safeResult:setItem ("result", plume.error.cannotOpenFile (args[1], searchPaths))
                                                             do
                                                                 do
                                                                     local _ret647
@@ -7911,9 +7748,8 @@ return function (plume)
                                                                         end
                                                                         local result = _ret649
                                                                         local safeResult = plume.obj.table (0, 2)
-                                                                        safeResult.keys = {"success", "result"}
-                                                                        safeResult.table.success = true
-                                                                        safeResult.table.result = result
+                                                                        safeResult:setItem ("success", true)
+                                                                        safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end

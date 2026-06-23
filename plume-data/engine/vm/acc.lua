@@ -86,11 +86,7 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                 capturedCount = capturedCount+1
             elseif variadicTable then
                 -- Surplus → Insert into variadic table
-                local key = #variadicTable.table+1
-                if not variadicTable.table[key] then
-                    table.insert(variadicTable.keys, key)
-                end
-                variadicTable.table[key] = value
+                variadicTable:addItem(value)
             else
                 tomanyPositionalCounter = tomanyPositionalCounter+1
             end
@@ -113,12 +109,9 @@ function _CONCAT_TABLE(vm, posParamCount, namedParamOffset, variadic)
                 -- Unknown key → Insert into variadic table
                 if variadicTable then
                     if tag == "key" then
-                        if not variadicTable.table[key] then
-                            table.insert(variadicTable.keys, key)
-                        end
-                        variadicTable.table[key] = value
+                        variadicTable:setItem(key, value)
                     elseif tag == "metakey" then
-                        variadicTable.meta.table[key] = value
+                        variadicTable:setMetaItem(key, value)
                     end
                 elseif not unknownNamed then -- should capture all unknown?
                     unknownNamed = key

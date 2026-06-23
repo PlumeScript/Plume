@@ -30,9 +30,8 @@ function _ERROR (vm, msg)
             table.remove(vm.runtime.callstack)
         end
         local safeResult = vm.plume.obj.table(0, 2)
-        safeResult.keys = {"success", "result"}
-        safeResult.table.success = false
-        safeResult.table.result = msg
+        safeResult:setItem("success", false)
+        safeResult:setItem("result", msg)
         RETURN(vm)
         _STACK_PUSH(vm, vm.mainStack, safeResult)
     else

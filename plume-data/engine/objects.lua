@@ -24,7 +24,20 @@ return function(plume)
 			type = "table", --type
 			table = table.new(listSlots, hashSlots),
 			keys = table.new(hashSlots, 0),
-			meta = {table={}}
+			meta = {table={}},
+			setItem = function (self, k, v)
+				if not self.table[k] then
+					table.insert(self.keys, k)
+				end
+				self.table[k] = v
+				
+			end,
+			setMetaItem = function (self, k, v)
+				self.meta.table[k] = v
+			end,
+			addItem = function (self, v)
+				self:setItem(#self.table+1, v)
+			end
 		}
 		return t
 	end
@@ -37,8 +50,7 @@ return function(plume)
 				v = plume.obj.quickTable(v)
 			end
 
-			table.insert(t.table, v)
-			table.insert(t.keys, #t.table)
+			t:addItem(v)
 		end
 
 		for k, v in pairs(source) do
@@ -46,9 +58,7 @@ return function(plume)
 				if type(v) == "table" and not v.type then
 					v = plume.obj.quickTable(v)
 				end
-			
-				table.insert(t.keys, k)
-				t.table[k] = v
+				t:setItem(k, v)
 			end
 		end
 
