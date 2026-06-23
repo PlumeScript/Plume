@@ -103,8 +103,8 @@ function FOR_ITER (vm, arg1, arg2)
         else
             -- Could be optimized
             result = vm.plume.obj.table(2, 0)
-            result.table[1] = state
-            result.table[2] = obj.ref.table[state]
+            result:addItem(state)
+            result:addItem(obj.ref.table[state])
         end
     elseif flag == vm.flag.ITER_ITEMS then
         state = state+1
@@ -120,8 +120,8 @@ function FOR_ITER (vm, arg1, arg2)
         else
             -- Could be optimized
             result = vm.plume.obj.table(2, 0)
-            result.table[1] = obj.ref.keys[state]
-            result.table[2] = obj.ref.table[result.table[1]]
+            result:addItem(obj.ref.keys[state])
+            result:addItem(obj.ref.table[result.table[1]])
         end
     elseif flag == vm.flag.ITER_CUSTOM then
         local iter = obj.meta.table.next

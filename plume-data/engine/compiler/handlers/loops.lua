@@ -110,6 +110,7 @@ return function (plume, context, nodeHandlerTable)
 		if not loop or loop.insideMacro then
 			plume.error.cannotUseContinueOutsideLoop(node)
 		end
+		context.safeClose(node, loop)
 		context.registerGoto (node, loop.begin_label)
 	end
 	nodeHandlerTable.BREAK = function(node)
@@ -117,15 +118,7 @@ return function (plume, context, nodeHandlerTable)
 		if not loop or loop.insideMacro then
 			plume.error.cannotUseBreakOutsideLoop(node)
 		end
-		for _ = 1, loop.scopeToClose do
-			context.registerOP(node, plume.ops.LEAVE_SCOPE)
-		end
-		for _ = 1, loop.contextToClose do
-			context.registerOP(node, plume.ops.POP_CONTEXT)
-		end
-		if loop.leave then
-			context.registerOP(nil, plume.ops.LEAVE_SCOPE)
-		end
+		context.safeClose(node, loop, loop.leave)
 		context.registerGoto (node, loop.end_label)
 	end
 end

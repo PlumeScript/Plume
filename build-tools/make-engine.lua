@@ -136,6 +136,10 @@ end
 local footer = [[
 		::END::
 		--! to-remove-begin
+		local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
+		if not finalSuccess then
+			return false, finalMsg, #vm.runtime.bytecode
+		end
 		if plume.runStatFlag then
 			if plume.stats then
 				for k, v in pairs(vm.stats.opseq) do

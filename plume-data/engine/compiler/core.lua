@@ -13,8 +13,8 @@ return function(plume)
 	--- (bytecode, parameters names and number...)
 	--- @return nil (instructions are writted directly into the chunk)
 	function plume.compileFile(code, filename, chunk, runtime)
-		if runtime.cache[filename] then
-			plume.copyMacrosInfos(runtime.cache[filename], chunk)
+		if runtime.cache.chunks[filename] then
+			plume.copyMacrosInfos(runtime.cache.chunks[filename], chunk)
 			return true
 		end
 
@@ -32,9 +32,7 @@ return function(plume)
 		context.nodeHandler(ast) 
 
 		-- Close context
-		for _=1, context.contextVariableToClose do
-			context.registerOP(nil, plume.ops.POP_CONTEXT)
-		end
+		context.safeClose(nil, {contextToClose=context.contextVariableToClose})
 
 		-- Save file offset
 		chunk.offset = (runtime.bytecode and #runtime.bytecode or 0) + 1
@@ -47,7 +45,7 @@ return function(plume)
 			context.savedInstructions = nil
 		end
 
-		runtime.cache[filename] = chunk
+		runtime.cache.chunks[filename] = chunk
 
 		return true
 	end

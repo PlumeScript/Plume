@@ -24,7 +24,20 @@ return function(plume)
 			type = "table", --type
 			table = table.new(listSlots, hashSlots),
 			keys = table.new(hashSlots, 0),
-			meta = {table={}}
+			meta = {table={}},
+			setItem = function (self, k, v)
+				if not self.table[k] then
+					table.insert(self.keys, k)
+				end
+				self.table[k] = v
+				
+			end,
+			setMetaItem = function (self, k, v)
+				self.meta.table[k] = v
+			end,
+			addItem = function (self, v)
+				self:setItem(#self.table+1, v)
+			end
 		}
 		return t
 	end
@@ -37,8 +50,7 @@ return function(plume)
 				v = plume.obj.quickTable(v)
 			end
 
-			table.insert(t.table, v)
-			table.insert(t.keys, #t.table)
+			t:addItem(v)
 		end
 
 		for k, v in pairs(source) do
@@ -46,9 +58,7 @@ return function(plume)
 				if type(v) == "table" and not v.type then
 					v = plume.obj.quickTable(v)
 				end
-			
-				table.insert(t.keys, k)
-				t.table[k] = v
+				t:setItem(k, v)
 			end
 		end
 
@@ -87,32 +97,21 @@ return function(plume)
 
 	local function makePlumeTable()
 		local result = plume.obj.table(0, 2)
-		result.keys = {
-			"path",
-			"locale",
-			"localeNumberFormat",
-			"localeThousandsSeparator",
-			"localeDecimalSeparator",
-			"localeThousandthsSeparator"
-		}
 
 		local pathTable = plume.obj.table(0, 0)
 		for path in (os.getenv("PLUME_PATH") or ""):gmatch('[^;]+') do
-			local i = #pathTable.table + 1
-			table.insert(pathTable.keys, i)
-			pathTable.table[i] = path
+			pathTable:addItem(path)
 		end
-		result.table.path = pathTable
+		result:setItem("path", pathTable)
 		for _, key in ipairs(plume.std.plume.keys) do
-			table.insert(result.keys, key)
-			result.table[key] = plume.std.plume.table[key]
+			result:setItem(key, plume.std.plume.table[key])
 		end
 
-		result.table.locale = plume.obj.context(plume.obj.empty)
-		result.table.localeNumberFormat = plume.obj.context(plume.obj.empty)
-		result.table.localeThousandsSeparator =  plume.obj.context(plume.obj.empty)
-		result.table.localeDecimalSeparator =  plume.obj.context(plume.obj.empty)
-		result.table.localeThousandthsSeparator =  plume.obj.context(plume.obj.empty)
+		result:setItem("locale", plume.obj.context(plume.obj.empty))
+		result:setItem("localeNumberFormat", plume.obj.context(plume.obj.empty))
+		result:setItem("localeThousandsSeparator",  plume.obj.context(plume.obj.empty))
+		result:setItem("localeDecimalSeparator",  plume.obj.context(plume.obj.empty))
+		result:setItem("localeThousandthsSeparator",  plume.obj.context(plume.obj.empty))
 		return result
 	end
 
@@ -141,7 +140,7 @@ return function(plume)
 			mapping              = {},
 			callstack            = {},
 			files                = {},
-			cache                = {},
+			cache                = {chunks={}, results={}},
 			contextCount         = 0, -- used to generate a unique UID for each compilation
 			plume                = makePlumeTable()
 		}

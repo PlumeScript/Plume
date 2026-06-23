@@ -40,6 +40,12 @@ function RETURN_FILE(vm, arg1, arg2)
     else
         JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
     end
+
+    -- Cache result
+    local file = _GET_CURRENT_FILE(vm)
+    if file and file.cacheId then
+        vm.runtime.cache.results[file.cacheId] = _STACK_GET(vm, vm.mainStack)
+    end
 end
 
 --- @opcode

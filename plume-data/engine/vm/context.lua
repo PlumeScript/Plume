@@ -7,13 +7,6 @@ Licensed under the MIT License — see LICENSE for details.
 
 --- @opcode
 --! inline
-function CREATE_CONTEXT(vm, arg1, arg2)
-	local defaultValue = _STACK_POP(vm, vm.mainStack)
-    _STACK_PUSH(vm, vm.mainStack, vm.plume.obj.context(defaultValue))
-end
-
---- @opcode
---! inline
 function PUSH_CONTEXT(vm, arg1, arg2)
     local values = _STACK_POP(vm, vm.mainStack)
 
@@ -38,12 +31,4 @@ function POP_CONTEXT(vm, arg1, arg2)
     for _, var in ipairs(cache) do
         var:pop()
     end
-end
-
---- @opcode
---! inline
-function LOAD_CONTEXT(vm, arg1, arg2)
-    local default = _STACK_POP(vm, vm.mainStack)
-    local name    = _STACK_POP(vm, vm.mainStack)
-    _STACK_PUSH(vm, vm.mainStack, _LOAD_CONTEXT(vm, name, false, default))
 end

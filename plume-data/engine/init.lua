@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b51 (Owl Edition)
+Plume🪶 b52 (Owl Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,7 +30,7 @@ else
 end
 
 local plume = {}
-plume._VERSION = "b51 (Owl Edition)"
+plume._VERSION = "b52 (Owl Edition)"
 
 require 'plume-data/engine/debug/core'           (plume)
 require 'plume-data/engine/error/core'           (plume)

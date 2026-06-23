@@ -25,6 +25,7 @@ return function (plume, context, nodeHandlerTable)
 		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
 
 		local fileParams = {}
+		local fileParamsForCache = {}
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
 			local keyNode = plume.ast.get(param, "KEY")
 			local valueNode = plume.ast.get(param, "VALUE")
@@ -33,6 +34,7 @@ return function (plume, context, nodeHandlerTable)
 
 			if key then
 				fileParams[key] = value
+				table.insert(fileParamsForCache, {key=key, value=value})
 			end
 		end
 
@@ -57,10 +59,15 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end
 		
-
-		local success, result = plume.executeFile(filename, context.runtime, fileParams)
-		if not success then
-			plume.error.cannotExecuteFile(pathNode, path, result)
+		local cacheId = plume.getModuleCacheId(filename, fileParamsForCache)
+        local result  = context.runtime.cache.results[cacheId]
+        if not result or not context.chunk.futureFlagImportCache then
+			local success
+			success, result = plume.executeFile(filename, context.runtime, fileParams)
+			if not success then
+				plume.error.cannotExecuteFile(pathNode, path, result)
+			end
+			 context.runtime.cache.results[cacheId] = result
 		end
 
 		local t = type(result) == "table" and result.type or type(result)
@@ -149,6 +156,17 @@ return function (plume, context, nodeHandlerTable)
 				end
 				context.chunk.flagRawNumbers = true
 			end
+		},
+
+		future = {
+			checkArgs = {
+				importCache  = {true}
+			},
+			method = function(node, args)
+				if args.importCache then
+					context.chunk.futureFlagImportCache = true
+				end
+			end
 		}
 	}
 
@@ -179,7 +197,12 @@ return function (plume, context, nodeHandlerTable)
 			local valueNode = plume.ast.get(option, "VALUE")
 			local key = keyNode and keyNode.content
 
-			local value = getRawValue(valueNode)
+			local value
+			if valueNode then
+				value = getRawValue(valueNode)
+			else
+				value = true
+			end
 
 			if handler.checkArgs then
 				if not handler.checkArgs[key] then

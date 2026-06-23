@@ -137,7 +137,7 @@ function STD_IMPORT(vm, arg1, arg2)
 
     local firstFilename = vm.runtime.files[1].name
     local lastFilename  = vm.runtime.files[vm.fileStack[vm.fileStack.pointer]].name
-
+    local currentFile   = _GET_CURRENT_FILE(vm)
 
     local assertion = _ASSERT_STD_TYPE(vm, "import", 1, args.table[1],  "string", "string path, ...params")
 
@@ -170,15 +170,26 @@ function STD_IMPORT(vm, arg1, arg2)
                 for _, key in ipairs(args.keys) do
                     local offset = chunk.namedParamOffset[key]
                     if offset then
-                        table.insert(vm.fileParams, {offset=offset, value=args.table[key]})
+                        table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
                     end
                 end
 
-                -- prepare stack and jumps
-                _STACK_PUSH(vm, vm.fileStack, chunk.fileID)
-                _STACK_PUSH(vm, vm.macroStack, vm.ip + 1)
-                -- ENTER_SCOPE is already the first file instruction
-                _INJECTION_PUSH(vm, vm.plume.ops.JUMP, 0, chunk.offset)
+                local cacheId, paramMutableWarning = vm.plume.getModuleCacheId(filename, vm.fileParams)
+                local result = vm.runtime.cache.results[cacheId]
+
+                if result and currentFile.futureFlagImportCache then
+                    _STACK_PUSH(vm, vm.mainStack, result)
+                    if paramMutableWarning then
+                        vm.plume.warning.runtimeWarning(string.format("Import call skipped (cached).\nAny modifications of the mutable parameter `%s` will be ignored.", paramMutableWarning), nil, vm.runtime, vm.ip, {890})
+                    end
+                else
+                    chunk.cacheId = cacheId
+                    -- prepare stack and jumps
+                    _STACK_PUSH(vm, vm.fileStack, chunk.fileID)
+                    _STACK_PUSH(vm, vm.macroStack, vm.ip + 1)
+                    -- ENTER_SCOPE is already the first file instruction
+                    _INJECTION_PUSH(vm, vm.plume.ops.JUMP, 0, chunk.offset)
+                end
             else
                 _ERROR(vm, err)
             end

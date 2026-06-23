@@ -136,4 +136,19 @@ return function (plume, context)
 
 		return table.concat(result, "\n")
 	end
+
+	function context.safeClose(node, obj, leave)
+		if not obj then
+			return
+		end
+		for _ = 1, obj.contextToClose or 0 do
+			context.registerOP(node, plume.ops.POP_CONTEXT)
+		end
+		for _ = 1, obj.scopeToClose or 0 do
+			context.registerOP(node, plume.ops.LEAVE_SCOPE)
+		end
+		if leave then
+			context.registerOP(node, plume.ops.LEAVE_SCOPE)
+		end
+	end
 end

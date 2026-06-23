@@ -424,13 +424,22 @@ return function (plume)
 		return nil, searchPaths
 	end
 
-	function plume.stdShiftArgs(cls, args)
-		local self = args.table.self
-		if self == cls then -- called with `cls.method(string)` instead of `cls.method()`
-			return args
-		else
-			table.insert(args.table, 1, self)
-			return args
+	function plume.getModuleCacheId(filename, fileparam)
+		local result = {plume.normalizePath(filename)}
+		local mutableWarning
+		for _, paramInfos in ipairs(fileparam) do
+			table.insert(result,
+				(tostring(paramInfos.key):gsub('%?', '??'):gsub(':', '::'))
+				.. ':'
+				.. tostring(paramInfos.value):gsub('%?', '??'):gsub(':', '::')
+			)
+
+			if type(paramInfos.value) == "table" and not mutableWarning then
+				if paramInfos.value.type == "table" then
+					mutableWarning = paramInfos.key
+				end
+			end
 		end
+		return table.concat(result, "?"), mutableWarning
 	end
 end

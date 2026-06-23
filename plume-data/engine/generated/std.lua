@@ -157,8 +157,7 @@ return function(plume)
 			------------
 			local result = plume.obj.table(0, 0)
 			for k, v in ipairs(t.table) do
-				table.insert(result.keys, k)
-				table.insert(result.table, v)
+				result:addItem(v)
 			end
 			return true, result
 		end),
@@ -195,8 +194,7 @@ return function(plume)
 			local result = plume.obj.table(0, 0)
 			for _, k in ipairs(t.keys) do
 				if not tonumber(k) then
-					table.insert(result.keys, k)
-					result.table[k] = t.table[k]
+					result:setItem(k, t.table[k])
 				end
 			end
 			return true, result
@@ -879,8 +877,7 @@ return function(plume)
 				for child in lfs.dir(path) do
 					if child ~= "." and child ~= ".." then
 						local _, childPath = makePath(path.."/"..child)
-						table.insert(result.table, childPath)
-						table.insert(result.keys, #result.table)
+						result:addItem(childPath)
 					end
 				end
 				return true, result
@@ -904,8 +901,7 @@ return function(plume)
 						if child ~= "." and child ~= ".." then
 							local childPath = currentPath.."/"..child
 							local _, childPathObj = makePath(childPath)
-							table.insert(result.table, childPathObj)
-							table.insert(result.keys, #result.table)
+							result:addItem(childPathObj)
 	
 							table.insert(toExplore, childPath)
 						end
@@ -1493,14 +1489,12 @@ return function(plume)
 	
 			local pos = 1
 			for sub, _sep in s:gmatch('(.-)('..sep..")") do
-				table.insert(t.table, sub)
-				table.insert(t.keys, #t.table)
+				t:addItem(sub)
 				pos = pos + #sub + #_sep
 			end
 	
 			if pos <= #s then
-				table.insert(t.table, s:sub(pos, -1))
-				table.insert(t.keys, #t.table)
+				t:addItem(s:sub(pos, -1))
 			end
 	
 			return true, t
@@ -1519,14 +1513,12 @@ return function(plume)
 	
 			local pos = 1
 			for sub in s:gmatch('(.-)\n') do
-				table.insert(t.table, sub)
-				table.insert(t.keys, #t.table)
+				t:addItem(sub)
 				pos = pos + #sub + 1
 			end
 	
 			if pos <= #s then
-				table.insert(t.table, s:sub(pos, -1))
-				table.insert(t.keys, #t.table)
+				t:addItem(s:sub(pos, -1))
 			end
 	
 			return true, t
@@ -1552,8 +1544,7 @@ return function(plume)
 			local t = plume.obj.table(0, 0)
 	
 			for sub in s:gmatch(pattern) do
-				table.insert(t.table, sub)
-				table.insert(t.keys, #t.table)
+				t:addItem(sub)
 			end
 	
 			return true, t
@@ -1575,10 +1566,7 @@ return function(plume)
 				pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 			end
 	
-			local t = plume.obj.table(3, 0)
-			t.keys = {1, 2, 3}
-			t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
-	
+			local t = plume.obj.quickTable({s:match("(.-)("..pattern..")(.+)")})
 			return true, t
 		end),
 	
@@ -1677,8 +1665,7 @@ return function(plume)
 				value = rawvalue
 			end
 	
-			table.insert(nt.keys, key)
-			nt.table[key] = value
+			nt:setItem(key, value)
 		end
 	
 		return nt
@@ -1826,8 +1813,7 @@ return function(plume)
 			local result = plume.obj.table(0, 0)
 			for _, v in ipairs(t.keys) do
 				if t.table[v] == x then
-					table.insert(result.table, v)
-					table.insert(result.keys, #result.table)
+					result:addItem(v)
 				end
 			end
 	
@@ -1867,9 +1853,8 @@ return function(plume)
 			------------
 			local key = t.keys[index]
 			local result = plume.obj.table(2, 0)
-			result.table[1] = key
-			result.table[2] = t.table[key]
-			result.keys = {1, 2}
+			result:addItem(key)
+			result:addItem(t.table[key])
 			
 			return true, result
 		end),
@@ -2115,23 +2100,16 @@ return function(plume)
 	
 	function createDate (args)
 		local time = plume.obj.table(0, 0)
-		
-		time.keys = {
-			"timestamp",
-			"locale",
-			"zone",
-			"type"
-		}
 	
 		function time:updateTimestamp(args)
-			self.table.timestamp = os.time({
+			time:setItem("timestamp", os.time({
 				year   = args.table.year or 1970,
 				month  = args.table.month or 1,
 				day    = args.table.day or 1,
 				hour   = args.table.hour or 1,
 				min    = args.table.minute or 0,
 				sec    = args.table.second or 0
-			})
+			}))
 			if self.table.timestamp then
 				return true
 			else
@@ -2151,11 +2129,11 @@ return function(plume)
 			}
 		end
 	
-		time.table.type      = "Date"
+		time:setItem("type", "Date")
 	
 		local success, result = true
 		if args.timestamp and args.timestamp ~= 0 then
-			time.table.timestamp = args.timestamp
+			time:setItem("timestamp", args.timestamp)
 		else
 			success, result = time:updateTimestamp(args)
 		end

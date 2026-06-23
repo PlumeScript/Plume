@@ -58,8 +58,7 @@ function plume.stdUtils.copy(t, deep, nt)
 			value = rawvalue
 		end
 
-		table.insert(nt.keys, key)
-		nt.table[key] = value
+		nt:setItem(key, value)
 	end
 
 	return nt
@@ -156,8 +155,7 @@ plume.std.Table = plume.obj.quickTable{
 		local result = plume.obj.table(0, 0)
 		for _, v in ipairs(t.keys) do
 			if t.table[v] == x then
-				table.insert(result.table, v)
-				table.insert(result.keys, #result.table)
+				result:addItem(v)
 			end
 		end
 
@@ -181,9 +179,8 @@ plume.std.Table = plume.obj.quickTable{
 		--!signature table t, any index
 		local key = t.keys[index]
 		local result = plume.obj.table(2, 0)
-		result.table[1] = key
-		result.table[2] = t.table[key]
-		result.keys = {1, 2}
+		result:addItem(key)
+		result:addItem(t.table[key])
 		
 		return true, result
 	end),

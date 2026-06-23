@@ -173,8 +173,13 @@ return function (plume)
 			(C("KEY", libidn) * os * ":") * os * Ct("VALUE", V"textic")
 			+ E(plume.error.useDoesNotAcceptPositionalArgs, libidn)
 		)
+		local nameposLibparam = Ct("USE_OPTION",
+			C("KEY", libidn) * (os * ":" * os * Ct("VALUE", V"textic"))^-1
+		)
 		local libparamlist = os * (P"("*P")" + P"(" * os * libparam * os * (P"," * os * libparam)^0 * os * ")")^-1
-		local libname = Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * libparamlist)
+		local nameposLibparamlist = os * (P"("*P")" + P"(" * os * nameposLibparam * os * (P"," * os * libparam)^0 * os * ")")^-1
+
+		local libname = Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist)
 					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
 		local use = K"use" * s * libname * (os*P","*os*libname)^0
 

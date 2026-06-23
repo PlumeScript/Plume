@@ -30,9 +30,8 @@ function _ERROR (vm, msg)
             table.remove(vm.runtime.callstack)
         end
         local safeResult = vm.plume.obj.table(0, 2)
-        safeResult.keys = {"success", "result"}
-        safeResult.table.success = false
-        safeResult.table.result = msg
+        safeResult:setItem("success", false)
+        safeResult:setItem("result", msg)
         RETURN(vm)
         _STACK_PUSH(vm, vm.mainStack, safeResult)
     else
@@ -70,4 +69,33 @@ function _GET_REF_POS(vm, key, offset)
             end
         end
     end
+end
+
+--! inline
+function _GET_CURRENT_FILE(vm)
+    local lastfile
+    local files = vm.runtime.files
+    local ip    = vm.ip
+    for _, file in ipairs(files) do
+        if file.offset then
+            if file.offset <= ip then
+                if not lastfile or file.offset > lastfile.offset then
+                    lastfile = file
+                end
+            end
+        end
+    end
+
+    return lastfile
+end
+
+--! inline
+function _FINAL_CHECKS (vm)
+    if vm.mainStack.pointer > 1 then
+        return false, "[Internal Error] To many elements on stack."
+    elseif vm.mainStack.pointer == 0 then
+        return false, "[Internal Error] Stack empty."
+    end
+
+    return true
 end

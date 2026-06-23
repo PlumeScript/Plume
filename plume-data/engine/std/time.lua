@@ -142,23 +142,16 @@ end)
 
 function createDate (args)
 	local time = plume.obj.table(0, 0)
-	
-	time.keys = {
-		"timestamp",
-		"locale",
-		"zone",
-		"type"
-	}
 
 	function time:updateTimestamp(args)
-		self.table.timestamp = os.time({
+		time:setItem("timestamp", os.time({
 			year   = args.table.year or 1970,
 			month  = args.table.month or 1,
 			day    = args.table.day or 1,
 			hour   = args.table.hour or 1,
 			min    = args.table.minute or 0,
 			sec    = args.table.second or 0
-		})
+		}))
 		if self.table.timestamp then
 			return true
 		else
@@ -178,11 +171,11 @@ function createDate (args)
 		}
 	end
 
-	time.table.type      = "Date"
+	time:setItem("type", "Date")
 
 	local success, result = true
 	if args.timestamp and args.timestamp ~= 0 then
-		time.table.timestamp = args.timestamp
+		time:setItem("timestamp", args.timestamp)
 	else
 		success, result = time:updateTimestamp(args)
 	end

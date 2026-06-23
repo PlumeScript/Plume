@@ -25,9 +25,8 @@ function _POP_CALLSTACK(vm)
     if call and call.safe then
         local result = _STACK_POP(vm, vm.mainStack)
         local safeResult = vm.plume.obj.table(0, 2)
-        safeResult.keys = {"success", "result"}
-        safeResult.table.success = true
-        safeResult.table.result = result
+        safeResult:setItem("success", true)
+        safeResult:setItem("result", result)
         _STACK_PUSH(vm, vm.mainStack, safeResult)
     end
 end

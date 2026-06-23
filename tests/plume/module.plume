@@ -86,3 +86,21 @@ $wing()
 /// Output
 blue quill
 /// End
+
+/// Test import cache 1
+use #future(importCache)
+let lib1 = $import(tests/plume/toimport/object)
+let lib2 = $import(tests/plume/toimport/object)
+$(lib1.result == lib2.result)
+/// Output
+true
+/// End
+
+/// Test import cache 2
+use #future(importCache)
+use tests/plume/toimport/object
+let lib = $import(tests/plume/toimport/object)
+$(result == lib.result)
+/// Output
+true
+/// End
