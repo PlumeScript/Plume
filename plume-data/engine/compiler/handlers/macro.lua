@@ -179,16 +179,10 @@ return function (plume, context, nodeHandlerTable)
 
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
-		
-		if macro then
-			for _=1, macro.contextToClose do
-				context.registerOP(node, plume.ops.POP_CONTEXT)
-			end
 
-			-- Close inner scopes
-			for i = macro.scopeDeep+1, #context.scopes do
-				context.registerOP(node, plume.ops.LEAVE_SCOPE)
-			end
+		if macro then
+			macro.scopeToClose = #context.scopes - macro.scopeDeep - 1
+			context.safeClose(node, macro)
 		end
 
 		local uid = macro and macro.uid

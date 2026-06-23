@@ -75,16 +75,9 @@ return function (plume, context, nodeHandlerTable)
 
 		local macro = context.getLast "macros"
 		local loop  = context.getLast "loops"
-		if loop then
-			for _ = 1, loop.contextToClose do
-				context.registerOP(node, plume.ops.POP_CONTEXT)
-			end
-		end
-		if macro then
-			for _ = 1, macro.contextToClose do
-				context.registerOP(node, plume.ops.POP_CONTEXT)
-			end
-		end
+		context.safeClose(node, macro)
+		context.safeClose(node, loop, loop and loop.leave)
+		
 		context.registerOP(node, plume.ops.RAISE)
 	end
 end

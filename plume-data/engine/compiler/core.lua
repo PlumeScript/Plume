@@ -32,9 +32,7 @@ return function(plume)
 		context.nodeHandler(ast) 
 
 		-- Close context
-		for _=1, context.contextVariableToClose do
-			context.registerOP(nil, plume.ops.POP_CONTEXT)
-		end
+		context.safeClose(nil, {contextToClose=context.contextVariableToClose})
 
 		-- Save file offset
 		chunk.offset = (runtime.bytecode and #runtime.bytecode or 0) + 1
