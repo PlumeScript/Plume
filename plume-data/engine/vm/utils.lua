@@ -88,3 +88,14 @@ function _GET_CURRENT_FILE(vm)
 
     return lastfile
 end
+
+--! inline
+function _FINAL_CHECKS (vm)
+    if vm.mainStack.pointer > 1 then
+        return false, "[Internal Error] To many elements on stack."
+    elseif vm.mainStack.pointer == 0 then
+        return false, "[Internal Error] Stack empty."
+    end
+
+    return true
+end
