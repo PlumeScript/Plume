@@ -63,8 +63,7 @@ plume.std.List.meta = plume.obj.quickTable{
 		--!signature table t !meta:List
 		local result = plume.obj.table(0, 0)
 		for k, v in ipairs(t.table) do
-			table.insert(result.keys, k)
-			table.insert(result.table, v)
+			result:addItem(v)
 		end
 		return true, result
 	end),
@@ -87,8 +86,7 @@ plume.std.Map.meta = plume.obj.quickTable{
 		local result = plume.obj.table(0, 0)
 		for _, k in ipairs(t.keys) do
 			if not tonumber(k) then
-				table.insert(result.keys, k)
-				result.table[k] = t.table[k]
+				result:setItem(k, t.table[k])
 			end
 		end
 		return true, result

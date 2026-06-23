@@ -209,14 +209,12 @@ plume.std.String = plume.obj.quickTable {
 
 		local pos = 1
 		for sub, _sep in s:gmatch('(.-)('..sep..")") do
-			table.insert(t.table, sub)
-			table.insert(t.keys, #t.table)
+			t:addItem(sub)
 			pos = pos + #sub + #_sep
 		end
 
 		if pos <= #s then
-			table.insert(t.table, s:sub(pos, -1))
-			table.insert(t.keys, #t.table)
+			t:addItem(s:sub(pos, -1))
 		end
 
 		return true, t
@@ -228,14 +226,12 @@ plume.std.String = plume.obj.quickTable {
 
 		local pos = 1
 		for sub in s:gmatch('(.-)\n') do
-			table.insert(t.table, sub)
-			table.insert(t.keys, #t.table)
+			t:addItem(sub)
 			pos = pos + #sub + 1
 		end
 
 		if pos <= #s then
-			table.insert(t.table, s:sub(pos, -1))
-			table.insert(t.keys, #t.table)
+			t:addItem(s:sub(pos, -1))
 		end
 
 		return true, t
@@ -251,8 +247,7 @@ plume.std.String = plume.obj.quickTable {
 		local t = plume.obj.table(0, 0)
 
 		for sub in s:gmatch(pattern) do
-			table.insert(t.table, sub)
-			table.insert(t.keys, #t.table)
+			t:addItem(sub)
 		end
 
 		return true, t
@@ -264,10 +259,7 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		local t = plume.obj.table(3, 0)
-		t.keys = {1, 2, 3}
-		t.table[1], t.table[2], t.table[3] = s:match("(.-)("..pattern..")(.+)")
-
+		local t = plume.obj.quickTable({s:match("(.-)("..pattern..")(.+)")})
 		return true, t
 	end),
 

@@ -186,8 +186,7 @@ local function makePath(path)
 			for child in lfs.dir(path) do
 				if child ~= "." and child ~= ".." then
 					local _, childPath = makePath(path.."/"..child)
-					table.insert(result.table, childPath)
-					table.insert(result.keys, #result.table)
+					result:addItem(childPath)
 				end
 			end
 			return true, result
@@ -206,8 +205,7 @@ local function makePath(path)
 					if child ~= "." and child ~= ".." then
 						local childPath = currentPath.."/"..child
 						local _, childPathObj = makePath(childPath)
-						table.insert(result.table, childPathObj)
-						table.insert(result.keys, #result.table)
+						result:addItem(childPathObj)
 
 						table.insert(toExplore, childPath)
 					end
