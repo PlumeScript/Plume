@@ -97,32 +97,21 @@ return function(plume)
 
 	local function makePlumeTable()
 		local result = plume.obj.table(0, 2)
-		result.keys = {
-			"path",
-			"locale",
-			"localeNumberFormat",
-			"localeThousandsSeparator",
-			"localeDecimalSeparator",
-			"localeThousandthsSeparator"
-		}
 
 		local pathTable = plume.obj.table(0, 0)
 		for path in (os.getenv("PLUME_PATH") or ""):gmatch('[^;]+') do
-			local i = #pathTable.table + 1
-			table.insert(pathTable.keys, i)
-			pathTable.table[i] = path
+			pathTable:addItem(path)
 		end
-		result.table.path = pathTable
+		result:setItem("path", pathTable)
 		for _, key in ipairs(plume.std.plume.keys) do
-			table.insert(result.keys, key)
-			result.table[key] = plume.std.plume.table[key]
+			result:setItem(key, plume.std.plume.table[key])
 		end
 
-		result.table.locale = plume.obj.context(plume.obj.empty)
-		result.table.localeNumberFormat = plume.obj.context(plume.obj.empty)
-		result.table.localeThousandsSeparator =  plume.obj.context(plume.obj.empty)
-		result.table.localeDecimalSeparator =  plume.obj.context(plume.obj.empty)
-		result.table.localeThousandthsSeparator =  plume.obj.context(plume.obj.empty)
+		result:setItem("locale", plume.obj.context(plume.obj.empty))
+		result:setItem("localeNumberFormat", plume.obj.context(plume.obj.empty))
+		result:setItem("localeThousandsSeparator",  plume.obj.context(plume.obj.empty))
+		result:setItem("localeDecimalSeparator",  plume.obj.context(plume.obj.empty))
+		result:setItem("localeThousandthsSeparator",  plume.obj.context(plume.obj.empty))
 		return result
 	end
 

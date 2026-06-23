@@ -173,13 +173,12 @@ function TABLE_SET (vm, arg1, arg2)
     local meta
     key = tonumber(key) or key
     if not t.table[key] then
-        table.insert(t.keys, key)
         meta = t.meta.table.setindex
         if meta then
             -- for preventing infinite loop with next TABLE_SET
             -- quite dirty an vulnerable (ex: meta set this key to nil)
             -- may be rewrited in the futur
-            t.table[key] = vm.empty 
+            t:setItem(key, vm.empty )
 
             -- table & key
             _STACK_PUSH(vm, vm.mainStack, t)
@@ -198,7 +197,7 @@ function TABLE_SET (vm, arg1, arg2)
     end
 
     if not meta then
-        t.table[key] = value
+        t:setItem(key, value)
     end
 end
 

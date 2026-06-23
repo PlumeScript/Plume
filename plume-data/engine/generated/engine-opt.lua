@@ -586,10 +586,9 @@ return function (plume)
                                             local meta
                                             key = tonumber (key) or key
                                             if not t.table[key] then
-                                                table.insert (t.keys, key)
                                                 meta = t.meta.table.setindex
                                                 if meta then
-                                                    t.table[key] = empty
+                                                    t:setItem (key, empty)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = t
                                                     mainStackPointer = mainStackPointer + 1
@@ -636,7 +635,7 @@ return function (plume)
                                                 end
                                             end
                                             if not meta then
-                                                t.table[key] = value
+                                                t:setItem (key, value)
                                             end
                                         end
                                     else
