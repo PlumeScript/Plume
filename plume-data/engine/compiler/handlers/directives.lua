@@ -160,7 +160,8 @@ return function (plume, context, nodeHandlerTable)
 
 		future = {
 			checkArgs = {
-				importCache  = {true}
+				importCache  = {true},
+				lineEval     = {true}
 			},
 			method = function(node, args)
 				if args.importCache then

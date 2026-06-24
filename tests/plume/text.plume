@@ -245,12 +245,14 @@ $("\a")
 /// End
 
 /// Test Line eval 1
+use #future(lineEval)
 $ 1+1
 /// Output
 2
 /// End
 
 /// Test Line eval 2
+use #future(lineEval)
 let x = 1
 macro wing()
     set x += 1
@@ -263,6 +265,7 @@ $x
 /// End
 
 /// Test Line eval 3
+use #future(lineEval)
 let x = $ 1+1
 $x
 /// Output
@@ -270,6 +273,7 @@ $x
 /// End
 
 /// Test Line eval 4
+use #future(lineEval)
 - $ 1+1
 /// Output
 $Table(2)

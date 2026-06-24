@@ -6,8 +6,10 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
+	local dynamicParseData
+
 	local function buildGrammar()
-		local S, R, P, V, Cp = lpeg.S, lpeg.R, lpeg.P, lpeg.V, lpeg.Cp
+		local S, R, P, V, Cp, Cmt = lpeg.S, lpeg.R, lpeg.P, lpeg.V, lpeg.Cp, lpeg.Cmt
 
 		local function C(name, pattern)
 			return Cp() * lpeg.C(pattern) * Cp() / function(bpos, content, epos)
@@ -140,6 +142,23 @@ return function (plume)
 			end
 		end
 
+		local function applyDirective(subject, pos, node)
+			local directiveNameNode = plume.ast.get(node, "NAME")
+			local directiveName = directiveNameNode.content
+
+			local options = {}
+			for _, option in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
+				local keyNode = plume.ast.get(option, "KEY")
+				local key = keyNode and keyNode.content
+				if directiveName == "future" then
+					if key == "lineEval" then
+						dynamicParseData.futureFlagLineEval = true
+					end
+				end
+			end
+			return pos, node
+		end
+
 		------------
 		-- common --
 		------------
@@ -179,7 +198,7 @@ return function (plume)
 		local libparamlist = os * (P"("*P")" + P"(" * os * libparam * os * (P"," * os * libparam)^0 * os * ")")^-1
 		local nameposLibparamlist = os * (P"("*P")" + P"(" * os * nameposLibparam * os * (P"," * os * libparam)^0 * os * ")")^-1
 
-		local libname = Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist)
+		local libname = Cmt(Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist), applyDirective)
 					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
 		local use = K"use" * s * libname * (os*P","*os*libname)^0
 
@@ -310,6 +329,9 @@ return function (plume)
 
 		local eval = P"$" * evalBase
 		local lineeval = P"$ " * Ct("EVAL", expr)
+		lineeval = lineeval * P(function()
+			return dynamicParseData.futureFlagLineEval
+		end)
 		local index = Ct("SAFE_INDEX", P"[" * expr * P"]" * P"?") + Ct("INDEX", P"[" * expr * P"]")
 		local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
@@ -515,6 +537,8 @@ return function (plume)
 	local grammar = buildGrammar()
 
 	function plume.parse(code, filename)
+		dynamicParseData = {}
+
 		-- parse will fail if empty line at programm end.
 		-- dirty quick fix
 		code = code:gsub('%s*$', '')
@@ -534,7 +558,11 @@ return function (plume)
 		local pos = 0
 		plume.ast.browse(ast, function (node)
 			if node.error then
-				node.error(node)
+				if node.error == plume.error.nonEscapedEvalMark and not dynamicParseData.futureFlagLineEval then
+					node.name = "TEXT"
+				else
+					node.error(node)
+				end
 			end
 
 			if node.name == "IDENTIFIER" then
