@@ -220,4 +220,9 @@ return function(plume)
 		local message = "Cannot use `ref` inside inline table or inline macro call."
 		plume.error.throwSyntaxError(node, message)
 	end
+
+	function plume.error.nonEscapedEvalMark(node)
+		local message = "`$` outside evaluation must be escaped."
+		plume.error.throwSyntaxError(node, message)
+	end
 end

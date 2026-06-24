@@ -483,11 +483,11 @@ return function (plume)
 
 			command = V"commandStd" + V"commandLB",
 
-			text   = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtext")^1,
-			textns = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextns")^1,
-			textnc = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnc")^1,
-			textnp = (escaped + eval + C("TEXT", P"$") + V"comment" + V"rawtextnp")^1,
-			textic = (escaped + eval + C("TEXT", P"$") + V"comment"
+			text   = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
+			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
+			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
+			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
+			textic = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
 						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic"
 					)^1,
 
