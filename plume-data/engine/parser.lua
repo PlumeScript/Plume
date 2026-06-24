@@ -151,7 +151,7 @@ return function (plume)
 				local keyNode = plume.ast.get(option, "KEY")
 				local key = keyNode and keyNode.content
 				if directiveName == "future" then
-					if key == "lineEval" then
+					if key == "lineEval" or key == "all" or key == "raven" then
 						dynamicParseData.futureFlagLineEval = true
 					end
 				end
