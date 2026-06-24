@@ -243,3 +243,34 @@ $("\a")
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test Line eval 1
+$ 1+1
+/// Output
+2
+/// End
+
+/// Test Line eval 2
+let x = 1
+macro wing()
+    set x += 1
+end
+
+run $ wing()
+$x
+/// Output
+2
+/// End
+
+/// Test Line eval 3
+let x = $ 1+1
+$x
+/// Output
+2
+/// End
+
+/// Test Line eval 4
+- $ 1+1
+/// Output
+$Table(2)
+/// End

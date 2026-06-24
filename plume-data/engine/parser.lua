@@ -309,6 +309,7 @@ return function (plume)
 		)
 
 		local eval = P"$" * evalBase
+		local lineeval = P"$ " * Ct("EVAL", expr)
 		local index = Ct("SAFE_INDEX", P"[" * expr * P"]" * P"?") + Ct("INDEX", P"[" * expr * P"]")
 		local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
@@ -477,7 +478,7 @@ return function (plume)
 
 			commandStd =  _if + _while + _for + _break + continue + macro
 						  + _do + block + let + set + leave + inlinetable
-						  + expand + use + raw + with,
+						  + expand + use + raw + with + lineeval,
 			-- Only at line start
 			commandLB = listitem + hashitem,
 
