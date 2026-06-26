@@ -181,7 +181,7 @@ return function (plume, context, nodeHandlerTable)
 		local macro = context.getLast "macros"
 
 		if macro then
-			macro.scopeToClose = #context.scopes - macro.scopeDeep - 1
+			macro.scopeToClose = #context.scopes - macro.scopeDeep
 			context.safeClose(node, macro)
 		end
 

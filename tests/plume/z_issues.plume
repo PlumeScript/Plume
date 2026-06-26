@@ -1324,3 +1324,18 @@ let t = (1, 2, 3)
 $Table.sort($t, compare: $comp)
 /// Output
 /// End
+
+/// Test #906
+macro wing()
+    for i in seq(5)
+        leave
+    end
+end
+
+macro nib()
+    $wing()
+end
+
+$nib()
+/// Output
+/// End
