@@ -1339,3 +1339,8 @@ end
 $nib()
 /// Output
 /// End
+
+/// Test #908
+leave
+/// Output
+/// End

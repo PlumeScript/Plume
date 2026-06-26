@@ -189,7 +189,7 @@ return function (plume, context, nodeHandlerTable)
 		if uid then
 			context.registerGoto(node, "macro_body_end_" .. uid)
 		else
-			context.registerOP(node, plume.ops.END, 0, 0) -- waiting for file rewrite
+			context.registerGoto(node, "macro_end")
 		end
 	end
 end
