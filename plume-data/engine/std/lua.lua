@@ -105,7 +105,7 @@ plume.std.Map.meta = plume.obj.quickTable{
 
 plume.std.lua = plume.obj.table(0, 0)
 
-plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
+plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, runtime, fileID)
 	local firstFilename = runtime.files[1].name
 	local lastFilename  = runtime.files[fileID].name
 
@@ -116,7 +116,7 @@ plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runt
 		local msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
 		return false, msg
 	end
-end)
+end))
 
 plume.std.attempt = plume.obj.table(0, 0)
 
