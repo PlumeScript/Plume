@@ -220,7 +220,7 @@ return function(plume)
 	
 	plume.std.lua = plume.obj.table(0, 0)
 	
-	plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
+	plume.std.lua.table.require =  plume.obj.luaMacro("require", function (args, runtime, fileID)
 		local firstFilename = runtime.files[1].name
 		local lastFilename  = runtime.files[fileID].name
 	
@@ -237,6 +237,27 @@ return function(plume)
 	
 	plume.std.Context = plume.obj.luaMacro("Context", function(args)
 		return true, plume.obj.context(args.table[1])
+	end)
+	
+	-- Basic implementation, prone to memory leaks
+	plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+		local __name      = "require"
+		local __signature = "`$require(string code, [string filename], ?safe)`"
+		local __s, __e, self, code, filename
+		__s, __e, code, filename = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
+		local safe
+		if __s then __s, __e, self, safe = plume.stdUnpackNamed(args, {"self", "safe"}, __name, __signature) end
+		safe = safe or false
+		if __s and code then __s, __e, code = plume.stdCheckType(code, "string", "1", __name, __signature) end
+		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "2", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		local success, result = plume.executeString(code, filename or "<string>", runtime)
+		if safe then
+			return true, plume.obj.quickTable({success=success, result=result})
+		else
+			return success, result
+		end
 	end)
 	
 	plume.std.Math = plume.obj.quickTable{

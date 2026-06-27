@@ -14,6 +14,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `min(...numbers)`
 *   `max(...numbers)`
 *   `attempt(macro, ...macroArgs)`: safe call.
+*   `eval(code[, filename], ?safe)`: execute the given plume code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error.
 
 ### Table Manipulation
 

@@ -123,3 +123,14 @@ plume.std.attempt = plume.obj.table(0, 0)
 plume.std.Context = plume.obj.luaMacro("Context", function(args)
 	return true, plume.obj.context(args.table[1])
 end)
+
+-- Basic implementation, prone to memory leaks
+plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+	--!signature string code, [string filename], ?safe
+	local success, result = plume.executeString(code, filename or "<string>", runtime)
+	if safe then
+		return true, plume.obj.quickTable({success=success, result=result})
+	else
+		return success, result
+	end
+end)
