@@ -75,7 +75,7 @@ return function (plume, context, nodeHandlerTable)
 			--- Used to prevent break inside a macro inside a loop
 			local lastLoop = context.getLast "loops"
 			if lastLoop then
-				lastLoop.insideMacro = true
+				lastLoop.insideMacro = lastLoop.insideMacro+1
 			end
 
 			-------------------------------------------------------------
@@ -166,7 +166,7 @@ return function (plume, context, nodeHandlerTable)
 			context.leaveScope(nil)
 
 			if lastLoop then
-				lastLoop.insideMacro = false
+				lastLoop.insideMacro = lastLoop.insideMacro-1
 			end
 			
 		end) ()

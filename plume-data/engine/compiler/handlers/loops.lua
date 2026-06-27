@@ -24,7 +24,8 @@ return function (plume, context, nodeHandlerTable)
 			begin_label    = "while_begin_"..uid,
 			end_label      = "while_end_"..uid,
 			contextToClose = 0,
-			scopeToClose   = 0
+			scopeToClose   = 0,
+			insideMacro    = 0
 		})
 
 		local lets = context.countLocals(body)
@@ -75,7 +76,8 @@ return function (plume, context, nodeHandlerTable)
 					end_label      = "for_end_"..uid,
 					leave          = true,
 					contextToClose = 0,
-					scopeToClose   = 0
+					scopeToClose   = 0,
+					insideMacro    = 0
 				})
 
 				context.childrenHandler(mainBody)
@@ -93,7 +95,7 @@ return function (plume, context, nodeHandlerTable)
 	-----------------------------------------------------------	
 	nodeHandlerTable.CONTINUE = function(node)
 		local loop = context.getLast 'loops'
-		if not loop or loop.insideMacro then
+		if not loop or loop.insideMacro>0 then
 			plume.error.cannotUseContinueOutsideLoop(node)
 		end
 		context.safeClose(node, loop)
@@ -101,7 +103,7 @@ return function (plume, context, nodeHandlerTable)
 	end
 	nodeHandlerTable.BREAK = function(node)
 		local loop = context.getLast 'loops'
-		if not loop or loop.insideMacro then
+		if not loop or loop.insideMacro>0 then
 			plume.error.cannotUseBreakOutsideLoop(node)
 		end
 		context.safeClose(node, loop, loop.leave)
