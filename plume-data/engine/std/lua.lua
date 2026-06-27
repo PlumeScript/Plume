@@ -129,7 +129,10 @@ plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
 	--!signature string code, [string filename], ?safe
 	local success, result = plume.executeString(code, filename or "<string>", runtime)
 	if safe then
-		return true, plume.obj.quickTable({success=success, result=result})
+		local safeResult = plume.obj.table(0, 2)
+		safeResult:setItem("success", success)
+		safeResult:setItem("result", result)
+		return true, safeResult
 	else
 		return success, result
 	end
