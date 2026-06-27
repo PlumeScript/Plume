@@ -24,5 +24,12 @@ plume.std.os = plume.obj.quickTable {
 			return r
 		end)
 		return success, result
+	end),
+
+	sleep = plume.obj.luaMacro("sleep", function (args)
+		--!signature number duration
+		local t = os.clock()
+		while os.clock() - t < duration do end
+		return true
 	end)
 }

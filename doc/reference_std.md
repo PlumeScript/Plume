@@ -158,8 +158,11 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 
 > **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
 
-#### File system
+#### System
 
+*   `os.sleep(duration)`: sleep for `duration` (in seconds).
+
+##### Path
 **Creation**
 *   `os.Path([path])`: Return a `Path` table. Without `path` args, return the current directory.
 
