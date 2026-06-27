@@ -242,81 +242,120 @@ return function(plume)
 	plume.std.Math = plume.obj.quickTable{
 		sin = plume.obj.luaMacro("sin", function (args)
 			local __name      = "sin"
-			local __signature = "`$sin(number x)`"
+			local __signature = "`$sin(number x, ?deg)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if deg then
+				x = x * math.pi / 180
+			end
 			return true, math.sin(x)
 		end),
 		cos = plume.obj.luaMacro("cos", function (args)
 			local __name      = "cos"
-			local __signature = "`$cos(number x)`"
+			local __signature = "`$cos(number x, ?deg)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if deg then
+				x = x * math.pi / 180
+			end
 			return true, math.cos(x)
 		end),
 		tan = plume.obj.luaMacro("tan", function (args)
 			local __name      = "tan"
-			local __signature = "`$tan(number x)`"
+			local __signature = "`$tan(number x, ?deg)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if deg then
+				x = x * math.pi / 180
+			end
 			return true, math.tan(x)
 		end),
 		asin =  plume.obj.luaMacro("asin", function (args)
 			local __name      = "asin"
-			local __signature = "`$asin(number x)`"
+			local __signature = "`$asin(number x, ?deg)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.asin(x)
+			local result = math.asin(x)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		acos =  plume.obj.luaMacro("acos", function (args)
 			local __name      = "acos"
-			local __signature = "`$acos(number x)`"
+			local __signature = "`$acos(number x, ?deg)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.acos(x)
+			local result =  math.acos(x)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		atan =  plume.obj.luaMacro("atan", function (args)
 			local __name      = "atan"
-			local __signature = "`$atan(number x)`"
+			local __signature = "`$atan(number x, ?deg)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.atan(x)
+			local result = math.atan(x)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		atan2 =  plume.obj.luaMacro("atan2", function (args)
 			local __name      = "atan2"
-			local __signature = "`$atan2(number x, number y)`"
+			local __signature = "`$atan2(number x, number y, ?deg)`"
 			local __s, __e, self, x, y
 			__s, __e, x, y = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg
+			if __s then __s, __e, self, deg = plume.stdUnpackNamed(args, {"self", "deg"}, __name, __signature) end
+			deg = deg or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if __s and y then __s, __e, y = plume.stdCheckType(y, "number", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.atan2(x, y)
+			local result = math.atan2(x, y)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		sinh =  plume.obj.luaMacro("sinh", function (args)
 			local __name      = "sinh"

@@ -10,6 +10,12 @@ $Math.cos($Math.pi).round()
 -1
 /// End
 
+/// Test Math.cos 180 degrees
+$Math.cos(180, ?deg).round()
+/// Output
+-1
+/// End
+
 /// Test Math.sin zero
 $Math.sin(0).round()
 /// Output
@@ -18,6 +24,12 @@ $Math.sin(0).round()
 
 /// Test Math.sin pi half
 $Math.sin($(Math.pi / 2)).round()
+/// Output
+1
+/// End
+
+/// Test Math.sin 90 degrees
+$Math.sin(90, ?deg).round()
 /// Output
 1
 /// End
@@ -34,6 +46,12 @@ $Math.tan($(Math.pi / 4)).round()
 1
 /// End
 
+/// Test Math.tan 45 degrees
+$Math.tan(45, ?deg).round()
+/// Output
+1
+/// End
+
 /// Test Math.acos
 $Math.acos(1).round()
 /// Output
@@ -44,6 +62,12 @@ $Math.acos(1).round()
 $Math.acos(0).round(digit: 4)
 /// Output
 1.5708
+/// End
+
+/// Test Math.acos zero degrees
+$Math.acos(0, ?deg).round()
+/// Output
+90
 /// End
 
 /// Test Math.asin zero
@@ -58,6 +82,12 @@ $Math.asin(1).round(digit: 4)
 1.5708
 /// End
 
+/// Test Math.asin one degrees
+$Math.asin(1, ?deg).round()
+/// Output
+90
+/// End
+
 /// Test Math.atan zero
 $Math.atan(0).round()
 /// Output
@@ -70,11 +100,24 @@ $Math.atan(1).round(digit: 4)
 0.7854
 /// End
 
+/// Test Math.atan one degrees
+$Math.atan(1, ?deg).round()
+/// Output
+45
+/// End
+
 /// Test Math.atan2 diagonal
 $Math.atan2(1, 1).round(digit: 4)
 /// Output
 0.7854
 /// End
+
+/// Test Math.atan2 diagonal degrees
+$Math.atan2(1, 1, ?deg).round()
+/// Output
+45
+/// End
+
 
 /// Test Math.log one
 $Math.log(1).round()

@@ -102,13 +102,13 @@ _All trigonometry functions works in radians._
 
 #### Functions
 
-* `Math.cos(x)`
-* `Math.sin(x)`
-* `Math.tan(x)`
-* `Math.acos(x)`
-* `Math.asin(x)`
-* `Math.atan(x)`
-* `Math.atan2(x, y)`
+* `Math.cos(x, ?deg)`
+* `Math.sin(x, ?deg)`
+* `Math.tan(x, ?deg)`
+* `Math.acos(x, ?deg)`
+* `Math.asin(x, ?deg)`
+* `Math.atan(x, ?deg)`
+* `Math.atan2(x, y, ?deg)`
 * `Math.log(x)`
 * `Math.log10(x)`
 
