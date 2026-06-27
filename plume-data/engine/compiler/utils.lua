@@ -141,6 +141,9 @@ return function (plume, context)
 		if not obj then
 			return
 		end
+		for _, op in ipairs(obj.blockToClose or {}) do
+			context.registerOP(node, op)
+		end
 		for _ = 1, obj.contextToClose or 0 do
 			context.registerOP(node, plume.ops.POP_CONTEXT)
 		end

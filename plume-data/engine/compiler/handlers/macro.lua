@@ -46,6 +46,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.body = body
 		macroObj.doc  = doc
 		macroObj.contextToClose = 0
+		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
 		table.insert(context.macros, macroObj)
 
@@ -181,14 +182,16 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 
-		macro.scopeToClose = #context.scopes - macro.scopeDeep
-		context.safeClose(node, macro)
+		
 
 		if macro.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
 		elseif macro.body.type == "VALUE" then
 			plume.error.leaveInValueBlock(node)
 		end
+
+		macro.scopeToClose = #context.scopes - macro.scopeDeep
+		context.safeClose(node, macro)
 
 		local uid = macro and macro.uid
 		if uid then

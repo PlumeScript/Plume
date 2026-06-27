@@ -32,18 +32,29 @@ return function (plume, context)
         --- @param label|nil string Used to jump at block end, but before finalizer.
         --- @return nil
         return function (node, label)
+            local macro = context.getLast "macros"
+
             if node.type == "TEXT" then
                 context.accBlockDeep = context.accBlockDeep + 1
                 context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)  
                 
+                if macro then
+                    table.insert(macro.blockToClose, plume.ops.CONCAT_TEXT)
+                end
+
                 context.toggleConcatOn()
                 f(node)  
                 context.toggleConcatPop()
 
+                if macro then
+                    table.remove(macro.blockToClose)
+                end
+
+                context.registerOP(nil, plume.ops.CONCAT_TEXT, 0, 0)
                 if label then  
                     context.registerLabel(node, label)  
                 end  
-                context.registerOP(nil, plume.ops.CONCAT_TEXT, 0, 0)
+                
                 context.accBlockDeep = context.accBlockDeep - 1
             else  
                 -- More or less a TEXT block with 1 element.
@@ -61,14 +72,22 @@ return function (plume, context)
                     context.accTableInit(node)
                     context.accBlockDeep = context.accBlockDeep + 1
 
+                    if macro then
+                        table.insert(macro.blockToClose, plume.ops.CONCAT_TABLE)
+                    end
+
                     context.toggleConcatOff()
                     f(node)
                     context.toggleConcatPop()
 
+                    if macro then
+                        table.remove(macro.blockToClose)
+                    end
+                    context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                    
                     if label then  
                         context.registerLabel(node, label)  
-                    end  
-                    context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                    end
                     context.accBlockDeep = context.accBlockDeep - 1
                 -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
                 elseif node.type == "EMPTY" then
@@ -88,8 +107,7 @@ return function (plume, context)
                         end
                     end
                 end  
-            end  
-            
+            end
         end          
     end  
     

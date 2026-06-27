@@ -1270,3 +1270,19 @@ leave
 a$(1+1)
 /// Output
 /// End
+
+/// Test #912
+macro wing()
+    a
+    for i in seq(4)
+        if true
+            b
+            leave
+        end
+    end
+end
+
+$wing()
+/// Output
+ab
+/// End
