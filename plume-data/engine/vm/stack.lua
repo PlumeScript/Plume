@@ -44,7 +44,12 @@ end
 ---@param index integer The destination index.
 ---@param value any The value to store.
 --! inline  
-function _STACK_SET(vm, stack, index, value)  
+function _STACK_SET(vm, stack, index, value)
+	--! to-remove-begin
+    if index > stack.pointer then
+        _ERROR (vm, "[VM] add value to stack out of bounds.")
+    end
+    --! to-remove-end
 	stack[index] = value  
 end  
 
