@@ -119,6 +119,10 @@ local function makeSnippet(deep, flags)
 	end)
 end
 
+local ignoredErrors = {
+	["SYNTAX ERROR: Cannot use `leave` in a value block. (i) `leave` is designed to stop accumulation, but this macro returns a single value. You should instead, use an `if` with an empty branch."] = true
+}
+
 local function runFuzzer(plume)
 	local errors = {}
 	local errorCount = 0
@@ -129,11 +133,13 @@ local function runFuzzer(plume)
 			local success, result = plume.executeString(snippet, "test.plume")
 			if not success then
 				local error = result:match('^(.-)\ntest%.plume') or result
-				if not errors[error] then
-					errorCount = errorCount + 1
-				end
-				if not errors[error] or #errors[error] > #snippet then
-					errors[error] = snippet
+				if not ignoredErrors[error] then
+					if not errors[error] then
+						errorCount = errorCount + 1
+					end
+					if not errors[error] or #errors[error] > #snippet then
+						errors[error] = snippet
+					end
 				end
 			end
 		end
