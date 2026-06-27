@@ -47,6 +47,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.doc  = doc
 		macroObj.insideRaise = 0
 		macroObj.insideLetset = 0
+		macroObj.insideCall = 0
 		macroObj.contextToClose = 0
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
@@ -195,6 +196,9 @@ return function (plume, context, nodeHandlerTable)
 		end
 		if macro.insideLetset>0 then
 			plume.error.cannotUseLeaveInsideLetset(node)
+		end
+		if macro.insideCall>0 then
+			plume.error.cannotUseLeaveInsideCall(node)
 		end
 
 		macro.scopeToClose = #context.scopes - macro.scopeDeep
