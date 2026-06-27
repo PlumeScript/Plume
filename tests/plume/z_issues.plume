@@ -692,7 +692,7 @@ with ($plume.locale: none)
     $(A+B)
 end
 /// Output
-(x: 14, y: 1)
+(x: 8, y: 1)
 /// End
 
 /// Test #573
