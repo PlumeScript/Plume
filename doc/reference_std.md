@@ -60,7 +60,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 *  `upper(s)`: Converts all characters in the string to uppercase.
 *  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. sub can be a `string`, or a macro that take one `match` parameter and return a `string`.
 *  `rep(s, count, sep:)`: Repeat the string `count`, separate with `sep` if provided.
-*  `sub(s, start, end)`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end.
+*  `sub(s, start[, end])`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end. If `end` isn't provided, it take the value of `start`.
 
 #### Search
 * `find(s, pattern, ?rich)`: Returns the first match, or empty if not found.

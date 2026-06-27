@@ -1599,15 +1599,18 @@ return function(plume)
 		sub = plume.obj.luaMacro("sub", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
 			local __name      = "sub"
-			local __signature = "`$sub(string s, number startpos, number endpos)`"
+			local __signature = "`$sub(string s, number startpos, [number endpos])`"
 			local __s, __e, self, s, startpos, endpos
-			__s, __e, s, startpos, endpos = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+			__s, __e, s, startpos, endpos = plume.stdUnpackPositional(args, 2, 3,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and s then __s, __e, s = plume.stdCheckType(s, "string", "1", __name, __signature) end
 			if __s and startpos then __s, __e, startpos = plume.stdCheckType(startpos, "number", "2", __name, __signature) end
 			if __s and endpos then __s, __e, endpos = plume.stdCheckType(endpos, "number", "3", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if not endpos then
+				endpos = startpos
+			end
 			return true, s:sub(startpos, endpos)
 		end)
 	}

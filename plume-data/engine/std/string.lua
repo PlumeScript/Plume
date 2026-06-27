@@ -280,7 +280,10 @@ plume.std.String = plume.obj.quickTable {
 
 	sub = plume.obj.luaMacro("sub", function (args)
 		--!override-self-plume.std.String
-		--!signature string s, number startpos, number endpos
+		--!signature string s, number startpos, [number endpos]
+		if not endpos then
+			endpos = startpos
+		end
 		return true, s:sub(startpos, endpos)
 	end)
 }

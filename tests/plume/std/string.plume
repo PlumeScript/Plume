@@ -118,6 +118,20 @@ $x.sub(2, -1)
 Bc
 /// End
 
+/// Test sub 3
+let x = aBc
+$x.sub(2)
+/// Output
+B
+/// End
+
+/// Test sub 4
+let x = aBc
+$x.sub(-1)
+/// Output
+c
+/// End
+
 /// Test find
 let x = aBc
 $x.find(B)
