@@ -98,7 +98,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 
 ### Math
 
-_All trigonometry functions works in radians, except if `?deg` flag is provided. `?rad` flag hasn't any effect. `?deg` and `?rad` flag can be provided together._
+_All trigonometry functions works in radians, except if `?deg` flag is provided. `?rad` flag hasn't any effect. `?deg` and `?rad` flag can't be provided together._
 
 #### Functions
 
