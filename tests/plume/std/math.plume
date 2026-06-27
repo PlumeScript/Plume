@@ -118,6 +118,28 @@ $Math.atan2(1, 1, ?deg).round()
 45
 /// End
 
+/// Test rad flag
+let r = $Random()
+let angle = $r()
+$(Math.cos(angle) == $Math.cos(angle, ?rad))
+/// Output
+true
+/// End
+
+/// Test both rad and deg flags
+$Math.cos(0, ?deg, ?rad)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot use `?deg` and `?rad` flags together.                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$Math.cos(0, ?deg, ?rad)                                                 │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
 
 /// Test Math.log one
 $Math.log(1).round()

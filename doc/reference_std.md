@@ -98,17 +98,17 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 
 ### Math
 
-_All trigonometry functions works in radians._
+_All trigonometry functions works in radians, except if `?deg` flag is provided. `?rad` flag hasn't any effect. `?deg` and `?rad` flag can be provided together._
 
 #### Functions
 
-* `Math.cos(x, ?deg)`
-* `Math.sin(x, ?deg)`
-* `Math.tan(x, ?deg)`
-* `Math.acos(x, ?deg)`
-* `Math.asin(x, ?deg)`
-* `Math.atan(x, ?deg)`
-* `Math.atan2(x, y, ?deg)`
+* `Math.cos(x, ?deg, ?rad)`
+* `Math.sin(x, ?deg, ?rad)`
+* `Math.tan(x, ?deg, ?rad)`
+* `Math.acos(x, ?deg, ?rad)`
+* `Math.asin(x, ?deg, ?rad)`
+* `Math.atan(x, ?deg, ?rad)`
+* `Math.atan2(x, y, ?deg, ?rad)`
 * `Math.log(x)`
 * `Math.log10(x)`
 
