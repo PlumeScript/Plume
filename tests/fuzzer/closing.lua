@@ -45,6 +45,13 @@ do
 	<body>
 end]],
 [[
+let <name> = do
+	<body>
+end]],
+[[
+let <name> = 1
+]],
+[[
 <body>
 <body>]]
 }
