@@ -1344,3 +1344,16 @@ $nib()
 leave
 /// Output
 /// End
+
+/// Test #909-1
+leave
+a
+/// Output
+empty
+/// End
+
+/// Test #909-2
+leave
+a$(1+1)
+/// Output
+/// End

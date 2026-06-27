@@ -183,6 +183,10 @@ return function (plume, context, nodeHandlerTable)
 		if macro then
 			macro.scopeToClose = #context.scopes - macro.scopeDeep
 			context.safeClose(node, macro)
+
+			if macro.node.type == "TEXT" then
+				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
+			end
 		end
 
 		local uid = macro and macro.uid
