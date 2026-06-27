@@ -225,4 +225,9 @@ return function(plume)
 		local message = "`$` outside evaluation must be escaped."
 		plume.error.throwSyntaxError(node, message)
 	end
+
+	function plume.error.leaveInValueBlock(node)
+		local message = "Cannot use `leave` in a value block.\n(i) `leave` is designed to stop accumulation,\nbut this macro returns a single value.\nYou should instead, use an `if` with an empty branch."
+		plume.error.throwSyntaxError(node, message)
+	end
 end

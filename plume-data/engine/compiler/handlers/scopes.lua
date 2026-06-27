@@ -9,7 +9,11 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.FILE = context.file(function(node)
 		local lets = context.countLocals(node)
 		context.enterScope(lets, true)
+
+		table.insert(context.macros, {isFile=true, node=node, body=node, scopeDeep=1, contextToClose=0})
 		context.accBlock()(node, "macro_end")
+		table.remove(context.macros)
+
 		context.leaveScope()
 	end)
 

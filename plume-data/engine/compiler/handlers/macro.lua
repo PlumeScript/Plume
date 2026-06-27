@@ -43,6 +43,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.uid = uid
 		macroObj.upvalueMap = {}
 		macroObj.node = node
+		macroObj.body = body
 		macroObj.doc  = doc
 		macroObj.contextToClose = 0
 		macroObj.scopeDeep = #context.scopes+1
@@ -180,13 +181,13 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 
-		if macro then
-			macro.scopeToClose = #context.scopes - macro.scopeDeep
-			context.safeClose(node, macro)
+		macro.scopeToClose = #context.scopes - macro.scopeDeep
+		context.safeClose(node, macro)
 
-			if macro.node.type == "TEXT" then
-				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
-			end
+		if macro.node.type == "TEXT" then
+			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
+		elseif macro.body.type == "VALUE" then
+			plume.error.leaveInValueBlock(node)
 		end
 
 		local uid = macro and macro.uid
