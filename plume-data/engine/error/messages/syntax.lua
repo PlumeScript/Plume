@@ -16,6 +16,21 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotUseBreakInsideRaise(node)
+		local message = "Cannot use break keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseContinueInsideRaise(node)
+		local message = "Cannot use continue keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseLeaveInsideRaise(node)
+		local message = "Cannot use leave keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.missingIterator(node)
 		local message = "Missing for iterator."
 		node.errlpos = 3 

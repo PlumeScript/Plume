@@ -45,6 +45,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.node = node
 		macroObj.body = body
 		macroObj.doc  = doc
+		macroObj.insideRaise = 0
 		macroObj.contextToClose = 0
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
@@ -182,12 +183,14 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 
-		
-
 		if macro.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
 		elseif macro.body.type == "VALUE" then
 			plume.error.leaveInValueBlock(node)
+		end
+
+		if macro.insideRaise>0 then
+			plume.error.cannotUseLeaveInsideRaise(node)
 		end
 
 		macro.scopeToClose = #context.scopes - macro.scopeDeep
