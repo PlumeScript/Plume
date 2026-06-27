@@ -12,6 +12,11 @@ end
 ]],
 [[if <bool>
 	<body>
+elseif <bool>
+end
+]],
+[[if <bool>
+	<body>
 else
 	<body>
 end
