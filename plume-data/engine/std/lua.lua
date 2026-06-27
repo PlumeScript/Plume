@@ -118,6 +118,32 @@ plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, ru
 	end
 end))
 
+plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args)
+	--!signature string code, [string filename], ?safe
+	local success, result = load(code, filename)
+
+	if success then
+		success, result = pcall(success)
+		if success then
+			local t = type(result)
+			if t == nil then
+				result = plume.obj.empty
+			elseif r ~= "string" and t ~= "number" then
+				return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
+			end
+		end
+	end
+	if safe then
+		local safeResult = plume.obj.table(0, 2)
+		safeResult:setItem("success", success)
+		safeResult:setItem("result", result)
+		return true, safeResult
+	else
+		return success, result
+	end
+end))
+
+
 plume.std.attempt = plume.obj.table(0, 0)
 
 plume.std.Context = plume.obj.luaMacro("Context", function(args)

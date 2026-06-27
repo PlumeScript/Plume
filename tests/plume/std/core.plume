@@ -167,3 +167,54 @@ $eval(\$(1+a), ?safe)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯)
 /// End
+
+/// Test lua.eval 1
+$lua.eval(return 1)
+/// Output
+1
+/// End
+
+/// Test lua.eval 2
+$lua.eval(return 1+1)
+/// Output
+2
+/// End
+
+/// Test lua.eval error 1
+$lua.eval(return 1+a)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a      │
+│   nil value)                                                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$lua.eval(return 1+a)                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test lua.eval error 2
+$lua.eval(return 1+a, ?safe)
+/// Output
+(success: false, result: [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a nil value))
+/// End
+
+/// Test lua.eval exotic
+$lua.eval(return function()end)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → The lua code returned  a 'function' object, that cannot be converted         │
+│   into Plume object.                                                           │
+│   (i) For now, only `string`, `number` and `nil` return are supported.         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$lua.eval(return function()end)                                          │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
