@@ -24,22 +24,18 @@ return function (plume, context, nodeHandlerTable)
 			begin_label    = "while_begin_"..uid,
 			end_label      = "while_end_"..uid,
 			contextToClose = 0,
-			scopeToClose   = 0
+			scopeToClose   = 0,
+			insideMacro    = 0,
+			insideRaise    = 0
 		})
 
 		local lets = context.countLocals(body)
-		if lets>0 then
-			context.enterScope(lets)
-		end
+		context.scope(function()
+			context.childrenHandler(body)
+		end, lets)(body)
 			
-		context.childrenHandler(body)
-
 		context.registerGoto(node, "while_begin_"..uid)
 		context.registerLabel(node, "while_end_"..uid)
-
-		if lets>0 then
-			context.leaveScope(true)
-		end
 
 		table.remove(context.loops)
 	end
@@ -58,11 +54,7 @@ return function (plume, context, nodeHandlerTable)
 
 		context.registerOP(node, plume.ops.GET_ITER) -- Get the iterator (meta method iter or default iterator)
 
-		-------------------------------------------------------
-		-- why don't use the wrapper context.scope()?
-		context.enterScope(3) -- iterator, state and flag
-		-------------------------------------------------------
-
+		context.scope(function()
 			context.registerOP(node, plume.ops.STORE_LOCAL, 0, 1) -- Save the iterator
 			context.registerOP(node, plume.ops.STORE_LOCAL, 0, 2) -- Save the state
 			context.registerOP(node, plume.ops.STORE_LOCAL, 0, 3) -- Save the flag
@@ -70,7 +62,7 @@ return function (plume, context, nodeHandlerTable)
 			context.registerLabel(node, "for_begin_"..uid)
 			context.registerGoto(node, "for_end_"..uid, "FOR_ITER", 1) -- Call iterator to get next(s) value(s)
 
-			context.scope(function(body)
+			context.scope(function()
 				context.affectation(node, varlist, nil,-- Store returned value(s) into var(s)
 					{
 						isLet = true,
@@ -85,21 +77,19 @@ return function (plume, context, nodeHandlerTable)
 					end_label      = "for_end_"..uid,
 					leave          = true,
 					contextToClose = 0,
-					scopeToClose   = 0
+					scopeToClose   = 0,
+					insideMacro    = 0,
+					insideRaise    = 0
 				})
 
-				context.childrenHandler(body)
+				context.childrenHandler(mainBody)
 				table.remove(context.loops)
 				context.registerLabel(node, "for_loop_end_"..uid)
 			end, #varlist.children)(mainBody)
 
 			context.registerGoto (node, "for_begin_"..uid)
 			context.registerLabel(node, "for_end_"..uid)
-		
-		-------------------------------------------------------
-		-- why don't use the wrapper context.scope()?
-		context.leaveScope(true)
-		-------------------------------------------------------	
+		end, 3)(mainBody)
 	end
 
 	-----------------------------------------------------------	
@@ -107,17 +97,25 @@ return function (plume, context, nodeHandlerTable)
 	-----------------------------------------------------------	
 	nodeHandlerTable.CONTINUE = function(node)
 		local loop = context.getLast 'loops'
-		if not loop or loop.insideMacro then
+		if not loop or loop.insideMacro>0 then
 			plume.error.cannotUseContinueOutsideLoop(node)
 		end
+		if loop.insideRaise>0 then
+			plume.error.cannotUseContinueInsideRaise(node)
+		end
+
 		context.safeClose(node, loop)
 		context.registerGoto (node, loop.begin_label)
 	end
 	nodeHandlerTable.BREAK = function(node)
 		local loop = context.getLast 'loops'
-		if not loop or loop.insideMacro then
+		if not loop or loop.insideMacro>0 then
 			plume.error.cannotUseBreakOutsideLoop(node)
 		end
+		if loop.insideRaise>0 then
+			plume.error.cannotUseBreakInsideRaise(node)
+		end
+
 		context.safeClose(node, loop, loop.leave)
 		context.registerGoto (node, loop.end_label)
 	end

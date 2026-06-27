@@ -9,7 +9,11 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.FILE = context.file(function(node)
 		local lets = context.countLocals(node)
 		context.enterScope(lets, true)
+
+		table.insert(context.macros, {isFile=true, node=node, body=node, scopeDeep=1, contextToClose=0, blockToClose={}, insideRaise=0, insideLetset=0, insideCall=0})
 		context.accBlock()(node, "macro_end")
+		table.remove(context.macros)
+
 		context.leaveScope()
 	end)
 
@@ -69,12 +73,26 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.RAISE = function(node)
+		local macro = context.getLast "macros"
+		local loop  = context.getLast "loops"
+
+		if loop then
+			loop.insideRaise = loop.insideRaise+1
+		end
+		if macro then
+			macro.insideRaise = macro.insideRaise+1
+		end
+
 		context.accBlock(function(node)
 			context.childrenHandler(node)
 		end)(node)
-
-		local macro = context.getLast "macros"
-		local loop  = context.getLast "loops"
+		if loop then
+			loop.insideRaise = loop.insideRaise-1
+		end
+		if macro then
+			macro.insideRaise = macro.insideRaise-1
+		end
+		
 		context.safeClose(node, macro)
 		context.safeClose(node, loop, loop and loop.leave)
 		

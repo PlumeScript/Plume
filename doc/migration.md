@@ -1,3 +1,8 @@
+# Owl -> Raven
+
+## Add an error when using non-escaped `$` #900
+Escape all non-eval `$`: `\$`
+
 # Sparrow -> Owl
 
 ## `#649` remove all `lua.*` tables and macros

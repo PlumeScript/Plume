@@ -67,10 +67,17 @@ return function (plume, context)
 	function context.countLocals(node)
 		local lets      = plume.ast.getAll(node, "LET") 
 		local hashItems = plume.ast.getAll(node, "HASH_ITEM")
-
+		local withs     = plume.ast.getAll(node, "WITH")
+		
 		local count = #plume.ast.getAll(node, "MACRO")
 		for _, let in ipairs(lets) do
 			count = count + #plume.ast.get(let, "VARLIST").children
+		end
+		for _, with in ipairs(withs) do
+			if with ~= node then
+				local body = plume.ast.get(with, "BODY")
+				count = count + context.countLocals(body)
+			end
 		end
 		for _, hashItem in ipairs(hashItems) do
 			if plume.ast.get(hashItem, "REF") then
@@ -140,6 +147,9 @@ return function (plume, context)
 	function context.safeClose(node, obj, leave)
 		if not obj then
 			return
+		end
+		for _, op in ipairs(obj.blockToClose or {}) do
+			context.registerOP(node, op)
 		end
 		for _ = 1, obj.contextToClose or 0 do
 			context.registerOP(node, plume.ops.POP_CONTEXT)

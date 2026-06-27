@@ -135,8 +135,9 @@ return function (plume)
 		return result
 	end
 
+	-- It needs to be completely rewritten; it's completely impossible to maintain at this point.
 	function plume.ast.markType(node, parentLastNode)
-		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF")
+		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
 
 		if node.parent and (
 			   node.name == "FOR"

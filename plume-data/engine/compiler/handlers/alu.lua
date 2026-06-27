@@ -18,6 +18,11 @@ return function (plume, context, nodeHandlerTable)
 		local argList = plume.ast.get(node, "CALL")
 		local body    = plume.ast.get(node, "BODY")
 
+		local macro = context.getLast "macros"
+		if macro then
+			macro.insideCall = macro.insideCall + 1
+		end
+
 		-- Body has it's own scope
 		context.scope(function()
 			if argList then
@@ -30,6 +35,10 @@ return function (plume, context, nodeHandlerTable)
 				context.accBlock()(body)
 			end
 		end)(body)
+
+		if macro then
+			macro.insideCall = macro.insideCall - 1
+		end
 	end
 
 	--- Handle evaluation node: computations, calls and indexes  

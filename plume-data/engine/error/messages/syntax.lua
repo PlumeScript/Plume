@@ -16,6 +16,31 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotUseBreakInsideRaise(node)
+		local message = "Cannot use break keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseContinueInsideRaise(node)
+		local message = "Cannot use continue keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseLeaveInsideRaise(node)
+		local message = "Cannot use leave keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseLeaveInsideLetset(node)
+		local message = "Cannot use leave keyword inside an affectation."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseLeaveInsideCall(node)
+		local message = "Cannot use leave keyword inside a call."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.missingIterator(node)
 		local message = "Missing for iterator."
 		node.errlpos = 3 
@@ -218,6 +243,16 @@ return function(plume)
 
 	function plume.error.cannotUseRef(node)
 		local message = "Cannot use `ref` inside inline table or inline macro call."
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.nonEscapedEvalMark(node)
+		local message = "`$` outside evaluation must be escaped."
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.leaveInValueBlock(node)
+		local message = "Cannot use `leave` in a value block.\n(i) `leave` is designed to stop accumulation,\nbut this macro returns a single value.\nYou should instead, use an `if` with an empty branch."
 		plume.error.throwSyntaxError(node, message)
 	end
 end

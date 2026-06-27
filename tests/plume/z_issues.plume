@@ -692,7 +692,7 @@ with ($plume.locale: none)
     $(A+B)
 end
 /// Output
-(x: 14, y: 1)
+(x: 8, y: 1)
 /// End
 
 /// Test #573
@@ -1041,24 +1041,6 @@ a
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-
-/// Test #847
-let a = $Context(a)
-
-macro Wing()
-    with ($a: b)
-        $a()
-        leave
-    end
-end
-
-$a()
-$Wing()
-$a()
-/// Output
-aba
-/// End
-
 /// Test #853-1
 let a = $Context(a)
 
@@ -1185,26 +1167,6 @@ $i
 6
 /// End
 
-/// Test #857
-let a = $Context(a)
-
-
-macro Wing()
-    while true
-        with ($a: b)
-            $a()
-            break
-        end
-    end
-    leave
-end
-$a()
-$Wing()
-$a()
-/// Output
-aba
-/// End
-
 /// Test #862
 let a = $Context(a)
 
@@ -1238,48 +1200,6 @@ $x: (5, 2, 3)
 
 /// Output
 (a: (5, 2, 3))
-/// End
-
-/// Test #875-1
-macro wing()
-    a
-    for i in seq(2)
-        leave
-    end
-end
-$wing()
-/// Output
-a
-/// End
-
-/// Test #875-2
-macro wing()
-    a
-    for i in seq(2)
-        if true
-            leave
-        end
-    end
-end
-$wing()
-/// Output
-a
-/// End
-
-/// Test #875-3
-if true
-    macro wing()
-        a
-        for i in seq(2)
-            if true
-                leave
-            end
-        end
-    end
-    $wing()
-end
-/// Output
-a
 /// End
 
 /// Test #876-1
@@ -1323,4 +1243,81 @@ end
 let t = (1, 2, 3)
 $Table.sort($t, compare: $comp)
 /// Output
+/// End
+
+/// Test #906
+macro wing()
+    for i in seq(5)
+        leave
+    end
+end
+
+macro nib()
+    $wing()
+end
+
+$nib()
+/// Output
+/// End
+
+/// Test #908
+leave
+/// Output
+/// End
+
+/// Test #909
+leave
+a$(1+1)
+/// Output
+/// End
+
+/// Test #912
+macro wing()
+    a
+    for i in seq(4)
+        if true
+            b
+            leave
+        end
+    end
+end
+
+$wing()
+/// Output
+ab
+/// End
+
+/// Test #920
+for i in seq(3)
+    macro wing()
+        macro nib()
+        end
+        break
+    end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword outside a loop.                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │macro wing()                                                             │
+│    4 │    end                                                                  │
+│    5 │    break                                                                │
+│      │    ^^^^^                                                                │
+│    6 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #922
+if false
+    
+else
+    a
+    a
+end
+/// Output
+aa
 /// End

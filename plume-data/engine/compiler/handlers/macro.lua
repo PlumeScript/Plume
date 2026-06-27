@@ -43,8 +43,13 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.uid = uid
 		macroObj.upvalueMap = {}
 		macroObj.node = node
+		macroObj.body = body
 		macroObj.doc  = doc
+		macroObj.insideRaise = 0
+		macroObj.insideLetset = 0
+		macroObj.insideCall = 0
 		macroObj.contextToClose = 0
+		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
 		table.insert(context.macros, macroObj)
 
@@ -73,7 +78,7 @@ return function (plume, context, nodeHandlerTable)
 			--- Used to prevent break inside a macro inside a loop
 			local lastLoop = context.getLast "loops"
 			if lastLoop then
-				lastLoop.insideMacro = true
+				lastLoop.insideMacro = lastLoop.insideMacro+1
 			end
 
 			-------------------------------------------------------------
@@ -164,7 +169,7 @@ return function (plume, context, nodeHandlerTable)
 			context.leaveScope(nil)
 
 			if lastLoop then
-				lastLoop.insideMacro = false
+				lastLoop.insideMacro = lastLoop.insideMacro-1
 			end
 			
 		end) ()
@@ -180,16 +185,30 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 
-		if macro then
-			macro.scopeToClose = #context.scopes - macro.scopeDeep - 1
-			context.safeClose(node, macro)
+		if macro.node.type == "TEXT" then
+			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
+		elseif macro.body.type == "VALUE" then
+			plume.error.leaveInValueBlock(node)
 		end
+
+		if macro.insideRaise>0 then
+			plume.error.cannotUseLeaveInsideRaise(node)
+		end
+		if macro.insideLetset>0 then
+			plume.error.cannotUseLeaveInsideLetset(node)
+		end
+		if macro.insideCall>0 then
+			plume.error.cannotUseLeaveInsideCall(node)
+		end
+
+		macro.scopeToClose = #context.scopes - macro.scopeDeep
+		context.safeClose(node, macro)
 
 		local uid = macro and macro.uid
 		if uid then
 			context.registerGoto(node, "macro_body_end_" .. uid)
 		else
-			context.registerOP(node, plume.ops.END, 0, 0) -- waiting for file rewrite
+			context.registerGoto(node, "macro_end")
 		end
 	end
 end

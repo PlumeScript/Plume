@@ -129,6 +129,7 @@ let t = do
 end
 
 macro index(t, y)
+  Search...\n
   for i in seq(1, len(t))
     if t[i] == y
       $i
@@ -139,6 +140,7 @@ end
 
 $index($t, red)
 /// Output
+Search...
 2
 /// End
 

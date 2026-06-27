@@ -243,3 +243,58 @@ $("\a")
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test Line eval 1
+use #future(lineEval)
+$ 1+1
+/// Output
+2
+/// End
+
+/// Test Line eval 2
+use #future(lineEval)
+let x = 1
+macro wing()
+    set x += 1
+end
+
+run $ wing()
+$x
+/// Output
+2
+/// End
+
+/// Test Line eval 3
+use #future(lineEval)
+let x = $ 1+1
+$x
+/// Output
+2
+/// End
+
+/// Test Line eval 4
+use #future(lineEval)
+- $ 1+1
+/// Output
+$Table(2)
+/// End
+
+/// Test leave in value block
+leave
+a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Cannot use `leave` in a value block.                                         │
+│   (i) `leave` is designed to stop accumulation,                                │
+│   but this macro returns a single value.                                       │
+│   You should instead, use an `if` with an empty branch.                        │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │leave                                                                    │
+│      │^^^^^                                                                    │
+│    2 │a                                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

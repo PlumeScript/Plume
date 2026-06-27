@@ -160,10 +160,13 @@ return function (plume, context, nodeHandlerTable)
 
 		future = {
 			checkArgs = {
-				importCache  = {true}
+				importCache  = {true},
+				lineEval     = {true},
+				raven        = {true},
+				all          = {true}
 			},
 			method = function(node, args)
-				if args.importCache then
+				if args.importCache or args.raven or args.all then
 					context.chunk.futureFlagImportCache = true
 				end
 			end
