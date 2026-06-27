@@ -352,6 +352,11 @@ return function (plume, context, nodeHandlerTable)
 		local nodevarlist = plume.ast.get(node, "VARLIST")
 		local body        = plume.ast.get(node, "BODY")
 
+		local macro = context.getLast "macros"
+		if macro then
+			macro.insideLetset = macro.insideLetset + 1
+		end
+
 		context.affectation(node, nodevarlist, body, {
 			isLet=isLet,
 			isConst=isConst,
@@ -360,6 +365,10 @@ return function (plume, context, nodeHandlerTable)
 			compound=compound,
 			isContext=isContext
 		})
+
+		if macro then
+			macro.insideLetset = macro.insideLetset - 1
+		end
 	end
 
 	--- Entry point for declarations (LET)
