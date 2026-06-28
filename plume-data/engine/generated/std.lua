@@ -760,20 +760,6 @@ return function(plume)
 				return r
 			end)
 			return success, result
-		end),
-	
-		sleep = plume.obj.luaMacro("sleep", function (args)
-			local __name      = "sleep"
-			local __signature = "`$sleep(number duration)`"
-			local __s, __e, self, duration
-			__s, __e, duration = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s and duration then __s, __e, duration = plume.stdCheckType(duration, "number", "1", __name, __signature) end
-			if not __s then return false, __e end
-			------------
-			local t = os.clock()
-			while os.clock() - t < duration do end
-			return true
 		end)
 	}
 	

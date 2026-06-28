@@ -166,8 +166,6 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 
 #### System
 
-*   `os.sleep(duration)`: sleep for `duration` (in seconds).
-
 ##### Path
 **Creation**
 *   `os.Path([path])`: Return a `Path` table. Without `path` args, return the current directory.
