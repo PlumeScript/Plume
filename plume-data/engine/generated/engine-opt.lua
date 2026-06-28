@@ -698,7 +698,7 @@ return function (plume)
                                                     end
                                                 end
                                             end
-                                            if not msetindex then
+                                            if not msetindex and not mreadonly then
                                                 t:setItem (key, value)
                                             end
                                         end

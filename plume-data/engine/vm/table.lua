@@ -200,7 +200,7 @@ function TABLE_SET (vm, arg1, arg2)
         end
     end
 
-    if not msetindex then
+    if not msetindex and not mreadonly then
         t:setItem(key, value)
     end
 end
