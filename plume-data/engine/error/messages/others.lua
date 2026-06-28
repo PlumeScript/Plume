@@ -20,7 +20,12 @@ return function(plume)
 
 	function plume.error.unregisteredKey(t, key)
 		local index = tonumber(key)
-		if index and math.floor(index) == index then
+		if index and math.floor(index) == index and index ~= 0 then
+			if index < 0 then
+				hint = string.format("To count from the end, use `$t[len(t)%s+1]` or `Table.at($t, %s)`.", key, key)
+				return string.format("Unregistered key '%s'.\n(i) %s",  key, hint)
+			end
+
 			local largestIndex = 0
 			for _, testkey in ipairs(t.keys) do
 				largestIndex = math.max(largestIndex, tonumber(testkey) or 0)
