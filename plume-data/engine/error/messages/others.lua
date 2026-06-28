@@ -66,4 +66,8 @@ return function(plume)
 
 		return string.format("Cannot use a '%s' as contextual variable. Use `$Context()` to create one.", t)
 	end
+
+	function plume.error.cannotSetIndexReadonlyTable()
+		return "Cannot set index of a readonly table."
+	end
 end

@@ -170,9 +170,13 @@ function TABLE_SET (vm, arg1, arg2)
         key   = _STACK_POP(vm, vm.mainStack)
         value = _STACK_POP(vm, vm.mainStack)
     end
+    local mreadonly = t:getMetaItem("readonly")
     local msetindex
     key = tonumber(key) or key
-    if not t.table[key] then
+
+    if mreadonly then
+        _ERROR(vm, vm.plume.error.cannotSetIndexReadonlyTable())
+    elseif not t.table[key] then
         msetindex = t:getMetaItem("setindex")
         if msetindex then
             -- for preventing infinite loop with next TABLE_SET

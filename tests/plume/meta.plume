@@ -285,3 +285,16 @@ $t.quill
 /// Output
 005
 /// End
+
+/// Test readonly
+let t = do
+  meta readonly: $true
+  wing: red
+end
+
+let m = $Table.getMeta($t)
+set m.readonly = $false
+
+set t.wing = blue
+/// Result
+/// End
