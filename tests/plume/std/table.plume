@@ -104,6 +104,24 @@ $t
 (5, 4, 2, 1, a: b)
 /// End
 
+/// Test sort wrong type
+let t = ($Math.sin, $Math.cos)
+run $Table.sort($t)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Table element #1 type is 'luaMacro' instead of 'number',                     │
+│   and therefore cannot be sorted.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = ($Math.sin, $Math.cos)                                           │
+│    2 │run $Table.sort($t)                                                      │
+│      │     ^^^^^^^^^^^^^^                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test append
 let t = (1, 2, 5, 4, a: b)
 run $Table.append($t, 5)

@@ -199,6 +199,14 @@ plume.std.Table = plume.obj.quickTable{
 
 	sort = plume.obj.luaMacro("sort", function(args)
 		--!signature table t, macro compare:
+
+		for i, x in ipairs(t.table) do
+			local _type = type(x) == "table" and x.type or type(x)
+			if _type ~= "number" or not tonumber(x) then
+				return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+			end
+		end
+
 		if compare and #t.table > 1 then
 			-- In case of closure - we should have an api for that
 			local positionalParamCount = compare.positionalParamCount or compare.macro.positionalParamCount
