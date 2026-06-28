@@ -15,10 +15,8 @@ plume.std.print = plume.obj.luaMacro("print", function(args)
 end)
 
 plume.std.help = plume.obj.luaMacro("help", function (args)
-	--!signature macro macro
-	local name = macro.debugMacroName or macro.name
-	local doc = macro.doc or ""
-	print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
+	--!signature macro|table m
+	print(plume.makedoc(m))
 	return true
 end)
 

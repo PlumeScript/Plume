@@ -47,16 +47,19 @@ return function(plume)
 	
 	plume.std.help = plume.obj.luaMacro("help", function (args)
 		local __name      = "print"
-		local __signature = "`$print(macro macro)`"
-		local __s, __e, self, macro
-		__s, __e, macro = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		local __signature = "`$print(macro|table m)`"
+		local __s, __e, self, m
+		__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-		if __s and macro then __s, __e, macro = plume.stdCheckType(macro, "macro", "1", __name, __signature) end
+		if __s and m then
+			__s, __e, m = plume.stdCheckType(m, "macro", "1", __name, __signature)
+			if not __s then
+				__s, __e, m = plume.stdCheckType(m, "table", "1", __name, __signature)
+			end
+		end
 		if not __s then return false, __e end
 		------------
-		local name = macro.debugMacroName or macro.name
-		local doc = macro.doc or ""
-		print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
+		print(plume.makedoc(m))
 		return true
 	end)
 	
@@ -1137,6 +1140,10 @@ return function(plume)
 	-- plume.std.plume isn't loaded like other std table,
 	-- but copied at runtime creation
 	
+	function plume.makedoc(m)
+		return m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
+	end
+	
 	plume.std.plume = plume.obj.quickTable {
 		doc = plume.obj.luaMacro("doc", function (args)
 			local __name      = "doc"
@@ -1152,7 +1159,7 @@ return function(plume)
 			end
 			if not __s then return false, __e end
 			------------
-			return true, m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
+			return true, plume.makedoc(m)
 		end)
 	}
 	plume.std.plume.name = "plume"
