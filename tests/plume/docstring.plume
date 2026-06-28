@@ -56,3 +56,11 @@ $plume.doc($lib)
 table tests/plume/toimport/filedoc.plume
     This file do somethings
 /// End
+
+/// Test std
+// This is a table
+$plume.doc($String.lines)
+/// Output
+luaMacro lines
+    `lines(s)`: Splits the string into a slice of individual lines.
+/// End
