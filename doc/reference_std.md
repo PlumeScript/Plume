@@ -22,6 +22,9 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `Map(table)`: return a table with only map part. If used as validator, raise an error if table contains a array element.
 *   **`Table`**:
     *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
+    *   `Table.at(table, index)`: Table indexing, support negative index. Doesn't trigger `getindex`
+    *   `Table.at(table, start, top)`: Table slicing (only numeric part), support negative index. Doesn't trigger `getindex`
+    *   `Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.
     *   `Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. 
     *   `Table.append(table, item)`: Adds `item` to the end of the specified `table`.
     *   `Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.

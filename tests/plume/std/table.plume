@@ -263,3 +263,46 @@ $t2
 /// Output
 (1, 2, (3, 4))
 /// End
+
+/// Test Table at
+let t = $Table(mark, quill, ink)
+$Table.at($t, 1)
+/// Output
+mark
+/// End
+
+/// Test Table at slice
+let t = $Table(mark, quill, ink)
+$Table.at($t, 2, 3)
+/// Output
+(quill, ink)
+/// End
+
+/// Test Table at negative
+let t = $Table(mark, quill, ink)
+for i in seq(5)
+	$Table.at($t, $(-i))\n
+end
+/// Output
+ink
+quill
+mark
+ink
+quill
+/// End
+
+/// Test Table setAt 1
+let t = $Table(mark, quill, ink)
+run $Table.setAt($t, 1, wing)
+$t
+/// Output
+(wing, quill, ink)
+/// End
+
+/// Test Table setAt 2
+let t = $Table(mark, quill, ink)
+run $Table.setAt($t, -1, wing)
+$t
+/// Output
+(mark, quill, wing)
+/// End

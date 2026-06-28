@@ -1815,6 +1815,17 @@ return function(plume)
 		return nt
 	end
 	
+	local function handleNegativeIndex(index, len)
+		if index < 0 then
+			index = index+1
+			while index <= 0 do
+				index = index + len
+			end
+		end
+	
+		return index
+	end
+	
 	plume.std.Table = plume.obj.quickTable{
 		remove = plume.obj.luaMacro("remove", function (args)
 			local __name      = "remove"
@@ -2086,6 +2097,59 @@ return function(plume)
 				r = r + x
 			end
 			return true, r
+		end),
+	
+		at = plume.obj.luaMacro("at", function (args)
+			local __name      = "at"
+			local __signature = "`$at(table t, number index, [number stop])`"
+			local __s, __e, self, t, index, stop
+			__s, __e, t, index, stop = plume.stdUnpackPositional(args, 2, 3,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and index then __s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature) end
+			if __s and stop then __s, __e, stop = plume.stdCheckType(stop, "number", "3", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+	
+			index = handleNegativeIndex(index, #t.table)
+			if stop then
+				stop = handleNegativeIndex(stop, #t.table)
+			end
+	
+			if stop then
+				local result = plume.obj.table(stop - index + 1, 0)
+				for i=index, stop do
+					local value = t.table[i]
+					if not value then
+						return false, plume.error.unregisteredKey(t, index)
+					end
+					result:addItem(value)
+				end
+				return true, result
+			else
+				local value = t.table[index]
+				if value then
+					return true, value
+				else
+					return false, plume.error.unregisteredKey(t, index)
+				end
+			end
+		end),
+	
+		setAt = plume.obj.luaMacro("setAt", function (args)
+			local __name      = "setAt"
+			local __signature = "`$setAt(table t, number index, any value)`"
+			local __s, __e, self, t, index, value
+			__s, __e, t, index, value = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and index then __s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			index = handleNegativeIndex(index, #t.table)
+	
+			t:setItem(index, value)
+			return true
 		end)
 	}
 	

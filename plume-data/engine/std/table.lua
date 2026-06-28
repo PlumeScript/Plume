@@ -64,6 +64,17 @@ function plume.stdUtils.copy(t, deep, nt)
 	return nt
 end
 
+local function handleNegativeIndex(index, len)
+	if index < 0 then
+		index = index+1
+		while index <= 0 do
+			index = index + len
+		end
+	end
+
+	return index
+end
+
 plume.std.Table = plume.obj.quickTable{
 	remove = plume.obj.luaMacro("remove", function(args)
 		--!signature table t, [number index]
@@ -239,6 +250,42 @@ plume.std.Table = plume.obj.quickTable{
 			r = r + x
 		end
 		return true, r
+	end),
+
+	at = plume.obj.luaMacro("at", function(args)
+		--!signature table t, number index, [number stop]
+
+		index = handleNegativeIndex(index, #t.table)
+		if stop then
+			stop = handleNegativeIndex(stop, #t.table)
+		end
+
+		if stop then
+			local result = plume.obj.table(stop - index + 1, 0)
+			for i=index, stop do
+				local value = t.table[i]
+				if not value then
+					return false, plume.error.unregisteredKey(t, index)
+				end
+				result:addItem(value)
+			end
+			return true, result
+		else
+			local value = t.table[index]
+			if value then
+				return true, value
+			else
+				return false, plume.error.unregisteredKey(t, index)
+			end
+		end
+	end),
+
+	setAt = plume.obj.luaMacro("setAt", function(args)
+		--!signature table t, number index, any value
+		index = handleNegativeIndex(index, #t.table)
+
+		t:setItem(index, value)
+		return true
 	end)
 }
 
