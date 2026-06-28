@@ -39,7 +39,7 @@ return function (plume, context)
 	--- @param ref string
 	--- @return table upvalueInfo Metadata for the upvalue
 	function context.registerUpvalue(
-		name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref, isContext
+		name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref
 	)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.macros[#context.macros - scopeDepth + 1]
@@ -58,8 +58,7 @@ return function (plume, context)
 					offset = #macro.upvalues+1,
 					localOffset = variableOffset, -- local offset to capture the variable
 					scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
-					isUpvalue = true,
-					isContext = isContext
+					isUpvalue = true
 				})
 				
 			end
@@ -178,8 +177,7 @@ return function (plume, context)
 							scopeDepth,
 							i,
 							relativeScopeOffset-i+1,
-							nil,
-							variable.isContext
+							nil
 						)
 					end
 				else
@@ -187,7 +185,6 @@ return function (plume, context)
 						frameOffset = #context.scopes-i,
 						offset      = variable.offset,
 						isConst     = variable.isConst,
-						isContext   = variable.isContext,
 						isRef       = variable.isRef,
 						ref         = variable.ref,
 						node        = variable.node,
@@ -239,14 +236,12 @@ return function (plume, context)
 	--- 	@field source string|nil The path to the file if imported via `use`.
 	--- 	@field isRef boolean True if it is a reference to a table field
 	--- 	@field ref string If isRef, name of the key ref
-	--- 	@field isContext boolean
 	--- 	@field isSelf boolean
 	---		@field isLoopVariable boolean
 	---		@field isMacro boolean
 	---		@field isMacroParam boolean
 	--- @return table|nil Returns the variable metadata {offset, isConst, isRef, source}, or nil on name collision.
 	function context.registerVariable(node, name, options)
-		-- , isConst, isParam, source, isRef, ref, isContext, isSelf
 		local scope
 		scope = context.getCurrentScope()
 
@@ -266,7 +261,6 @@ return function (plume, context)
 			isConst   = options.isConst,
 			isRef     = options.isRef,
 			source    = options.source,
-			isContext = options.isContext,
 			isSelf    = options.isSelf,
 			node      = node,
 			ref       = options.ref,
