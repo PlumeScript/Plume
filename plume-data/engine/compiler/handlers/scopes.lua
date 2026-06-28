@@ -7,11 +7,11 @@ Licensed under the MIT License — see LICENSE for details.
 
 return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.FILE = context.file(function(node)
+		local doc = context.collectFileComments(node)
 		local lets = context.countLocals(node)
 		context.enterScope(lets, true)
-
 		table.insert(context.macros, {isFile=true, node=node, body=node, scopeDeep=1, contextToClose=0, blockToClose={}, insideRaise=0, insideLetset=0, insideCall=0})
-		context.accBlock()(node, "macro_end")
+		context.accBlock(nil, {{"name", node.filename}, {"doc", doc}})(node, "macro_end")
 		table.remove(context.macros)
 
 		context.leaveScope()

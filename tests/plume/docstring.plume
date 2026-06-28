@@ -47,3 +47,12 @@ $(plume.doc(t))
 table t
     This is a table
 /// End
+
+/// Test File
+// This is a table
+let lib = $import(tests/plume/toimport/filedoc)
+$plume.doc($lib)
+/// Output
+table tests/plume/toimport/filedoc.plume
+    This file do somethings
+/// End

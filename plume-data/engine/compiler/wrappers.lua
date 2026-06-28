@@ -101,7 +101,7 @@ return function (plume, context)
                     end
 
                     context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
-                    if doc then
+                    if doc and #doc>0 then
                         infos = infos or {}
                         table.insert(infos, {"doc", doc})
                     end
