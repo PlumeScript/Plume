@@ -306,3 +306,35 @@ $t
 /// Output
 (mark, quill, wing)
 /// End
+
+/// Test Table setMeta
+let m = do
+	tostring: macro()
+		John
+	end
+end
+
+let t = $Table()
+run $Table.setMeta($t, $m)
+
+$String($t)
+/// Output
+John
+/// End
+
+/// Test Table getMeta
+let m = do
+	tostring: macro()
+		John
+	end
+end
+
+let t1 = $Table()
+let t2 = $Table()
+run $Table.setMeta($t1, $m)
+run $Table.setMeta($t2, $m)
+
+$(Table.getMeta(t1) == Table.getMeta(t2))
+/// Output
+true
+/// End

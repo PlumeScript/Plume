@@ -38,6 +38,8 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.sum(...items)`
     *   `Table.copy(table)`: Returns a superficial copy of `table`.
     *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
+    *   `Table.setMeta(t, meta)`
+    *   `Table.getMeta(t)`
     *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
 *   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 

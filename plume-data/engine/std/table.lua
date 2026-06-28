@@ -287,6 +287,20 @@ plume.std.Table = plume.obj.quickTable{
 
 		t:setItem(index, value)
 		return true
+	end),
+
+	setMeta = plume.obj.luaMacro("setMeta", function(args)
+		--!signature table t, table meta
+		t.meta = meta
+		return true
+	end),
+	getMeta = plume.obj.luaMacro("setMeta", function(args)
+		--!signature table t
+		if not t.meta then
+			t.meta = plume.obj.table(0, 0)
+		end
+
+		return true, t.meta
 	end)
 }
 

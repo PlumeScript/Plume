@@ -2156,6 +2156,35 @@ return function(plume)
 	
 			t:setItem(index, value)
 			return true
+		end),
+	
+		setMeta = plume.obj.luaMacro("setMeta", function (args)
+			local __name      = "setMeta"
+			local __signature = "`$setMeta(table t, table meta)`"
+			local __s, __e, self, t, meta
+			__s, __e, t, meta = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and meta then __s, __e, meta = plume.stdCheckType(meta, "table", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			t.meta = meta
+			return true
+		end),
+		getMeta = plume.obj.luaMacro("setMeta", function (args)
+			local __name      = "setMeta"
+			local __signature = "`$setMeta(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not t.meta then
+				t.meta = plume.obj.table(0, 0)
+			end
+	
+			return true, t.meta
 		end)
 	}
 	
