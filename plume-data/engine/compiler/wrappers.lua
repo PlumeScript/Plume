@@ -25,7 +25,7 @@ return function (plume, context)
     --- depending of its type.
     --- @param f|nil function Function used to process children. Default to context.childrenHandler 
     --- @return function
-    function context.accBlock(f)  
+    function context.accBlock(f, name)  
         f = f or context.childrenHandler
 
         --- @param node node
@@ -64,6 +64,9 @@ return function (plume, context)
                     f(node)
                     context.toggleConcatPop()
 
+                    if #node.children == 1 and node.children[1].type == "TABLE" and name then
+                        context.registerOP(node, plume.ops.SET_TABLE_NAME, 0, context.registerConstant(name))
+                    end
                     if label then  
                         context.registerLabel(node, label)  
                     end  
@@ -83,7 +86,11 @@ return function (plume, context)
                     if macro then
                         table.remove(macro.blockToClose)
                     end
+
                     context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                    if name then
+                        context.registerOP(node, plume.ops.SET_TABLE_NAME, 0, context.registerConstant(name))
+                    end
                     
                     if label then  
                         context.registerLabel(node, label)  

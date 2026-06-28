@@ -144,27 +144,27 @@ return function (plume)
 									if op < 25 then
 										TABLE_INDEX_CHECK_IS_NIL(vm, arg1, arg2)
 									else
-										CALL_INDEX_REGISTER_SELF(vm, arg1, arg2)
+										SET_TABLE_NAME(vm, arg1, arg2)
 									end
 								else
 									if op < 27 then
-										TAG_META_KEY(vm, arg1, arg2)
+										CALL_INDEX_REGISTER_SELF(vm, arg1, arg2)
 									else
-										TAG_KEY(vm, arg1, arg2)
+										TAG_META_KEY(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 30 then
 									if op < 29 then
-										ENTER_SCOPE(vm, arg1, arg2)
+										TAG_KEY(vm, arg1, arg2)
 									else
-										LEAVE_SCOPE(vm, arg1, arg2)
+										ENTER_SCOPE(vm, arg1, arg2)
 									end
 								else
 									if op < 31 then
-										BEGIN_ACC(vm, arg1, arg2)
+										LEAVE_SCOPE(vm, arg1, arg2)
 									else
-										CONCAT_TABLE(vm, arg1, arg2)
+										BEGIN_ACC(vm, arg1, arg2)
 									end
 								end
 							end
@@ -176,29 +176,29 @@ return function (plume)
 							if op < 36 then
 								if op < 34 then
 									if op < 33 then
-										CONCAT_TEXT(vm, arg1, arg2)
+										CONCAT_TABLE(vm, arg1, arg2)
 									else
-										CONCAT_CALL(vm, arg1, arg2)
+										CONCAT_TEXT(vm, arg1, arg2)
 									end
 								else
 									if op < 35 then
-										CHECK_IS_TEXT(vm, arg1, arg2)
+										CONCAT_CALL(vm, arg1, arg2)
 									else
-										JUMP_IF(vm, arg1, arg2)
+										CHECK_IS_TEXT(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 38 then
 									if op < 37 then
-										JUMP_IF_NOT(vm, arg1, arg2)
+										JUMP_IF(vm, arg1, arg2)
 									else
-										JUMP_IF_NOT_EMPTY(vm, arg1, arg2)
+										JUMP_IF_NOT(vm, arg1, arg2)
 									end
 								else
 									if op < 39 then
-										JUMP_FOR(vm, arg1, arg2)
+										JUMP_IF_NOT_EMPTY(vm, arg1, arg2)
 									else
-										JUMP(vm, arg1, arg2)
+										JUMP_FOR(vm, arg1, arg2)
 									end
 								end
 							end
@@ -206,29 +206,29 @@ return function (plume)
 							if op < 44 then
 								if op < 42 then
 									if op < 41 then
-										JUMP_IF_PEEK(vm, arg1, arg2)
+										JUMP(vm, arg1, arg2)
 									else
-										JUMP_IF_NOT_PEEK(vm, arg1, arg2)
+										JUMP_IF_PEEK(vm, arg1, arg2)
 									end
 								else
 									if op < 43 then
-										GET_ITER(vm, arg1, arg2)
+										JUMP_IF_NOT_PEEK(vm, arg1, arg2)
 									else
-										FOR_ITER(vm, arg1, arg2)
+										GET_ITER(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 46 then
 									if op < 45 then
-										OP_ADD(vm, arg1, arg2)
+										FOR_ITER(vm, arg1, arg2)
 									else
-										OP_MUL(vm, arg1, arg2)
+										OP_ADD(vm, arg1, arg2)
 									end
 								else
 									if op < 47 then
-										OP_SUB(vm, arg1, arg2)
+										OP_MUL(vm, arg1, arg2)
 									else
-										OP_DIV(vm, arg1, arg2)
+										OP_SUB(vm, arg1, arg2)
 									end
 								end
 							end
@@ -238,29 +238,29 @@ return function (plume)
 							if op < 52 then
 								if op < 50 then
 									if op < 49 then
-										OP_NEG(vm, arg1, arg2)
+										OP_DIV(vm, arg1, arg2)
 									else
-										OP_MOD(vm, arg1, arg2)
+										OP_NEG(vm, arg1, arg2)
 									end
 								else
 									if op < 51 then
-										OP_POW(vm, arg1, arg2)
+										OP_MOD(vm, arg1, arg2)
 									else
-										OP_LT(vm, arg1, arg2)
+										OP_POW(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 54 then
 									if op < 53 then
-										OP_EQ(vm, arg1, arg2)
+										OP_LT(vm, arg1, arg2)
 									else
-										OP_AND(vm, arg1, arg2)
+										OP_EQ(vm, arg1, arg2)
 									end
 								else
 									if op < 55 then
-										OP_NOT(vm, arg1, arg2)
+										OP_AND(vm, arg1, arg2)
 									else
-										OP_OR(vm, arg1, arg2)
+										OP_NOT(vm, arg1, arg2)
 									end
 								end
 							end
@@ -268,29 +268,29 @@ return function (plume)
 							if op < 60 then
 								if op < 58 then
 									if op < 57 then
-										DUPLICATE(vm, arg1, arg2)
+										OP_OR(vm, arg1, arg2)
 									else
-										SWITCH(vm, arg1, arg2)
+										DUPLICATE(vm, arg1, arg2)
 									end
 								else
 									if op < 59 then
-										RETURN(vm, arg1, arg2)
+										SWITCH(vm, arg1, arg2)
 									else
-										RETURN_FILE(vm, arg1, arg2)
+										RETURN(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 62 then
 									if op < 61 then
-										FILE_INIT_PARAMS(vm, arg1, arg2)
+										RETURN_FILE(vm, arg1, arg2)
 									else
-										PUSH_CONTEXT(vm, arg1, arg2)
+										FILE_INIT_PARAMS(vm, arg1, arg2)
 									end
 								else
 									if op < 63 then
-										POP_CONTEXT(vm, arg1, arg2)
+										PUSH_CONTEXT(vm, arg1, arg2)
 									else
-										LOAD_CONTEXT(vm, arg1, arg2)
+										POP_CONTEXT(vm, arg1, arg2)
 									end
 								end
 							end
@@ -304,29 +304,29 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
-										CREATE_CONTEXT(vm, arg1, arg2)
+										LOAD_CONTEXT(vm, arg1, arg2)
 									else
-										HOST_UPDATE(vm, arg1, arg2)
+										CREATE_CONTEXT(vm, arg1, arg2)
 									end
 								else
 									if op < 67 then
-										HOST_NEXT(vm, arg1, arg2)
+										HOST_UPDATE(vm, arg1, arg2)
 									else
-										RAISE(vm, arg1, arg2)
+										HOST_NEXT(vm, arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
-										goto END
+										RAISE(vm, arg1, arg2)
 									else
-										STD_LEN(vm, arg1, arg2)
+										goto END
 									end
 								else
 									if op < 71 then
-										STD_TYPE(vm, arg1, arg2)
+										STD_LEN(vm, arg1, arg2)
 									else
-										STD_SEQ(vm, arg1, arg2)
+										STD_TYPE(vm, arg1, arg2)
 									end
 								end
 							end
@@ -334,12 +334,14 @@ return function (plume)
 							if op < 76 then
 								if op < 74 then
 									if op < 73 then
-										STD_ITEMS(vm, arg1, arg2)
+										STD_SEQ(vm, arg1, arg2)
 									else
-										STD_ENUMERATE(vm, arg1, arg2)
+										STD_ITEMS(vm, arg1, arg2)
 									end
 								else
 									if op < 75 then
+										STD_ENUMERATE(vm, arg1, arg2)
+									else
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

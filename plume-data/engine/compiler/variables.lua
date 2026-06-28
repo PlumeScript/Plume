@@ -261,6 +261,7 @@ return function (plume, context)
 		table.insert(scope, {scope[name]}) 
 
 		scope[name] = {
+			name      = name,
 			offset    = #scope, -- Used by opcodes GET_LOCAL / SET_LOCAL to use the correct frame
 			isConst   = options.isConst,
 			isRef     = options.isRef,

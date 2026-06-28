@@ -225,3 +225,11 @@ function TABLE_EXPAND (vm, arg1, arg2)
         _ERROR (vm, vm.plume.error.cannotExpandValue(tt))
     end
 end
+
+--- @opcode
+--! inline
+function SET_TABLE_NAME (vm, arg1, arg2)
+    local name = vm.constants[arg2]
+    local t    = _STACK_GET(vm, vm.mainStack)
+    t.name     = name
+end
