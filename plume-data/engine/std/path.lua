@@ -216,6 +216,7 @@ local function makePath(path)
 	}
 
 	obj.subtype = "Path"
+	obj.name = "Path"
 
 	local function div(x1, x2)
 		local path1, path2

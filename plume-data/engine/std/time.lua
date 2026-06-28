@@ -355,3 +355,5 @@ plume.std.Time = plume.obj.quickTable{
 		return true
 	end)
 }
+
+plume.std.Time.name = "Time"

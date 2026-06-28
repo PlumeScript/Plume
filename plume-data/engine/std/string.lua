@@ -287,3 +287,5 @@ plume.std.String = plume.obj.quickTable {
 		return true, s:sub(startpos, endpos)
 	end)
 }
+
+plume.std.String.name = "String"

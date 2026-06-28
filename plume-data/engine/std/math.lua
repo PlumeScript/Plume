@@ -104,3 +104,5 @@ plume.std.Math = plume.obj.quickTable{
 	e    = math.exp(1),
 	huge = math.huge
 }
+
+plume.std.Math.name = "Math"

@@ -33,3 +33,5 @@ plume.std.os = plume.obj.quickTable {
 		return true
 	end)
 }
+
+plume.std.os.name = "os"

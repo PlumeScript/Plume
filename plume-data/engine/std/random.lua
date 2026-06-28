@@ -104,3 +104,5 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	
 	return true, random
 end)
+
+plume.std.Random.name = "Random"

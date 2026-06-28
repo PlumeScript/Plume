@@ -14,3 +14,4 @@ plume.std.plume = plume.obj.quickTable {
 		return true, m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
 	end)
 }
+plume.std.plume.name = "plume"

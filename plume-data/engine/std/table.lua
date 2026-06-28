@@ -315,3 +315,5 @@ plume.std.Table.meta = plume.obj.quickTable{
 		end
 	end)
 }
+
+plume.std.Table.name = "Table"
