@@ -130,6 +130,7 @@ plume.std.Number = plume.obj.quickTable{
 }
 
 plume.std.Number.name = "Number"
+plume.std.Number:setMetaItem('readonly', true)
 
 plume.std.Number.meta = plume.obj.quickTable {
 	call = plume.obj.luaMacro("Number", function(args)

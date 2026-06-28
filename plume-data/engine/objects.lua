@@ -40,7 +40,7 @@ return function(plume)
 				if not self.meta then
 					self.meta = plume.obj.table(0, 1)
 				end
-				self.meta.table[k] = v
+				self.meta:setItem(k, v)
 			end,
 			addItem = function (self, v)
 				self:setItem(#self.table+1, v)

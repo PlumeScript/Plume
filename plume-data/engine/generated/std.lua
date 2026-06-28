@@ -505,6 +505,9 @@ return function(plume)
 		huge = math.huge
 	}
 	
+	plume.std.Math.name = "Math"
+	plume.std.Math:setMetaItem('readonly', true)
+	
 	plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator)
 		if thousandsSeparator == plume.obj.empty then
 			thousandsSeparator = nil
@@ -704,6 +707,7 @@ return function(plume)
 	}
 	
 	plume.std.Number.name = "Number"
+	plume.std.Number:setMetaItem('readonly', true)
 	
 	plume.std.Number.meta = plume.obj.quickTable {
 		call = plume.obj.luaMacro("Number", function(args)
@@ -769,6 +773,9 @@ return function(plume)
 			return true
 		end)
 	}
+	
+	plume.std.os.name = "os"
+	plume.std.os:setMetaItem('readonly', true)
 	
 	local lfsLoaded, lfs = pcall(require, "lfs")
 	
@@ -1055,6 +1062,8 @@ return function(plume)
 		}
 	
 		obj.subtype = "Path"
+		obj.name = "Path"
+		obj:setMetaItem('readonly', true)
 	
 		local function div(x1, x2)
 			local path1, path2
@@ -1146,6 +1155,8 @@ return function(plume)
 			return true, m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
 		end)
 	}
+	plume.std.plume.name = "plume"
+	plume.std.plume:setMetaItem('readonly', true)
 	
 	plume.std.Random = plume.obj.luaMacro("Random", function (args)
 		local __name      = "Random"
@@ -1284,11 +1295,14 @@ return function(plume)
 				elseif #args.table == 2 then
 					return true, _random_range(args.table[1], args.table[2])
 				end
-			end)
+			end),
+			readonly = true
 		}
 		
 		return true, random
 	end)
+	
+	
 	
 	local function replaceUpdate(context)
 		local s       = context.string
@@ -1763,6 +1777,9 @@ return function(plume)
 		end)
 	}
 	
+	plume.std.String.name = "String"
+	plume.std.String:setMetaItem('readonly', true)
+	
 	local function sortUpdate(context)
 		if context.j == context.i then
 			table.insert(context.result, context.source.table[context.i])
@@ -2208,6 +2225,9 @@ return function(plume)
 		end)
 	}
 	
+	plume.std.Table.name = "Table"
+	plume.std.Table:setMetaItem('readonly', true)
+	
 	local createDate, createDuration
 	
 	local function getType(x)
@@ -2607,6 +2627,8 @@ return function(plume)
 		end)
 	}
 	
+	plume.std.Time.name = "Time"
+	plume.std.Time:setMetaItem('readonly', true)
 	
 	function plume.stdUnpackPositional (args, minArgs, maxArgs, name, signature)
 		if #args.table < minArgs or #args.table > maxArgs then

@@ -357,3 +357,4 @@ plume.std.Time = plume.obj.quickTable{
 }
 
 plume.std.Time.name = "Time"
+plume.std.Time:setMetaItem('readonly', true)

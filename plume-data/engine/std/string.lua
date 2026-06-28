@@ -289,3 +289,4 @@ plume.std.String = plume.obj.quickTable {
 }
 
 plume.std.String.name = "String"
+plume.std.String:setMetaItem('readonly', true)

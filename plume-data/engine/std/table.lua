@@ -317,3 +317,4 @@ plume.std.Table.meta = plume.obj.quickTable{
 }
 
 plume.std.Table.name = "Table"
+plume.std.Table:setMetaItem('readonly', true)

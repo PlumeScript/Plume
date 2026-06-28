@@ -15,3 +15,4 @@ plume.std.plume = plume.obj.quickTable {
 	end)
 }
 plume.std.plume.name = "plume"
+plume.std.plume:setMetaItem('readonly', true)

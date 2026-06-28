@@ -35,3 +35,4 @@ plume.std.os = plume.obj.quickTable {
 }
 
 plume.std.os.name = "os"
+plume.std.os:setMetaItem('readonly', true)

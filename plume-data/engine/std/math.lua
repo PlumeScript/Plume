@@ -106,3 +106,4 @@ plume.std.Math = plume.obj.quickTable{
 }
 
 plume.std.Math.name = "Math"
+plume.std.Math:setMetaItem('readonly', true)
