@@ -19,10 +19,10 @@ function GET_ITER (vm, arg1, arg2)
     local iter, value, flag, macrocall
     local start = 0
     if tobj == "table" then
-        if obj.meta.table.next then
+        if obj:getMetaItem("next") then
             iter = obj
         else
-            iter = obj.meta.table.iter
+            iter = obj:getMetaItem("iter")
         end
 
         
@@ -124,7 +124,7 @@ function FOR_ITER (vm, arg1, arg2)
             result:addItem(obj.ref.table[result.table[1]])
         end
     elseif flag == vm.flag.ITER_CUSTOM then
-        local iter = obj.meta.table.next
+        local iter = obj:getMetaItem("next")
         if iter.type == "luaMacro" then
             result = iter.callable()
         else

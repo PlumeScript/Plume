@@ -24,7 +24,6 @@ return function(plume)
 			type = "table", --type
 			table = table.new(listSlots, hashSlots),
 			keys = table.new(hashSlots, 0),
-			meta = {table={}},
 			setItem = function (self, k, v)
 				if not self.table[k] then
 					table.insert(self.keys, k)
@@ -32,7 +31,15 @@ return function(plume)
 				self.table[k] = v
 				
 			end,
+			getMetaItem = function (self, k)
+				if self.meta then
+					return self.meta.table[k]
+				end
+			end,
 			setMetaItem = function (self, k, v)
+				if not self.meta then
+					self.meta = plume.obj.table(0, 1)
+				end
 				self.meta.table[k] = v
 			end,
 			addItem = function (self, v)

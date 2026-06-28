@@ -257,64 +257,64 @@ function createDuration(s)
 
 	duration.table.type = "Duration"
 
-	duration.meta = plume.obj.table(0, 0)
-	duration.meta.keys = {"tostring", "setindex", "getindex", "add", "sub", "mul", "div"}
-	duration.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
-		local self = args.table.self
-		return true, self.value
-	end)
-	duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
-		return false, "Cannot edit 'duration' fields."
-	end)
-	duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
-		local self = args.table.self
-		local key = args.table[1]
-		
-		if key == "day" then
-			return true, self.value / 86400
-		elseif key == "hour" then
-			return true, self.value / 3600
-		elseif key == "minute" then
-			return true, self.value / 60
-		elseif key == "second" then
+	duration.meta = plume.obj.quickTable({
+		tostring = plume.obj.luaMacro ("tostring", function(args)
+			local self = args.table.self
 			return true, self.value
-		else
-			return false, string.format("Unregistered key '%s'", key)
-		end
-	end)
+		end),
+		setindex = plume.obj.luaMacro ("setindex", function(args)
+			return false, "Cannot edit 'duration' fields."
+		end),
+		getindex = plume.obj.luaMacro ("getindex", function(args)
+			local self = args.table.self
+			local key = args.table[1]
+			
+			if key == "day" then
+				return true, self.value / 86400
+			elseif key == "hour" then
+				return true, self.value / 3600
+			elseif key == "minute" then
+				return true, self.value / 60
+			elseif key == "second" then
+				return true, self.value
+			else
+				return false, string.format("Unregistered key '%s'", key)
+			end
+		end),
 
-	duration.meta.table.add = ddadd
-	duration.meta.table.sub = ddsub
-	duration.meta.table.mul = ddmul
-	duration.meta.table.div = dddiv
+		add = ddadd,
+		sub = ddsub,
+		mul = ddmul,
+		div = dddiv,
 
-	duration.meta.table.eq = plume.obj.luaMacro("eq", function(args)
-		local x = args.table[1]
-		local y = args.table[2]
+		eq = plume.obj.luaMacro("eq", function(args)
+			local x = args.table[1]
+			local y = args.table[2]
 
-		local tx = getType(x)
-		local ty = getType(y)
+			local tx = getType(x)
+			local ty = getType(y)
 
-		if tx ~= "Duration" or ty ~= "Duration" then
-			return true, false
-		end
+			if tx ~= "Duration" or ty ~= "Duration" then
+				return true, false
+			end
 
-		return true, x.value == y.value
-	end)
+			return true, x.value == y.value
+		end),
 
-	duration.meta.table.lt = plume.obj.luaMacro("lt", function(args)
-		local x = args.table[1]
-		local y = args.table[2]
+		lt = plume.obj.luaMacro("lt", function(args)
+			local x = args.table[1]
+			local y = args.table[2]
 
-		local tx = getType(x)
-		local ty = getType(y)
+			local tx = getType(x)
+			local ty = getType(y)
 
-		if tx ~= "Duration" or ty ~= "Duration" then
-			return false, string.format("Cannot compare 'Duration' and '%s'", (tx ~= "Duration" and tx or ty))
-		end
+			if tx ~= "Duration" or ty ~= "Duration" then
+				return false, string.format("Cannot compare 'Duration' and '%s'", (tx ~= "Duration" and tx or ty))
+			end
 
-		return true, x.value < y.value
-	end)
+			return true, x.value < y.value
+		end)
+	})
 
 	return true, duration
 end
