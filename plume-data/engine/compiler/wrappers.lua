@@ -20,12 +20,22 @@ return function (plume, context)
         context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)
     end 
 
+    local function registerTableInfos(node, infos)
+        for _, info in ipairs(infos) do
+            context.registerOP(node,
+                plume.ops.TABLE_CUSTOM_FIELD,
+                context.registerConstant(info[1]),
+                context.registerConstant(info[2])
+            )
+        end
+    end
+
     --- Wrapper for accumulation block. Initialize accumulator and finalize the block.
     --- Accumulation block doesn't have its own scope.
     --- depending of its type.
     --- @param f|nil function Function used to process children. Default to context.childrenHandler 
     --- @return function
-    function context.accBlock(f, name)  
+    function context.accBlock(f, infos)  
         f = f or context.childrenHandler
 
         --- @param node node
@@ -64,8 +74,8 @@ return function (plume, context)
                     f(node)
                     context.toggleConcatPop()
 
-                    if #node.children == 1 and node.children[1].type == "TABLE" and name then
-                        context.registerOP(node, plume.ops.SET_TABLE_NAME, 0, context.registerConstant(name))
+                    if #node.children == 1 and node.children[1].type == "TABLE" and infos then
+                        registerTableInfos(node, infos)
                     end
                     if label then  
                         context.registerLabel(node, label)  
@@ -88,8 +98,8 @@ return function (plume, context)
                     end
 
                     context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
-                    if name then
-                        context.registerOP(node, plume.ops.SET_TABLE_NAME, 0, context.registerConstant(name))
+                    if infos then
+                        registerTableInfos(node, infos)
                     end
                     
                     if label then  

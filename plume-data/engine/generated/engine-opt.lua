@@ -1165,14 +1165,15 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local name = constants[arg2]
+                                            local field = constants[arg1]
+                                            local value = constants[arg2]
                                             local _ret107
                                             do
                                                 local value = mainStack[mainStackPointer]
                                                 _ret107 = value
                                             end
                                             local t = _ret107
-                                            t.name = name
+                                            t[field] = value
                                         end
                                     end
                                 else

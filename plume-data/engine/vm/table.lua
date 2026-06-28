@@ -228,8 +228,9 @@ end
 
 --- @opcode
 --! inline
-function SET_TABLE_NAME (vm, arg1, arg2)
-    local name = vm.constants[arg2]
-    local t    = _STACK_GET(vm, vm.mainStack)
-    t.name     = name
+function TABLE_CUSTOM_FIELD (vm, arg1, arg2)
+    local field = vm.constants[arg1]
+    local value = vm.constants[arg2]
+    local t     = _STACK_GET(vm, vm.mainStack)
+    t[field]    = value
 end

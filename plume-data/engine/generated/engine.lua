@@ -144,7 +144,7 @@ return function (plume)
 									if op < 25 then
 										TABLE_INDEX_CHECK_IS_NIL(vm, arg1, arg2)
 									else
-										SET_TABLE_NAME(vm, arg1, arg2)
+										TABLE_CUSTOM_FIELD(vm, arg1, arg2)
 									end
 								else
 									if op < 27 then

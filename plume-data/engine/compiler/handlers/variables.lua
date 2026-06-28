@@ -179,11 +179,11 @@ return function (plume, context, nodeHandlerTable)
 
 		-- Generate RHS code
 		if not compound and not isBodyStacked then
-			local name
-			if #varlist == 1 then
-				name = varlist[1].name
+			local infos ={}
+			if #varlist == 1 and varlist[1].name then
+				table.insert(infos, {"name", varlist[1].name})
 			end
-			context.scope(context.accBlock(nil, name))(body)
+			context.scope(context.accBlock(nil, infos))(body)
 		end
 		
 		for i, var in ipairs(varlist) do
