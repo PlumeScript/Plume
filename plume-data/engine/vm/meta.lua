@@ -15,7 +15,7 @@ function _META_CHECK (vm, name, obj)
 	local binopps = "eq lt"
 	local unopps = "minus"
 
-	local macro = obj.macro or obj -- in case of closure
+	
 
 	local expectedParamCount
 	for opp in comopps:gmatch('%S+') do
@@ -37,13 +37,24 @@ function _META_CHECK (vm, name, obj)
 	end
 
 	if expectedParamCount then
-		if macro.positionalParamCount ~= expectedParamCount then
-			return false, vm.plume.error.wrongArgsCountMetaDefinition(
-				name, macro.positionalParamCount, expectedParamCount
-			)
+		local t = _GET_TYPE(vm, obj)
+		local metaValue = obj
+		if t == "closure" then
+			metaValue = obj.macro
+			t = "macro"
 		end
-		if macro.namedParamCount > 1 then -- 1 for self
-			return false, vm.plume.error.metaMacroWithoutNamedParameter(name)
+
+		if t == "macro" then
+			if metaValue.positionalParamCount ~= expectedParamCount then
+				return false, vm.plume.error.wrongArgsCountMetaDefinition(
+					name, metaValue.positionalParamCount, expectedParamCount
+				)
+			end
+			if metaValue.namedParamCount > 1 then -- 1 for self
+				return false, vm.plume.error.metaMacroWithoutNamedParameter(name)
+			end
+		else
+			return false, vm.plume.error.wrongMetaFieldType(name, t, "macro")
 		end
 	else
 		return _META_CHECK_NAME(vm, name)

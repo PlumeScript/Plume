@@ -43,4 +43,8 @@ return function(plume)
 	function plume.error.cannotDoArithmeticWith(_type)
 		return string.format("Cannot do comparison or arithmetic with a %s value.", _type)
 	end
+
+	function plume.error.wrongMetaFieldType(name, _type, expected)
+		return string.format("Wrong type '%s' for meta field '%s'. Expected '%s'.", _type, name, expected)
+	end
 end
