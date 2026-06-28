@@ -7853,7 +7853,7 @@ return function (plume)
                                                             end
                                                             local safeResult = plume.obj.table (0, 2)
                                                             safeResult:setItem ("success", false)
-                                                            safeResult:setItem ("result", plume.error.cannotOpenFile (args[1], searchPaths))
+                                                            safeResult:setItem ("result", plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                             do
                                                                 do
                                                                     local _ret653
@@ -7898,7 +7898,7 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
                                                         else
-                                                            vmerr = plume.error.cannotOpenFile (args[1], searchPaths)
+                                                            vmerr = plume.error.cannotOpenFile (args.table[1], searchPaths)
                                                         end
                                                     end
                                                 end

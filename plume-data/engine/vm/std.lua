@@ -194,7 +194,7 @@ function STD_IMPORT(vm, arg1, arg2)
                 _ERROR(vm, err)
             end
         else
-            _ERROR(vm, vm.plume.error.cannotOpenFile(args[1], searchPaths))
+            _ERROR(vm, vm.plume.error.cannotOpenFile(args.table[1], searchPaths))
         end
     end
 
