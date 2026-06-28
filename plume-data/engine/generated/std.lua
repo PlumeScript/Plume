@@ -1129,14 +1129,19 @@ return function(plume)
 	plume.std.plume = plume.obj.quickTable {
 		doc = plume.obj.luaMacro("doc", function (args)
 			local __name      = "doc"
-			local __signature = "`$doc(macro m)`"
+			local __signature = "`$doc(macro|table m)`"
 			local __s, __e, self, m
 			__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s and m then __s, __e, m = plume.stdCheckType(m, "macro", "1", __name, __signature) end
+			if __s and m then
+				__s, __e, m = plume.stdCheckType(m, "macro", "1", __name, __signature)
+				if not __s then
+					__s, __e, m = plume.stdCheckType(m, "table", "1", __name, __signature)
+				end
+			end
 			if not __s then return false, __e end
 			------------
-			return true, "macro " .. (m.debugMacroName or m.name) .. "\n    " .. m.doc:gsub('\n', '\n    ') or ""
+			return true, m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
 		end)
 	}
 	
@@ -1811,7 +1816,8 @@ return function(plume)
 	
 			nt:setItem(key, value)
 		end
-	
+		nt.name = t.name
+		nt.doc  = t.doc
 		return nt
 	end
 	

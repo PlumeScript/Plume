@@ -128,7 +128,7 @@ return function (plume, context)
 		if not parent then
 			return ""
 		end
-
+		
 		local result = {}
 		local currentpos = 1
 		while currentpos<#parent.children and parent.children[currentpos] ~= node do
@@ -139,6 +139,12 @@ return function (plume, context)
 				result = {}
 			end
 			currentpos = currentpos + 1
+		end
+
+		if #result == 0 then
+			if parent.name == "DO" or parent.name == "BODY" or parent.name == "LET" then
+				return context.collectComments(parent)
+			end
 		end
 
 		return table.concat(result, "\n")

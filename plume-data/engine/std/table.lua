@@ -60,7 +60,8 @@ function plume.stdUtils.copy(t, deep, nt)
 
 		nt:setItem(key, value)
 	end
-
+	nt.name = t.name
+	nt.doc  = t.doc
 	return nt
 end
 

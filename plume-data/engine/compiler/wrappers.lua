@@ -38,6 +38,7 @@ return function (plume, context)
     function context.accBlock(f, infos)  
         f = f or context.childrenHandler
 
+
         --- @param node node
         --- @param label|nil string Used to jump at block end, but before finalizer.
         --- @return nil
@@ -81,7 +82,9 @@ return function (plume, context)
                         context.registerLabel(node, label)  
                     end  
                 -- Handled by block in most cases  
-                elseif node.type == "TABLE" then  
+                elseif node.type == "TABLE" then
+                    local doc = context.collectComments(node)
+
                     context.accTableInit(node)
                     context.accBlockDeep = context.accBlockDeep + 1
 
@@ -98,6 +101,10 @@ return function (plume, context)
                     end
 
                     context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                    if doc then
+                        infos = infos or {}
+                        table.insert(infos, {"doc", doc})
+                    end
                     if infos then
                         registerTableInfos(node, infos)
                     end

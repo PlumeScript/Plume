@@ -36,3 +36,14 @@ macro double
     double the number
     @param x number the number to double
 /// End
+
+/// Test Table
+// This is a table
+let t = do
+    - 1
+end
+$(plume.doc(t))
+/// Output
+table t
+    This is a table
+/// End
