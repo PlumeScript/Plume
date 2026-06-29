@@ -182,6 +182,8 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.upvalueMap = nil
 	end
 
+	nodeHandlerTable.ANONYMOUS_MACRO = nodeHandlerTable.MACRO
+
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 

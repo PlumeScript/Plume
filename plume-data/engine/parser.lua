@@ -364,7 +364,8 @@ return function (plume)
 				* os * P")"
 			)
 		-- local paramlistM = paramlist + E(plume.error.missingParamList)
-		local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlist^-1 * body * _end)
+		local macro      = Ct("MACRO",           K"macro" * s * idn * os * paramlist^-1 * body * _end)
+		                 + Ct("ANONYMOUS_MACRO", K"macro"           * os * paramlist^-1 * body * _end)
 
 		local namedArg  = (E(plume.error.cannotUseRef, K"ref") * s)^-1 * Ct("HASH_ITEM",
 							os * (idn + eval) * os * P":"

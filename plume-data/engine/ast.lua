@@ -77,10 +77,12 @@ return function (plume)
 	end
 
 	local _primitiveTypes = {
-		TABLE = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
-		TEXT  = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
-		VALUE = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE"},
-		INHERIT = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY"}
+		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
+		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
+		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE"},
+		VALUE_MACRO = {"ANONYMOUS_MACRO"},
+		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY"},
+		EMPTY       = {"MACRO"}
 	}
 
 	local primitiveTypes = {}
@@ -197,12 +199,6 @@ return function (plume)
 			return "VALUE_TABLE"
 		elseif (node.name == "WITH" or node.name == "DO") and node.type == "EMPTY" then
 			return "EMPTY"
-		elseif node.name == "MACRO" then
-			if plume.ast.get(node, "IDENTIFIER") then
-				return "EMPTY"
-			else
-				return "VALUE_MACRO"
-			end
 		elseif node.name == "WITH"
 			or node.name == "DO" then
 			return "VALUE"
@@ -216,7 +212,9 @@ return function (plume)
 			if node.name == "HASH_ITEM" and node.children[1].name == "IDENTIFIER"  then
 				if node.children[2] then -- HAST_ITEM value should be empty
 					local value = node.children[2]
-					if value.name == "BODY" and #value.children == 1 and value.children[1].name == "MACRO" then
+					if value.name == "BODY"
+					and #value.children == 1
+					and (value.children[1].name == "MACRO" or value.children[1].name == "ANONYMOUS_MACRO") then
 						value.children[1].label = node.children[1].content
 					end
 				end
