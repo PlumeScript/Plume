@@ -92,100 +92,106 @@ return function (plume)
 		end
 	end
 
-
-	-- It needs to be completely rewritten; it's completely impossible to maintain at this point.
+	local markTypeHandlerTable = {}
+	
 	function plume.ast.markType(node, parentLastNode)
-		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
+		local handler = markTypeHandlerTable[node.name]
 
-		if node.parent and (
-			   node.name == "FOR"
-			or node.name == "WHILE"
-			or node.name == "IF"
-			or node.name == "ELSE"
-			or node.name == "ELSEIF"
-			or (node.name == "BODY" and (
-				   node.parent.name == "FOR"
-				or node.parent.name == "WHILE"
-				or node.parent.name == "IF"
-				or (node.parent.name == "ELSE" and #(node.children or {})>0)
-				or (node.parent.name == "ELSEIF" and #(node.children or {})>0)
-			)))	 then
-			node.type = node.parent.type
+		if handler then
+			node.type = handler(node)
 		else
-			node.type = "EMPTY"
-		end
+			local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
 
-		local nulldelta = 0
-		local lastNode = parentLastNode
-		local branchType
-
-		for i, child in ipairs(node.children or {}) do
-			local childType = plume.ast.markType(child, lastNode)
-
-			-- workaround for the case where child is an information,
-			-- not a proper child
-			local avoid = child.name == "IDENTIFIER" and (
-					node.name ~= "EVAL"
-					and node.name ~= "LIST_ITEM"
-					and node.name ~= "BODY"
-			) or child.name == "NULL" or child.name == "LINESTART"
-			
-			if avoid then
-				nulldelta = nulldelta + 1
+			if node.parent and (
+				   node.name == "FOR"
+				or node.name == "WHILE"
+				or node.name == "IF"
+				or node.name == "ELSE"
+				or node.name == "ELSEIF"
+				or (node.name == "BODY" and (
+					   node.parent.name == "FOR"
+					or node.parent.name == "WHILE"
+					or node.parent.name == "IF"
+					or (node.parent.name == "ELSE" and #(node.children or {})>0)
+					or (node.parent.name == "ELSEIF" and #(node.children or {})>0)
+				)))	 then
+				node.type = node.parent.type
 			else
-				if (node.name == "LIST_ITEM" or node.name == "HASH_ITEM")
-				and (childType == "VALUE_MACRO" or childType == "VALUE_TABLE") then
-					node.type = "VALUE"
-				elseif child.name == "BODY" and node.name == "WITH" then
-					node.type = child.type
-				elseif node.type == "EMPTY" then
-					if childType == "TEXT"
-					and (child.name ~= "FOR" and child.name ~= "WHILE") then
-						node.type = "VALUE"
-					else
-						node.type = childType
-					end
-					lastNode = child
-				elseif node.type == "VALUE"
-				and (childType == "TEXT" or childType == "VALUE") then
-					if waitOneValue then
-						waitOneValue = false
-					else
-						node.type = "TEXT"
-					end
-				elseif node.type == "TEXT" and childType == "VALUE" then
-					node.type = "TEXT"
-				elseif node.type == "VALUE_TABLE" and childType == "VALUE_TABLE" then
-					if branchType and branchType ~= "EMPTY" then
-						if child.name == "INLINE_TABLE" then
-							plume.error.inlineTableMuseBeAlone(child)
-						elseif child.name == "WITH"  then
-							plume.error.withTableMuseBeAlone(child)
-						end
-					else
-						node.type = "VALUE_TABLE"
-					end
-				elseif childType ~= "EMPTY" and node.type ~= childType then
-					if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
-						plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
-					else
-						if lastNode.name == "INLINE_TABLE" then
-							plume.error.inlineTableMuseBeAlone(lastNode)
-						elseif lastNode.name == "WITH"  then
-							plume.error.withTableMuseBeAlone(child)
-						else
-							plume.error.mixedBlock(lastNode, node.type, childType, child)
-						end
-					end
-				end
-				branchType = node.type
+				node.type = "EMPTY"
 			end
-		end
 
-		-- For / While cannot produce VALUE
-		if node.name == "FOR" or node.name == "WHILE" then
-			if node.type == "VALUE" then
-				node.type = "TEXT"
+			local nulldelta = 0
+			local lastNode = parentLastNode
+			local branchType
+
+			for i, child in ipairs(node.children or {}) do
+				local childType = plume.ast.markType(child, lastNode)
+
+				-- workaround for the case where child is an information,
+				-- not a proper child
+				local avoid = child.name == "IDENTIFIER" and (
+						node.name ~= "EVAL"
+						and node.name ~= "LIST_ITEM"
+						and node.name ~= "BODY"
+				) or child.name == "NULL" or child.name == "LINESTART"
+				
+				if avoid then
+					nulldelta = nulldelta + 1
+				else
+					if (node.name == "LIST_ITEM" or node.name == "HASH_ITEM")
+					and (childType == "VALUE_MACRO" or childType == "VALUE_TABLE") then
+						node.type = "VALUE"
+					elseif child.name == "BODY" and node.name == "WITH" then
+						node.type = child.type
+					elseif node.type == "EMPTY" then
+						if childType == "TEXT"
+						and (child.name ~= "FOR" and child.name ~= "WHILE") then
+							node.type = "VALUE"
+						else
+							node.type = childType
+						end
+						lastNode = child
+					elseif node.type == "VALUE"
+					and (childType == "TEXT" or childType == "VALUE") then
+						if waitOneValue then
+							waitOneValue = false
+						else
+							node.type = "TEXT"
+						end
+					elseif node.type == "TEXT" and childType == "VALUE" then
+						node.type = "TEXT"
+					elseif node.type == "VALUE_TABLE" and childType == "VALUE_TABLE" then
+						if branchType and branchType ~= "EMPTY" then
+							if child.name == "INLINE_TABLE" then
+								plume.error.inlineTableMuseBeAlone(child)
+							elseif child.name == "WITH"  then
+								plume.error.withTableMuseBeAlone(child)
+							end
+						else
+							node.type = "VALUE_TABLE"
+						end
+					elseif childType ~= "EMPTY" and node.type ~= childType then
+						if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
+							plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
+						else
+							if lastNode.name == "INLINE_TABLE" then
+								plume.error.inlineTableMuseBeAlone(lastNode)
+							elseif lastNode.name == "WITH"  then
+								plume.error.withTableMuseBeAlone(child)
+							else
+								plume.error.mixedBlock(lastNode, node.type, childType, child)
+							end
+						end
+					end
+					branchType = node.type
+				end
+			end
+
+			-- For / While cannot produce VALUE
+			if node.name == "FOR" or node.name == "WHILE" then
+				if node.type == "VALUE" then
+					node.type = "TEXT"
+				end
 			end
 		end
 
