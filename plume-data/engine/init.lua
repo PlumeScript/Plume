@@ -36,6 +36,7 @@ require 'plume-data/engine/debug/core'           (plume)
 require 'plume-data/engine/error/core'           (plume)
 require 'plume-data/engine/warning'              (plume)
 require 'plume-data/engine/utils'                (plume)
+require 'plume-data/engine/ast'                  (plume)
 require 'plume-data/engine/objects'              (plume)
 
 require 'plume-data/engine/parser'               (plume)
