@@ -18,8 +18,9 @@ function _CHECK_NUMBER_META (vm, x)
         end
         x = tonumber(x)
     elseif tx  ~= "number" then
-        if tx  == "table" and x.meta.table.tonumber then
-            local meta = x.meta.table.tonumber
+        local mtonumber = x:getMetaItem("tonumber")
+        if tx  == "table" and mtonumber then
+            local meta = mtonumber
             local params = {}
             return _CALL (vm, meta, params)
         else
@@ -41,21 +42,26 @@ function _HANDLE_META_BIN (vm, left, right, name)
     local tleft  = _GET_TYPE(vm, left)
     local tright = _GET_TYPE(vm, right)
 
-    if tleft == "table" and left.meta and left.meta.table[name.."r"] then
-        meta = left.meta.table[name.."r"]
+    local leftmetar  = tleft == "table" and left:getMetaItem(name.."r")
+    local rightmetal = tright == "table" and right:getMetaItem(name.."l")
+    local leftmeta   = tleft == "table" and left:getMetaItem(name)
+    local rightmeta  = tright == "table" and right:getMetaItem(name)
+
+    if leftmetar then
+        meta = leftmetar
         param1 = right
         paramself = left
-    elseif tright == "table" and right.meta and right.meta.table[name.."l"] then
-        meta = right.meta.table[name.."l"]
+    elseif rightmetal then
+        meta = rightmetal
         param1 = left
         paramself = right
-    elseif tleft == "table" and left.meta and left.meta.table[name] then
-        meta = left.meta.table[name]
+    elseif leftmeta then
+        meta = leftmeta
         param1 = left
         param2 = right
         paramself = left
-    elseif tright == "table" and right.meta and right.meta.table[name] then
-        meta = right.meta.table[name]
+    elseif rightmeta then
+        meta = rightmeta
         param1 = left
         param2 = right
         paramself = right
@@ -85,14 +91,11 @@ end
 --! inline
 function _HANDLE_META_UN (vm, x, name)
     local meta, paramself
-    if _GET_TYPE(vm, x) == "table" and x.meta and x.meta.table[name] then
-        meta = x.meta.table[name]
-        paramself = x
-    end
+    meta = _GET_TYPE(vm, x) == "table" and x:getMetaItem(name)
 
     if meta then
         BEGIN_ACC(vm, 0, 0)
-        _PUSH_SELF(vm, paramself)
+        _PUSH_SELF(vm, x)
         _STACK_PUSH(vm, vm.mainStack, meta)
         _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
     end

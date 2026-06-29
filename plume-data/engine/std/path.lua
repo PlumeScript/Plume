@@ -216,6 +216,8 @@ local function makePath(path)
 	}
 
 	obj.subtype = "Path"
+	obj.name = "Path"
+	obj:setMetaItem('readonly', true)
 
 	local function div(x1, x2)
 		local path1, path2

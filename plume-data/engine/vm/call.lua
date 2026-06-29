@@ -45,13 +45,15 @@ function CONCAT_CALL (vm, arg1, arg2)
 
     -- Table can be called with, if exists, the meta-field call
     if t == "table" then
-        if arg1==1 and tocall.meta and tocall.meta.table.validate then
+        local mvalidate = tocall:getMetaItem("validate")
+        local mcall     = tocall:getMetaItem("call")
+        if arg1==1 and mvalidate then
             self = tocall
-            tocall = tocall.meta.table.validate
+            tocall = mvalidate
             t = tocall.type
-        elseif tocall.meta and tocall.meta.table.call then
+        elseif mcall then
             self = tocall
-            tocall = tocall.meta.table.call
+            tocall = mcall
             t = tocall.type
         end
     end

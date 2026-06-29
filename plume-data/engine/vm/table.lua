@@ -56,7 +56,7 @@ function TABLE_SET_META (vm, arg1, arg2)
     local t     = _STACK_POP(vm, vm.mainStack)
     local key   = _STACK_POP(vm, vm.mainStack)
     local value = _STACK_POP(vm, vm.mainStack)
-    t.meta.table[key] = value
+    t:setMetaItem(key, value)
 end
 
 --- @opcode
@@ -101,14 +101,14 @@ function TABLE_INDEX (vm, arg1, arg2)
             if value ~= nil then
                 _STACK_PUSH(vm, vm.mainStack, value)
             else
+                local mgetindex = t:getMetaItem("getindex")
                 if arg1 == 1 then
                     LOAD_EMPTY(vm)
-                elseif t.meta.table.getindex then
-                    local meta = t.meta.table.getindex
+                elseif mgetindex then
                     BEGIN_ACC(vm, 0, 0)
                     _STACK_PUSH(vm, vm.mainStack, key)
                     _PUSH_SELF(vm, t)
-                    _STACK_PUSH(vm, vm.mainStack, meta)
+                    _STACK_PUSH(vm, vm.mainStack, mgetindex)
                     _INJECTION_PUSH(vm, vm.plume.ops.TABLE_INDEX_CHECK_IS_NIL, 0, 0)
                     _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
                 else
@@ -170,11 +170,15 @@ function TABLE_SET (vm, arg1, arg2)
         key   = _STACK_POP(vm, vm.mainStack)
         value = _STACK_POP(vm, vm.mainStack)
     end
-    local meta
+    local mreadonly = t:getMetaItem("readonly")
+    local msetindex
     key = tonumber(key) or key
-    if not t.table[key] then
-        meta = t.meta.table.setindex
-        if meta then
+
+    if mreadonly then
+        _ERROR(vm, vm.plume.error.cannotSetIndexReadonlyTable())
+    elseif not t.table[key] then
+        msetindex = t:getMetaItem("setindex")
+        if msetindex then
             -- for preventing infinite loop with next TABLE_SET
             -- quite dirty an vulnerable (ex: meta set this key to nil)
             -- may be rewrited in the futur
@@ -189,14 +193,14 @@ function TABLE_SET (vm, arg1, arg2)
             _STACK_PUSH(vm, vm.mainStack, key)
             _STACK_PUSH(vm, vm.mainStack, value)
             _PUSH_SELF(vm, t)
-            _STACK_PUSH(vm, vm.mainStack, meta)
+            _STACK_PUSH(vm, vm.mainStack, msetindex)
 
             _INJECTION_PUSH(vm, vm.plume.ops.TABLE_SET, 1, 0)   -- set
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0) -- call
         end
     end
 
-    if not meta then
+    if not msetindex and not mreadonly then
         t:setItem(key, value)
     end
 end
@@ -224,4 +228,13 @@ function TABLE_EXPAND (vm, arg1, arg2)
     else
         _ERROR (vm, vm.plume.error.cannotExpandValue(tt))
     end
+end
+
+--- @opcode
+--! inline
+function TABLE_CUSTOM_FIELD (vm, arg1, arg2)
+    local field = vm.constants[arg1]
+    local value = vm.constants[arg2]
+    local t     = _STACK_GET(vm, vm.mainStack)
+    t[field]    = value
 end

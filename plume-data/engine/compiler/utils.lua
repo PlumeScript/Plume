@@ -128,7 +128,7 @@ return function (plume, context)
 		if not parent then
 			return ""
 		end
-
+		
 		local result = {}
 		local currentpos = 1
 		while currentpos<#parent.children and parent.children[currentpos] ~= node do
@@ -141,6 +141,31 @@ return function (plume, context)
 			currentpos = currentpos + 1
 		end
 
+		if #result == 0 then
+			if parent.name == "DO" or parent.name == "BODY" or parent.name == "LET" then
+				return context.collectComments(parent)
+			end
+		end
+
+		return table.concat(result, "\n")
+	end
+
+	--- Collect file comments: any comment between file start and the first non-comment line.
+	--- Warning: if the first non-comment line is LET, comment will be ignored.
+	--- @param node node to get adjacent comments
+	--- @return string Concatenated comment strings separated by newlines (`\n`).
+	function context.collectFileComments(node)
+		local result = {}
+		local currentpos = 1
+		for _, child in ipairs(node.children) do
+			if child.name == "COMMENT" then
+				table.insert(result, child.content)
+			elseif child.name == "LET" then
+				return ""
+			else
+				break
+			end
+		end
 		return table.concat(result, "\n")
 	end
 

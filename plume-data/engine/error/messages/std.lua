@@ -19,4 +19,8 @@ return function(plume)
 	function plume.error.cannotRemoveNotfoundKey(key)
 		return string.format("The key '%s' does not exist and therefore cannot be deleted.", key)
 	end
+
+	function plume.error.cannotUseDegRadTogether()
+		return "Cannot use `?deg` and `?rad` flags together."
+	end
 end

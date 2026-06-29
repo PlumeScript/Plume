@@ -20,13 +20,24 @@ return function (plume, context)
         context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)
     end 
 
+    local function registerTableInfos(node, infos)
+        for _, info in ipairs(infos) do
+            context.registerOP(node,
+                plume.ops.TABLE_CUSTOM_FIELD,
+                context.registerConstant(info[1]),
+                context.registerConstant(info[2])
+            )
+        end
+    end
+
     --- Wrapper for accumulation block. Initialize accumulator and finalize the block.
     --- Accumulation block doesn't have its own scope.
     --- depending of its type.
     --- @param f|nil function Function used to process children. Default to context.childrenHandler 
     --- @return function
-    function context.accBlock(f)  
+    function context.accBlock(f, infos)  
         f = f or context.childrenHandler
+
 
         --- @param node node
         --- @param label|nil string Used to jump at block end, but before finalizer.
@@ -64,11 +75,16 @@ return function (plume, context)
                     f(node)
                     context.toggleConcatPop()
 
+                    if #node.children == 1 and node.children[1].type == "TABLE" and infos then
+                        registerTableInfos(node, infos)
+                    end
                     if label then  
                         context.registerLabel(node, label)  
                     end  
                 -- Handled by block in most cases  
-                elseif node.type == "TABLE" then  
+                elseif node.type == "TABLE" then
+                    local doc = context.collectComments(node)
+
                     context.accTableInit(node)
                     context.accBlockDeep = context.accBlockDeep + 1
 
@@ -83,7 +99,15 @@ return function (plume, context)
                     if macro then
                         table.remove(macro.blockToClose)
                     end
+
                     context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                    if doc and #doc>0 then
+                        infos = infos or {}
+                        table.insert(infos, {"doc", doc})
+                    end
+                    if infos then
+                        registerTableInfos(node, infos)
+                    end
                     
                     if label then  
                         context.registerLabel(node, label)  

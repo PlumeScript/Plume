@@ -14,13 +14,17 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `min(...numbers)`
 *   `max(...numbers)`
 *   `attempt(macro, ...macroArgs)`: safe call.
-
+*   `eval(code[, filename], ?safe)`: execute the given plume code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error.
+*   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 ### Table Manipulation
 
 *   `List(table)`: return a table with only array part. If used as validator, raise an error if table contains a map element.
 *   `Map(table)`: return a table with only map part. If used as validator, raise an error if table contains a array element.
 *   **`Table`**:
-    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
+    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly. _Use this function specifically when creating empty tables (`Table()`) or tables with a single element._
+    *   `Table.at(table, index)`: Table indexing, support negative index. Doesn't trigger `getindex`
+    *   `Table.at(table, start, top)`: Table slicing (only numeric part), support negative index. Doesn't trigger `getindex`
+    *   `Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.
     *   `Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. 
     *   `Table.append(table, item)`: Adds `item` to the end of the specified `table`.
     *   `Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
@@ -34,12 +38,11 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.sum(...items)`
     *   `Table.copy(table)`: Returns a superficial copy of `table`.
     *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
-    *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
-*   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
+    *   `Table.setMeta(t, meta)`
+    *   `Table.getMeta(t)`
+    *   `Table.deepMerge(t1, t2, ?concatNumeric)`: Recursively merges `t2` into `t1`. If a key exists in both and both values are tables, it merges them recursively; otherwise, `t2` overwrites `t1`. Use `?concatNumeric` to skip numeric keys, concatening `t1` and `t2`'s array items.
+    *   `Table.flatten(t, ?deep)`: Concatenates the array elements of a table of tables into a single flat array. Use `?deep` to recursively flatten arbitrarily nested structures.
 
-Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$Table(a, b, ...)` and evaluates to the same result.
-
-Use `$Table` specifically when creating empty tables or tables with a single element.
 
 ### String manipulation
 
@@ -60,7 +63,7 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 *  `upper(s)`: Converts all characters in the string to uppercase.
 *  `replace(s, pattern, sub, ?rich)`: Replaces occurrences of pattern with sub. sub can be a `string`, or a macro that take one `match` parameter and return a `string`.
 *  `rep(s, count, sep:)`: Repeat the string `count`, separate with `sep` if provided.
-*  `sub(s, start, end)`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end.
+*  `sub(s, start[, end])`: Return a substring for `s`, starting at position `start`, ending at position `end`. `end` could be `-1`, representing string end. If `end` isn't provided, it take the value of `start`.
 
 #### Search
 * `find(s, pattern, ?rich)`: Returns the first match, or empty if not found.
@@ -98,17 +101,17 @@ For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern
 
 ### Math
 
-_All trigonometry functions works in radians._
+_All trigonometry functions works in radians, except if `?deg` flag is provided. `?rad` flag hasn't any effect. `?deg` and `?rad` flag can't be provided together._
 
 #### Functions
 
-* `Math.cos(x)`
-* `Math.sin(x)`
-* `Math.tan(x)`
-* `Math.acos(x)`
-* `Math.asin(x)`
-* `Math.atan(x)`
-* `Math.atan2(x, y)`
+* `Math.cos(x, ?deg, ?rad)`
+* `Math.sin(x, ?deg, ?rad)`
+* `Math.tan(x, ?deg, ?rad)`
+* `Math.acos(x, ?deg, ?rad)`
+* `Math.asin(x, ?deg, ?rad)`
+* `Math.atan(x, ?deg, ?rad)`
+* `Math.atan2(x, y, ?deg, ?rad)`
 * `Math.log(x)`
 * `Math.log10(x)`
 
@@ -158,8 +161,9 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 
 > **Note:** `write(path)` provides a quick shortcut for simple file writes, while `os.Path.write()` offers more control when you're already working with Path objects.
 
-#### File system
+#### System
 
+##### Path
 **Creation**
 *   `os.Path([path])`: Return a `Path` table. Without `path` args, return the current directory.
 
@@ -262,6 +266,7 @@ Assume `let time = $Time()`
 ### Lua Integration
 
 * `lua.require(path)` (used to load Lua modules, use same Path resolution as `import`). Required file must return a function.
+* `lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers and empty are supported).
 
 ### Others
 *   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.

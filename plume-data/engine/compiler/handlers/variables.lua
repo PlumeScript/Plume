@@ -39,9 +39,8 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isConst boolean
 	--- @param isParam boolean
 	--- @param isFrom boolean If using object destructuring
-	--- @param isContext boolean True if a bind to context
 	--- @return table rvar The resolved variable object containing scope information and metadata
-	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isContext, isLoopVariable)
+	local function resolveAssignmentTarget(node, varNode, isLet, isConst, isParam, isFrom, isLoopVariable)
 		local rvar
 		
 		----------------------------------------------------------
@@ -87,7 +86,6 @@ return function (plume, context, nodeHandlerTable)
 				rvar, definitionVar = context.registerVariable(node, name, {
 					isConst=isConst,
 					isParam=isParam,
-					isContext=isContext,
 					isLoopVariable=isLoopVariable
 				})
 				if not rvar then
@@ -103,8 +101,6 @@ return function (plume, context, nodeHandlerTable)
 					plume.error.setUnknownVariable(node, name, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then
 					plume.error.setConstantVariable(node, name, source, rvar.node)
-				elseif rvar.isContext then
-					plume.error.setContextVariable(node, name, plume.ast.get(node, "BODY"))
 				end
 			end
 			rvar.key = key
@@ -155,19 +151,11 @@ return function (plume, context, nodeHandlerTable)
 	--- @param isFrom boolean If using object destructuring
 	--- @param compound table Node representing compound operators like +=
 	--- @param isBodyStacked boolean True if the value is already on the stack
-	--- @param isContext boolean True if a bind to context
 	local function generateAssignmentBytecode(
-		node, varlist, body, isLet, isParam, isFrom, compound, isBodyStacked, isContext
+		node, varlist, body, isLet, isParam, isFrom, compound, isBodyStacked
 	)
 		if not (body or isBodyStacked) then
-			if isContext then
-				for _, var in ipairs(varlist) do
-					context.registerOP(var.ref, plume.ops.LOAD_EMPTY, 0, 0)
-					context.registerOP(var.ref, plume.ops.CREATE_CONTEXT, 0, 0)
-					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
-				end
-			end
-
+			
 			return
 		end
 
@@ -179,7 +167,11 @@ return function (plume, context, nodeHandlerTable)
 
 		-- Generate RHS code
 		if not compound and not isBodyStacked then
-			context.scope(context.accBlock())(body)
+			local infos ={}
+			if #varlist == 1 and varlist[1].name then
+				table.insert(infos, {"name", varlist[1].name})
+			end
+			context.scope(context.accBlock(nil, infos))(body)
 		end
 		
 		for i, var in ipairs(varlist) do
@@ -252,9 +244,6 @@ return function (plume, context, nodeHandlerTable)
 					context.registerOP(node, plume.ops.STORE_UPVALUE, 0, var.offset)
 				elseif not isLet and var.frameOffset > 0 then
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, var.frameOffset, var.offset)
-				elseif isContext then
-					context.registerOP(var.ref, plume.ops.CREATE_CONTEXT, 0, 0)
-					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
 				else
 					context.registerOP(var.ref, plume.ops.STORE_LOCAL, 0, var.offset)
 				end
@@ -282,19 +271,9 @@ return function (plume, context, nodeHandlerTable)
 	--- 	@field isFrom boolean True if using object destructuring
 	--- 	@field compound table Compound operator node
 	--- 	@field isBodyStacked boolean True if value is already on stack
-	--- 	@field isContext boolean True if a bind to context
 	--- 	@field isLoopVariable boolean True
 	function context.affectation(node, nodevarlist, body, options)
 		local varlist = {}
-
-		if options.isContext then
-			if options.isConst then
-				plume.error.cannotMixContextConst(node)
-			end
-			if options.isParam then
-				plume.error.cannotMixContextParamt(node)
-			end
-		end
 		
 		-- Phase 1: Preparation
 		for _, varNode in ipairs(nodevarlist.children) do
@@ -309,7 +288,6 @@ return function (plume, context, nodeHandlerTable)
 				options.isConst,
 				options.isParam,
 				options.isFrom,
-				options.isContext,
 				options.isLoopVariable
 			)
 			table.insert(varlist, rvar)
@@ -321,8 +299,7 @@ return function (plume, context, nodeHandlerTable)
 			options.isParam,
 			options.isFrom,
 			options.compound,
-			options.isBodyStacked,
-			options.isContext
+			options.isBodyStacked
 		)
 
 		-- Validation check for empty constants
@@ -337,7 +314,6 @@ return function (plume, context, nodeHandlerTable)
 	local function SETLET(node, isLet)
 		local isConst     = plume.ast.get(node, "CONST")
 		local isParam     = plume.ast.get(node, "PARAM")
-		local isContext   = plume.ast.get(node, "CONTEXT")
 
 		if isParam then
 			if isConst then
@@ -362,8 +338,7 @@ return function (plume, context, nodeHandlerTable)
 			isConst=isConst,
 			isParam=isParam,
 			isFrom=isFrom,
-			compound=compound,
-			isContext=isContext
+			compound=compound
 		})
 
 		if macro then

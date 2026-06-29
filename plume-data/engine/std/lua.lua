@@ -15,10 +15,8 @@ plume.std.print = plume.obj.luaMacro("print", function(args)
 end)
 
 plume.std.help = plume.obj.luaMacro("help", function (args)
-	--!signature macro macro
-	local name = macro.debugMacroName or macro.name
-	local doc = macro.doc or ""
-	print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
+	--!signature macro|table m
+	print(plume.makedoc(m))
 	return true
 end)
 
@@ -105,7 +103,7 @@ plume.std.Map.meta = plume.obj.quickTable{
 
 plume.std.lua = plume.obj.table(0, 0)
 
-plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
+plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, runtime, fileID)
 	local firstFilename = runtime.files[1].name
 	local lastFilename  = runtime.files[fileID].name
 
@@ -116,10 +114,50 @@ plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runt
 		local msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
 		return false, msg
 	end
-end)
+end))
+
+plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args)
+	--!signature string code, [string filename], ?safe
+	local success, result = load(code, filename)
+
+	if success then
+		success, result = pcall(success)
+		if success then
+			local t = type(result)
+			if t == nil then
+				result = plume.obj.empty
+			elseif r ~= "string" and t ~= "number" then
+				return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
+			end
+		end
+	end
+	if safe then
+		local safeResult = plume.obj.table(0, 2)
+		safeResult:setItem("success", success)
+		safeResult:setItem("result", result)
+		return true, safeResult
+	else
+		return success, result
+	end
+end))
+
 
 plume.std.attempt = plume.obj.table(0, 0)
 
 plume.std.Context = plume.obj.luaMacro("Context", function(args)
 	return true, plume.obj.context(args.table[1])
+end)
+
+-- Basic implementation, prone to memory leaks
+plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+	--!signature string code, [string filename], ?safe
+	local success, result = plume.executeString(code, filename or "<string>", runtime)
+	if safe then
+		local safeResult = plume.obj.table(0, 2)
+		safeResult:setItem("success", success)
+		safeResult:setItem("result", result)
+		return true, safeResult
+	else
+		return success, result
+	end
 end)

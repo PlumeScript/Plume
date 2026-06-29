@@ -20,7 +20,17 @@ return function(plume)
 
 	function plume.error.unregisteredKey(t, key)
 		local index = tonumber(key)
-		if index and math.floor(index) == index then
+		local tableHint = ""
+		if t.name then
+			tableHint = string.format(" for table '%s'", t.name)
+		end
+
+		if index and math.floor(index) == index and index ~= 0 then
+			if index < 0 then
+				hint = string.format("To count from the end, use `$t[len(t)%s+1]` or `Table.at($t, %s)`.", key, key)
+				return string.format("Unregistered key '%s'.\n(i) %s",  key, hint)
+			end
+
 			local largestIndex = 0
 			for _, testkey in ipairs(t.keys) do
 				largestIndex = math.max(largestIndex, tonumber(testkey) or 0)
@@ -42,10 +52,10 @@ return function(plume)
 				hint = "This table does not include any numerical indexes."
 			end
 
-			return string.format("Invalid index '%s'.\n%s",  key, hint)
+			return string.format("Invalid index '%s'%s.\n%s",  key, tableHint, hint)
 		else
 			local hint = plume.error.makeVisibleKeysHint(key, t.keys)
-			return string.format("Unregistered key '%s'.%s",  key, hint)
+			return string.format("Unregistered key '%s'%s.%s",  key, tableHint, hint)
 		end
 	end
 
@@ -60,5 +70,9 @@ return function(plume)
 		end
 
 		return string.format("Cannot use a '%s' as contextual variable. Use `$Context()` to create one.", t)
+	end
+
+	function plume.error.cannotSetIndexReadonlyTable()
+		return "Cannot set index of a readonly table."
 	end
 end

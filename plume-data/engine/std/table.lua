@@ -60,8 +60,56 @@ function plume.stdUtils.copy(t, deep, nt)
 
 		nt:setItem(key, value)
 	end
-
+	nt.name = t.name
+	nt.doc  = t.doc
 	return nt
+end
+
+local function handleNegativeIndex(index, len)
+	if index < 0 then
+		index = index+1
+		while index <= 0 do
+			index = index + len
+		end
+	end
+
+	return index
+end
+
+local function deepMerge(t1, t2, concatNumeric)
+	local result = plume.stdUtils.copy(t1, {})
+	for _, key in ipairs(t2.keys) do
+		local v2 = t2.table[key]
+		if tonumber(key) and concatNumeric then
+			result:addItem(v2)
+		else
+			local v3
+			if t1.table[key] then
+				local v1 = t1.table[key]
+				if type(v1) == "table" and v1.type == "table" and type(v1) == "table" and v1.type == "table" then
+					v3 = deepMerge(v1, v2)
+				else
+					v3 = v2
+				end
+			else
+				v3 = v2
+			end
+
+			result:setItem(key, v3)
+		end
+	end
+
+	return result
+end
+
+local function expandInto(result, t, deep)
+	for _, value in ipairs(t.table) do
+		if deep and type(value) == "table" and value.type == "table" then
+			expandInto(result, value, deep)
+		else
+			result:addItem(value)
+		end
+	end
 end
 
 plume.std.Table = plume.obj.quickTable{
@@ -187,6 +235,14 @@ plume.std.Table = plume.obj.quickTable{
 
 	sort = plume.obj.luaMacro("sort", function(args)
 		--!signature table t, macro compare:
+
+		for i, x in ipairs(t.table) do
+			local _type = type(x) == "table" and x.type or type(x)
+			if _type ~= "number" or not tonumber(x) then
+				return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+			end
+		end
+
 		if compare and #t.table > 1 then
 			-- In case of closure - we should have an api for that
 			local positionalParamCount = compare.positionalParamCount or compare.macro.positionalParamCount
@@ -239,6 +295,76 @@ plume.std.Table = plume.obj.quickTable{
 			r = r + x
 		end
 		return true, r
+	end),
+
+	at = plume.obj.luaMacro("at", function(args)
+		--!signature table t, number index, [number stop]
+
+		index = handleNegativeIndex(index, #t.table)
+		if stop then
+			stop = handleNegativeIndex(stop, #t.table)
+		end
+
+		if stop then
+			local result = plume.obj.table(stop - index + 1, 0)
+			for i=index, stop do
+				local value = t.table[i]
+				if not value then
+					return false, plume.error.unregisteredKey(t, index)
+				end
+				result:addItem(value)
+			end
+			return true, result
+		else
+			local value = t.table[index]
+			if value then
+				return true, value
+			else
+				return false, plume.error.unregisteredKey(t, index)
+			end
+		end
+	end),
+
+	setAt = plume.obj.luaMacro("setAt", function(args)
+		--!signature table t, number index, any value
+		index = handleNegativeIndex(index, #t.table)
+
+		t:setItem(index, value)
+		return true
+	end),
+
+	setMeta = plume.obj.luaMacro("setMeta", function(args)
+		--!signature table t, table meta
+		t.meta = meta
+		return true
+	end),
+	getMeta = plume.obj.luaMacro("setMeta", function(args)
+		--!signature table t
+		if not t.meta then
+			t.meta = plume.obj.table(0, 0)
+		end
+
+		return true, t.meta
+	end),
+
+	deepMerge = plume.obj.luaMacro("deepMerge", function(args)
+		--!signature table t1, table t2, ?concatNumeric
+		return true, deepMerge(t1, t2, concatNumeric)
+	end),
+
+	flatten = plume.obj.luaMacro("flatten", function(args)
+		--!signature table t, ?deep
+		local result = plume.obj.table(0, 0)
+
+		for _, value in ipairs(t.table) do
+			if type(value) == "table" and value.type == "table" then
+				expandInto(result, value, deep)
+			else
+				result:addItem(value)
+			end
+		end
+
+		return true, result
 	end)
 }
 
@@ -253,3 +379,6 @@ plume.std.Table.meta = plume.obj.quickTable{
 		end
 	end)
 }
+
+plume.std.Table.name = "Table"
+plume.std.Table:setMetaItem('readonly', true)

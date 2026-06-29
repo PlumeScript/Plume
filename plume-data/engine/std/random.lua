@@ -99,8 +99,10 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
 			elseif #args.table == 2 then
 				return true, _random_range(args.table[1], args.table[2])
 			end
-		end)
+		end),
+		readonly = true
 	}
 	
 	return true, random
 end)
+

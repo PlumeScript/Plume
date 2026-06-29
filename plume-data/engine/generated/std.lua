@@ -47,16 +47,19 @@ return function(plume)
 	
 	plume.std.help = plume.obj.luaMacro("help", function (args)
 		local __name      = "print"
-		local __signature = "`$print(macro macro)`"
-		local __s, __e, self, macro
-		__s, __e, macro = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		local __signature = "`$print(macro|table m)`"
+		local __s, __e, self, m
+		__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-		if __s and macro then __s, __e, macro = plume.stdCheckType(macro, "macro", "1", __name, __signature) end
+		if __s and m then
+			__s, __e, m = plume.stdCheckType(m, "macro", "1", __name, __signature)
+			if not __s then
+				__s, __e, m = plume.stdCheckType(m, "table", "1", __name, __signature)
+			end
+		end
 		if not __s then return false, __e end
 		------------
-		local name = macro.debugMacroName or macro.name
-		local doc = macro.doc or ""
-		print("macro " .. name .. "\n    " .. doc:gsub('\n', '\n    ') or "")
+		print(plume.makedoc(m))
 		return true
 	end)
 	
@@ -220,7 +223,7 @@ return function(plume)
 	
 	plume.std.lua = plume.obj.table(0, 0)
 	
-	plume.std.lua.table.require =  plume.obj.luaMacro("require", function(args, runtime, fileID)
+	plume.std.lua:setItem("require", plume.obj.luaMacro("require", function (args, runtime, fileID)
 		local firstFilename = runtime.files[1].name
 		local lastFilename  = runtime.files[fileID].name
 	
@@ -231,92 +234,219 @@ return function(plume)
 			local msg = "Error: cannot open '" .. args.table[1] .. "'.\nPaths tried:\n\t" .. table.concat(searchPaths, '\n\t')
 			return false, msg
 		end
-	end)
+	end))
+	
+	plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args)
+		local __name      = "require"
+		local __signature = "`$require(string code, [string filename], ?safe)`"
+		local __s, __e, self, code, filename
+		__s, __e, code, filename = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
+		local safe
+		if __s then __s, __e, self, safe = plume.stdUnpackNamed(args, {"self", "safe"}, __name, __signature) end
+		safe = safe or false
+		if __s and code then __s, __e, code = plume.stdCheckType(code, "string", "1", __name, __signature) end
+		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "2", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		local success, result = load(code, filename)
+	
+		if success then
+			success, result = pcall(success)
+			if success then
+				local t = type(result)
+				if t == nil then
+					result = plume.obj.empty
+				elseif r ~= "string" and t ~= "number" then
+					return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
+				end
+			end
+		end
+		if safe then
+			local safeResult = plume.obj.table(0, 2)
+			safeResult:setItem("success", success)
+			safeResult:setItem("result", result)
+			return true, safeResult
+		else
+			return success, result
+		end
+	end))
+	
 	
 	plume.std.attempt = plume.obj.table(0, 0)
 	
-	plume.std.Context = plume.obj.luaMacro("Context", function(args)
+	plume.std.Context = plume.obj.luaMacro("Context", function (args)
 		return true, plume.obj.context(args.table[1])
+	end)
+	
+	-- Basic implementation, prone to memory leaks
+	plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+		local __name      = "Context"
+		local __signature = "`$Context(string code, [string filename], ?safe)`"
+		local __s, __e, self, code, filename
+		__s, __e, code, filename = plume.stdUnpackPositional(args, 1, 2,  __name, __signature)
+		local safe
+		if __s then __s, __e, self, safe = plume.stdUnpackNamed(args, {"self", "safe"}, __name, __signature) end
+		safe = safe or false
+		if __s and code then __s, __e, code = plume.stdCheckType(code, "string", "1", __name, __signature) end
+		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "2", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		local success, result = plume.executeString(code, filename or "<string>", runtime)
+		if safe then
+			local safeResult = plume.obj.table(0, 2)
+			safeResult:setItem("success", success)
+			safeResult:setItem("result", result)
+			return true, safeResult
+		else
+			return success, result
+		end
 	end)
 	
 	plume.std.Math = plume.obj.quickTable{
 		sin = plume.obj.luaMacro("sin", function (args)
 			local __name      = "sin"
-			local __signature = "`$sin(number x)`"
+			local __signature = "`$sin(number x, ?deg, ?rad)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			if deg then
+				x = x * math.pi / 180
+			end
 			return true, math.sin(x)
 		end),
 		cos = plume.obj.luaMacro("cos", function (args)
 			local __name      = "cos"
-			local __signature = "`$cos(number x)`"
+			local __signature = "`$cos(number x, ?deg, ?rad)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			if deg then
+				x = x * math.pi / 180
+			end
 			return true, math.cos(x)
 		end),
 		tan = plume.obj.luaMacro("tan", function (args)
 			local __name      = "tan"
-			local __signature = "`$tan(number x)`"
+			local __signature = "`$tan(number x, ?deg, ?rad)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			if deg then
+				x = x * math.pi / 180
+			end
 			return true, math.tan(x)
 		end),
 		asin =  plume.obj.luaMacro("asin", function (args)
 			local __name      = "asin"
-			local __signature = "`$asin(number x)`"
+			local __signature = "`$asin(number x, ?deg, ?rad)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.asin(x)
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			local result = math.asin(x)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		acos =  plume.obj.luaMacro("acos", function (args)
 			local __name      = "acos"
-			local __signature = "`$acos(number x)`"
+			local __signature = "`$acos(number x, ?deg, ?rad)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.acos(x)
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			local result =  math.acos(x)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		atan =  plume.obj.luaMacro("atan", function (args)
 			local __name      = "atan"
-			local __signature = "`$atan(number x)`"
+			local __signature = "`$atan(number x, ?deg, ?rad)`"
 			local __s, __e, self, x
 			__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.atan(x)
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			local result = math.atan(x)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		atan2 =  plume.obj.luaMacro("atan2", function (args)
 			local __name      = "atan2"
-			local __signature = "`$atan2(number x, number y)`"
+			local __signature = "`$atan2(number x, number y, ?deg, ?rad)`"
 			local __s, __e, self, x, y
 			__s, __e, x, y = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			local deg, rad
+			if __s then __s, __e, self, deg, rad = plume.stdUnpackNamed(args, {"self", "deg", "rad"}, __name, __signature) end
+			deg = deg or false
+			rad = rad or false
 			if __s and x then __s, __e, x = plume.stdCheckType(x, "number", "1", __name, __signature) end
 			if __s and y then __s, __e, y = plume.stdCheckType(y, "number", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.atan2(x, y)
+			if deg and rad then
+				return false, plume.error.cannotUseDegRadTogether()
+			end
+			local result = math.atan2(x, y)
+			if deg then
+				result = result / math.pi * 180
+			end
+			return true, result
 		end),
 		sinh =  plume.obj.luaMacro("sinh", function (args)
 			local __name      = "sinh"
@@ -377,6 +507,9 @@ return function(plume)
 		e    = math.exp(1),
 		huge = math.huge
 	}
+	
+	plume.std.Math.name = "Math"
+	plume.std.Math:setMetaItem('readonly', true)
 	
 	plume.formatNumber = function(x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator)
 		if thousandsSeparator == plume.obj.empty then
@@ -576,6 +709,9 @@ return function(plume)
 		end)
 	}
 	
+	plume.std.Number.name = "Number"
+	plume.std.Number:setMetaItem('readonly', true)
+	
 	plume.std.Number.meta = plume.obj.quickTable {
 		call = plume.obj.luaMacro("Number", function(args)
 			local x = args.table[1]
@@ -626,6 +762,9 @@ return function(plume)
 			return success, result
 		end)
 	}
+	
+	plume.std.os.name = "os"
+	plume.std.os:setMetaItem('readonly', true)
 	
 	local lfsLoaded, lfs = pcall(require, "lfs")
 	
@@ -912,6 +1051,8 @@ return function(plume)
 		}
 	
 		obj.subtype = "Path"
+		obj.name = "Path"
+		obj:setMetaItem('readonly', true)
 	
 		local function div(x1, x2)
 			local path1, path2
@@ -985,19 +1126,30 @@ return function(plume)
 	-- plume.std.plume isn't loaded like other std table,
 	-- but copied at runtime creation
 	
+	function plume.makedoc(m)
+		return m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
+	end
+	
 	plume.std.plume = plume.obj.quickTable {
 		doc = plume.obj.luaMacro("doc", function (args)
 			local __name      = "doc"
-			local __signature = "`$doc(macro m)`"
+			local __signature = "`$doc(macro|table m)`"
 			local __s, __e, self, m
 			__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s and m then __s, __e, m = plume.stdCheckType(m, "macro", "1", __name, __signature) end
+			if __s and m then
+				__s, __e, m = plume.stdCheckType(m, "macro", "1", __name, __signature)
+				if not __s then
+					__s, __e, m = plume.stdCheckType(m, "table", "1", __name, __signature)
+				end
+			end
 			if not __s then return false, __e end
 			------------
-			return true, "macro " .. (m.debugMacroName or m.name) .. "\n    " .. m.doc:gsub('\n', '\n    ') or ""
+			return true, plume.makedoc(m)
 		end)
 	}
+	plume.std.plume.name = "plume"
+	plume.std.plume:setMetaItem('readonly', true)
 	
 	plume.std.Random = plume.obj.luaMacro("Random", function (args)
 		local __name      = "Random"
@@ -1136,11 +1288,14 @@ return function(plume)
 				elseif #args.table == 2 then
 					return true, _random_range(args.table[1], args.table[2])
 				end
-			end)
+			end),
+			readonly = true
 		}
 		
 		return true, random
 	end)
+	
+	
 	
 	local function replaceUpdate(context)
 		local s       = context.string
@@ -1599,18 +1754,24 @@ return function(plume)
 		sub = plume.obj.luaMacro("sub", function (args)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
 			local __name      = "sub"
-			local __signature = "`$sub(string s, number startpos, number endpos)`"
+			local __signature = "`$sub(string s, number startpos, [number endpos])`"
 			local __s, __e, self, s, startpos, endpos
-			__s, __e, s, startpos, endpos = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+			__s, __e, s, startpos, endpos = plume.stdUnpackPositional(args, 2, 3,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and s then __s, __e, s = plume.stdCheckType(s, "string", "1", __name, __signature) end
 			if __s and startpos then __s, __e, startpos = plume.stdCheckType(startpos, "number", "2", __name, __signature) end
 			if __s and endpos then __s, __e, endpos = plume.stdCheckType(endpos, "number", "3", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			if not endpos then
+				endpos = startpos
+			end
 			return true, s:sub(startpos, endpos)
 		end)
 	}
+	
+	plume.std.String.name = "String"
+	plume.std.String:setMetaItem('readonly', true)
 	
 	local function sortUpdate(context)
 		if context.j == context.i then
@@ -1667,8 +1828,56 @@ return function(plume)
 	
 			nt:setItem(key, value)
 		end
-	
+		nt.name = t.name
+		nt.doc  = t.doc
 		return nt
+	end
+	
+	local function handleNegativeIndex(index, len)
+		if index < 0 then
+			index = index+1
+			while index <= 0 do
+				index = index + len
+			end
+		end
+	
+		return index
+	end
+	
+	local function deepMerge(t1, t2, concatNumeric)
+		local result = plume.stdUtils.copy(t1, {})
+		for _, key in ipairs(t2.keys) do
+			local v2 = t2.table[key]
+			if tonumber(key) and concatNumeric then
+				result:addItem(v2)
+			else
+				local v3
+				if t1.table[key] then
+					local v1 = t1.table[key]
+					if type(v1) == "table" and v1.type == "table" and type(v1) == "table" and v1.type == "table" then
+						v3 = deepMerge(v1, v2)
+					else
+						v3 = v2
+					end
+				else
+					v3 = v2
+				end
+	
+				result:setItem(key, v3)
+			end
+		end
+	
+		return result
+	end
+	
+	local function expandInto(result, t, deep)
+		for _, value in ipairs(t.table) do
+			if deep and type(value) == "table" and value.type == "table" then
+				expandInto(result, value, deep)
+			else
+				result:addItem(value)
+			end
+		end
 	end
 	
 	plume.std.Table = plume.obj.quickTable{
@@ -1871,6 +2080,14 @@ return function(plume)
 			if __s and compare then __s, __e, compare = plume.stdCheckType(compare, "macro", "compare", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+	
+			for i, x in ipairs(t.table) do
+				local _type = type(x) == "table" and x.type or type(x)
+				if _type ~= "number" or not tonumber(x) then
+					return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+				end
+			end
+	
 			if compare and #t.table > 1 then
 				-- In case of closure - we should have an api for that
 				local positionalParamCount = compare.positionalParamCount or compare.macro.positionalParamCount
@@ -1942,6 +2159,127 @@ return function(plume)
 				r = r + x
 			end
 			return true, r
+		end),
+	
+		at = plume.obj.luaMacro("at", function (args)
+			local __name      = "at"
+			local __signature = "`$at(table t, number index, [number stop])`"
+			local __s, __e, self, t, index, stop
+			__s, __e, t, index, stop = plume.stdUnpackPositional(args, 2, 3,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and index then __s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature) end
+			if __s and stop then __s, __e, stop = plume.stdCheckType(stop, "number", "3", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+	
+			index = handleNegativeIndex(index, #t.table)
+			if stop then
+				stop = handleNegativeIndex(stop, #t.table)
+			end
+	
+			if stop then
+				local result = plume.obj.table(stop - index + 1, 0)
+				for i=index, stop do
+					local value = t.table[i]
+					if not value then
+						return false, plume.error.unregisteredKey(t, index)
+					end
+					result:addItem(value)
+				end
+				return true, result
+			else
+				local value = t.table[index]
+				if value then
+					return true, value
+				else
+					return false, plume.error.unregisteredKey(t, index)
+				end
+			end
+		end),
+	
+		setAt = plume.obj.luaMacro("setAt", function (args)
+			local __name      = "setAt"
+			local __signature = "`$setAt(table t, number index, any value)`"
+			local __s, __e, self, t, index, value
+			__s, __e, t, index, value = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and index then __s, __e, index = plume.stdCheckType(index, "number", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			index = handleNegativeIndex(index, #t.table)
+	
+			t:setItem(index, value)
+			return true
+		end),
+	
+		setMeta = plume.obj.luaMacro("setMeta", function (args)
+			local __name      = "setMeta"
+			local __signature = "`$setMeta(table t, table meta)`"
+			local __s, __e, self, t, meta
+			__s, __e, t, meta = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if __s and meta then __s, __e, meta = plume.stdCheckType(meta, "table", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			t.meta = meta
+			return true
+		end),
+		getMeta = plume.obj.luaMacro("setMeta", function (args)
+			local __name      = "setMeta"
+			local __signature = "`$setMeta(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			if not t.meta then
+				t.meta = plume.obj.table(0, 0)
+			end
+	
+			return true, t.meta
+		end),
+	
+		deepMerge = plume.obj.luaMacro("deepMerge", function (args)
+			local __name      = "deepMerge"
+			local __signature = "`$deepMerge(table t1, table t2, ?concatNumeric)`"
+			local __s, __e, self, t1, t2
+			__s, __e, t1, t2 = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local concatNumeric
+			if __s then __s, __e, self, concatNumeric = plume.stdUnpackNamed(args, {"self", "concatNumeric"}, __name, __signature) end
+			concatNumeric = concatNumeric or false
+			if __s and t1 then __s, __e, t1 = plume.stdCheckType(t1, "table", "1", __name, __signature) end
+			if __s and t2 then __s, __e, t2 = plume.stdCheckType(t2, "table", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, deepMerge(t1, t2, concatNumeric)
+		end),
+	
+		flatten = plume.obj.luaMacro("flatten", function (args)
+			local __name      = "flatten"
+			local __signature = "`$flatten(table t, ?deep)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			local deep
+			if __s then __s, __e, self, deep = plume.stdUnpackNamed(args, {"self", "deep"}, __name, __signature) end
+			deep = deep or false
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local result = plume.obj.table(0, 0)
+	
+			for _, value in ipairs(t.table) do
+				if type(value) == "table" and value.type == "table" then
+					expandInto(result, value, deep)
+				else
+					result:addItem(value)
+				end
+			end
+	
+			return true, result
 		end)
 	}
 	
@@ -1962,6 +2300,9 @@ return function(plume)
 			end
 		end)
 	}
+	
+	plume.std.Table.name = "Table"
+	plume.std.Table:setMetaItem('readonly', true)
 	
 	local createDate, createDuration
 	
@@ -2215,64 +2556,64 @@ return function(plume)
 	
 		duration.table.type = "Duration"
 	
-		duration.meta = plume.obj.table(0, 0)
-		duration.meta.keys = {"tostring", "setindex", "getindex", "add", "sub", "mul", "div"}
-		duration.meta.table.tostring = plume.obj.luaMacro ("tostring", function(args)
-			local self = args.table.self
-			return true, self.value
-		end)
-		duration.meta.table.setindex = plume.obj.luaMacro ("setindex", function(args)
-			return false, "Cannot edit 'duration' fields."
-		end)
-		duration.meta.table.getindex = plume.obj.luaMacro ("getindex", function(args)
-			local self = args.table.self
-			local key = args.table[1]
-			
-			if key == "day" then
-				return true, self.value / 86400
-			elseif key == "hour" then
-				return true, self.value / 3600
-			elseif key == "minute" then
-				return true, self.value / 60
-			elseif key == "second" then
+		duration.meta = plume.obj.quickTable({
+			tostring = plume.obj.luaMacro ("tostring", function(args)
+				local self = args.table.self
 				return true, self.value
-			else
-				return false, string.format("Unregistered key '%s'", key)
-			end
-		end)
+			end),
+			setindex = plume.obj.luaMacro ("setindex", function(args)
+				return false, "Cannot edit 'duration' fields."
+			end),
+			getindex = plume.obj.luaMacro ("getindex", function(args)
+				local self = args.table.self
+				local key = args.table[1]
+				
+				if key == "day" then
+					return true, self.value / 86400
+				elseif key == "hour" then
+					return true, self.value / 3600
+				elseif key == "minute" then
+					return true, self.value / 60
+				elseif key == "second" then
+					return true, self.value
+				else
+					return false, string.format("Unregistered key '%s'", key)
+				end
+			end),
 	
-		duration.meta.table.add = ddadd
-		duration.meta.table.sub = ddsub
-		duration.meta.table.mul = ddmul
-		duration.meta.table.div = dddiv
+			add = ddadd,
+			sub = ddsub,
+			mul = ddmul,
+			div = dddiv,
 	
-		duration.meta.table.eq = plume.obj.luaMacro("eq", function(args)
-			local x = args.table[1]
-			local y = args.table[2]
+			eq = plume.obj.luaMacro("eq", function(args)
+				local x = args.table[1]
+				local y = args.table[2]
 	
-			local tx = getType(x)
-			local ty = getType(y)
+				local tx = getType(x)
+				local ty = getType(y)
 	
-			if tx ~= "Duration" or ty ~= "Duration" then
-				return true, false
-			end
+				if tx ~= "Duration" or ty ~= "Duration" then
+					return true, false
+				end
 	
-			return true, x.value == y.value
-		end)
+				return true, x.value == y.value
+			end),
 	
-		duration.meta.table.lt = plume.obj.luaMacro("lt", function(args)
-			local x = args.table[1]
-			local y = args.table[2]
+			lt = plume.obj.luaMacro("lt", function(args)
+				local x = args.table[1]
+				local y = args.table[2]
 	
-			local tx = getType(x)
-			local ty = getType(y)
+				local tx = getType(x)
+				local ty = getType(y)
 	
-			if tx ~= "Duration" or ty ~= "Duration" then
-				return false, string.format("Cannot compare 'Duration' and '%s'", (tx ~= "Duration" and tx or ty))
-			end
+				if tx ~= "Duration" or ty ~= "Duration" then
+					return false, string.format("Cannot compare 'Duration' and '%s'", (tx ~= "Duration" and tx or ty))
+				end
 	
-			return true, x.value < y.value
-		end)
+				return true, x.value < y.value
+			end)
+		})
 	
 		return true, duration
 	end
@@ -2362,6 +2703,8 @@ return function(plume)
 		end)
 	}
 	
+	plume.std.Time.name = "Time"
+	plume.std.Time:setMetaItem('readonly', true)
 	
 	function plume.stdUnpackPositional (args, minArgs, maxArgs, name, signature)
 		if #args.table < minArgs or #args.table > maxArgs then

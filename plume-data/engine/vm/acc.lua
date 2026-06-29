@@ -161,7 +161,7 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
             _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), tostring(value))
         end
     elseif t ~= "string" then
-        local meta = t == "table" and value.meta.table.tostring
+        local meta = t == "table" and value:getMetaItem("tostring")
         if  meta then
             _STACK_POP(vm, vm.mainStack)
 

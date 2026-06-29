@@ -104,6 +104,24 @@ $t
 (5, 4, 2, 1, a: b)
 /// End
 
+/// Test sort wrong type
+let t = ($Math.sin, $Math.cos)
+run $Table.sort($t)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Table element #1 type is 'luaMacro' instead of 'number',                     │
+│   and therefore cannot be sorted.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = ($Math.sin, $Math.cos)                                           │
+│    2 │run $Table.sort($t)                                                      │
+│      │     ^^^^^^^^^^^^^^                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test append
 let t = (1, 2, 5, 4, a: b)
 run $Table.append($t, 5)
@@ -262,4 +280,134 @@ set t[3][1] = 0
 $t2
 /// Output
 (1, 2, (3, 4))
+/// End
+
+/// Test Table at
+let t = $Table(mark, quill, ink)
+$Table.at($t, 1)
+/// Output
+mark
+/// End
+
+/// Test Table at slice
+let t = $Table(mark, quill, ink)
+$Table.at($t, 2, 3)
+/// Output
+(quill, ink)
+/// End
+
+/// Test Table at negative
+let t = $Table(mark, quill, ink)
+for i in seq(5)
+	$Table.at($t, $(-i))\n
+end
+/// Output
+ink
+quill
+mark
+ink
+quill
+/// End
+
+/// Test Table setAt 1
+let t = $Table(mark, quill, ink)
+run $Table.setAt($t, 1, wing)
+$t
+/// Output
+(wing, quill, ink)
+/// End
+
+/// Test Table setAt 2
+let t = $Table(mark, quill, ink)
+run $Table.setAt($t, -1, wing)
+$t
+/// Output
+(mark, quill, wing)
+/// End
+
+/// Test Table setMeta
+let m = do
+	tostring: macro()
+		John
+	end
+end
+
+let t = $Table()
+run $Table.setMeta($t, $m)
+
+$String($t)
+/// Output
+John
+/// End
+
+/// Test Table getMeta
+let m = do
+	tostring: macro()
+		John
+	end
+end
+
+let t1 = $Table()
+let t2 = $Table()
+run $Table.setMeta($t1, $m)
+run $Table.setMeta($t2, $m)
+
+$(Table.getMeta(t1) == Table.getMeta(t2))
+/// Output
+true
+/// End
+
+/// Test Table.deepMerge basic
+let t1 = $Table(a: 1, b: 2)
+let t2 = $Table(c: 3, d: 4)
+$Table.deepMerge($t1, $t2)
+/// Output
+(a: 1, b: 2, c: 3, d: 4)
+/// End
+
+/// Test Table.deepMerge overwrite
+let t1 = $Table(a: 1, b: 2)
+let t2 = $Table(b: 3, c: 4)
+$Table.deepMerge($t1, $t2)
+/// Output
+(a: 1, b: 3, c: 4)
+/// End
+
+/// Test Table.deepMerge nested
+let t1 = $Table(config: (host: localhost))
+let t2 = $Table(config: (port: 8080))
+let m = $Table.deepMerge($t1, $t2)
+$m.config.host$m.config.port
+/// Output
+localhost8080
+/// End
+
+/// Test Table.deepMerge concatNumeric
+let t1 = $Table(1, 2, a: (x: 1 ))
+let t2 = $Table(3, 4, a: (y: 2 ), b: 5)
+let m = $Table.deepMerge($t1, $t2, ?concatNumeric)
+$m
+/// Output
+(1, 2, a: (x: 1, y: 2), 3, 4, b: 5)
+/// End
+
+/// Test Table.flatten basic
+let t = ((1, 2), (3, 4))
+$Table.flatten($t)
+/// Output
+(1, 2, 3, 4)
+/// End
+
+/// Test Table.flatten no deep
+let t = ((1, (2, $Table(3))), $Table(4))
+$Table.flatten($t)
+/// Output
+(1, (2, $Table(3)), 4)
+/// End
+
+/// Test Table.flatten deep
+let t = ((1, (2, $Table(3))), $Table(4))
+$Table.flatten($t, ?deep)
+/// Output
+(1, 2, 3, 4)
 /// End

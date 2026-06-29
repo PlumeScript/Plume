@@ -119,3 +119,117 @@ $attempt($wing)
 /// Output
 (success: true, result: No error!)
 /// End
+
+/// Test eval 1
+$eval(1+1)
+/// Output
+1+1
+/// End
+
+/// Test eval 2
+$eval(\$(1+1))
+/// Output
+2
+/// End
+
+/// Test eval error 1
+$eval(\$(1+a))
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'a', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ <string>                                                                    │
+│    1 │$(1+a)                                                                   │
+│      │    ^                                                                    │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ test.plume                                                                  │
+│    1 │$eval(\$(1+a))                                                           │
+│      │ ^^^^^^^^^^^^^                                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test eval error 2
+$eval(\$(1+a), ?safe)
+/// Output
+(success: false, result: ╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'a', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ <string>                                                                    │
+│    1 │$(1+a)                                                                   │
+│      │    ^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯)
+/// End
+
+/// Test lua.eval 1
+$lua.eval(return 1)
+/// Output
+1
+/// End
+
+/// Test lua.eval 2
+$lua.eval(return 1+1)
+/// Output
+2
+/// End
+
+/// Test lua.eval error 1
+$lua.eval(return 1+a)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a      │
+│   nil value)                                                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$lua.eval(return 1+a)                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test lua.eval error 2
+$lua.eval(return 1+a, ?safe)
+/// Output
+(success: false, result: [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a nil value))
+/// End
+
+/// Test lua.eval exotic
+$lua.eval(return function()end)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → The lua code returned  a 'function' object, that cannot be converted         │
+│   into Plume object.                                                           │
+│   (i) For now, only `string`, `number` and `nil` return are supported.         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$lua.eval(return function()end)                                          │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test std are readonly
+set Math.sin = $Math.cos
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot set index of a readonly table.                                        │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │set Math.sin = $Math.cos                                                 │
+│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

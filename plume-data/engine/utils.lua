@@ -20,6 +20,7 @@ return function (plume)
 		TABLE_SET_ACC
 		TABLE_EXPAND
 		TABLE_INDEX_CHECK_IS_NIL
+		TABLE_CUSTOM_FIELD
 
 		CALL_INDEX_REGISTER_SELF
 
@@ -67,6 +68,7 @@ return function (plume)
 		eq lt minus
 		call getindex setindex
 		iter next tostring validate
+		readonly
 	]]):gmatch("%S+") do
 		plume.validMetaNames[name] = true
 	end

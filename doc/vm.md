@@ -378,3 +378,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 
 #### TABLE_EXPAND
 <br>Unstack 1: a table <br>Stack all list item <br>Put all hash item on the stack 
+
+#### TABLE_CUSTOM_FIELD
+
