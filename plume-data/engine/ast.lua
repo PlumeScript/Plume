@@ -69,6 +69,13 @@ return function (plume)
 		return result
 	end
 
+	function plume.ast.markParent(node)
+		for _, child in ipairs(node.children or {}) do
+			plume.ast.markParent(child)
+			child.parent = node
+		end
+	end
+
 	-- It needs to be completely rewritten; it's completely impossible to maintain at this point.
 	function plume.ast.markType(node, parentLastNode)
 		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
@@ -96,7 +103,6 @@ return function (plume)
 		local branchType
 
 		for i, child in ipairs(node.children or {}) do
-			child.parent = node
 			local childType = plume.ast.markType(child, lastNode)
 
 			-- workaround for the case where child is an information,

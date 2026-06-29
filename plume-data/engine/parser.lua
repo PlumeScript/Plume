@@ -585,6 +585,7 @@ return function (plume)
 			})
 		end
 		
+		plume.ast.markParent(ast)
 		plume.ast.markType(ast)
 		ast.pos = pos
 		return ast
