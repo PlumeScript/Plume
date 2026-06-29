@@ -15,13 +15,13 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `max(...numbers)`
 *   `attempt(macro, ...macroArgs)`: safe call.
 *   `eval(code[, filename], ?safe)`: execute the given plume code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error.
-
+*   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
 ### Table Manipulation
 
 *   `List(table)`: return a table with only array part. If used as validator, raise an error if table contains a map element.
 *   `Map(table)`: return a table with only map part. If used as validator, raise an error if table contains a array element.
 *   **`Table`**:
-    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly.
+    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly. _Use this function specifically when creating empty tables (`Table()`) or tables with a single element._
     *   `Table.at(table, index)`: Table indexing, support negative index. Doesn't trigger `getindex`
     *   `Table.at(table, start, top)`: Table slicing (only numeric part), support negative index. Doesn't trigger `getindex`
     *   `Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.
@@ -40,12 +40,9 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.deepcopy(table)`: Returns a deepcopy copy of `table`. Support self-referencing table.
     *   `Table.setMeta(t, meta)`
     *   `Table.getMeta(t)`
-    *   **Edge Cases:** Use this function specifically when creating empty tables (`Table()`) or tables with a single element.
-*   `rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.
+    *   `Table.deepMerge(t1, t2, ?concatNumeric)`: Recursively merges `t2` into `t1`. If a key exists in both and both values are tables, it merges them recursively; otherwise, `t2` overwrites `t1`. Use `?concatNumeric` to skip numeric keys, concatening `t1` and `t2`'s array items.
+    *   `Table.flatten(t, ?deep)`: Concatenates the array elements of a table of tables into a single flat array. Use `?deep` to recursively flatten arbitrarily nested structures.
 
-Note: For multi-element inline tables, the parentheses syntax `(a, b, ...)` is the preferred method against `$Table(a, b, ...)` and evaluates to the same result.
-
-Use `$Table` specifically when creating empty tables or tables with a single element.
 
 ### String manipulation
 

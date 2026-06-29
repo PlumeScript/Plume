@@ -1844,6 +1844,42 @@ return function(plume)
 		return index
 	end
 	
+	local function deepMerge(t1, t2, concatNumeric)
+		local result = plume.stdUtils.copy(t1, {})
+		for _, key in ipairs(t2.keys) do
+			local v2 = t2.table[key]
+			if tonumber(key) and concatNumeric then
+				result:addItem(v2)
+			else
+				local v3
+				if t1.table[key] then
+					local v1 = t1.table[key]
+					if type(v1) == "table" and v1.type == "table" and type(v1) == "table" and v1.type == "table" then
+						v3 = deepMerge(v1, v2)
+					else
+						v3 = v2
+					end
+				else
+					v3 = v2
+				end
+	
+				result:setItem(key, v3)
+			end
+		end
+	
+		return result
+	end
+	
+	local function expandInto(result, t, deep)
+		for _, value in ipairs(t.table) do
+			if deep and type(value) == "table" and value.type == "table" then
+				expandInto(result, value, deep)
+			else
+				result:addItem(value)
+			end
+		end
+	end
+	
 	plume.std.Table = plume.obj.quickTable{
 		remove = plume.obj.luaMacro("remove", function (args)
 			local __name      = "remove"
@@ -2205,6 +2241,45 @@ return function(plume)
 			end
 	
 			return true, t.meta
+		end),
+	
+		deepMerge = plume.obj.luaMacro("deepMerge", function (args)
+			local __name      = "deepMerge"
+			local __signature = "`$deepMerge(table t1, table t2, ?concatNumeric)`"
+			local __s, __e, self, t1, t2
+			__s, __e, t1, t2 = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
+			local concatNumeric
+			if __s then __s, __e, self, concatNumeric = plume.stdUnpackNamed(args, {"self", "concatNumeric"}, __name, __signature) end
+			concatNumeric = concatNumeric or false
+			if __s and t1 then __s, __e, t1 = plume.stdCheckType(t1, "table", "1", __name, __signature) end
+			if __s and t2 then __s, __e, t2 = plume.stdCheckType(t2, "table", "2", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			return true, deepMerge(t1, t2, concatNumeric)
+		end),
+	
+		flatten = plume.obj.luaMacro("flatten", function (args)
+			local __name      = "flatten"
+			local __signature = "`$flatten(table t, ?deep)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			local deep
+			if __s then __s, __e, self, deep = plume.stdUnpackNamed(args, {"self", "deep"}, __name, __signature) end
+			deep = deep or false
+			if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local result = plume.obj.table(0, 0)
+	
+			for _, value in ipairs(t.table) do
+				if type(value) == "table" and value.type == "table" then
+					expandInto(result, value, deep)
+				else
+					result:addItem(value)
+				end
+			end
+	
+			return true, result
 		end)
 	}
 	

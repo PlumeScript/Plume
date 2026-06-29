@@ -76,6 +76,42 @@ local function handleNegativeIndex(index, len)
 	return index
 end
 
+local function deepMerge(t1, t2, concatNumeric)
+	local result = plume.stdUtils.copy(t1, {})
+	for _, key in ipairs(t2.keys) do
+		local v2 = t2.table[key]
+		if tonumber(key) and concatNumeric then
+			result:addItem(v2)
+		else
+			local v3
+			if t1.table[key] then
+				local v1 = t1.table[key]
+				if type(v1) == "table" and v1.type == "table" and type(v1) == "table" and v1.type == "table" then
+					v3 = deepMerge(v1, v2)
+				else
+					v3 = v2
+				end
+			else
+				v3 = v2
+			end
+
+			result:setItem(key, v3)
+		end
+	end
+
+	return result
+end
+
+local function expandInto(result, t, deep)
+	for _, value in ipairs(t.table) do
+		if deep and type(value) == "table" and value.type == "table" then
+			expandInto(result, value, deep)
+		else
+			result:addItem(value)
+		end
+	end
+end
+
 plume.std.Table = plume.obj.quickTable{
 	remove = plume.obj.luaMacro("remove", function(args)
 		--!signature table t, [number index]
@@ -309,6 +345,26 @@ plume.std.Table = plume.obj.quickTable{
 		end
 
 		return true, t.meta
+	end),
+
+	deepMerge = plume.obj.luaMacro("deepMerge", function(args)
+		--!signature table t1, table t2, ?concatNumeric
+		return true, deepMerge(t1, t2, concatNumeric)
+	end),
+
+	flatten = plume.obj.luaMacro("flatten", function(args)
+		--!signature table t, ?deep
+		local result = plume.obj.table(0, 0)
+
+		for _, value in ipairs(t.table) do
+			if type(value) == "table" and value.type == "table" then
+				expandInto(result, value, deep)
+			else
+				result:addItem(value)
+			end
+		end
+
+		return true, result
 	end)
 }
 
