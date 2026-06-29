@@ -76,6 +76,21 @@ return function (plume)
 		end
 	end
 
+	local _primitiveTypes = {
+		TABLE = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
+		TEXT  = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
+		VALUE = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE"},
+		INHERIT = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY"}
+	}
+
+	local primitiveTypes = {}
+	for typeName, nodeNames in pairs(_primitiveTypes) do
+		for _, nodeName in ipairs(nodeNames) do
+			primitiveTypes[nodeName] = typeName
+		end
+	end
+
+
 	-- It needs to be completely rewritten; it's completely impossible to maintain at this point.
 	function plume.ast.markType(node, parentLastNode)
 		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
@@ -172,28 +187,11 @@ return function (plume)
 			end
 		end
 
-		-- primitive types
-		if node.name == "LIST_ITEM"
-		or node.name == "HASH_ITEM"
-		or node.name == "EXPAND"
-		or node.name == "EMPTY_REF" then
-			return "TABLE"
-		elseif node.name == "TEXT"
-			or node.name == "RAW"
-			or node.name == "EVAL"
-			or node.name == "BLOCK"
-			or node.name == "NUMBER" 
-			or node.name == "IDENTIFIER"
-			or node.name == "QUOTE"
-			then
-			return "TEXT"
-		elseif node.name == "FOR"
-			or node.name == "WHILE"
-			or node.name == "IF"
-			or node.name == "ELSE"
-			or node.name == "ELSEIF"
-			or node.name == "BODY" then
+		local primitiveType = primitiveTypes[node.name]
+		if primitiveType == "INHERIT" then
 			return node.type
+		elseif primitiveType then
+			return primitiveType
 		elseif node.name == "INLINE_TABLE" 
 			or (node.name == "WITH" and node.type == "TABLE") then
 			return "VALUE_TABLE"
@@ -205,28 +203,7 @@ return function (plume)
 			else
 				return "VALUE_MACRO"
 			end
-		elseif node.name == "ADD"
-			or node.name == "SUB"
-			or node.name == "MUL"
-			or node.name == "DIV"
-			or node.name == "NEG"
-			or node.name == "POW"
-			or node.name == "MOD"
-			or node.name == "EQ"
-			or node.name == "NEQ"
-			or node.name == "LT"
-			or node.name == "GT"
-			or node.name == "LTE"
-			or node.name == "GTE"
-
-			or node.name == "AND"
-			or node.name == "NOT"
-			or node.name == "OR"
-
-			or node.name == "FALSE"
-			or node.name == "TRUE"
-
-			or node.name == "WITH"
+		elseif node.name == "WITH"
 			or node.name == "DO" then
 			return "VALUE"
 		else
