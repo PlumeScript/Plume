@@ -92,8 +92,9 @@ return function (plume)
 		end
 	end
 
-	local typeHandlerTable = {}
-	typeHandlerTable.DEFAULT = function(node, parentLastNode)
+
+	-- It needs to be completely rewritten; it's completely impossible to maintain at this point.
+	function plume.ast.markType(node, parentLastNode)
 		local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
 
 		if node.parent and (
@@ -187,11 +188,6 @@ return function (plume)
 				node.type = "TEXT"
 			end
 		end
-	end
-
-	-- It needs to be completely rewritten; it's completely impossible to maintain at this point.
-	function plume.ast.markType(node, parentLastNode)
-		(typeHandlerTable[node.name] or typeHandlerTable.DEFAULT) (node, parentLastNode)
 
 		local primitiveType = primitiveTypes[node.name]
 		if primitiveType == "INHERIT" then
