@@ -11,12 +11,12 @@ return function (plume, context, nodeHandlerTable)
 
 	--- Register reference
 	local function handleRef(node)
-		local identifier = plume.ast.get(node, "IDENTIFIER")
+		local identifier = plume.ast.get(node, "NAME")
 		local ref        = plume.ast.get(node, "REF")
 		local refalias   = plume.ast.get(node, "ALIAS")
 
 		if ref then
-			local varName = refalias and plume.ast.get(refalias, "IDENTIFIER").content or identifier.content
+			local varName = refalias and plume.ast.get(refalias, "NAME").content or identifier.content
 			if not context.registerVariable(node, varName,{isRef=true, ref=identifier.content}) then
 				plume.error.letExistingVariable(node, varName)
 			end
@@ -29,7 +29,7 @@ return function (plume, context, nodeHandlerTable)
 	
 	--- `key: value` and `meta key: value`
 	nodeHandlerTable.HASH_ITEM = function(node)
-		local identifier = plume.ast.get(node, "IDENTIFIER")
+		local identifier = plume.ast.get(node, "NAME")
 		local eval       = plume.ast.get(node, "EVAL")
 		local body       = plume.ast.get(node, "BODY")
 		local meta       = plume.ast.get(node, "META")
