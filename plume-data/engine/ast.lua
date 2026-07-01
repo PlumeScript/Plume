@@ -86,10 +86,12 @@ return function (plume)
 	}
 
 	local _nodeCategory = {
-		PROVIDER = {"FOR", "WHILE", "DO"}
+		PROVIDER = {"FOR", "WHILE", "DO"},
+		BRANCH   = {"IF"}
 	}
 
 	local _cannotProvideValue = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM"}
+	local _cannotProvideTableValue = {"IF"}
 
 	local primitiveTypes = {}
 	for typeName, nodeNames in pairs(_primitiveTypes) do
@@ -106,6 +108,10 @@ return function (plume)
 	local cannotProvideValue = {}
 	for _, nodeName in ipairs(_cannotProvideValue) do
 		cannotProvideValue[nodeName] = true
+	end
+	local cannotProvideTableValue = {}
+	for _, nodeName in ipairs(_cannotProvideTableValue) do
+		cannotProvideTableValue[nodeName] = true
 	end
 
 	local markTypeHandlerTable = {}
@@ -229,7 +235,7 @@ return function (plume)
 		end
 	end
 
-	function accTypeInference(node, canBeValue)
+	function accTypeInference(node, canBeValue, cannotBeValueIfTable)
 		local detectedType = "EMPTY"
 		local firstRelevantChild = node
 		local isValue = canBeValue
@@ -245,10 +251,15 @@ return function (plume)
 					isValue = false
 				end
 
-				if cannotProvideValue[child.name] then
+				if cannotProvideValue[child.name] 
+				or (detectedType == "TABLE" and cannotProvideTableValue[child.name]) then
 					isValue = false
 				end
 			end
+		end
+
+		if cannotBeValueIfTable and detectedType == "TABLE" then
+			isValue = false
 		end
 
 		if isValue and detectedType ~= "EMPTY" then
@@ -270,6 +281,17 @@ return function (plume)
 			for _, elem in ipairs(node.children or {}) do
 				if elem.name == "BODY" then
 					detectedType, firstRelevantChild = accTypeInference(elem)
+					elem.type = detectedType
+				else
+					plume.ast.markType(elem)
+				end
+			end
+		elseif category == "BRANCH" then
+			for _, elem in ipairs(node.children or {}) do
+				if elem.name == "BODY" or elem.name == "ELSEIF" or elem.name == "ELSE" then
+					local returnedType
+					detectedType, firstRelevantChild = accTypeInference(elem, true, true)
+					print(elem.name, detectedType)
 					elem.type = detectedType
 				else
 					plume.ast.markType(elem)
