@@ -78,8 +78,8 @@ return function (plume)
 
 	local _primitiveTypes = {
 		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
-		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
-		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE", "ANONYMOUS_MACRO"},
+		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE", "ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE"},
+		MACRO       = {"ANONYMOUS_MACRO"},
 		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO", "WITH"}
 	}
 
@@ -88,8 +88,7 @@ return function (plume)
 		BRANCH   = {"IF"}
 	}
 
-	local _cannotProvideValue      = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM", "WITH"}
-	local _cannotProvideTableValue = {"IF"}
+	local _cantBeUnic = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM", "WITH"}
 
 	local primitiveTypes = {}
 	for typeName, nodeNames in pairs(_primitiveTypes) do
@@ -103,140 +102,13 @@ return function (plume)
 			nodeCategory[nodeName] = typeName
 		end
 	end
-	local cannotProvideValue = {}
-	for _, nodeName in ipairs(_cannotProvideValue) do
-		cannotProvideValue[nodeName] = true
-	end
-	local cannotProvideTableValue = {}
-	for _, nodeName in ipairs(_cannotProvideTableValue) do
-		cannotProvideTableValue[nodeName] = true
-	end
-
-	local markTypeHandlerTable = {}
-	
-	function plume.ast.markType(node, parentLastNode)
-		local handler = markTypeHandlerTable[node.name]
-
-		if handler then
-			node.type = handler(node)
-		else
-			local waitOneValue = node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and node.parent.type == "VALUE"
-
-			if node.parent and (
-				   node.name == "FOR"
-				or node.name == "WHILE"
-				or node.name == "IF"
-				or node.name == "ELSE"
-				or node.name == "ELSEIF"
-				or (node.name == "BODY" and (
-					   node.parent.name == "FOR"
-					or node.parent.name == "WHILE"
-					or node.parent.name == "IF"
-					or (node.parent.name == "ELSE" and #(node.children or {})>0)
-					or (node.parent.name == "ELSEIF" and #(node.children or {})>0)
-				)))	 then
-				node.type = node.parent.type
-			else
-				node.type = "EMPTY"
-			end
-
-			local nulldelta = 0
-			local lastNode = parentLastNode
-			local branchType
-
-			for i, child in ipairs(node.children or {}) do
-				local childType = plume.ast.markType(child, lastNode)
-
-				-- workaround for the case where child is an information,
-				-- not a proper child
-				local avoid = child.name == "IDENTIFIER" and (
-						node.name ~= "EVAL"
-						and node.name ~= "LIST_ITEM"
-						and node.name ~= "BODY"
-				) or child.name == "NULL" or child.name == "LINESTART"
-				
-				if avoid then
-					nulldelta = nulldelta + 1
-				else
-					if (node.name == "LIST_ITEM" or node.name == "HASH_ITEM")
-					and (childType == "VALUE_MACRO" or childType == "VALUE_TABLE") then
-						node.type = "VALUE"
-					elseif child.name == "BODY" and node.name == "WITH" then
-						node.type = child.type
-					elseif node.type == "EMPTY" then
-						if childType == "TEXT"
-						and (child.name ~= "FOR" and child.name ~= "WHILE") then
-							node.type = "VALUE"
-						else
-							node.type = childType
-						end
-						lastNode = child
-					elseif node.type == "VALUE"
-					and (childType == "TEXT" or childType == "VALUE") then
-						if waitOneValue then
-							waitOneValue = false
-						else
-							node.type = "TEXT"
-						end
-					elseif node.type == "TEXT" and childType == "VALUE" then
-						node.type = "TEXT"
-					elseif node.type == "VALUE_TABLE" and childType == "VALUE_TABLE" then
-						if branchType and branchType ~= "EMPTY" then
-							if child.name == "INLINE_TABLE" then
-								plume.error.inlineTableMuseBeAlone(child)
-							elseif child.name == "WITH"  then
-								plume.error.withTableMuseBeAlone(child)
-							end
-						else
-							node.type = "VALUE_TABLE"
-						end
-					elseif childType ~= "EMPTY" and node.type ~= childType then
-						if node.parent and (node.parent.name == "ELSE" or node.parent.name == "ELSEIF") and i==nulldelta+1 then
-							plume.error.mixedBlockInsideIf(child, node.type, childType, node.parent.name)
-						else
-							if lastNode.name == "INLINE_TABLE" then
-								plume.error.inlineTableMuseBeAlone(lastNode)
-							elseif lastNode.name == "WITH"  then
-								plume.error.withTableMuseBeAlone(child)
-							else
-								plume.error.mixedBlock(lastNode, node.type, childType, child)
-							end
-						end
-					end
-					branchType = node.type
-				end
-			end
-
-			-- For / While cannot produce VALUE
-			if node.name == "FOR" or node.name == "WHILE" then
-				if node.type == "VALUE" then
-					node.type = "TEXT"
-				end
-			end
-		end
-
-		local primitiveType = primitiveTypes[node.name]
-		if primitiveType == "INHERIT" then
-			return node.type
-		elseif primitiveType then
-			return primitiveType
-		elseif node.name == "INLINE_TABLE" 
-			or (node.name == "WITH" and node.type == "TABLE") then
-			return "VALUE_TABLE"
-		elseif (node.name == "WITH" or node.name == "DO") and node.type == "EMPTY" then
-			return "EMPTY"
-		elseif node.name == "WITH"
-			or node.name == "DO" then
-			return "VALUE"
-		else
-			return "EMPTY"
-		end
+	local cantBeUnic = {}
+	for _, nodeName in ipairs(_cantBeUnic) do
+		cantBeUnic[nodeName] = true
 	end
 
 	local function checkType(a, b)
 		if a == "EMPTY" or b == "EMPTY" then
-			return true
-		elseif (a == "VALUE" or b == "VALUE") and (a == "TEXT" or b == "TEXT") then
 			return true
 		elseif a == b then
 			return true
@@ -245,42 +117,36 @@ return function (plume)
 		end
 	end
 
-	local function accTypeInference(node, canBeValue, cannotBeValueIfTable)
+	local function accTypeInference(node, canBeUnic)
 		local detectedType = "EMPTY"
 		local firstRelevantChild = node
-		local isValue = canBeValue
+		local isUnic = canBeUnic
 
 		for _, child in ipairs(node.children or {}) do
 			local childProvidedType, lastRelevantChild = plume.ast.markType(child)
-
 			if childProvidedType ~= "EMPTY" then
 				if childProvidedType ~= detectedType then
+					if not checkType(detectedType, childProvidedType) then
 
-					if detectedType == "EMPTY" or childProvidedType ~= "VALUE" then
-						if not checkType(detectedType, childProvidedType) then
-							plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
-						end
-
+						plume.debug.printAST(node)
+						plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
+					end
+					if detectedType == "EMPTY"  then
 						detectedType       = childProvidedType
 						firstRelevantChild = lastRelevantChild
 					end
 				else
-					isValue = false
+					isUnic = false
 				end
 
-				if cannotProvideValue[child.name] 
-				or (detectedType == "TABLE" and cannotProvideTableValue[child.name]) then
-					isValue = false
+				if cantBeUnic[child.name]  then
+					isUnic = false
 				end
 			end
 		end
 
-		if cannotBeValueIfTable and detectedType == "TABLE" then
-			isValue = false
-		end
-
-		if isValue and detectedType ~= "EMPTY" then
-			detectedType = "VALUE"
+		if isUnic and detectedType ~= "EMPTY" then
+			node.isUnic = true
 			firstRelevantChild = node
 		end
 
