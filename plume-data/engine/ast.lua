@@ -79,8 +79,7 @@ return function (plume)
 	local _primitiveTypes = {
 		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
 		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
-		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE"},
-		VALUE_MACRO = {"ANONYMOUS_MACRO"},
+		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE", "ANONYMOUS_MACRO"},
 		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO", "WITH"}
 	}
 
@@ -237,7 +236,7 @@ return function (plume)
 	local function checkType(a, b)
 		if a == "EMPTY" or b == "EMPTY" then
 			return true
-		elseif a == "VALUE" or b == "VALUE" then
+		elseif (a == "VALUE" or b == "VALUE") and (a == "TEXT" or b == "TEXT") then
 			return true
 		elseif a == b then
 			return true
@@ -289,8 +288,9 @@ return function (plume)
 	end
 
 	function plume.ast.markType(node)
-		local detectedType, firstRelevantChild
+		local detectedType = "EMPTY"
 		local provideType  = "EMPTY"
+		local firstRelevantChild 
 		
 		local category = nodeCategory[node.name] or "DEFAULT"
 
@@ -308,8 +308,23 @@ return function (plume)
 		elseif category == "BRANCH" then
 			for _, elem in ipairs(node.children or {}) do
 				if elem.name == "BODY" or elem.name == "ELSEIF" or elem.name == "ELSE" then
-					local returnedType
-					detectedType, firstRelevantChild = accTypeInference(elem, true, true)
+					local branchDetectedType, branchRelevantChild = accTypeInference(elem, true, true)
+
+					if branchDetectedType == "EMPTY" then
+						detectedType = "EMPTY"
+					else
+						if not checkType(branchDetectedType, detectedType) then
+							plume.error.mixedBlockInsideIf(
+								branchRelevantChild,
+								detectedType,
+								branchDetectedType,
+								firstRelevantChild.name
+							)
+						end
+
+						detectedType       = branchDetectedType
+						firstRelevantChild = branchRelevantChild
+					end
 					elem.type = detectedType
 				else
 					plume.ast.markType(elem)

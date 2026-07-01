@@ -794,33 +794,7 @@ if "a"
 elseif "big"
     \s
 else
-    (wing: nib)
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-│   The previous branches of this if statement were of type TEXT, but this else  │
-│   body is of type TABLE.                                                       │
-│   All branches of an if statement must be of the same type.                    │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    5 │else                                                                     │
-│    6 │    (wing: nib)                                                          │
-│      │    ^^^^^^^^^^^                                                          │
-│    7 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test #647-2
-if "a"
-    \s
-elseif "big"
-    (wing: nib)
-else
-    \s
+    wing: nib
 end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -832,9 +806,35 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    wing: nib                                                            │
+│      │    ^^^^^^^^^                                                            │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #647-2
+if "a"
+    \s
+elseif "big"
+    wing: nib
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this body  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
 │    3 │elseif "big"                                                             │
-│    4 │    (wing: nib)                                                          │
-│      │    ^^^^^^^^^^^                                                          │
+│    4 │    wing: nib                                                            │
+│      │    ^^^^^^^^^                                                            │
 │    5 │else                                                                     │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -842,7 +842,7 @@ end
 
 /// Test #647-3
 if "a"
-    (wing: nib)
+    wing: nib
 elseif "big"
     \s
 else
@@ -853,15 +853,15 @@ end
 │ SYNTAX ERROR:                                                                  │
 │ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
 │   The previous branches of this if statement were of type TABLE, but this      │
-│   elseif body is of type TEXT.                                                 │
+│   hash_item body is of type TEXT.                                              │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    3 │elseif "big"                                                             │
-│    4 │    \s                                                                   │
+│    1 │if "a"                                                                   │
+│    2 │    wing: nib                                                            │
 │      │                                                                         │
-│    5 │else                                                                     │
+│    3 │elseif "big"                                                             │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
