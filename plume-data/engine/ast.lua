@@ -81,8 +81,7 @@ return function (plume)
 		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
 		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE"},
 		VALUE_MACRO = {"ANONYMOUS_MACRO"},
-		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO"},
-		EMPTY       = {"MACRO"}
+		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO", "WITH"}
 	}
 
 	local _nodeCategory = {
@@ -90,7 +89,7 @@ return function (plume)
 		BRANCH   = {"IF"}
 	}
 
-	local _cannotProvideValue = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM"}
+	local _cannotProvideValue      = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM", "WITH"}
 	local _cannotProvideTableValue = {"IF"}
 
 	local primitiveTypes = {}
@@ -245,8 +244,10 @@ return function (plume)
 
 			if childProvidedType ~= "EMPTY" then
 				if childProvidedType ~= detectedType then
-					detectedType       = childProvidedType
-					firstRelevantChild = lastRelevantChild
+					if detectedType == "EMPTY" or childProvidedType ~= "VALUE" then
+						detectedType       = childProvidedType
+						firstRelevantChild = lastRelevantChild
+					end
 				else
 					isValue = false
 				end
@@ -291,7 +292,6 @@ return function (plume)
 				if elem.name == "BODY" or elem.name == "ELSEIF" or elem.name == "ELSE" then
 					local returnedType
 					detectedType, firstRelevantChild = accTypeInference(elem, true, true)
-					print(elem.name, detectedType)
 					elem.type = detectedType
 				else
 					plume.ast.markType(elem)
