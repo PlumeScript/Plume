@@ -234,7 +234,19 @@ return function (plume)
 		end
 	end
 
-	function accTypeInference(node, canBeValue, cannotBeValueIfTable)
+	local function checkType(a, b)
+		if a == "EMPTY" or b == "EMPTY" then
+			return true
+		elseif a == "VALUE" or b == "VALUE" then
+			return true
+		elseif a == b then
+			return true
+		else
+			return false
+		end
+	end
+
+	local function accTypeInference(node, canBeValue, cannotBeValueIfTable)
 		local detectedType = "EMPTY"
 		local firstRelevantChild = node
 		local isValue = canBeValue
@@ -244,7 +256,12 @@ return function (plume)
 
 			if childProvidedType ~= "EMPTY" then
 				if childProvidedType ~= detectedType then
+
 					if detectedType == "EMPTY" or childProvidedType ~= "VALUE" then
+						if not checkType(detectedType, childProvidedType) then
+							plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
+						end
+
 						detectedType       = childProvidedType
 						firstRelevantChild = lastRelevantChild
 					end
@@ -265,6 +282,7 @@ return function (plume)
 
 		if isValue and detectedType ~= "EMPTY" then
 			detectedType = "VALUE"
+			firstRelevantChild = node
 		end
 
 		return detectedType, firstRelevantChild
@@ -309,7 +327,7 @@ return function (plume)
 			provideType = primitiveType
 		end
 
-		return provideType, firstContributingChild
+		return provideType, firstRelevantChild
 	end
 
 	function plume.ast.labelMacro(ast)
