@@ -127,8 +127,6 @@ return function (plume)
 			if childProvidedType ~= "EMPTY" then
 				if childProvidedType ~= detectedType then
 					if not checkType(detectedType, childProvidedType) then
-
-						plume.debug.printAST(node)
 						plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
 					end
 					if detectedType == "EMPTY"  then
@@ -139,7 +137,7 @@ return function (plume)
 					isUnic = false
 				end
 
-				if cantBeUnic[child.name]  then
+				if cantBeUnic[child.name] then
 					isUnic = false
 				end
 			end
@@ -147,7 +145,6 @@ return function (plume)
 
 		if isUnic and detectedType ~= "EMPTY" then
 			node.isUnic = true
-			firstRelevantChild = node
 		end
 
 		return detectedType, firstRelevantChild
@@ -166,7 +163,7 @@ return function (plume)
 			for _, elem in ipairs(node.children or {}) do
 				if elem.name == "BODY" then
 					detectedType, firstRelevantChild = accTypeInference(elem)
-					elem.type = detectedType
+					elem.type = "EMPTY"
 				else
 					plume.ast.markType(elem)
 				end
@@ -174,7 +171,7 @@ return function (plume)
 		elseif category == "BRANCH" then
 			for _, elem in ipairs(node.children or {}) do
 				if elem.name == "BODY" or elem.name == "ELSEIF" or elem.name == "ELSE" then
-					local branchDetectedType, branchRelevantChild = accTypeInference(elem, true, true)
+					local branchDetectedType, branchRelevantChild = accTypeInference(elem, true)
 
 					if branchDetectedType == "EMPTY" then
 						detectedType = "EMPTY"
@@ -184,7 +181,7 @@ return function (plume)
 								branchRelevantChild,
 								detectedType,
 								branchDetectedType,
-								firstRelevantChild.name
+								elem.name
 							)
 						end
 
@@ -206,6 +203,7 @@ return function (plume)
 			provideType = node.type
 		elseif primitiveType then
 			provideType = primitiveType
+			firstRelevantChild = node
 		end
 
 		return provideType, firstRelevantChild

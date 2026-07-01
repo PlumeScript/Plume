@@ -18,10 +18,10 @@ return function (plume, context, nodeHandlerTable)
 		local uid = context.getUID()
 
 		--------------------------------------------
-		-- Special case: if inside a VALUE block,
-		-- create an ELSE branch to emit LOAD_EMPTY
+		-- Special case:
+		-- create an ELSE branch to emit LOAD_EMPTY	
 		local specialValueMode = (
-			node.parent.type == "VALUE"
+			node.parent.isUnic
 			and node.type ~= "EMPTY"
 		)
 

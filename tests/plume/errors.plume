@@ -475,9 +475,9 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    1 │Wing                                                                     │
-│      │^^^^                                                                     │
-│    2 │if true                                                                  │
+│    6 │else                                                                     │
+│    7 │    song                                                                 │
+│      │    ^^^^                                                                 │
 │                                                                                │
 │    But you try to add a 'TABLE' element.                                       │
 │    8 │- nib                                                                    │

@@ -800,8 +800,8 @@ end
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
 │ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-│   The previous branches of this if statement were of type TEXT, but this       │
-│   elseif body is of type TABLE.                                                │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -826,8 +826,8 @@ end
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
 │ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-│   The previous branches of this if statement were of type TEXT, but this body  │
-│   body is of type TABLE.                                                       │
+│   The previous branches of this if statement were of type TEXT, but this       │
+│   elseif body is of type TABLE.                                                │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
@@ -844,7 +844,7 @@ end
 if "a"
     wing: nib
 elseif "big"
-    \s
+    a
 else
     \s
 end
@@ -853,15 +853,15 @@ end
 │ SYNTAX ERROR:                                                                  │
 │ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
 │   The previous branches of this if statement were of type TABLE, but this      │
-│   hash_item body is of type TEXT.                                              │
+│   elseif body is of type TEXT.                                                 │
 │   All branches of an if statement must be of the same type.                    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │if "a"                                                                   │
-│    2 │    wing: nib                                                            │
-│      │                                                                         │
 │    3 │elseif "big"                                                             │
+│    4 │    a                                                                    │
+│      │    ^                                                                    │
+│    5 │else                                                                     │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
@@ -886,10 +886,10 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    5 │else                                                                     │
-│    6 │    with (a: 5)                                                          │
-│      │    ^^^^^^^^^^^                                                          │
-│    7 │        - wing                                                           │
+│    6 │with (a: 5)                                                              │
+│    7 │    - wing                                                               │
+│      │    ^^^^^^                                                               │
+│    8 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

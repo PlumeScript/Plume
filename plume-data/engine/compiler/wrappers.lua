@@ -44,10 +44,9 @@ return function (plume, context)
         --- @return nil
         return function (node, label)
             local macro = context.getLast "macros"
-
             -- More or less a TEXT block with 1 element.
             -- Don't use ACC_TEXT to prevent conversion to string
-            if node.isUnic then 
+            if node.isUnic and (node.type == "TEXT" or node.type == "MACRO") then 
                 context.toggleConcatOff() 
                 f(node)
                 context.toggleConcatPop()
