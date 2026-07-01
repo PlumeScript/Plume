@@ -79,17 +79,33 @@ return function (plume)
 	local _primitiveTypes = {
 		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
 		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE"},
-		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE"},
+		VALUE       = {"ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE"},
 		VALUE_MACRO = {"ANONYMOUS_MACRO"},
-		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY"},
+		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO"},
 		EMPTY       = {"MACRO"}
 	}
+
+	local _nodeCategory = {
+		PROVIDER = {"FOR", "WHILE", "DO"}
+	}
+
+	local _cannotProvideValue = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM"}
 
 	local primitiveTypes = {}
 	for typeName, nodeNames in pairs(_primitiveTypes) do
 		for _, nodeName in ipairs(nodeNames) do
 			primitiveTypes[nodeName] = typeName
 		end
+	end
+	local nodeCategory = {}
+	for typeName, nodeNames in pairs(_nodeCategory) do
+		for _, nodeName in ipairs(nodeNames) do
+			nodeCategory[nodeName] = typeName
+		end
+	end
+	local cannotProvideValue = {}
+	for _, nodeName in ipairs(_cannotProvideValue) do
+		cannotProvideValue[nodeName] = true
 	end
 
 	local markTypeHandlerTable = {}
@@ -211,6 +227,67 @@ return function (plume)
 		else
 			return "EMPTY"
 		end
+	end
+
+	function accTypeInference(node, canBeValue)
+		local detectedType = "EMPTY"
+		local firstRelevantChild = node
+		local isValue = canBeValue
+
+		for _, child in ipairs(node.children or {}) do
+			local childProvidedType, lastRelevantChild = plume.ast.markType(child)
+
+			if childProvidedType ~= "EMPTY" then
+				if childProvidedType ~= detectedType then
+					detectedType       = childProvidedType
+					firstRelevantChild = lastRelevantChild
+				else
+					isValue = false
+				end
+
+				if cannotProvideValue[child.name] then
+					isValue = false
+				end
+			end
+		end
+
+		if isValue and detectedType ~= "EMPTY" then
+			detectedType = "VALUE"
+		end
+
+		return detectedType, firstRelevantChild
+	end
+
+	function plume.ast.markType(node)
+		local detectedType, firstRelevantChild
+		local provideType  = "EMPTY"
+		
+		local category = nodeCategory[node.name] or "DEFAULT"
+
+		if category == "DEFAULT" then
+			detectedType, firstRelevantChild = accTypeInference(node, true)
+		elseif category == "PROVIDER" then
+			for _, elem in ipairs(node.children or {}) do
+				if elem.name == "BODY" then
+					detectedType, firstRelevantChild = accTypeInference(elem)
+					elem.type = detectedType
+				else
+					plume.ast.markType(elem)
+				end
+			end
+		end
+
+		node.type = detectedType
+
+		local primitiveType = primitiveTypes[node.name]
+
+		if primitiveType == "INHERIT" then
+			provideType = node.type
+		elseif primitiveType then
+			provideType = primitiveType
+		end
+
+		return provideType, firstContributingChild
 	end
 
 	function plume.ast.labelMacro(ast)
