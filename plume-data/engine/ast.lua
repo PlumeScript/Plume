@@ -192,9 +192,7 @@ return function (plume)
 				if elem.name == "BODY" or elem.name == "ELSEIF" or elem.name == "ELSE" then
 					local branchDetectedType, branchRelevantChild = accTypeInference(elem, true)
 
-					if branchDetectedType == "EMPTY" then
-						detectedType = "EMPTY"
-					else
+					if branchDetectedType ~= "EMPTY" then
 						if not checkType(branchDetectedType, detectedType) then
 							plume.error.mixedBlockInsideIf(
 								branchRelevantChild,

@@ -1309,3 +1309,12 @@ end
 /// Output
 aa
 /// End
+
+/// Test #957
+if true
+  a
+elseif true
+end
+/// Output
+a
+/// End
