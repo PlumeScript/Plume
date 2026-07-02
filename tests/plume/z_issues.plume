@@ -1394,3 +1394,42 @@ a\n
 /// Output
 a
 /// End
+
+/// Test #966-1
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  do
+    if false
+      a
+    end
+    leave
+  end
+end
+/// Output
+/// End
+
+/// Test #966-2
+for var1 in seq(4)
+  do
+    if true
+      if false
+        a
+      end
+    end
+      
+    if true
+      break
+    end
+  end
+end
+/// Output
+/// End
+
+/// Test #966-3
+for var1 in seq(4)
+  break
+  a
+end
+/// Output
+/// End

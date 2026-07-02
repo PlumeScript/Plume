@@ -25,6 +25,14 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.DO = function(node)
+		local loop = context.getLast "loops"
+		
+		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
+			if loop then
+				table.insert(loop.blockToClose, plume.ops.CHECK_IS_TEXT)
+			end
+		end
+
 		local body = plume.ast.get(node, "BODY")
 		context.scope(function()
 			if body.type == "TABLE" or body.isUnic then
@@ -35,6 +43,9 @@ return function (plume, context, nodeHandlerTable)
 		end)(body)
 
 		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
+			if loop then
+				table.remove(loop.blockToClose)
+			end
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end

@@ -152,6 +152,10 @@ return function (plume)
 					isUnic = false
 				end
 			end
+
+			if child.name == "BREAK" then
+				child.interruptPartialInformation = {isUnic=isUnic, detectedType=detectedType}
+			end
 		end
 
 		if isUnic and detectedType ~= "EMPTY" then
