@@ -189,10 +189,12 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 
+		if macro.body.isUnic then
+			plume.error.leaveInValueBlock(node)
+		end
+		
 		if macro.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
-		elseif macro.body.type == "VALUE" then
-			plume.error.leaveInValueBlock(node)
 		end
 
 		if macro.insideRaise>0 then
