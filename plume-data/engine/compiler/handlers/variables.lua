@@ -335,6 +335,10 @@ return function (plume, context, nodeHandlerTable)
 		if macro then
 			macro.insideLetset = macro.insideLetset + 1
 		end
+		local loop = context.getLast "loops"
+		if loop then
+			loop.insideLetset = loop.insideLetset + 1
+		end
 
 		context.affectation(node, nodevarlist, body, {
 			isLet=isLet,
@@ -346,6 +350,9 @@ return function (plume, context, nodeHandlerTable)
 
 		if macro then
 			macro.insideLetset = macro.insideLetset - 1
+		end
+		if loop then
+			loop.insideLetset = loop.insideLetset - 1
 		end
 	end
 

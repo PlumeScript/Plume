@@ -26,6 +26,16 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotUseBreakInsideLetset(node)
+		local message = "Cannot use break keyword inside an affectation."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseContinueInsideLetset(node)
+		local message = "Cannot use continue keyword inside an affectation."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.cannotUseLeaveInsideRaise(node)
 		local message = "Cannot use leave keyword inside a `raise` block."
 		plume.error.throwCompilationError(node, message)
