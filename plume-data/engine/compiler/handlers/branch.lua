@@ -22,6 +22,7 @@ return function (plume, context, nodeHandlerTable)
 		-- create an ELSE branch to emit LOAD_EMPTY	
 		local specialValueMode = (
 			node.parent.isUnic
+			and node.type ~= "TABLE"
 			and node.type ~= "EMPTY"
 		)
 
