@@ -567,7 +567,7 @@ return function (plume)
 				end
 			end
 
-			if node.name == "IDENTIFIER" then
+			if node.name == "NAME" then
 				plume.checkIdentifier(node, node.content)
 			end
 
@@ -589,7 +589,7 @@ return function (plume)
 		
 		plume.ast.markParent(ast)
 		plume.ast.markType(ast)
-
+		
 		ast.pos = pos
 		return ast
 	end
