@@ -1,5 +1,5 @@
-local TEST_COUNT = 1000
-local MAX_DEEP = 3
+local TEST_COUNT = 10000
+local MAX_DEEP = 5
 local SEED = 651
 
 local templates = {
@@ -133,7 +133,9 @@ end
 
 local ignoredErrors = {
 	["SYNTAX ERROR: Cannot use `leave` in a value block. (i) `leave` is designed to stop accumulation, but this macro returns a single value. You should instead, use an `if` with an empty branch."] = true,
-	["COMPILATION ERROR: Cannot use leave keyword inside an affectation.              "] = true
+	["COMPILATION ERROR: Cannot use leave keyword inside an affectation.              "] = true,
+	["COMPILATION ERROR: Cannot use continue keyword inside an affectation.           "] = true,
+	["COMPILATION ERROR: Cannot use break keyword inside an affectation.              "] = true
 }
 
 local function runFuzzer(plume)
