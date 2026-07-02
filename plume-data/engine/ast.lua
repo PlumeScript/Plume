@@ -84,11 +84,11 @@ return function (plume)
 	}
 
 	local _nodeCategory = {
-		PROVIDER = {"FOR", "WHILE", "DO"},
+		PROVIDER = {"FOR", "WHILE", "DO", "WITH"},
 		BRANCH   = {"IF"}
 	}
 
-	local _cantBeUnic = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM", "WITH", "DO"}
+	local _cantBeUnic = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM"}
 
 	local primitiveTypes = {}
 	for typeName, nodeNames in pairs(_primitiveTypes) do
@@ -157,6 +157,7 @@ return function (plume)
 		if isUnic and detectedType ~= "EMPTY" then
 			node.isUnic = true
 		end
+					
 
 		return detectedType, firstRelevantChild
 	end
@@ -173,8 +174,15 @@ return function (plume)
 		elseif category == "PROVIDER" then
 			for _, elem in ipairs(node.children or {}) do
 				if elem.name == "BODY" then
-					detectedType, firstRelevantChild = accTypeInference(elem)
-					elem.type = "EMPTY"
+					detectedType, firstRelevantChild = accTypeInference(elem, not cantBeUnic[node.name])
+
+					-- Not very clean: table concatenation should be done at
+					-- the highest level, and text concatenation at the lowest
+					if detectedType ~= "TABLE" then
+						elem.type = detectedType
+					else
+						elem.type = "EMPTY"
+					end
 				else
 					plume.ast.markType(elem)
 				end

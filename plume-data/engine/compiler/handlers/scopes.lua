@@ -27,7 +27,11 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.DO = function(node)
 		local body = plume.ast.get(node, "BODY")
 		context.scope(function()
-			context.accBlock()(body)
+			if body.type == "TABLE" or body.isUnic then
+				context.childrenHandler(body)
+			else
+				context.accBlock()(body)
+			end
 		end)(body)
 
 		if context.checkIfCanConcat() then
@@ -56,7 +60,11 @@ return function (plume, context, nodeHandlerTable)
 			loop.contextToClose  = loop.contextToClose + 1
 		end
 
-		context.childrenHandler(body)
+		if body.type == "TABLE" or body.isUnic then
+			context.childrenHandler(body)
+		else
+			context.accBlock()(body)
+		end
 
 		if macro then
 			macro.contextToClose = macro.contextToClose - 1
