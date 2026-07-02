@@ -77,7 +77,7 @@ return function (plume, context)
                 if loop then
                     table.remove(loop.blockToClose)
                 end
-                if macro then
+                if macro  then
                     table.remove(macro.blockToClose)
                 end
 

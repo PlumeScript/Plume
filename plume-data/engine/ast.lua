@@ -161,7 +161,6 @@ return function (plume)
 		if isUnic and detectedType ~= "EMPTY" then
 			node.isUnic = true
 		end
-					
 
 		return detectedType, firstRelevantChild
 	end

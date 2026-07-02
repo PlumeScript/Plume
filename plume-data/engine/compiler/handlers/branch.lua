@@ -78,5 +78,9 @@ return function (plume, context, nodeHandlerTable)
 		end
 
 		context.registerLabel(node, "branch_"..finalBranch.."_"..uid)
+
+		if context.checkIfCanConcat() and node.type == "TEXT" and specialValueMode then
+			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
+		end
 	end
 end

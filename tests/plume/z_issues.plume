@@ -1433,3 +1433,31 @@ for var1 in seq(4)
 end
 /// Output
 /// End
+
+/// Test #967-1
+macro var5(x)
+  leave
+end
+for var4 in seq(4)
+  do
+    if true
+      $var5(x)
+    end
+    if true
+      leave
+    end
+  end
+end
+/// Output
+/// End
+
+/// Test #967-2
+if false
+    a
+end
+    
+if false
+    a
+end
+/// Output
+/// End
