@@ -127,7 +127,13 @@ return function (plume)
 			if childProvidedType ~= "EMPTY" then
 				if childProvidedType ~= detectedType then
 					if not checkType(detectedType, childProvidedType) then
-						plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
+						if child.name == "INLINE_TABLE" then
+							plume.error.inlineTableMuseBeAlone(child)
+						elseif firstRelevantChild.name == "INLINE_TABLE" then
+							plume.error.inlineTableMuseBeAlone(firstRelevantChild)
+						else
+							plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
+						end
 					end
 					if detectedType == "EMPTY"  then
 						detectedType       = childProvidedType
