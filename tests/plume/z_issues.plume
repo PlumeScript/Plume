@@ -1339,3 +1339,15 @@ end
 /// Output
 /// End
 
+/// Test #960
+let var2 = 0
+while var2 < 4
+    set var2 += 1
+    if true
+      a
+      continue
+    end
+end
+/// Output
+aaaa
+/// End

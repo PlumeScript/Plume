@@ -25,6 +25,7 @@ return function (plume, context, nodeHandlerTable)
 			end_label      = "while_end_"..uid,
 			contextToClose = 0,
 			scopeToClose   = 0,
+			blockToClose   = {},
 			insideMacro    = 0,
 			insideRaise    = 0
 		})
@@ -78,6 +79,7 @@ return function (plume, context, nodeHandlerTable)
 					leave          = true,
 					contextToClose = 0,
 					scopeToClose   = 0,
+					blockToClose   = {},
 					insideMacro    = 0,
 					insideRaise    = 0
 				})

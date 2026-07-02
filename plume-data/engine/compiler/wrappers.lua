@@ -44,6 +44,8 @@ return function (plume, context)
         --- @return nil
         return function (node, label)
             local macro = context.getLast "macros"
+            local loop  = context.getLast "loops"
+
             -- More or less a TEXT block with 1 element.
             -- Don't use ACC_TEXT to prevent conversion to string
             if node.isUnic and (node.type == "TEXT" or node.type == "MACRO") then 
@@ -60,7 +62,10 @@ return function (plume, context)
             elseif node.type == "TEXT" then
                 context.accBlockDeep = context.accBlockDeep + 1
                 context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)  
-                
+
+                if loop then
+                    table.insert(loop.blockToClose, plume.ops.CONCAT_TEXT)
+                end
                 if macro then
                     table.insert(macro.blockToClose, plume.ops.CONCAT_TEXT)
                 end
@@ -69,6 +74,9 @@ return function (plume, context)
                 f(node)  
                 context.toggleConcatPop()
 
+                if loop then
+                    table.remove(loop.blockToClose)
+                end
                 if macro then
                     table.remove(macro.blockToClose)
                 end
