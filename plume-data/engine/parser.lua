@@ -589,6 +589,7 @@ return function (plume)
 		
 		plume.ast.markParent(ast)
 		plume.ast.markType(ast)
+		plume.ast.fixIF_isUnic(ast)
 		
 		ast.pos = pos
 		return ast

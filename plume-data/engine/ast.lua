@@ -220,6 +220,35 @@ return function (plume)
 		return provideType, firstRelevantChild
 	end
 
+	-- An IF can contain only a single value (and therefore does not concatenate it)
+	-- AND be included in a block that does concatenate.
+	-- We could add CHECK_IS_TEXT after each IF, but the error message would then point to the wrong line.
+	-- Here, we force the IF and its children to no longer be “isUnic” if the parent is not.
+	function plume.ast.fixIF_isUnic(node)
+		for _, child in ipairs(node.children or {}) do
+			if child.name == "IF" and not node.isUnic then
+				local branchs = {}
+
+				local elseifnodes = plume.ast.getAll(child, "ELSEIF")
+				local elsenode    = plume.ast.get(child, "ELSE")
+
+				table.insert(branchs, plume.ast.get(child, "BODY"))
+				for _, elseifnode in ipairs(elseifnodes) do
+					table.insert(branchs, plume.ast.get(elseifnode, "BODY"))
+				end
+				if elsenode then
+					table.insert(branchs, plume.ast.get(elsenode, "BODY"))
+				end
+
+				for _, branch in ipairs(branchs) do
+					branch.isUnic = false
+				end
+			end
+
+			plume.ast.fixIF_isUnic(child)
+		end
+	end
+
 	function plume.ast.labelMacro(ast)
 		plume.ast.browse(ast, function(node)
 			if node.name == "HASH_ITEM" and node.children[1].name == "NAME"  then
