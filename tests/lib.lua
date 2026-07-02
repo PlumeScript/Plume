@@ -256,7 +256,7 @@ function lib.executeTests(allTests, plumeEngine)
                         plumeEngine.config = {color="never", errorStyle="fancy"}
 
                         -- Set hook to run every 1,000,000 instructions
-                        debug.sethook(timeout_hook, "", 1000000)
+                        debug.sethook(timeout_hook, "", 1000)
 
                         local x, y, z = xpcall(
                             plumeEngine.execute,

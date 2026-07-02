@@ -18,10 +18,11 @@ return function (plume, context, nodeHandlerTable)
 		local uid = context.getUID()
 
 		--------------------------------------------
-		-- Special case: if inside a VALUE block,
-		-- create an ELSE branch to emit LOAD_EMPTY
+		-- Special case:
+		-- create an ELSE branch to emit LOAD_EMPTY	
 		local specialValueMode = (
-			node.parent.type == "VALUE"
+			node.parent.isUnic
+			and node.type ~= "TABLE"
 			and node.type ~= "EMPTY"
 		)
 
@@ -66,7 +67,9 @@ return function (plume, context, nodeHandlerTable)
 				context.scope()(body)
 			end
 			if specialValueMode and body.type == "EMPTY" then
-				if not context.checkIfCanConcat() then
+				if context.checkIfCanConcat() then
+					context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
+				else
 					context.registerOP(node, plume.ops.LOAD_EMPTY)
 				end
 			end
@@ -75,5 +78,9 @@ return function (plume, context, nodeHandlerTable)
 		end
 
 		context.registerLabel(node, "branch_"..finalBranch.."_"..uid)
+
+		if context.checkIfCanConcat() and node.type == "TEXT" and specialValueMode then
+			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
+		end
 	end
 end

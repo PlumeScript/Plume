@@ -128,8 +128,11 @@ return function (plume, context)
 		end
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
-				context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset))
-				context.registerOP(nil, plume.ops.CLOSE_REF_UPVALUE, 0, 0)
+				local block = context.getLast("tableBlocks")
+				local label = block and "acc_table_" .. block.blockUID or "macro_end"
+
+				context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset), label)
+				context.registerOP(nil, plume.ops.CLOSE_REF_UPVALUE, 0, 0, label)
 			else
 				context.registerOP(nil, plume.ops.CLOSE_UPVALUE, 0, infos.offset)
 			end

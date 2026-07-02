@@ -760,26 +760,14 @@ a
 /// End
 
 /// Test #617
-with (wing: 1)
-    - a
+with ($plume.locale: fr)
+    - $plume.locale()
 end
-with (wing: 1)
-    - b
+with ($plume.locale: en)
+    - $plume.locale()
 end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → `with` statement that returns a table must be the only elements in their     │
-│   block.                                                                       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    3 │end                                                                      │
-│    4 │with (wing: 1)                                                           │
-│      │^^^^^^^^^^^^^^                                                           │
-│    5 │    - b                                                                  │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
+/// Output
+(fr, en)
 /// End
 
 /// Test #620
@@ -794,7 +782,7 @@ if "a"
 elseif "big"
     \s
 else
-    (wing: nib)
+    wing: nib
 end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -807,8 +795,8 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    5 │else                                                                     │
-│    6 │    (wing: nib)                                                          │
-│      │    ^^^^^^^^^^^                                                          │
+│    6 │    wing: nib                                                            │
+│      │    ^^^^^^^^^                                                            │
 │    7 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -818,7 +806,7 @@ end
 if "a"
     \s
 elseif "big"
-    (wing: nib)
+    wing: nib
 else
     \s
 end
@@ -833,8 +821,8 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    3 │elseif "big"                                                             │
-│    4 │    (wing: nib)                                                          │
-│      │    ^^^^^^^^^^^                                                          │
+│    4 │    wing: nib                                                            │
+│      │    ^^^^^^^^^                                                            │
 │    5 │else                                                                     │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -842,9 +830,9 @@ end
 
 /// Test #647-3
 if "a"
-    (wing: nib)
+    wing: nib
 elseif "big"
-    \s
+    a
 else
     \s
 end
@@ -859,8 +847,8 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    3 │elseif "big"                                                             │
-│    4 │    \s                                                                   │
-│      │                                                                         │
+│    4 │    a                                                                    │
+│      │    ^                                                                    │
 │    5 │else                                                                     │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -886,10 +874,10 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    5 │else                                                                     │
-│    6 │    with (a: 5)                                                          │
-│      │    ^^^^^^^^^^^                                                          │
-│    7 │        - wing                                                           │
+│    6 │with (a: 5)                                                              │
+│    7 │    - wing                                                               │
+│      │    ^^^^^^                                                               │
+│    8 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
@@ -1320,4 +1308,161 @@ else
 end
 /// Output
 aa
+/// End
+
+/// Test #957
+if true
+  a
+elseif true
+end
+/// Output
+a
+/// End
+
+/// Test #959
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  do
+    if true
+      let var2 = 1
+      
+    else
+      if false
+        a
+      end
+      
+    end
+    
+  end
+end
+/// Output
+/// End
+
+/// Test #960
+let var2 = 0
+while var2 < 4
+    set var2 += 1
+    if true
+      a
+      continue
+    end
+end
+/// Output
+aaaa
+/// End
+
+/// Test #961
+do
+    let var1 = 1 
+end
+for var2 in seq(4)
+    a 
+end
+/// Output
+aaaa
+/// End
+
+/// Test #962
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  let var2 = do
+    a
+    continue
+  end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside an affectation.                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │  a                                                                      │
+│    6 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #965
+with ($plume.locale: 5)
+end
+a\n
+/// Output
+a
+/// End
+
+/// Test #966
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  do
+    if false
+      a
+    end
+    leave
+  end
+end
+/// Output
+/// End
+
+/// Test #966-3
+for var1 in seq(4)
+  break
+  a
+end
+/// Output
+/// End
+
+/// Test #967-1
+macro var5(x)
+  leave
+end
+for var4 in seq(4)
+  do
+    if true
+      $var5(x)
+    end
+    if true
+      leave
+    end
+  end
+end
+/// Output
+/// End
+
+/// Test #967-2
+if false
+    a
+end
+    
+if false
+    a
+end
+/// Output
+/// End
+
+/// Test #969
+for var1 in seq(4)
+  do
+    continue
+    a
+  end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside a `do` block.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │do                                                                       │
+│    3 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    4 │  a                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

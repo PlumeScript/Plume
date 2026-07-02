@@ -62,12 +62,13 @@ return function(plume)
 
 		context.constants = runtime.constants
 		
-		context.scopes    = {}
-		context.scopesUp  = {}
-		context.concats   = {}
-		context.roots     = {}
-		context.loops     = {}
-		context.macros    = {}
+		context.scopes      = {}
+		context.tableBlocks = {}
+		context.scopesUp    = {}
+		context.concats     = {}
+		context.roots       = {}
+		context.loops       = {}
+		context.macros      = {}
 
 		context.importedVariables = {}
 

@@ -31,6 +31,9 @@ return function (plume, context, nodeHandlerTable)
 		end
 	end
 	nodeHandlerTable.VALIDATOR = nodeHandlerTable.IDENTIFIER
+	-- Only usefull for NAME used as IDENTIFIER inside compound
+	nodeHandlerTable.NAME      = nodeHandlerTable.IDENTIFIER
+	
 
 	--- Analyzes a target node (variable or index) and prepares its internal structure
 	--- @param node node The main statement node
@@ -49,14 +52,14 @@ return function (plume, context, nodeHandlerTable)
 		--- `set name = value`
 		--- `let key [as name] [:defaultValue] from `
 		----------------------------------------------------------
-		if varNode.name == "IDENTIFIER"
+		if varNode.name == "NAME"
 		or varNode.name == "ALIAS"
 		or varNode.name == "DEFAULT"
 		or varNode.name == "ALIAS_DEFAULT" then
 			local key, name, default
 			
 			-- Extracting names and keys based on node type
-			if varNode.name == "IDENTIFIER" then
+			if varNode.name == "NAME" then
 				key = varNode.content
 				name = varNode.content
 			elseif varNode.name == "DEFAULT" then
@@ -332,6 +335,10 @@ return function (plume, context, nodeHandlerTable)
 		if macro then
 			macro.insideLetset = macro.insideLetset + 1
 		end
+		local loop = context.getLast "loops"
+		if loop then
+			loop.insideLetset = loop.insideLetset + 1
+		end
 
 		context.affectation(node, nodevarlist, body, {
 			isLet=isLet,
@@ -343,6 +350,9 @@ return function (plume, context, nodeHandlerTable)
 
 		if macro then
 			macro.insideLetset = macro.insideLetset - 1
+		end
+		if loop then
+			loop.insideLetset = loop.insideLetset - 1
 		end
 	end
 

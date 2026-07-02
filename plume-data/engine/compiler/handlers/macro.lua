@@ -7,7 +7,7 @@ Licensed under the MIT License — see LICENSE for details.
 
 return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.MACRO = function(node)
-		local macroIdentifier = plume.ast.get(node, "IDENTIFIER")
+		local macroIdentifier = plume.ast.get(node, "NAME")
 		local body            = plume.ast.get(node, "BODY")
 		local paramList       = plume.ast.get(node, "PARAMLIST") or {children={}}
 		local uid = context.getUID()
@@ -27,7 +27,7 @@ return function (plume, context, nodeHandlerTable)
 			local parent = node.parent and node.parent.parent
 			if parent and (parent.name == "SET" or parent.name == "LET") then
 				local varlist    = plume.ast.get(parent, "VARLIST")
-				local identifier = plume.ast.get(varlist, "IDENTIFIER")
+				local identifier = plume.ast.get(varlist, "NAME")
 				debugMacroName = identifier and identifier.content
 			end
 		end
@@ -88,7 +88,9 @@ return function (plume, context, nodeHandlerTable)
 			local passFlag
 
 			for i, paramNode in ipairs(paramList.children) do
-				local paramNameNode      = plume.ast.get(paramNode, "IDENTIFIER", 1, 2)
+				local paramNameNode      = plume.ast.get(paramNode, "NAME", 1, 2)
+										or plume.ast.get(paramNode, "IDENTIFIER", 1, 2) -- for variadics
+										
 				local paramValidatorNode = plume.ast.get(paramNode, "VALIDATOR")
 				local variadic           = plume.ast.get(paramNode, "VARIADIC")
 				local paramBody          = plume.ast.get(paramNode, "BODY")
@@ -182,13 +184,17 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.upvalueMap = nil
 	end
 
+	nodeHandlerTable.ANONYMOUS_MACRO = nodeHandlerTable.MACRO
+
 	nodeHandlerTable.LEAVE = function(node)
 		local macro = context.getLast "macros"
 
+		if macro.body.isUnic then
+			plume.error.leaveInValueBlock(node)
+		end
+		
 		if macro.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
-		elseif macro.body.type == "VALUE" then
-			plume.error.leaveInValueBlock(node)
 		end
 
 		if macro.insideRaise>0 then

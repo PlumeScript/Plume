@@ -44,11 +44,28 @@ return function (plume, context)
         --- @return nil
         return function (node, label)
             local macro = context.getLast "macros"
+            local loop  = context.getLast "loops"
 
-            if node.type == "TEXT" then
+            -- More or less a TEXT block with 1 element.
+            -- Don't use ACC_TEXT to prevent conversion to string
+            if node.isUnic and (node.type == "TEXT" or node.type == "MACRO") then 
+                context.toggleConcatOff() 
+                f(node)
+                context.toggleConcatPop()
+
+                if #node.children == 1 and node.children[1].type == "TABLE" and infos then
+                    registerTableInfos(node, infos)
+                end
+                if label then  
+                    context.registerLabel(node, label)  
+                end  
+            elseif node.type == "TEXT" then
                 context.accBlockDeep = context.accBlockDeep + 1
                 context.registerOP(node, plume.ops.BEGIN_ACC, 0, 0)  
-                
+
+                if loop then
+                    table.insert(loop.blockToClose, plume.ops.CONCAT_TEXT)
+                end
                 if macro then
                     table.insert(macro.blockToClose, plume.ops.CONCAT_TEXT)
                 end
@@ -57,7 +74,10 @@ return function (plume, context)
                 f(node)  
                 context.toggleConcatPop()
 
-                if macro then
+                if loop then
+                    table.remove(loop.blockToClose)
+                end
+                if macro  then
                     table.remove(macro.blockToClose)
                 end
 
@@ -67,70 +87,56 @@ return function (plume, context)
                 end  
                 
                 context.accBlockDeep = context.accBlockDeep - 1
-            else  
-                -- More or less a TEXT block with 1 element.
-                -- Don't use ACC_TEXT to prevent conversion to string
-                if node.type == "VALUE" or node.type == "VALUE_TABLE" or node.type == "VALUE_MACRO" then 
-                    context.toggleConcatOff() 
-                    f(node)
-                    context.toggleConcatPop()
+            -- Handled by block in most cases  
+            elseif node.type == "TABLE" then
+                local doc = context.collectComments(node)
+                node.blockUID = context.getUID()
+                table.insert(context.tableBlocks, node)
 
-                    if #node.children == 1 and node.children[1].type == "TABLE" and infos then
-                        registerTableInfos(node, infos)
-                    end
-                    if label then  
-                        context.registerLabel(node, label)  
-                    end  
-                -- Handled by block in most cases  
-                elseif node.type == "TABLE" then
-                    local doc = context.collectComments(node)
+                context.accTableInit(node)
+                context.accBlockDeep = context.accBlockDeep + 1
 
-                    context.accTableInit(node)
-                    context.accBlockDeep = context.accBlockDeep + 1
+                if macro then
+                    table.insert(macro.blockToClose, plume.ops.CONCAT_TABLE)
+                end
 
-                    if macro then
-                        table.insert(macro.blockToClose, plume.ops.CONCAT_TABLE)
-                    end
+                context.toggleConcatOff()
+                f(node)
+                context.toggleConcatPop()
 
-                    context.toggleConcatOff()
-                    f(node)
-                    context.toggleConcatPop()
+                if macro then
+                    table.remove(macro.blockToClose)
+                end
 
-                    if macro then
-                        table.remove(macro.blockToClose)
-                    end
+                context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                context.registerLabel(node, "acc_table_" .. node.blockUID)
 
-                    context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
-                    if doc and #doc>0 then
-                        infos = infos or {}
-                        table.insert(infos, {"doc", doc})
-                    end
-                    if infos then
-                        registerTableInfos(node, infos)
-                    end
-                    
-                    if label then  
-                        context.registerLabel(node, label)  
-                    end
-                    context.accBlockDeep = context.accBlockDeep - 1
-                -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
-                elseif node.type == "EMPTY" then
-                    context.toggleConcatOff()
-                    f(node)
-                    context.toggleConcatPop()
+                if doc and #doc>0 then
+                    infos = infos or {}
+                    table.insert(infos, {"doc", doc})
+                end
+                if infos then
+                    registerTableInfos(node, infos)
+                end
+                
+                if label then  
+                    context.registerLabel(node, label)  
+                end
+                context.accBlockDeep = context.accBlockDeep - 1
+                table.remove(context.tableBlocks)
+            -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
+            elseif node.type == "EMPTY" then
+                context.toggleConcatOff()
+                f(node)
+                context.toggleConcatPop()
 
-                    if label then  
-                        context.registerLabel(node, label)  
-                    end
-                    local parentName = node.parent and node.parent.name
-                    if parentName ~= "WITH" and parentName ~= "DO" then -- not the cleanest workaround
-                        if context.checkIfCanConcat() then
-                            context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
-                        else
-                            context.registerOP(nil, plume.ops.LOAD_EMPTY, 0, 0)
-                        end
-                    end
-                end  
+                if label then  
+                    context.registerLabel(node, label)  
+                end
+                local parentName = node.parent and node.parent.name
+                if parentName ~= "WITH" and parentName ~= "DO" then -- not the cleanest workaround
+                    context.registerOP(node, plume.ops.LOAD_EMPTY, 0, 0)
+                end
             end
         end          
     end  

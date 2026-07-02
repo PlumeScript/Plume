@@ -25,12 +25,26 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.DO = function(node)
+		local loop = context.getLast "loops"
+		
+		if loop then
+			loop.insideDo = loop.insideDo + 1
+		end
+
 		local body = plume.ast.get(node, "BODY")
 		context.scope(function()
-			context.accBlock()(body)
+			if body.type == "TABLE" or body.isUnic then
+				context.childrenHandler(body)
+			else
+				context.accBlock()(body)
+			end
 		end)(body)
 
-		if context.checkIfCanConcat() then
+		if loop then
+			loop.insideDo = loop.insideDo - 1
+		end
+
+		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end
@@ -43,7 +57,7 @@ return function (plume, context, nodeHandlerTable)
 		local body   = plume.ast.get(node, "BODY")
 		local params = plume.ast.get(node, "PARAMLIST")
 
-		context.childrenHandler(params)
+		context.accBlock()(params)
 
 		context.registerOP(node, plume.ops.PUSH_CONTEXT)
 
@@ -56,7 +70,11 @@ return function (plume, context, nodeHandlerTable)
 			loop.contextToClose  = loop.contextToClose + 1
 		end
 
-		context.accBlock()(body)
+		if body.type == "TABLE" or body.isUnic then
+			context.childrenHandler(body)
+		else
+			context.accBlock()(body)
+		end
 
 		if macro then
 			macro.contextToClose = macro.contextToClose - 1
@@ -67,7 +85,7 @@ return function (plume, context, nodeHandlerTable)
 		
 		context.registerOP(node, plume.ops.POP_CONTEXT)
 
-		if context.checkIfCanConcat() then
+		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end

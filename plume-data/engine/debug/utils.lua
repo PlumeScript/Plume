@@ -111,4 +111,12 @@ return function (plume)
 		end
 		return result
 	end
+
+	function plume.debug.printAST(node, indent)
+		indent = indent or ""
+		print(string.format("%s%s (%s)", indent, node.name, node.type or "???"))
+		for _, child in ipairs(node.children or {}) do
+			plume.debug.printAST(child, indent .. " ")
+		end
+	end
 end

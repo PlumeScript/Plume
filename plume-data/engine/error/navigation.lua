@@ -36,7 +36,7 @@ return function(plume)
 	end
 
 	function plume.error.findNodeParentMacro (node)
-		if node.name == "MACRO" then
+		if node.name == "MACRO" or node.name == "ANONYMOUS_MACRO" then
 			return node
 		elseif node.parent then
 			return plume.error.findNodeParentMacro(node.parent)

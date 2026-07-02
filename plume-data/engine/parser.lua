@@ -172,6 +172,7 @@ return function (plume)
 		local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
 		-- strict identifier
 		local _idns = (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0
+		local name = C("NAME", _idns)
 		local idns = C("IDENTIFIER", _idns)
 		local idn = C("TRUE", K"true")   * -idns
 				  + C("FALSE", K"false") * -idns
@@ -299,8 +300,8 @@ return function (plume)
 
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
-			local optnarg = Ct("HASH_ITEM", (idn + Ct("EVAL", P"$" * V"_layer1"))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
-			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*idn)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1"))
+			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
+			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1"))
 			local arglist = Ct("CALL", P"(" * arg^-1 * (os * P"," * os * arg)^0 * P")")
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
 			local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
@@ -354,9 +355,9 @@ return function (plume)
 		local paramDefaultValue =   os * P":" * os * Ct("BODY", V"inlinetable" + V"textic"^-1)
 		local param      = Ct("PARAM",
 								  (C("VALIDATOR", _idns) * s)^-1 * (
-								  idn * paramDefaultValue^-1
+								  name * paramDefaultValue^-1
 								+ Ct("VARIADIC", P"..." * idn * Et(plume.error.cannotSetVariadicDefaultValue, paramDefaultValue)^-1)
-							)) + sugarFlagParam(Ct("FLAG", "?"*idn * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
+							)) + sugarFlagParam(Ct("FLAG", "?"*name * Et(plume.error.cannotSetFlagDefaultValue, paramDefaultValue)^-1))
 							
 		local paramlist  = Ct("PARAMLIST",
 				P"(" * os
@@ -364,15 +365,16 @@ return function (plume)
 				* os * P")"
 			)
 		-- local paramlistM = paramlist + E(plume.error.missingParamList)
-		local macro      = Ct("MACRO", K"macro" * (s * idn)^-1 * os * paramlist^-1 * body * _end)
+		local macro      = Ct("MACRO",           K"macro" * s * name * os * paramlist^-1 * body * _end)
+		                 + Ct("ANONYMOUS_MACRO", K"macro"            * os * paramlist^-1 * body * _end)
 
 		local namedArg  = (E(plume.error.cannotUseRef, K"ref") * s)^-1 * Ct("HASH_ITEM",
-							os * (idn + eval) * os * P":"
+							os * (name + Ct("DYNAMIC_KEY", eval)) * os * P":"
 							* os * Ct("BODY", (V"inlinetable" + V"textic")^-1)
 						)
 		local arg       = namedArg	
-						+ E(plume.error.cannotUseRef, K"ref") * s * idn
-						+ sugarFlagCall(Ct("FLAG", os *"?"*idn))
+						+ E(plume.error.cannotUseRef, K"ref") * s * name
+						+ sugarFlagCall(Ct("FLAG", os *"?"*name))
 						+ Ct("EXPAND", P"..."*evalBase)
 						+ Ct("LIST_ITEM", V"inlinetable")
 						+ Ct("LIST_ITEM", V"textic")
@@ -400,15 +402,15 @@ return function (plume)
 		--- Common identifier
 		local _letsetdefaut = P":" * os * Ct("VALUE", (P"(" * V"textnp" * ")" + V"textns")^-1)
 		local letsetvar = (
-			Ct("ALIAS_DEFAULT", idn * os * K"as" * os * idn * os * _letsetdefaut)
-			+ Ct("ALIAS", idn * os * K"as" * os * idn)
-			+ Ct("DEFAULT", idn * os * _letsetdefaut)
-			+ idn
+			Ct("ALIAS_DEFAULT", name * os * K"as" * os * name * os * _letsetdefaut)
+			+ Ct("ALIAS", name * os * K"as" * os * name)
+			+ Ct("DEFAULT", name * os * _letsetdefaut)
+			+ name
 		)
 
 		--- Specific identifiers
 		local letvar     = letsetvar
-		local setvar     = Ct("SETINDEX", (idn * V"evalOpperator"^1)) + letsetvar
+		local setvar     = Ct("SETINDEX", (name * V"evalOpperator"^1)) + letsetvar
 
 		--- Make full rule
 		local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar + E(plume.error.missingValue, P","))^0)
@@ -436,9 +438,9 @@ return function (plume)
 		local continue = C("CONTINUE", K"continue")
 
 		-- table
-		local ref      = idn * (s * K"as" * s * Ct("ALIAS", idn))^-1
+		local ref      = name * (s * K"as" * s * Ct("ALIAS", name))^-1
 		local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatementNLB" + P"-" * #lt) 
-		local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (idn + eval) * P":" * (os * lbodynlb + #lt))
+		local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (name + Ct("DYNAMIC_KEY", eval)) * P":" * (os * lbodynlb + #lt))
 						+ Ct("HASH_ITEM", Ct("REF", K"ref"*s) * ref * P":" *  os * lbodynlb)
 						+ Ct("EMPTY_REF", Ct("REF", K"ref"*s) * ref) * (os * P"," * os * Ct("EMPTY_REF", ref))^0
 		local expand   = Ct("EXPAND", P"..." * evalBase) 
@@ -565,7 +567,7 @@ return function (plume)
 				end
 			end
 
-			if node.name == "IDENTIFIER" then
+			if node.name == "NAME" then
 				plume.checkIdentifier(node, node.content)
 			end
 
@@ -585,7 +587,10 @@ return function (plume)
 			})
 		end
 		
+		plume.ast.markParent(ast)
 		plume.ast.markType(ast)
+		plume.ast.fixIF_isUnic(ast)
+		
 		ast.pos = pos
 		return ast
 	end
