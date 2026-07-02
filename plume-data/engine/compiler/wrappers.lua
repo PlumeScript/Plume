@@ -82,6 +82,8 @@ return function (plume, context)
             -- Handled by block in most cases  
             elseif node.type == "TABLE" then
                 local doc = context.collectComments(node)
+                node.blockUID = context.getUID()
+                table.insert(context.tableBlocks, node)
 
                 context.accTableInit(node)
                 context.accBlockDeep = context.accBlockDeep + 1
@@ -99,6 +101,8 @@ return function (plume, context)
                 end
 
                 context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
+                context.registerLabel(node, "acc_table_" .. node.blockUID)
+
                 if doc and #doc>0 then
                     infos = infos or {}
                     table.insert(infos, {"doc", doc})
@@ -111,6 +115,7 @@ return function (plume, context)
                     context.registerLabel(node, label)  
                 end
                 context.accBlockDeep = context.accBlockDeep - 1
+                table.remove(context.tableBlocks)
             -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
             elseif node.type == "EMPTY" then
                 context.toggleConcatOff()
