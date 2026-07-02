@@ -27,10 +27,8 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.DO = function(node)
 		local loop = context.getLast "loops"
 		
-		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
-			if loop then
-				table.insert(loop.blockToClose, plume.ops.CHECK_IS_TEXT)
-			end
+		if loop then
+			loop.insideDo = loop.insideDo + 1
 		end
 
 		local body = plume.ast.get(node, "BODY")
@@ -42,10 +40,11 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end)(body)
 
+		if loop then
+			loop.insideDo = loop.insideDo - 1
+		end
+
 		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
-			if loop then
-				table.remove(loop.blockToClose)
-			end
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end

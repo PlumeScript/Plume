@@ -31,6 +31,15 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotUseBreakInsideDo(node)
+		local message = "Cannot use break keyword inside a `do` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseContinueInsideDo(node)
+		local message = "Cannot use continue keyword inside a `do` block."
+		plume.error.throwCompilationError(node, message)
+	end
 	function plume.error.cannotUseContinueInsideLetset(node)
 		local message = "Cannot use continue keyword inside an affectation."
 		plume.error.throwCompilationError(node, message)

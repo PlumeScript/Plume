@@ -28,7 +28,8 @@ return function (plume, context, nodeHandlerTable)
 			blockToClose   = {},
 			insideMacro    = 0,
 			insideRaise    = 0,
-			insideLetset   = 0
+			insideLetset   = 0,
+			insideDo       = 0
 		})
 
 		local lets = context.countLocals(body)
@@ -83,7 +84,8 @@ return function (plume, context, nodeHandlerTable)
 					blockToClose   = {},
 					insideMacro    = 0,
 					insideRaise    = 0,
-					insideLetset   = 0
+					insideLetset   = 0,
+					insideDo       = 0
 				})
 
 				context.childrenHandler(mainBody)
@@ -110,6 +112,9 @@ return function (plume, context, nodeHandlerTable)
 		if loop.insideLetset>0 then
 			plume.error.cannotUseContinueInsideLetset(node)
 		end
+		if loop.insideDo>0 then
+			plume.error.cannotUseContinueInsideDo(node)
+		end
 
 		context.safeClose(node, loop)
 		context.registerGoto (node, loop.begin_label)
@@ -124,6 +129,9 @@ return function (plume, context, nodeHandlerTable)
 		end
 		if loop.insideLetset>0 then
 			plume.error.cannotUseBreakInsideLetset(node)
+		end
+		if loop.insideDo>0 then
+			plume.error.cannotUseBreakInsideDo(node)
 		end
 
 		context.safeClose(node, loop, loop.leave)

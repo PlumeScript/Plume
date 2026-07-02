@@ -1395,7 +1395,7 @@ a\n
 a
 /// End
 
-/// Test #966-1
+/// Test #966
 let var1 = 0
 while var1 < 4
   set var1 += 1
@@ -1404,23 +1404,6 @@ while var1 < 4
       a
     end
     leave
-  end
-end
-/// Output
-/// End
-
-/// Test #966-2
-for var1 in seq(4)
-  do
-    if true
-      if false
-        a
-      end
-    end
-      
-    if true
-      break
-    end
   end
 end
 /// Output
@@ -1460,4 +1443,26 @@ if false
     a
 end
 /// Output
+/// End
+
+/// Test #969
+for var1 in seq(4)
+  do
+    continue
+    a
+  end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside a `do` block.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │do                                                                       │
+│    3 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    4 │  a                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
