@@ -88,7 +88,7 @@ return function (plume)
 		BRANCH   = {"IF"}
 	}
 
-	local _cantBeUnic = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM", "WITH"}
+	local _cantBeUnic = {"FOR", "WHILE", "HASH_ITEM", "LIST_ITEM", "WITH", "DO"}
 
 	local primitiveTypes = {}
 	for typeName, nodeNames in pairs(_primitiveTypes) do
