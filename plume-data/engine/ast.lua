@@ -132,7 +132,12 @@ return function (plume)
 						elseif firstRelevantChild.name == "INLINE_TABLE" then
 							plume.error.inlineTableMuseBeAlone(firstRelevantChild)
 						else
-							plume.error.mixedBlock(firstRelevantChild, detectedType, childProvidedType, lastRelevantChild)
+							plume.error.mixedBlock(
+								firstRelevantChild,
+								detectedType,
+								childProvidedType,
+								lastRelevantChild
+							)
 						end
 					end
 					if detectedType == "EMPTY"  then
