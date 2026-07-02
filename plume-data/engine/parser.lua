@@ -300,7 +300,7 @@ return function (plume)
 
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
-			local optnarg = Ct("HASH_ITEM", (name + Ct("EVAL", P"$" * V"_layer1"))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
+			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
 			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1"))
 			local arglist = Ct("CALL", P"(" * arg^-1 * (os * P"," * os * arg)^0 * P")")
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
@@ -369,7 +369,7 @@ return function (plume)
 		                 + Ct("ANONYMOUS_MACRO", K"macro"            * os * paramlist^-1 * body * _end)
 
 		local namedArg  = (E(plume.error.cannotUseRef, K"ref") * s)^-1 * Ct("HASH_ITEM",
-							os * (name + eval) * os * P":"
+							os * (name + Ct("DYNAMIC_KEY", eval)) * os * P":"
 							* os * Ct("BODY", (V"inlinetable" + V"textic")^-1)
 						)
 		local arg       = namedArg	
@@ -440,7 +440,7 @@ return function (plume)
 		-- table
 		local ref      = name * (s * K"as" * s * Ct("ALIAS", name))^-1
 		local listitem = Ct("LIST_ITEM", P"- " * os * V"firstStatementNLB" + P"-" * #lt) 
-		local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (name + eval) * P":" * (os * lbodynlb + #lt))
+		local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (name + Ct("DYNAMIC_KEY", eval)) * P":" * (os * lbodynlb + #lt))
 						+ Ct("HASH_ITEM", Ct("REF", K"ref"*s) * ref * P":" *  os * lbodynlb)
 						+ Ct("EMPTY_REF", Ct("REF", K"ref"*s) * ref) * (os * P"," * os * Ct("EMPTY_REF", ref))^0
 		local expand   = Ct("EXPAND", P"..." * evalBase) 

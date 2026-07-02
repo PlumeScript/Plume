@@ -30,7 +30,8 @@ return function (plume, context, nodeHandlerTable)
 	--- `key: value` and `meta key: value`
 	nodeHandlerTable.HASH_ITEM = function(node)
 		local identifier = plume.ast.get(node, "NAME")
-		local eval       = plume.ast.get(node, "EVAL")
+		local dk         = plume.ast.get(node, "DYNAMIC_KEY")
+		local eval       = dk and plume.ast.get(dk, "EVAL")
 		local body       = plume.ast.get(node, "BODY")
 		local meta       = plume.ast.get(node, "META")
 
