@@ -760,26 +760,14 @@ a
 /// End
 
 /// Test #617
-with (wing: 1)
-    - a
+with ($plume.locale: fr)
+    - $plume.locale()
 end
-with (wing: 1)
-    - b
+with ($plume.locale: en)
+    - $plume.locale()
 end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → `with` statement that returns a table must be the only elements in their     │
-│   block.                                                                       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    3 │end                                                                      │
-│    4 │with (wing: 1)                                                           │
-│      │^^^^^^^^^^^^^^                                                           │
-│    5 │    - b                                                                  │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
+/// Output
+(fr, en)
 /// End
 
 /// Test #620

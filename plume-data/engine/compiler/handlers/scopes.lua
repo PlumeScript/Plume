@@ -56,7 +56,7 @@ return function (plume, context, nodeHandlerTable)
 			loop.contextToClose  = loop.contextToClose + 1
 		end
 
-		context.accBlock()(body)
+		context.childrenHandler(body)
 
 		if macro then
 			macro.contextToClose = macro.contextToClose - 1
