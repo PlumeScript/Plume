@@ -211,7 +211,7 @@ return function (plume)
 
 	function plume.ast.labelMacro(ast)
 		plume.ast.browse(ast, function(node)
-			if node.name == "HASH_ITEM" and node.children[1].name == "IDENTIFIER"  then
+			if node.name == "HASH_ITEM" and node.children[1].name == "NAME"  then
 				if node.children[2] then -- HAST_ITEM value should be empty
 					local value = node.children[2]
 					if value.name == "BODY"
