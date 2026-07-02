@@ -77,8 +77,8 @@ return function (plume)
 	end
 
 	local _primitiveTypes = {
-		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF"},
-		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE", "ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "INLINE_TABLE"},
+		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF", "INLINE_TABLE"},
+		TEXT        = {"TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE", "ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "EMPTY"},
 		MACRO       = {"ANONYMOUS_MACRO"},
 		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO", "WITH"}
 	}

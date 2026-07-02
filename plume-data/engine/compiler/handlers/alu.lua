@@ -184,5 +184,5 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	--- Wrapper for computations
-	nodeHandlerTable.EXPR = context.childrenHandler
+	nodeHandlerTable.EXPR = context.accBlock()
 end

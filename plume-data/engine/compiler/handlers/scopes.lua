@@ -43,7 +43,7 @@ return function (plume, context, nodeHandlerTable)
 		local body   = plume.ast.get(node, "BODY")
 		local params = plume.ast.get(node, "PARAMLIST")
 
-		context.childrenHandler(params)
+		context.accBlock()(params)
 
 		context.registerOP(node, plume.ops.PUSH_CONTEXT)
 

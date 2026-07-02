@@ -24,7 +24,7 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.INLINE_TABLE = function(node)
-		context.accBlock()(node)
+		context.childrenHandler(node)
 	end
 	
 	--- `key: value` and `meta key: value`
