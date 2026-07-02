@@ -34,7 +34,7 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end)(body)
 
-		if context.checkIfCanConcat() then
+		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end
