@@ -76,7 +76,7 @@ return function (plume)
 	
 
 	function plume.checkIdentifier(node, identifier)
-		for kw in ('if then elseif else while for do macro let set const param use raw run ref with raise'):gmatch('%S+') do
+		for kw in ('if elseif else while for do macro let set const param use raw run ref with raise'):gmatch('%S+') do
 			if identifier == kw then
 				plume.error.wrongIdentifier(node, identifier)
 			end
