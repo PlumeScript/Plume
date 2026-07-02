@@ -75,7 +75,7 @@ return function (plume, context, nodeHandlerTable)
 		
 		context.registerOP(node, plume.ops.POP_CONTEXT)
 
-		if context.checkIfCanConcat() then
+		if context.checkIfCanConcat() and node.type ~= "EMPTY" then
 			context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		end
 	end
