@@ -215,6 +215,8 @@ local function main()
 	end
 
 	package.path = arg[1].."/?.lua;" .. package.path
+	package.cpath = arg[1].."/?.so;" .. package.cpath
+	
 	local plume = require "plume-data/engine/init"
 	if args.showHelp then
 		print((help:gsub('!VERSION!', plume._VERSION)))
