@@ -11,6 +11,7 @@ return function (plume, context, nodeHandlerTable)
 		local body            = plume.ast.get(node, "BODY")
 		local paramList       = plume.ast.get(node, "PARAMLIST") or {children={}}
 		local uid = context.getUID()
+		local endLabel = "macro_body_end_" .. uid
 
 		local doc = context.collectComments(node)
 		if doc == "" then
@@ -51,7 +52,9 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.contextToClose = 0
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
+		macroObj.endLabel = endLabel
 		context.append("macros", macroObj)
+		context.append("accBlock", macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
@@ -164,7 +167,7 @@ return function (plume, context, nodeHandlerTable)
 				macroObj.namedParamOffset.self = param.offset
 			end
 
-			context.accBlock()(body, "macro_body_end_" .. uid) -- Handle the macro body
+			context.accBlock()(body, endLabel) -- Handle the macro body
 			
 			macroObj.localsCount = #context.getCurrentScope()
 
@@ -178,6 +181,7 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.RETURN, 0, 0)
 
 		context.registerLabel(node, "macro_declaration_end_" .. uid)
+		context.remove("accBlock")
 		context.remove("macros")
 		-- Not used by the runtime
 		macroObj.uid = nil
@@ -187,34 +191,30 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.ANONYMOUS_MACRO = nodeHandlerTable.MACRO
 
 	nodeHandlerTable.LEAVE = function(node)
-		local macro = context.getLast "macros"
+		local parent = context.getLast "macros"
 
-		if macro.body.isUnic then
+		if parent.body.isUnic then
 			plume.error.leaveInValueBlock(node)
 		end
 		
-		if macro.node.type == "TEXT" then
+		if parent.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
 		end
 
-		if macro.insideRaise>0 then
+		if parent.insideRaise>0 then
 			plume.error.cannotUseLeaveInsideRaise(node)
 		end
-		if macro.insideLetset>0 then
+		if parent.insideLetset>0 then
 			plume.error.cannotUseLeaveInsideLetset(node)
 		end
-		if macro.insideCall>0 then
+		if parent.insideCall>0 then
 			plume.error.cannotUseLeaveInsideCall(node)
 		end
 
-		macro.scopeToClose = #context.scopes - macro.scopeDeep
-		context.safeClose(node, macro)
+		parent.scopeToClose = #context.scopes - parent.scopeDeep
+		context.safeClose(node, parent)
 
-		local uid = macro and macro.uid
-		if uid then
-			context.registerGoto(node, "macro_body_end_" .. uid)
-		else
-			context.registerGoto(node, "macro_end")
-		end
+		local uid = parent and parent.uid
+		context.registerGoto(node, parent.endLabel)
 	end
 end

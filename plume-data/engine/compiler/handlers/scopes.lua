@@ -10,8 +10,22 @@ return function (plume, context, nodeHandlerTable)
 		local doc = context.collectFileComments(node)
 		local lets = context.countLocals(node)
 		context.enterScope(lets, true)
-		context.append("macros", {isFile=true, node=node, body=node, scopeDeep=1, contextToClose=0, blockToClose={}, insideRaise=0, insideLetset=0, insideCall=0})
+		local fileInfos = {
+			isFile=true,
+			node=node,
+			body=node,
+			scopeDeep=1,
+			contextToClose=0,
+			blockToClose={},
+			insideRaise=0,
+			insideLetset=0,
+			insideCall=0,
+			endLabel = "macro_end"
+		}
+		context.append("macros",fileInfos)
+		context.append("accBlock",fileInfos)
 		context.accBlock(nil, {{"name", node.filename}, {"doc", doc}})(node, "macro_end")
+		context.remove("accBlock")
 		context.remove("macros")
 
 		context.leaveScope()
@@ -31,6 +45,10 @@ return function (plume, context, nodeHandlerTable)
 			loop.insideDo = loop.insideDo + 1
 		end
 
+		local uid = context.getUID()
+		local label = "do_end_" .. uid
+		context.append("accBlock", {uid=uid, endLabel=label})
+
 		local body = plume.ast.get(node, "BODY")
 		context.scope(function()
 			if body.type == "TABLE" or body.isUnic then
@@ -39,6 +57,9 @@ return function (plume, context, nodeHandlerTable)
 				context.accBlock()(body)
 			end
 		end)(body)
+
+		context.remove("accBlock")
+		context.registerLabel(node, label)
 
 		if loop then
 			loop.insideDo = loop.insideDo - 1
