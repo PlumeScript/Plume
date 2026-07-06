@@ -3,6 +3,8 @@
 ## Add an error when using non-escaped `$` #900
 Escape all non-eval `$`: `\$`
 
+## Leave affect only the current accumulation block instead of the whole macro #916
+
 # Sparrow -> Owl
 
 ## `#649` remove all `lua.*` tables and macros
