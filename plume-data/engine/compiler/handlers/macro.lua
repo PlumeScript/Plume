@@ -196,6 +196,10 @@ return function (plume, context, nodeHandlerTable)
 			parent = context.getLast "accBlock"
 		else
 			parent = context.getLast "macros"
+
+			if parent ~= context.getLast "accBlock" then
+				plume.warning.throwWarning("From raven edition, this `leave` will only stop current accumulation block (parent `do`) instead of whole macro.", nil, node, {886, 916})
+			end
 		end
 
 		if parent.body and parent.body.isUnic then
