@@ -191,24 +191,33 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.ANONYMOUS_MACRO = nodeHandlerTable.MACRO
 
 	nodeHandlerTable.LEAVE = function(node)
-		local parent = context.getLast "macros"
+		local parent
+		if context.futureFlagNewLeave then
+			parent = context.getLast "accBlock"
+		else
+			parent = context.getLast "macros"
+		end
 
-		if parent.body.isUnic then
+		if parent.body and parent.body.isUnic then
 			plume.error.leaveInValueBlock(node)
 		end
 		
-		if parent.node.type == "TEXT" then
+		-- Messy: `do` doesn't provide node field, but handle itself this case...
+		if parent.node and parent.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
 		end
 
-		if parent.insideRaise>0 then
-			plume.error.cannotUseLeaveInsideRaise(node)
-		end
-		if parent.insideLetset>0 then
-			plume.error.cannotUseLeaveInsideLetset(node)
-		end
-		if parent.insideCall>0 then
-			plume.error.cannotUseLeaveInsideCall(node)
+		if context.futureFlagNewLeave then
+		else
+			if parent.insideRaise>0 then
+				plume.error.cannotUseLeaveInsideRaise(node)
+			end
+			if parent.insideLetset>0 then
+				plume.error.cannotUseLeaveInsideLetset(node)
+			end
+			if parent.insideCall>0 then
+				plume.error.cannotUseLeaveInsideCall(node)
+			end
 		end
 
 		parent.scopeToClose = #context.scopes - parent.scopeDeep

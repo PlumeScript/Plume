@@ -47,19 +47,18 @@ return function (plume, context, nodeHandlerTable)
 
 		local uid = context.getUID()
 		local label = "do_end_" .. uid
-		context.append("accBlock", {uid=uid, endLabel=label})
+		context.append("accBlock", {uid=uid, endLabel=label, scopeDeep = #context.scopes+1})
 
 		local body = plume.ast.get(node, "BODY")
 		context.scope(function()
 			if body.type == "TABLE" or body.isUnic then
 				context.childrenHandler(body)
 			else
-				context.accBlock()(body)
+				context.accBlock()(body, nil, label)
 			end
 		end)(body)
 
 		context.remove("accBlock")
-		context.registerLabel(node, label)
 
 		if loop then
 			loop.insideDo = loop.insideDo - 1

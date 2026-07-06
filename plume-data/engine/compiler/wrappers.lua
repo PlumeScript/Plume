@@ -42,7 +42,7 @@ return function (plume, context)
         --- @param node node
         --- @param label|nil string Used to jump at block end, but before finalizer.
         --- @return nil
-        return function (node, label)
+        return function (node, label, beforeConcatLabel)
             local macro = context.getLast "macros"
             local loop  = context.getLast "loops"
 
@@ -81,6 +81,10 @@ return function (plume, context)
                     table.remove(macro.blockToClose)
                 end
 
+                if beforeConcatLabel then  
+                    context.registerLabel(node, beforeConcatLabel)  
+                end  
+
                 context.registerOP(nil, plume.ops.CONCAT_TEXT, 0, 0)
                 if label then  
                     context.registerLabel(node, label)  
@@ -108,6 +112,9 @@ return function (plume, context)
                     table.remove(macro.blockToClose)
                 end
 
+                if beforeConcatLabel then  
+                    context.registerLabel(node, beforeConcatLabel)  
+                end 
                 context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
                 context.registerLabel(node, "acc_table_" .. node.blockUID)
 
