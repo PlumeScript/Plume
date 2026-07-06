@@ -8,8 +8,54 @@ Licensed under the MIT License — see LICENSE for details.
 return function (plume, context)
 	--- @param key string
 	--- @return any last element of context[key]
-	function context.getLast(key)
-		return context[key][#context[key]]
+	function context.getLast(key, index)
+		index = index or 0
+		for i=#context.stacks, 1, -1 do
+			if context.stacks[i].key == key then
+				if index > 0 then
+					index = index - 1
+				else
+					return context.stacks[i].value
+				end
+			end
+		end
+	end
+
+	function context.getFirst(key, index)
+		index = index or 0
+		for i=1, #context.stacks, 1 do
+			if context.stacks[i].key == key then
+				if index > 0 then
+					index = index - 1
+				else
+					return context.stacks[i].value
+				end
+			end
+		end
+	end
+
+	--- @param key string
+	--- @param value any
+	function context.append(key, value)
+		table.insert(context.stacks, {key=key, value=value})
+	end
+
+	--- @param key string
+	function context.remove(key)
+		local lastIndex
+		for i=#context.stacks, 1, -1 do
+			if context.stacks[i].key == key then
+				lastIndex = i
+				break
+			end
+		end
+		if not lastIndex then
+			error(string.format('[Internal Error] Cannot found "%s" on compiler stack', key))
+		end
+		if lastIndex < #context.stacks then
+			error(string.format('[Internal Error] Incoherent compiler stack, "%s" instead of "%s".', context.stacks[#context.stacks].key, key))
+		end
+		return table.remove(context.stacks, lastIndex)
 	end
 
 	local uid = 0
@@ -49,13 +95,13 @@ return function (plume, context)
 
 	--- Utils to set/check if the current block is a TEXT one
 	function context.toggleConcatOn()
-		table.insert(context.concats, true)
+		context.append("concats", true)
 	end
 	function context.toggleConcatOff()
-		table.insert(context.concats, false)
+		context.append("concats", false)
 	end
 	function context.toggleConcatPop()
-		table.remove(context.concats)
+		context.remove("concats")
 	end
 	function context.checkIfCanConcat()
 		return context.getLast"concats"

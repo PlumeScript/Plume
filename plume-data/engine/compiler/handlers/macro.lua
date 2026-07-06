@@ -51,7 +51,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.contextToClose = 0
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
-		table.insert(context.macros, macroObj)
+		context.append("macros", macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
@@ -178,7 +178,7 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.RETURN, 0, 0)
 
 		context.registerLabel(node, "macro_declaration_end_" .. uid)
-		table.remove(context.macros)
+		context.remove("macros")
 		-- Not used by the runtime
 		macroObj.uid = nil
 		macroObj.upvalueMap = nil

@@ -42,7 +42,7 @@ return function (plume, context)
 		name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref
 	)
 		-- First macro inside the scope will capture upvalue
-		local macro = context.macros[#context.macros - scopeDepth + 1]
+		local macro = context.getLast("macros", scopeDepth - 1)
 
 		if not macro.upvalueMap[name] then
 			if ref then
@@ -86,7 +86,7 @@ return function (plume, context)
 
 		-- All nested macro will load upvalue from previous first macro
 		for i=scopeDepth-1, 1, -1 do
-			local childMacro = context.macros[#context.macros - i + 1]
+			local childMacro = context.getLast("macros", i - 1)
 			if not childMacro.upvalueMap[name] then
 				table.insert(childMacro.upvalues, {
 					offset = #childMacro.upvalues+1,
@@ -97,7 +97,7 @@ return function (plume, context)
 			end
 		end
 
-		macro = context.macros[#context.macros] or macro -- return from the deepest macro
+		local macro = context.getLast("macros") or macro -- return from the deepest macro
 
 		return macro.upvalueMap[name]
 	end

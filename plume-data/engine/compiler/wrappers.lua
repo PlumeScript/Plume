@@ -91,7 +91,7 @@ return function (plume, context)
             elseif node.type == "TABLE" then
                 local doc = context.collectComments(node)
                 node.blockUID = context.getUID()
-                table.insert(context.tableBlocks, node)
+                context.append("tableBlocks", node)
 
                 context.accTableInit(node)
                 context.accBlockDeep = context.accBlockDeep + 1
@@ -123,7 +123,7 @@ return function (plume, context)
                     context.registerLabel(node, label)  
                 end
                 context.accBlockDeep = context.accBlockDeep - 1
-                table.remove(context.tableBlocks)
+                context.remove("tableBlocks")
             -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
             elseif node.type == "EMPTY" then
                 context.toggleConcatOff()
