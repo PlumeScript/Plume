@@ -73,7 +73,11 @@ local shortcut = {
 	["-s"]="--string"
 }
 
-local function winCheckTerminalCapabilities()
+local function checkTerminalCapabilities()
+	if jit.os ~= "Windows" then
+		return true, true
+	end
+
 	local ffiLoaded, ffi = pcall(require, "ffi")
 	if not ffiLoaded then
 		return false, false
@@ -183,7 +187,7 @@ local function parseArgs()
 	args.color      = args.color      or getColor()
 
 	if args.errorStyle == "auto" or args.color == "auto" then
-		local ansi, unicode = winCheckTerminalCapabilities()
+		local ansi, unicode = checkTerminalCapabilities()
 
 		if args.errorStyle == "auto" then
 			if unicode then
