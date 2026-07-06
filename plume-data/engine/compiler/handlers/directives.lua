@@ -169,6 +169,10 @@ return function (plume, context, nodeHandlerTable)
 				if args.importCache or args.raven or args.all then
 					context.chunk.futureFlagImportCache = true
 				end
+
+				if args.newLeave or args.raven or args.all then
+					context.futureFlagNewLeave = true
+				end
 			end
 		}
 	}
