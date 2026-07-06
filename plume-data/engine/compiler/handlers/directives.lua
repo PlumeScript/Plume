@@ -162,6 +162,7 @@ return function (plume, context, nodeHandlerTable)
 			checkArgs = {
 				importCache  = {true},
 				lineEval     = {true},
+				newLeave     = {true},
 				raven        = {true},
 				all          = {true}
 			},
