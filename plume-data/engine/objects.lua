@@ -119,6 +119,8 @@ return function(plume)
 		result:setItem("localeThousandsSeparator",  plume.obj.context(plume.obj.empty))
 		result:setItem("localeDecimalSeparator",  plume.obj.context(plume.obj.empty))
 		result:setItem("localeThousandthsSeparator",  plume.obj.context(plume.obj.empty))
+
+		result:setItem("VERSION", plume._VERSION)
 		return result
 	end
 
