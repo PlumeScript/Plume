@@ -62,6 +62,7 @@ return function (plume)
         local MASK_ARG2 = bit.lshift (1, ARG2_BITS) - 1
         local band = bit.band
         local rshift = bit.rshift
+        local currentFile = runtime.files[chunk.fileID]
         if initFileParams then
             fileParams = {}
             for key, value in pairs (initFileParams)
@@ -71,69 +72,7 @@ return function (plume)
                     local offset = chunk.namedParamOffset[key]
                     if offset then
                         table.insert (fileParams, {offset = offset, value = value})
-                    else
-                        do
-                            local safeCallIndex
-                            for i = #runtime.callstack, 1, -1 do
-                                local call = runtime.callstack[i]
-                                if call.safe then
-                                    safeCallIndex = i
-                                end
-                            end
-                            if safeCallIndex then
-                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                    table.remove (runtime.callstack)
-                                end
-                                local safeResult = plume.obj.table (0, 2)
-                                safeResult:setItem ("success", false)
-                                safeResult:setItem ("result", plume.error.unknownParamError (key, chunk.namedParamOffset))
-                                do
-                                    do
-                                        local _ret5
-                                        do
-                                            variableStackFramesPointer = variableStackFramesPointer - 1
-                                            local value = variableStackFrames[variableStackFramesPointer + 1]
-                                            _ret5 = value
-                                        end
-                                        variableStackPointer = _ret5 - 1
-                                    end
-                                    local _ret6
-                                    do
-                                        closureStack.pointer = closureStack.pointer - 1
-                                        local value = closureStack[closureStack.pointer + 1]
-                                        _ret6 = value
-                                    end
-                                    do
-                                        local call = table.remove (runtime.callstack)
-                                        if call and call.safe then
-                                            local _ret7
-                                            do
-                                                mainStackPointer = mainStackPointer - 1
-                                                local value = mainStack[mainStackPointer + 1]
-                                                _ret7 = value
-                                            end
-                                            local result = _ret7
-                                            local safeResult = plume.obj.table (0, 2)
-                                            safeResult:setItem ("success", true)
-                                            safeResult:setItem ("result", result)
-                                            mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = safeResult
-                                        end
-                                    end
-                                    local _ret8
-                                    do
-                                        macroStackPointer = macroStackPointer - 1
-                                        local value = macroStack[macroStackPointer + 1]
-                                        _ret8 = value
-                                    end
-                                    jump = _ret8
-                                end
-                                mainStackPointer = mainStackPointer + 1
-                                mainStack[mainStackPointer] = safeResult
-                            else
-                                vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
-                            end
-                        end
+                    elseif currentFile.futureFlagUnknownParamError then
                         do
                             local safeCallIndex
                             for i = #runtime.callstack, 1, -1 do
@@ -196,6 +135,71 @@ return function (plume)
                                 local vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
                             end
                         end
+                        do
+                            local safeCallIndex
+                            for i = #runtime.callstack, 1, -1 do
+                                local call = runtime.callstack[i]
+                                if call.safe then
+                                    safeCallIndex = i
+                                end
+                            end
+                            if safeCallIndex then
+                                for i = #runtime.callstack, safeCallIndex, -1 do
+                                    table.remove (runtime.callstack)
+                                end
+                                local safeResult = plume.obj.table (0, 2)
+                                safeResult:setItem ("success", false)
+                                safeResult:setItem ("result", plume.error.unknownParamError (key, chunk.namedParamOffset))
+                                do
+                                    do
+                                        local _ret5
+                                        do
+                                            variableStackFramesPointer = variableStackFramesPointer - 1
+                                            local value = variableStackFrames[variableStackFramesPointer + 1]
+                                            _ret5 = value
+                                        end
+                                        variableStackPointer = _ret5 - 1
+                                    end
+                                    local _ret6
+                                    do
+                                        closureStack.pointer = closureStack.pointer - 1
+                                        local value = closureStack[closureStack.pointer + 1]
+                                        _ret6 = value
+                                    end
+                                    do
+                                        local call = table.remove (runtime.callstack)
+                                        if call and call.safe then
+                                            local _ret7
+                                            do
+                                                mainStackPointer = mainStackPointer - 1
+                                                local value = mainStack[mainStackPointer + 1]
+                                                _ret7 = value
+                                            end
+                                            local result = _ret7
+                                            local safeResult = plume.obj.table (0, 2)
+                                            safeResult:setItem ("success", true)
+                                            safeResult:setItem ("result", result)
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = safeResult
+                                        end
+                                    end
+                                    local _ret8
+                                    do
+                                        macroStackPointer = macroStackPointer - 1
+                                        local value = macroStack[macroStackPointer + 1]
+                                        _ret8 = value
+                                    end
+                                    jump = _ret8
+                                end
+                                mainStackPointer = mainStackPointer + 1
+                                mainStack[mainStackPointer] = safeResult
+                            else
+                                vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
+                            end
+                        end
+                    else
+                        plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key)
+                        , nil, runtime, ip, {886, 981})
                     end
                 end
             end
@@ -7875,7 +7879,7 @@ return function (plume)
                                                                 local offset = chunk.namedParamOffset[key]
                                                                 if offset then
                                                                     table.insert (fileParams, {offset = offset, key = key, value = args.table[key]})
-                                                                else
+                                                                elseif chunk.futureFlagUnknownParamError then
                                                                     do
                                                                         local safeCallIndex
                                                                         for i = #runtime.callstack, 1, -1 do
@@ -7938,6 +7942,9 @@ return function (plume)
                                                                             vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
                                                                         end
                                                                     end
+                                                                else
+                                                                    plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key)
+                                                                    , nil, runtime, ip, {886, 981})
                                                                 end
                                                             end
                                                         end

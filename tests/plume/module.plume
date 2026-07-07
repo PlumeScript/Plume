@@ -132,7 +132,7 @@ use tests/plume/toimport/filedoc(x:5)
 │  ↳ tests/plume/toimport/filedoc.plume                                          │
 │    1 │// This file do somethings                                               │
 │      │^                                                                        │
-│    2 │x: 5                                                                     │
+│    2 │use #future(unknownParamError)                                           │
 │                                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │

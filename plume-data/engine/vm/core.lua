@@ -20,6 +20,7 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
     _VM_INIT_VARS(vm, runtime, chunk)
 
     -- Inject file params
+    local currentFile = runtime.files[chunk.fileID]
     if initFileParams then
         vm.fileParams = {}
         for key, value in pairs(initFileParams) do
@@ -27,9 +28,11 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
                 local offset = chunk.namedParamOffset[key]
                 if offset then
                     table.insert(vm.fileParams, {offset=offset, value=value})
-                else
+                elseif currentFile.futureFlagUnknownParamError then
                     _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
                     _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset)) -- dirty fix
+                else
+                     vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key), nil, vm.runtime, vm.ip, {886, 981})
                 end
             end
         end

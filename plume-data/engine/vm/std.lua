@@ -172,8 +172,10 @@ function STD_IMPORT(vm, arg1, arg2)
                         local offset = chunk.namedParamOffset[key]
                         if offset then
                             table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
-                        else
+                        elseif chunk.futureFlagUnknownParamError then
                             _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
+                        else
+                             vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key), nil, vm.runtime, vm.ip, {886, 981})
                         end
                     end
                 end
