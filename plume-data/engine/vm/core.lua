@@ -34,21 +34,25 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
         
         for key, value in pairs(initFileParams) do
             if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
+                local varKey
                 if tonumber(key) then
-                    key = "arg" .. (key-1) -- 1 is the file path
+                    key = key-1-- 1 is the file path
+                    varKey = "arg" .. key
+                else
+                    varKey = key
                 end
 
-                local offset = chunk.namedParamOffset[key]
+                local offset = chunk.namedParamOffset[varKey]
                 if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
                     table.insert(vm.fileParams, {offset=offset, value=value})
                 elseif chunk.variadicParam then
                     local variadic = vm.fileParams[1].value
                     variadic:setItem(key, value)
                 elseif currentFile.futureFlagUnknownParamError then
-                    _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
-                    _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset)) -- dirty fix
+                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, chunk.namedParamOffset))
+                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, chunk.namedParamOffset)) -- dirty fix
                 else
-                     vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key), nil, vm.runtime, vm.ip, {886, 981})
+                     vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, vm.runtime, vm.ip, {886, 981})
                 end
             end
         end

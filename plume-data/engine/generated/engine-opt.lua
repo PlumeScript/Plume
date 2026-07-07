@@ -73,11 +73,15 @@ return function (plume)
              do
                 if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber (key)
                 ) then
+                    local varKey
                     if tonumber (key)
                      then
-                        key = "arg" .. (key - 1)
+                        key = key - 1
+                        varKey = "arg" .. key
+                    else
+                        varKey = key
                     end
-                    local offset = chunk.namedParamOffset[key]
+                    local offset = chunk.namedParamOffset[varKey]
                     if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
                         table.insert (fileParams, {offset = offset, value = value})
                     elseif chunk.variadicParam then
@@ -98,7 +102,7 @@ return function (plume)
                                 end
                                 local safeResult = plume.obj.table (0, 2)
                                 safeResult:setItem ("success", false)
-                                safeResult:setItem ("result", plume.error.unknownParamError (key, chunk.namedParamOffset))
+                                safeResult:setItem ("result", plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                 do
                                     do
                                         local _ret1
@@ -143,7 +147,7 @@ return function (plume)
                                 mainStackPointer = mainStackPointer + 1
                                 mainStack[mainStackPointer] = safeResult
                             else
-                                local vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
+                                local vmerr = plume.error.unknownParamError (varKey, chunk.namedParamOffset)
                             end
                         end
                         do
@@ -160,7 +164,7 @@ return function (plume)
                                 end
                                 local safeResult = plume.obj.table (0, 2)
                                 safeResult:setItem ("success", false)
-                                safeResult:setItem ("result", plume.error.unknownParamError (key, chunk.namedParamOffset))
+                                safeResult:setItem ("result", plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                 do
                                     do
                                         local _ret5
@@ -205,11 +209,11 @@ return function (plume)
                                 mainStackPointer = mainStackPointer + 1
                                 mainStack[mainStackPointer] = safeResult
                             else
-                                vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
+                                vmerr = plume.error.unknownParamError (varKey, chunk.namedParamOffset)
                             end
                         end
                     else
-                        plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key)
+                        plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                         , nil, runtime, ip, {886, 981})
                     end
                 end
@@ -7892,16 +7896,20 @@ return function (plume)
                                                             if key ~= 1 and (chunk.futureFlagPositionnalFileParam or not tonumber (key)
                                                             ) then
                                                                 local value = args.table[key]
+                                                                local varKey
                                                                 if tonumber (key)
                                                                  then
-                                                                    key = "arg" .. (key - 1)
+                                                                    key = key - 1
+                                                                    varKey = "arg" .. key
+                                                                else
+                                                                    varKey = key
                                                                 end
-                                                                local offset = chunk.namedParamOffset[key]
+                                                                local offset = chunk.namedParamOffset[varKey]
                                                                 if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
-                                                                    table.insert (fileParams, {offset = offset, key = key, value = value})
+                                                                    table.insert (fileParams, {offset = offset, key = varKey, value = value})
                                                                 elseif chunk.variadicParam then
                                                                     local variadic = fileParams[1].value
-                                                                    variadic:setItem (key, args.table[key])
+                                                                    variadic:setItem (key, value)
                                                                 elseif chunk.futureFlagUnknownParamError then
                                                                     do
                                                                         local safeCallIndex
@@ -7917,7 +7925,7 @@ return function (plume)
                                                                             end
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", false)
-                                                                            safeResult:setItem ("result", plume.error.unknownParamError (key, chunk.namedParamOffset))
+                                                                            safeResult:setItem ("result", plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                             do
                                                                                 do
                                                                                     local _ret656
@@ -7962,11 +7970,11 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         else
-                                                                            vmerr = plume.error.unknownParamError (key, chunk.namedParamOffset)
+                                                                            vmerr = plume.error.unknownParamError (varKey, chunk.namedParamOffset)
                                                                         end
                                                                     end
                                                                 else
-                                                                    plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", key)
+                                                                    plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                                                                     , nil, runtime, ip, {886, 981})
                                                                 end
                                                             end
