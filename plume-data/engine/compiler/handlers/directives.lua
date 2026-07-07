@@ -168,12 +168,13 @@ return function (plume, context, nodeHandlerTable)
 
 		future = {
 			checkArgs = {
-				importCache       = {true},
-				lineEval          = {true},
-				newLeave          = {true},
-				unknownParamError = {true},
-				raven             = {true},
-				all               = {true}
+				importCache          = {true},
+				lineEval             = {true},
+				newLeave             = {true},
+				unknownParamError    = {true},
+				positionnalFileParam = {true},
+				raven                = {true},
+				all                  = {true}
 			},
 			method = function(node, args)
 				if args.importCache or args.raven or args.all then
@@ -187,6 +188,11 @@ return function (plume, context, nodeHandlerTable)
 				if args.unknownParamError or args.raven or args.all then
 					context.chunk.futureFlagUnknownParamError = true
 				end
+
+				if args.positionnalFileParam or args.raven or args.all then
+					context.chunk.futureFlagPositionnalFileParam = true
+				end
+
 			end
 		}
 	}

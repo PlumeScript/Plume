@@ -33,7 +33,7 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
     if initFileParams then
         
         for key, value in pairs(initFileParams) do
-            if key ~= 1 then
+            if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
                 if tonumber(key) then
                     key = "arg" .. (key-1) -- 1 is the file path
                 end

@@ -71,7 +71,8 @@ return function (plume)
         if initFileParams then
             for key, value in pairs (initFileParams)
              do
-                if key ~= 1 then
+                if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber (key)
+                ) then
                     if tonumber (key)
                      then
                         key = "arg" .. (key - 1)
@@ -7888,7 +7889,8 @@ return function (plume)
                                                         end
                                                         for _, key in ipairs (args.keys)
                                                          do
-                                                            if key ~= 1 then
+                                                            if key ~= 1 and (chunk.futureFlagPositionnalFileParam or not tonumber (key)
+                                                            ) then
                                                                 local value = args.table[key]
                                                                 if tonumber (key)
                                                                  then

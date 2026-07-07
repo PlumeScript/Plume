@@ -176,7 +176,7 @@ function STD_IMPORT(vm, arg1, arg2)
                 end
 
                 for _, key in ipairs(args.keys) do
-                    if key ~= 1 then
+                    if key ~= 1 and (chunk.futureFlagPositionnalFileParam or not tonumber(key)) then
                         local value = args.table[key]
                         if tonumber(key) then
                             key = "arg" .. (key-1) -- 1 is the file path
