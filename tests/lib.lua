@@ -251,6 +251,7 @@ function lib.executeTests(allTests, plumeEngine)
                         runtime.plume.table.path = ""
 
                         plumeEngine.runDevFlag = mode==1
+                        plumeEngine.ignoreWarningsFlag = true
                         testData.opt = mode==2
 
                         plumeEngine.config = {color="never", errorStyle="fancy"}
