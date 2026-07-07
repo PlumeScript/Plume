@@ -120,7 +120,7 @@ return function(plume)
 		result:setItem("localeDecimalSeparator",  plume.obj.context(plume.obj.empty))
 		result:setItem("localeThousandthsSeparator",  plume.obj.context(plume.obj.empty))
 
-		result:setItem("VERSION", plume._VERSION)
+		result:setItem("VERSION", plume.VERSION)
 		return result
 	end
 

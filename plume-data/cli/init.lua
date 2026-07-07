@@ -267,7 +267,7 @@ local function main()
 	if args.showHelp then
 		print((help:gsub('!VERSION!', plume._VERSION)))
 	elseif args.showVersion then
-		print("Plume🪶" .. plume._VERSION)
+		print("Plume🪶" .. plume.VERSION)
 	elseif args.inputFilename or args.inputString then
 		local success, result
 
