@@ -35,13 +35,16 @@ OPTIONS
 
 	-p, --params <TOKENS...>
 		Inject values into `let param` variables declared in the
-		script. Tokens use Plume's native syntax:
-			key:value    Sets param `key` to `value`
-			?flag        Sets param `flag` to true
-		Shell handles tokenization: use quotes for values with spaces.
-			plume -i file.plume --params x:5 name:"John Doe" ?verbose
+		script. Tokens follow standard CLI conventions:
+			--key=value    Sets param `key` to `value`
+			--key value    Equivalent to --key=value
+			--flag         Sets param `flag` to true
+			value          Collected as a positional argument, in
+			               order of appearance
 		This option consumes all remaining arguments on the command
 		line and must be placed last.
+		plume -i file.plume --params --x=5 --name "John Doe" --verbose add solvePeqNP
+
 
 	--error-style <fancy|auto|plain>
 		Sets the visual style of compilation errors. 'fancy' uses Unicode 
@@ -135,14 +138,6 @@ local function getColor()
 	return os.getenv("PLUME_COLOR") or "auto"
 end
 
-local function parseParamArg(arg)
-	local key, value = arg:match('^(.-):(.+)$')
-	if not key and arg:sub(1, 1) == "?" then
-		key = arg:sub(2, -1)
-		value = true
-	end
-	return key, value
-end
 
 local function parseArgs()
 	local args = {}
@@ -156,6 +151,22 @@ local function parseArgs()
 		end
 		return arg[pos]
 	end
+
+	local posargcounter = 1 -- first is for filename
+	local function parseParamArg(arg)
+		local optn, key, eq, value = arg:match('^(..)([^=]+)(=?)(.-)$')
+		if optn == "--" then
+			if eq == "" then
+				value = true
+			end
+		else
+			value = arg
+			posargcounter = posargcounter+1
+			key=posargcounter
+		end
+		return key, value
+	end
+
 
 	-- Show help if no option
 	if pos > #arg then

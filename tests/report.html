@@ -98,37 +98,10 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">761 passed out of 761 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">760 passed out of 760 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
-<h2>cli/base.lua: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
+<h2>cli/base.lua: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
-<details>
-<summary>
-<span class="status-icon status-pass">✓</span> Param parse error <em style='font-weight: normal'></em>
-</summary>
-<div class="test-content">
-<div class="code-grid">
-<div>
-<h4>Code</h4>
-<pre><code class="language-plume">
-plume -i in.plume --params x50
-
-// in.plume
-let param x = 5
-$x
-</code></pre>
-</div>
-<div>
-<h4>Bytecode</h4>
-<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
-</div>
-</div>
-<h4>Output</h4>
-<pre><code>
-Cannot parse parameter &#39;x50&#39;. Use only `key:value` or `?flag` syntax.
-</code></pre>
-</div>
-</details>
 <details>
 <summary>
 <span class="status-icon status-pass">✓</span> Wrong input <em style='font-weight: normal'></em>
@@ -187,11 +160,13 @@ $(1+1)
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-plume -i in.plume --params x:50
+plume -i in.plume --params --x=50 wing
 
 // in.plume
-let param x = 5
-$x
+use #future(all)
+let param x
+let param arg1
+$x-$arg1
 </code></pre>
 </div>
 <div>
@@ -201,7 +176,7 @@ $x
 </div>
 <h4>Output</h4>
 <pre><code>
-50
+50-wing
 </code></pre>
 </div>
 </details>

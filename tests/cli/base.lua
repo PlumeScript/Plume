@@ -15,21 +15,14 @@ return {
 		}
 	},
 	param = {
-		command   = "-i in.plume --params x:50",
+		command   = "-i in.plume --params --x=50 wing",
 		inputFile = {
 			name="in.plume",
-			content="let param x = 5\n$x"
+			content="use #future(all)\nlet param x\nlet param arg1\n$x-$arg1"
 		},
-		output = "50"
+		output = "50-wing"
 	},
-	["Param parse error"] = {
-		command   = "-i in.plume --params x50",
-		inputFile = {
-			name="in.plume",
-			content="let param x = 5\n$x"
-		},
-		output = "Cannot parse parameter 'x50'. Use only `key:value` or `?flag` syntax."
-	},
+	
 	["Wrong input"] = {
 		command   = "-i in.plume -o out.plume",
 		error     = true,
