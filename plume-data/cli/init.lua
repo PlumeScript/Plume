@@ -278,7 +278,11 @@ local function main()
 		end
 
 		if success then
-			result = plume.repr(result)
+			if true then
+				result = plume.reprOutput(result)
+			else
+				result = plume.repr(result)
+			end
 			if args.outputFilename then
 				local file = io.open(args.outputFilename, "w")
 					if not file then

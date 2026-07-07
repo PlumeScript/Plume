@@ -296,4 +296,18 @@ return function(plume)
 		end
 	end
 
+	-- Called on output
+	function plume.reprOutput(obj)
+		local t = type(obj) == "table" and obj.type or type(obj)
+		if t == "string" then
+			return obj
+		elseif t == "number" or t == "bool" then
+			return tostring(obj)
+		elseif t == "empty" then
+			return ""
+		else
+			return plume.repr(obj)
+		end
+	end
+
 end
