@@ -33,6 +33,16 @@ OPTIONS
 		The destination file where the generated content will be saved.
 		If this option is omitted, the output is printed directly to stdout.
 
+	-p, --params <TOKENS...>
+		Inject values into `let param` variables declared in the
+		script. Tokens use Plume's native syntax:
+			key:value    Sets param `key` to `value`
+			?flag        Sets param `flag` to true
+		Shell handles tokenization: use quotes for values with spaces.
+			plume -i file.plume --params x:5 name:"John Doe" ?verbose
+		This option consumes all remaining arguments on the command
+		line and must be placed last.
+
 	--error-style <fancy|auto|plain>
 		Sets the visual style of compilation errors. 'fancy' uses Unicode 
 		borders and symbols, 'plain' uses ASCII only for compatibility, 
@@ -70,7 +80,8 @@ local shortcut = {
 	["-o"]="--output",
 	["-h"]="--help",
 	["-v"]="--version",
-	["-s"]="--string"
+	["-s"]="--string",
+	["-p"]="--params"
 }
 
 local function checkTerminalCapabilities()
@@ -124,6 +135,15 @@ local function getColor()
 	return os.getenv("PLUME_COLOR") or "auto"
 end
 
+local function parseParamArg(arg)
+	local key, value = arg:match('^(.-):(.+)$')
+	if not key and arg:sub(1, 1) == "?" then
+		key = arg:sub(2, -1)
+		value = true
+	end
+	return key, value
+end
+
 local function parseArgs()
 	local args = {}
 	local pos = 2
@@ -174,6 +194,18 @@ local function parseArgs()
 			args.color = getNext()
 			if not args.color then
 				return
+			end
+		elseif content == "--params" then
+			args.fileParams = {}
+			while arg[pos+1] do
+				pos = pos+1
+				local arg = arg[pos]
+				local key, value = parseParamArg(arg)
+				if not key or not value then
+					print("Cannot parse parameter '" .. arg .."'. Use only `key:value` or `?flag` syntax.")
+					return
+				end
+				args.fileParams[key] = value
 			end
 		else
 			print("Unknown option '" .. content .. "'. Use plume -h to get help.")
@@ -229,9 +261,9 @@ local function main()
 		local success, result
 
 		if args.inputFilename then
-			success, result = plume.executeFile(args.inputFilename, nil, nil, args, true)
+			success, result = plume.executeFile(args.inputFilename, nil, args.fileParams, args, true)
 		else
-			success, result = plume.executeString(args.inputString, "<input>",nil, nil, args, true)
+			success, result = plume.executeString(args.inputString, "<input>", args.fileParams, nil, args, true)
 		end
 
 		if success then
