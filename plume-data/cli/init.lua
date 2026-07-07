@@ -214,8 +214,11 @@ local function main()
 		return
 	end
 
-	package.path = arg[1].."/?.lua;" .. package.path
-	package.cpath = arg[1].."/?.so;" .. package.cpath
+	package.path  = arg[1] .. "/?.lua;"
+	             .. arg[1] .. "/plume-data/lua/?.lua;"
+	             .. package.path
+	package.cpath = arg[1] .. "/plume-data/bin/?.so;"
+	             .. package.cpath
 	
 	local plume = require "plume-data/engine/init"
 	if args.showHelp then
