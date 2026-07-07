@@ -26,10 +26,18 @@ return function (plume, context, nodeHandlerTable)
 
 		local fileParams = {}
 		local fileParamsForCache = {}
+		local posIndex = 1 -- 1 is for file path
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
 			local keyNode = plume.ast.get(param, "KEY")
 			local valueNode = plume.ast.get(param, "VALUE")
-			local key = keyNode and keyNode.content
+			local key
+			if keyNode then
+				key = keyNode.content
+			else
+				posIndex = posIndex + 1
+				key = posIndex
+			end
+
 			local value = getRawValue(valueNode, path, key, true)
 
 			if key then

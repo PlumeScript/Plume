@@ -2805,7 +2805,7 @@ return function(plume)
 	registerLuaStdFunction("seq", 1, 3)
 	registerLuaStdFunction("items", 1)
 	registerLuaStdFunction("enumerate", 1)
-	registerLuaStdFunction("import", 1)
+	registerLuaStdFunction("import", 1, "inf")
 	
 	for name, obj in pairs(plume.stdVM) do
 		plume.std[name] = obj

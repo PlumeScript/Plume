@@ -191,7 +191,7 @@ return function (plume)
 		local libidn = (P(1)-S",\n():")^0
 		local libparam = Ct("USE_OPTION",
 			(C("KEY", libidn) * os * ":") * os * Ct("VALUE", V"textic")
-			+ E(plume.error.useDoesNotAcceptPositionalArgs, libidn)
+			+ Ct("VALUE", V"textic")
 		)
 		local nameposLibparam = Ct("USE_OPTION",
 			C("KEY", libidn) * (os * ":" * os * Ct("VALUE", V"textic"))^-1

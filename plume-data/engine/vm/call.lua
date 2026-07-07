@@ -106,7 +106,7 @@ function CONCAT_CALL (vm, arg1, arg2)
     -- Some harcoded std functions
     elseif t == "stdMacro" then
         local args = CONCAT_TABLE(vm)
-        if #args.table < tocall.minArgs or #args.table > tocall.maxArgs then
+        if #args.table < tocall.minArgs or (tocall.maxArgs ~= "inf" and #args.table > tocall.maxArgs) then
             _ERROR(vm, vm.plume.error.wrongArgsCountStd(tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
         end
         

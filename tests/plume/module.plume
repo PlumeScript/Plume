@@ -54,6 +54,19 @@ $import(tests/plume/toimport/param2, leftover: 5)
 $Table(5: leftover)
 /// End
 
+/// Test positionnal param
+$import(tests/plume/toimport/param3, a, b)
+/// Output
+(x: a - b)
+/// End
+
+/// Test use positionnal param
+use tests/plume/toimport/param3(a, b)
+$x
+/// Output
+a - b
+/// End
+
 /// Test upvalue with cache
 use tests/plume/toimport/inc
 $inc()\n

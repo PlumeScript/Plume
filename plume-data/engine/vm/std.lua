@@ -176,10 +176,14 @@ function STD_IMPORT(vm, arg1, arg2)
                 end
 
                 for _, key in ipairs(args.keys) do
-                    if not tonumber(key) then
+                    if key ~= 1 then
+                        local value = args.table[key]
+                        if tonumber(key) then
+                            key = "arg" .. (key-1) -- 1 is the file path
+                        end
                         local offset = chunk.namedParamOffset[key]
                         if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
-                            table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
+                            table.insert(vm.fileParams, {offset=offset, key=key, value=value})
                         elseif chunk.variadicParam then
                             local variadic = vm.fileParams[1].value
                             variadic:setItem(key, args.table[key])

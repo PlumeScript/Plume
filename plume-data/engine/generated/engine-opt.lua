@@ -71,8 +71,11 @@ return function (plume)
         if initFileParams then
             for key, value in pairs (initFileParams)
              do
-                if not tonumber (key)
-                 then
+                if key ~= 1 then
+                    if tonumber (key)
+                     then
+                        key = "arg" .. (key - 1)
+                    end
                     local offset = chunk.namedParamOffset[key]
                     if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
                         table.insert (fileParams, {offset = offset, value = value})
@@ -3335,7 +3338,7 @@ return function (plume)
                                                     _ret245 = resultTable
                                                 end
                                                 local args = _ret245
-                                                if #args.table < tocall.minArgs or #args.table > tocall.maxArgs then
+                                                if #args.table < tocall.minArgs or (tocall.maxArgs ~= "inf" and #args.table > tocall.maxArgs) then
                                                     do
                                                         local safeCallIndex
                                                         for i = #runtime.callstack, 1, -1 do
@@ -7885,11 +7888,15 @@ return function (plume)
                                                         end
                                                         for _, key in ipairs (args.keys)
                                                          do
-                                                            if not tonumber (key)
-                                                             then
+                                                            if key ~= 1 then
+                                                                local value = args.table[key]
+                                                                if tonumber (key)
+                                                                 then
+                                                                    key = "arg" .. (key - 1)
+                                                                end
                                                                 local offset = chunk.namedParamOffset[key]
                                                                 if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
-                                                                    table.insert (fileParams, {offset = offset, key = key, value = args.table[key]})
+                                                                    table.insert (fileParams, {offset = offset, key = key, value = value})
                                                                 elseif chunk.variadicParam then
                                                                     local variadic = fileParams[1].value
                                                                     variadic:setItem (key, args.table[key])

@@ -33,7 +33,11 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
     if initFileParams then
         
         for key, value in pairs(initFileParams) do
-            if not tonumber(key) then
+            if key ~= 1 then
+                if tonumber(key) then
+                    key = "arg" .. (key-1) -- 1 is the file path
+                end
+
                 local offset = chunk.namedParamOffset[key]
                 if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
                     table.insert(vm.fileParams, {offset=offset, value=value})
