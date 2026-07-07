@@ -406,6 +406,7 @@ return function (plume)
 			+ Ct("ALIAS", name * os * K"as" * os * name)
 			+ Ct("DEFAULT", name * os * _letsetdefaut)
 			+ name
+			+ Ct("VARIADIC", P"..." * name)
 		)
 
 		--- Specific identifiers

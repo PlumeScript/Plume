@@ -21,13 +21,25 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
 
     -- Inject file params
     local currentFile = runtime.files[chunk.fileID]
+
+    vm.fileParams = {}
+    if chunk.variadicParam then
+        table.insert(vm.fileParams, {
+            offset = chunk.variadicParam.offset,
+            value  = vm.plume.obj.table(0, 0)
+        })
+    end
+
     if initFileParams then
-        vm.fileParams = {}
+        
         for key, value in pairs(initFileParams) do
             if not tonumber(key) then
                 local offset = chunk.namedParamOffset[key]
-                if offset then
+                if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
                     table.insert(vm.fileParams, {offset=offset, value=value})
+                elseif chunk.variadicParam then
+                    local variadic = vm.fileParams[1].value
+                    variadic:setItem(key, value)
                 elseif currentFile.futureFlagUnknownParamError then
                     _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
                     _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset)) -- dirty fix

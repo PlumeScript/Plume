@@ -1,0 +1,5 @@
+let param ...leftover
+
+for k, v in items(leftover)
+	$v: $k
+end

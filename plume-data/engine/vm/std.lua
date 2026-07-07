@@ -167,11 +167,22 @@ function STD_IMPORT(vm, arg1, arg2)
                 -- Save params for FILE_INIT_PARAMS
                 vm.fileParams = {}
 
+                if chunk.variadicParam then
+                    table.insert(vm.fileParams, {
+                        offset = chunk.variadicParam.offset,
+                        key    = chunk.variadicParam.name,
+                        value  = vm.plume.obj.table(0, 0)
+                    })
+                end
+
                 for _, key in ipairs(args.keys) do
                     if not tonumber(key) then
                         local offset = chunk.namedParamOffset[key]
-                        if offset then
+                        if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
                             table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
+                        elseif chunk.variadicParam then
+                            local variadic = vm.fileParams[1].value
+                            variadic:setItem(key, args.table[key])
                         elseif chunk.futureFlagUnknownParamError then
                             _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
                         else

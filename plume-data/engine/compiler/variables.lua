@@ -281,6 +281,14 @@ return function (plume, context)
 			-- Files parameters are always named.
 			context.chunk.namedParamCount = context.chunk.namedParamCount+1
 			context.chunk.namedParamOffset[name] = #scope
+
+			if options.isVariadicParam then
+				if context.chunk.variadicParam then
+					plume.error.cannotDeclareMultipleVariadicParam(node)
+				end
+
+				context.chunk.variadicParam = {offset=#scope, name=name}
+			end
 		end
 
 		return scope[name]

@@ -82,4 +82,19 @@ return function(plume)
 		plume.error.addContext(node, definitionNode)
 		plume.error.throwCompilationError(node, message)
 	end
+
+	function plume.error.variadicLetMustBeParam(node)
+		local message = "Varadic declarations are reserved to `param` variables."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.variadicLetMustBeEmpty(node)
+		local message = "Cannot set default value of a variadic param."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotDeclareMultipleVariadicParam(node)
+		local message = "Cannot declare multiple variadic params."
+		plume.error.throwCompilationError(node, message)
+	end
 end
