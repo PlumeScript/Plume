@@ -77,4 +77,20 @@ return function(plume)
 		local message = string.format("Cycle in use: %s", table.concat(filenames, " -> "))
 		plume.error.throwCompilationError(node, message)
 	end
+
+	function plume.error.unknownParamError(key, namedParamOffset)
+		local keys = {}
+		for key, _ in pairs(namedParamOffset) do
+			table.insert(keys, key)
+		end
+		table.sort(keys)
+
+		local suggestions = ""
+		if #keys > 0 then
+			suggestions = string.format("\nValid parameters are: %s", table.concat(keys, ", "))
+		end
+
+		local message = string.format("Unknown parameter '%s' for this file.%s", key, suggestions)
+		return message
+	end
 end

@@ -23,9 +23,14 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
     if initFileParams then
         vm.fileParams = {}
         for key, value in pairs(initFileParams) do
-            local offset = chunk.namedParamOffset[key]
-            if offset then
-                table.insert(vm.fileParams, {offset=offset, value=value})
+            if not tonumber(key) then
+                local offset = chunk.namedParamOffset[key]
+                if offset then
+                    table.insert(vm.fileParams, {offset=offset, value=value})
+                else
+                    _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
+                    _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset)) -- dirty fix
+                end
             end
         end
     end

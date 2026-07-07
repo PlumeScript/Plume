@@ -168,9 +168,13 @@ function STD_IMPORT(vm, arg1, arg2)
                 vm.fileParams = {}
 
                 for _, key in ipairs(args.keys) do
-                    local offset = chunk.namedParamOffset[key]
-                    if offset then
-                        table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
+                    if not tonumber(key) then
+                        local offset = chunk.namedParamOffset[key]
+                        if offset then
+                            table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
+                        else
+                            _ERROR(vm, vm.plume.error.unknownParamError(key, chunk.namedParamOffset))
+                        end
                     end
                 end
 
