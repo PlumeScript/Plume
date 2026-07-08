@@ -218,6 +218,8 @@ local function parseArgs()
 				end
 				args.fileParams[key] = value
 			end
+		elseif content == "--future-string" then
+			args.futureStringFlag = true
 		else
 			print("Unknown option '" .. content .. "'. Use plume -h to get help.")
 			return
@@ -278,7 +280,7 @@ local function main()
 		end
 
 		if success then
-			if true then
+			if plume.futureStringFlag then
 				result = plume.reprOutput(result)
 			else
 				result = plume.repr(result)

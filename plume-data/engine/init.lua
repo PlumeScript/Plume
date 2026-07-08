@@ -89,6 +89,7 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 		plume.config = plume.config or {}
 		plume.config.errorStyle = args.errorStyle
 		plume.config.color = args.color
+		plume.futureStringFlag = args.futureStringFlag
 	end
 
 	runtime = runtime or plume.obj.runtime()

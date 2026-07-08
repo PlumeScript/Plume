@@ -253,7 +253,7 @@ return function(plume)
 
 	local function reprObj(obj, pretty, indent)
 		indent = indent or 0
-		if true then
+		if plume.futureStringFlag then
 			if type(obj) == "string" then
 				obj = obj:gsub('\\', '\\\\')
 				obj = obj:gsub('%$', '\\$')
@@ -281,12 +281,12 @@ return function(plume)
 
 		local t = obj.type or "???"
 		if t == "empty" then
-			if true then
+			if plume.futureStringFlag then
 				return "$empty"
 			else
 				return "empty"
 			end
-		elseif t == "boolean" and true then
+		elseif t == "boolean" and plume.futureStringFlag then
 			return "$"..tostring(obj)
 		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
 			return t .. "<" .. obj.name .. ">"
