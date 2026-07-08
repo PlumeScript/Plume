@@ -197,7 +197,6 @@ return function(plume)
 		local result = {}
 		local ordered = true
 		local lastIndex = 0
-		indent = indent or 0
 
 		local itemsCount = 0
 		local valueCount = 0
@@ -282,6 +281,7 @@ return function(plume)
 
 	function plume.repr(obj, acc, pretty, indent)
 		acc = acc or {}
+		indent = indent or 0
 		if type(obj) ~= "table" then
 			return reprObj(obj, pretty, indent)
 		end
@@ -289,7 +289,7 @@ return function(plume)
 		local t = obj.type or "???"
 		if t == "empty" then
 			if plume.futureStringFlag then
-				if indent == "" or indent == nil then
+				if indent == 0 then
 					return "$empty"
 				else
 					return ""
