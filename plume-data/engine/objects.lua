@@ -236,10 +236,17 @@ return function(plume)
 		end
 		
 		if pretty then
-			return string.format("do\n%s%s\n%send",
-				("  "):rep(indent+1),
-				table.concat(result, "\n"..("  "):rep(indent+1)),
-				("  "):rep(indent)
+			local template
+			if plume.futureStringFlag and indent == 0 then
+				template = "%s%s\n%s"
+			else
+				template = "do\n%s%s\n%send"
+			end
+
+			return string.format(template,
+				("  "):rep(indent),
+				table.concat(result, "\n"..("  "):rep(indent)),
+				("  "):rep(indent-1)
 			)
 		else
 			local prefix = "$Table"
