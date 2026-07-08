@@ -233,8 +233,8 @@ end
 --- @opcode
 --! inline
 function TABLE_CUSTOM_FIELD (vm, arg1, arg2)
-    local field = vm.constants[arg1]
-    local value = vm.constants[arg2]
+    local field = vm.constants[arg2]
+    local value = _STACK_POP(vm, vm.mainStack)
     local t     = _STACK_GET(vm, vm.mainStack)
     t[field]    = value
 end

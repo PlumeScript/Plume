@@ -22,10 +22,11 @@ return function (plume, context)
 
     local function registerTableInfos(node, infos)
         for _, info in ipairs(infos) do
+            context.registerOP(node, plume.ops.LOAD_CONSTANT, nil, context.registerConstant(info[2]))
             context.registerOP(node,
                 plume.ops.TABLE_CUSTOM_FIELD,
-                context.registerConstant(info[1]),
-                context.registerConstant(info[2])
+                nil,
+                context.registerConstant(info[1])
             )
         end
     end
