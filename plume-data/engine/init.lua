@@ -105,13 +105,11 @@ end
 function plume.executeFile(filename, runtime, fileParams, args, isMain)
 	filename = plume.normalizePath(filename)
 
-	local f = io.open(filename)
-		if not f then
-			return false, "Error: the file '" .. filename .. "' don't exist or isn't readable."
-		end
+	if not futf8.exists(filename) then
+		return false, "Error: the file '" .. filename .. "' don't exist or isn't readable."
+	end
 
-		local code = f:read("*a")
-	f:close()
+	local code = futf8.read(filename)
 
 	return plume.executeString(code, filename, runtime, fileParams, args, isMain)
 end

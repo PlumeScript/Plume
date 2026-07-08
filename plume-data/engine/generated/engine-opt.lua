@@ -7879,9 +7879,7 @@ return function (plume)
                                                     local chunk = runtime.files[filename]
                                                     if not chunk then
                                                         chunk = plume.obj.macro (filename, runtime)
-                                                        local f = io.open (filename)
-                                                        local code = f:read ("*a")
-                                                        f:close ()
+                                                        local code = futf8.read (filename)
                                                         success, err = pcall (plume.compileFile, code, filename, chunk, runtime)
                                                         runtime.files[filename] = chunk
                                                     end

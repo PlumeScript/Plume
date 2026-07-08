@@ -9,3 +9,4 @@ lfs  = require "lfs"
 lpeg = require "lpeg"
 
 require "table.new"
+require "plume-data/compat/baseline/fileutf8"

@@ -174,3 +174,9 @@ use tests/plume/toimport/filedoc(x:5)
 │      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test fun
+$import(tests/plume/toimport/fun)
+/// Output
+Plume support `.🪶` extension.
+/// End

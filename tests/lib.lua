@@ -96,7 +96,7 @@ local function parseTestFile(content)
     return testsByName
 end
 
---- Loads and parses all `.plume` test files from a given directory.
+--- Loads and parses all `.plume` / `.🪶` test files from a given directory.
 -- @param directory The path to the directory containing test files.
 -- @return A table containing all parsed tests, organized by filename.
 function lib.loadTests(directory, allTests)
@@ -108,13 +108,10 @@ function lib.loadTests(directory, allTests)
             local fullPath = path .. "/" .. filename
             filename = fullPath:gsub('^tests/', '')
 
-            if filename:match("%.plume$") then
+            if filename:match("%.plume$") or filename:match('%.🪶$') then
                 
-                local file, err = io.open(fullPath, "r")
-                
-                if file then
-                    local content = file:read("*a")
-                    file:close()
+                if futf8.exists(fullPath) then
+                    local content = futf8.read(fullPath)
                     
                     local parsedTests = parseTestFile(content)
                     if parsedTests then
@@ -123,7 +120,7 @@ function lib.loadTests(directory, allTests)
                         allTests[filename] = { error = "Failed to parse file." }
                     end
                 else
-                    allTests[filename] = { error = "Failed to open file: " .. (err or "unknown error") }
+                    allTests[filename] = { error = "Failed to open file" }
                 end
             elseif filename:match('%.lua$') then
                 fullPath = fullPath:gsub('%.lua$', '')
@@ -186,9 +183,7 @@ function lib.executeTests(allTests, plumeEngine)
                     local result, error
 
                     if testData.inputFile then
-                        local f = io.open(testData.inputFile.name, "w")
-                        f:write(testData.inputFile.content)
-                        f:close()
+                        futf8.write(testData.inputFile.name, testData.inputFile.content)
                     end
 
                     if testData.command then
@@ -218,9 +213,7 @@ function lib.executeTests(allTests, plumeEngine)
                     end
 
                     if testData.outputFile and not error then
-                        local f = io.open(testData.outputFile.name)
-                        result = f:read("*a")
-                        f:close()
+                        result = futf8.read(testData.outputFile.name)
                     end
 
                     testData.obtained = {

@@ -157,9 +157,7 @@ function STD_IMPORT(vm, arg1, arg2)
             if not chunk then
                 chunk =  vm.plume.obj.macro(filename, vm.runtime)
 
-                local f = io.open(filename)
-                    local code = f:read("*a")
-                f:close()
+                local code = futf8.read(filename)
                 success, err = pcall(vm.plume.compileFile, code, filename, chunk, vm.runtime)
                 vm.runtime.files[filename] = chunk
             end
