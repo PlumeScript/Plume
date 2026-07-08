@@ -1,7 +1,7 @@
 return {
 	version = {
 		command = "-v",
-		output  = "Plume🪶b55 (Owl Edition)"
+		output  = "Plume🪶b56 (Owl Edition)"
 	},
 	io = {
 		command   = "-i in.plume -o out.plume",
@@ -14,6 +14,15 @@ return {
 			content="2"
 		}
 	},
+	param = {
+		command   = "-i in.plume --params --x=50 wing",
+		inputFile = {
+			name="in.plume",
+			content="use #future(all)\nlet param x\nlet param arg1\n$x-$arg1"
+		},
+		output = "50-wing"
+	},
+	
 	["Wrong input"] = {
 		command   = "-i in.plume -o out.plume",
 		error     = true,
@@ -23,6 +32,7 @@ return {
 		command = "-s \"$(1+1)\"",
 		output  = "2"
 	},
+
 	s_error = {
 		command = "-s \"$(1+)\"",
 		error=true,

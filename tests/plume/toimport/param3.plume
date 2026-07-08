@@ -1,0 +1,5 @@
+use #future(positionnalFileParam)
+let param arg1
+let param arg2
+
+x: $arg1 - $arg2

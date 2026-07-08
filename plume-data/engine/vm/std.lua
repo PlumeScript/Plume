@@ -157,9 +157,7 @@ function STD_IMPORT(vm, arg1, arg2)
             if not chunk then
                 chunk =  vm.plume.obj.macro(filename, vm.runtime)
 
-                local f = io.open(filename)
-                    local code = f:read("*a")
-                f:close()
+                local code = futf8.read(filename)
                 success, err = pcall(vm.plume.compileFile, code, filename, chunk, vm.runtime)
                 vm.runtime.files[filename] = chunk
             end
@@ -167,10 +165,35 @@ function STD_IMPORT(vm, arg1, arg2)
                 -- Save params for FILE_INIT_PARAMS
                 vm.fileParams = {}
 
+                if chunk.variadicParam then
+                    table.insert(vm.fileParams, {
+                        offset = chunk.variadicParam.offset,
+                        key    = chunk.variadicParam.name,
+                        value  = vm.plume.obj.table(0, 0)
+                    })
+                end
+
                 for _, key in ipairs(args.keys) do
-                    local offset = chunk.namedParamOffset[key]
-                    if offset then
-                        table.insert(vm.fileParams, {offset=offset, key=key, value=args.table[key]})
+                    if key ~= 1 and (chunk.futureFlagPositionnalFileParam or not tonumber(key)) then
+                        local value = args.table[key]
+                        local varKey
+                        if tonumber(key) then
+                            key = key-1-- 1 is the file path
+                            varKey = "arg" .. key
+                        else
+                            varKey = key
+                        end
+                        local offset = chunk.namedParamOffset[varKey]
+                        if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
+                            table.insert(vm.fileParams, {offset=offset, key=varKey, value=value})
+                        elseif chunk.variadicParam then
+                            local variadic = vm.fileParams[1].value
+                            variadic:setItem(key, value)
+                        elseif chunk.futureFlagUnknownParamError then
+                            _ERROR(vm, vm.plume.error.unknownParamError(varKey, chunk.namedParamOffset))
+                        else
+                             vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, vm.runtime, vm.ip, {886, 981})
+                        end
                     end
                 end
 

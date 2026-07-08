@@ -42,10 +42,11 @@ import = table.concat(import)
 
 local init = [[
 		-- Creates stacks, handle arguments
+		local op, arg1, arg2, vmerr, vmserr
 		local vm =  --! to-remove
 			_VM_INIT(plume, runtime, chunk, initFileParams)
 		
-		local op, arg1, arg2, vmerr, vmserr
+		
 		::DISPATCH::
 			if vm.err then 
 				return false, vm.err, vm.ip

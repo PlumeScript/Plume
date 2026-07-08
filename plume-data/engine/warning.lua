@@ -23,7 +23,7 @@ return function (plume)
 
 		mode = mode[node.filename] or mode["global"]
 
-		if mode == "ignore" then
+		if mode == "ignore" or plume.ignoreWarningsFlag then
 			return
 		end
 

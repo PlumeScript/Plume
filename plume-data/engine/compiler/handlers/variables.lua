@@ -139,6 +139,30 @@ return function (plume, context, nodeHandlerTable)
 			else
 				plume.error.cannotSetCall(node)
 			end
+		----------------------------------------------------------
+		--- Case 3: Variadic. Only with param
+		--- `let param ...leftover`
+		---------------------------------------------------------- 
+		elseif varNode.name == "VARIADIC" then
+			if not isParam then
+				plume.error.variadicLetMustBeParam(varNode)
+			end
+			local body = plume.ast.get(node, "BODY")
+			if body then
+				plume.error.variadicLetMustBeEmpty(body)
+			end
+			varNode = plume.ast.get(varNode, "NAME")
+			local name = varNode.content
+			local definitionVar
+			rvar, definitionVar = context.registerVariable(node, name, {
+				isConst=isConst,
+				isParam=isParam,
+				isVariadicParam=true
+			})
+
+			if not rvar then
+				plume.error.letExistingVariable(node, name, source, definitionVar.node)
+			end
 		end
 
 		rvar.ref = varNode

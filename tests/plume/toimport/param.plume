@@ -1,2 +1,3 @@
+use #future(unknownParamError)
 let param x = 10
 $x

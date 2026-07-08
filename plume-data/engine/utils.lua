@@ -147,11 +147,11 @@ return function (plume)
 			root = formatDirFromFilename(firstFilename)
 		end
 
-		local ext
+		local exts
 		if lua then
-			ext = "lua"
+			exts = {"lua"}
 		else
-			ext = "plume"
+			exts = {"plume", "🪶"}
 		end
 
 		local basedirs = {}
@@ -170,27 +170,31 @@ return function (plume)
 		table.insert(basedirs, "")
 
 		local searchPaths = {}
+		local logSearchPaths = {}
 		for _, base in ipairs(basedirs) do
-			for _, template in ipairs(pathTemplates) do
-				template = template:gsub('%%base%%', base)
-				template = template:gsub('%%path%%', path)
-				template = template:gsub('%%ext%%', ext)
+			for i, ext in ipairs(exts) do
+				for _, template in ipairs(pathTemplates) do
+					template = template:gsub('%%base%%', base)
+					template = template:gsub('%%path%%', path)
+					template = template:gsub('%%ext%%', ext)
 
-				template = plume.normalizePath(template)
+					template = plume.normalizePath(template)
 
-				table.insert(searchPaths, template)
+					table.insert(searchPaths, template)
+					if i==1 then
+						table.insert(logSearchPaths, template)
+					end
+				end
 			end
 		end
 
 		for _, search in ipairs(searchPaths) do
-			local f = io.open(search)
-			if f then
-				f:close()
+			if futf8.exists(search) then
 				return search
 			end
 		end
 		
-		return nil, searchPaths
+		return nil, logSearchPaths
 	end
 
 	function plume.getModuleCacheId(filename, fileparam)

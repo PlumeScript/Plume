@@ -98,4 +98,4 @@ function _FINAL_CHECKS (vm)
     end
 
     return true
-end
+end  

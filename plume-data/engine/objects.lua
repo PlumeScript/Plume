@@ -119,6 +119,8 @@ return function(plume)
 		result:setItem("localeThousandsSeparator",  plume.obj.context(plume.obj.empty))
 		result:setItem("localeDecimalSeparator",  plume.obj.context(plume.obj.empty))
 		result:setItem("localeThousandthsSeparator",  plume.obj.context(plume.obj.empty))
+
+		result:setItem("VERSION", plume.VERSION)
 		return result
 	end
 
@@ -195,7 +197,6 @@ return function(plume)
 		local result = {}
 		local ordered = true
 		local lastIndex = 0
-		indent = indent or 0
 
 		local itemsCount = 0
 		local valueCount = 0
@@ -234,10 +235,17 @@ return function(plume)
 		end
 		
 		if pretty then
-			return string.format("do\n%s%s\n%send",
-				("  "):rep(indent+1),
-				table.concat(result, "\n"..("  "):rep(indent+1)),
-				("  "):rep(indent)
+			local template
+			if plume.futureStringFlag and indent == 0 then
+				template = "%s%s\n%s"
+			else
+				template = "do\n%s%s\n%send"
+			end
+
+			return string.format(template,
+				("  "):rep(indent),
+				table.concat(result, "\n"..("  "):rep(indent)),
+				("  "):rep(indent-1)
 			)
 		else
 			local prefix = "$Table"
@@ -251,6 +259,13 @@ return function(plume)
 
 	local function reprObj(obj, pretty, indent)
 		indent = indent or 0
+		if plume.futureStringFlag then
+			if type(obj) == "string" then
+				obj = obj:gsub('\\', '\\\\')
+				obj = obj:gsub('%$', '\\$')
+			end
+		end
+
 		if type(obj) == "string" and pretty and #obj > 80 then
 			local result = {"do"}
 			for i=1, #obj/80+1 do
@@ -266,13 +281,24 @@ return function(plume)
 
 	function plume.repr(obj, acc, pretty, indent)
 		acc = acc or {}
+		indent = indent or 0
 		if type(obj) ~= "table" then
 			return reprObj(obj, pretty, indent)
 		end
 
 		local t = obj.type or "???"
 		if t == "empty" then
-			return "empty"
+			if plume.futureStringFlag then
+				if indent == 0 then
+					return "$empty"
+				else
+					return ""
+				end
+			else
+				return "empty"
+			end
+		elseif t == "boolean" and plume.futureStringFlag then
+			return "$"..tostring(obj)
 		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
 			return t .. "<" .. obj.name .. ">"
 		elseif t == "closure" then
@@ -291,6 +317,20 @@ return function(plume)
 			return string.format("Context<%s>", table.concat(values, ", "))
 		else
 			return t.."Obj<"..(t.name or "???")..">"
+		end
+	end
+
+	-- Called on output
+	function plume.reprOutput(obj)
+		local t = type(obj) == "table" and obj.type or type(obj)
+		if t == "string" then
+			return obj
+		elseif t == "number" or t == "bool" then
+			return tostring(obj)
+		elseif t == "empty" then
+			return ""
+		else
+			return plume.repr(obj)
 		end
 	end
 

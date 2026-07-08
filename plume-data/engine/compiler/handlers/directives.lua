@@ -26,10 +26,18 @@ return function (plume, context, nodeHandlerTable)
 
 		local fileParams = {}
 		local fileParamsForCache = {}
+		local posIndex = 1 -- 1 is for file path
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
 			local keyNode = plume.ast.get(param, "KEY")
 			local valueNode = plume.ast.get(param, "VALUE")
-			local key = keyNode and keyNode.content
+			local key
+			if keyNode then
+				key = keyNode.content
+			else
+				posIndex = posIndex + 1
+				key = posIndex
+			end
+
 			local value = getRawValue(valueNode, path, key, true)
 
 			if key then
@@ -160,15 +168,31 @@ return function (plume, context, nodeHandlerTable)
 
 		future = {
 			checkArgs = {
-				importCache  = {true},
-				lineEval     = {true},
-				raven        = {true},
-				all          = {true}
+				importCache          = {true},
+				lineEval             = {true},
+				newLeave             = {true},
+				unknownParamError    = {true},
+				positionnalFileParam = {true},
+				raven                = {true},
+				all                  = {true}
 			},
 			method = function(node, args)
 				if args.importCache or args.raven or args.all then
 					context.chunk.futureFlagImportCache = true
 				end
+
+				if args.newLeave or args.raven or args.all then
+					context.futureFlagNewLeave = true
+				end
+
+				if args.unknownParamError or args.raven or args.all then
+					context.chunk.futureFlagUnknownParamError = true
+				end
+
+				if args.positionnalFileParam or args.raven or args.all then
+					context.chunk.futureFlagPositionnalFileParam = true
+				end
+
 			end
 		}
 	}

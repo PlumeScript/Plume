@@ -1,0 +1,15 @@
+/// Test #916
+use #future(newLeave)
+do
+    a
+    do
+        a
+        $(1+1)
+        leave
+        c
+    end
+    d
+end
+/// Output
+aa2d
+/// End

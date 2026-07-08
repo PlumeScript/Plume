@@ -22,10 +22,11 @@ return function (plume, context)
 
     local function registerTableInfos(node, infos)
         for _, info in ipairs(infos) do
+            context.registerOP(node, plume.ops.LOAD_CONSTANT, nil, context.registerConstant(info[2]))
             context.registerOP(node,
                 plume.ops.TABLE_CUSTOM_FIELD,
-                context.registerConstant(info[1]),
-                context.registerConstant(info[2])
+                nil,
+                context.registerConstant(info[1])
             )
         end
     end
@@ -42,7 +43,7 @@ return function (plume, context)
         --- @param node node
         --- @param label|nil string Used to jump at block end, but before finalizer.
         --- @return nil
-        return function (node, label)
+        return function (node, label, beforeConcatLabel)
             local macro = context.getLast "macros"
             local loop  = context.getLast "loops"
 
@@ -81,6 +82,10 @@ return function (plume, context)
                     table.remove(macro.blockToClose)
                 end
 
+                if beforeConcatLabel then  
+                    context.registerLabel(node, beforeConcatLabel)  
+                end  
+
                 context.registerOP(nil, plume.ops.CONCAT_TEXT, 0, 0)
                 if label then  
                     context.registerLabel(node, label)  
@@ -91,7 +96,7 @@ return function (plume, context)
             elseif node.type == "TABLE" then
                 local doc = context.collectComments(node)
                 node.blockUID = context.getUID()
-                table.insert(context.tableBlocks, node)
+                context.append("tableBlocks", node)
 
                 context.accTableInit(node)
                 context.accBlockDeep = context.accBlockDeep + 1
@@ -108,6 +113,9 @@ return function (plume, context)
                     table.remove(macro.blockToClose)
                 end
 
+                if beforeConcatLabel then  
+                    context.registerLabel(node, beforeConcatLabel)  
+                end 
                 context.registerOP(nil, plume.ops.CONCAT_TABLE, 0, 0)
                 context.registerLabel(node, "acc_table_" .. node.blockUID)
 
@@ -123,7 +131,7 @@ return function (plume, context)
                     context.registerLabel(node, label)  
                 end
                 context.accBlockDeep = context.accBlockDeep - 1
-                table.remove(context.tableBlocks)
+                context.remove("tableBlocks")
             -- Exactly same behavior as BEGIN_ACC (nothing) ACC_TEXT
             elseif node.type == "EMPTY" then
                 context.toggleConcatOff()

@@ -35,6 +35,38 @@ $x
 10
 /// End
 
+/// Test variadic param
+$import(tests/plume/toimport/param2, x:5, y:57)
+/// Output
+(5: x, 57: y)
+/// End
+
+/// Test use variadic param
+use tests/plume/toimport/param2(x:z, y:a)
+$z$a
+/// Output
+xy
+/// End
+
+/// Test variadic param as name
+$import(tests/plume/toimport/param2, leftover: 5)
+/// Output
+$Table(5: leftover)
+/// End
+
+/// Test positionnal param
+$import(tests/plume/toimport/param3, a, b)
+/// Output
+(x: a - b)
+/// End
+
+/// Test use positionnal param
+use tests/plume/toimport/param3(a, b)
+$x
+/// Output
+a - b
+/// End
+
 /// Test upvalue with cache
 use tests/plume/toimport/inc
 $inc()\n
@@ -103,4 +135,48 @@ let lib = $import(tests/plume/toimport/object)
 $(result == lib.result)
 /// Output
 true
+/// End
+
+/// Test unknown param 1
+$import(tests/plume/toimport/param, y:5)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown parameter 'y' for this file.                                         │
+│   Valid parameters are: x                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$import(tests/plume/toimport/param, y:5)                                 │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test unknown param 2
+use tests/plume/toimport/filedoc(x:5)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown parameter 'x' for this file.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ tests/plume/toimport/filedoc.plume                                          │
+│    1 │// This file do somethings                                               │
+│      │^                                                                        │
+│    2 │use #future(unknownParamError)                                           │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ test.plume                                                                  │
+│    1 │use tests/plume/toimport/filedoc(x:5)                                    │
+│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                         │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test fun
+$import(tests/plume/toimport/fun)
+/// Output
+Plume support `.🪶` extension.
 /// End

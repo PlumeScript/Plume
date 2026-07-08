@@ -11,6 +11,7 @@ return function (plume, context, nodeHandlerTable)
 		local body            = plume.ast.get(node, "BODY")
 		local paramList       = plume.ast.get(node, "PARAMLIST") or {children={}}
 		local uid = context.getUID()
+		local endLabel = "macro_body_end_" .. uid
 
 		local doc = context.collectComments(node)
 		if doc == "" then
@@ -51,7 +52,9 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.contextToClose = 0
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
-		table.insert(context.macros, macroObj)
+		macroObj.endLabel = endLabel
+		context.append("macros", macroObj)
+		context.append("accBlock", macroObj)
 
 		context.registerOP(macroIdentifier or node, plume.ops.LOAD_CONSTANT, 0, macroOffset)
 		context.registerOP(macroIdentifier or node, plume.ops.CLOSURE)
@@ -164,7 +167,7 @@ return function (plume, context, nodeHandlerTable)
 				macroObj.namedParamOffset.self = param.offset
 			end
 
-			context.accBlock()(body, "macro_body_end_" .. uid) -- Handle the macro body
+			context.accBlock()(body, endLabel) -- Handle the macro body
 			
 			macroObj.localsCount = #context.getCurrentScope()
 
@@ -178,7 +181,8 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.RETURN, 0, 0)
 
 		context.registerLabel(node, "macro_declaration_end_" .. uid)
-		table.remove(context.macros)
+		context.remove("accBlock")
+		context.remove("macros")
 		-- Not used by the runtime
 		macroObj.uid = nil
 		macroObj.upvalueMap = nil
@@ -187,34 +191,43 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.ANONYMOUS_MACRO = nodeHandlerTable.MACRO
 
 	nodeHandlerTable.LEAVE = function(node)
-		local macro = context.getLast "macros"
+		local parent
+		if context.futureFlagNewLeave then
+			parent = context.getLast "accBlock"
+		else
+			parent = context.getLast "macros"
 
-		if macro.body.isUnic then
+			if parent ~= context.getLast "accBlock" then
+				plume.warning.throwWarning("From raven edition, this `leave` will only stop current accumulation block (parent `do`) instead of whole macro.", nil, node, {886, 916})
+			end
+		end
+
+		if parent.body and parent.body.isUnic then
 			plume.error.leaveInValueBlock(node)
 		end
 		
-		if macro.node.type == "TEXT" then
+		-- Messy: `do` doesn't provide node field, but handle itself this case...
+		if parent.node and parent.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
 		end
 
-		if macro.insideRaise>0 then
-			plume.error.cannotUseLeaveInsideRaise(node)
-		end
-		if macro.insideLetset>0 then
-			plume.error.cannotUseLeaveInsideLetset(node)
-		end
-		if macro.insideCall>0 then
-			plume.error.cannotUseLeaveInsideCall(node)
-		end
-
-		macro.scopeToClose = #context.scopes - macro.scopeDeep
-		context.safeClose(node, macro)
-
-		local uid = macro and macro.uid
-		if uid then
-			context.registerGoto(node, "macro_body_end_" .. uid)
+		if context.futureFlagNewLeave then
 		else
-			context.registerGoto(node, "macro_end")
+			if parent.insideRaise>0 then
+				plume.error.cannotUseLeaveInsideRaise(node)
+			end
+			if parent.insideLetset>0 then
+				plume.error.cannotUseLeaveInsideLetset(node)
+			end
+			if parent.insideCall>0 then
+				plume.error.cannotUseLeaveInsideCall(node)
+			end
 		end
+
+		parent.scopeToClose = #context.scopes - parent.scopeDeep
+		context.safeClose(node, parent)
+
+		local uid = parent and parent.uid
+		context.registerGoto(node, parent.endLabel)
 	end
 end

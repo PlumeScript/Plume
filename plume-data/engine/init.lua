@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b55 (Owl Edition)
+Plume🪶 b56 (Owl Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,7 +30,7 @@ else
 end
 
 local plume = {}
-plume._VERSION = "b55 (Owl Edition)"
+plume.VERSION = "b56 (Owl Edition)"
 
 require 'plume-data/engine/debug/core'           (plume)
 require 'plume-data/engine/error/core'           (plume)
@@ -89,6 +89,7 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 		plume.config = plume.config or {}
 		plume.config.errorStyle = args.errorStyle
 		plume.config.color = args.color
+		plume.futureStringFlag = args.futureStringFlag
 	end
 
 	runtime = runtime or plume.obj.runtime()
@@ -104,13 +105,11 @@ end
 function plume.executeFile(filename, runtime, fileParams, args, isMain)
 	filename = plume.normalizePath(filename)
 
-	local f = io.open(filename)
-		if not f then
-			return false, "Error: the file '" .. filename .. "' don't exist or isn't readable."
-		end
+	if not futf8.exists(filename) then
+		return false, "Error: the file '" .. filename .. "' don't exist or isn't readable."
+	end
 
-		local code = f:read("*a")
-	f:close()
+	local code = futf8.read(filename)
 
 	return plume.executeString(code, filename, runtime, fileParams, args, isMain)
 end

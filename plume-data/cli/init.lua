@@ -33,6 +33,19 @@ OPTIONS
 		The destination file where the generated content will be saved.
 		If this option is omitted, the output is printed directly to stdout.
 
+	-p, --params <TOKENS...>
+		Inject values into `let param` variables declared in the
+		script. Tokens follow standard CLI conventions:
+			--key=value    Sets param `key` to `value`
+			--key value    Equivalent to --key=value
+			--flag         Sets param `flag` to true
+			value          Collected as a positional argument, in
+			               order of appearance
+		This option consumes all remaining arguments on the command
+		line and must be placed last.
+		plume -i file.plume --params --x=5 --name "John Doe" --verbose add solvePeqNP
+
+
 	--error-style <fancy|auto|plain>
 		Sets the visual style of compilation errors. 'fancy' uses Unicode 
 		borders and symbols, 'plain' uses ASCII only for compatibility, 
@@ -70,10 +83,15 @@ local shortcut = {
 	["-o"]="--output",
 	["-h"]="--help",
 	["-v"]="--version",
-	["-s"]="--string"
+	["-s"]="--string",
+	["-p"]="--params"
 }
 
-local function winCheckTerminalCapabilities()
+local function checkTerminalCapabilities()
+	if jit.os ~= "Windows" then
+		return true, true
+	end
+
 	local ffiLoaded, ffi = pcall(require, "ffi")
 	if not ffiLoaded then
 		return false, false
@@ -120,6 +138,7 @@ local function getColor()
 	return os.getenv("PLUME_COLOR") or "auto"
 end
 
+
 local function parseArgs()
 	local args = {}
 	local pos = 2
@@ -132,6 +151,22 @@ local function parseArgs()
 		end
 		return arg[pos]
 	end
+
+	local posargcounter = 1 -- first is for filename
+	local function parseParamArg(arg)
+		local optn, key, eq, value = arg:match('^(..)([^=]+)(=?)(.-)$')
+		if optn == "--" then
+			if eq == "" then
+				value = true
+			end
+		else
+			value = arg
+			posargcounter = posargcounter+1
+			key=posargcounter
+		end
+		return key, value
+	end
+
 
 	-- Show help if no option
 	if pos > #arg then
@@ -171,6 +206,20 @@ local function parseArgs()
 			if not args.color then
 				return
 			end
+		elseif content == "--params" then
+			args.fileParams = {}
+			while arg[pos+1] do
+				pos = pos+1
+				local arg = arg[pos]
+				local key, value = parseParamArg(arg)
+				if not key or not value then
+					print("Cannot parse parameter '" .. arg .."'. Use only `key:value` or `?flag` syntax.")
+					return
+				end
+				args.fileParams[key] = value
+			end
+		elseif content == "--future-string" then
+			args.futureStringFlag = true
 		else
 			print("Unknown option '" .. content .. "'. Use plume -h to get help.")
 			return
@@ -183,7 +232,7 @@ local function parseArgs()
 	args.color      = args.color      or getColor()
 
 	if args.errorStyle == "auto" or args.color == "auto" then
-		local ansi, unicode = winCheckTerminalCapabilities()
+		local ansi, unicode = checkTerminalCapabilities()
 
 		if args.errorStyle == "auto" then
 			if unicode then
@@ -210,23 +259,32 @@ local function main()
 		return
 	end
 
-	package.path = arg[1].."/?.lua;" .. package.path
+	package.path  = arg[1] .. "/?.lua;"
+	             .. arg[1] .. "/plume-data/lua/?.lua;"
+	             .. package.path
+	package.cpath = arg[1] .. "/plume-data/bin/?.so;"
+	             .. package.cpath
+	
 	local plume = require "plume-data/engine/init"
 	if args.showHelp then
 		print((help:gsub('!VERSION!', plume._VERSION)))
 	elseif args.showVersion then
-		print("Plume🪶" .. plume._VERSION)
+		print("Plume🪶" .. plume.VERSION)
 	elseif args.inputFilename or args.inputString then
 		local success, result
 
 		if args.inputFilename then
-			success, result = plume.executeFile(args.inputFilename, nil, nil, args, true)
+			success, result = plume.executeFile(args.inputFilename, nil, args.fileParams, args, true)
 		else
-			success, result = plume.executeString(args.inputString, "<input>",nil, nil, args, true)
+			success, result = plume.executeString(args.inputString, "<input>", args.fileParams, nil, args, true)
 		end
 
 		if success then
-			result = plume.repr(result)
+			if plume.futureStringFlag then
+				result = plume.reprOutput(result)
+			else
+				result = plume.repr(result)
+			end
 			if args.outputFilename then
 				local file = io.open(args.outputFilename, "w")
 					if not file then

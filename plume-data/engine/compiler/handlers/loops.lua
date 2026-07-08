@@ -20,7 +20,7 @@ return function (plume, context, nodeHandlerTable)
 		context.registerGoto(node, "while_end_"..uid, "JUMP_IF_NOT")
 
 		-- Informations used by break/continue
-		table.insert(context.loops, {
+		context.append("loops", {
 			begin_label    = "while_begin_"..uid,
 			end_label      = "while_end_"..uid,
 			contextToClose = 0,
@@ -40,7 +40,7 @@ return function (plume, context, nodeHandlerTable)
 		context.registerGoto(node, "while_begin_"..uid)
 		context.registerLabel(node, "while_end_"..uid)
 
-		table.remove(context.loops)
+		context.remove("loops")
 	end
 
 	--- For create two scopes: one that lives the iterator,
@@ -75,7 +75,7 @@ return function (plume, context, nodeHandlerTable)
 				)
 				
 				-- Informations used by break/continue
-				table.insert(context.loops, {
+				context.append("loops", {
 					begin_label    = "for_loop_end_"..uid,
 					end_label      = "for_end_"..uid,
 					leave          = true,
@@ -87,9 +87,9 @@ return function (plume, context, nodeHandlerTable)
 					insideLetset   = 0,
 					insideDo       = 0
 				})
-
 				context.childrenHandler(mainBody)
-				table.remove(context.loops)
+				context.remove("loops")
+
 				context.registerLabel(node, "for_loop_end_"..uid)
 			end, #varlist.children)(mainBody)
 
