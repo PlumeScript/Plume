@@ -282,7 +282,11 @@ return function(plume)
 		local t = obj.type or "???"
 		if t == "empty" then
 			if plume.futureStringFlag then
-				return "$empty"
+				if indent == "" or indent == nil then
+					return "$empty"
+				else
+					return ""
+				end
 			else
 				return "empty"
 			end
