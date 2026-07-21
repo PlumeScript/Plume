@@ -62,6 +62,17 @@ function _GET_REF_POS(vm, key, offset)
         frameTop = _STACK_GET(vm, vm.mainStack.frames, _STACK_POS(vm, vm.mainStack.frames)-offset+1)
     end
 
+    --! to-remove-begin
+    if not frameTop then
+        _ERROR(vm, "[VM] frameTop is nil, cannot find current ref.")
+        return
+    end
+    if not frameOffset then
+        _ERROR(vm, "[VM] frameOffset is nil, cannot find current ref.")
+        return
+    end
+    --! to-remove-end
+
     for i = frameTop, frameOffset, -1 do
         if vm.tagStack[i] == "key" then
             if _STACK_GET(vm, vm.mainStack, i) == key then
