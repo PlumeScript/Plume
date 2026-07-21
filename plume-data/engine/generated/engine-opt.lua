@@ -579,7 +579,8 @@ return function (plume)
                                                 _ret55 = value
                                             end
                                             local t = _ret55
-                                            local upvalue = table.remove (upvalueMap[key])
+                                            local map = upvalueMap[key]
+                                            local upvalue = table.remove (map)
                                             upvalue.reference = t.table
                                             upvalue.offset = key
                                             if #upvalueMap[key] == 0 then

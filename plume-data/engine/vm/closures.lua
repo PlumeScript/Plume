@@ -53,7 +53,19 @@ end
 function CLOSE_REF_UPVALUE (vm, arg1, arg2)
 	local key = _STACK_POP(vm, vm.mainStack)
 	local t   = _STACK_GET(vm, vm.mainStack) -- stack top is the newly created table
-	local upvalue = table.remove(vm.upvalueMap[key])
+
+	local map = vm.upvalueMap[key]
+	--! to-remove-begin
+    if map == nil then
+        _ERROR (vm, string.format("[VM] Not upvalue map for key '%s'.", key))
+        return
+    elseif #map==0 then
+    	_ERROR (vm, "[VM] Empty upvalueMap.")
+    	return
+    end
+    --! to-remove-end
+
+	local upvalue = table.remove(map)
 
 	upvalue.reference = t.table
 	upvalue.offset    = key
