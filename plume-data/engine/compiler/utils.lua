@@ -34,6 +34,14 @@ return function (plume, context)
 		end
 	end
 
+	function context.getCurrentFile()
+		for i=#context.stacks, 1, -1 do
+			if context.stacks[i].key == "macros" and context.stacks[i].value.isFile then
+				return context.stacks[i].value
+			end
+		end
+	end
+
 	--- @param key string
 	--- @param value any
 	function context.append(key, value)

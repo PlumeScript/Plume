@@ -76,7 +76,7 @@ return function (plume, context)
 
 			if not found then
 				if ref then
-					table.insert(scopeUp, {offset=ref, isRef=true})
+					table.insert(scopeUp, {offset=ref, isRef=true, currentFile=context.getCurrentFile()})
 				else
 					table.insert(scopeUp, {offset=variableOffset})
 				end
@@ -129,7 +129,7 @@ return function (plume, context)
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
 				local block = context.getLast("tableBlocks")
-				local label = block and "acc_table_" .. block.blockUID or "macro_end"
+				local label = block and "acc_table_" .. block.blockUID or infos.currentFile.endLabel
 
 				context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset), label)
 				context.registerOP(nil, plume.ops.CLOSE_REF_UPVALUE, 0, 0, label)
