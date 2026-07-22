@@ -68,7 +68,7 @@ end
 function plume.execute(code, filename, chunk, runtime, fileParams)
 	local success, result, ip
 	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
-
+	
 	if success then
 		success, result, ip = plume.run(runtime, chunk, fileParams)
 	else

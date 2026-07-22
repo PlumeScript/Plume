@@ -1473,3 +1473,29 @@ $import(tests/plume/toimport/1017-2)
 $wing()
 /// Output
 /// End
+
+/// Test #1022-1
+ref wing: macro()
+end
+
+for i in seq(6)
+    let key = H$i
+    $key: macro()
+        $wing()
+    end
+end
+/// Output
+(wing: macro<???>, H1: macro<???>, H2: macro<???>, H3: macro<???>, H4: macro<???>, H5: macro<???>, H6: macro<???>)
+/// End
+
+/// Test #1022-2
+ref wing: macro
+   Wing!
+end
+
+nib: macro
+   $wing()$wing()
+end
+/// Output
+(wing: macro<???>, nib: macro<nib>)
+/// End

@@ -83,6 +83,44 @@ function _GET_REF_POS(vm, key, offset)
 end
 
 --! inline
+function _GET_REF_POS_v2(vm, key, offset)
+    offset = offset-1 -- frames start at 0
+
+    local frameBottom
+    if offset == 0 then
+        frameBottom = 1
+    else
+        frameBottom = _STACK_GET(vm, vm.mainStack.frames, offset)
+    end
+    
+    local frameTop
+    if offset == _STACK_POS(vm, vm.mainStack.frames)-1 or offset==0 then
+        frameTop = _STACK_POS(vm, vm.mainStack)+1
+    else
+        frameTop = _STACK_GET(vm, vm.mainStack.frames, offset)
+    end
+    
+    --! to-remove-begin
+    if not frameTop or frameTop <= 0 then
+        _ERROR(vm, "[VM] Wrong frameTop, cannot find current ref.")
+        return
+    end
+    if not frameBottom or frameBottom <= 0 then
+        _ERROR(vm, "[VM] Wrong frameBottom, cannot find current ref.")
+        return
+    end
+    --! to-remove-end
+    
+    for i = frameBottom, frameTop-1 do
+        if vm.tagStack[i] == "key" then
+            if _STACK_GET(vm, vm.mainStack, i) == key then
+                return i-1 -- Value is just before the key
+            end
+        end
+    end
+end
+
+--! inline
 function _GET_CURRENT_FILE(vm)
     local lastfile
     local files = vm.runtime.files

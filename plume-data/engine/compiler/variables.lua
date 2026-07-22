@@ -43,15 +43,15 @@ return function (plume, context)
 	)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.getLast("macros", scopeDepth - 1)
-
 		if not macro.upvalueMap[name] then
 			if ref then
 				table.insert(macro.upvalues, {
 					offset = #macro.upvalues+1,
 					key = ref,
 					scopeOffset = relativeScopeOffset,
+					blockPosition=macro.accDeep,
 					isUpvalue = true,
-					isRefUpvalue = true
+					isRefUpvalue = true,
 				})
 			else
 				table.insert(macro.upvalues, {
