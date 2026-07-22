@@ -105,6 +105,12 @@ return function(plume)
 	local function makePlumeTable()
 		local result = plume.obj.table(0, 2)
 
+		-- Copy all primitives to preserve them from shadowing
+		for k, v in pairs(plume.std) do
+			result:setItem(k, v)
+		end
+
+
 		local pathTable = plume.obj.table(0, 0)
 		for path in (os.getenv("PLUME_PATH") or ""):gmatch('[^;]+') do
 			pathTable:addItem(path)
