@@ -1,0 +1,7 @@
+use #future(all)
+ref quill: macro()
+end
+
+ref wing: macro ()
+	$quill()
+end

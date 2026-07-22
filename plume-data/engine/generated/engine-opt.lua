@@ -345,34 +345,39 @@ return function (plume)
                                             local key = _ret25
                                             local _ret26
                                             do
-                                                local _ret27 = mainStackFramesPointer
-                                                local _ret28
-                                                do
-                                                    local value = mainStackFrames[_ret27 - arg1 or mainStackFramesPointer]
-                                                    _ret28 = value
-                                                end
-                                                local frameOffset = _ret28
-                                                local frameTop
+                                                arg1 = arg1 - 1
+                                                local frameBottom
                                                 if arg1 == 0 then
-                                                    local _ret29 = mainStackPointer
-                                                    frameTop = _ret29
+                                                    frameBottom = 1
                                                 else
-                                                    local _ret30 = mainStackFramesPointer
-                                                    local _ret31
+                                                    local _ret27
                                                     do
-                                                        local value = mainStackFrames[_ret30 - arg1 + 1 or mainStackFramesPointer]
-                                                        _ret31 = value
+                                                        local value = mainStackFrames[arg1 or mainStackFramesPointer]
+                                                        _ret27 = value
                                                     end
-                                                    frameTop = _ret31
+                                                    frameBottom = _ret27
                                                 end
-                                                for i = frameTop, frameOffset, -1 do
+                                                local frameTop
+                                                local _ret29 = mainStackFramesPointer
+                                                if arg1 == _ret29 - 1 or arg1 == 0 then
+                                                    local _ret28 = mainStackPointer
+                                                    frameTop = _ret28 + 1
+                                                else
+                                                    local _ret30
+                                                    do
+                                                        local value = mainStackFrames[arg1 + 1 or mainStackFramesPointer]
+                                                        _ret30 = value
+                                                    end
+                                                    frameTop = _ret30
+                                                end
+                                                for i = frameTop - 1, frameBottom, -1 do
                                                     if tagStack[i] == "key" then
-                                                        local _ret32
+                                                        local _ret31
                                                         do
                                                             local value = mainStack[i or mainStackPointer]
-                                                            _ret32 = value
+                                                            _ret31 = value
                                                         end
-                                                        if _ret32 == key then
+                                                        if _ret31 == key then
                                                             _ret26 = i - 1
                                                             goto _inline_end54
                                                         end
@@ -382,13 +387,13 @@ return function (plume)
                                             ::_inline_end54::
                                             local pos = _ret26
                                             if pos then
-                                                local _ret33
+                                                local _ret32
                                                 do
                                                     local value = mainStack[pos or mainStackPointer]
-                                                    _ret33 = value
+                                                    _ret32 = value
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
-                                                mainStack[mainStackPointer] = _ret33
+                                                mainStack[mainStackPointer] = _ret32
                                             else
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = plume.obj.empty
@@ -396,12 +401,12 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret34
+                                            local _ret33
                                             do
                                                 local value = closureStack[closureStack.pointer]
-                                                _ret34 = value
+                                                _ret33 = value
                                             end
-                                            local upvalue = _ret34[arg2]
+                                            local upvalue = _ret33[arg2]
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = upvalue.reference[upvalue.offset]
                                         end
@@ -413,108 +418,127 @@ return function (plume)
                                 if op < 10 then
                                     if op < 9 then
                                         do
-                                            local _ret35
+                                            local _ret34
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret35 = value
+                                                _ret34 = value
                                             end
                                             do
-                                                local _ret36
+                                                local _ret35
                                                 do
                                                     local value = variableStackFrames[variableStackFramesPointer + -arg1 or 0]
-                                                    _ret36 = value
+                                                    _ret35 = value
                                                 end
-                                                variableStack[_ret36 + (arg2 - 1 or 0)] = _ret35
+                                                variableStack[_ret35 + (arg2 - 1 or 0)] = _ret34
                                             end
                                         end
                                     else
                                         do
-                                            local _ret37
+                                            local _ret36
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret37 = value
+                                                _ret36 = value
                                             end
                                         end
                                     end
                                 else
                                     if op < 11 then
                                         do
-                                            local _ret38
+                                            local _ret37
                                             do
                                                 local value = closureStack[closureStack.pointer]
+                                                _ret37 = value
+                                            end
+                                            local upvalue = _ret37[arg2]
+                                            local _ret38
+                                            do
+                                                mainStackPointer = mainStackPointer - 1
+                                                local value = mainStack[mainStackPointer + 1]
                                                 _ret38 = value
                                             end
-                                            local upvalue = _ret38[arg2]
+                                            upvalue.reference[upvalue.offset] = _ret38
+                                        end
+                                    else
+                                        do
                                             local _ret39
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret39 = value
                                             end
-                                            upvalue.reference[upvalue.offset] = _ret39
-                                        end
-                                    else
-                                        do
+                                            local key = _ret39
                                             local _ret40
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
                                                 _ret40 = value
                                             end
-                                            local key = _ret40
+                                            local value = _ret40
                                             local _ret41
                                             do
-                                                mainStackPointer = mainStackPointer - 1
-                                                local value = mainStack[mainStackPointer + 1]
-                                                _ret41 = value
-                                            end
-                                            local value = _ret41
-                                            local _ret42
-                                            do
-                                                local _ret43 = mainStackFramesPointer
-                                                local _ret44
-                                                do
-                                                    local value = mainStackFrames[_ret43 - arg1 or mainStackFramesPointer]
-                                                    _ret44 = value
-                                                end
-                                                local frameOffset = _ret44
-                                                local frameTop
+                                                arg1 = arg1 - 1
+                                                local frameBottom
                                                 if arg1 == 0 then
-                                                    local _ret45 = mainStackPointer
-                                                    frameTop = _ret45
+                                                    frameBottom = 1
                                                 else
-                                                    local _ret46 = mainStackFramesPointer
-                                                    local _ret47
+                                                    local _ret42
                                                     do
-                                                        local value = mainStackFrames[_ret46 - arg1 + 1 or mainStackFramesPointer]
-                                                        _ret47 = value
+                                                        local value = mainStackFrames[arg1 or mainStackFramesPointer]
+                                                        _ret42 = value
                                                     end
-                                                    frameTop = _ret47
+                                                    frameBottom = _ret42
                                                 end
-                                                for i = frameTop, frameOffset, -1 do
+                                                local frameTop
+                                                local _ret44 = mainStackFramesPointer
+                                                if arg1 == _ret44 - 1 or arg1 == 0 then
+                                                    local _ret43 = mainStackPointer
+                                                    frameTop = _ret43 + 1
+                                                else
+                                                    local _ret45
+                                                    do
+                                                        local value = mainStackFrames[arg1 + 1 or mainStackFramesPointer]
+                                                        _ret45 = value
+                                                    end
+                                                    frameTop = _ret45
+                                                end
+                                                for i = frameTop - 1, frameBottom, -1 do
                                                     if tagStack[i] == "key" then
-                                                        local _ret48
+                                                        local _ret46
                                                         do
                                                             local value = mainStack[i or mainStackPointer]
-                                                            _ret48 = value
+                                                            _ret46 = value
                                                         end
-                                                        if _ret48 == key then
-                                                            _ret42 = i - 1
-                                                            goto _inline_end80
+                                                        if _ret46 == key then
+                                                            _ret41 = i - 1
+                                                            goto _inline_end79
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end80::
-                                            mainStack[_ret42] = value
+                                            ::_inline_end79::
+                                            mainStack[_ret41] = value
                                         end
                                     end
                                 end
                             else
                                 if op < 14 then
                                     if op < 13 then
+                                        do
+                                            local _ret47
+                                            do
+                                                local _ret48
+                                                do
+                                                    local value = variableStackFrames[variableStackFramesPointer + -0]
+                                                    _ret48 = value
+                                                end
+                                                _ret47 = _ret48 + arg2 - 1
+                                            end
+                                            local offset = _ret47
+                                            upvalueMap[offset] = {reference = variableStack, offset = offset}
+                                        end
+                                    else
                                         do
                                             local _ret49
                                             do
@@ -526,20 +550,6 @@ return function (plume)
                                                 _ret49 = _ret50 + arg2 - 1
                                             end
                                             local offset = _ret49
-                                            upvalueMap[offset] = {reference = variableStack, offset = offset}
-                                        end
-                                    else
-                                        do
-                                            local _ret51
-                                            do
-                                                local _ret52
-                                                do
-                                                    local value = variableStackFrames[variableStackFramesPointer + -0]
-                                                    _ret52 = value
-                                                end
-                                                _ret51 = _ret52 + arg2 - 1
-                                            end
-                                            local offset = _ret51
                                             local upvalue = upvalueMap[offset]
                                             upvalue[1] = upvalue.reference[upvalue.offset]
                                             upvalue.reference = upvalue
@@ -550,13 +560,13 @@ return function (plume)
                                 else
                                     if op < 15 then
                                         do
-                                            local _ret53
+                                            local _ret51
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret53 = value
+                                                _ret51 = value
                                             end
-                                            local key = _ret53
+                                            local key = _ret51
                                             local upvalue = {emptyRef = true}
                                             if upvalueMap[key] then
                                                 table.insert (upvalueMap[key], upvalue)
@@ -566,20 +576,21 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret54
+                                            local _ret52
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret54 = value
+                                                _ret52 = value
                                             end
-                                            local key = _ret54
-                                            local _ret55
+                                            local key = _ret52
+                                            local _ret53
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret55 = value
+                                                _ret53 = value
                                             end
-                                            local t = _ret55
-                                            local upvalue = table.remove (upvalueMap[key])
+                                            local t = _ret53
+                                            local map = upvalueMap[key]
+                                            local upvalue = table.remove (map)
                                             upvalue.reference = t.table
                                             upvalue.offset = key
                                             if #upvalueMap[key] == 0 then
@@ -596,81 +607,86 @@ return function (plume)
                                 if op < 18 then
                                     if op < 17 then
                                         do
-                                            local _ret56
+                                            local _ret54
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret56 = value
+                                                _ret54 = value
                                             end
-                                            local macro = _ret56
+                                            local macro = _ret54
                                             if #macro.upvalues > 0 then
                                                 local macroClosure = {type = "closure", macro = macro, upvalues = {}}
-                                                local _ret57 = mainStackPointer
-                                                mainStack[_ret57] = macroClosure
+                                                local _ret55 = mainStackPointer
+                                                mainStack[_ret55] = macroClosure
                                                 for _, upvalueInfos in ipairs (macro.upvalues)
                                                  do
                                                     local upvalue
                                                     if upvalueInfos.parentOffset then
-                                                        local _ret58
+                                                        local _ret56
                                                         do
                                                             local value = closureStack[closureStack.pointer]
-                                                            _ret58 = value
+                                                            _ret56 = value
                                                         end
-                                                        upvalue = _ret58[upvalueInfos.parentOffset]
+                                                        upvalue = _ret56[upvalueInfos.parentOffset]
                                                     elseif upvalueInfos.isRefUpvalue then
                                                         upvalue = upvalueMap[upvalueInfos.key][#upvalueMap[upvalueInfos.key]]
                                                         if upvalue.emptyRef then
                                                             upvalue.emptyRef = nil
                                                             upvalue.reference = mainStack
-                                                            local _ret59
+                                                            local _ret57
                                                             do
-                                                                local _ret60 = mainStackFramesPointer
-                                                                local _ret61
-                                                                do
-                                                                    local value = mainStackFrames[_ret60 - upvalueInfos.scopeOffset or mainStackFramesPointer]
-                                                                    _ret61 = value
-                                                                end
-                                                                local frameOffset = _ret61
-                                                                local frameTop
-                                                                if upvalueInfos.scopeOffset == 0 then
-                                                                    local _ret62 = mainStackPointer
-                                                                    frameTop = _ret62
+                                                                upvalueInfos.blockPosition = upvalueInfos.blockPosition - 1
+                                                                local frameBottom
+                                                                if upvalueInfos.blockPosition == 0 then
+                                                                    frameBottom = 1
                                                                 else
-                                                                    local _ret63 = mainStackFramesPointer
-                                                                    local _ret64
+                                                                    local _ret58
                                                                     do
-                                                                        local value = mainStackFrames[_ret63 - upvalueInfos.scopeOffset + 1 or mainStackFramesPointer]
-                                                                        _ret64 = value
+                                                                        local value = mainStackFrames[upvalueInfos.blockPosition or mainStackFramesPointer]
+                                                                        _ret58 = value
                                                                     end
-                                                                    frameTop = _ret64
+                                                                    frameBottom = _ret58
                                                                 end
-                                                                for i = frameTop, frameOffset, -1 do
+                                                                local frameTop
+                                                                local _ret60 = mainStackFramesPointer
+                                                                if upvalueInfos.blockPosition == _ret60 - 1 or upvalueInfos.blockPosition == 0 then
+                                                                    local _ret59 = mainStackPointer
+                                                                    frameTop = _ret59 + 1
+                                                                else
+                                                                    local _ret61
+                                                                    do
+                                                                        local value = mainStackFrames[upvalueInfos.blockPosition + 1 or mainStackFramesPointer]
+                                                                        _ret61 = value
+                                                                    end
+                                                                    frameTop = _ret61
+                                                                end
+                                                                for i = frameTop - 1, frameBottom, -1 do
                                                                     if tagStack[i] == "key" then
-                                                                        local _ret65
+                                                                        local _ret62
                                                                         do
                                                                             local value = mainStack[i or mainStackPointer]
-                                                                            _ret65 = value
+                                                                            _ret62 = value
                                                                         end
-                                                                        if _ret65 == upvalueInfos.key then
-                                                                            _ret59 = i - 1
-                                                                            goto _inline_end104
+                                                                        if _ret62 == upvalueInfos.key then
+                                                                            _ret57 = i - 1
+                                                                            goto _inline_end102
                                                                         end
                                                                     end
                                                                 end
                                                             end
-                                                            ::_inline_end104::
-                                                            upvalue.offset = _ret59
+                                                            ::_inline_end102::
+                                                            upvalue.offset = _ret57
                                                         end
                                                     else
-                                                        local _ret66
+                                                        local _ret63
                                                         do
-                                                            local _ret67
+                                                            local _ret64
                                                             do
                                                                 local value = variableStackFrames[variableStackFramesPointer + -(upvalueInfos.scopeOffset or 0)]
-                                                                _ret67 = value
+                                                                _ret64 = value
                                                             end
-                                                            _ret66 = _ret67 + upvalueInfos.localOffset - 1
+                                                            _ret63 = _ret64 + upvalueInfos.localOffset - 1
                                                         end
-                                                        local offset = _ret66
+                                                        local offset = _ret63
                                                         upvalue = upvalueMap[offset]
                                                     end
                                                     macroClosure.upvalues[upvalueInfos.offset] = upvalue
@@ -686,20 +702,28 @@ return function (plume)
                                         do
                                             local t, key, value
                                             if arg1 == 1 then
-                                                local _ret68
+                                                local _ret65
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret68 = value
+                                                    _ret65 = value
                                                 end
-                                                value = _ret68
-                                                local _ret69
+                                                value = _ret65
+                                                local _ret66
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret69 = value
+                                                    _ret66 = value
                                                 end
-                                                key = _ret69
+                                                key = _ret66
+                                                local _ret67
+                                                do
+                                                    mainStackPointer = mainStackPointer - 1
+                                                    local value = mainStack[mainStackPointer + 1]
+                                                    _ret67 = value
+                                                end
+                                                t = _ret67
+                                            else
                                                 local _ret70
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
@@ -707,28 +731,20 @@ return function (plume)
                                                     _ret70 = value
                                                 end
                                                 t = _ret70
-                                            else
-                                                local _ret73
+                                                local _ret69
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret73 = value
+                                                    _ret69 = value
                                                 end
-                                                t = _ret73
-                                                local _ret72
+                                                key = _ret69
+                                                local _ret68
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret72 = value
+                                                    _ret68 = value
                                                 end
-                                                key = _ret72
-                                                local _ret71
-                                                do
-                                                    mainStackPointer = mainStackPointer - 1
-                                                    local value = mainStack[mainStackPointer + 1]
-                                                    _ret71 = value
-                                                end
-                                                value = _ret71
+                                                value = _ret68
                                             end
                                             local mreadonly = t:getMetaItem ("readonly")
                                             local msetindex
@@ -751,30 +767,30 @@ return function (plume)
                                                         safeResult:setItem ("result", plume.error.cannotSetIndexReadonlyTable ())
                                                         do
                                                             do
-                                                                local _ret74
+                                                                local _ret71
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret74 = value
+                                                                    _ret71 = value
                                                                 end
-                                                                variableStackPointer = _ret74 - 1
+                                                                variableStackPointer = _ret71 - 1
                                                             end
-                                                            local _ret75
+                                                            local _ret72
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret75 = value
+                                                                _ret72 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret76
+                                                                    local _ret73
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret76 = value
+                                                                        _ret73 = value
                                                                     end
-                                                                    local result = _ret76
+                                                                    local result = _ret73
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -782,13 +798,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret77
+                                                            local _ret74
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret77 = value
+                                                                _ret74 = value
                                                             end
-                                                            jump = _ret77
+                                                            jump = _ret74
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -815,8 +831,8 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret78 = mainStackPointer
-                                                        local pos = _ret78
+                                                        local _ret75 = mainStackPointer
+                                                        local pos = _ret75
                                                         tagStack[pos] = "key"
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
@@ -828,9 +844,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 1
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret79 = macroStackPointer
+                                                        local _ret76 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret79
+                                                        injectionStack[injectionStackPointer] = _ret76
                                                     end
                                                     do
                                                         injectionStackPointer = injectionStackPointer + 1
@@ -839,9 +855,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret80 = macroStackPointer
+                                                        local _ret77 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret80
+                                                        injectionStack[injectionStackPointer] = _ret77
                                                     end
                                                 end
                                             end
@@ -851,20 +867,20 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret81
+                                            local _ret78
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret81 = value
+                                                _ret78 = value
                                             end
-                                            local t = _ret81
-                                            local _ret82
+                                            local t = _ret78
+                                            local _ret79
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret82 = value
+                                                _ret79 = value
                                             end
-                                            local key = _ret82
+                                            local key = _ret79
                                             key = tonumber (key) or key
                                             if key == empty then
                                                 if arg1 == 1 then
@@ -888,30 +904,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.cannotUseEmptyAsKey ())
                                                             do
                                                                 do
-                                                                    local _ret83
+                                                                    local _ret80
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret83 = value
+                                                                        _ret80 = value
                                                                     end
-                                                                    variableStackPointer = _ret83 - 1
+                                                                    variableStackPointer = _ret80 - 1
                                                                 end
-                                                                local _ret84
+                                                                local _ret81
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret84 = value
+                                                                    _ret81 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret85
+                                                                        local _ret82
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret85 = value
+                                                                            _ret82 = value
                                                                         end
-                                                                        local result = _ret85
+                                                                        local result = _ret82
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -919,13 +935,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret86
+                                                                local _ret83
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret86 = value
+                                                                    _ret83 = value
                                                                 end
-                                                                jump = _ret86
+                                                                jump = _ret83
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -935,12 +951,16 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                local _ret98 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                                local tt = _ret98
+                                                local _ret95 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                                local tt = _ret95
                                                 if not tonumber (key)
                                                  then
                                                     if tt == "string" then
                                                         t = plume.std.String
+                                                        tt = "table"
+                                                    end
+                                                    if tt == "empty" then
+                                                        t = plume.std.Empty
                                                         tt = "table"
                                                     end
                                                     if tt == "number" then
@@ -970,30 +990,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.cannotIndexValue (tt))
                                                                 do
                                                                     do
-                                                                        local _ret87
+                                                                        local _ret84
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret87 = value
+                                                                            _ret84 = value
                                                                         end
-                                                                        variableStackPointer = _ret87 - 1
+                                                                        variableStackPointer = _ret84 - 1
                                                                     end
-                                                                    local _ret88
+                                                                    local _ret85
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret88 = value
+                                                                        _ret85 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret89
+                                                                            local _ret86
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret89 = value
+                                                                                _ret86 = value
                                                                             end
-                                                                            local result = _ret89
+                                                                            local result = _ret86
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -1001,13 +1021,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret90
+                                                                    local _ret87
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret90 = value
+                                                                        _ret87 = value
                                                                     end
-                                                                    jump = _ret90
+                                                                    jump = _ret87
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -1036,8 +1056,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret91 = mainStackPointer
-                                                                local pos = _ret91
+                                                                local _ret88 = mainStackPointer
+                                                                local pos = _ret88
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -1049,9 +1069,9 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret92 = macroStackPointer
+                                                                local _ret89 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret92
+                                                                injectionStack[injectionStackPointer] = _ret89
                                                             end
                                                             do
                                                                 injectionStackPointer = injectionStackPointer + 1
@@ -1060,9 +1080,9 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret93 = macroStackPointer
+                                                                local _ret90 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret93
+                                                                injectionStack[injectionStackPointer] = _ret90
                                                             end
                                                         else
                                                             do
@@ -1082,30 +1102,30 @@ return function (plume)
                                                                     safeResult:setItem ("result", plume.error.unregisteredKey (t, key))
                                                                     do
                                                                         do
-                                                                            local _ret94
+                                                                            local _ret91
                                                                             do
                                                                                 variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                 local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                _ret94 = value
+                                                                                _ret91 = value
                                                                             end
-                                                                            variableStackPointer = _ret94 - 1
+                                                                            variableStackPointer = _ret91 - 1
                                                                         end
-                                                                        local _ret95
+                                                                        local _ret92
                                                                         do
                                                                             closureStack.pointer = closureStack.pointer - 1
                                                                             local value = closureStack[closureStack.pointer + 1]
-                                                                            _ret95 = value
+                                                                            _ret92 = value
                                                                         end
                                                                         do
                                                                             local call = table.remove (runtime.callstack)
                                                                             if call and call.safe then
-                                                                                local _ret96
+                                                                                local _ret93
                                                                                 do
                                                                                     mainStackPointer = mainStackPointer - 1
                                                                                     local value = mainStack[mainStackPointer + 1]
-                                                                                    _ret96 = value
+                                                                                    _ret93 = value
                                                                                 end
-                                                                                local result = _ret96
+                                                                                local result = _ret93
                                                                                 local safeResult = plume.obj.table (0, 2)
                                                                                 safeResult:setItem ("success", true)
                                                                                 safeResult:setItem ("result", result)
@@ -1113,13 +1133,13 @@ return function (plume)
                                                                                 mainStack[mainStackPointer] = safeResult
                                                                             end
                                                                         end
-                                                                        local _ret97
+                                                                        local _ret94
                                                                         do
                                                                             macroStackPointer = macroStackPointer - 1
                                                                             local value = macroStack[macroStackPointer + 1]
-                                                                            _ret97 = value
+                                                                            _ret94 = value
                                                                         end
-                                                                        jump = _ret97
+                                                                        jump = _ret94
                                                                     end
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
@@ -1140,75 +1160,75 @@ return function (plume)
                                         TABLE_REGISTER_SELF (vm, arg1, arg2)
                                     else
                                         do
-                                            local _ret99
+                                            local _ret96
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret99 = value
+                                                _ret96 = value
                                             end
-                                            local t = _ret99
-                                            local _ret100
+                                            local t = _ret96
+                                            local _ret97
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret100 = value
+                                                _ret97 = value
                                             end
-                                            local key = _ret100
-                                            local _ret101
+                                            local key = _ret97
+                                            local _ret98
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret101 = value
+                                                _ret98 = value
                                             end
-                                            local value = _ret101
+                                            local value = _ret98
                                             t:setMetaItem (key, value)
                                         end
                                     end
                                 else
                                     if op < 23 then
                                         do
-                                            local _ret102
+                                            local _ret99
                                             do
-                                                local _ret103
+                                                local _ret100
                                                 do
                                                     local value = mainStackFrames[mainStackFramesPointer]
-                                                    _ret103 = value
+                                                    _ret100 = value
                                                 end
-                                                local _ret104
+                                                local _ret101
                                                 do
-                                                    local value = mainStack[_ret103 or mainStackPointer]
-                                                    _ret104 = value
+                                                    local value = mainStack[_ret100 or mainStackPointer]
+                                                    _ret101 = value
                                                 end
-                                                _ret102 = _ret104
+                                                _ret99 = _ret101
                                             end
-                                            local t = _ret102
-                                            local _ret105
+                                            local t = _ret99
+                                            local _ret102
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret105 = value
+                                                _ret102 = value
                                             end
-                                            table.insert (t, _ret105)
-                                            local _ret106
+                                            table.insert (t, _ret102)
+                                            local _ret103
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret106 = value
+                                                _ret103 = value
                                             end
-                                            table.insert (t, _ret106)
+                                            table.insert (t, _ret103)
                                             table.insert (t, arg2 == 1)
                                         end
                                     else
                                         do
-                                            local _ret107
+                                            local _ret104
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret107 = value
+                                                _ret104 = value
                                             end
-                                            local t = _ret107
-                                            local _ret108 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                            local tt = _ret108
+                                            local t = _ret104
+                                            local _ret105 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local tt = _ret105
                                             if tt == "table" then
                                                 for _, item in ipairs (t.table)
                                                  do
@@ -1224,8 +1244,8 @@ return function (plume)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = key
                                                         do
-                                                            local _ret109 = mainStackPointer
-                                                            local pos = _ret109
+                                                            local _ret106 = mainStackPointer
+                                                            local pos = _ret106
                                                             tagStack[pos] = "key"
                                                         end
                                                     end
@@ -1248,30 +1268,30 @@ return function (plume)
                                                         safeResult:setItem ("result", plume.error.cannotExpandValue (tt))
                                                         do
                                                             do
-                                                                local _ret110
+                                                                local _ret107
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret110 = value
+                                                                    _ret107 = value
                                                                 end
-                                                                variableStackPointer = _ret110 - 1
+                                                                variableStackPointer = _ret107 - 1
                                                             end
-                                                            local _ret111
+                                                            local _ret108
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret111 = value
+                                                                _ret108 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret112
+                                                                    local _ret109
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret112 = value
+                                                                        _ret109 = value
                                                                     end
-                                                                    local result = _ret112
+                                                                    local result = _ret109
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -1279,13 +1299,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret113
+                                                            local _ret110
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret113 = value
+                                                                _ret110 = value
                                                             end
-                                                            jump = _ret113
+                                                            jump = _ret110
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -1303,12 +1323,12 @@ return function (plume)
                                 if op < 26 then
                                     if op < 25 then
                                         do
-                                            local _ret114
+                                            local _ret111
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret114 = value
+                                                _ret111 = value
                                             end
-                                            local top = _ret114
+                                            local top = _ret111
                                             if top == empty then
                                                 do
                                                     local safeCallIndex
@@ -1327,30 +1347,30 @@ return function (plume)
                                                         safeResult:setItem ("result", plume.error.getindexReturnsEmpty ())
                                                         do
                                                             do
-                                                                local _ret115
+                                                                local _ret112
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret115 = value
+                                                                    _ret112 = value
                                                                 end
-                                                                variableStackPointer = _ret115 - 1
+                                                                variableStackPointer = _ret112 - 1
                                                             end
-                                                            local _ret116
+                                                            local _ret113
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret116 = value
+                                                                _ret113 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret117
+                                                                    local _ret114
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret117 = value
+                                                                        _ret114 = value
                                                                     end
-                                                                    local result = _ret117
+                                                                    local result = _ret114
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -1358,13 +1378,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret118
+                                                            local _ret115
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret118 = value
+                                                                _ret115 = value
                                                             end
-                                                            jump = _ret118
+                                                            jump = _ret115
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -1377,46 +1397,46 @@ return function (plume)
                                     else
                                         do
                                             local field = constants[arg2]
-                                            local _ret119
+                                            local _ret116
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret119 = value
+                                                _ret116 = value
                                             end
-                                            local value = _ret119
-                                            local _ret120
+                                            local value = _ret116
+                                            local _ret117
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret120 = value
+                                                _ret117 = value
                                             end
-                                            local t = _ret120
+                                            local t = _ret117
                                             t[field] = value
                                         end
                                     end
                                 else
                                     if op < 27 then
                                         do
-                                            local _ret121
+                                            local _ret118
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret121 = value
+                                                _ret118 = value
                                             end
-                                            local t = _ret121
-                                            local _ret122
+                                            local t = _ret118
+                                            local _ret119
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret122 = value
+                                                _ret119 = value
                                             end
-                                            local index = _ret122
+                                            local index = _ret119
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = t
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = "self"
                                             do
-                                                local _ret123 = mainStackPointer
-                                                local pos = _ret123
+                                                local _ret120 = mainStackPointer
+                                                local pos = _ret120
                                                 tagStack[pos] = "key"
                                             end
                                             mainStackPointer = mainStackPointer + 1
@@ -1426,20 +1446,20 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret124
+                                            local _ret121
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret124 = value
+                                                _ret121 = value
                                             end
-                                            local name = _ret124
-                                            local _ret125 = mainStackPointer
-                                            local _ret126
+                                            local name = _ret121
+                                            local _ret122 = mainStackPointer
+                                            local _ret123
                                             do
-                                                local value = mainStack[_ret125 - 1 or mainStackPointer]
-                                                _ret126 = value
+                                                local value = mainStack[_ret122 - 1 or mainStackPointer]
+                                                _ret123 = value
                                             end
-                                            local value = _ret126
-                                            local _ret127, _ret128
+                                            local value = _ret123
+                                            local _ret124, _ret125
                                             do
                                                 local comopps = "add mul div sub mod pow"
                                                 local binopps = "eq lt"
@@ -1467,8 +1487,8 @@ return function (plume)
                                                     end
                                                 end
                                                 if expectedParamCount then
-                                                    local _ret129 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
-                                                    local t = _ret129
+                                                    local _ret126 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
+                                                    local t = _ret126
                                                     local metaValue = value
                                                     if t == "closure" then
                                                         metaValue = value.macro
@@ -1476,34 +1496,34 @@ return function (plume)
                                                     end
                                                     if t == "macro" then
                                                         if metaValue.positionalParamCount ~= expectedParamCount then
-                                                            _ret127, _ret128 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
-                                                            goto _inline_end292
+                                                            _ret124, _ret125 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
+                                                            goto _inline_end289
                                                         end
                                                         if metaValue.namedParamCount > 1 then
-                                                            _ret127, _ret128 = false, plume.error.metaMacroWithoutNamedParameter (name)
-                                                            goto _inline_end292
+                                                            _ret124, _ret125 = false, plume.error.metaMacroWithoutNamedParameter (name)
+                                                            goto _inline_end289
                                                         end
                                                     else
-                                                        _ret127, _ret128 = false, plume.error.wrongMetaFieldType (name, t, "macro")
-                                                        goto _inline_end292
+                                                        _ret124, _ret125 = false, plume.error.wrongMetaFieldType (name, t, "macro")
+                                                        goto _inline_end289
                                                     end
                                                 else
-                                                    local _ret130, _ret131
+                                                    local _ret127, _ret128
                                                     if plume.validMetaNames[name] then
-                                                        _ret130 = true
-                                                        goto _inline_end294
+                                                        _ret127 = true
+                                                        goto _inline_end291
                                                     else
-                                                        _ret130, _ret131 = false, "'" .. name .. "' isn't a valid meta-macro name."
-                                                        goto _inline_end294
+                                                        _ret127, _ret128 = false, "'" .. name .. "' isn't a valid meta-macro name."
+                                                        goto _inline_end291
                                                     end
-                                                    ::_inline_end294::
-                                                    _ret127, _ret128 = _ret130, _ret131
-                                                    goto _inline_end292
+                                                    ::_inline_end291::
+                                                    _ret124, _ret125 = _ret127, _ret128
+                                                    goto _inline_end289
                                                 end
-                                                _ret127, _ret128 = true
+                                                _ret124, _ret125 = true
                                             end
-                                            ::_inline_end292::
-                                            local valid, err = _ret127, _ret128
+                                            ::_inline_end289::
+                                            local valid, err = _ret124, _ret125
                                             if not valid then
                                                 do
                                                     local safeCallIndex
@@ -1522,30 +1542,30 @@ return function (plume)
                                                         safeResult:setItem ("result", err)
                                                         do
                                                             do
-                                                                local _ret132
+                                                                local _ret129
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret132 = value
+                                                                    _ret129 = value
                                                                 end
-                                                                variableStackPointer = _ret132 - 1
+                                                                variableStackPointer = _ret129 - 1
                                                             end
-                                                            local _ret133
+                                                            local _ret130
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret133 = value
+                                                                _ret130 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret134
+                                                                    local _ret131
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret134 = value
+                                                                        _ret131 = value
                                                                     end
-                                                                    local result = _ret134
+                                                                    local result = _ret131
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -1553,13 +1573,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret135
+                                                            local _ret132
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret135 = value
+                                                                _ret132 = value
                                                             end
-                                                            jump = _ret135
+                                                            jump = _ret132
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -1568,8 +1588,8 @@ return function (plume)
                                                     end
                                                 end
                                             end
-                                            local _ret136 = mainStackPointer
-                                            local pos = _ret136
+                                            local _ret133 = mainStackPointer
+                                            local pos = _ret133
                                             tagStack[pos] = "metakey"
                                         end
                                     end
@@ -1578,15 +1598,15 @@ return function (plume)
                                 if op < 30 then
                                     if op < 29 then
                                         do
-                                            local _ret137 = mainStackPointer
-                                            local pos = _ret137
+                                            local _ret134 = mainStackPointer
+                                            local pos = _ret134
                                             tagStack[pos] = "key"
                                         end
                                     else
                                         do
-                                            local _ret138 = variableStackPointer
+                                            local _ret135 = variableStackPointer
                                             variableStackFramesPointer = variableStackFramesPointer + 1
-                                            variableStackFrames[variableStackFramesPointer] = _ret138 + 1 - arg1
+                                            variableStackFrames[variableStackFramesPointer] = _ret135 + 1 - arg1
                                             for i = 1, arg2 - arg1 do
                                                 variableStackPointer = variableStackPointer + 1
                                                 variableStack[variableStackPointer] = empty
@@ -1596,13 +1616,13 @@ return function (plume)
                                 else
                                     if op < 31 then
                                         do
-                                            local _ret139
+                                            local _ret136
                                             do
                                                 variableStackFramesPointer = variableStackFramesPointer - 1
                                                 local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                _ret139 = value
+                                                _ret136 = value
                                             end
-                                            variableStackPointer = _ret139 - 1
+                                            variableStackPointer = _ret136 - 1
                                         end
                                     else
                                         mainStackFramesPointer = mainStackFramesPointer + 1
@@ -1618,20 +1638,20 @@ return function (plume)
                             if op < 36 then
                                 if op < 34 then
                                     if op < 33 then
-                                        local _ret140
+                                        local _ret137
                                         do
-                                            local _ret141, _ret142, _ret143, _ret144
+                                            local _ret138, _ret139, _ret140, _ret141
                                             do
                                                 local argsOffset = 1
-                                                local _ret145
+                                                local _ret142
                                                 do
                                                     local value = mainStackFrames[mainStackFramesPointer]
-                                                    _ret145 = value
+                                                    _ret142 = value
                                                 end
-                                                local frameOffset = _ret145
+                                                local frameOffset = _ret142
                                                 local bufferOffset = frameOffset
-                                                local _ret146 = mainStackPointer
-                                                local mainStackTop = _ret146
+                                                local _ret143 = mainStackPointer
+                                                local mainStackTop = _ret143
                                                 local variadicTable
                                                 local max = mainStackTop - bufferOffset + 1
                                                 variadicTable = plume.obj.table (max, max / 2)
@@ -1640,21 +1660,21 @@ return function (plume)
                                                 local unknownNamed
                                                 while bufferOffset <= mainStackTop do
                                                     local tag = tagStack[bufferOffset + 1]
-                                                    local _ret147
+                                                    local _ret144
                                                     do
                                                         local value = mainStack[bufferOffset or mainStackPointer]
-                                                        _ret147 = value
+                                                        _ret144 = value
                                                     end
-                                                    local value = _ret147
+                                                    local value = _ret144
                                                     if tag == nil then
                                                         if argsOffset <= 0 then
                                                             do
-                                                                local _ret148
+                                                                local _ret145
                                                                 do
                                                                     local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                    _ret148 = value
+                                                                    _ret145 = value
                                                                 end
-                                                                variableStack[_ret148 + (argsOffset - 1 or 0)] = value
+                                                                variableStack[_ret145 + (argsOffset - 1 or 0)] = value
                                                             end
                                                             capturedCount = capturedCount + 1
                                                         elseif variadicTable then
@@ -1665,22 +1685,22 @@ return function (plume)
                                                         argsOffset = argsOffset + 1
                                                     else
                                                         bufferOffset = bufferOffset + 1
-                                                        local _ret154
+                                                        local _ret151
                                                         do
                                                             local value = mainStack[bufferOffset or mainStackPointer]
-                                                            _ret154 = value
+                                                            _ret151 = value
                                                         end
-                                                        local key = _ret154
+                                                        local key = _ret151
                                                         local argOffset = nil
                                                         if argOffset then
                                                             if tag == "key" then
                                                                 do
-                                                                    local _ret149
+                                                                    local _ret146
                                                                     do
                                                                         local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                        _ret149 = value
+                                                                        _ret146 = value
                                                                     end
-                                                                    variableStack[_ret149 + (argOffset - 1 or 0)] = value
+                                                                    variableStack[_ret146 + (argOffset - 1 or 0)] = value
                                                                 end
                                                             else
                                                                 do
@@ -1700,30 +1720,30 @@ return function (plume)
                                                                         safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                         do
                                                                             do
-                                                                                local _ret150
+                                                                                local _ret147
                                                                                 do
                                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                    _ret150 = value
+                                                                                    _ret147 = value
                                                                                 end
-                                                                                variableStackPointer = _ret150 - 1
+                                                                                variableStackPointer = _ret147 - 1
                                                                             end
-                                                                            local _ret151
+                                                                            local _ret148
                                                                             do
                                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                                _ret151 = value
+                                                                                _ret148 = value
                                                                             end
                                                                             do
                                                                                 local call = table.remove (runtime.callstack)
                                                                                 if call and call.safe then
-                                                                                    local _ret152
+                                                                                    local _ret149
                                                                                     do
                                                                                         mainStackPointer = mainStackPointer - 1
                                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                                        _ret152 = value
+                                                                                        _ret149 = value
                                                                                     end
-                                                                                    local result = _ret152
+                                                                                    local result = _ret149
                                                                                     local safeResult = plume.obj.table (0, 2)
                                                                                     safeResult:setItem ("success", true)
                                                                                     safeResult:setItem ("result", result)
@@ -1731,13 +1751,13 @@ return function (plume)
                                                                                     mainStack[mainStackPointer] = safeResult
                                                                                 end
                                                                             end
-                                                                            local _ret153
+                                                                            local _ret150
                                                                             do
                                                                                 macroStackPointer = macroStackPointer - 1
                                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                                _ret153 = value
+                                                                                _ret150 = value
                                                                             end
-                                                                            jump = _ret153
+                                                                            jump = _ret150
                                                                         end
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
@@ -1761,9 +1781,35 @@ return function (plume)
                                                     end
                                                     bufferOffset = bufferOffset + 1
                                                 end
-                                                _ret141, _ret142, _ret143, _ret144 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                _ret138, _ret139, _ret140, _ret141 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                             end
-                                            local resultTable = _ret141, _ret142, _ret143, _ret144
+                                            local resultTable = _ret138, _ret139, _ret140, _ret141
+                                            do
+                                                local _ret152
+                                                do
+                                                    mainStackFramesPointer = mainStackFramesPointer - 1
+                                                    local value = mainStackFrames[mainStackFramesPointer + 1]
+                                                    _ret152 = value
+                                                end
+                                                mainStackPointer = _ret152 - 1
+                                            end
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = resultTable
+                                            _ret137 = resultTable
+                                        end
+                                    else
+                                        do
+                                            local _ret153
+                                            do
+                                                local value = mainStackFrames[mainStackFramesPointer]
+                                                _ret153 = value
+                                            end
+                                            local start = _ret153
+                                            local _ret154 = mainStackPointer
+                                            local stop = _ret154
+                                            local acc_text = table.concat (mainStack, "", start, stop)
+                                            mainStackPointer = start
+                                            mainStack[start] = acc_text
                                             do
                                                 local _ret155
                                                 do
@@ -1771,47 +1817,21 @@ return function (plume)
                                                     local value = mainStackFrames[mainStackFramesPointer + 1]
                                                     _ret155 = value
                                                 end
-                                                mainStackPointer = _ret155 - 1
-                                            end
-                                            mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = resultTable
-                                            _ret140 = resultTable
-                                        end
-                                    else
-                                        do
-                                            local _ret156
-                                            do
-                                                local value = mainStackFrames[mainStackFramesPointer]
-                                                _ret156 = value
-                                            end
-                                            local start = _ret156
-                                            local _ret157 = mainStackPointer
-                                            local stop = _ret157
-                                            local acc_text = table.concat (mainStack, "", start, stop)
-                                            mainStackPointer = start
-                                            mainStack[start] = acc_text
-                                            do
-                                                local _ret158
-                                                do
-                                                    mainStackFramesPointer = mainStackFramesPointer - 1
-                                                    local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                    _ret158 = value
-                                                end
                                             end
                                         end
                                     end
                                 else
                                     if op < 35 then
                                         do
-                                            local _ret159
+                                            local _ret156
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret159 = value
+                                                _ret156 = value
                                             end
-                                            local tocall = _ret159
-                                            local _ret160 = type (tocall) == "table" and (tocall == empty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
-                                            local t = _ret160
+                                            local tocall = _ret156
+                                            local _ret157 = type (tocall) == "table" and (tocall == empty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
+                                            local t = _ret157
                                             local self
                                             if t == "table" then
                                                 local mvalidate = tocall:getMetaItem ("validate")
@@ -1833,8 +1853,8 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret161 = mainStackPointer
-                                                        local pos = _ret161
+                                                        local _ret158 = mainStackPointer
+                                                        local pos = _ret158
                                                         tagStack[pos] = "key"
                                                     end
                                                 end
@@ -1856,30 +1876,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount))
                                                             do
                                                                 do
-                                                                    local _ret162
+                                                                    local _ret159
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret162 = value
+                                                                        _ret159 = value
                                                                     end
-                                                                    variableStackPointer = _ret162 - 1
+                                                                    variableStackPointer = _ret159 - 1
                                                                 end
-                                                                local _ret163
+                                                                local _ret160
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret163 = value
+                                                                    _ret160 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret164
+                                                                        local _ret161
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret164 = value
+                                                                            _ret161 = value
                                                                         end
-                                                                        local result = _ret164
+                                                                        local result = _ret161
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -1887,13 +1907,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret165
+                                                                local _ret162
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret165 = value
+                                                                    _ret162 = value
                                                                 end
-                                                                jump = _ret165
+                                                                jump = _ret162
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -1903,26 +1923,26 @@ return function (plume)
                                                     end
                                                 else
                                                     do
-                                                        local _ret198 = variableStackPointer
+                                                        local _ret195 = variableStackPointer
                                                         variableStackFramesPointer = variableStackFramesPointer + 1
-                                                        variableStackFrames[variableStackFramesPointer] = _ret198 + 1
+                                                        variableStackFrames[variableStackFramesPointer] = _ret195 + 1
                                                         for i = 1, tocall.localsCount do
                                                             variableStackPointer = variableStackPointer + 1
                                                             variableStack[variableStackPointer] = empty
                                                         end
                                                     end
-                                                    local _ret184, _ret185, _ret186, _ret187
+                                                    local _ret181, _ret182, _ret183, _ret184
                                                     do
                                                         local argsOffset = 1
-                                                        local _ret188
+                                                        local _ret185
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
-                                                            _ret188 = value
+                                                            _ret185 = value
                                                         end
-                                                        local frameOffset = _ret188
+                                                        local frameOffset = _ret185
                                                         local bufferOffset = frameOffset
-                                                        local _ret189 = mainStackPointer
-                                                        local mainStackTop = _ret189
+                                                        local _ret186 = mainStackPointer
+                                                        local mainStackTop = _ret186
                                                         local variadicTable
                                                         if tocall.variadicOffset then
                                                             local max = mainStackTop - bufferOffset + 1
@@ -1933,21 +1953,21 @@ return function (plume)
                                                         local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
-                                                            local _ret190
+                                                            local _ret187
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
-                                                                _ret190 = value
+                                                                _ret187 = value
                                                             end
-                                                            local value = _ret190
+                                                            local value = _ret187
                                                             if tag == nil then
                                                                 if argsOffset <= tocall.positionalParamCount then
                                                                     do
-                                                                        local _ret191
+                                                                        local _ret188
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                            _ret191 = value
+                                                                            _ret188 = value
                                                                         end
-                                                                        variableStack[_ret191 + (argsOffset - 1 or 0)] = value
+                                                                        variableStack[_ret188 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
@@ -1958,22 +1978,22 @@ return function (plume)
                                                                 argsOffset = argsOffset + 1
                                                             else
                                                                 bufferOffset = bufferOffset + 1
-                                                                local _ret197
+                                                                local _ret194
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
-                                                                    _ret197 = value
+                                                                    _ret194 = value
                                                                 end
-                                                                local key = _ret197
+                                                                local key = _ret194
                                                                 local argOffset = tocall.namedParamOffset and (tocall.namedParamOffset)[key]
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
-                                                                            local _ret192
+                                                                            local _ret189
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                                _ret192 = value
+                                                                                _ret189 = value
                                                                             end
-                                                                            variableStack[_ret192 + (argOffset - 1 or 0)] = value
+                                                                            variableStack[_ret189 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
                                                                         do
@@ -1993,30 +2013,30 @@ return function (plume)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
-                                                                                        local _ret193
+                                                                                        local _ret190
                                                                                         do
                                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                            _ret193 = value
+                                                                                            _ret190 = value
                                                                                         end
-                                                                                        variableStackPointer = _ret193 - 1
+                                                                                        variableStackPointer = _ret190 - 1
                                                                                     end
-                                                                                    local _ret194
+                                                                                    local _ret191
                                                                                     do
                                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                                        _ret194 = value
+                                                                                        _ret191 = value
                                                                                     end
                                                                                     do
                                                                                         local call = table.remove (runtime.callstack)
                                                                                         if call and call.safe then
-                                                                                            local _ret195
+                                                                                            local _ret192
                                                                                             do
                                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                                _ret195 = value
+                                                                                                _ret192 = value
                                                                                             end
-                                                                                            local result = _ret195
+                                                                                            local result = _ret192
                                                                                             local safeResult = plume.obj.table (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
@@ -2024,13 +2044,13 @@ return function (plume)
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
                                                                                     end
-                                                                                    local _ret196
+                                                                                    local _ret193
                                                                                     do
                                                                                         macroStackPointer = macroStackPointer - 1
                                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                                        _ret196 = value
+                                                                                        _ret193 = value
                                                                                     end
-                                                                                    jump = _ret196
+                                                                                    jump = _ret193
                                                                                 end
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
@@ -2054,9 +2074,9 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret184, _ret185, _ret186, _ret187 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                        _ret181, _ret182, _ret183, _ret184 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                     end
-                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret184, _ret185, _ret186, _ret187
+                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret181, _ret182, _ret183, _ret184
                                                     if tomanyPositionnalCounter > 0 then
                                                         do
                                                             local safeCallIndex
@@ -2075,30 +2095,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
                                                                 do
                                                                     do
-                                                                        local _ret166
+                                                                        local _ret163
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret166 = value
+                                                                            _ret163 = value
                                                                         end
-                                                                        variableStackPointer = _ret166 - 1
+                                                                        variableStackPointer = _ret163 - 1
                                                                     end
-                                                                    local _ret167
+                                                                    local _ret164
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret167 = value
+                                                                        _ret164 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret168
+                                                                            local _ret165
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret168 = value
+                                                                                _ret165 = value
                                                                             end
-                                                                            local result = _ret168
+                                                                            local result = _ret165
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -2106,13 +2126,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret169
+                                                                    local _ret166
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret169 = value
+                                                                        _ret166 = value
                                                                     end
-                                                                    jump = _ret169
+                                                                    jump = _ret166
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -2138,30 +2158,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
                                                                 do
                                                                     do
-                                                                        local _ret174
+                                                                        local _ret171
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret174 = value
+                                                                            _ret171 = value
                                                                         end
-                                                                        variableStackPointer = _ret174 - 1
+                                                                        variableStackPointer = _ret171 - 1
                                                                     end
-                                                                    local _ret175
+                                                                    local _ret172
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret175 = value
+                                                                        _ret172 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret176
+                                                                            local _ret173
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret176 = value
+                                                                                _ret173 = value
                                                                             end
-                                                                            local result = _ret176
+                                                                            local result = _ret173
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -2169,13 +2189,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret177
+                                                                    local _ret174
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret177 = value
+                                                                        _ret174 = value
                                                                     end
-                                                                    jump = _ret177
+                                                                    jump = _ret174
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -2201,30 +2221,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.unknownParameter (unknownNamed, tocall))
                                                                 do
                                                                     do
-                                                                        local _ret170
+                                                                        local _ret167
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret170 = value
+                                                                            _ret167 = value
                                                                         end
-                                                                        variableStackPointer = _ret170 - 1
+                                                                        variableStackPointer = _ret167 - 1
                                                                     end
-                                                                    local _ret171
+                                                                    local _ret168
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret171 = value
+                                                                        _ret168 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret172
+                                                                            local _ret169
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret172 = value
+                                                                                _ret169 = value
                                                                             end
-                                                                            local result = _ret172
+                                                                            local result = _ret169
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -2232,13 +2252,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret173
+                                                                    local _ret170
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret173 = value
+                                                                        _ret170 = value
                                                                     end
-                                                                    jump = _ret173
+                                                                    jump = _ret170
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -2249,12 +2269,12 @@ return function (plume)
                                                     else
                                                         if tocall.variadicOffset then
                                                             do
-                                                                local _ret183
+                                                                local _ret180
                                                                 do
                                                                     local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                    _ret183 = value
+                                                                    _ret180 = value
                                                                 end
-                                                                variableStack[_ret183 + (tocall.variadicOffset - 1 or 0)] = variadicTable
+                                                                variableStack[_ret180 + (tocall.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
                                                         table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
@@ -2276,30 +2296,30 @@ return function (plume)
                                                                     safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                     do
                                                                         do
-                                                                            local _ret179
+                                                                            local _ret176
                                                                             do
                                                                                 variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                 local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                _ret179 = value
+                                                                                _ret176 = value
                                                                             end
-                                                                            variableStackPointer = _ret179 - 1
+                                                                            variableStackPointer = _ret176 - 1
                                                                         end
-                                                                        local _ret180
+                                                                        local _ret177
                                                                         do
                                                                             closureStack.pointer = closureStack.pointer - 1
                                                                             local value = closureStack[closureStack.pointer + 1]
-                                                                            _ret180 = value
+                                                                            _ret177 = value
                                                                         end
                                                                         do
                                                                             local call = table.remove (runtime.callstack)
                                                                             if call and call.safe then
-                                                                                local _ret181
+                                                                                local _ret178
                                                                                 do
                                                                                     mainStackPointer = mainStackPointer - 1
                                                                                     local value = mainStack[mainStackPointer + 1]
-                                                                                    _ret181 = value
+                                                                                    _ret178 = value
                                                                                 end
-                                                                                local result = _ret181
+                                                                                local result = _ret178
                                                                                 local safeResult = plume.obj.table (0, 2)
                                                                                 safeResult:setItem ("success", true)
                                                                                 safeResult:setItem ("result", result)
@@ -2307,13 +2327,13 @@ return function (plume)
                                                                                 mainStack[mainStackPointer] = safeResult
                                                                             end
                                                                         end
-                                                                        local _ret182
+                                                                        local _ret179
                                                                         do
                                                                             macroStackPointer = macroStackPointer - 1
                                                                             local value = macroStack[macroStackPointer + 1]
-                                                                            _ret182 = value
+                                                                            _ret179 = value
                                                                         end
-                                                                        jump = _ret182
+                                                                        jump = _ret179
                                                                     end
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
@@ -2323,13 +2343,13 @@ return function (plume)
                                                             end
                                                         end
                                                         do
-                                                            local _ret178
+                                                            local _ret175
                                                             do
                                                                 mainStackFramesPointer = mainStackFramesPointer - 1
                                                                 local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                                _ret178 = value
+                                                                _ret175 = value
                                                             end
-                                                            mainStackPointer = _ret178 - 1
+                                                            mainStackPointer = _ret175 - 1
                                                         end
                                                         macroStackPointer = macroStackPointer + 1
                                                         macroStack[macroStackPointer] = ip + 1
@@ -2345,8 +2365,8 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret299 = mainStackPointer
-                                                        local pos = _ret299
+                                                        local _ret296 = mainStackPointer
+                                                        local pos = _ret296
                                                         tagStack[pos] = "key"
                                                     end
                                                 end
@@ -2368,30 +2388,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount))
                                                             do
                                                                 do
-                                                                    local _ret300
+                                                                    local _ret297
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret300 = value
+                                                                        _ret297 = value
                                                                     end
-                                                                    variableStackPointer = _ret300 - 1
+                                                                    variableStackPointer = _ret297 - 1
                                                                 end
-                                                                local _ret301
+                                                                local _ret298
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret301 = value
+                                                                    _ret298 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret302
+                                                                        local _ret299
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret302 = value
+                                                                            _ret299 = value
                                                                         end
-                                                                        local result = _ret302
+                                                                        local result = _ret299
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -2399,13 +2419,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret303
+                                                                local _ret300
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret303 = value
+                                                                    _ret300 = value
                                                                 end
-                                                                jump = _ret303
+                                                                jump = _ret300
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -2415,26 +2435,26 @@ return function (plume)
                                                     end
                                                 else
                                                     do
-                                                        local _ret336 = variableStackPointer
+                                                        local _ret333 = variableStackPointer
                                                         variableStackFramesPointer = variableStackFramesPointer + 1
-                                                        variableStackFrames[variableStackFramesPointer] = _ret336 + 1
+                                                        variableStackFrames[variableStackFramesPointer] = _ret333 + 1
                                                         for i = 1, tocall.macro.localsCount do
                                                             variableStackPointer = variableStackPointer + 1
                                                             variableStack[variableStackPointer] = empty
                                                         end
                                                     end
-                                                    local _ret322, _ret323, _ret324, _ret325
+                                                    local _ret319, _ret320, _ret321, _ret322
                                                     do
                                                         local argsOffset = 1
-                                                        local _ret326
+                                                        local _ret323
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
-                                                            _ret326 = value
+                                                            _ret323 = value
                                                         end
-                                                        local frameOffset = _ret326
+                                                        local frameOffset = _ret323
                                                         local bufferOffset = frameOffset
-                                                        local _ret327 = mainStackPointer
-                                                        local mainStackTop = _ret327
+                                                        local _ret324 = mainStackPointer
+                                                        local mainStackTop = _ret324
                                                         local variadicTable
                                                         if tocall.macro.variadicOffset then
                                                             local max = mainStackTop - bufferOffset + 1
@@ -2445,21 +2465,21 @@ return function (plume)
                                                         local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
-                                                            local _ret328
+                                                            local _ret325
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
-                                                                _ret328 = value
+                                                                _ret325 = value
                                                             end
-                                                            local value = _ret328
+                                                            local value = _ret325
                                                             if tag == nil then
                                                                 if argsOffset <= tocall.macro.positionalParamCount then
                                                                     do
-                                                                        local _ret329
+                                                                        local _ret326
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                            _ret329 = value
+                                                                            _ret326 = value
                                                                         end
-                                                                        variableStack[_ret329 + (argsOffset - 1 or 0)] = value
+                                                                        variableStack[_ret326 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
@@ -2470,22 +2490,22 @@ return function (plume)
                                                                 argsOffset = argsOffset + 1
                                                             else
                                                                 bufferOffset = bufferOffset + 1
-                                                                local _ret335
+                                                                local _ret332
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
-                                                                    _ret335 = value
+                                                                    _ret332 = value
                                                                 end
-                                                                local key = _ret335
+                                                                local key = _ret332
                                                                 local argOffset = tocall.macro.namedParamOffset and (tocall.macro.namedParamOffset)[key]
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
-                                                                            local _ret330
+                                                                            local _ret327
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                                _ret330 = value
+                                                                                _ret327 = value
                                                                             end
-                                                                            variableStack[_ret330 + (argOffset - 1 or 0)] = value
+                                                                            variableStack[_ret327 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
                                                                         do
@@ -2505,30 +2525,30 @@ return function (plume)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
-                                                                                        local _ret331
+                                                                                        local _ret328
                                                                                         do
                                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                            _ret331 = value
+                                                                                            _ret328 = value
                                                                                         end
-                                                                                        variableStackPointer = _ret331 - 1
+                                                                                        variableStackPointer = _ret328 - 1
                                                                                     end
-                                                                                    local _ret332
+                                                                                    local _ret329
                                                                                     do
                                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                                        _ret332 = value
+                                                                                        _ret329 = value
                                                                                     end
                                                                                     do
                                                                                         local call = table.remove (runtime.callstack)
                                                                                         if call and call.safe then
-                                                                                            local _ret333
+                                                                                            local _ret330
                                                                                             do
                                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                                _ret333 = value
+                                                                                                _ret330 = value
                                                                                             end
-                                                                                            local result = _ret333
+                                                                                            local result = _ret330
                                                                                             local safeResult = plume.obj.table (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
@@ -2536,13 +2556,13 @@ return function (plume)
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
                                                                                     end
-                                                                                    local _ret334
+                                                                                    local _ret331
                                                                                     do
                                                                                         macroStackPointer = macroStackPointer - 1
                                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                                        _ret334 = value
+                                                                                        _ret331 = value
                                                                                     end
-                                                                                    jump = _ret334
+                                                                                    jump = _ret331
                                                                                 end
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
@@ -2566,9 +2586,9 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret322, _ret323, _ret324, _ret325 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                        _ret319, _ret320, _ret321, _ret322 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                     end
-                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret322, _ret323, _ret324, _ret325
+                                                    local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret319, _ret320, _ret321, _ret322
                                                     if tomanyPositionnalCounter > 0 then
                                                         do
                                                             local safeCallIndex
@@ -2587,30 +2607,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
                                                                 do
                                                                     do
-                                                                        local _ret304
+                                                                        local _ret301
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret304 = value
+                                                                            _ret301 = value
                                                                         end
-                                                                        variableStackPointer = _ret304 - 1
+                                                                        variableStackPointer = _ret301 - 1
                                                                     end
-                                                                    local _ret305
+                                                                    local _ret302
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret305 = value
+                                                                        _ret302 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret306
+                                                                            local _ret303
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret306 = value
+                                                                                _ret303 = value
                                                                             end
-                                                                            local result = _ret306
+                                                                            local result = _ret303
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -2618,13 +2638,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret307
+                                                                    local _ret304
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret307 = value
+                                                                        _ret304 = value
                                                                     end
-                                                                    jump = _ret307
+                                                                    jump = _ret304
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -2650,30 +2670,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
                                                                 do
                                                                     do
-                                                                        local _ret312
+                                                                        local _ret309
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret312 = value
+                                                                            _ret309 = value
                                                                         end
-                                                                        variableStackPointer = _ret312 - 1
+                                                                        variableStackPointer = _ret309 - 1
                                                                     end
-                                                                    local _ret313
+                                                                    local _ret310
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret313 = value
+                                                                        _ret310 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret314
+                                                                            local _ret311
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret314 = value
+                                                                                _ret311 = value
                                                                             end
-                                                                            local result = _ret314
+                                                                            local result = _ret311
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -2681,13 +2701,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret315
+                                                                    local _ret312
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret315 = value
+                                                                        _ret312 = value
                                                                     end
-                                                                    jump = _ret315
+                                                                    jump = _ret312
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -2713,30 +2733,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.unknownParameter (unknownNamed, tocall.macro))
                                                                 do
                                                                     do
-                                                                        local _ret308
+                                                                        local _ret305
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret308 = value
+                                                                            _ret305 = value
                                                                         end
-                                                                        variableStackPointer = _ret308 - 1
+                                                                        variableStackPointer = _ret305 - 1
                                                                     end
-                                                                    local _ret309
+                                                                    local _ret306
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret309 = value
+                                                                        _ret306 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret310
+                                                                            local _ret307
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret310 = value
+                                                                                _ret307 = value
                                                                             end
-                                                                            local result = _ret310
+                                                                            local result = _ret307
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -2744,13 +2764,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret311
+                                                                    local _ret308
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret311 = value
+                                                                        _ret308 = value
                                                                     end
-                                                                    jump = _ret311
+                                                                    jump = _ret308
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -2761,12 +2781,12 @@ return function (plume)
                                                     else
                                                         if tocall.macro.variadicOffset then
                                                             do
-                                                                local _ret321
+                                                                local _ret318
                                                                 do
                                                                     local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                    _ret321 = value
+                                                                    _ret318 = value
                                                                 end
-                                                                variableStack[_ret321 + (tocall.macro.variadicOffset - 1 or 0)] = variadicTable
+                                                                variableStack[_ret318 + (tocall.macro.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
                                                         table.insert (runtime.callstack, {runtime = runtime, macro = tocall.macro, ip = ip, safe = arg2 == 1})
@@ -2788,30 +2808,30 @@ return function (plume)
                                                                     safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                     do
                                                                         do
-                                                                            local _ret317
+                                                                            local _ret314
                                                                             do
                                                                                 variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                 local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                _ret317 = value
+                                                                                _ret314 = value
                                                                             end
-                                                                            variableStackPointer = _ret317 - 1
+                                                                            variableStackPointer = _ret314 - 1
                                                                         end
-                                                                        local _ret318
+                                                                        local _ret315
                                                                         do
                                                                             closureStack.pointer = closureStack.pointer - 1
                                                                             local value = closureStack[closureStack.pointer + 1]
-                                                                            _ret318 = value
+                                                                            _ret315 = value
                                                                         end
                                                                         do
                                                                             local call = table.remove (runtime.callstack)
                                                                             if call and call.safe then
-                                                                                local _ret319
+                                                                                local _ret316
                                                                                 do
                                                                                     mainStackPointer = mainStackPointer - 1
                                                                                     local value = mainStack[mainStackPointer + 1]
-                                                                                    _ret319 = value
+                                                                                    _ret316 = value
                                                                                 end
-                                                                                local result = _ret319
+                                                                                local result = _ret316
                                                                                 local safeResult = plume.obj.table (0, 2)
                                                                                 safeResult:setItem ("success", true)
                                                                                 safeResult:setItem ("result", result)
@@ -2819,13 +2839,13 @@ return function (plume)
                                                                                 mainStack[mainStackPointer] = safeResult
                                                                             end
                                                                         end
-                                                                        local _ret320
+                                                                        local _ret317
                                                                         do
                                                                             macroStackPointer = macroStackPointer - 1
                                                                             local value = macroStack[macroStackPointer + 1]
-                                                                            _ret320 = value
+                                                                            _ret317 = value
                                                                         end
-                                                                        jump = _ret320
+                                                                        jump = _ret317
                                                                     end
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
@@ -2835,13 +2855,13 @@ return function (plume)
                                                             end
                                                         end
                                                         do
-                                                            local _ret316
+                                                            local _ret313
                                                             do
                                                                 mainStackFramesPointer = mainStackFramesPointer - 1
                                                                 local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                                _ret316 = value
+                                                                _ret313 = value
                                                             end
-                                                            mainStackPointer = _ret316 - 1
+                                                            mainStackPointer = _ret313 - 1
                                                         end
                                                         macroStackPointer = macroStackPointer + 1
                                                         macroStack[macroStackPointer] = ip + 1
@@ -2851,20 +2871,20 @@ return function (plume)
                                                 closureStack.pointer = closureStack.pointer + 1
                                                 closureStack[closureStack.pointer] = tocall.upvalues
                                             elseif t == "luaMacro" then
-                                                local _ret271
+                                                local _ret268
                                                 do
-                                                    local _ret272, _ret273, _ret274, _ret275
+                                                    local _ret269, _ret270, _ret271, _ret272
                                                     do
                                                         local argsOffset = 1
-                                                        local _ret276
+                                                        local _ret273
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
-                                                            _ret276 = value
+                                                            _ret273 = value
                                                         end
-                                                        local frameOffset = _ret276
+                                                        local frameOffset = _ret273
                                                         local bufferOffset = frameOffset
-                                                        local _ret277 = mainStackPointer
-                                                        local mainStackTop = _ret277
+                                                        local _ret274 = mainStackPointer
+                                                        local mainStackTop = _ret274
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
                                                         variadicTable = plume.obj.table (max, max / 2)
@@ -2873,21 +2893,21 @@ return function (plume)
                                                         local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
-                                                            local _ret278
+                                                            local _ret275
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
-                                                                _ret278 = value
+                                                                _ret275 = value
                                                             end
-                                                            local value = _ret278
+                                                            local value = _ret275
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
                                                                     do
-                                                                        local _ret279
+                                                                        local _ret276
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                            _ret279 = value
+                                                                            _ret276 = value
                                                                         end
-                                                                        variableStack[_ret279 + (argsOffset - 1 or 0)] = value
+                                                                        variableStack[_ret276 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
@@ -2898,22 +2918,22 @@ return function (plume)
                                                                 argsOffset = argsOffset + 1
                                                             else
                                                                 bufferOffset = bufferOffset + 1
-                                                                local _ret285
+                                                                local _ret282
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
-                                                                    _ret285 = value
+                                                                    _ret282 = value
                                                                 end
-                                                                local key = _ret285
+                                                                local key = _ret282
                                                                 local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
-                                                                            local _ret280
+                                                                            local _ret277
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                                _ret280 = value
+                                                                                _ret277 = value
                                                                             end
-                                                                            variableStack[_ret280 + (argOffset - 1 or 0)] = value
+                                                                            variableStack[_ret277 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
                                                                         do
@@ -2933,30 +2953,30 @@ return function (plume)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
-                                                                                        local _ret281
+                                                                                        local _ret278
                                                                                         do
                                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                            _ret281 = value
+                                                                                            _ret278 = value
                                                                                         end
-                                                                                        variableStackPointer = _ret281 - 1
+                                                                                        variableStackPointer = _ret278 - 1
                                                                                     end
-                                                                                    local _ret282
+                                                                                    local _ret279
                                                                                     do
                                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                                        _ret282 = value
+                                                                                        _ret279 = value
                                                                                     end
                                                                                     do
                                                                                         local call = table.remove (runtime.callstack)
                                                                                         if call and call.safe then
-                                                                                            local _ret283
+                                                                                            local _ret280
                                                                                             do
                                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                                _ret283 = value
+                                                                                                _ret280 = value
                                                                                             end
-                                                                                            local result = _ret283
+                                                                                            local result = _ret280
                                                                                             local safeResult = plume.obj.table (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
@@ -2964,13 +2984,13 @@ return function (plume)
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
                                                                                     end
-                                                                                    local _ret284
+                                                                                    local _ret281
                                                                                     do
                                                                                         macroStackPointer = macroStackPointer - 1
                                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                                        _ret284 = value
+                                                                                        _ret281 = value
                                                                                     end
-                                                                                    jump = _ret284
+                                                                                    jump = _ret281
                                                                                 end
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
@@ -2994,21 +3014,21 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret272, _ret273, _ret274, _ret275 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                        _ret269, _ret270, _ret271, _ret272 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                     end
-                                                    local resultTable = _ret272, _ret273, _ret274, _ret275
+                                                    local resultTable = _ret269, _ret270, _ret271, _ret272
                                                     do
-                                                        local _ret286
+                                                        local _ret283
                                                         do
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                            _ret286 = value
+                                                            _ret283 = value
                                                         end
-                                                        mainStackPointer = _ret286 - 1
+                                                        mainStackPointer = _ret283 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
-                                                    _ret271 = resultTable
+                                                    _ret268 = resultTable
                                                 end
                                                 table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
                                                 if #runtime.callstack > 1000 then
@@ -3029,30 +3049,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.stackOverflow ())
                                                             do
                                                                 do
-                                                                    local _ret287
+                                                                    local _ret284
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret287 = value
+                                                                        _ret284 = value
                                                                     end
-                                                                    variableStackPointer = _ret287 - 1
+                                                                    variableStackPointer = _ret284 - 1
                                                                 end
-                                                                local _ret288
+                                                                local _ret285
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret288 = value
+                                                                    _ret285 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret289
+                                                                        local _ret286
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret289 = value
+                                                                            _ret286 = value
                                                                         end
-                                                                        local result = _ret289
+                                                                        local result = _ret286
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -3060,13 +3080,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret290
+                                                                local _ret287
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret290 = value
+                                                                    _ret287 = value
                                                                 end
-                                                                jump = _ret290
+                                                                jump = _ret287
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -3075,18 +3095,18 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                local _ret291
+                                                local _ret288
                                                 do
                                                     local value = fileStack[fileStackPointer]
-                                                    _ret291 = value
+                                                    _ret288 = value
                                                 end
-                                                local _ret292
+                                                local _ret289
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret292 = value
+                                                    _ret289 = value
                                                 end
-                                                local success, result, isHosted = tocall.callable (_ret292, runtime, _ret291, ip)
+                                                local success, result, isHosted = tocall.callable (_ret289, runtime, _ret288, ip)
                                                 if success then
                                                     if result == nil then
                                                         result = empty
@@ -3101,21 +3121,21 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = 0
-                                                            local _ret293 = macroStackPointer
+                                                            local _ret290 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = _ret293
+                                                            injectionStack[injectionStackPointer] = _ret290
                                                         end
                                                     else
                                                         do
                                                             local call = table.remove (runtime.callstack)
                                                             if call and call.safe then
-                                                                local _ret294
+                                                                local _ret291
                                                                 do
                                                                     mainStackPointer = mainStackPointer - 1
                                                                     local value = mainStack[mainStackPointer + 1]
-                                                                    _ret294 = value
+                                                                    _ret291 = value
                                                                 end
-                                                                local result = _ret294
+                                                                local result = _ret291
                                                                 local safeResult = plume.obj.table (0, 2)
                                                                 safeResult:setItem ("success", true)
                                                                 safeResult:setItem ("result", result)
@@ -3142,30 +3162,30 @@ return function (plume)
                                                             safeResult:setItem ("result", result)
                                                             do
                                                                 do
-                                                                    local _ret295
+                                                                    local _ret292
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret295 = value
+                                                                        _ret292 = value
                                                                     end
-                                                                    variableStackPointer = _ret295 - 1
+                                                                    variableStackPointer = _ret292 - 1
                                                                 end
-                                                                local _ret296
+                                                                local _ret293
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret296 = value
+                                                                    _ret293 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret297
+                                                                        local _ret294
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret297 = value
+                                                                            _ret294 = value
                                                                         end
-                                                                        local result = _ret297
+                                                                        local result = _ret294
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -3173,13 +3193,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret298
+                                                                local _ret295
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret298 = value
+                                                                    _ret295 = value
                                                                 end
-                                                                jump = _ret298
+                                                                jump = _ret295
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -3189,20 +3209,20 @@ return function (plume)
                                                     end
                                                 end
                                             elseif t == "stdMacro" then
-                                                local _ret246
+                                                local _ret243
                                                 do
-                                                    local _ret247, _ret248, _ret249, _ret250
+                                                    local _ret244, _ret245, _ret246, _ret247
                                                     do
                                                         local argsOffset = 1
-                                                        local _ret251
+                                                        local _ret248
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
-                                                            _ret251 = value
+                                                            _ret248 = value
                                                         end
-                                                        local frameOffset = _ret251
+                                                        local frameOffset = _ret248
                                                         local bufferOffset = frameOffset
-                                                        local _ret252 = mainStackPointer
-                                                        local mainStackTop = _ret252
+                                                        local _ret249 = mainStackPointer
+                                                        local mainStackTop = _ret249
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
                                                         variadicTable = plume.obj.table (max, max / 2)
@@ -3211,21 +3231,21 @@ return function (plume)
                                                         local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
-                                                            local _ret253
+                                                            local _ret250
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
-                                                                _ret253 = value
+                                                                _ret250 = value
                                                             end
-                                                            local value = _ret253
+                                                            local value = _ret250
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
                                                                     do
-                                                                        local _ret254
+                                                                        local _ret251
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                            _ret254 = value
+                                                                            _ret251 = value
                                                                         end
-                                                                        variableStack[_ret254 + (argsOffset - 1 or 0)] = value
+                                                                        variableStack[_ret251 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
@@ -3236,22 +3256,22 @@ return function (plume)
                                                                 argsOffset = argsOffset + 1
                                                             else
                                                                 bufferOffset = bufferOffset + 1
-                                                                local _ret260
+                                                                local _ret257
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
-                                                                    _ret260 = value
+                                                                    _ret257 = value
                                                                 end
-                                                                local key = _ret260
+                                                                local key = _ret257
                                                                 local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
-                                                                            local _ret255
+                                                                            local _ret252
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                                _ret255 = value
+                                                                                _ret252 = value
                                                                             end
-                                                                            variableStack[_ret255 + (argOffset - 1 or 0)] = value
+                                                                            variableStack[_ret252 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
                                                                         do
@@ -3271,30 +3291,30 @@ return function (plume)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
-                                                                                        local _ret256
+                                                                                        local _ret253
                                                                                         do
                                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                            _ret256 = value
+                                                                                            _ret253 = value
                                                                                         end
-                                                                                        variableStackPointer = _ret256 - 1
+                                                                                        variableStackPointer = _ret253 - 1
                                                                                     end
-                                                                                    local _ret257
+                                                                                    local _ret254
                                                                                     do
                                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                                        _ret257 = value
+                                                                                        _ret254 = value
                                                                                     end
                                                                                     do
                                                                                         local call = table.remove (runtime.callstack)
                                                                                         if call and call.safe then
-                                                                                            local _ret258
+                                                                                            local _ret255
                                                                                             do
                                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                                _ret258 = value
+                                                                                                _ret255 = value
                                                                                             end
-                                                                                            local result = _ret258
+                                                                                            local result = _ret255
                                                                                             local safeResult = plume.obj.table (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
@@ -3302,13 +3322,13 @@ return function (plume)
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
                                                                                     end
-                                                                                    local _ret259
+                                                                                    local _ret256
                                                                                     do
                                                                                         macroStackPointer = macroStackPointer - 1
                                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                                        _ret259 = value
+                                                                                        _ret256 = value
                                                                                     end
-                                                                                    jump = _ret259
+                                                                                    jump = _ret256
                                                                                 end
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
@@ -3332,23 +3352,23 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret247, _ret248, _ret249, _ret250 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                        _ret244, _ret245, _ret246, _ret247 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                     end
-                                                    local resultTable = _ret247, _ret248, _ret249, _ret250
+                                                    local resultTable = _ret244, _ret245, _ret246, _ret247
                                                     do
-                                                        local _ret261
+                                                        local _ret258
                                                         do
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                            _ret261 = value
+                                                            _ret258 = value
                                                         end
-                                                        mainStackPointer = _ret261 - 1
+                                                        mainStackPointer = _ret258 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
-                                                    _ret246 = resultTable
+                                                    _ret243 = resultTable
                                                 end
-                                                local args = _ret246
+                                                local args = _ret243
                                                 if #args.table < tocall.minArgs or (tocall.maxArgs ~= "inf" and #args.table > tocall.maxArgs) then
                                                     do
                                                         local safeCallIndex
@@ -3367,30 +3387,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.wrongArgsCountStd (tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
                                                             do
                                                                 do
-                                                                    local _ret262
+                                                                    local _ret259
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret262 = value
+                                                                        _ret259 = value
                                                                     end
-                                                                    variableStackPointer = _ret262 - 1
+                                                                    variableStackPointer = _ret259 - 1
                                                                 end
-                                                                local _ret263
+                                                                local _ret260
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret263 = value
+                                                                    _ret260 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret264
+                                                                        local _ret261
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret264 = value
+                                                                            _ret261 = value
                                                                         end
-                                                                        local result = _ret264
+                                                                        local result = _ret261
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -3398,13 +3418,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret265
+                                                                local _ret262
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret265 = value
+                                                                    _ret262 = value
                                                                 end
-                                                                jump = _ret265
+                                                                jump = _ret262
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -3432,30 +3452,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.stackOverflow ())
                                                             do
                                                                 do
-                                                                    local _ret266
+                                                                    local _ret263
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret266 = value
+                                                                        _ret263 = value
                                                                     end
-                                                                    variableStackPointer = _ret266 - 1
+                                                                    variableStackPointer = _ret263 - 1
                                                                 end
-                                                                local _ret267
+                                                                local _ret264
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret267 = value
+                                                                    _ret264 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret268
+                                                                        local _ret265
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret268 = value
+                                                                            _ret265 = value
                                                                         end
-                                                                        local result = _ret268
+                                                                        local result = _ret265
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -3463,13 +3483,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret269
+                                                                local _ret266
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret269 = value
+                                                                    _ret266 = value
                                                                 end
-                                                                jump = _ret269
+                                                                jump = _ret266
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -3485,25 +3505,25 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret270 = macroStackPointer
+                                                    local _ret267 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret270
+                                                    injectionStack[injectionStackPointer] = _ret267
                                                 end
                                             elseif t == "context" then
-                                                local _ret229
+                                                local _ret226
                                                 do
-                                                    local _ret230, _ret231, _ret232, _ret233
+                                                    local _ret227, _ret228, _ret229, _ret230
                                                     do
                                                         local argsOffset = 1
-                                                        local _ret234
+                                                        local _ret231
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
-                                                            _ret234 = value
+                                                            _ret231 = value
                                                         end
-                                                        local frameOffset = _ret234
+                                                        local frameOffset = _ret231
                                                         local bufferOffset = frameOffset
-                                                        local _ret235 = mainStackPointer
-                                                        local mainStackTop = _ret235
+                                                        local _ret232 = mainStackPointer
+                                                        local mainStackTop = _ret232
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
                                                         variadicTable = plume.obj.table (max, max / 2)
@@ -3512,21 +3532,21 @@ return function (plume)
                                                         local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
-                                                            local _ret236
+                                                            local _ret233
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
-                                                                _ret236 = value
+                                                                _ret233 = value
                                                             end
-                                                            local value = _ret236
+                                                            local value = _ret233
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
                                                                     do
-                                                                        local _ret237
+                                                                        local _ret234
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                            _ret237 = value
+                                                                            _ret234 = value
                                                                         end
-                                                                        variableStack[_ret237 + (argsOffset - 1 or 0)] = value
+                                                                        variableStack[_ret234 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
@@ -3537,22 +3557,22 @@ return function (plume)
                                                                 argsOffset = argsOffset + 1
                                                             else
                                                                 bufferOffset = bufferOffset + 1
-                                                                local _ret243
+                                                                local _ret240
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
-                                                                    _ret243 = value
+                                                                    _ret240 = value
                                                                 end
-                                                                local key = _ret243
+                                                                local key = _ret240
                                                                 local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
-                                                                            local _ret238
+                                                                            local _ret235
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                                _ret238 = value
+                                                                                _ret235 = value
                                                                             end
-                                                                            variableStack[_ret238 + (argOffset - 1 or 0)] = value
+                                                                            variableStack[_ret235 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
                                                                         do
@@ -3572,30 +3592,30 @@ return function (plume)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
-                                                                                        local _ret239
+                                                                                        local _ret236
                                                                                         do
                                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                            _ret239 = value
+                                                                                            _ret236 = value
                                                                                         end
-                                                                                        variableStackPointer = _ret239 - 1
+                                                                                        variableStackPointer = _ret236 - 1
                                                                                     end
-                                                                                    local _ret240
+                                                                                    local _ret237
                                                                                     do
                                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                                        _ret240 = value
+                                                                                        _ret237 = value
                                                                                     end
                                                                                     do
                                                                                         local call = table.remove (runtime.callstack)
                                                                                         if call and call.safe then
-                                                                                            local _ret241
+                                                                                            local _ret238
                                                                                             do
                                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                                _ret241 = value
+                                                                                                _ret238 = value
                                                                                             end
-                                                                                            local result = _ret241
+                                                                                            local result = _ret238
                                                                                             local safeResult = plume.obj.table (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
@@ -3603,13 +3623,13 @@ return function (plume)
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
                                                                                     end
-                                                                                    local _ret242
+                                                                                    local _ret239
                                                                                     do
                                                                                         macroStackPointer = macroStackPointer - 1
                                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                                        _ret242 = value
+                                                                                        _ret239 = value
                                                                                     end
-                                                                                    jump = _ret242
+                                                                                    jump = _ret239
                                                                                 end
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
@@ -3633,45 +3653,45 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret230, _ret231, _ret232, _ret233 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                        _ret227, _ret228, _ret229, _ret230 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                     end
-                                                    local resultTable = _ret230, _ret231, _ret232, _ret233
+                                                    local resultTable = _ret227, _ret228, _ret229, _ret230
                                                     do
-                                                        local _ret244
+                                                        local _ret241
                                                         do
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                            _ret244 = value
+                                                            _ret241 = value
                                                         end
-                                                        mainStackPointer = _ret244 - 1
+                                                        mainStackPointer = _ret241 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
-                                                    _ret229 = resultTable
+                                                    _ret226 = resultTable
                                                 end
-                                                local _ret245
+                                                local _ret242
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret245 = value
+                                                    _ret242 = value
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = tocall:get ()
                                             elseif tocall == plume.std.Table then
-                                                local _ret213
+                                                local _ret210
                                                 do
-                                                    local _ret214, _ret215, _ret216, _ret217
+                                                    local _ret211, _ret212, _ret213, _ret214
                                                     do
                                                         local argsOffset = 1
-                                                        local _ret218
+                                                        local _ret215
                                                         do
                                                             local value = mainStackFrames[mainStackFramesPointer]
-                                                            _ret218 = value
+                                                            _ret215 = value
                                                         end
-                                                        local frameOffset = _ret218
+                                                        local frameOffset = _ret215
                                                         local bufferOffset = frameOffset
-                                                        local _ret219 = mainStackPointer
-                                                        local mainStackTop = _ret219
+                                                        local _ret216 = mainStackPointer
+                                                        local mainStackTop = _ret216
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
                                                         variadicTable = plume.obj.table (max, max / 2)
@@ -3680,21 +3700,21 @@ return function (plume)
                                                         local unknownNamed
                                                         while bufferOffset <= mainStackTop do
                                                             local tag = tagStack[bufferOffset + 1]
-                                                            local _ret220
+                                                            local _ret217
                                                             do
                                                                 local value = mainStack[bufferOffset or mainStackPointer]
-                                                                _ret220 = value
+                                                                _ret217 = value
                                                             end
-                                                            local value = _ret220
+                                                            local value = _ret217
                                                             if tag == nil then
                                                                 if argsOffset <= 0 then
                                                                     do
-                                                                        local _ret221
+                                                                        local _ret218
                                                                         do
                                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                            _ret221 = value
+                                                                            _ret218 = value
                                                                         end
-                                                                        variableStack[_ret221 + (argsOffset - 1 or 0)] = value
+                                                                        variableStack[_ret218 + (argsOffset - 1 or 0)] = value
                                                                     end
                                                                     capturedCount = capturedCount + 1
                                                                 elseif variadicTable then
@@ -3705,22 +3725,22 @@ return function (plume)
                                                                 argsOffset = argsOffset + 1
                                                             else
                                                                 bufferOffset = bufferOffset + 1
-                                                                local _ret227
+                                                                local _ret224
                                                                 do
                                                                     local value = mainStack[bufferOffset or mainStackPointer]
-                                                                    _ret227 = value
+                                                                    _ret224 = value
                                                                 end
-                                                                local key = _ret227
+                                                                local key = _ret224
                                                                 local argOffset = nil
                                                                 if argOffset then
                                                                     if tag == "key" then
                                                                         do
-                                                                            local _ret222
+                                                                            local _ret219
                                                                             do
                                                                                 local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                                                _ret222 = value
+                                                                                _ret219 = value
                                                                             end
-                                                                            variableStack[_ret222 + (argOffset - 1 or 0)] = value
+                                                                            variableStack[_ret219 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
                                                                         do
@@ -3740,30 +3760,30 @@ return function (plume)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
                                                                                     do
-                                                                                        local _ret223
+                                                                                        local _ret220
                                                                                         do
                                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                            _ret223 = value
+                                                                                            _ret220 = value
                                                                                         end
-                                                                                        variableStackPointer = _ret223 - 1
+                                                                                        variableStackPointer = _ret220 - 1
                                                                                     end
-                                                                                    local _ret224
+                                                                                    local _ret221
                                                                                     do
                                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                                        _ret224 = value
+                                                                                        _ret221 = value
                                                                                     end
                                                                                     do
                                                                                         local call = table.remove (runtime.callstack)
                                                                                         if call and call.safe then
-                                                                                            local _ret225
+                                                                                            local _ret222
                                                                                             do
                                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                                _ret225 = value
+                                                                                                _ret222 = value
                                                                                             end
-                                                                                            local result = _ret225
+                                                                                            local result = _ret222
                                                                                             local safeResult = plume.obj.table (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
@@ -3771,13 +3791,13 @@ return function (plume)
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
                                                                                     end
-                                                                                    local _ret226
+                                                                                    local _ret223
                                                                                     do
                                                                                         macroStackPointer = macroStackPointer - 1
                                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                                        _ret226 = value
+                                                                                        _ret223 = value
                                                                                     end
-                                                                                    jump = _ret226
+                                                                                    jump = _ret223
                                                                                 end
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
@@ -3801,38 +3821,38 @@ return function (plume)
                                                             end
                                                             bufferOffset = bufferOffset + 1
                                                         end
-                                                        _ret214, _ret215, _ret216, _ret217 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
+                                                        _ret211, _ret212, _ret213, _ret214 = variadicTable, tomanyPositionalCounter, capturedCount, unknownNamed
                                                     end
-                                                    local resultTable = _ret214, _ret215, _ret216, _ret217
+                                                    local resultTable = _ret211, _ret212, _ret213, _ret214
                                                     do
-                                                        local _ret228
+                                                        local _ret225
                                                         do
                                                             mainStackFramesPointer = mainStackFramesPointer - 1
                                                             local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                            _ret228 = value
+                                                            _ret225 = value
                                                         end
-                                                        mainStackPointer = _ret228 - 1
+                                                        mainStackPointer = _ret225 - 1
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = resultTable
-                                                    _ret213 = resultTable
+                                                    _ret210 = resultTable
                                                 end
                                             elseif tocall == plume.std.String then
-                                                local _ret210
+                                                local _ret207
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret210 = value
+                                                    _ret207 = value
                                                 end
-                                                local value = _ret210
+                                                local value = _ret207
                                                 do
-                                                    local _ret211
+                                                    local _ret208
                                                     do
                                                         mainStackFramesPointer = mainStackFramesPointer - 1
                                                         local value = mainStackFrames[mainStackFramesPointer + 1]
-                                                        _ret211 = value
+                                                        _ret208 = value
                                                     end
-                                                    mainStackPointer = _ret211 - 1
+                                                    mainStackPointer = _ret208 - 1
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = value
@@ -3843,28 +3863,28 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret212 = macroStackPointer
+                                                    local _ret209 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret212
+                                                    injectionStack[injectionStackPointer] = _ret209
                                                 end
                                             elseif tocall == plume.std.attempt then
-                                                local _ret199
+                                                local _ret196
                                                 do
-                                                    local _ret200
+                                                    local _ret197
                                                     do
                                                         local value = mainStackFrames[mainStackFramesPointer]
-                                                        _ret200 = value
+                                                        _ret197 = value
                                                     end
-                                                    local _ret201
+                                                    local _ret198
                                                     do
-                                                        local value = mainStack[_ret200 or mainStackPointer]
-                                                        _ret201 = value
+                                                        local value = mainStack[_ret197 or mainStackPointer]
+                                                        _ret198 = value
                                                     end
-                                                    _ret199 = _ret201
+                                                    _ret196 = _ret198
                                                 end
-                                                local macro = _ret199
-                                                local _ret202 = type (macro) == "table" and (macro == empty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
-                                                local tmacro = _ret202
+                                                local macro = _ret196
+                                                local _ret199 = type (macro) == "table" and (macro == empty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
+                                                local tmacro = _ret199
                                                 if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
                                                     do
                                                         local safeCallIndex
@@ -3883,30 +3903,30 @@ return function (plume)
                                                             safeResult:setItem ("result", string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
                                                             do
                                                                 do
-                                                                    local _ret203
+                                                                    local _ret200
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret203 = value
+                                                                        _ret200 = value
                                                                     end
-                                                                    variableStackPointer = _ret203 - 1
+                                                                    variableStackPointer = _ret200 - 1
                                                                 end
-                                                                local _ret204
+                                                                local _ret201
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret204 = value
+                                                                    _ret201 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret205
+                                                                        local _ret202
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret205 = value
+                                                                            _ret202 = value
                                                                         end
-                                                                        local result = _ret205
+                                                                        local result = _ret202
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -3914,13 +3934,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret206
+                                                                local _ret203
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret206 = value
+                                                                    _ret203 = value
                                                                 end
-                                                                jump = _ret206
+                                                                jump = _ret203
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -3929,14 +3949,14 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                local _ret207
+                                                local _ret204
                                                 do
                                                     local value = mainStackFrames[mainStackFramesPointer]
-                                                    _ret207 = value
+                                                    _ret204 = value
                                                 end
-                                                local frameBegin = _ret207
-                                                local _ret208 = mainStackPointer
-                                                local frameEnd = _ret208
+                                                local frameBegin = _ret204
+                                                local _ret205 = mainStackPointer
+                                                local frameEnd = _ret205
                                                 for i = frameBegin, frameEnd - 1 do
                                                     mainStack[i] = mainStack[i + 1]
                                                 end
@@ -3948,9 +3968,9 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 1
-                                                    local _ret209 = macroStackPointer
+                                                    local _ret206 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret209
+                                                    injectionStack[injectionStackPointer] = _ret206
                                                 end
                                             else
                                                 do
@@ -3970,30 +3990,30 @@ return function (plume)
                                                         safeResult:setItem ("result", plume.error.cannotCallValue (t))
                                                         do
                                                             do
-                                                                local _ret337
+                                                                local _ret334
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret337 = value
+                                                                    _ret334 = value
                                                                 end
-                                                                variableStackPointer = _ret337 - 1
+                                                                variableStackPointer = _ret334 - 1
                                                             end
-                                                            local _ret338
+                                                            local _ret335
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret338 = value
+                                                                _ret335 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret339
+                                                                    local _ret336
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret339 = value
+                                                                        _ret336 = value
                                                                     end
-                                                                    local result = _ret339
+                                                                    local result = _ret336
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -4001,13 +4021,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret340
+                                                            local _ret337
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret340 = value
+                                                                _ret337 = value
                                                             end
-                                                            jump = _ret340
+                                                            jump = _ret337
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -4019,21 +4039,21 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret341
+                                            local _ret338
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret341 = value
+                                                _ret338 = value
                                             end
-                                            local value = _ret341
-                                            local _ret342 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
-                                            local t = _ret342
+                                            local value = _ret338
+                                            local _ret339 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
+                                            local t = _ret339
                                             if value == empty then
-                                                local _ret343 = mainStackPointer
-                                                mainStack[_ret343] = ""
+                                                local _ret340 = mainStackPointer
+                                                mainStack[_ret340] = ""
                                             elseif t == "number" then
                                                 local plumeTable = runtime.plume.table
                                                 local locale = plumeTable.locale:get ()
-                                                local _ret352
+                                                local _ret349
                                                 do
                                                     local lastfile
                                                     local files = runtime.files
@@ -4048,17 +4068,17 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret352 = lastfile
+                                                    _ret349 = lastfile
                                                 end
-                                                local file = _ret352
+                                                local file = _ret349
                                                 if locale ~= empty and locale ~= "none" and not file.flagRawNumbers then
                                                     local success, result = plume.formatNumber (value, plumeTable.localeNumberFormat:get ()
                                                     , locale, plumeTable.localeThousandsSeparator:get ()
                                                     , plumeTable.localeDecimalSeparator:get ()
                                                     , plumeTable.localeThousandthsSeparator:get ())
                                                     if success then
-                                                        local _ret353 = mainStackPointer
-                                                        mainStack[_ret353] = result
+                                                        local _ret350 = mainStackPointer
+                                                        mainStack[_ret350] = result
                                                     else
                                                         do
                                                             local safeCallIndex
@@ -4077,30 +4097,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", result)
                                                                 do
                                                                     do
-                                                                        local _ret354
+                                                                        local _ret351
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret354 = value
+                                                                            _ret351 = value
                                                                         end
-                                                                        variableStackPointer = _ret354 - 1
+                                                                        variableStackPointer = _ret351 - 1
                                                                     end
-                                                                    local _ret355
+                                                                    local _ret352
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret355 = value
+                                                                        _ret352 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret356
+                                                                            local _ret353
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret356 = value
+                                                                                _ret353 = value
                                                                             end
-                                                                            local result = _ret356
+                                                                            local result = _ret353
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -4108,13 +4128,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret357
+                                                                    local _ret354
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret357 = value
+                                                                        _ret354 = value
                                                                     end
-                                                                    jump = _ret357
+                                                                    jump = _ret354
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -4124,17 +4144,17 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret358 = mainStackPointer
-                                                    mainStack[_ret358] = tostring (value)
+                                                    local _ret355 = mainStackPointer
+                                                    mainStack[_ret355] = tostring (value)
                                                 end
                                             elseif t ~= "string" then
                                                 local meta = t == "table" and value:getMetaItem ("tostring")
                                                 if meta then
-                                                    local _ret344
+                                                    local _ret341
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
-                                                        _ret344 = value
+                                                        _ret341 = value
                                                     end
                                                     mainStackFramesPointer = mainStackFramesPointer + 1
                                                     mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -4143,8 +4163,8 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret345 = mainStackPointer
-                                                        local pos = _ret345
+                                                        local _ret342 = mainStackPointer
+                                                        local pos = _ret342
                                                         tagStack[pos] = "key"
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
@@ -4156,13 +4176,13 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret346 = macroStackPointer
+                                                        local _ret343 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret346
+                                                        injectionStack[injectionStackPointer] = _ret343
                                                     end
                                                 elseif t == "boolean" then
-                                                    local _ret347 = mainStackPointer
-                                                    mainStack[_ret347] = tostring (value)
+                                                    local _ret344 = mainStackPointer
+                                                    mainStack[_ret344] = tostring (value)
                                                 else
                                                     do
                                                         local safeCallIndex
@@ -4181,30 +4201,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.cannotConcatValue (t))
                                                             do
                                                                 do
-                                                                    local _ret348
+                                                                    local _ret345
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret348 = value
+                                                                        _ret345 = value
                                                                     end
-                                                                    variableStackPointer = _ret348 - 1
+                                                                    variableStackPointer = _ret345 - 1
                                                                 end
-                                                                local _ret349
+                                                                local _ret346
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret349 = value
+                                                                    _ret346 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret350
+                                                                        local _ret347
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret350 = value
+                                                                            _ret347 = value
                                                                         end
-                                                                        local result = _ret350
+                                                                        local result = _ret347
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -4212,13 +4232,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret351
+                                                                local _ret348
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret351 = value
+                                                                    _ret348 = value
                                                                 end
-                                                                jump = _ret351
+                                                                jump = _ret348
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -4235,41 +4255,41 @@ return function (plume)
                                 if op < 38 then
                                     if op < 37 then
                                         do
-                                            local _ret359
+                                            local _ret356
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret359 = value
+                                                _ret356 = value
                                             end
-                                            local test = _ret359
-                                            local _ret360
+                                            local test = _ret356
+                                            local _ret357
                                             if test == empty then
-                                                _ret360 = false
-                                                goto _inline_end872
+                                                _ret357 = false
+                                                goto _inline_end869
                                             end
-                                            _ret360 = test
-                                            ::_inline_end872::
-                                            if _ret360 then
+                                            _ret357 = test
+                                            ::_inline_end869::
+                                            if _ret357 then
                                                 jump = arg2
                                             end
                                         end
                                     else
                                         do
-                                            local _ret361
+                                            local _ret358
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret361 = value
+                                                _ret358 = value
                                             end
-                                            local test = _ret361
-                                            local _ret362
+                                            local test = _ret358
+                                            local _ret359
                                             if test == empty then
-                                                _ret362 = false
-                                                goto _inline_end875
+                                                _ret359 = false
+                                                goto _inline_end872
                                             end
-                                            _ret362 = test
-                                            ::_inline_end875::
-                                            if not _ret362 then
+                                            _ret359 = test
+                                            ::_inline_end872::
+                                            if not _ret359 then
                                                 jump = arg2
                                             end
                                         end
@@ -4277,38 +4297,38 @@ return function (plume)
                                 else
                                     if op < 39 then
                                         do
-                                            local _ret363
+                                            local _ret360
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret363 = value
+                                                _ret360 = value
                                             end
-                                            local test = _ret363
+                                            local test = _ret360
                                             if test ~= empty then
                                                 jump = arg2
                                             end
                                         end
                                     else
                                         do
-                                            local _ret364
+                                            local _ret361
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret364 = value
+                                                _ret361 = value
                                             end
-                                            local test = _ret364
-                                            local _ret366
+                                            local test = _ret361
+                                            local _ret363
                                             if test == empty then
-                                                _ret366 = false
-                                                goto _inline_end882
+                                                _ret363 = false
+                                                goto _inline_end879
                                             end
-                                            _ret366 = test
-                                            ::_inline_end882::
-                                            if not _ret366 then
-                                                local _ret365
+                                            _ret363 = test
+                                            ::_inline_end879::
+                                            if not _ret363 then
+                                                local _ret362
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret365 = value
+                                                    _ret362 = value
                                                 end
                                                 jump = arg2
                                             end
@@ -4323,20 +4343,20 @@ return function (plume)
                                         jump = arg2
                                     else
                                         do
-                                            local _ret367
+                                            local _ret364
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret367 = value
+                                                _ret364 = value
                                             end
-                                            local test = _ret367
-                                            local _ret368
+                                            local test = _ret364
+                                            local _ret365
                                             if test == empty then
-                                                _ret368 = false
-                                                goto _inline_end886
+                                                _ret365 = false
+                                                goto _inline_end883
                                             end
-                                            _ret368 = test
-                                            ::_inline_end886::
-                                            if _ret368 then
+                                            _ret365 = test
+                                            ::_inline_end883::
+                                            if _ret365 then
                                                 jump = arg2
                                             end
                                         end
@@ -4344,34 +4364,34 @@ return function (plume)
                                 else
                                     if op < 43 then
                                         do
-                                            local _ret369
+                                            local _ret366
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret369 = value
+                                                _ret366 = value
                                             end
-                                            local test = _ret369
-                                            local _ret370
+                                            local test = _ret366
+                                            local _ret367
                                             if test == empty then
-                                                _ret370 = false
-                                                goto _inline_end889
+                                                _ret367 = false
+                                                goto _inline_end886
                                             end
-                                            _ret370 = test
-                                            ::_inline_end889::
-                                            if not _ret370 then
+                                            _ret367 = test
+                                            ::_inline_end886::
+                                            if not _ret367 then
                                                 jump = arg2
                                             end
                                         end
                                     else
                                         do
-                                            local _ret371
+                                            local _ret368
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret371 = value
+                                                _ret368 = value
                                             end
-                                            local obj = _ret371
-                                            local _ret372 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
-                                            local tobj = _ret372
+                                            local obj = _ret368
+                                            local _ret369 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
+                                            local tobj = _ret369
                                             local iter, value, flag, macrocall
                                             local start = 0
                                             if tobj == "table" then
@@ -4416,30 +4436,30 @@ return function (plume)
                                                         safeResult:setItem ("result", plume.error.cannotIterateValue (tobj))
                                                         do
                                                             do
-                                                                local _ret373
+                                                                local _ret370
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret373 = value
+                                                                    _ret370 = value
                                                                 end
-                                                                variableStackPointer = _ret373 - 1
+                                                                variableStackPointer = _ret370 - 1
                                                             end
-                                                            local _ret374
+                                                            local _ret371
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret374 = value
+                                                                _ret371 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret375
+                                                                    local _ret372
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret375 = value
+                                                                        _ret372 = value
                                                                     end
-                                                                    local result = _ret375
+                                                                    local result = _ret372
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -4447,13 +4467,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret376
+                                                            local _ret373
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret376 = value
+                                                                _ret373 = value
                                                             end
-                                                            jump = _ret376
+                                                            jump = _ret373
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -4474,8 +4494,8 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = "self"
                                                 do
-                                                    local _ret377 = mainStackPointer
-                                                    local pos = _ret377
+                                                    local _ret374 = mainStackPointer
+                                                    local pos = _ret374
                                                     tagStack[pos] = "key"
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
@@ -4487,9 +4507,9 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret378 = macroStackPointer
+                                                    local _ret375 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret378
+                                                    injectionStack[injectionStackPointer] = _ret375
                                                 end
                                             else
                                                 mainStackPointer = mainStackPointer + 1
@@ -4502,6 +4522,21 @@ return function (plume)
                                 if op < 46 then
                                     if op < 45 then
                                         do
+                                            local _ret376
+                                            do
+                                                local _ret377
+                                                do
+                                                    local value = variableStackFrames[variableStackFramesPointer]
+                                                    _ret377 = value
+                                                end
+                                                local _ret378
+                                                do
+                                                    local value = variableStack[_ret377 or variableStackPointer]
+                                                    _ret378 = value
+                                                end
+                                                _ret376 = _ret378
+                                            end
+                                            local obj = _ret376
                                             local _ret379
                                             do
                                                 local _ret380
@@ -4511,12 +4546,12 @@ return function (plume)
                                                 end
                                                 local _ret381
                                                 do
-                                                    local value = variableStack[_ret380 or variableStackPointer]
+                                                    local value = variableStack[_ret380 + 1 or variableStackPointer]
                                                     _ret381 = value
                                                 end
                                                 _ret379 = _ret381
                                             end
-                                            local obj = _ret379
+                                            local state = _ret379
                                             local _ret382
                                             do
                                                 local _ret383
@@ -4526,27 +4561,12 @@ return function (plume)
                                                 end
                                                 local _ret384
                                                 do
-                                                    local value = variableStack[_ret383 + 1 or variableStackPointer]
+                                                    local value = variableStack[_ret383 + 2 or variableStackPointer]
                                                     _ret384 = value
                                                 end
                                                 _ret382 = _ret384
                                             end
-                                            local state = _ret382
-                                            local _ret385
-                                            do
-                                                local _ret386
-                                                do
-                                                    local value = variableStackFrames[variableStackFramesPointer]
-                                                    _ret386 = value
-                                                end
-                                                local _ret387
-                                                do
-                                                    local value = variableStack[_ret386 + 2 or variableStackPointer]
-                                                    _ret387 = value
-                                                end
-                                                _ret385 = _ret387
-                                            end
-                                            local flag = _ret385
+                                            local flag = _ret382
                                             local result, call
                                             if flag == ITER_TABLE then
                                                 state = state + 1
@@ -4599,8 +4619,8 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret390 = mainStackPointer
-                                                        local pos = _ret390
+                                                        local _ret387 = mainStackPointer
+                                                        local pos = _ret387
                                                         tagStack[pos] = "key"
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
@@ -4612,9 +4632,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = arg2
-                                                        local _ret389 = macroStackPointer
+                                                        local _ret386 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret389
+                                                        injectionStack[injectionStackPointer] = _ret386
                                                     end
                                                     do
                                                         injectionStackPointer = injectionStackPointer + 1
@@ -4623,9 +4643,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret388 = macroStackPointer
+                                                        local _ret385 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret388
+                                                        injectionStack[injectionStackPointer] = _ret385
                                                     end
                                                 end
                                             else
@@ -4634,12 +4654,12 @@ return function (plume)
                                             end
                                             if not call then
                                                 do
-                                                    local _ret391
+                                                    local _ret388
                                                     do
                                                         local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                        _ret391 = value
+                                                        _ret388 = value
                                                     end
-                                                    variableStack[_ret391 + 1] = state
+                                                    variableStack[_ret388 + 1] = state
                                                 end
                                                 if result == empty then
                                                     jump = arg2
@@ -4651,38 +4671,38 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret392
+                                            local _ret389
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret392 = value
+                                                _ret389 = value
                                             end
-                                            local right = _ret392
-                                            local _ret393
+                                            local right = _ret389
+                                            local _ret390
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret393 = value
+                                                _ret390 = value
                                             end
-                                            local left = _ret393
+                                            local left = _ret390
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret394 = leftNumber + rightNumber
-                                                local result = _ret394
+                                                local _ret391 = leftNumber + rightNumber
+                                                local result = _ret391
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret408, _ret409
+                                                local _ret405, _ret406
                                                 do
-                                                    local _ret410 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret410
+                                                    local _ret407 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret407
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret408, _ret409 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1000
+                                                            _ret405, _ret406 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end997
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -4690,26 +4710,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret408, _ret409 = _CALL (vm, meta, params)
-                                                            goto _inline_end1000
+                                                            _ret405, _ret406 = _CALL (vm, meta, params)
+                                                            goto _inline_end997
                                                         else
-                                                            _ret408, _ret409 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1000
+                                                            _ret405, _ret406 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end997
                                                         end
                                                     end
-                                                    _ret408, _ret409 = right
+                                                    _ret405, _ret406 = right
                                                 end
-                                                ::_inline_end1000::
-                                                right, rerr = _ret408, _ret409
-                                                local _ret405, _ret406
+                                                ::_inline_end997::
+                                                right, rerr = _ret405, _ret406
+                                                local _ret402, _ret403
                                                 do
-                                                    local _ret407 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret407
+                                                    local _ret404 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret404
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret405, _ret406 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end998
+                                                            _ret402, _ret403 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end995
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -4717,25 +4737,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret405, _ret406 = _CALL (vm, meta, params)
-                                                            goto _inline_end998
+                                                            _ret402, _ret403 = _CALL (vm, meta, params)
+                                                            goto _inline_end995
                                                         else
-                                                            _ret405, _ret406 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end998
+                                                            _ret402, _ret403 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end995
                                                         end
                                                     end
-                                                    _ret405, _ret406 = left
+                                                    _ret402, _ret403 = left
                                                 end
-                                                ::_inline_end998::
-                                                left, lerr = _ret405, _ret406
+                                                ::_inline_end995::
+                                                left, lerr = _ret402, _ret403
                                                 if lerr or rerr then
-                                                    local _ret395
+                                                    local _ret392
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret396 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret396
-                                                        local _ret397 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret397
+                                                        local _ret393 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret393
+                                                        local _ret394 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret394
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("addr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("addl")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("add")
@@ -4773,8 +4793,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret398 = mainStackPointer
-                                                                local pos = _ret398
+                                                                local _ret395 = mainStackPointer
+                                                                local pos = _ret395
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -4786,14 +4806,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret399 = macroStackPointer
+                                                                local _ret396 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret399
+                                                                injectionStack[injectionStackPointer] = _ret396
                                                             end
                                                         end
-                                                        _ret395 = meta
+                                                        _ret392 = meta
                                                     end
-                                                    local meta = _ret395
+                                                    local meta = _ret392
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -4812,30 +4832,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret400
+                                                                        local _ret397
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret400 = value
+                                                                            _ret397 = value
                                                                         end
-                                                                        variableStackPointer = _ret400 - 1
+                                                                        variableStackPointer = _ret397 - 1
                                                                     end
-                                                                    local _ret401
+                                                                    local _ret398
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret401 = value
+                                                                        _ret398 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret402
+                                                                            local _ret399
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret402 = value
+                                                                                _ret399 = value
                                                                             end
-                                                                            local result = _ret402
+                                                                            local result = _ret399
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -4843,13 +4863,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret403
+                                                                    local _ret400
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret403 = value
+                                                                        _ret400 = value
                                                                     end
-                                                                    jump = _ret403
+                                                                    jump = _ret400
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -4859,8 +4879,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret404 = left + right
-                                                    local result = _ret404
+                                                    local _ret401 = left + right
+                                                    local result = _ret401
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -4870,38 +4890,38 @@ return function (plume)
                                 else
                                     if op < 47 then
                                         do
-                                            local _ret411
+                                            local _ret408
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret411 = value
+                                                _ret408 = value
                                             end
-                                            local right = _ret411
-                                            local _ret412
+                                            local right = _ret408
+                                            local _ret409
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret412 = value
+                                                _ret409 = value
                                             end
-                                            local left = _ret412
+                                            local left = _ret409
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret413 = leftNumber * rightNumber
-                                                local result = _ret413
+                                                local _ret410 = leftNumber * rightNumber
+                                                local result = _ret410
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret427, _ret428
+                                                local _ret424, _ret425
                                                 do
-                                                    local _ret429 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret429
+                                                    local _ret426 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret426
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret427, _ret428 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1044
+                                                            _ret424, _ret425 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end1041
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -4909,26 +4929,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret427, _ret428 = _CALL (vm, meta, params)
-                                                            goto _inline_end1044
+                                                            _ret424, _ret425 = _CALL (vm, meta, params)
+                                                            goto _inline_end1041
                                                         else
-                                                            _ret427, _ret428 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1044
+                                                            _ret424, _ret425 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1041
                                                         end
                                                     end
-                                                    _ret427, _ret428 = right
+                                                    _ret424, _ret425 = right
                                                 end
-                                                ::_inline_end1044::
-                                                right, rerr = _ret427, _ret428
-                                                local _ret424, _ret425
+                                                ::_inline_end1041::
+                                                right, rerr = _ret424, _ret425
+                                                local _ret421, _ret422
                                                 do
-                                                    local _ret426 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret426
+                                                    local _ret423 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret423
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret424, _ret425 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1042
+                                                            _ret421, _ret422 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end1039
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -4936,25 +4956,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret424, _ret425 = _CALL (vm, meta, params)
-                                                            goto _inline_end1042
+                                                            _ret421, _ret422 = _CALL (vm, meta, params)
+                                                            goto _inline_end1039
                                                         else
-                                                            _ret424, _ret425 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1042
+                                                            _ret421, _ret422 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1039
                                                         end
                                                     end
-                                                    _ret424, _ret425 = left
+                                                    _ret421, _ret422 = left
                                                 end
-                                                ::_inline_end1042::
-                                                left, lerr = _ret424, _ret425
+                                                ::_inline_end1039::
+                                                left, lerr = _ret421, _ret422
                                                 if lerr or rerr then
-                                                    local _ret414
+                                                    local _ret411
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret415 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret415
-                                                        local _ret416 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret416
+                                                        local _ret412 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret412
+                                                        local _ret413 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret413
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("mulr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("mull")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("mul")
@@ -4992,8 +5012,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret417 = mainStackPointer
-                                                                local pos = _ret417
+                                                                local _ret414 = mainStackPointer
+                                                                local pos = _ret414
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -5005,14 +5025,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret418 = macroStackPointer
+                                                                local _ret415 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret418
+                                                                injectionStack[injectionStackPointer] = _ret415
                                                             end
                                                         end
-                                                        _ret414 = meta
+                                                        _ret411 = meta
                                                     end
-                                                    local meta = _ret414
+                                                    local meta = _ret411
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -5031,30 +5051,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret419
+                                                                        local _ret416
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret419 = value
+                                                                            _ret416 = value
                                                                         end
-                                                                        variableStackPointer = _ret419 - 1
+                                                                        variableStackPointer = _ret416 - 1
                                                                     end
-                                                                    local _ret420
+                                                                    local _ret417
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret420 = value
+                                                                        _ret417 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret421
+                                                                            local _ret418
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret421 = value
+                                                                                _ret418 = value
                                                                             end
-                                                                            local result = _ret421
+                                                                            local result = _ret418
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -5062,13 +5082,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret422
+                                                                    local _ret419
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret422 = value
+                                                                        _ret419 = value
                                                                     end
-                                                                    jump = _ret422
+                                                                    jump = _ret419
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -5078,8 +5098,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret423 = left * right
-                                                    local result = _ret423
+                                                    local _ret420 = left * right
+                                                    local result = _ret420
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -5087,38 +5107,38 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret430
+                                            local _ret427
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret430 = value
+                                                _ret427 = value
                                             end
-                                            local right = _ret430
-                                            local _ret431
+                                            local right = _ret427
+                                            local _ret428
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret431 = value
+                                                _ret428 = value
                                             end
-                                            local left = _ret431
+                                            local left = _ret428
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret432 = leftNumber - rightNumber
-                                                local result = _ret432
+                                                local _ret429 = leftNumber - rightNumber
+                                                local result = _ret429
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret446, _ret447
+                                                local _ret443, _ret444
                                                 do
-                                                    local _ret448 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret448
+                                                    local _ret445 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret445
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret446, _ret447 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1088
+                                                            _ret443, _ret444 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end1085
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5126,26 +5146,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret446, _ret447 = _CALL (vm, meta, params)
-                                                            goto _inline_end1088
+                                                            _ret443, _ret444 = _CALL (vm, meta, params)
+                                                            goto _inline_end1085
                                                         else
-                                                            _ret446, _ret447 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1088
+                                                            _ret443, _ret444 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1085
                                                         end
                                                     end
-                                                    _ret446, _ret447 = right
+                                                    _ret443, _ret444 = right
                                                 end
-                                                ::_inline_end1088::
-                                                right, rerr = _ret446, _ret447
-                                                local _ret443, _ret444
+                                                ::_inline_end1085::
+                                                right, rerr = _ret443, _ret444
+                                                local _ret440, _ret441
                                                 do
-                                                    local _ret445 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret445
+                                                    local _ret442 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret442
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret443, _ret444 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1086
+                                                            _ret440, _ret441 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end1083
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5153,25 +5173,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret443, _ret444 = _CALL (vm, meta, params)
-                                                            goto _inline_end1086
+                                                            _ret440, _ret441 = _CALL (vm, meta, params)
+                                                            goto _inline_end1083
                                                         else
-                                                            _ret443, _ret444 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1086
+                                                            _ret440, _ret441 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1083
                                                         end
                                                     end
-                                                    _ret443, _ret444 = left
+                                                    _ret440, _ret441 = left
                                                 end
-                                                ::_inline_end1086::
-                                                left, lerr = _ret443, _ret444
+                                                ::_inline_end1083::
+                                                left, lerr = _ret440, _ret441
                                                 if lerr or rerr then
-                                                    local _ret433
+                                                    local _ret430
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret434 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret434
-                                                        local _ret435 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret435
+                                                        local _ret431 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret431
+                                                        local _ret432 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret432
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("subr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("subl")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("sub")
@@ -5209,8 +5229,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret436 = mainStackPointer
-                                                                local pos = _ret436
+                                                                local _ret433 = mainStackPointer
+                                                                local pos = _ret433
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -5222,14 +5242,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret437 = macroStackPointer
+                                                                local _ret434 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret437
+                                                                injectionStack[injectionStackPointer] = _ret434
                                                             end
                                                         end
-                                                        _ret433 = meta
+                                                        _ret430 = meta
                                                     end
-                                                    local meta = _ret433
+                                                    local meta = _ret430
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -5248,30 +5268,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret438
+                                                                        local _ret435
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret438 = value
+                                                                            _ret435 = value
                                                                         end
-                                                                        variableStackPointer = _ret438 - 1
+                                                                        variableStackPointer = _ret435 - 1
                                                                     end
-                                                                    local _ret439
+                                                                    local _ret436
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret439 = value
+                                                                        _ret436 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret440
+                                                                            local _ret437
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret440 = value
+                                                                                _ret437 = value
                                                                             end
-                                                                            local result = _ret440
+                                                                            local result = _ret437
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -5279,13 +5299,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret441
+                                                                    local _ret438
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret441 = value
+                                                                        _ret438 = value
                                                                     end
-                                                                    jump = _ret441
+                                                                    jump = _ret438
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -5295,8 +5315,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret442 = left - right
-                                                    local result = _ret442
+                                                    local _ret439 = left - right
+                                                    local result = _ret439
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -5312,38 +5332,38 @@ return function (plume)
                                 if op < 50 then
                                     if op < 49 then
                                         do
-                                            local _ret449
+                                            local _ret446
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret449 = value
+                                                _ret446 = value
                                             end
-                                            local right = _ret449
-                                            local _ret450
+                                            local right = _ret446
+                                            local _ret447
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret450 = value
+                                                _ret447 = value
                                             end
-                                            local left = _ret450
+                                            local left = _ret447
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret451 = leftNumber / rightNumber
-                                                local result = _ret451
+                                                local _ret448 = leftNumber / rightNumber
+                                                local result = _ret448
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret465, _ret466
+                                                local _ret462, _ret463
                                                 do
-                                                    local _ret467 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret467
+                                                    local _ret464 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret464
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret465, _ret466 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1132
+                                                            _ret462, _ret463 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end1129
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5351,26 +5371,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret465, _ret466 = _CALL (vm, meta, params)
-                                                            goto _inline_end1132
+                                                            _ret462, _ret463 = _CALL (vm, meta, params)
+                                                            goto _inline_end1129
                                                         else
-                                                            _ret465, _ret466 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1132
+                                                            _ret462, _ret463 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1129
                                                         end
                                                     end
-                                                    _ret465, _ret466 = right
+                                                    _ret462, _ret463 = right
                                                 end
-                                                ::_inline_end1132::
-                                                right, rerr = _ret465, _ret466
-                                                local _ret462, _ret463
+                                                ::_inline_end1129::
+                                                right, rerr = _ret462, _ret463
+                                                local _ret459, _ret460
                                                 do
-                                                    local _ret464 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret464
+                                                    local _ret461 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret461
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret462, _ret463 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1130
+                                                            _ret459, _ret460 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end1127
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5378,25 +5398,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret462, _ret463 = _CALL (vm, meta, params)
-                                                            goto _inline_end1130
+                                                            _ret459, _ret460 = _CALL (vm, meta, params)
+                                                            goto _inline_end1127
                                                         else
-                                                            _ret462, _ret463 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1130
+                                                            _ret459, _ret460 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1127
                                                         end
                                                     end
-                                                    _ret462, _ret463 = left
+                                                    _ret459, _ret460 = left
                                                 end
-                                                ::_inline_end1130::
-                                                left, lerr = _ret462, _ret463
+                                                ::_inline_end1127::
+                                                left, lerr = _ret459, _ret460
                                                 if lerr or rerr then
-                                                    local _ret452
+                                                    local _ret449
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret453 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret453
-                                                        local _ret454 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret454
+                                                        local _ret450 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret450
+                                                        local _ret451 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret451
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("divr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("divl")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("div")
@@ -5434,8 +5454,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret455 = mainStackPointer
-                                                                local pos = _ret455
+                                                                local _ret452 = mainStackPointer
+                                                                local pos = _ret452
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -5447,14 +5467,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret456 = macroStackPointer
+                                                                local _ret453 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret456
+                                                                injectionStack[injectionStackPointer] = _ret453
                                                             end
                                                         end
-                                                        _ret452 = meta
+                                                        _ret449 = meta
                                                     end
-                                                    local meta = _ret452
+                                                    local meta = _ret449
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -5473,30 +5493,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret457
+                                                                        local _ret454
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret457 = value
+                                                                            _ret454 = value
                                                                         end
-                                                                        variableStackPointer = _ret457 - 1
+                                                                        variableStackPointer = _ret454 - 1
                                                                     end
-                                                                    local _ret458
+                                                                    local _ret455
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret458 = value
+                                                                        _ret455 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret459
+                                                                            local _ret456
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret459 = value
+                                                                                _ret456 = value
                                                                             end
-                                                                            local result = _ret459
+                                                                            local result = _ret456
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -5504,13 +5524,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret460
+                                                                    local _ret457
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret460 = value
+                                                                        _ret457 = value
                                                                     end
-                                                                    jump = _ret460
+                                                                    jump = _ret457
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -5520,8 +5540,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret461 = left / right
-                                                    local result = _ret461
+                                                    local _ret458 = left / right
+                                                    local result = _ret458
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -5529,23 +5549,23 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret468
+                                            local _ret465
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret468 = value
+                                                _ret465 = value
                                             end
-                                            local x = _ret468
+                                            local x = _ret465
                                             local err, meta
-                                            local _ret469, _ret470
+                                            local _ret466, _ret467
                                             do
-                                                local _ret471 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
-                                                local tx = _ret471
+                                                local _ret468 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                local tx = _ret468
                                                 if tx == "string" then
                                                     if not tonumber (x)
                                                      then
-                                                        _ret469, _ret470 = x, plume.error.cannotConvertToString (x)
-                                                        goto _inline_end1137
+                                                        _ret466, _ret467 = x, plume.error.cannotConvertToString (x)
+                                                        goto _inline_end1134
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
@@ -5553,23 +5573,23 @@ return function (plume)
                                                     if tx == "table" and mtonumber then
                                                         local meta = mtonumber
                                                         local params = {}
-                                                        _ret469, _ret470 = _CALL (vm, meta, params)
-                                                        goto _inline_end1137
+                                                        _ret466, _ret467 = _CALL (vm, meta, params)
+                                                        goto _inline_end1134
                                                     else
-                                                        _ret469, _ret470 = x, plume.error.cannotDoArithmeticWith (tx)
-                                                        goto _inline_end1137
+                                                        _ret466, _ret467 = x, plume.error.cannotDoArithmeticWith (tx)
+                                                        goto _inline_end1134
                                                     end
                                                 end
-                                                _ret469, _ret470 = x
+                                                _ret466, _ret467 = x
                                             end
-                                            ::_inline_end1137::
-                                            x, err = _ret469, _ret470
+                                            ::_inline_end1134::
+                                            x, err = _ret466, _ret467
                                             if err then
-                                                local _ret472
+                                                local _ret469
                                                 do
                                                     local meta, paramself
-                                                    local _ret473 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
-                                                    meta = _ret473 == "table" and x:getMetaItem ("minus")
+                                                    local _ret470 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                    meta = _ret470 == "table" and x:getMetaItem ("minus")
                                                     if meta then
                                                         mainStackFramesPointer = mainStackFramesPointer + 1
                                                         mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -5578,8 +5598,8 @@ return function (plume)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = "self"
                                                         do
-                                                            local _ret474 = mainStackPointer
-                                                            local pos = _ret474
+                                                            local _ret471 = mainStackPointer
+                                                            local pos = _ret471
                                                             tagStack[pos] = "key"
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
@@ -5591,14 +5611,14 @@ return function (plume)
                                                             injectionStack[injectionStackPointer] = 0
                                                             injectionStackPointer = injectionStackPointer + 1
                                                             injectionStack[injectionStackPointer] = 0
-                                                            local _ret475 = macroStackPointer
+                                                            local _ret472 = macroStackPointer
                                                             injectionStackPointer = injectionStackPointer + 1
-                                                            injectionStack[injectionStackPointer] = _ret475
+                                                            injectionStack[injectionStackPointer] = _ret472
                                                         end
                                                     end
-                                                    _ret472 = meta
+                                                    _ret469 = meta
                                                 end
-                                                meta = _ret472
+                                                meta = _ret469
                                                 if not meta then
                                                     do
                                                         local safeCallIndex
@@ -5617,30 +5637,30 @@ return function (plume)
                                                             safeResult:setItem ("result", err)
                                                             do
                                                                 do
-                                                                    local _ret476
+                                                                    local _ret473
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret476 = value
+                                                                        _ret473 = value
                                                                     end
-                                                                    variableStackPointer = _ret476 - 1
+                                                                    variableStackPointer = _ret473 - 1
                                                                 end
-                                                                local _ret477
+                                                                local _ret474
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret477 = value
+                                                                    _ret474 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret478
+                                                                        local _ret475
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret478 = value
+                                                                            _ret475 = value
                                                                         end
-                                                                        local result = _ret478
+                                                                        local result = _ret475
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -5648,13 +5668,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret479
+                                                                local _ret476
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret479 = value
+                                                                    _ret476 = value
                                                                 end
-                                                                jump = _ret479
+                                                                jump = _ret476
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -5664,47 +5684,47 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                local _ret480 = -x
+                                                local _ret477 = -x
                                                 mainStackPointer = mainStackPointer + 1
-                                                mainStack[mainStackPointer] = _ret480
+                                                mainStack[mainStackPointer] = _ret477
                                             end
                                         end
                                     end
                                 else
                                     if op < 51 then
                                         do
-                                            local _ret481
+                                            local _ret478
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret481 = value
+                                                _ret478 = value
                                             end
-                                            local right = _ret481
-                                            local _ret482
+                                            local right = _ret478
+                                            local _ret479
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret482 = value
+                                                _ret479 = value
                                             end
-                                            local left = _ret482
+                                            local left = _ret479
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret483 = leftNumber % rightNumber
-                                                local result = _ret483
+                                                local _ret480 = leftNumber % rightNumber
+                                                local result = _ret480
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret497, _ret498
+                                                local _ret494, _ret495
                                                 do
-                                                    local _ret499 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret499
+                                                    local _ret496 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret496
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret497, _ret498 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1212
+                                                            _ret494, _ret495 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end1209
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5712,26 +5732,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret497, _ret498 = _CALL (vm, meta, params)
-                                                            goto _inline_end1212
+                                                            _ret494, _ret495 = _CALL (vm, meta, params)
+                                                            goto _inline_end1209
                                                         else
-                                                            _ret497, _ret498 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1212
+                                                            _ret494, _ret495 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1209
                                                         end
                                                     end
-                                                    _ret497, _ret498 = right
+                                                    _ret494, _ret495 = right
                                                 end
-                                                ::_inline_end1212::
-                                                right, rerr = _ret497, _ret498
-                                                local _ret494, _ret495
+                                                ::_inline_end1209::
+                                                right, rerr = _ret494, _ret495
+                                                local _ret491, _ret492
                                                 do
-                                                    local _ret496 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret496
+                                                    local _ret493 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret493
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret494, _ret495 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1210
+                                                            _ret491, _ret492 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end1207
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5739,25 +5759,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret494, _ret495 = _CALL (vm, meta, params)
-                                                            goto _inline_end1210
+                                                            _ret491, _ret492 = _CALL (vm, meta, params)
+                                                            goto _inline_end1207
                                                         else
-                                                            _ret494, _ret495 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1210
+                                                            _ret491, _ret492 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1207
                                                         end
                                                     end
-                                                    _ret494, _ret495 = left
+                                                    _ret491, _ret492 = left
                                                 end
-                                                ::_inline_end1210::
-                                                left, lerr = _ret494, _ret495
+                                                ::_inline_end1207::
+                                                left, lerr = _ret491, _ret492
                                                 if lerr or rerr then
-                                                    local _ret484
+                                                    local _ret481
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret485 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret485
-                                                        local _ret486 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret486
+                                                        local _ret482 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret482
+                                                        local _ret483 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret483
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("modr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("modl")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("mod")
@@ -5795,8 +5815,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret487 = mainStackPointer
-                                                                local pos = _ret487
+                                                                local _ret484 = mainStackPointer
+                                                                local pos = _ret484
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -5808,14 +5828,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret488 = macroStackPointer
+                                                                local _ret485 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret488
+                                                                injectionStack[injectionStackPointer] = _ret485
                                                             end
                                                         end
-                                                        _ret484 = meta
+                                                        _ret481 = meta
                                                     end
-                                                    local meta = _ret484
+                                                    local meta = _ret481
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -5834,30 +5854,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret489
+                                                                        local _ret486
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret489 = value
+                                                                            _ret486 = value
                                                                         end
-                                                                        variableStackPointer = _ret489 - 1
+                                                                        variableStackPointer = _ret486 - 1
                                                                     end
-                                                                    local _ret490
+                                                                    local _ret487
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret490 = value
+                                                                        _ret487 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret491
+                                                                            local _ret488
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret491 = value
+                                                                                _ret488 = value
                                                                             end
-                                                                            local result = _ret491
+                                                                            local result = _ret488
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -5865,13 +5885,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret492
+                                                                    local _ret489
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret492 = value
+                                                                        _ret489 = value
                                                                     end
-                                                                    jump = _ret492
+                                                                    jump = _ret489
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -5881,8 +5901,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret493 = left % right
-                                                    local result = _ret493
+                                                    local _ret490 = left % right
+                                                    local result = _ret490
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -5890,38 +5910,38 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret500
+                                            local _ret497
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret500 = value
+                                                _ret497 = value
                                             end
-                                            local right = _ret500
-                                            local _ret501
+                                            local right = _ret497
+                                            local _ret498
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret501 = value
+                                                _ret498 = value
                                             end
-                                            local left = _ret501
+                                            local left = _ret498
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret502 = leftNumber ^ rightNumber
-                                                local result = _ret502
+                                                local _ret499 = leftNumber ^ rightNumber
+                                                local result = _ret499
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret516, _ret517
+                                                local _ret513, _ret514
                                                 do
-                                                    local _ret518 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret518
+                                                    local _ret515 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret515
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret516, _ret517 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1256
+                                                            _ret513, _ret514 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end1253
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5929,26 +5949,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret516, _ret517 = _CALL (vm, meta, params)
-                                                            goto _inline_end1256
+                                                            _ret513, _ret514 = _CALL (vm, meta, params)
+                                                            goto _inline_end1253
                                                         else
-                                                            _ret516, _ret517 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1256
+                                                            _ret513, _ret514 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1253
                                                         end
                                                     end
-                                                    _ret516, _ret517 = right
+                                                    _ret513, _ret514 = right
                                                 end
-                                                ::_inline_end1256::
-                                                right, rerr = _ret516, _ret517
-                                                local _ret513, _ret514
+                                                ::_inline_end1253::
+                                                right, rerr = _ret513, _ret514
+                                                local _ret510, _ret511
                                                 do
-                                                    local _ret515 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret515
+                                                    local _ret512 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret512
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret513, _ret514 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1254
+                                                            _ret510, _ret511 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end1251
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5956,25 +5976,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret513, _ret514 = _CALL (vm, meta, params)
-                                                            goto _inline_end1254
+                                                            _ret510, _ret511 = _CALL (vm, meta, params)
+                                                            goto _inline_end1251
                                                         else
-                                                            _ret513, _ret514 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1254
+                                                            _ret510, _ret511 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1251
                                                         end
                                                     end
-                                                    _ret513, _ret514 = left
+                                                    _ret510, _ret511 = left
                                                 end
-                                                ::_inline_end1254::
-                                                left, lerr = _ret513, _ret514
+                                                ::_inline_end1251::
+                                                left, lerr = _ret510, _ret511
                                                 if lerr or rerr then
-                                                    local _ret503
+                                                    local _ret500
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret504 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret504
-                                                        local _ret505 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret505
+                                                        local _ret501 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret501
+                                                        local _ret502 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret502
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("powr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("powl")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("pow")
@@ -6012,8 +6032,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret506 = mainStackPointer
-                                                                local pos = _ret506
+                                                                local _ret503 = mainStackPointer
+                                                                local pos = _ret503
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -6025,14 +6045,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret507 = macroStackPointer
+                                                                local _ret504 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret507
+                                                                injectionStack[injectionStackPointer] = _ret504
                                                             end
                                                         end
-                                                        _ret503 = meta
+                                                        _ret500 = meta
                                                     end
-                                                    local meta = _ret503
+                                                    local meta = _ret500
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -6051,30 +6071,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret508
+                                                                        local _ret505
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret508 = value
+                                                                            _ret505 = value
                                                                         end
-                                                                        variableStackPointer = _ret508 - 1
+                                                                        variableStackPointer = _ret505 - 1
                                                                     end
-                                                                    local _ret509
+                                                                    local _ret506
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret509 = value
+                                                                        _ret506 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret510
+                                                                            local _ret507
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret510 = value
+                                                                                _ret507 = value
                                                                             end
-                                                                            local result = _ret510
+                                                                            local result = _ret507
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -6082,13 +6102,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret511
+                                                                    local _ret508
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret511 = value
+                                                                        _ret508 = value
                                                                     end
-                                                                    jump = _ret511
+                                                                    jump = _ret508
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -6098,8 +6118,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret512 = left ^ right
-                                                    local result = _ret512
+                                                    local _ret509 = left ^ right
+                                                    local result = _ret509
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -6111,38 +6131,38 @@ return function (plume)
                                 if op < 54 then
                                     if op < 53 then
                                         do
-                                            local _ret519
+                                            local _ret516
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret519 = value
+                                                _ret516 = value
                                             end
-                                            local right = _ret519
-                                            local _ret520
+                                            local right = _ret516
+                                            local _ret517
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret520 = value
+                                                _ret517 = value
                                             end
-                                            local left = _ret520
+                                            local left = _ret517
                                             local rightNumber = tonumber (right)
                                             local leftNumber = tonumber (left)
                                             if rightNumber and leftNumber then
-                                                local _ret521 = leftNumber < rightNumber
-                                                local result = _ret521
+                                                local _ret518 = leftNumber < rightNumber
+                                                local result = _ret518
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             else
                                                 local rerr, lerr
-                                                local _ret535, _ret536
+                                                local _ret532, _ret533
                                                 do
-                                                    local _ret537 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                    local tx = _ret537
+                                                    local _ret534 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local tx = _ret534
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
-                                                            _ret535, _ret536 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1300
+                                                            _ret532, _ret533 = right, plume.error.cannotConvertToString (right)
+                                                            goto _inline_end1297
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6150,26 +6170,26 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret535, _ret536 = _CALL (vm, meta, params)
-                                                            goto _inline_end1300
+                                                            _ret532, _ret533 = _CALL (vm, meta, params)
+                                                            goto _inline_end1297
                                                         else
-                                                            _ret535, _ret536 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1300
+                                                            _ret532, _ret533 = right, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1297
                                                         end
                                                     end
-                                                    _ret535, _ret536 = right
+                                                    _ret532, _ret533 = right
                                                 end
-                                                ::_inline_end1300::
-                                                right, rerr = _ret535, _ret536
-                                                local _ret532, _ret533
+                                                ::_inline_end1297::
+                                                right, rerr = _ret532, _ret533
+                                                local _ret529, _ret530
                                                 do
-                                                    local _ret534 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                    local tx = _ret534
+                                                    local _ret531 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local tx = _ret531
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
-                                                            _ret532, _ret533 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1298
+                                                            _ret529, _ret530 = left, plume.error.cannotConvertToString (left)
+                                                            goto _inline_end1295
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6177,25 +6197,25 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret532, _ret533 = _CALL (vm, meta, params)
-                                                            goto _inline_end1298
+                                                            _ret529, _ret530 = _CALL (vm, meta, params)
+                                                            goto _inline_end1295
                                                         else
-                                                            _ret532, _ret533 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1298
+                                                            _ret529, _ret530 = left, plume.error.cannotDoArithmeticWith (tx)
+                                                            goto _inline_end1295
                                                         end
                                                     end
-                                                    _ret532, _ret533 = left
+                                                    _ret529, _ret530 = left
                                                 end
-                                                ::_inline_end1298::
-                                                left, lerr = _ret532, _ret533
+                                                ::_inline_end1295::
+                                                left, lerr = _ret529, _ret530
                                                 if lerr or rerr then
-                                                    local _ret522
+                                                    local _ret519
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret523 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                        local tleft = _ret523
-                                                        local _ret524 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                        local tright = _ret524
+                                                        local _ret520 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local tleft = _ret520
+                                                        local _ret521 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local tright = _ret521
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("ltr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("ltl")
                                                         local leftmeta = tleft == "table" and left:getMetaItem ("lt")
@@ -6233,8 +6253,8 @@ return function (plume)
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
-                                                                local _ret525 = mainStackPointer
-                                                                local pos = _ret525
+                                                                local _ret522 = mainStackPointer
+                                                                local pos = _ret522
                                                                 tagStack[pos] = "key"
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
@@ -6246,14 +6266,14 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = 0
-                                                                local _ret526 = macroStackPointer
+                                                                local _ret523 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret526
+                                                                injectionStack[injectionStackPointer] = _ret523
                                                             end
                                                         end
-                                                        _ret522 = meta
+                                                        _ret519 = meta
                                                     end
-                                                    local meta = _ret522
+                                                    local meta = _ret519
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
@@ -6272,30 +6292,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
                                                                     do
-                                                                        local _ret527
+                                                                        local _ret524
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret527 = value
+                                                                            _ret524 = value
                                                                         end
-                                                                        variableStackPointer = _ret527 - 1
+                                                                        variableStackPointer = _ret524 - 1
                                                                     end
-                                                                    local _ret528
+                                                                    local _ret525
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret528 = value
+                                                                        _ret525 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret529
+                                                                            local _ret526
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret529 = value
+                                                                                _ret526 = value
                                                                             end
-                                                                            local result = _ret529
+                                                                            local result = _ret526
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -6303,13 +6323,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret530
+                                                                    local _ret527
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret530 = value
+                                                                        _ret527 = value
                                                                     end
-                                                                    jump = _ret530
+                                                                    jump = _ret527
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -6319,8 +6339,8 @@ return function (plume)
                                                         end
                                                     end
                                                 else
-                                                    local _ret531 = left < right
-                                                    local result = _ret531
+                                                    local _ret528 = left < right
+                                                    local result = _ret528
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
                                                 end
@@ -6328,27 +6348,27 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret538
+                                            local _ret535
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret538 = value
+                                                _ret535 = value
                                             end
-                                            local right = _ret538
-                                            local _ret539
+                                            local right = _ret535
+                                            local _ret536
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret539 = value
+                                                _ret536 = value
                                             end
-                                            local left = _ret539
-                                            local _ret540
+                                            local left = _ret536
+                                            local _ret537
                                             do
                                                 local meta, param1, param2, paramself
-                                                local _ret541 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
-                                                local tleft = _ret541
-                                                local _ret542 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
-                                                local tright = _ret542
+                                                local _ret538 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                local tleft = _ret538
+                                                local _ret539 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                local tright = _ret539
                                                 local leftmetar = tleft == "table" and left:getMetaItem ("eqr")
                                                 local rightmetal = tright == "table" and right:getMetaItem ("eql")
                                                 local leftmeta = tleft == "table" and left:getMetaItem ("eq")
@@ -6386,8 +6406,8 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
-                                                        local _ret543 = mainStackPointer
-                                                        local pos = _ret543
+                                                        local _ret540 = mainStackPointer
+                                                        local pos = _ret540
                                                         tagStack[pos] = "key"
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
@@ -6399,14 +6419,14 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret544 = macroStackPointer
+                                                        local _ret541 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret544
+                                                        injectionStack[injectionStackPointer] = _ret541
                                                     end
                                                 end
-                                                _ret540 = meta
+                                                _ret537 = meta
                                             end
-                                            local meta = _ret540
+                                            local meta = _ret537
                                             if not meta then
                                                 local result = left == right or tonumber (left) and tonumber (left) == tonumber (right) or (false)
                                                 mainStackPointer = mainStackPointer + 1
@@ -6417,60 +6437,60 @@ return function (plume)
                                 else
                                     if op < 55 then
                                         do
-                                            local _ret545
+                                            local _ret542
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret545 = value
+                                                _ret542 = value
                                             end
-                                            local right = _ret545
-                                            local _ret546
+                                            local right = _ret542
+                                            local _ret543
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret546 = value
+                                                _ret543 = value
                                             end
-                                            local left = _ret546
-                                            local _ret547
+                                            local left = _ret543
+                                            local _ret544
                                             if right == empty then
-                                                _ret547 = false
-                                                goto _inline_end1329
+                                                _ret544 = false
+                                                goto _inline_end1326
                                             end
-                                            _ret547 = right
-                                            ::_inline_end1329::
-                                            right = _ret547
-                                            local _ret548
+                                            _ret544 = right
+                                            ::_inline_end1326::
+                                            right = _ret544
+                                            local _ret545
                                             if left == empty then
-                                                _ret548 = false
-                                                goto _inline_end1330
+                                                _ret545 = false
+                                                goto _inline_end1327
                                             end
-                                            _ret548 = left
-                                            ::_inline_end1330::
-                                            left = _ret548
-                                            local _ret549 = left and right
+                                            _ret545 = left
+                                            ::_inline_end1327::
+                                            left = _ret545
+                                            local _ret546 = left and right
                                             mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret549
+                                            mainStack[mainStackPointer] = _ret546
                                         end
                                     else
                                         do
-                                            local _ret550
+                                            local _ret547
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret550 = value
+                                                _ret547 = value
                                             end
-                                            local x = _ret550
-                                            local _ret551
+                                            local x = _ret547
+                                            local _ret548
                                             if x == empty then
-                                                _ret551 = false
-                                                goto _inline_end1336
+                                                _ret548 = false
+                                                goto _inline_end1333
                                             end
-                                            _ret551 = x
-                                            ::_inline_end1336::
-                                            x = _ret551
-                                            local _ret552 = not x
+                                            _ret548 = x
+                                            ::_inline_end1333::
+                                            x = _ret548
+                                            local _ret549 = not x
                                             mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret552
+                                            mainStack[mainStackPointer] = _ret549
                                         end
                                     end
                                 end
@@ -6480,68 +6500,68 @@ return function (plume)
                                 if op < 58 then
                                     if op < 57 then
                                         do
-                                            local _ret553
+                                            local _ret550
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret553 = value
+                                                _ret550 = value
                                             end
-                                            local right = _ret553
-                                            local _ret554
+                                            local right = _ret550
+                                            local _ret551
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret554 = value
+                                                _ret551 = value
                                             end
-                                            local left = _ret554
-                                            local _ret555
+                                            local left = _ret551
+                                            local _ret552
                                             if right == empty then
-                                                _ret555 = false
-                                                goto _inline_end1343
+                                                _ret552 = false
+                                                goto _inline_end1340
                                             end
-                                            _ret555 = right
-                                            ::_inline_end1343::
-                                            right = _ret555
-                                            local _ret556
+                                            _ret552 = right
+                                            ::_inline_end1340::
+                                            right = _ret552
+                                            local _ret553
                                             if left == empty then
-                                                _ret556 = false
-                                                goto _inline_end1344
+                                                _ret553 = false
+                                                goto _inline_end1341
                                             end
-                                            _ret556 = left
-                                            ::_inline_end1344::
-                                            left = _ret556
-                                            local _ret557 = left or right
+                                            _ret553 = left
+                                            ::_inline_end1341::
+                                            left = _ret553
+                                            local _ret554 = left or right
                                             mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret557
+                                            mainStack[mainStackPointer] = _ret554
                                         end
                                     else
                                         do
-                                            local _ret558
+                                            local _ret555
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret558 = value
+                                                _ret555 = value
                                             end
                                             mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret558
+                                            mainStack[mainStackPointer] = _ret555
                                         end
                                     end
                                 else
                                     if op < 59 then
                                         do
-                                            local _ret559
+                                            local _ret556
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret559 = value
+                                                _ret556 = value
                                             end
-                                            local x = _ret559
-                                            local _ret560
+                                            local x = _ret556
+                                            local _ret557
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret560 = value
+                                                _ret557 = value
                                             end
-                                            local y = _ret560
+                                            local y = _ret557
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = x
                                             mainStackPointer = mainStackPointer + 1
@@ -6550,30 +6570,30 @@ return function (plume)
                                     else
                                         do
                                             do
-                                                local _ret561
+                                                local _ret558
                                                 do
                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                    _ret561 = value
+                                                    _ret558 = value
                                                 end
-                                                variableStackPointer = _ret561 - 1
+                                                variableStackPointer = _ret558 - 1
                                             end
-                                            local _ret562
+                                            local _ret559
                                             do
                                                 closureStack.pointer = closureStack.pointer - 1
                                                 local value = closureStack[closureStack.pointer + 1]
-                                                _ret562 = value
+                                                _ret559 = value
                                             end
                                             do
                                                 local call = table.remove (runtime.callstack)
                                                 if call and call.safe then
-                                                    local _ret563
+                                                    local _ret560
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
-                                                        _ret563 = value
+                                                        _ret560 = value
                                                     end
-                                                    local result = _ret563
+                                                    local result = _ret560
                                                     local safeResult = plume.obj.table (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
@@ -6581,13 +6601,13 @@ return function (plume)
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
                                             end
-                                            local _ret564
+                                            local _ret561
                                             do
                                                 macroStackPointer = macroStackPointer - 1
                                                 local value = macroStack[macroStackPointer + 1]
-                                                _ret564 = value
+                                                _ret561 = value
                                             end
-                                            jump = _ret564
+                                            jump = _ret561
                                         end
                                     end
                                 end
@@ -6596,30 +6616,30 @@ return function (plume)
                                     if op < 61 then
                                         do
                                             do
-                                                local _ret565
+                                                local _ret562
                                                 do
                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                    _ret565 = value
+                                                    _ret562 = value
                                                 end
-                                                variableStackPointer = _ret565 - 1
+                                                variableStackPointer = _ret562 - 1
                                             end
-                                            local _ret566
+                                            local _ret563
                                             do
                                                 fileStackPointer = fileStackPointer - 1
                                                 local value = fileStack[fileStackPointer + 1]
-                                                _ret566 = value
+                                                _ret563 = value
                                             end
                                             do
                                                 local call = table.remove (runtime.callstack)
                                                 if call and call.safe then
-                                                    local _ret567
+                                                    local _ret564
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
-                                                        _ret567 = value
+                                                        _ret564 = value
                                                     end
-                                                    local result = _ret567
+                                                    local result = _ret564
                                                     local safeResult = plume.obj.table (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
@@ -6627,8 +6647,8 @@ return function (plume)
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
                                             end
-                                            local _ret569 = fileStackPointer
-                                            if _ret569 == 0 then
+                                            local _ret566 = fileStackPointer
+                                            if _ret566 == 0 then
                                                 do
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = plume.ops.END
@@ -6636,20 +6656,20 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret568 = macroStackPointer
+                                                    local _ret565 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret568
+                                                    injectionStack[injectionStackPointer] = _ret565
                                                 end
                                             else
-                                                local _ret570
+                                                local _ret567
                                                 do
                                                     macroStackPointer = macroStackPointer - 1
                                                     local value = macroStack[macroStackPointer + 1]
-                                                    _ret570 = value
+                                                    _ret567 = value
                                                 end
-                                                jump = _ret570
+                                                jump = _ret567
                                             end
-                                            local _ret571
+                                            local _ret568
                                             do
                                                 local lastfile
                                                 local files = runtime.files
@@ -6664,16 +6684,16 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                _ret571 = lastfile
+                                                _ret568 = lastfile
                                             end
-                                            local file = _ret571
+                                            local file = _ret568
                                             if file and file.cacheId then
-                                                local _ret572
+                                                local _ret569
                                                 do
                                                     local value = mainStack[mainStackPointer]
-                                                    _ret572 = value
+                                                    _ret569 = value
                                                 end
-                                                runtime.cache.results[file.cacheId] = _ret572
+                                                runtime.cache.results[file.cacheId] = _ret569
                                             end
                                         end
                                     else
@@ -6683,12 +6703,12 @@ return function (plume)
                                                 for _, paramInfos in ipairs (params)
                                                  do
                                                     do
-                                                        local _ret573
+                                                        local _ret570
                                                         do
                                                             local value = variableStackFrames[variableStackFramesPointer or 0]
-                                                            _ret573 = value
+                                                            _ret570 = value
                                                         end
-                                                        variableStack[_ret573 + (paramInfos.offset - 1 or 0)] = paramInfos.value
+                                                        variableStack[_ret570 + (paramInfos.offset - 1 or 0)] = paramInfos.value
                                                     end
                                                 end
                                                 fileParams = nil
@@ -6698,13 +6718,13 @@ return function (plume)
                                 else
                                     if op < 63 then
                                         do
-                                            local _ret574
+                                            local _ret571
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret574 = value
+                                                _ret571 = value
                                             end
-                                            local values = _ret574
+                                            local values = _ret571
                                             local cache = {}
                                             contextStackCache.pointer = contextStackCache.pointer + 1
                                             contextStackCache[contextStackCache.pointer] = cache
@@ -6729,30 +6749,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.wrongContextType (var))
                                                             do
                                                                 do
-                                                                    local _ret575
+                                                                    local _ret572
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret575 = value
+                                                                        _ret572 = value
                                                                     end
-                                                                    variableStackPointer = _ret575 - 1
+                                                                    variableStackPointer = _ret572 - 1
                                                                 end
-                                                                local _ret576
+                                                                local _ret573
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret576 = value
+                                                                    _ret573 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret577
+                                                                        local _ret574
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret577 = value
+                                                                            _ret574 = value
                                                                         end
-                                                                        local result = _ret577
+                                                                        local result = _ret574
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -6760,13 +6780,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret578
+                                                                local _ret575
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret578 = value
+                                                                    _ret575 = value
                                                                 end
-                                                                jump = _ret578
+                                                                jump = _ret575
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -6782,13 +6802,13 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret579
+                                            local _ret576
                                             do
                                                 contextStackCache.pointer = contextStackCache.pointer - 1
                                                 local value = contextStackCache[contextStackCache.pointer + 1]
-                                                _ret579 = value
+                                                _ret576 = value
                                             end
-                                            local cache = _ret579
+                                            local cache = _ret576
                                             for _, var in ipairs (cache)
                                              do
                                                 var:pop ()
@@ -6814,12 +6834,12 @@ return function (plume)
                                 else
                                     if op < 67 then
                                         do
-                                            local _ret580
+                                            local _ret577
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret580 = value
+                                                _ret577 = value
                                             end
-                                            local context = _ret580
+                                            local context = _ret577
                                             local success, result = context:HOST_UPDATE ()
                                             if not success then
                                                 do
@@ -6839,30 +6859,30 @@ return function (plume)
                                                         safeResult:setItem ("result", result)
                                                         do
                                                             do
-                                                                local _ret581
+                                                                local _ret578
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret581 = value
+                                                                    _ret578 = value
                                                                 end
-                                                                variableStackPointer = _ret581 - 1
+                                                                variableStackPointer = _ret578 - 1
                                                             end
-                                                            local _ret582
+                                                            local _ret579
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret582 = value
+                                                                _ret579 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret583
+                                                                    local _ret580
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret583 = value
+                                                                        _ret580 = value
                                                                     end
-                                                                    local result = _ret583
+                                                                    local result = _ret580
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -6870,13 +6890,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret584
+                                                            local _ret581
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret584 = value
+                                                                _ret581 = value
                                                             end
-                                                            jump = _ret584
+                                                            jump = _ret581
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -6901,9 +6921,9 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret585 = macroStackPointer
+                                                    local _ret582 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret585
+                                                    injectionStack[injectionStackPointer] = _ret582
                                                 end
                                                 do
                                                     injectionStackPointer = injectionStackPointer + 1
@@ -6912,9 +6932,9 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret586 = macroStackPointer
+                                                    local _ret583 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret586
+                                                    injectionStack[injectionStackPointer] = _ret583
                                                 end
                                                 do
                                                     injectionStackPointer = injectionStackPointer + 1
@@ -6923,21 +6943,21 @@ return function (plume)
                                                     injectionStack[injectionStackPointer] = 0
                                                     injectionStackPointer = injectionStackPointer + 1
                                                     injectionStack[injectionStackPointer] = 0
-                                                    local _ret587 = macroStackPointer
+                                                    local _ret584 = macroStackPointer
                                                     injectionStackPointer = injectionStackPointer + 1
-                                                    injectionStack[injectionStackPointer] = _ret587
+                                                    injectionStack[injectionStackPointer] = _ret584
                                                 end
                                             else
                                                 do
                                                     local call = table.remove (runtime.callstack)
                                                     if call and call.safe then
-                                                        local _ret589
+                                                        local _ret586
                                                         do
                                                             mainStackPointer = mainStackPointer - 1
                                                             local value = mainStack[mainStackPointer + 1]
-                                                            _ret589 = value
+                                                            _ret586 = value
                                                         end
-                                                        local result = _ret589
+                                                        local result = _ret586
                                                         local safeResult = plume.obj.table (0, 2)
                                                         safeResult:setItem ("success", true)
                                                         safeResult:setItem ("result", result)
@@ -6945,11 +6965,11 @@ return function (plume)
                                                         mainStack[mainStackPointer] = safeResult
                                                     end
                                                 end
-                                                local _ret588
+                                                local _ret585
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
-                                                    _ret588 = value
+                                                    _ret585 = value
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = context.RETURN_VALUE or empty
@@ -6957,19 +6977,19 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret590
+                                            local _ret587
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret590 = value
+                                                _ret587 = value
                                             end
-                                            local value = _ret590
-                                            local _ret591
+                                            local value = _ret587
+                                            local _ret588
                                             do
                                                 local value = mainStack[mainStackPointer]
-                                                _ret591 = value
+                                                _ret588 = value
                                             end
-                                            local context = _ret591
+                                            local context = _ret588
                                             local success, result = context:HOST_NEXT (value)
                                             if not success then
                                                 do
@@ -6989,30 +7009,30 @@ return function (plume)
                                                         safeResult:setItem ("result", result)
                                                         do
                                                             do
-                                                                local _ret592
+                                                                local _ret589
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret592 = value
+                                                                    _ret589 = value
                                                                 end
-                                                                variableStackPointer = _ret592 - 1
+                                                                variableStackPointer = _ret589 - 1
                                                             end
-                                                            local _ret593
+                                                            local _ret590
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret593 = value
+                                                                _ret590 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret594
+                                                                    local _ret591
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret594 = value
+                                                                        _ret591 = value
                                                                     end
-                                                                    local result = _ret594
+                                                                    local result = _ret591
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -7020,13 +7040,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret595
+                                                            local _ret592
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret595 = value
+                                                                _ret592 = value
                                                             end
-                                                            jump = _ret595
+                                                            jump = _ret592
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -7043,9 +7063,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret596 = macroStackPointer
+                                                        local _ret593 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret596
+                                                        injectionStack[injectionStackPointer] = _ret593
                                                     end
                                                     do
                                                         injectionStackPointer = injectionStackPointer + 1
@@ -7054,9 +7074,9 @@ return function (plume)
                                                         injectionStack[injectionStackPointer] = 0
                                                         injectionStackPointer = injectionStackPointer + 1
                                                         injectionStack[injectionStackPointer] = 0
-                                                        local _ret597 = macroStackPointer
+                                                        local _ret594 = macroStackPointer
                                                         injectionStackPointer = injectionStackPointer + 1
-                                                        injectionStack[injectionStackPointer] = _ret597
+                                                        injectionStack[injectionStackPointer] = _ret594
                                                     end
                                                 else
                                                     ip = jump - 1
@@ -7070,13 +7090,13 @@ return function (plume)
                                 if op < 70 then
                                     if op < 69 then
                                         do
-                                            local _ret598
+                                            local _ret595
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret598 = value
+                                                _ret595 = value
                                             end
-                                            local msg = _ret598
+                                            local msg = _ret595
                                             do
                                                 local safeCallIndex
                                                 for i = #runtime.callstack, 1, -1 do
@@ -7094,30 +7114,30 @@ return function (plume)
                                                     safeResult:setItem ("result", msg)
                                                     do
                                                         do
-                                                            local _ret599
+                                                            local _ret596
                                                             do
                                                                 variableStackFramesPointer = variableStackFramesPointer - 1
                                                                 local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                _ret599 = value
+                                                                _ret596 = value
                                                             end
-                                                            variableStackPointer = _ret599 - 1
+                                                            variableStackPointer = _ret596 - 1
                                                         end
-                                                        local _ret600
+                                                        local _ret597
                                                         do
                                                             closureStack.pointer = closureStack.pointer - 1
                                                             local value = closureStack[closureStack.pointer + 1]
-                                                            _ret600 = value
+                                                            _ret597 = value
                                                         end
                                                         do
                                                             local call = table.remove (runtime.callstack)
                                                             if call and call.safe then
-                                                                local _ret601
+                                                                local _ret598
                                                                 do
                                                                     mainStackPointer = mainStackPointer - 1
                                                                     local value = mainStack[mainStackPointer + 1]
-                                                                    _ret601 = value
+                                                                    _ret598 = value
                                                                 end
-                                                                local result = _ret601
+                                                                local result = _ret598
                                                                 local safeResult = plume.obj.table (0, 2)
                                                                 safeResult:setItem ("success", true)
                                                                 safeResult:setItem ("result", result)
@@ -7125,13 +7145,13 @@ return function (plume)
                                                                 mainStack[mainStackPointer] = safeResult
                                                             end
                                                         end
-                                                        local _ret602
+                                                        local _ret599
                                                         do
                                                             macroStackPointer = macroStackPointer - 1
                                                             local value = macroStack[macroStackPointer + 1]
-                                                            _ret602 = value
+                                                            _ret599 = value
                                                         end
-                                                        jump = _ret602
+                                                        jump = _ret599
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
@@ -7146,15 +7166,15 @@ return function (plume)
                                 else
                                     if op < 71 then
                                         do
-                                            local _ret603
+                                            local _ret600
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret603 = value
+                                                _ret600 = value
                                             end
-                                            local t = _ret603.table[1]
-                                            local _ret604 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                            local tt = _ret604
+                                            local t = _ret600.table[1]
+                                            local _ret601 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local tt = _ret601
                                             local result
                                             if tt == "table" then
                                                 result = #t.table
@@ -7178,30 +7198,30 @@ return function (plume)
                                                         safeResult:setItem ("result", plume.error.hasNoLen (tt))
                                                         do
                                                             do
-                                                                local _ret605
+                                                                local _ret602
                                                                 do
                                                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                    _ret605 = value
+                                                                    _ret602 = value
                                                                 end
-                                                                variableStackPointer = _ret605 - 1
+                                                                variableStackPointer = _ret602 - 1
                                                             end
-                                                            local _ret606
+                                                            local _ret603
                                                             do
                                                                 closureStack.pointer = closureStack.pointer - 1
                                                                 local value = closureStack[closureStack.pointer + 1]
-                                                                _ret606 = value
+                                                                _ret603 = value
                                                             end
                                                             do
                                                                 local call = table.remove (runtime.callstack)
                                                                 if call and call.safe then
-                                                                    local _ret607
+                                                                    local _ret604
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1
                                                                         local value = mainStack[mainStackPointer + 1]
-                                                                        _ret607 = value
+                                                                        _ret604 = value
                                                                     end
-                                                                    local result = _ret607
+                                                                    local result = _ret604
                                                                     local safeResult = plume.obj.table (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
@@ -7209,13 +7229,13 @@ return function (plume)
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
                                                             end
-                                                            local _ret608
+                                                            local _ret605
                                                             do
                                                                 macroStackPointer = macroStackPointer - 1
                                                                 local value = macroStack[macroStackPointer + 1]
-                                                                _ret608 = value
+                                                                _ret605 = value
                                                             end
-                                                            jump = _ret608
+                                                            jump = _ret605
                                                         end
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
@@ -7226,6 +7246,36 @@ return function (plume)
                                             end
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = result
+                                            do
+                                                local call = table.remove (runtime.callstack)
+                                                if call and call.safe then
+                                                    local _ret606
+                                                    do
+                                                        mainStackPointer = mainStackPointer - 1
+                                                        local value = mainStack[mainStackPointer + 1]
+                                                        _ret606 = value
+                                                    end
+                                                    local result = _ret606
+                                                    local safeResult = plume.obj.table (0, 2)
+                                                    safeResult:setItem ("success", true)
+                                                    safeResult:setItem ("result", result)
+                                                    mainStackPointer = mainStackPointer + 1
+                                                    mainStack[mainStackPointer] = safeResult
+                                                end
+                                            end
+                                        end
+                                    else
+                                        do
+                                            local _ret607
+                                            do
+                                                mainStackPointer = mainStackPointer - 1
+                                                local value = mainStack[mainStackPointer + 1]
+                                                _ret607 = value
+                                            end
+                                            local t = _ret607.table[1]
+                                            local _ret608 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            mainStackPointer = mainStackPointer + 1
+                                            mainStack[mainStackPointer] = _ret608
                                             do
                                                 local call = table.remove (runtime.callstack)
                                                 if call and call.safe then
@@ -7244,36 +7294,6 @@ return function (plume)
                                                 end
                                             end
                                         end
-                                    else
-                                        do
-                                            local _ret610
-                                            do
-                                                mainStackPointer = mainStackPointer - 1
-                                                local value = mainStack[mainStackPointer + 1]
-                                                _ret610 = value
-                                            end
-                                            local t = _ret610.table[1]
-                                            local _ret611 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
-                                            mainStackPointer = mainStackPointer + 1
-                                            mainStack[mainStackPointer] = _ret611
-                                            do
-                                                local call = table.remove (runtime.callstack)
-                                                if call and call.safe then
-                                                    local _ret612
-                                                    do
-                                                        mainStackPointer = mainStackPointer - 1
-                                                        local value = mainStack[mainStackPointer + 1]
-                                                        _ret612 = value
-                                                    end
-                                                    local result = _ret612
-                                                    local safeResult = plume.obj.table (0, 2)
-                                                    safeResult:setItem ("success", true)
-                                                    safeResult:setItem ("result", result)
-                                                    mainStackPointer = mainStackPointer + 1
-                                                    mainStack[mainStackPointer] = safeResult
-                                                end
-                                            end
-                                        end
                                     end
                                 end
                             end
@@ -7283,20 +7303,20 @@ return function (plume)
                                     if op < 73 then
                                         do
                                             local signature = "numbers stop|start, stop|start, stop, step"
-                                            local _ret613
+                                            local _ret610
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret613 = value
+                                                _ret610 = value
                                             end
-                                            local args = _ret613.table
+                                            local args = _ret610.table
                                             local start = tonumber (args[1])
                                             local stop = tonumber (args[2])
                                             local step = tonumber (args[3] or 1)
-                                            local _ret614
+                                            local _ret611
                                             do
-                                                local _ret615 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
-                                                local t = _ret615
+                                                local _ret612 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
+                                                local t = _ret612
                                                 if t ~= "number" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -7319,30 +7339,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
                                                                     do
-                                                                        local _ret616
+                                                                        local _ret613
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret616 = value
+                                                                            _ret613 = value
                                                                         end
-                                                                        variableStackPointer = _ret616 - 1
+                                                                        variableStackPointer = _ret613 - 1
                                                                     end
-                                                                    local _ret617
+                                                                    local _ret614
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret617 = value
+                                                                        _ret614 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret618
+                                                                            local _ret615
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret618 = value
+                                                                                _ret615 = value
                                                                             end
-                                                                            local result = _ret618
+                                                                            local result = _ret615
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -7350,13 +7370,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret619
+                                                                    local _ret616
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret619 = value
+                                                                        _ret616 = value
                                                                     end
-                                                                    jump = _ret619
+                                                                    jump = _ret616
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -7365,20 +7385,20 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret614 = false
-                                                    goto _inline_end1522
+                                                    _ret611 = false
+                                                    goto _inline_end1519
                                                 end
-                                                _ret614 = true
+                                                _ret611 = true
                                             end
-                                            ::_inline_end1522::
+                                            ::_inline_end1519::
                                             if not stop then
                                                 stop = start
                                                 start = 1
                                             end
-                                            local _ret620
+                                            local _ret617
                                             do
-                                                local _ret621 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
-                                                local t = _ret621
+                                                local _ret618 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
+                                                local t = _ret618
                                                 if t ~= "number" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -7401,30 +7421,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
                                                                     do
-                                                                        local _ret622
+                                                                        local _ret619
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret622 = value
+                                                                            _ret619 = value
                                                                         end
-                                                                        variableStackPointer = _ret622 - 1
+                                                                        variableStackPointer = _ret619 - 1
                                                                     end
-                                                                    local _ret623
+                                                                    local _ret620
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret623 = value
+                                                                        _ret620 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret624
+                                                                            local _ret621
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret624 = value
+                                                                                _ret621 = value
                                                                             end
-                                                                            local result = _ret624
+                                                                            local result = _ret621
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -7432,13 +7452,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret625
+                                                                    local _ret622
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret625 = value
+                                                                        _ret622 = value
                                                                     end
-                                                                    jump = _ret625
+                                                                    jump = _ret622
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -7447,16 +7467,16 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret620 = false
-                                                    goto _inline_end1537
+                                                    _ret617 = false
+                                                    goto _inline_end1534
                                                 end
-                                                _ret620 = true
+                                                _ret617 = true
                                             end
-                                            ::_inline_end1537::
-                                            local _ret626
+                                            ::_inline_end1534::
+                                            local _ret623
                                             do
-                                                local _ret627 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
-                                                local t = _ret627
+                                                local _ret624 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
+                                                local t = _ret624
                                                 if t ~= "number" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -7479,30 +7499,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
                                                                     do
-                                                                        local _ret628
+                                                                        local _ret625
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret628 = value
+                                                                            _ret625 = value
                                                                         end
-                                                                        variableStackPointer = _ret628 - 1
+                                                                        variableStackPointer = _ret625 - 1
                                                                     end
-                                                                    local _ret629
+                                                                    local _ret626
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret629 = value
+                                                                        _ret626 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret630
+                                                                            local _ret627
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret630 = value
+                                                                                _ret627 = value
                                                                             end
-                                                                            local result = _ret630
+                                                                            local result = _ret627
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -7510,13 +7530,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret631
+                                                                    local _ret628
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret631 = value
+                                                                        _ret628 = value
                                                                     end
-                                                                    jump = _ret631
+                                                                    jump = _ret628
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -7525,12 +7545,12 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret626 = false
-                                                    goto _inline_end1552
+                                                    _ret623 = false
+                                                    goto _inline_end1549
                                                 end
-                                                _ret626 = true
+                                                _ret623 = true
                                             end
-                                            ::_inline_end1552::
+                                            ::_inline_end1549::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
@@ -7538,13 +7558,13 @@ return function (plume)
                                             do
                                                 local call = table.remove (runtime.callstack)
                                                 if call and call.safe then
-                                                    local _ret632
+                                                    local _ret629
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
-                                                        _ret632 = value
+                                                        _ret629 = value
                                                     end
-                                                    local result = _ret632
+                                                    local result = _ret629
                                                     local safeResult = plume.obj.table (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
@@ -7555,17 +7575,17 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret633
+                                            local _ret630
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret633 = value
+                                                _ret630 = value
                                             end
-                                            local args = _ret633.table
-                                            local _ret634
+                                            local args = _ret630.table
+                                            local _ret631
                                             do
-                                                local _ret635 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
-                                                local t = _ret635
+                                                local _ret632 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local t = _ret632
                                                 if t ~= "table" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -7588,30 +7608,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)"))
                                                                 do
                                                                     do
-                                                                        local _ret636
+                                                                        local _ret633
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret636 = value
+                                                                            _ret633 = value
                                                                         end
-                                                                        variableStackPointer = _ret636 - 1
+                                                                        variableStackPointer = _ret633 - 1
                                                                     end
-                                                                    local _ret637
+                                                                    local _ret634
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret637 = value
+                                                                        _ret634 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret638
+                                                                            local _ret635
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret638 = value
+                                                                                _ret635 = value
                                                                             end
-                                                                            local result = _ret638
+                                                                            local result = _ret635
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -7619,13 +7639,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret639
+                                                                    local _ret636
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret639 = value
+                                                                        _ret636 = value
                                                                     end
-                                                                    jump = _ret639
+                                                                    jump = _ret636
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -7634,24 +7654,24 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret634 = false
-                                                    goto _inline_end1573
+                                                    _ret631 = false
+                                                    goto _inline_end1570
                                                 end
-                                                _ret634 = true
+                                                _ret631 = true
                                             end
-                                            ::_inline_end1573::
+                                            ::_inline_end1570::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named}
                                             do
                                                 local call = table.remove (runtime.callstack)
                                                 if call and call.safe then
-                                                    local _ret640
+                                                    local _ret637
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
-                                                        _ret640 = value
+                                                        _ret637 = value
                                                     end
-                                                    local result = _ret640
+                                                    local result = _ret637
                                                     local safeResult = plume.obj.table (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
@@ -7664,17 +7684,17 @@ return function (plume)
                                 else
                                     if op < 75 then
                                         do
-                                            local _ret641
+                                            local _ret638
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret641 = value
+                                                _ret638 = value
                                             end
-                                            local args = _ret641.table
-                                            local _ret642
+                                            local args = _ret638.table
+                                            local _ret639
                                             do
-                                                local _ret643 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
-                                                local t = _ret643
+                                                local _ret640 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local t = _ret640
                                                 if t ~= "table" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -7697,30 +7717,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)"))
                                                                 do
                                                                     do
-                                                                        local _ret644
+                                                                        local _ret641
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret644 = value
+                                                                            _ret641 = value
                                                                         end
-                                                                        variableStackPointer = _ret644 - 1
+                                                                        variableStackPointer = _ret641 - 1
                                                                     end
-                                                                    local _ret645
+                                                                    local _ret642
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret645 = value
+                                                                        _ret642 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret646
+                                                                            local _ret643
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret646 = value
+                                                                                _ret643 = value
                                                                             end
-                                                                            local result = _ret646
+                                                                            local result = _ret643
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -7728,13 +7748,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret647
+                                                                    local _ret644
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret647 = value
+                                                                        _ret644 = value
                                                                     end
-                                                                    jump = _ret647
+                                                                    jump = _ret644
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -7743,24 +7763,24 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret642 = false
-                                                    goto _inline_end1594
+                                                    _ret639 = false
+                                                    goto _inline_end1591
                                                 end
-                                                _ret642 = true
+                                                _ret639 = true
                                             end
-                                            ::_inline_end1594::
+                                            ::_inline_end1591::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS}
                                             do
                                                 local call = table.remove (runtime.callstack)
                                                 if call and call.safe then
-                                                    local _ret648
+                                                    local _ret645
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
                                                         local value = mainStack[mainStackPointer + 1]
-                                                        _ret648 = value
+                                                        _ret645 = value
                                                     end
-                                                    local result = _ret648
+                                                    local result = _ret645
                                                     local safeResult = plume.obj.table (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
@@ -7771,16 +7791,16 @@ return function (plume)
                                         end
                                     else
                                         do
-                                            local _ret649
+                                            local _ret646
                                             do
                                                 mainStackPointer = mainStackPointer - 1
                                                 local value = mainStack[mainStackPointer + 1]
-                                                _ret649 = value
+                                                _ret646 = value
                                             end
-                                            local args = _ret649
+                                            local args = _ret646
                                             local firstFilename = runtime.files[1].name
                                             local lastFilename = runtime.files[fileStack[fileStackPointer]].name
-                                            local _ret650
+                                            local _ret647
                                             do
                                                 local lastfile
                                                 local files = runtime.files
@@ -7795,13 +7815,13 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                _ret650 = lastfile
+                                                _ret647 = lastfile
                                             end
-                                            local currentFile = _ret650
-                                            local _ret651
+                                            local currentFile = _ret647
+                                            local _ret648
                                             do
-                                                local _ret652 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
-                                                local t = _ret652
+                                                local _ret649 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
+                                                local t = _ret649
                                                 if t ~= "string" then
                                                     if not vmerr then
                                                         if t == "nil" then
@@ -7824,30 +7844,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                 do
                                                                     do
-                                                                        local _ret653
+                                                                        local _ret650
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret653 = value
+                                                                            _ret650 = value
                                                                         end
-                                                                        variableStackPointer = _ret653 - 1
+                                                                        variableStackPointer = _ret650 - 1
                                                                     end
-                                                                    local _ret654
+                                                                    local _ret651
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret654 = value
+                                                                        _ret651 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret655
+                                                                            local _ret652
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret655 = value
+                                                                                _ret652 = value
                                                                             end
-                                                                            local result = _ret655
+                                                                            local result = _ret652
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -7855,13 +7875,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret656
+                                                                    local _ret653
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret656 = value
+                                                                        _ret653 = value
                                                                     end
-                                                                    jump = _ret656
+                                                                    jump = _ret653
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -7870,13 +7890,13 @@ return function (plume)
                                                             end
                                                         end
                                                     end
-                                                    _ret651 = false
-                                                    goto _inline_end1616
+                                                    _ret648 = false
+                                                    goto _inline_end1613
                                                 end
-                                                _ret651 = true
+                                                _ret648 = true
                                             end
-                                            ::_inline_end1616::
-                                            local assertion = _ret651
+                                            ::_inline_end1613::
+                                            local assertion = _ret648
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
                                                 if filename then
@@ -7932,30 +7952,30 @@ return function (plume)
                                                                             safeResult:setItem ("result", plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                             do
                                                                                 do
-                                                                                    local _ret657
+                                                                                    local _ret654
                                                                                     do
                                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                        _ret657 = value
+                                                                                        _ret654 = value
                                                                                     end
-                                                                                    variableStackPointer = _ret657 - 1
+                                                                                    variableStackPointer = _ret654 - 1
                                                                                 end
-                                                                                local _ret658
+                                                                                local _ret655
                                                                                 do
                                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                                    _ret658 = value
+                                                                                    _ret655 = value
                                                                                 end
                                                                                 do
                                                                                     local call = table.remove (runtime.callstack)
                                                                                     if call and call.safe then
-                                                                                        local _ret659
+                                                                                        local _ret656
                                                                                         do
                                                                                             mainStackPointer = mainStackPointer - 1
                                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                                            _ret659 = value
+                                                                                            _ret656 = value
                                                                                         end
-                                                                                        local result = _ret659
+                                                                                        local result = _ret656
                                                                                         local safeResult = plume.obj.table (0, 2)
                                                                                         safeResult:setItem ("success", true)
                                                                                         safeResult:setItem ("result", result)
@@ -7963,13 +7983,13 @@ return function (plume)
                                                                                         mainStack[mainStackPointer] = safeResult
                                                                                     end
                                                                                 end
-                                                                                local _ret660
+                                                                                local _ret657
                                                                                 do
                                                                                     macroStackPointer = macroStackPointer - 1
                                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                                    _ret660 = value
+                                                                                    _ret657 = value
                                                                                 end
-                                                                                jump = _ret660
+                                                                                jump = _ret657
                                                                             end
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
@@ -8005,9 +8025,9 @@ return function (plume)
                                                                 injectionStack[injectionStackPointer] = 0
                                                                 injectionStackPointer = injectionStackPointer + 1
                                                                 injectionStack[injectionStackPointer] = chunk.offset
-                                                                local _ret661 = macroStackPointer
+                                                                local _ret658 = macroStackPointer
                                                                 injectionStackPointer = injectionStackPointer + 1
-                                                                injectionStack[injectionStackPointer] = _ret661
+                                                                injectionStack[injectionStackPointer] = _ret658
                                                             end
                                                         end
                                                     else
@@ -8028,30 +8048,30 @@ return function (plume)
                                                                 safeResult:setItem ("result", err)
                                                                 do
                                                                     do
-                                                                        local _ret662
+                                                                        local _ret659
                                                                         do
                                                                             variableStackFramesPointer = variableStackFramesPointer - 1
                                                                             local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                            _ret662 = value
+                                                                            _ret659 = value
                                                                         end
-                                                                        variableStackPointer = _ret662 - 1
+                                                                        variableStackPointer = _ret659 - 1
                                                                     end
-                                                                    local _ret663
+                                                                    local _ret660
                                                                     do
                                                                         closureStack.pointer = closureStack.pointer - 1
                                                                         local value = closureStack[closureStack.pointer + 1]
-                                                                        _ret663 = value
+                                                                        _ret660 = value
                                                                     end
                                                                     do
                                                                         local call = table.remove (runtime.callstack)
                                                                         if call and call.safe then
-                                                                            local _ret664
+                                                                            local _ret661
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
                                                                                 local value = mainStack[mainStackPointer + 1]
-                                                                                _ret664 = value
+                                                                                _ret661 = value
                                                                             end
-                                                                            local result = _ret664
+                                                                            local result = _ret661
                                                                             local safeResult = plume.obj.table (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
@@ -8059,13 +8079,13 @@ return function (plume)
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
                                                                     end
-                                                                    local _ret665
+                                                                    local _ret662
                                                                     do
                                                                         macroStackPointer = macroStackPointer - 1
                                                                         local value = macroStack[macroStackPointer + 1]
-                                                                        _ret665 = value
+                                                                        _ret662 = value
                                                                     end
-                                                                    jump = _ret665
+                                                                    jump = _ret662
                                                                 end
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
@@ -8092,30 +8112,30 @@ return function (plume)
                                                             safeResult:setItem ("result", plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                             do
                                                                 do
-                                                                    local _ret666
+                                                                    local _ret663
                                                                     do
                                                                         variableStackFramesPointer = variableStackFramesPointer - 1
                                                                         local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret666 = value
+                                                                        _ret663 = value
                                                                     end
-                                                                    variableStackPointer = _ret666 - 1
+                                                                    variableStackPointer = _ret663 - 1
                                                                 end
-                                                                local _ret667
+                                                                local _ret664
                                                                 do
                                                                     closureStack.pointer = closureStack.pointer - 1
                                                                     local value = closureStack[closureStack.pointer + 1]
-                                                                    _ret667 = value
+                                                                    _ret664 = value
                                                                 end
                                                                 do
                                                                     local call = table.remove (runtime.callstack)
                                                                     if call and call.safe then
-                                                                        local _ret668
+                                                                        local _ret665
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
                                                                             local value = mainStack[mainStackPointer + 1]
-                                                                            _ret668 = value
+                                                                            _ret665 = value
                                                                         end
-                                                                        local result = _ret668
+                                                                        local result = _ret665
                                                                         local safeResult = plume.obj.table (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
@@ -8123,13 +8143,13 @@ return function (plume)
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
                                                                 end
-                                                                local _ret669
+                                                                local _ret666
                                                                 do
                                                                     macroStackPointer = macroStackPointer - 1
                                                                     local value = macroStack[macroStackPointer + 1]
-                                                                    _ret669 = value
+                                                                    _ret666 = value
                                                                 end
-                                                                jump = _ret669
+                                                                jump = _ret666
                                                             end
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = safeResult
@@ -8149,11 +8169,11 @@ return function (plume)
             end
             goto DISPATCH
         ::END::
-        local _ret670
+        local _ret667
         do
             local value = mainStack[mainStackPointer]
-            _ret670 = value
+            _ret667 = value
         end
-        return true, _ret670
+        return true, _ret667
     end
 end

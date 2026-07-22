@@ -43,21 +43,21 @@ return function (plume, context)
 	)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.getLast("macros", scopeDepth - 1)
-
 		if not macro.upvalueMap[name] then
 			if ref then
 				table.insert(macro.upvalues, {
 					offset = #macro.upvalues+1,
 					key = ref,
-					scopeOffset = relativeScopeOffset-1,
+					scopeOffset = relativeScopeOffset,
+					blockPosition=macro.accDeep,
 					isUpvalue = true,
-					isRefUpvalue = true
+					isRefUpvalue = true,
 				})
 			else
 				table.insert(macro.upvalues, {
 					offset = #macro.upvalues+1,
 					localOffset = variableOffset, -- local offset to capture the variable
-					scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
+					scopeOffset = relativeScopeOffset, -- in which scope get the variable
 					isUpvalue = true
 				})
 				
@@ -76,7 +76,7 @@ return function (plume, context)
 
 			if not found then
 				if ref then
-					table.insert(scopeUp, {offset=ref, isRef=true})
+					table.insert(scopeUp, {offset=ref, isRef=true, currentFile=context.getCurrentFile()})
 				else
 					table.insert(scopeUp, {offset=variableOffset})
 				end
@@ -129,7 +129,7 @@ return function (plume, context)
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
 				local block = context.getLast("tableBlocks")
-				local label = block and "acc_table_" .. block.blockUID or "macro_end"
+				local label = block and "acc_table_" .. block.blockUID or infos.currentFile.endLabel
 
 				context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset), label)
 				context.registerOP(nil, plume.ops.CLOSE_REF_UPVALUE, 0, 0, label)
@@ -170,7 +170,7 @@ return function (plume, context)
 							nil,
 							scopeDepth,
 							i,
-							relativeScopeOffset-i+1,
+							relativeScopeOffset-i,
 							variable.ref
 						)
 					else
@@ -179,11 +179,12 @@ return function (plume, context)
 							variable.offset,
 							scopeDepth,
 							i,
-							relativeScopeOffset-i+1,
+							relativeScopeOffset-i,
 							nil
 						)
 					end
 				else
+					local macro = context.getLast("macros")
 					result = {
 						frameOffset = #context.scopes-i,
 						offset      = variable.offset,
@@ -191,7 +192,8 @@ return function (plume, context)
 						isRef       = variable.isRef,
 						ref         = variable.ref,
 						node        = variable.node,
-						source      = variable
+						source      = variable,
+						blockPosition = macro.accBlockDeep
 					}
 				end
 

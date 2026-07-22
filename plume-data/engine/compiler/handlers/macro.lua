@@ -52,6 +52,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.contextToClose = 0
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
+		macroObj.accDeep = context.accBlockDeep
 		macroObj.endLabel = endLabel
 		context.append("macros", macroObj)
 		context.append("accBlock", macroObj)
@@ -111,9 +112,10 @@ return function (plume, context, nodeHandlerTable)
 				if paramBody then
 					if macroObj.variadicOffset then
 						if paramNode.isFlag then
-							plume.error.cannotAddNamedAfterVariadic(paramNode)
-						else
+							
 							plume.error.cannotAddFlagAfterVariadic(paramNode)
+						else
+							plume.error.cannotAddNamedAfterVariadic(paramNode)
 						end
 					end
 					if passFlag and not paramNode.isFlag then

@@ -1466,3 +1466,96 @@ end
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1017
+let wing from $import(tests/plume/toimport/1017-1)
+$import(tests/plume/toimport/1017-2)
+$wing()
+/// Output
+/// End
+
+/// Test #1019-1
+macro wing(a, b)
+end
+
+$wing(,b)
+/// Output
+/// End
+
+/// Test #1019-2
+macro wing(a, b)
+end
+
+$wing(b,)
+/// Output
+/// End
+
+/// Test #1019-3
+macro wing(a, b, c)
+end
+
+$wing(b,,c)
+/// Output
+/// End
+
+/// Test #1019-4
+macro wing(a, b, c)
+end
+
+$(wing(1,,3))
+/// Output
+/// End
+
+
+/// Test #1020
+if "a"
+    wing: nib
+elseif "big"
+    \s
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    \s                                                                   │
+│      │    ^^                                                                   │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+
+/// Test #1022-1
+ref wing: macro()
+end
+
+for i in seq(6)
+    let key = H$i
+    $key: macro()
+        $wing()
+    end
+end
+/// Output
+(wing: macro<???>, H1: macro<???>, H2: macro<???>, H3: macro<???>, H4: macro<???>, H5: macro<???>, H6: macro<???>)
+/// End
+
+/// Test #1022-2
+ref wing: macro
+   Wing!
+end
+
+nib: macro
+   $wing()$wing()
+end
+/// Output
+(wing: macro<???>, nib: macro<nib>)
+/// End

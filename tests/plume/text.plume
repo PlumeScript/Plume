@@ -298,3 +298,8 @@ a
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test empty support string method
+$empty.replace(a, b)
+/// Output
+/// End

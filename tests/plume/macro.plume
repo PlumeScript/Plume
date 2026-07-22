@@ -258,3 +258,25 @@ $wing((5, 6, 7))
 /// Output
 3
 /// End
+
+/// Test short macro 1
+let double = macro (x) $(2*x)
+
+$double(5)
+/// Output
+10
+/// End
+
+/// Test short macro 2
+macro double (x) $(2*x)
+
+$double(5)
+/// Output
+10
+/// End
+
+/// Test short macro as expr
+(1, 2, macro (x) $(2*x), 3)
+/// Output
+(1, 2, macro<???>, 3)
+/// End

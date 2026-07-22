@@ -9,25 +9,31 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.FILE = context.file(function(node)
 		local doc = context.collectFileComments(node)
 		local lets = context.countLocals(node)
-		context.enterScope(lets, true)
-		local fileInfos = {
-			isFile=true,
-			node=node,
-			body=node,
-			scopeDeep=1,
-			contextToClose=0,
-			blockToClose={},
-			insideRaise=0,
-			insideLetset=0,
-			insideCall=0,
-			endLabel = "macro_end"
-		}
-		context.append("macros",fileInfos)
-		context.append("accBlock",fileInfos)
-		context.accBlock(nil, {{"name", node.filename}, {"doc", doc}})(node, "macro_end")
-		context.remove("accBlock")
-		context.remove("macros")
+		local fileUID = context.getUID()
+		local endLabel = "macro_end"..fileUID
 
+		context.enterScope(lets, true)
+			local fileInfos = {
+				isFile         = true,
+				node           = node,
+				body           = node,
+				scopeDeep      = 1,
+				contextToClose = 0,
+				blockToClose   = {},
+				insideRaise    = 0,
+				insideLetset   = 0,
+				insideCall     = 0,
+				endLabel       = endLabel,
+				accBlockDeep   = 1
+			}
+			context.append("macros",fileInfos)
+				context.append("accBlock",fileInfos)
+					context.accBlock(nil, {
+						{"name", node.filename},
+						{"doc", doc}
+					})(node, endLabel)
+				context.remove("accBlock")
+			context.remove("macros")
 		context.leaveScope()
 	end)
 

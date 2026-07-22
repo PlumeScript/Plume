@@ -178,11 +178,11 @@ return function (plume)
 				  + C("FALSE", K"false") * -idns
 				  + C("EMPTY", K"empty") * -idns
 				  + idns
-		local escaped = P"\\s" * Cc("TEXT", " ")
-					  + P"\\t" * Cc("TEXT", "\t")
-					  + P"\\n" * Cc("TEXT", "\n")
-					  + P"\\r" * Cc("TEXT", "\r")
-					  + P"\\"*C("TEXT", P(1))
+		local escaped =  C("SPECIAL_TEXT", P"\\s")
+					  +  C("SPECIAL_TEXT", P"\\t")
+					  +  C("SPECIAL_TEXT", P"\\n")
+					  +  C("SPECIAL_TEXT", P"\\r")
+					  +  P"\\"*C("TEXT", P(1))
 		
 
 		---------------------------
@@ -301,8 +301,11 @@ return function (plume)
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
 			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
-			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1"))
-			local arglist = Ct("CALL", P"(" * arg^-1 * (os * P"," * os * arg)^0 * P")")
+			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
+			local arglist = Ct("CALL", 
+				  P"(" * P")"
+				+ P"(" * arg * (os * P"," * os * arg)^0 * P")"
+			)
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
 			local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
@@ -365,8 +368,20 @@ return function (plume)
 				* os * P")"
 			)
 		-- local paramlistM = paramlist + E(plume.error.missingParamList)
-		local macro      = Ct("MACRO",           K"macro" * s * name * os * paramlist^-1 * body * _end)
-		                 + Ct("ANONYMOUS_MACRO", K"macro"            * os * paramlist^-1 * body * _end)
+		local nMacroStart = K"macro" * s * name * os * paramlist^-1
+		local aMacroStart = K"macro" * os * paramlist^-1
+		local lMacroBody      = body * _end
+		local sMacroBody = Ct("BODY", V"firstStatement")
+		local sMacroBodyic = Ct("BODY", V"textic")
+		
+
+		local nlMacro      = Ct("MACRO", nMacroStart * lMacroBody)
+		local nsMacro      = Ct("MACRO", nMacroStart * sMacroBody)
+		local alMacro      = Ct("ANONYMOUS_MACRO", aMacroStart * lMacroBody)
+		local asMacro      = Ct("ANONYMOUS_MACRO", aMacroStart * sMacroBody)
+		local asMacroic    = Ct("ANONYMOUS_MACRO", aMacroStart * sMacroBodyic)
+
+		local macro      = nsMacro + nlMacro + asMacro + alMacro
 
 		local namedArg  = (E(plume.error.cannotUseRef, K"ref") * s)^-1 * Ct("HASH_ITEM",
 							os * (name + Ct("DYNAMIC_KEY", eval)) * os * P":"
@@ -378,11 +393,13 @@ return function (plume)
 						+ Ct("EXPAND", P"..."*evalBase)
 						+ Ct("LIST_ITEM", V"inlinetable")
 						+ Ct("LIST_ITEM", V"textic")
+						+ Ct("LIST_ITEM", Ct("EMPTY", os))
 
-		local call      = Ct("CALL", P"("
-							* os * arg^-1 * (os * P"," * os * arg)^0 * (os
-						* P")"
-						+ E(plume.error.missingClosingBracketArgList)))
+		local closingPar = (os * (P")" + E(plume.error.missingClosingBracketArgList)))
+		local call      = Ct("CALL", 
+								P"(" * P")"
+							+	P"(" * os * arg * (os * P"," * os * arg)^0 * closingPar
+							)
 
 		local blockName = idn * (index + directindex)^0
 		local blockStart = Ct("EVAL", P"@" * blockName * os
@@ -513,8 +530,8 @@ return function (plume)
 			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
 			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
 			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
-			textic = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
-						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic"
+			textic = asMacroic + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic" 
 					)^1,
 
 			comment  = os * (

@@ -54,18 +54,37 @@ end
 --- @param offset number
 --! inline
 function _GET_REF_POS(vm, key, offset)
-    local frameOffset  = _STACK_GET(vm, vm.mainStack.frames, _STACK_POS(vm, vm.mainStack.frames)-offset)
-    local frameTop
-    if offset == 0 then
-        frameTop = _STACK_POS(vm, vm.mainStack)
-    else
-        frameTop = _STACK_GET(vm, vm.mainStack.frames, _STACK_POS(vm, vm.mainStack.frames)-offset+1)
-    end
+    offset = offset-1 -- frames start at 0
 
-    for i = frameTop, frameOffset, -1 do
+    local frameBottom
+    if offset == 0 then
+        frameBottom = 1
+    else
+        frameBottom = _STACK_GET(vm, vm.mainStack.frames, offset)
+    end
+    
+    local frameTop
+    if offset == _STACK_POS(vm, vm.mainStack.frames)-1 or offset==0 then
+        frameTop = _STACK_POS(vm, vm.mainStack)+1
+    else
+        frameTop = _STACK_GET(vm, vm.mainStack.frames, offset+1)
+    end
+    
+    --! to-remove-begin
+    if not frameTop or frameTop <= 0 then
+        _ERROR(vm, "[VM] Wrong frameTop, cannot find current ref.")
+        return
+    end
+    if not frameBottom or frameBottom <= 0 then
+        _ERROR(vm, "[VM] Wrong frameBottom, cannot find current ref.")
+        return
+    end
+    --! to-remove-end
+    
+    for i = frameTop-1, frameBottom, -1 do
         if vm.tagStack[i] == "key" then
             if _STACK_GET(vm, vm.mainStack, i) == key then
-                return i-1
+                return i-1 -- Value is just before the key
             end
         end
     end

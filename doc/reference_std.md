@@ -50,6 +50,8 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 For all macro that take a `pattern` parameter, `?rich` flag enable `lua` pattern, when no `?rich` flag match the exact string.
 
+All `String` methods are supported by `Number` with an implicit string conversion.
+
 #### Normalization
 *  `trim(s)`: Removes leading and trailing whitespace from the string.
 *  `ltrim(s)`: Removes leading whitespace from the beginning of the string.
