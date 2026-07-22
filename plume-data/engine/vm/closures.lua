@@ -110,7 +110,6 @@ function CLOSURE (vm, arg1, arg2)
 				if upvalue.emptyRef then
 					upvalue.emptyRef  = nil
 					upvalue.reference = vm.mainStack
-					-- upvalue.offset    = _GET_REF_POS(vm, upvalueInfos.key, upvalueInfos.scopeOffset)
 					upvalue.offset    = _GET_REF_POS_v2(vm, upvalueInfos.key, upvalueInfos.blockPosition)
 				end
 			else

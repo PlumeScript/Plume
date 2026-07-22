@@ -644,12 +644,12 @@ return function (plume)
                                                                 else
                                                                     local _ret63
                                                                     do
-                                                                        local value = mainStackFrames[upvalueInfos.blockPosition or mainStackFramesPointer]
+                                                                        local value = mainStackFrames[upvalueInfos.blockPosition + 1 or mainStackFramesPointer]
                                                                         _ret63 = value
                                                                     end
                                                                     frameTop = _ret63
                                                                 end
-                                                                for i = frameBottom, frameTop - 1 do
+                                                                for i = frameTop - 1, frameBottom, -1 do
                                                                     if tagStack[i] == "key" then
                                                                         local _ret64
                                                                         do

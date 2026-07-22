@@ -97,7 +97,7 @@ function _GET_REF_POS_v2(vm, key, offset)
     if offset == _STACK_POS(vm, vm.mainStack.frames)-1 or offset==0 then
         frameTop = _STACK_POS(vm, vm.mainStack)+1
     else
-        frameTop = _STACK_GET(vm, vm.mainStack.frames, offset)
+        frameTop = _STACK_GET(vm, vm.mainStack.frames, offset+1)
     end
     
     --! to-remove-begin
@@ -111,7 +111,7 @@ function _GET_REF_POS_v2(vm, key, offset)
     end
     --! to-remove-end
     
-    for i = frameBottom, frameTop-1 do
+    for i = frameTop-1, frameBottom, -1 do
         if vm.tagStack[i] == "key" then
             if _STACK_GET(vm, vm.mainStack, i) == key then
                 return i-1 -- Value is just before the key
