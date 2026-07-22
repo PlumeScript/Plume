@@ -112,9 +112,10 @@ return function (plume, context, nodeHandlerTable)
 				if paramBody then
 					if macroObj.variadicOffset then
 						if paramNode.isFlag then
-							plume.error.cannotAddNamedAfterVariadic(paramNode)
-						else
+							
 							plume.error.cannotAddFlagAfterVariadic(paramNode)
+						else
+							plume.error.cannotAddNamedAfterVariadic(paramNode)
 						end
 					end
 					if passFlag and not paramNode.isFlag then
