@@ -184,6 +184,7 @@ return function (plume, context)
 						)
 					end
 				else
+					local macro = context.getLast("macros")
 					result = {
 						frameOffset = #context.scopes-i,
 						offset      = variable.offset,
@@ -191,7 +192,8 @@ return function (plume, context)
 						isRef       = variable.isRef,
 						ref         = variable.ref,
 						node        = variable.node,
-						source      = variable
+						source      = variable,
+						blockPosition = macro.accBlockDeep
 					}
 				end
 

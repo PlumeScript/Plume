@@ -20,7 +20,7 @@ return function (plume, context, nodeHandlerTable)
 		end
 		if var.isRef then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var.ref))
-			context.registerOP(node, plume.ops.LOAD_REF, var.frameOffset, 0)
+			context.registerOP(node, plume.ops.LOAD_REF, var.blockPosition, 0)
 		elseif var.isUpvalue then
 			context.registerOP(node, plume.ops.LOAD_UPVALUE, 0, var.offset)
 		elseif var.isStd then

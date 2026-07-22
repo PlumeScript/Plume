@@ -23,7 +23,8 @@ return function (plume, context, nodeHandlerTable)
 				insideRaise    = 0,
 				insideLetset   = 0,
 				insideCall     = 0,
-				endLabel       = endLabel
+				endLabel       = endLabel,
+				accBlockDeep   = 1
 			}
 			context.append("macros",fileInfos)
 				context.append("accBlock",fileInfos)
