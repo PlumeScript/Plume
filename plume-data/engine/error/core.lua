@@ -84,15 +84,14 @@ return function(plume)
             end
             level = level + 1
         end
-		return {msg=msg, ip=ip}
+		return {msg=msg, ip=ip or 1}
 	end
 
 	function plume.safeRun(run, runtime, chunk, fileParams)
 		local novmcrash, success, result, ip = xpcall(run, plume.error.vmCrashHandler, runtime, chunk, fileParams)
-		
 		if not novmcrash then
 			result = success.msg
-			ip = success.ip
+			ip = success.ip or 1
 			success = false
 		end
 		
