@@ -84,6 +84,10 @@ function TABLE_INDEX (vm, arg1, arg2)
                 t = vm.plume.std.String
                 tt = "table"
             end
+            if tt == "empty" then
+                t = vm.plume.std.Empty
+                tt = "table"
+            end
             if tt == "number" then
                 t = vm.plume.std.Number
                 tt = "table"

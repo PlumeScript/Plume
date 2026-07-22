@@ -150,3 +150,9 @@ $1.5.round()
 /// Output
 2
 /// End
+
+/// Test support string
+$1.5.find(5)
+/// Output
+5
+/// End

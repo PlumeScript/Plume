@@ -583,7 +583,8 @@ $x.wing
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Cannot index a non-table 'empty' value.                                      │
+│ → Unregistered key 'wing'.                                                     │
+│   Perhaps you mean 'find'?                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
