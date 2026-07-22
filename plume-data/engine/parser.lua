@@ -301,8 +301,11 @@ return function (plume)
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
 			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
-			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1"))
-			local arglist = Ct("CALL", P"(" * arg^-1 * (os * P"," * os * arg)^0 * P")")
+			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
+			local arglist = Ct("CALL", 
+				  P"(" * P")"
+				+ P"(" * arg * (os * P"," * os * arg)^0 * P")"
+			)
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
 			local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
@@ -378,11 +381,13 @@ return function (plume)
 						+ Ct("EXPAND", P"..."*evalBase)
 						+ Ct("LIST_ITEM", V"inlinetable")
 						+ Ct("LIST_ITEM", V"textic")
+						+ Ct("LIST_ITEM", Ct("EMPTY", os))
 
-		local call      = Ct("CALL", P"("
-							* os * arg^-1 * (os * P"," * os * arg)^0 * (os
-						* P")"
-						+ E(plume.error.missingClosingBracketArgList)))
+		local closingPar = (os * (P")" + E(plume.error.missingClosingBracketArgList)))
+		local call      = Ct("CALL", 
+								P"(" * P")"
+							+	P"(" * os * arg * (os * P"," * os * arg)^0 * closingPar
+							)
 
 		local blockName = idn * (index + directindex)^0
 		local blockStart = Ct("EVAL", P"@" * blockName * os
