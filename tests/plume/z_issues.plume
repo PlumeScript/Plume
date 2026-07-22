@@ -1474,6 +1474,33 @@ $wing()
 /// Output
 /// End
 
+/// Test #1020
+if "a"
+    wing: nib
+elseif "big"
+    \s
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    \s                                                                   │
+│      │    ^^                                                                   │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+
 /// Test #1022-1
 ref wing: macro()
 end

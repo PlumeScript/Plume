@@ -34,6 +34,20 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
 	end
 
+	local charTable = {
+		["\\s"] = " ",
+		["\\t"] = "\t",
+		["\\n"] = "\n",
+		["\\r"] = "\r"
+	}
+	function context.getSpecialText(node)
+		local value = node.content
+		return charTable[value]
+	end
+	nodeHandlerTable.SPECIAL_TEXT = function(node)
+		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(context.getSpecialText(node)))
+	end
+
 	nodeHandlerTable.RAW = function(node)
 		local content = (node.children[1] or {}).content or "" -- RAW shouldn't have more than 1 child
 

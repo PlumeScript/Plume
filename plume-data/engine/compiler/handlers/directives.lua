@@ -11,6 +11,8 @@ return function (plume, context, nodeHandlerTable)
 		plume.ast.browse(node, function(child)
 			if child.name == "TEXT" then
 				table.insert(value, child.content)
+			elseif child.name == "SPECIAL_TEXT" then
+				table.insert(value, context.getSpecialText(child))
 			else
 				plume.error.useDoesNotAcceptDynamicArgs(child, name, paramName, node.code:sub(node.bpos, node.epos), isImport)
 			end

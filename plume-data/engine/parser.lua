@@ -178,11 +178,11 @@ return function (plume)
 				  + C("FALSE", K"false") * -idns
 				  + C("EMPTY", K"empty") * -idns
 				  + idns
-		local escaped = P"\\s" * Cc("TEXT", " ")
-					  + P"\\t" * Cc("TEXT", "\t")
-					  + P"\\n" * Cc("TEXT", "\n")
-					  + P"\\r" * Cc("TEXT", "\r")
-					  + P"\\"*C("TEXT", P(1))
+		local escaped =  C("SPECIAL_TEXT", P"\\s")
+					  +  C("SPECIAL_TEXT", P"\\t")
+					  +  C("SPECIAL_TEXT", P"\\n")
+					  +  C("SPECIAL_TEXT", P"\\r")
+					  +  P"\\"*C("TEXT", P(1))
 		
 
 		---------------------------
