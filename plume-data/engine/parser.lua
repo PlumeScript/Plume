@@ -368,8 +368,20 @@ return function (plume)
 				* os * P")"
 			)
 		-- local paramlistM = paramlist + E(plume.error.missingParamList)
-		local macro      = Ct("MACRO",           K"macro" * s * name * os * paramlist^-1 * body * _end)
-		                 + Ct("ANONYMOUS_MACRO", K"macro"            * os * paramlist^-1 * body * _end)
+		local nMacroStart = K"macro" * s * name * os * paramlist^-1
+		local aMacroStart = K"macro" * os * paramlist^-1
+		local lMacroBody      = body * _end
+		local sMacroBody = Ct("BODY", V"firstStatement")
+		local sMacroBodyic = Ct("BODY", V"textic")
+		
+
+		local nlMacro      = Ct("MACRO", nMacroStart * lMacroBody)
+		local nsMacro      = Ct("MACRO", nMacroStart * sMacroBody)
+		local alMacro      = Ct("ANONYMOUS_MACRO", aMacroStart * lMacroBody)
+		local asMacro      = Ct("ANONYMOUS_MACRO", aMacroStart * sMacroBody)
+		local asMacroic    = Ct("ANONYMOUS_MACRO", aMacroStart * sMacroBodyic)
+
+		local macro      = nsMacro + nlMacro + asMacro + alMacro
 
 		local namedArg  = (E(plume.error.cannotUseRef, K"ref") * s)^-1 * Ct("HASH_ITEM",
 							os * (name + Ct("DYNAMIC_KEY", eval)) * os * P":"
@@ -518,8 +530,8 @@ return function (plume)
 			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
 			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
 			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
-			textic = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
-						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic"
+			textic = asMacroic + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic" 
 					)^1,
 
 			comment  = os * (
