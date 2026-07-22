@@ -49,7 +49,7 @@ return function (plume, context)
 				table.insert(macro.upvalues, {
 					offset = #macro.upvalues+1,
 					key = ref,
-					scopeOffset = relativeScopeOffset-1,
+					scopeOffset = relativeScopeOffset,
 					isUpvalue = true,
 					isRefUpvalue = true
 				})
@@ -57,7 +57,7 @@ return function (plume, context)
 				table.insert(macro.upvalues, {
 					offset = #macro.upvalues+1,
 					localOffset = variableOffset, -- local offset to capture the variable
-					scopeOffset = relativeScopeOffset-1, -- in which scope get the variable
+					scopeOffset = relativeScopeOffset, -- in which scope get the variable
 					isUpvalue = true
 				})
 				
@@ -170,7 +170,7 @@ return function (plume, context)
 							nil,
 							scopeDepth,
 							i,
-							relativeScopeOffset-i+1,
+							relativeScopeOffset-i,
 							variable.ref
 						)
 					else
@@ -179,7 +179,7 @@ return function (plume, context)
 							variable.offset,
 							scopeDepth,
 							i,
-							relativeScopeOffset-i+1,
+							relativeScopeOffset-i,
 							nil
 						)
 					end
