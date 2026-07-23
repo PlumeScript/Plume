@@ -197,7 +197,7 @@ return function (plume)
 		end
 	end
 
-	plume.debug.executeFile = function (input, output)
+	plume.debug.executeFile = function (input, output, isMain)
 		local data = {}
 
 		data.filename = input
@@ -212,7 +212,7 @@ return function (plume)
 			local runtime = plume.obj.runtime()
 			local chunk   = plume.obj.macro(data.filename, runtime)
 
-			success, result = pcall(plume.compileFile, data.code, data.filename, chunk, runtime)
+			success, result = pcall(plume.compileFile, data.code, data.filename, chunk, runtime, isMain)
 
 			if success then
 				data.bytecode = runtime.bytecode

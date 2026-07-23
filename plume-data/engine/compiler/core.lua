@@ -12,13 +12,13 @@ return function(plume)
 	--- @param chunk chunk The table to store all sourcecode informations
 	--- (bytecode, parameters names and number...)
 	--- @return nil (instructions are writted directly into the chunk)
-	function plume.compileFile(code, filename, chunk, runtime)
+	function plume.compileFile(code, filename, chunk, runtime, isMain)
 		if runtime.cache.chunks[filename] then
 			plume.copyMacrosInfos(runtime.cache.chunks[filename], chunk)
 			return true
 		end
 
-		local context = plume.newCompilationContext(chunk, runtime)
+		local context = plume.newCompilationContext(chunk, runtime, isMain)
 
 		-- A compilation is already running. Save the partial result
 		if #runtime.instructions > 0 then
@@ -52,13 +52,14 @@ return function(plume)
 
 	--- @param chunk chunk
 	--- @return nil
-	function plume.newCompilationContext(chunk, runtime)
+	function plume.newCompilationContext(chunk, runtime, isMain)
 		local context = {}
 
 		runtime.contextCount = runtime.contextCount + 1
 
 		context.chunk = chunk
 		context.runtime = runtime
+		context.isMain = isMain
 
 		context.constants = runtime.constants
 		

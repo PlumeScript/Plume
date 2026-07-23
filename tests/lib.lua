@@ -258,7 +258,9 @@ function lib.executeTests(allTests, plumeEngine)
                             testData.input,
                             "test.plume",
                             chunk,
-                            runtime
+                            runtime,
+                            nil,
+                            true
                         )
                         
                         -- CRITICAL: Always disable the hook after the pcall completes

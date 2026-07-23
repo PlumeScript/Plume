@@ -65,9 +65,9 @@ function plume.run(runtime, chunk, fileParams)
 	return plume.safeRun(run, runtime, chunk, fileParams)
 end
 
-function plume.execute(code, filename, chunk, runtime, fileParams)
+function plume.execute(code, filename, chunk, runtime, fileParams, isMain)
 	local success, result, ip
-	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
+	success, result = pcall(plume.compileFile, code, filename, chunk, runtime, isMain)
 	
 	if success then
 		success, result, ip = plume.run(runtime, chunk, fileParams)
@@ -95,7 +95,7 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 	runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 
-	local success, result = plume.execute(code, filename, chunk, runtime, fileParams)
+	local success, result = plume.execute(code, filename, chunk, runtime, fileParams, isMain)
 	if success and isMain then
 		plume.error.showWarnings()
 	end
