@@ -18,6 +18,12 @@ return function(plume)
 		}
 	end
 
+	function plume.obj.fragment(count)
+		local fragment = table.new(count, 1)
+		fragment.type = "fragment"
+		return fragment
+	end
+
 	function plume.obj.table (listSlots, hashSlots)
 		local t
 		t = {
@@ -285,6 +291,14 @@ return function(plume)
 		end
 	end
 
+	function reprFragment(obj)
+		local childs = {}
+		for _, child in ipairs(obj) do
+			table.insert(childs, plume.repr(child))
+		end
+		return "Fragment(" .. table.concat(childs, ",") .. ")"
+	end
+
 	function plume.repr(obj, acc, pretty, indent)
 		acc = acc or {}
 		indent = indent or 0
@@ -321,6 +335,8 @@ return function(plume)
 				table.insert(values, plume.repr(value))
 			end
 			return string.format("Context<%s>", table.concat(values, ", "))
+		elseif t == "fragment" then
+			return reprFragment(obj)
 		else
 			return t.."Obj<"..(t.name or "???")..">"
 		end
