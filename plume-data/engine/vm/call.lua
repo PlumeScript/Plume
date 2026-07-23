@@ -123,7 +123,7 @@ function CONCAT_CALL (vm, arg1, arg2)
     elseif tocall == vm.plume.std.Table then
         CONCAT_TABLE(vm)
 
-    -- CHECK_IS_TEXT do exactly the same thing as tostring
+    -- FORCE_FRAGMENT do exactly the same thing as tostring
     elseif tocall == vm.plume.std.String then
 
         local value = _STACK_POP(vm, vm.mainStack)
@@ -131,6 +131,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         _STACK_PUSH(vm, vm.mainStack, value)
         -- Should check for to many arguments, instead of ignoring them
         _INJECTION_PUSH(vm, vm.plume.ops.CHECK_IS_TEXT, 0, 0)
+        _INJECTION_PUSH(vm, vm.plume.ops.FORCE_FRAGMENT, 0, 0)
 
     elseif tocall == vm.plume.std.attempt then
         local macro = _STACK_GET_FRAMED(vm, vm.mainStack, 0)
