@@ -121,9 +121,6 @@ JUMP_IF_NOT :else   -- Jumps if result is false.
 #### BEGIN_ACC
 <br>Create a new accumulation frame 
 
-#### CONCAT_TEXT
-<br>Concat all element in the current frame. <br>Unstack all element in current frame, remove the last frame and stack the concatenation for theses elements 
-
 #### CONCAT_TABLE
 <br>Make a table from elements of the current frame <br>Unstack all element in current frame, remove the last frame. <br>Make a new table <br>First unstacked element must be a table, containing in order key, value, ismeta to insert in the new table <br>All following elements are appended to the new table. 
 
