@@ -21,19 +21,93 @@ function _END_ACC (vm)
     _STACK_POP(vm, vm.mainStack.frames)
 end
 
---- @opcode
---- Concat all element in the current frame.
---- Unstack all element in current frame, remove the last frame
---- and stack the concatenation for theses elements
+--! inline
+function _MAKE_FRAGMENT(vm, start, count)
+    local fragment = vm.plume.obj.fragment(count)
+    for i = 1, count do
+        fragment[i] = _STACK_GET(vm, vm.mainStack, start+i-1)
+    end
+    return fragment
+end
+
 --! inline
 function CONCAT_TEXT (vm, arg1, arg2)
     local start = _STACK_GET(vm, vm.mainStack.frames)
     local stop  = _STACK_POS(vm, vm.mainStack)
-    
-    local acc_text = table.concat(vm.mainStack, "", start, stop)
+    local count = stop - start + 1
+    local fragment
+
+    local CONCAT_COUNT_LIMIT  = 8
+    local CONCAT_LENGTH_LIMIT = 64
+
+    --! to-remove-begin
+    -- No optimisation in debug mode
+    CONCAT_COUNT_LIMIT = 0
+    --! to-remove-end
+
+    if count == 0 then
+        fragment = ""
+    elseif count == 1 then
+        fragment = _STACK_GET(vm, vm.mainStack, start)
+    elseif count <= CONCAT_COUNT_LIMIT then
+        local directConcat = true
+        local length = 0
+        for i = start, stop do
+            local item = _STACK_GET(vm, vm.mainStack, i)
+            if _GET_TYPE(vm, item) == "fragment" then
+                directConcat = false
+                break
+            else
+                length = length + #item
+            end
+        end
+        directConcat = directConcat and length <= CONCAT_LENGTH_LIMIT
+        if directConcat then
+            fragment = table.concat(vm.mainStack, "", start, stop)
+        else
+            fragment = _MAKE_FRAGMENT(vm, start, count)
+        end
+    else
+        fragment = _MAKE_FRAGMENT(vm, start, count)
+    end
     _STACK_MOVE(vm, vm.mainStack, start)
-    _STACK_SET(vm, vm.mainStack, start, acc_text)
+    _STACK_SET(vm, vm.mainStack, start, fragment)
     _END_ACC(vm)
+end
+
+--! inline
+function FORCE_FRAGMENT (vm, arg1, arg2)
+    local fragment = _STACK_GET(vm, vm.mainStack)
+
+    if _GET_TYPE(vm, fragment) == "fragment" then
+        local result        = {}
+        local stackFragment = {fragment}
+        local stackIndex    = {}
+        local depth         = 0
+
+        while #stackFragment > 0 do
+            depth = #stackFragment
+            local top = table.remove(stackFragment)
+            local quickExit = false
+            for i=(stackIndex[depth] or 1), #top do
+                local item = top[i]
+                if type(item) == "table" then -- by construction, must be a fragment
+                    stackIndex[depth] = i+1
+                    table.insert(stackFragment, top)
+                    table.insert(stackFragment, item)
+                    quickExit = true
+                    break
+                else
+                    table.insert(result, item)
+                end
+            end
+            if not quickExit then
+                stackIndex[depth] = 1
+            end
+        end
+        _STACK_POP(vm, vm.mainStack)
+        _STACK_PUSH(vm, vm.mainStack, table.concat(result))
+    end
 end
 
 --- @opcode
@@ -160,7 +234,7 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
         else
             _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), tostring(value))
         end
-    elseif t ~= "string" then
+    elseif t ~= "string" and t ~= "fragment" then
         local meta = t == "table" and value:getMetaItem("tostring")
         if  meta then
             _STACK_POP(vm, vm.mainStack)

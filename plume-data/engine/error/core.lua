@@ -52,8 +52,10 @@ return function(plume)
 		print(plume.error.formatError({}))
 	end
 
+	local unexpectedHeading = "Unexpected internal error. Please report it at https://github.com/PlumeScript/Plume."
+
 	function plume.error.vmCrashHandler(err)
-		local msg = "Unexpected internal error. Please report it at https://github.com/PlumeScript/Plume."
+		local msg = unexpectedHeading
 
 		msg = msg .. "\n\nLua error message:\n\t".. err
 		msg = msg .. "\n"..debug.traceback("", 2)
@@ -90,7 +92,7 @@ return function(plume)
 	function plume.safeRun(run, runtime, chunk, fileParams)
 		local novmcrash, success, result, ip = xpcall(run, plume.error.vmCrashHandler, runtime, chunk, fileParams)
 		if not novmcrash then
-			result = success.msg
+			result = success.msg or (type(success) == "string" and unexpectedHeading.."\n"..success)
 			ip = success.ip or 1
 			success = false
 		end

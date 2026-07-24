@@ -10,12 +10,20 @@ return function(plume)
 	plume.obj.empty = {type = "empty"}
 
 	--- lua fonction take 1 parameter: the plume table of all given arguments
-	function plume.obj.luaMacro (name, f)
+	function plume.obj.luaMacro (name, f, refs)
 		return {
 			type = "luaMacro",
 			callable = f,
+			refs = refs or {}, -- which element should be passed as reference,
+					           -- and which element need a FORCE_FRAGMENT
 			name = name -- optionnal
 		}
+	end
+
+	function plume.obj.fragment(count)
+		local fragment = table.new(count, 1)
+		fragment.type = "fragment"
+		return fragment
 	end
 
 	function plume.obj.table (listSlots, hashSlots)
@@ -285,6 +293,14 @@ return function(plume)
 		end
 	end
 
+	function reprFragment(obj)
+		local childs = {}
+		for _, child in ipairs(obj) do
+			table.insert(childs, plume.repr(child))
+		end
+		return "Fragment(" .. table.concat(childs, ",") .. ")"
+	end
+
 	function plume.repr(obj, acc, pretty, indent)
 		acc = acc or {}
 		indent = indent or 0
@@ -321,6 +337,8 @@ return function(plume)
 				table.insert(values, plume.repr(value))
 			end
 			return string.format("Context<%s>", table.concat(values, ", "))
+		elseif t == "fragment" then
+			return reprFragment(obj)
 		else
 			return t.."Obj<"..(t.name or "???")..">"
 		end

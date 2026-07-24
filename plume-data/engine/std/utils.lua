@@ -41,10 +41,45 @@ function plume.stdUnpackNamed(args, nameds, name, signature)
 	return true, nil, unpack(result)
 end
 
+---- <TEMP> ----
+function plume.makeFragment(s)
+	local result        = {}
+	local stackFragment = {s}
+	local stackIndex    = {}
+	local depth         = 0
+
+	while #stackFragment > 0 do
+		depth = #stackFragment
+		local top = table.remove(stackFragment)
+		local quickExit = false
+		for i=(stackIndex[depth] or 1), #top do
+			local item = top[i]
+			if type(item) == "table" then -- by construction, must be a fragment
+				stackIndex[depth] = i+1
+				table.insert(stackFragment, top)
+				table.insert(stackFragment, item)
+				quickExit = true
+				break
+			else
+				table.insert(result, item)
+			end
+		end
+		if not quickExit then
+			stackIndex[depth] = 1
+		end
+	end
+	return table.concat(result)
+end
+---- </TEMP> ----
 function plume.stdCheckType(arg, expected, argName, name, signature)
 	local given = type(arg)
 	if type(arg) == "table" and arg.type then
-		if expected ~= "table" and arg.subtype then
+		---- <TEMP> ----
+		if arg.type == "fragment" then
+			given = "string"
+			arg = plume.makeFragment(arg)
+		---- </TEMP> ----
+		elseif expected ~= "table" and arg.subtype then
 			given = arg.subtype
 		elseif expected ~= "table" and arg.table and arg.table.type then
 			given = arg.table.type

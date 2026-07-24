@@ -35,6 +35,10 @@ return function (plume, context, nodeHandlerTable)
 				context.remove("accBlock")
 			context.remove("macros")
 		context.leaveScope()
+
+		if context.isMain then
+			context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+		end
 	end)
 
 	nodeHandlerTable.RUN = function(node)

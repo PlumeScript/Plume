@@ -78,10 +78,16 @@ return function (plume, context, nodeHandlerTable)
 				local offset = context.registerConstant(name)
 				context.registerOP(index, plume.ops.LOAD_CONSTANT, 0, offset)
 			end
+
+			if child.name:match('INDEX') then
+				context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+			end
 		end
 		context.toggleConcatOff()
 		context.nodeHandler(node.children[1]) -- Load the "root" value
 		context.toggleConcatPop()
+
+		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 
 		-- Push all index and call opcodes in order
 		for i=2, #node.children do
@@ -106,6 +112,9 @@ return function (plume, context, nodeHandlerTable)
 					context.registerOP(child, plume.ops.CALL_INDEX_REGISTER_SELF, 0, 0)
 				end
 				context.registerOP(child, plume.ops.TABLE_INDEX, safeFlag)
+			end
+			if i < #node.children then
+				context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 			end
 		end
 
