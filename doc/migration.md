@@ -5,6 +5,24 @@ Escape all non-eval `$`: `\$`
 
 ## Leave affect only the current accumulation block instead of the whole macro #916
 
+## Add an error when using non-escaped `$` #900
+Escape all non-eval `$`: `\$`
+
+## Leave affect only the current accumulation block instead of the whole macro #916
+
+## Add an error when using undefined files params #981
+
+## String representation rework #650
+- Change program output formating behavior #1001
+	- `repr` will not be called anymore on `string`, `number`, `bool` and `empty`.
+- `repr` now give a more exact representation #1002
+- `repr` should print "" instead of empty when possible #1000 _For exemple, in table leafs_
+- `repr(table)` shouldn't add `do` in first layer #999
+
+## `import` and `use` results will be cached starting with `raven` release #806
+- One cache per parameter combination.
+- Using a mutable object as a parameter can lead to unexpected behavior ; a special warning is provided for this #890
+
 # Sparrow -> Owl
 
 ## `#649` remove all `lua.*` tables and macros
