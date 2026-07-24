@@ -358,6 +358,32 @@ body {
 	font-size: 12px;
 	color: var(--text-primary);
 	border-left: 3px solid #60a5fa;
+	position: relative;
+}
+
+.stack-element--tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 60%;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.stack-element:hover .stack-element--tooltip,
+.stack-element:focus-within .stack-element--tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 .stack-content:not(:has(.stack-element)) {

@@ -96,6 +96,22 @@ return function (plume)
 		return table.concat(result)
 	end
 
+	local function reprStackElement(obj)
+		local repr = plume.repr(obj)
+		local tooltip = ""
+		if #repr > 20 then
+			tooltip = string.format("<div class='stack-element--tooltip'>%s</div>", escape(repr))
+			repr = repr:sub(1, 17) .. "..."
+		end
+
+		return string.format(
+				"<div class='stack-element'>%s%s</div>",
+				escape(repr), tooltip
+			)
+
+		
+	end
+
 	local function renderExecution(log)
 		local result = {}
 		for i, vm in ipairs(log) do
@@ -119,7 +135,7 @@ return function (plume)
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format("<div class='stack-element'>%s</div>", escape(plume.repr(vm.mainStack[j]))))
+							table.insert(result, reprStackElement(vm.mainStack[j]))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
@@ -132,10 +148,7 @@ return function (plume)
 									table.insert(result, string.format("<div class='frame-separator'></div>"))
 								end
 							end
-							table.insert(result, string.format(
-								"<div class='stack-element'>%s</div>",
-								escape(plume.repr(vm.variableStack[j]))
-							))
+							table.insert(result,reprStackElement(vm.variableStack[j]))
 						end
 						table.insert(result, "</div>")
 					table.insert(result, "</div>")
