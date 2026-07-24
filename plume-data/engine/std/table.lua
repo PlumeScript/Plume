@@ -147,12 +147,21 @@ plume.std.Table = plume.obj.quickTable{
 		end
 
 		local args = args.table
+		---- <TEMP> ----
+		if args[1] and type(args[1]) == "table" and args[1].type == "fragment" then
+			args[1] = plume.makeFragment(args[1])
+		end
+		---- </TEMP> ----
 		if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
 			return false, plume.error.joinErrorHint()
 		end
 
 		for i, value in ipairs(args) do
-			if type(value) ~= "number" and type(value) ~= "string" then
+			---- <TEMP> ----
+			if type(value) == "table" and value.type == "fragment" then
+				args[i] = plume.makeFragment(value)
+			---- </TEMP> ----
+			elseif type(value) ~= "number" and type(value) ~= "string" then
 				return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
 			end
 		end

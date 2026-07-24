@@ -10,10 +10,12 @@ return function(plume)
 	plume.obj.empty = {type = "empty"}
 
 	--- lua fonction take 1 parameter: the plume table of all given arguments
-	function plume.obj.luaMacro (name, f)
+	function plume.obj.luaMacro (name, f, refs)
 		return {
 			type = "luaMacro",
 			callable = f,
+			refs = refs or {}, -- which element should be passed as reference,
+					           -- and which element need a FORCE_FRAGMENT
 			name = name -- optionnal
 		}
 	end

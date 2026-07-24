@@ -29,6 +29,13 @@ end
 
 local function replaceNext(context, value)
 	local t = type(value) == "table" and value.type or type(value)
+	---- <TEMP> ----
+	if t == "fragment" then
+		value = plume.makeFragment(value)
+		t = "string"
+	end
+	---- </TEMP> ----
+
 	if t ~= "string" and t ~= "number" and t ~= "empty" then
 		return false, string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
 	end

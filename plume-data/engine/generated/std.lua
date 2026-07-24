@@ -1321,6 +1321,13 @@ return function(plume)
 	
 	local function replaceNext(context, value)
 		local t = type(value) == "table" and value.type or type(value)
+		---- <TEMP> ----
+		if t == "fragment" then
+			value = plume.makeFragment(value)
+			t = "string"
+		end
+		---- </TEMP> ----
+	
 		if t ~= "string" and t ~= "number" and t ~= "empty" then
 			return false, string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
 		end
@@ -1938,12 +1945,21 @@ return function(plume)
 			end
 	
 			local args = args.table
+			---- <TEMP> ----
+			if args[1] and type(args[1]) == "table" and args[1].type == "fragment" then
+				args[1] = plume.makeFragment(args[1])
+			end
+			---- </TEMP> ----
 			if args and #args == 1 and type(args[1]) == "table" and args[1].type == "table" then
 				return false, plume.error.joinErrorHint()
 			end
 	
 			for i, value in ipairs(args) do
-				if type(value) ~= "number" and type(value) ~= "string" then
+				---- <TEMP> ----
+				if type(value) == "table" and value.type == "fragment" then
+					args[i] = plume.makeFragment(value)
+				---- </TEMP> ----
+				elseif type(value) ~= "number" and type(value) ~= "string" then
 					return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
 				end
 			end
@@ -2742,10 +2758,45 @@ return function(plume)
 		return true, nil, unpack(result)
 	end
 	
+	---- <TEMP> ----
+	function plume.makeFragment(s)
+		local result        = {}
+		local stackFragment = {s}
+		local stackIndex    = {}
+		local depth         = 0
+	
+		while #stackFragment > 0 do
+			depth = #stackFragment
+			local top = table.remove(stackFragment)
+			local quickExit = false
+			for i=(stackIndex[depth] or 1), #top do
+				local item = top[i]
+				if type(item) == "table" then -- by construction, must be a fragment
+					stackIndex[depth] = i+1
+					table.insert(stackFragment, top)
+					table.insert(stackFragment, item)
+					quickExit = true
+					break
+				else
+					table.insert(result, item)
+				end
+			end
+			if not quickExit then
+				stackIndex[depth] = 1
+			end
+		end
+		return table.concat(result)
+	end
+	---- </TEMP> ----
 	function plume.stdCheckType(arg, expected, argName, name, signature)
 		local given = type(arg)
 		if type(arg) == "table" and arg.type then
-			if expected ~= "table" and arg.subtype then
+			---- <TEMP> ----
+			if arg.type == "fragment" then
+				given = "string"
+				arg = plume.makeFragment(arg)
+			---- </TEMP> ----
+			elseif expected ~= "table" and arg.subtype then
 				given = arg.subtype
 			elseif expected ~= "table" and arg.table and arg.table.type then
 				given = arg.table.type
