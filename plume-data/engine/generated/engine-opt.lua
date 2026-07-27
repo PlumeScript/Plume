@@ -13,6 +13,10 @@ return function (plume)
         local vmstate = vm
         local bytecode = vmstate.runtime.bytecode
         local constants = vmstate.runtime.constants
+        local runtimeCallstack = vmstate.runtime.callstack
+        local runtimeFiles = vmstate.runtime.files
+        local runtimeCache = vmstate.runtime.cache
+        local runtimePlume = vmstate.runtime.plume
         local fileParams = vmstate.fileParams
         local variableStack = vmstate.variableStack
         local variableStackFrames = vmstate.variableStack.frames
@@ -33,11 +37,9 @@ return function (plume)
         local ip = vmstate.ip
         local injectionStack = vmstate.injectionStack
         local injectionStackPointer = vmstate.injectionStack.pointer
-        local globalStackCache = vmstate.globalStackCache
         local flag = vmstate.flag
         local fileStack = vmstate.fileStack
         local fileStackPointer = vmstate.fileStack.pointer
-        local empty = vmstate.empty
         local contextStackCache = vmstate.contextStackCache
         local contextStackCachePointer = vmstate.contextStackCache.pointer
         local closureStack = vmstate.closureStack
@@ -47,6 +49,10 @@ return function (plume)
         local ITER_ITEMS = vmstate.flag.ITER_ITEMS
         local ITER_ENUMS = vmstate.flag.ITER_ENUMS
         local ITER_CUSTOM = vmstate.flag.ITER_CUSTOM
+        local plumeObjTable = vmstate.plume.obj.table
+        local plumeObjMacro = vmstate.plume.obj.macro
+        local plumeObjFragment = vmstate.plume.obj.fragment
+        local plumeObjEmpty = vmstate.plume.obj.empty
         ip = startip - 1
         OP_BITS = plume.OP_BITS
         ARG1_BITS = plume.ARG1_BITS
@@ -62,10 +68,10 @@ return function (plume)
             fileStack[1] = fileID
         end
         do
-            local currentFile = runtime.files[fileID]
+            local currentFile = runtimeFiles[fileID]
             fileParams = {}
             if variadicParam then
-                table.insert (fileParams, {offset = variadicParam.offset, value = plume.obj.table (0, 0)
+                table.insert (fileParams, {offset = variadicParam.offset, value = plumeObjTable (0, 0)
                 })
             end
             if initFileParams then
@@ -90,17 +96,17 @@ return function (plume)
                         elseif currentFile.futureFlagUnknownParamError then
                             do
                                 local safeCallIndex
-                                for i = #runtime.callstack, 1, -1 do
-                                    local call = runtime.callstack[i]
+                                for i = #runtimeCallstack, 1, -1 do
+                                    local call = runtimeCallstack[i]
                                     if call.safe then
                                         safeCallIndex = i
                                     end
                                 end
                                 if safeCallIndex then
-                                    for i = #runtime.callstack, safeCallIndex, -1 do
-                                        table.remove (runtime.callstack)
+                                    for i = #runtimeCallstack, safeCallIndex, -1 do
+                                        table.remove (runtimeCallstack)
                                     end
-                                    local safeResult = plume.obj.table (0, 2)
+                                    local safeResult = plumeObjTable (0, 2)
                                     safeResult:setItem ("success", false)
                                     safeResult:setItem ("result", plume.error.unknownParamError (varKey, namedParamOffset))
                                     do
@@ -115,12 +121,12 @@ return function (plume)
                                         end
                                         local _ret2
                                         do
-                                            closureStack.pointer = closureStack.pointer - 1
-                                            local value = closureStack[closureStack.pointer + 1]
+                                            closureStackPointer = closureStackPointer - 1
+                                            local value = closureStack[closureStackPointer + 1]
                                             _ret2 = value
                                         end
                                         do
-                                            local call = table.remove (runtime.callstack)
+                                            local call = table.remove (runtimeCallstack)
                                             if call and call.safe then
                                                 local _ret3
                                                 do
@@ -129,7 +135,7 @@ return function (plume)
                                                     _ret3 = value
                                                 end
                                                 local result = _ret3
-                                                local safeResult = plume.obj.table (0, 2)
+                                                local safeResult = plumeObjTable (0, 2)
                                                 safeResult:setItem ("success", true)
                                                 safeResult:setItem ("result", result)
                                                 mainStackPointer = mainStackPointer + 1
@@ -152,17 +158,17 @@ return function (plume)
                             end
                             do
                                 local safeCallIndex
-                                for i = #runtime.callstack, 1, -1 do
-                                    local call = runtime.callstack[i]
+                                for i = #runtimeCallstack, 1, -1 do
+                                    local call = runtimeCallstack[i]
                                     if call.safe then
                                         safeCallIndex = i
                                     end
                                 end
                                 if safeCallIndex then
-                                    for i = #runtime.callstack, safeCallIndex, -1 do
-                                        table.remove (runtime.callstack)
+                                    for i = #runtimeCallstack, safeCallIndex, -1 do
+                                        table.remove (runtimeCallstack)
                                     end
-                                    local safeResult = plume.obj.table (0, 2)
+                                    local safeResult = plumeObjTable (0, 2)
                                     safeResult:setItem ("success", false)
                                     safeResult:setItem ("result", plume.error.unknownParamError (varKey, namedParamOffset))
                                     do
@@ -177,12 +183,12 @@ return function (plume)
                                         end
                                         local _ret6
                                         do
-                                            closureStack.pointer = closureStack.pointer - 1
-                                            local value = closureStack[closureStack.pointer + 1]
+                                            closureStackPointer = closureStackPointer - 1
+                                            local value = closureStack[closureStackPointer + 1]
                                             _ret6 = value
                                         end
                                         do
-                                            local call = table.remove (runtime.callstack)
+                                            local call = table.remove (runtimeCallstack)
                                             if call and call.safe then
                                                 local _ret7
                                                 do
@@ -191,7 +197,7 @@ return function (plume)
                                                     _ret7 = value
                                                 end
                                                 local result = _ret7
-                                                local safeResult = plume.obj.table (0, 2)
+                                                local safeResult = plumeObjTable (0, 2)
                                                 safeResult:setItem ("success", true)
                                                 safeResult:setItem ("result", result)
                                                 mainStackPointer = mainStackPointer + 1
@@ -313,7 +319,7 @@ return function (plume)
                                 if op < 6 then
                                     if op < 5 then
                                         mainStackPointer = mainStackPointer + 1
-                                        mainStack[mainStackPointer] = empty
+                                        mainStack[mainStackPointer] = plumeObjEmpty
                                     else
                                         do
                                             local _ret22
@@ -380,12 +386,12 @@ return function (plume)
                                                         end
                                                         if _ret31 == key then
                                                             _ret26 = i - 1
-                                                            goto _inline_end54
+                                                            goto _inline_end55
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end54::
+                                            ::_inline_end55::
                                             local pos = _ret26
                                             if pos then
                                                 local _ret32
@@ -397,14 +403,14 @@ return function (plume)
                                                 mainStack[mainStackPointer] = _ret32
                                             else
                                                 mainStackPointer = mainStackPointer + 1
-                                                mainStack[mainStackPointer] = plume.obj.empty
+                                                mainStack[mainStackPointer] = plumeObjEmpty
                                             end
                                         end
                                     else
                                         do
                                             local _ret33
                                             do
-                                                local value = closureStack[closureStack.pointer]
+                                                local value = closureStack[closureStackPointer]
                                                 _ret33 = value
                                             end
                                             local upvalue = _ret33[arg2]
@@ -449,7 +455,7 @@ return function (plume)
                                         do
                                             local _ret37
                                             do
-                                                local value = closureStack[closureStack.pointer]
+                                                local value = closureStack[closureStackPointer]
                                                 _ret37 = value
                                             end
                                             local upvalue = _ret37[arg2]
@@ -513,12 +519,12 @@ return function (plume)
                                                         end
                                                         if _ret46 == key then
                                                             _ret41 = i - 1
-                                                            goto _inline_end79
+                                                            goto _inline_end80
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end79::
+                                            ::_inline_end80::
                                             mainStack[_ret41] = value
                                         end
                                     end
@@ -624,7 +630,7 @@ return function (plume)
                                                     if upvalueInfos.parentOffset then
                                                         local _ret56
                                                         do
-                                                            local value = closureStack[closureStack.pointer]
+                                                            local value = closureStack[closureStackPointer]
                                                             _ret56 = value
                                                         end
                                                         upvalue = _ret56[upvalueInfos.parentOffset]
@@ -669,12 +675,12 @@ return function (plume)
                                                                         end
                                                                         if _ret62 == upvalueInfos.key then
                                                                             _ret57 = i - 1
-                                                                            goto _inline_end102
+                                                                            goto _inline_end103
                                                                         end
                                                                     end
                                                                 end
                                                             end
-                                                            ::_inline_end102::
+                                                            ::_inline_end103::
                                                             upvalue.offset = _ret57
                                                         end
                                                     else
@@ -753,17 +759,17 @@ return function (plume)
                                             if mreadonly then
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", plume.error.cannotSetIndexReadonlyTable ())
                                                         do
@@ -778,12 +784,12 @@ return function (plume)
                                                             end
                                                             local _ret72
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret72 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret73
                                                                     do
@@ -792,7 +798,7 @@ return function (plume)
                                                                         _ret73 = value
                                                                     end
                                                                     local result = _ret73
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -816,7 +822,7 @@ return function (plume)
                                             elseif not t.table[key] then
                                                 msetindex = t:getMetaItem ("setindex")
                                                 if msetindex then
-                                                    t:setItem (key, empty)
+                                                    t:setItem (key, plumeObjEmpty)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = t
                                                     mainStackPointer = mainStackPointer + 1
@@ -883,24 +889,24 @@ return function (plume)
                                             end
                                             local key = _ret79
                                             key = tonumber (key) or key
-                                            if key == empty then
+                                            if key == plumeObjEmpty then
                                                 if arg1 == 1 then
                                                     mainStackPointer = mainStackPointer + 1
-                                                    mainStack[mainStackPointer] = empty
+                                                    mainStack[mainStackPointer] = plumeObjEmpty
                                                 else
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.cannotUseEmptyAsKey ())
                                                             do
@@ -915,12 +921,12 @@ return function (plume)
                                                                 end
                                                                 local _ret81
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret81 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret82
                                                                         do
@@ -929,7 +935,7 @@ return function (plume)
                                                                             _ret82 = value
                                                                         end
                                                                         local result = _ret82
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -952,7 +958,7 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                local _ret95 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                                local _ret95 = type (t) == "table" and (t == plumeObjEmpty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                                 local tt = _ret95
                                                 if not tonumber (key)
                                                  then
@@ -972,21 +978,21 @@ return function (plume)
                                                 if tt ~= "table" then
                                                     if arg1 == 1 then
                                                         mainStackPointer = mainStackPointer + 1
-                                                        mainStack[mainStackPointer] = empty
+                                                        mainStack[mainStackPointer] = plumeObjEmpty
                                                     else
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.cannotIndexValue (tt))
                                                                 do
@@ -1001,12 +1007,12 @@ return function (plume)
                                                                     end
                                                                     local _ret85
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret85 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret86
                                                                             do
@@ -1015,7 +1021,7 @@ return function (plume)
                                                                                 _ret86 = value
                                                                             end
                                                                             local result = _ret86
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -1046,7 +1052,7 @@ return function (plume)
                                                         local mgetindex = t:getMetaItem ("getindex")
                                                         if arg1 == 1 then
                                                             mainStackPointer = mainStackPointer + 1
-                                                            mainStack[mainStackPointer] = empty
+                                                            mainStack[mainStackPointer] = plumeObjEmpty
                                                         elseif mgetindex then
                                                             mainStackFramesPointer = mainStackFramesPointer + 1
                                                             mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -1088,17 +1094,17 @@ return function (plume)
                                                         else
                                                             do
                                                                 local safeCallIndex
-                                                                for i = #runtime.callstack, 1, -1 do
-                                                                    local call = runtime.callstack[i]
+                                                                for i = #runtimeCallstack, 1, -1 do
+                                                                    local call = runtimeCallstack[i]
                                                                     if call.safe then
                                                                         safeCallIndex = i
                                                                     end
                                                                 end
                                                                 if safeCallIndex then
-                                                                    for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                        table.remove (runtime.callstack)
+                                                                    for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                        table.remove (runtimeCallstack)
                                                                     end
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", false)
                                                                     safeResult:setItem ("result", plume.error.unregisteredKey (t, key))
                                                                     do
@@ -1113,12 +1119,12 @@ return function (plume)
                                                                         end
                                                                         local _ret92
                                                                         do
-                                                                            closureStack.pointer = closureStack.pointer - 1
-                                                                            local value = closureStack[closureStack.pointer + 1]
+                                                                            closureStackPointer = closureStackPointer - 1
+                                                                            local value = closureStack[closureStackPointer + 1]
                                                                             _ret92 = value
                                                                         end
                                                                         do
-                                                                            local call = table.remove (runtime.callstack)
+                                                                            local call = table.remove (runtimeCallstack)
                                                                             if call and call.safe then
                                                                                 local _ret93
                                                                                 do
@@ -1127,7 +1133,7 @@ return function (plume)
                                                                                     _ret93 = value
                                                                                 end
                                                                                 local result = _ret93
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", true)
                                                                                 safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
@@ -1228,7 +1234,7 @@ return function (plume)
                                                 _ret104 = value
                                             end
                                             local t = _ret104
-                                            local _ret105 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local _ret105 = type (t) == "table" and (t == plumeObjEmpty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             local tt = _ret105
                                             if tt == "table" then
                                                 for _, item in ipairs (t.table)
@@ -1254,17 +1260,17 @@ return function (plume)
                                             else
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", plume.error.cannotExpandValue (tt))
                                                         do
@@ -1279,12 +1285,12 @@ return function (plume)
                                                             end
                                                             local _ret108
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret108 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret109
                                                                     do
@@ -1293,7 +1299,7 @@ return function (plume)
                                                                         _ret109 = value
                                                                     end
                                                                     local result = _ret109
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -1330,20 +1336,20 @@ return function (plume)
                                                 _ret111 = value
                                             end
                                             local top = _ret111
-                                            if top == empty then
+                                            if top == plumeObjEmpty then
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", plume.error.getindexReturnsEmpty ())
                                                         do
@@ -1358,12 +1364,12 @@ return function (plume)
                                                             end
                                                             local _ret113
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret113 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret114
                                                                     do
@@ -1372,7 +1378,7 @@ return function (plume)
                                                                         _ret114 = value
                                                                     end
                                                                     local result = _ret114
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -1488,7 +1494,7 @@ return function (plume)
                                                     end
                                                 end
                                                 if expectedParamCount then
-                                                    local _ret126 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
+                                                    local _ret126 = type (value) == "table" and (value == plumeObjEmpty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
                                                     local t = _ret126
                                                     local metaValue = value
                                                     if t == "closure" then
@@ -1498,47 +1504,47 @@ return function (plume)
                                                     if t == "macro" then
                                                         if metaValue.positionalParamCount ~= expectedParamCount then
                                                             _ret124, _ret125 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
-                                                            goto _inline_end289
+                                                            goto _inline_end290
                                                         end
                                                         if metaValue.namedParamCount > 1 then
                                                             _ret124, _ret125 = false, plume.error.metaMacroWithoutNamedParameter (name)
-                                                            goto _inline_end289
+                                                            goto _inline_end290
                                                         end
                                                     else
                                                         _ret124, _ret125 = false, plume.error.wrongMetaFieldType (name, t, "macro")
-                                                        goto _inline_end289
+                                                        goto _inline_end290
                                                     end
                                                 else
                                                     local _ret127, _ret128
                                                     if plume.validMetaNames[name] then
                                                         _ret127 = true
-                                                        goto _inline_end291
+                                                        goto _inline_end292
                                                     else
                                                         _ret127, _ret128 = false, "'" .. name .. "' isn't a valid meta-macro name."
-                                                        goto _inline_end291
+                                                        goto _inline_end292
                                                     end
-                                                    ::_inline_end291::
+                                                    ::_inline_end292::
                                                     _ret124, _ret125 = _ret127, _ret128
-                                                    goto _inline_end289
+                                                    goto _inline_end290
                                                 end
                                                 _ret124, _ret125 = true
                                             end
-                                            ::_inline_end289::
+                                            ::_inline_end290::
                                             local valid, err = _ret124, _ret125
                                             if not valid then
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", err)
                                                         do
@@ -1553,12 +1559,12 @@ return function (plume)
                                                             end
                                                             local _ret130
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret130 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret131
                                                                     do
@@ -1567,7 +1573,7 @@ return function (plume)
                                                                         _ret131 = value
                                                                     end
                                                                     local result = _ret131
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -1610,7 +1616,7 @@ return function (plume)
                                             variableStackFrames[variableStackFramesPointer] = _ret135 + 1 - arg1
                                             for i = 1, arg2 - arg1 do
                                                 variableStackPointer = variableStackPointer + 1
-                                                variableStack[variableStackPointer] = empty
+                                                variableStack[variableStackPointer] = plumeObjEmpty
                                             end
                                         end
                                     end
@@ -1655,7 +1661,7 @@ return function (plume)
                                                 local mainStackTop = _ret143
                                                 local variadicTable
                                                 local max = mainStackTop - bufferOffset + 1
-                                                variadicTable = plume.obj.table (max, max / 2)
+                                                variadicTable = plumeObjTable (max, max / 2)
                                                 local tomanyPositionalCounter = 0
                                                 local capturedCount = 0
                                                 local unknownNamed
@@ -1706,17 +1712,17 @@ return function (plume)
                                                             else
                                                                 do
                                                                     local safeCallIndex
-                                                                    for i = #runtime.callstack, 1, -1 do
-                                                                        local call = runtime.callstack[i]
+                                                                    for i = #runtimeCallstack, 1, -1 do
+                                                                        local call = runtimeCallstack[i]
                                                                         if call.safe then
                                                                             safeCallIndex = i
                                                                         end
                                                                     end
                                                                     if safeCallIndex then
-                                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                            table.remove (runtime.callstack)
+                                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                            table.remove (runtimeCallstack)
                                                                         end
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", false)
                                                                         safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                         do
@@ -1731,12 +1737,12 @@ return function (plume)
                                                                             end
                                                                             local _ret148
                                                                             do
-                                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                                closureStackPointer = closureStackPointer - 1
+                                                                                local value = closureStack[closureStackPointer + 1]
                                                                                 _ret148 = value
                                                                             end
                                                                             do
-                                                                                local call = table.remove (runtime.callstack)
+                                                                                local call = table.remove (runtimeCallstack)
                                                                                 if call and call.safe then
                                                                                     local _ret149
                                                                                     do
@@ -1745,7 +1751,7 @@ return function (plume)
                                                                                         _ret149 = value
                                                                                     end
                                                                                     local result = _ret149
-                                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                                    local safeResult = plumeObjTable (0, 2)
                                                                                     safeResult:setItem ("success", true)
                                                                                     safeResult:setItem ("result", result)
                                                                                     mainStackPointer = mainStackPointer + 1
@@ -1831,7 +1837,7 @@ return function (plume)
                                                         _ret155 = value
                                                     end
                                                     local item = _ret155
-                                                    local _ret156 = type (item) == "table" and (item == empty and "empty" or item.type) or (type (item) == "cdata" and item.type) or type (item)
+                                                    local _ret156 = type (item) == "table" and (item == plumeObjEmpty and "empty" or item.type) or (type (item) == "cdata" and item.type) or type (item)
                                                     if _ret156 == "fragment" then
                                                         directConcat = false
                                                         break
@@ -1845,7 +1851,7 @@ return function (plume)
                                                 else
                                                     local _ret157
                                                     do
-                                                        local fragment = plume.obj.fragment (count)
+                                                        local fragment = plumeObjFragment (count)
                                                         for i = 1, count do
                                                             local _ret158
                                                             do
@@ -1861,7 +1867,7 @@ return function (plume)
                                             else
                                                 local _ret160
                                                 do
-                                                    local fragment = plume.obj.fragment (count)
+                                                    local fragment = plumeObjFragment (count)
                                                     for i = 1, count do
                                                         local _ret161
                                                         do
@@ -1896,7 +1902,7 @@ return function (plume)
                                                 _ret163 = value
                                             end
                                             local tocall = _ret163
-                                            local _ret164 = type (tocall) == "table" and (tocall == empty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
+                                            local _ret164 = type (tocall) == "table" and (tocall == plumeObjEmpty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
                                             local t = _ret164
                                             local self
                                             if t == "table" then
@@ -1927,17 +1933,17 @@ return function (plume)
                                                 if arg1 == 1 and tocall.positionalParamCount ~= 1 then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount))
                                                             do
@@ -1952,12 +1958,12 @@ return function (plume)
                                                                 end
                                                                 local _ret167
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret167 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret168
                                                                         do
@@ -1966,7 +1972,7 @@ return function (plume)
                                                                             _ret168 = value
                                                                         end
                                                                         local result = _ret168
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -1994,7 +2000,7 @@ return function (plume)
                                                         variableStackFrames[variableStackFramesPointer] = _ret202 + 1
                                                         for i = 1, tocall.localsCount do
                                                             variableStackPointer = variableStackPointer + 1
-                                                            variableStack[variableStackPointer] = empty
+                                                            variableStack[variableStackPointer] = plumeObjEmpty
                                                         end
                                                     end
                                                     local _ret188, _ret189, _ret190, _ret191
@@ -2012,7 +2018,7 @@ return function (plume)
                                                         local variadicTable
                                                         if tocall.variadicOffset then
                                                             local max = mainStackTop - bufferOffset + 1
-                                                            variadicTable = plume.obj.table (max, max / 2)
+                                                            variadicTable = plumeObjTable (max, max / 2)
                                                         end
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
@@ -2064,17 +2070,17 @@ return function (plume)
                                                                     else
                                                                         do
                                                                             local safeCallIndex
-                                                                            for i = #runtime.callstack, 1, -1 do
-                                                                                local call = runtime.callstack[i]
+                                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                                local call = runtimeCallstack[i]
                                                                                 if call.safe then
                                                                                     safeCallIndex = i
                                                                                 end
                                                                             end
                                                                             if safeCallIndex then
-                                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                    table.remove (runtime.callstack)
+                                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                    table.remove (runtimeCallstack)
                                                                                 end
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", false)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
@@ -2089,12 +2095,12 @@ return function (plume)
                                                                                     end
                                                                                     local _ret198
                                                                                     do
-                                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                                        closureStackPointer = closureStackPointer - 1
+                                                                                        local value = closureStack[closureStackPointer + 1]
                                                                                         _ret198 = value
                                                                                     end
                                                                                     do
-                                                                                        local call = table.remove (runtime.callstack)
+                                                                                        local call = table.remove (runtimeCallstack)
                                                                                         if call and call.safe then
                                                                                             local _ret199
                                                                                             do
@@ -2103,7 +2109,7 @@ return function (plume)
                                                                                                 _ret199 = value
                                                                                             end
                                                                                             local result = _ret199
-                                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                                            local safeResult = plumeObjTable (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
@@ -2146,17 +2152,17 @@ return function (plume)
                                                     if tomanyPositionnalCounter > 0 then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
                                                                 do
@@ -2171,12 +2177,12 @@ return function (plume)
                                                                     end
                                                                     local _ret171
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret171 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret172
                                                                             do
@@ -2185,7 +2191,7 @@ return function (plume)
                                                                                 _ret172 = value
                                                                             end
                                                                             local result = _ret172
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -2209,17 +2215,17 @@ return function (plume)
                                                     elseif capturedCount < tocall.positionalParamCount then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
                                                                 do
@@ -2234,12 +2240,12 @@ return function (plume)
                                                                     end
                                                                     local _ret179
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret179 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret180
                                                                             do
@@ -2248,7 +2254,7 @@ return function (plume)
                                                                                 _ret180 = value
                                                                             end
                                                                             local result = _ret180
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -2272,17 +2278,17 @@ return function (plume)
                                                     elseif unknownNamed then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.unknownParameter (unknownNamed, tocall))
                                                                 do
@@ -2297,12 +2303,12 @@ return function (plume)
                                                                     end
                                                                     local _ret175
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret175 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret176
                                                                             do
@@ -2311,7 +2317,7 @@ return function (plume)
                                                                                 _ret176 = value
                                                                             end
                                                                             local result = _ret176
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -2343,21 +2349,21 @@ return function (plume)
                                                                 variableStack[_ret187 + (tocall.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
-                                                        table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
-                                                        if #runtime.callstack > 1000 then
+                                                        table.insert (runtimeCallstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
+                                                        if #runtimeCallstack > 1000 then
                                                             do
                                                                 local safeCallIndex
-                                                                for i = #runtime.callstack, 1, -1 do
-                                                                    local call = runtime.callstack[i]
+                                                                for i = #runtimeCallstack, 1, -1 do
+                                                                    local call = runtimeCallstack[i]
                                                                     if call.safe then
                                                                         safeCallIndex = i
                                                                     end
                                                                 end
                                                                 if safeCallIndex then
-                                                                    for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                        table.remove (runtime.callstack)
+                                                                    for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                        table.remove (runtimeCallstack)
                                                                     end
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", false)
                                                                     safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                     do
@@ -2372,12 +2378,12 @@ return function (plume)
                                                                         end
                                                                         local _ret184
                                                                         do
-                                                                            closureStack.pointer = closureStack.pointer - 1
-                                                                            local value = closureStack[closureStack.pointer + 1]
+                                                                            closureStackPointer = closureStackPointer - 1
+                                                                            local value = closureStack[closureStackPointer + 1]
                                                                             _ret184 = value
                                                                         end
                                                                         do
-                                                                            local call = table.remove (runtime.callstack)
+                                                                            local call = table.remove (runtimeCallstack)
                                                                             if call and call.safe then
                                                                                 local _ret185
                                                                                 do
@@ -2386,7 +2392,7 @@ return function (plume)
                                                                                     _ret185 = value
                                                                                 end
                                                                                 local result = _ret185
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", true)
                                                                                 safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
@@ -2422,8 +2428,8 @@ return function (plume)
                                                         jump = tocall.offset
                                                     end
                                                 end
-                                                closureStack.pointer = closureStack.pointer + 1
-                                                closureStack[closureStack.pointer] = {}
+                                                closureStackPointer = closureStackPointer + 1
+                                                closureStack[closureStackPointer] = {}
                                             elseif t == "closure" then
                                                 if self then
                                                     mainStackPointer = mainStackPointer + 1
@@ -2439,17 +2445,17 @@ return function (plume)
                                                 if arg1 == 1 and tocall.macro.positionalParamCount ~= 1 then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount))
                                                             do
@@ -2464,12 +2470,12 @@ return function (plume)
                                                                 end
                                                                 local _ret306
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret306 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret307
                                                                         do
@@ -2478,7 +2484,7 @@ return function (plume)
                                                                             _ret307 = value
                                                                         end
                                                                         local result = _ret307
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -2506,7 +2512,7 @@ return function (plume)
                                                         variableStackFrames[variableStackFramesPointer] = _ret341 + 1
                                                         for i = 1, tocall.macro.localsCount do
                                                             variableStackPointer = variableStackPointer + 1
-                                                            variableStack[variableStackPointer] = empty
+                                                            variableStack[variableStackPointer] = plumeObjEmpty
                                                         end
                                                     end
                                                     local _ret327, _ret328, _ret329, _ret330
@@ -2524,7 +2530,7 @@ return function (plume)
                                                         local variadicTable
                                                         if tocall.macro.variadicOffset then
                                                             local max = mainStackTop - bufferOffset + 1
-                                                            variadicTable = plume.obj.table (max, max / 2)
+                                                            variadicTable = plumeObjTable (max, max / 2)
                                                         end
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
@@ -2576,17 +2582,17 @@ return function (plume)
                                                                     else
                                                                         do
                                                                             local safeCallIndex
-                                                                            for i = #runtime.callstack, 1, -1 do
-                                                                                local call = runtime.callstack[i]
+                                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                                local call = runtimeCallstack[i]
                                                                                 if call.safe then
                                                                                     safeCallIndex = i
                                                                                 end
                                                                             end
                                                                             if safeCallIndex then
-                                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                    table.remove (runtime.callstack)
+                                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                    table.remove (runtimeCallstack)
                                                                                 end
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", false)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
@@ -2601,12 +2607,12 @@ return function (plume)
                                                                                     end
                                                                                     local _ret337
                                                                                     do
-                                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                                        closureStackPointer = closureStackPointer - 1
+                                                                                        local value = closureStack[closureStackPointer + 1]
                                                                                         _ret337 = value
                                                                                     end
                                                                                     do
-                                                                                        local call = table.remove (runtime.callstack)
+                                                                                        local call = table.remove (runtimeCallstack)
                                                                                         if call and call.safe then
                                                                                             local _ret338
                                                                                             do
@@ -2615,7 +2621,7 @@ return function (plume)
                                                                                                 _ret338 = value
                                                                                             end
                                                                                             local result = _ret338
-                                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                                            local safeResult = plumeObjTable (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
@@ -2658,17 +2664,17 @@ return function (plume)
                                                     if tomanyPositionnalCounter > 0 then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
                                                                 do
@@ -2683,12 +2689,12 @@ return function (plume)
                                                                     end
                                                                     local _ret310
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret310 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret311
                                                                             do
@@ -2697,7 +2703,7 @@ return function (plume)
                                                                                 _ret311 = value
                                                                             end
                                                                             local result = _ret311
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -2721,17 +2727,17 @@ return function (plume)
                                                     elseif capturedCount < tocall.macro.positionalParamCount then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
                                                                 do
@@ -2746,12 +2752,12 @@ return function (plume)
                                                                     end
                                                                     local _ret318
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret318 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret319
                                                                             do
@@ -2760,7 +2766,7 @@ return function (plume)
                                                                                 _ret319 = value
                                                                             end
                                                                             local result = _ret319
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -2784,17 +2790,17 @@ return function (plume)
                                                     elseif unknownNamed then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.unknownParameter (unknownNamed, tocall.macro))
                                                                 do
@@ -2809,12 +2815,12 @@ return function (plume)
                                                                     end
                                                                     local _ret314
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret314 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret315
                                                                             do
@@ -2823,7 +2829,7 @@ return function (plume)
                                                                                 _ret315 = value
                                                                             end
                                                                             local result = _ret315
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -2855,21 +2861,21 @@ return function (plume)
                                                                 variableStack[_ret326 + (tocall.macro.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
-                                                        table.insert (runtime.callstack, {runtime = runtime, macro = tocall.macro, ip = ip, safe = arg2 == 1})
-                                                        if #runtime.callstack > 1000 then
+                                                        table.insert (runtimeCallstack, {runtime = runtime, macro = tocall.macro, ip = ip, safe = arg2 == 1})
+                                                        if #runtimeCallstack > 1000 then
                                                             do
                                                                 local safeCallIndex
-                                                                for i = #runtime.callstack, 1, -1 do
-                                                                    local call = runtime.callstack[i]
+                                                                for i = #runtimeCallstack, 1, -1 do
+                                                                    local call = runtimeCallstack[i]
                                                                     if call.safe then
                                                                         safeCallIndex = i
                                                                     end
                                                                 end
                                                                 if safeCallIndex then
-                                                                    for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                        table.remove (runtime.callstack)
+                                                                    for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                        table.remove (runtimeCallstack)
                                                                     end
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", false)
                                                                     safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                     do
@@ -2884,12 +2890,12 @@ return function (plume)
                                                                         end
                                                                         local _ret323
                                                                         do
-                                                                            closureStack.pointer = closureStack.pointer - 1
-                                                                            local value = closureStack[closureStack.pointer + 1]
+                                                                            closureStackPointer = closureStackPointer - 1
+                                                                            local value = closureStack[closureStackPointer + 1]
                                                                             _ret323 = value
                                                                         end
                                                                         do
-                                                                            local call = table.remove (runtime.callstack)
+                                                                            local call = table.remove (runtimeCallstack)
                                                                             if call and call.safe then
                                                                                 local _ret324
                                                                                 do
@@ -2898,7 +2904,7 @@ return function (plume)
                                                                                     _ret324 = value
                                                                                 end
                                                                                 local result = _ret324
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", true)
                                                                                 safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
@@ -2934,8 +2940,8 @@ return function (plume)
                                                         jump = tocall.macro.offset
                                                     end
                                                 end
-                                                closureStack.pointer = closureStack.pointer + 1
-                                                closureStack[closureStack.pointer] = tocall.upvalues
+                                                closureStackPointer = closureStackPointer + 1
+                                                closureStack[closureStackPointer] = tocall.upvalues
                                             elseif t == "luaMacro" then
                                                 local _ret276
                                                 do
@@ -2953,7 +2959,7 @@ return function (plume)
                                                         local mainStackTop = _ret282
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
-                                                        variadicTable = plume.obj.table (max, max / 2)
+                                                        variadicTable = plumeObjTable (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -3004,17 +3010,17 @@ return function (plume)
                                                                     else
                                                                         do
                                                                             local safeCallIndex
-                                                                            for i = #runtime.callstack, 1, -1 do
-                                                                                local call = runtime.callstack[i]
+                                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                                local call = runtimeCallstack[i]
                                                                                 if call.safe then
                                                                                     safeCallIndex = i
                                                                                 end
                                                                             end
                                                                             if safeCallIndex then
-                                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                    table.remove (runtime.callstack)
+                                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                    table.remove (runtimeCallstack)
                                                                                 end
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", false)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
@@ -3029,12 +3035,12 @@ return function (plume)
                                                                                     end
                                                                                     local _ret287
                                                                                     do
-                                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                                        closureStackPointer = closureStackPointer - 1
+                                                                                        local value = closureStack[closureStackPointer + 1]
                                                                                         _ret287 = value
                                                                                     end
                                                                                     do
-                                                                                        local call = table.remove (runtime.callstack)
+                                                                                        local call = table.remove (runtimeCallstack)
                                                                                         if call and call.safe then
                                                                                             local _ret288
                                                                                             do
@@ -3043,7 +3049,7 @@ return function (plume)
                                                                                                 _ret288 = value
                                                                                             end
                                                                                             local result = _ret288
-                                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                                            local safeResult = plumeObjTable (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
@@ -3096,21 +3102,21 @@ return function (plume)
                                                     mainStack[mainStackPointer] = resultTable
                                                     _ret276 = resultTable
                                                 end
-                                                table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
-                                                if #runtime.callstack > 1000 then
+                                                table.insert (runtimeCallstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
+                                                if #runtimeCallstack > 1000 then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.stackOverflow ())
                                                             do
@@ -3125,12 +3131,12 @@ return function (plume)
                                                                 end
                                                                 local _ret293
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret293 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret294
                                                                         do
@@ -3139,7 +3145,7 @@ return function (plume)
                                                                             _ret294 = value
                                                                         end
                                                                         local result = _ret294
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -3175,7 +3181,7 @@ return function (plume)
                                                 local success, result, isHosted = tocall.callable (_ret297, runtime, _ret296, ip)
                                                 if success then
                                                     if result == nil then
-                                                        result = empty
+                                                        result = plumeObjEmpty
                                                     end
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = result
@@ -3193,7 +3199,7 @@ return function (plume)
                                                         end
                                                     else
                                                         do
-                                                            local call = table.remove (runtime.callstack)
+                                                            local call = table.remove (runtimeCallstack)
                                                             if call and call.safe then
                                                                 local _ret299
                                                                 do
@@ -3202,7 +3208,7 @@ return function (plume)
                                                                     _ret299 = value
                                                                 end
                                                                 local result = _ret299
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", true)
                                                                 safeResult:setItem ("result", result)
                                                                 mainStackPointer = mainStackPointer + 1
@@ -3213,17 +3219,17 @@ return function (plume)
                                                 else
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", result)
                                                             do
@@ -3238,12 +3244,12 @@ return function (plume)
                                                                 end
                                                                 local _ret301
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret301 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret302
                                                                         do
@@ -3252,7 +3258,7 @@ return function (plume)
                                                                             _ret302 = value
                                                                         end
                                                                         local result = _ret302
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -3291,7 +3297,7 @@ return function (plume)
                                                         local mainStackTop = _ret257
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
-                                                        variadicTable = plume.obj.table (max, max / 2)
+                                                        variadicTable = plumeObjTable (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -3342,17 +3348,17 @@ return function (plume)
                                                                     else
                                                                         do
                                                                             local safeCallIndex
-                                                                            for i = #runtime.callstack, 1, -1 do
-                                                                                local call = runtime.callstack[i]
+                                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                                local call = runtimeCallstack[i]
                                                                                 if call.safe then
                                                                                     safeCallIndex = i
                                                                                 end
                                                                             end
                                                                             if safeCallIndex then
-                                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                    table.remove (runtime.callstack)
+                                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                    table.remove (runtimeCallstack)
                                                                                 end
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", false)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
@@ -3367,12 +3373,12 @@ return function (plume)
                                                                                     end
                                                                                     local _ret262
                                                                                     do
-                                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                                        closureStackPointer = closureStackPointer - 1
+                                                                                        local value = closureStack[closureStackPointer + 1]
                                                                                         _ret262 = value
                                                                                     end
                                                                                     do
-                                                                                        local call = table.remove (runtime.callstack)
+                                                                                        local call = table.remove (runtimeCallstack)
                                                                                         if call and call.safe then
                                                                                             local _ret263
                                                                                             do
@@ -3381,7 +3387,7 @@ return function (plume)
                                                                                                 _ret263 = value
                                                                                             end
                                                                                             local result = _ret263
-                                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                                            local safeResult = plumeObjTable (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
@@ -3438,17 +3444,17 @@ return function (plume)
                                                 if #args.table < tocall.minArgs or (tocall.maxArgs ~= "inf" and #args.table > tocall.maxArgs) then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.wrongArgsCountStd (tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
                                                             do
@@ -3463,12 +3469,12 @@ return function (plume)
                                                                 end
                                                                 local _ret268
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret268 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret269
                                                                         do
@@ -3477,7 +3483,7 @@ return function (plume)
                                                                             _ret269 = value
                                                                         end
                                                                         local result = _ret269
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -3499,21 +3505,21 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                table.insert (runtime.callstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
-                                                if #runtime.callstack > 1000 then
+                                                table.insert (runtimeCallstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
+                                                if #runtimeCallstack > 1000 then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.stackOverflow ())
                                                             do
@@ -3528,12 +3534,12 @@ return function (plume)
                                                                 end
                                                                 local _ret272
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret272 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret273
                                                                         do
@@ -3542,7 +3548,7 @@ return function (plume)
                                                                             _ret273 = value
                                                                         end
                                                                         local result = _ret273
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -3592,7 +3598,7 @@ return function (plume)
                                                         local mainStackTop = _ret240
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
-                                                        variadicTable = plume.obj.table (max, max / 2)
+                                                        variadicTable = plumeObjTable (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -3643,17 +3649,17 @@ return function (plume)
                                                                     else
                                                                         do
                                                                             local safeCallIndex
-                                                                            for i = #runtime.callstack, 1, -1 do
-                                                                                local call = runtime.callstack[i]
+                                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                                local call = runtimeCallstack[i]
                                                                                 if call.safe then
                                                                                     safeCallIndex = i
                                                                                 end
                                                                             end
                                                                             if safeCallIndex then
-                                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                    table.remove (runtime.callstack)
+                                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                    table.remove (runtimeCallstack)
                                                                                 end
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", false)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
@@ -3668,12 +3674,12 @@ return function (plume)
                                                                                     end
                                                                                     local _ret245
                                                                                     do
-                                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                                        closureStackPointer = closureStackPointer - 1
+                                                                                        local value = closureStack[closureStackPointer + 1]
                                                                                         _ret245 = value
                                                                                     end
                                                                                     do
-                                                                                        local call = table.remove (runtime.callstack)
+                                                                                        local call = table.remove (runtimeCallstack)
                                                                                         if call and call.safe then
                                                                                             local _ret246
                                                                                             do
@@ -3682,7 +3688,7 @@ return function (plume)
                                                                                                 _ret246 = value
                                                                                             end
                                                                                             local result = _ret246
-                                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                                            local safeResult = plumeObjTable (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
@@ -3760,7 +3766,7 @@ return function (plume)
                                                         local mainStackTop = _ret224
                                                         local variadicTable
                                                         local max = mainStackTop - bufferOffset + 1
-                                                        variadicTable = plume.obj.table (max, max / 2)
+                                                        variadicTable = plumeObjTable (max, max / 2)
                                                         local tomanyPositionalCounter = 0
                                                         local capturedCount = 0
                                                         local unknownNamed
@@ -3811,17 +3817,17 @@ return function (plume)
                                                                     else
                                                                         do
                                                                             local safeCallIndex
-                                                                            for i = #runtime.callstack, 1, -1 do
-                                                                                local call = runtime.callstack[i]
+                                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                                local call = runtimeCallstack[i]
                                                                                 if call.safe then
                                                                                     safeCallIndex = i
                                                                                 end
                                                                             end
                                                                             if safeCallIndex then
-                                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                    table.remove (runtime.callstack)
+                                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                    table.remove (runtimeCallstack)
                                                                                 end
-                                                                                local safeResult = plume.obj.table (0, 2)
+                                                                                local safeResult = plumeObjTable (0, 2)
                                                                                 safeResult:setItem ("success", false)
                                                                                 safeResult:setItem ("result", plume.error.cannotUseMetaKey)
                                                                                 do
@@ -3836,12 +3842,12 @@ return function (plume)
                                                                                     end
                                                                                     local _ret229
                                                                                     do
-                                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                                        closureStackPointer = closureStackPointer - 1
+                                                                                        local value = closureStack[closureStackPointer + 1]
                                                                                         _ret229 = value
                                                                                     end
                                                                                     do
-                                                                                        local call = table.remove (runtime.callstack)
+                                                                                        local call = table.remove (runtimeCallstack)
                                                                                         if call and call.safe then
                                                                                             local _ret230
                                                                                             do
@@ -3850,7 +3856,7 @@ return function (plume)
                                                                                                 _ret230 = value
                                                                                             end
                                                                                             local result = _ret230
-                                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                                            local safeResult = plumeObjTable (0, 2)
                                                                                             safeResult:setItem ("success", true)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
@@ -3960,22 +3966,22 @@ return function (plume)
                                                     _ret203 = _ret205
                                                 end
                                                 local macro = _ret203
-                                                local _ret206 = type (macro) == "table" and (macro == empty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
+                                                local _ret206 = type (macro) == "table" and (macro == plumeObjEmpty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
                                                 local tmacro = _ret206
                                                 if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
                                                             do
@@ -3990,12 +3996,12 @@ return function (plume)
                                                                 end
                                                                 local _ret208
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret208 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret209
                                                                         do
@@ -4004,7 +4010,7 @@ return function (plume)
                                                                             _ret209 = value
                                                                         end
                                                                         local result = _ret209
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -4052,17 +4058,17 @@ return function (plume)
                                             else
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", plume.error.cannotCallValue (t))
                                                         do
@@ -4077,12 +4083,12 @@ return function (plume)
                                                             end
                                                             local _ret343
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret343 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret344
                                                                     do
@@ -4091,7 +4097,7 @@ return function (plume)
                                                                         _ret344 = value
                                                                     end
                                                                     local result = _ret344
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -4122,18 +4128,18 @@ return function (plume)
                                                 _ret346 = value
                                             end
                                             local value = _ret346
-                                            local _ret347 = type (value) == "table" and (value == empty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
+                                            local _ret347 = type (value) == "table" and (value == plumeObjEmpty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
                                             local t = _ret347
-                                            if value == empty then
+                                            if value == plumeObjEmpty then
                                                 local _ret348 = mainStackPointer
                                                 mainStack[_ret348] = ""
                                             elseif t == "number" then
-                                                local plumeTable = runtime.plume.table
+                                                local plumeTable = runtimePlume.table
                                                 local locale = plumeTable.locale:get ()
                                                 local _ret357
                                                 do
                                                     local lastfile
-                                                    local files = runtime.files
+                                                    local files = runtimeFiles
                                                     local ip = ip
                                                     for _, file in ipairs (files)
                                                      do
@@ -4148,7 +4154,7 @@ return function (plume)
                                                     _ret357 = lastfile
                                                 end
                                                 local file = _ret357
-                                                if locale ~= empty and locale ~= "none" and not file.flagRawNumbers then
+                                                if locale ~= plumeObjEmpty and locale ~= "none" and not file.flagRawNumbers then
                                                     local success, result = plume.formatNumber (value, plumeTable.localeNumberFormat:get ()
                                                     , locale, plumeTable.localeThousandsSeparator:get ()
                                                     , plumeTable.localeDecimalSeparator:get ()
@@ -4159,17 +4165,17 @@ return function (plume)
                                                     else
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", result)
                                                                 do
@@ -4184,12 +4190,12 @@ return function (plume)
                                                                     end
                                                                     local _ret360
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret360 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret361
                                                                             do
@@ -4198,7 +4204,7 @@ return function (plume)
                                                                                 _ret361 = value
                                                                             end
                                                                             local result = _ret361
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -4263,17 +4269,17 @@ return function (plume)
                                                 else
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.cannotConcatValue (t))
                                                             do
@@ -4288,12 +4294,12 @@ return function (plume)
                                                                 end
                                                                 local _ret354
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret354 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret355
                                                                         do
@@ -4302,7 +4308,7 @@ return function (plume)
                                                                             _ret355 = value
                                                                         end
                                                                         local result = _ret355
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -4338,7 +4344,7 @@ return function (plume)
                                                 _ret364 = value
                                             end
                                             local fragment = _ret364
-                                            local _ret366 = type (fragment) == "table" and (fragment == empty and "empty" or fragment.type) or (type (fragment) == "cdata" and fragment.type) or type (fragment)
+                                            local _ret366 = type (fragment) == "table" and (fragment == plumeObjEmpty and "empty" or fragment.type) or (type (fragment) == "cdata" and fragment.type) or type (fragment)
                                             if _ret366 == "fragment" then
                                                 local result = {}
                                                 local stackFragment = {fragment}
@@ -4384,12 +4390,12 @@ return function (plume)
                                             end
                                             local test = _ret367
                                             local _ret368
-                                            if test == empty then
+                                            if test == plumeObjEmpty then
                                                 _ret368 = false
-                                                goto _inline_end887
+                                                goto _inline_end888
                                             end
                                             _ret368 = test
-                                            ::_inline_end887::
+                                            ::_inline_end888::
                                             if _ret368 then
                                                 jump = arg2
                                             end
@@ -4406,12 +4412,12 @@ return function (plume)
                                             end
                                             local test = _ret369
                                             local _ret370
-                                            if test == empty then
+                                            if test == plumeObjEmpty then
                                                 _ret370 = false
-                                                goto _inline_end890
+                                                goto _inline_end891
                                             end
                                             _ret370 = test
-                                            ::_inline_end890::
+                                            ::_inline_end891::
                                             if not _ret370 then
                                                 jump = arg2
                                             end
@@ -4425,7 +4431,7 @@ return function (plume)
                                                 _ret371 = value
                                             end
                                             local test = _ret371
-                                            if test ~= empty then
+                                            if test ~= plumeObjEmpty then
                                                 jump = arg2
                                             end
                                         end
@@ -4444,12 +4450,12 @@ return function (plume)
                                             end
                                             local test = _ret372
                                             local _ret374
-                                            if test == empty then
+                                            if test == plumeObjEmpty then
                                                 _ret374 = false
-                                                goto _inline_end897
+                                                goto _inline_end898
                                             end
                                             _ret374 = test
-                                            ::_inline_end897::
+                                            ::_inline_end898::
                                             if not _ret374 then
                                                 local _ret373
                                                 do
@@ -4473,12 +4479,12 @@ return function (plume)
                                             end
                                             local test = _ret375
                                             local _ret376
-                                            if test == empty then
+                                            if test == plumeObjEmpty then
                                                 _ret376 = false
-                                                goto _inline_end901
+                                                goto _inline_end902
                                             end
                                             _ret376 = test
-                                            ::_inline_end901::
+                                            ::_inline_end902::
                                             if _ret376 then
                                                 jump = arg2
                                             end
@@ -4492,12 +4498,12 @@ return function (plume)
                                             end
                                             local test = _ret377
                                             local _ret378
-                                            if test == empty then
+                                            if test == plumeObjEmpty then
                                                 _ret378 = false
-                                                goto _inline_end904
+                                                goto _inline_end905
                                             end
                                             _ret378 = test
-                                            ::_inline_end904::
+                                            ::_inline_end905::
                                             if not _ret378 then
                                                 jump = arg2
                                             end
@@ -4515,7 +4521,7 @@ return function (plume)
                                                 _ret379 = value
                                             end
                                             local obj = _ret379
-                                            local _ret380 = type (obj) == "table" and (obj == empty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
+                                            local _ret380 = type (obj) == "table" and (obj == plumeObjEmpty and "empty" or obj.type) or (type (obj) == "cdata" and obj.type) or type (obj)
                                             local tobj = _ret380
                                             local iter, value, flag, macrocall
                                             local start = 0
@@ -4546,17 +4552,17 @@ return function (plume)
                                             else
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", plume.error.cannotIterateValue (tobj))
                                                         do
@@ -4571,12 +4577,12 @@ return function (plume)
                                                             end
                                                             local _ret382
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret382 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret383
                                                                     do
@@ -4585,7 +4591,7 @@ return function (plume)
                                                                         _ret383 = value
                                                                     end
                                                                     local result = _ret383
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -4692,23 +4698,23 @@ return function (plume)
                                             if flag == ITER_TABLE then
                                                 state = state + 1
                                                 if state > #obj then
-                                                    result = empty
+                                                    result = plumeObjEmpty
                                                 else
                                                     result = obj[state]
                                                 end
                                             elseif flag == ITER_SEQ then
                                                 state = state + obj.step
                                                 if state > obj.stop then
-                                                    result = empty
+                                                    result = plumeObjEmpty
                                                 else
                                                     result = state
                                                 end
                                             elseif flag == ITER_ENUMS then
                                                 state = state + 1
                                                 if state > #obj.ref.table then
-                                                    result = empty
+                                                    result = plumeObjEmpty
                                                 else
-                                                    result = plume.obj.table (2, 0)
+                                                    result = plumeObjTable (2, 0)
                                                     result:addItem (state)
                                                     result:addItem (obj.ref.table[state])
                                                 end
@@ -4721,9 +4727,9 @@ return function (plume)
                                                     end
                                                 end
                                                 if state > #obj.ref.keys then
-                                                    result = empty
+                                                    result = plumeObjEmpty
                                                 else
-                                                    result = plume.obj.table (2, 0)
+                                                    result = plumeObjTable (2, 0)
                                                     result:addItem (obj.ref.keys[state])
                                                     result:addItem (obj.ref.table[result.table[1]])
                                                 end
@@ -4782,7 +4788,7 @@ return function (plume)
                                                     end
                                                     variableStack[_ret399 + 1] = state
                                                 end
-                                                if result == empty then
+                                                if result == plumeObjEmpty then
                                                     jump = arg2
                                                 else
                                                     mainStackPointer = mainStackPointer + 1
@@ -4819,13 +4825,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret416, _ret417
                                                 do
-                                                    local _ret418 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret418 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret418
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret416, _ret417 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1015
+                                                            goto _inline_end1016
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -4834,25 +4840,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret416, _ret417 = _CALL (vm, meta, params)
-                                                            goto _inline_end1015
+                                                            goto _inline_end1016
                                                         else
                                                             _ret416, _ret417 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1015
+                                                            goto _inline_end1016
                                                         end
                                                     end
                                                     _ret416, _ret417 = right
                                                 end
-                                                ::_inline_end1015::
+                                                ::_inline_end1016::
                                                 right, rerr = _ret416, _ret417
                                                 local _ret413, _ret414
                                                 do
-                                                    local _ret415 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret415 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret415
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret413, _ret414 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1013
+                                                            goto _inline_end1014
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -4861,23 +4867,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret413, _ret414 = _CALL (vm, meta, params)
-                                                            goto _inline_end1013
+                                                            goto _inline_end1014
                                                         else
                                                             _ret413, _ret414 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1013
+                                                            goto _inline_end1014
                                                         end
                                                     end
                                                     _ret413, _ret414 = left
                                                 end
-                                                ::_inline_end1013::
+                                                ::_inline_end1014::
                                                 left, lerr = _ret413, _ret414
                                                 if lerr or rerr then
                                                     local _ret403
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret404 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret404 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret404
-                                                        local _ret405 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret405 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret405
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("addr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("addl")
@@ -4940,17 +4946,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -4965,12 +4971,12 @@ return function (plume)
                                                                     end
                                                                     local _ret409
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret409 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret410
                                                                             do
@@ -4979,7 +4985,7 @@ return function (plume)
                                                                                 _ret410 = value
                                                                             end
                                                                             local result = _ret410
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -5036,13 +5042,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret435, _ret436
                                                 do
-                                                    local _ret437 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret437 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret437
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret435, _ret436 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1059
+                                                            goto _inline_end1060
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5051,25 +5057,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret435, _ret436 = _CALL (vm, meta, params)
-                                                            goto _inline_end1059
+                                                            goto _inline_end1060
                                                         else
                                                             _ret435, _ret436 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1059
+                                                            goto _inline_end1060
                                                         end
                                                     end
                                                     _ret435, _ret436 = right
                                                 end
-                                                ::_inline_end1059::
+                                                ::_inline_end1060::
                                                 right, rerr = _ret435, _ret436
                                                 local _ret432, _ret433
                                                 do
-                                                    local _ret434 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret434 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret434
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret432, _ret433 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1057
+                                                            goto _inline_end1058
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5078,23 +5084,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret432, _ret433 = _CALL (vm, meta, params)
-                                                            goto _inline_end1057
+                                                            goto _inline_end1058
                                                         else
                                                             _ret432, _ret433 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1057
+                                                            goto _inline_end1058
                                                         end
                                                     end
                                                     _ret432, _ret433 = left
                                                 end
-                                                ::_inline_end1057::
+                                                ::_inline_end1058::
                                                 left, lerr = _ret432, _ret433
                                                 if lerr or rerr then
                                                     local _ret422
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret423 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret423 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret423
-                                                        local _ret424 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret424 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret424
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("mulr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("mull")
@@ -5157,17 +5163,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -5182,12 +5188,12 @@ return function (plume)
                                                                     end
                                                                     local _ret428
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret428 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret429
                                                                             do
@@ -5196,7 +5202,7 @@ return function (plume)
                                                                                 _ret429 = value
                                                                             end
                                                                             local result = _ret429
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -5261,13 +5267,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret454, _ret455
                                                 do
-                                                    local _ret456 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret456 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret456
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret454, _ret455 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1103
+                                                            goto _inline_end1104
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5276,25 +5282,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret454, _ret455 = _CALL (vm, meta, params)
-                                                            goto _inline_end1103
+                                                            goto _inline_end1104
                                                         else
                                                             _ret454, _ret455 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1103
+                                                            goto _inline_end1104
                                                         end
                                                     end
                                                     _ret454, _ret455 = right
                                                 end
-                                                ::_inline_end1103::
+                                                ::_inline_end1104::
                                                 right, rerr = _ret454, _ret455
                                                 local _ret451, _ret452
                                                 do
-                                                    local _ret453 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret453 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret453
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret451, _ret452 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1101
+                                                            goto _inline_end1102
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5303,23 +5309,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret451, _ret452 = _CALL (vm, meta, params)
-                                                            goto _inline_end1101
+                                                            goto _inline_end1102
                                                         else
                                                             _ret451, _ret452 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1101
+                                                            goto _inline_end1102
                                                         end
                                                     end
                                                     _ret451, _ret452 = left
                                                 end
-                                                ::_inline_end1101::
+                                                ::_inline_end1102::
                                                 left, lerr = _ret451, _ret452
                                                 if lerr or rerr then
                                                     local _ret441
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret442 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret442 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret442
-                                                        local _ret443 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret443 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret443
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("subr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("subl")
@@ -5382,17 +5388,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -5407,12 +5413,12 @@ return function (plume)
                                                                     end
                                                                     local _ret447
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret447 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret448
                                                                             do
@@ -5421,7 +5427,7 @@ return function (plume)
                                                                                 _ret448 = value
                                                                             end
                                                                             local result = _ret448
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -5478,13 +5484,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret473, _ret474
                                                 do
-                                                    local _ret475 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret475 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret475
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret473, _ret474 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1147
+                                                            goto _inline_end1148
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5493,25 +5499,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret473, _ret474 = _CALL (vm, meta, params)
-                                                            goto _inline_end1147
+                                                            goto _inline_end1148
                                                         else
                                                             _ret473, _ret474 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1147
+                                                            goto _inline_end1148
                                                         end
                                                     end
                                                     _ret473, _ret474 = right
                                                 end
-                                                ::_inline_end1147::
+                                                ::_inline_end1148::
                                                 right, rerr = _ret473, _ret474
                                                 local _ret470, _ret471
                                                 do
-                                                    local _ret472 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret472 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret472
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret470, _ret471 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1145
+                                                            goto _inline_end1146
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5520,23 +5526,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret470, _ret471 = _CALL (vm, meta, params)
-                                                            goto _inline_end1145
+                                                            goto _inline_end1146
                                                         else
                                                             _ret470, _ret471 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1145
+                                                            goto _inline_end1146
                                                         end
                                                     end
                                                     _ret470, _ret471 = left
                                                 end
-                                                ::_inline_end1145::
+                                                ::_inline_end1146::
                                                 left, lerr = _ret470, _ret471
                                                 if lerr or rerr then
                                                     local _ret460
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret461 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret461 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret461
-                                                        local _ret462 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret462 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret462
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("divr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("divl")
@@ -5599,17 +5605,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -5624,12 +5630,12 @@ return function (plume)
                                                                     end
                                                                     local _ret466
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret466 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret467
                                                                             do
@@ -5638,7 +5644,7 @@ return function (plume)
                                                                                 _ret467 = value
                                                                             end
                                                                             local result = _ret467
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -5682,13 +5688,13 @@ return function (plume)
                                             local err, meta
                                             local _ret477, _ret478
                                             do
-                                                local _ret479 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                local _ret479 = type (x) == "table" and (x == plumeObjEmpty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                 local tx = _ret479
                                                 if tx == "string" then
                                                     if not tonumber (x)
                                                      then
                                                         _ret477, _ret478 = x, plume.error.cannotConvertToString (x)
-                                                        goto _inline_end1152
+                                                        goto _inline_end1153
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
@@ -5697,21 +5703,21 @@ return function (plume)
                                                         local meta = mtonumber
                                                         local params = {}
                                                         _ret477, _ret478 = _CALL (vm, meta, params)
-                                                        goto _inline_end1152
+                                                        goto _inline_end1153
                                                     else
                                                         _ret477, _ret478 = x, plume.error.cannotDoArithmeticWith (tx)
-                                                        goto _inline_end1152
+                                                        goto _inline_end1153
                                                     end
                                                 end
                                                 _ret477, _ret478 = x
                                             end
-                                            ::_inline_end1152::
+                                            ::_inline_end1153::
                                             x, err = _ret477, _ret478
                                             if err then
                                                 local _ret480
                                                 do
                                                     local meta, paramself
-                                                    local _ret481 = type (x) == "table" and (x == empty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
+                                                    local _ret481 = type (x) == "table" and (x == plumeObjEmpty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                     meta = _ret481 == "table" and x:getMetaItem ("minus")
                                                     if meta then
                                                         mainStackFramesPointer = mainStackFramesPointer + 1
@@ -5745,17 +5751,17 @@ return function (plume)
                                                 if not meta then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", err)
                                                             do
@@ -5770,12 +5776,12 @@ return function (plume)
                                                                 end
                                                                 local _ret485
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret485 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret486
                                                                         do
@@ -5784,7 +5790,7 @@ return function (plume)
                                                                             _ret486 = value
                                                                         end
                                                                         local result = _ret486
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -5839,13 +5845,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret505, _ret506
                                                 do
-                                                    local _ret507 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret507 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret507
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret505, _ret506 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1227
+                                                            goto _inline_end1228
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5854,25 +5860,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret505, _ret506 = _CALL (vm, meta, params)
-                                                            goto _inline_end1227
+                                                            goto _inline_end1228
                                                         else
                                                             _ret505, _ret506 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1227
+                                                            goto _inline_end1228
                                                         end
                                                     end
                                                     _ret505, _ret506 = right
                                                 end
-                                                ::_inline_end1227::
+                                                ::_inline_end1228::
                                                 right, rerr = _ret505, _ret506
                                                 local _ret502, _ret503
                                                 do
-                                                    local _ret504 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret504 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret504
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret502, _ret503 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1225
+                                                            goto _inline_end1226
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5881,23 +5887,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret502, _ret503 = _CALL (vm, meta, params)
-                                                            goto _inline_end1225
+                                                            goto _inline_end1226
                                                         else
                                                             _ret502, _ret503 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1225
+                                                            goto _inline_end1226
                                                         end
                                                     end
                                                     _ret502, _ret503 = left
                                                 end
-                                                ::_inline_end1225::
+                                                ::_inline_end1226::
                                                 left, lerr = _ret502, _ret503
                                                 if lerr or rerr then
                                                     local _ret492
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret493 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret493 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret493
-                                                        local _ret494 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret494 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret494
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("modr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("modl")
@@ -5960,17 +5966,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -5985,12 +5991,12 @@ return function (plume)
                                                                     end
                                                                     local _ret498
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret498 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret499
                                                                             do
@@ -5999,7 +6005,7 @@ return function (plume)
                                                                                 _ret499 = value
                                                                             end
                                                                             local result = _ret499
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -6060,13 +6066,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret524, _ret525
                                                 do
-                                                    local _ret526 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret526 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret526
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret524, _ret525 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1271
+                                                            goto _inline_end1272
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6075,25 +6081,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret524, _ret525 = _CALL (vm, meta, params)
-                                                            goto _inline_end1271
+                                                            goto _inline_end1272
                                                         else
                                                             _ret524, _ret525 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1271
+                                                            goto _inline_end1272
                                                         end
                                                     end
                                                     _ret524, _ret525 = right
                                                 end
-                                                ::_inline_end1271::
+                                                ::_inline_end1272::
                                                 right, rerr = _ret524, _ret525
                                                 local _ret521, _ret522
                                                 do
-                                                    local _ret523 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret523 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret523
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret521, _ret522 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1269
+                                                            goto _inline_end1270
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6102,23 +6108,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret521, _ret522 = _CALL (vm, meta, params)
-                                                            goto _inline_end1269
+                                                            goto _inline_end1270
                                                         else
                                                             _ret521, _ret522 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1269
+                                                            goto _inline_end1270
                                                         end
                                                     end
                                                     _ret521, _ret522 = left
                                                 end
-                                                ::_inline_end1269::
+                                                ::_inline_end1270::
                                                 left, lerr = _ret521, _ret522
                                                 if lerr or rerr then
                                                     local _ret511
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret512 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret512 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret512
-                                                        local _ret513 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret513 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret513
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("powr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("powl")
@@ -6181,17 +6187,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -6206,12 +6212,12 @@ return function (plume)
                                                                     end
                                                                     local _ret517
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret517 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret518
                                                                             do
@@ -6220,7 +6226,7 @@ return function (plume)
                                                                                 _ret518 = value
                                                                             end
                                                                             local result = _ret518
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -6277,13 +6283,13 @@ return function (plume)
                                                 local rerr, lerr
                                                 local _ret543, _ret544
                                                 do
-                                                    local _ret545 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                    local _ret545 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret545
                                                     if tx == "string" then
                                                         if not tonumber (right)
                                                          then
                                                             _ret543, _ret544 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1315
+                                                            goto _inline_end1316
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6292,25 +6298,25 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret543, _ret544 = _CALL (vm, meta, params)
-                                                            goto _inline_end1315
+                                                            goto _inline_end1316
                                                         else
                                                             _ret543, _ret544 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1315
+                                                            goto _inline_end1316
                                                         end
                                                     end
                                                     _ret543, _ret544 = right
                                                 end
-                                                ::_inline_end1315::
+                                                ::_inline_end1316::
                                                 right, rerr = _ret543, _ret544
                                                 local _ret540, _ret541
                                                 do
-                                                    local _ret542 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                    local _ret542 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret542
                                                     if tx == "string" then
                                                         if not tonumber (left)
                                                          then
                                                             _ret540, _ret541 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1313
+                                                            goto _inline_end1314
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6319,23 +6325,23 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret540, _ret541 = _CALL (vm, meta, params)
-                                                            goto _inline_end1313
+                                                            goto _inline_end1314
                                                         else
                                                             _ret540, _ret541 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1313
+                                                            goto _inline_end1314
                                                         end
                                                     end
                                                     _ret540, _ret541 = left
                                                 end
-                                                ::_inline_end1313::
+                                                ::_inline_end1314::
                                                 left, lerr = _ret540, _ret541
                                                 if lerr or rerr then
                                                     local _ret530
                                                     do
                                                         local meta, param1, param2, paramself
-                                                        local _ret531 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                        local _ret531 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                         local tleft = _ret531
-                                                        local _ret532 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                        local _ret532 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret532
                                                         local leftmetar = tleft == "table" and left:getMetaItem ("ltr")
                                                         local rightmetal = tright == "table" and right:getMetaItem ("ltl")
@@ -6398,17 +6404,17 @@ return function (plume)
                                                     if not meta then
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", lerr or rerr)
                                                                 do
@@ -6423,12 +6429,12 @@ return function (plume)
                                                                     end
                                                                     local _ret536
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret536 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret537
                                                                             do
@@ -6437,7 +6443,7 @@ return function (plume)
                                                                                 _ret537 = value
                                                                             end
                                                                             local result = _ret537
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -6488,9 +6494,9 @@ return function (plume)
                                             local _ret548
                                             do
                                                 local meta, param1, param2, paramself
-                                                local _ret549 = type (left) == "table" and (left == empty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
+                                                local _ret549 = type (left) == "table" and (left == plumeObjEmpty and "empty" or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                 local tleft = _ret549
-                                                local _ret550 = type (right) == "table" and (right == empty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
+                                                local _ret550 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                 local tright = _ret550
                                                 local leftmetar = tleft == "table" and left:getMetaItem ("eqr")
                                                 local rightmetal = tright == "table" and right:getMetaItem ("eql")
@@ -6573,20 +6579,20 @@ return function (plume)
                                             end
                                             local left = _ret554
                                             local _ret555
-                                            if right == empty then
+                                            if right == plumeObjEmpty then
                                                 _ret555 = false
-                                                goto _inline_end1344
-                                            end
-                                            _ret555 = right
-                                            ::_inline_end1344::
-                                            right = _ret555
-                                            local _ret556
-                                            if left == empty then
-                                                _ret556 = false
                                                 goto _inline_end1345
                                             end
-                                            _ret556 = left
+                                            _ret555 = right
                                             ::_inline_end1345::
+                                            right = _ret555
+                                            local _ret556
+                                            if left == plumeObjEmpty then
+                                                _ret556 = false
+                                                goto _inline_end1346
+                                            end
+                                            _ret556 = left
+                                            ::_inline_end1346::
                                             left = _ret556
                                             local _ret557 = left and right
                                             mainStackPointer = mainStackPointer + 1
@@ -6608,12 +6614,12 @@ return function (plume)
                                             end
                                             local x = _ret558
                                             local _ret559
-                                            if x == empty then
+                                            if x == plumeObjEmpty then
                                                 _ret559 = false
-                                                goto _inline_end1351
+                                                goto _inline_end1352
                                             end
                                             _ret559 = x
-                                            ::_inline_end1351::
+                                            ::_inline_end1352::
                                             x = _ret559
                                             local _ret560 = not x
                                             mainStackPointer = mainStackPointer + 1
@@ -6636,20 +6642,20 @@ return function (plume)
                                             end
                                             local left = _ret562
                                             local _ret563
-                                            if right == empty then
+                                            if right == plumeObjEmpty then
                                                 _ret563 = false
-                                                goto _inline_end1358
-                                            end
-                                            _ret563 = right
-                                            ::_inline_end1358::
-                                            right = _ret563
-                                            local _ret564
-                                            if left == empty then
-                                                _ret564 = false
                                                 goto _inline_end1359
                                             end
-                                            _ret564 = left
+                                            _ret563 = right
                                             ::_inline_end1359::
+                                            right = _ret563
+                                            local _ret564
+                                            if left == plumeObjEmpty then
+                                                _ret564 = false
+                                                goto _inline_end1360
+                                            end
+                                            _ret564 = left
+                                            ::_inline_end1360::
                                             left = _ret564
                                             local _ret565 = left or right
                                             mainStackPointer = mainStackPointer + 1
@@ -6705,12 +6711,12 @@ return function (plume)
                                             end
                                             local _ret570
                                             do
-                                                closureStack.pointer = closureStack.pointer - 1
-                                                local value = closureStack[closureStack.pointer + 1]
+                                                closureStackPointer = closureStackPointer - 1
+                                                local value = closureStack[closureStackPointer + 1]
                                                 _ret570 = value
                                             end
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret571
                                                     do
@@ -6719,7 +6725,7 @@ return function (plume)
                                                         _ret571 = value
                                                     end
                                                     local result = _ret571
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -6752,7 +6758,7 @@ return function (plume)
                                                 _ret574 = value
                                             end
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret575
                                                     do
@@ -6761,7 +6767,7 @@ return function (plume)
                                                         _ret575 = value
                                                     end
                                                     local result = _ret575
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -6793,7 +6799,7 @@ return function (plume)
                                             local _ret579
                                             do
                                                 local lastfile
-                                                local files = runtime.files
+                                                local files = runtimeFiles
                                                 local ip = ip
                                                 for _, file in ipairs (files)
                                                  do
@@ -6814,7 +6820,7 @@ return function (plume)
                                                     local value = mainStack[mainStackPointer]
                                                     _ret580 = value
                                                 end
-                                                runtime.cache.results[file.cacheId] = _ret580
+                                                runtimeCache.results[file.cacheId] = _ret580
                                             end
                                         end
                                     end
@@ -6855,17 +6861,17 @@ return function (plume)
                                                 if type (var) ~= "table" or var.type ~= "context" then
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.wrongContextType (var))
                                                             do
@@ -6880,12 +6886,12 @@ return function (plume)
                                                                 end
                                                                 local _ret584
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret584 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret585
                                                                         do
@@ -6894,7 +6900,7 @@ return function (plume)
                                                                             _ret585 = value
                                                                         end
                                                                         local result = _ret585
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
@@ -6965,17 +6971,17 @@ return function (plume)
                                             if not success then
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", result)
                                                         do
@@ -6990,12 +6996,12 @@ return function (plume)
                                                             end
                                                             local _ret590
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret590 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret591
                                                                     do
@@ -7004,7 +7010,7 @@ return function (plume)
                                                                         _ret591 = value
                                                                     end
                                                                     local result = _ret591
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -7070,7 +7076,7 @@ return function (plume)
                                                 end
                                             else
                                                 do
-                                                    local call = table.remove (runtime.callstack)
+                                                    local call = table.remove (runtimeCallstack)
                                                     if call and call.safe then
                                                         local _ret597
                                                         do
@@ -7079,7 +7085,7 @@ return function (plume)
                                                             _ret597 = value
                                                         end
                                                         local result = _ret597
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", true)
                                                         safeResult:setItem ("result", result)
                                                         mainStackPointer = mainStackPointer + 1
@@ -7093,7 +7099,7 @@ return function (plume)
                                                     _ret596 = value
                                                 end
                                                 mainStackPointer = mainStackPointer + 1
-                                                mainStack[mainStackPointer] = context.RETURN_VALUE or empty
+                                                mainStack[mainStackPointer] = context.RETURN_VALUE or plumeObjEmpty
                                             end
                                         end
                                     end
@@ -7119,17 +7125,17 @@ return function (plume)
                                             if not success then
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", result)
                                                         do
@@ -7144,12 +7150,12 @@ return function (plume)
                                                             end
                                                             local _ret601
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret601 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret602
                                                                     do
@@ -7158,7 +7164,7 @@ return function (plume)
                                                                         _ret602 = value
                                                                     end
                                                                     local result = _ret602
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -7220,17 +7226,17 @@ return function (plume)
                                             local msg = _ret606
                                             do
                                                 local safeCallIndex
-                                                for i = #runtime.callstack, 1, -1 do
-                                                    local call = runtime.callstack[i]
+                                                for i = #runtimeCallstack, 1, -1 do
+                                                    local call = runtimeCallstack[i]
                                                     if call.safe then
                                                         safeCallIndex = i
                                                     end
                                                 end
                                                 if safeCallIndex then
-                                                    for i = #runtime.callstack, safeCallIndex, -1 do
-                                                        table.remove (runtime.callstack)
+                                                    for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                        table.remove (runtimeCallstack)
                                                     end
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", false)
                                                     safeResult:setItem ("result", msg)
                                                     do
@@ -7245,12 +7251,12 @@ return function (plume)
                                                         end
                                                         local _ret608
                                                         do
-                                                            closureStack.pointer = closureStack.pointer - 1
-                                                            local value = closureStack[closureStack.pointer + 1]
+                                                            closureStackPointer = closureStackPointer - 1
+                                                            local value = closureStack[closureStackPointer + 1]
                                                             _ret608 = value
                                                         end
                                                         do
-                                                            local call = table.remove (runtime.callstack)
+                                                            local call = table.remove (runtimeCallstack)
                                                             if call and call.safe then
                                                                 local _ret609
                                                                 do
@@ -7259,7 +7265,7 @@ return function (plume)
                                                                     _ret609 = value
                                                                 end
                                                                 local result = _ret609
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", true)
                                                                 safeResult:setItem ("result", result)
                                                                 mainStackPointer = mainStackPointer + 1
@@ -7294,7 +7300,7 @@ return function (plume)
                                                 _ret611 = value
                                             end
                                             local t = _ret611.table[1]
-                                            local _ret612 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local _ret612 = type (t) == "table" and (t == plumeObjEmpty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             local tt = _ret612
                                             local result
                                             if tt == "table" then
@@ -7304,17 +7310,17 @@ return function (plume)
                                             else
                                                 do
                                                     local safeCallIndex
-                                                    for i = #runtime.callstack, 1, -1 do
-                                                        local call = runtime.callstack[i]
+                                                    for i = #runtimeCallstack, 1, -1 do
+                                                        local call = runtimeCallstack[i]
                                                         if call.safe then
                                                             safeCallIndex = i
                                                         end
                                                     end
                                                     if safeCallIndex then
-                                                        for i = #runtime.callstack, safeCallIndex, -1 do
-                                                            table.remove (runtime.callstack)
+                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                            table.remove (runtimeCallstack)
                                                         end
-                                                        local safeResult = plume.obj.table (0, 2)
+                                                        local safeResult = plumeObjTable (0, 2)
                                                         safeResult:setItem ("success", false)
                                                         safeResult:setItem ("result", plume.error.hasNoLen (tt))
                                                         do
@@ -7329,12 +7335,12 @@ return function (plume)
                                                             end
                                                             local _ret614
                                                             do
-                                                                closureStack.pointer = closureStack.pointer - 1
-                                                                local value = closureStack[closureStack.pointer + 1]
+                                                                closureStackPointer = closureStackPointer - 1
+                                                                local value = closureStack[closureStackPointer + 1]
                                                                 _ret614 = value
                                                             end
                                                             do
-                                                                local call = table.remove (runtime.callstack)
+                                                                local call = table.remove (runtimeCallstack)
                                                                 if call and call.safe then
                                                                     local _ret615
                                                                     do
@@ -7343,7 +7349,7 @@ return function (plume)
                                                                         _ret615 = value
                                                                     end
                                                                     local result = _ret615
-                                                                    local safeResult = plume.obj.table (0, 2)
+                                                                    local safeResult = plumeObjTable (0, 2)
                                                                     safeResult:setItem ("success", true)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
@@ -7368,7 +7374,7 @@ return function (plume)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = result
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret617
                                                     do
@@ -7377,7 +7383,7 @@ return function (plume)
                                                         _ret617 = value
                                                     end
                                                     local result = _ret617
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -7400,11 +7406,11 @@ return function (plume)
                                                 _ret618 = value
                                             end
                                             local t = _ret618.table[1]
-                                            local _ret619 = type (t) == "table" and (t == empty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
+                                            local _ret619 = type (t) == "table" and (t == plumeObjEmpty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = _ret619
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret620
                                                     do
@@ -7413,7 +7419,7 @@ return function (plume)
                                                         _ret620 = value
                                                     end
                                                     local result = _ret620
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -7436,7 +7442,7 @@ return function (plume)
                                             local step = tonumber (args[3] or 1)
                                             local _ret622
                                             do
-                                                local _ret623 = type (start) == "table" and (start == empty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
+                                                local _ret623 = type (start) == "table" and (start == plumeObjEmpty and "empty" or start.type) or (type (start) == "cdata" and start.type) or type (start)
                                                 local t = _ret623
                                                 if t ~= "number" then
                                                     if not vmerr then
@@ -7445,17 +7451,17 @@ return function (plume)
                                                         end
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
@@ -7470,12 +7476,12 @@ return function (plume)
                                                                     end
                                                                     local _ret625
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret625 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret626
                                                                             do
@@ -7484,7 +7490,7 @@ return function (plume)
                                                                                 _ret626 = value
                                                                             end
                                                                             local result = _ret626
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -7507,18 +7513,18 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret622 = false
-                                                    goto _inline_end1537
+                                                    goto _inline_end1538
                                                 end
                                                 _ret622 = true
                                             end
-                                            ::_inline_end1537::
+                                            ::_inline_end1538::
                                             if not stop then
                                                 stop = start
                                                 start = 1
                                             end
                                             local _ret628
                                             do
-                                                local _ret629 = type (stop) == "table" and (stop == empty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
+                                                local _ret629 = type (stop) == "table" and (stop == plumeObjEmpty and "empty" or stop.type) or (type (stop) == "cdata" and stop.type) or type (stop)
                                                 local t = _ret629
                                                 if t ~= "number" then
                                                     if not vmerr then
@@ -7527,17 +7533,17 @@ return function (plume)
                                                         end
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
@@ -7552,12 +7558,12 @@ return function (plume)
                                                                     end
                                                                     local _ret631
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret631 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret632
                                                                             do
@@ -7566,7 +7572,7 @@ return function (plume)
                                                                                 _ret632 = value
                                                                             end
                                                                             local result = _ret632
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -7589,14 +7595,14 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret628 = false
-                                                    goto _inline_end1552
+                                                    goto _inline_end1553
                                                 end
                                                 _ret628 = true
                                             end
-                                            ::_inline_end1552::
+                                            ::_inline_end1553::
                                             local _ret634
                                             do
-                                                local _ret635 = type (step) == "table" and (step == empty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
+                                                local _ret635 = type (step) == "table" and (step == plumeObjEmpty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
                                                 local t = _ret635
                                                 if t ~= "number" then
                                                     if not vmerr then
@@ -7605,17 +7611,17 @@ return function (plume)
                                                         end
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")"))
                                                                 do
@@ -7630,12 +7636,12 @@ return function (plume)
                                                                     end
                                                                     local _ret637
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret637 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret638
                                                                             do
@@ -7644,7 +7650,7 @@ return function (plume)
                                                                                 _ret638 = value
                                                                             end
                                                                             local result = _ret638
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -7667,17 +7673,17 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret634 = false
-                                                    goto _inline_end1567
+                                                    goto _inline_end1568
                                                 end
                                                 _ret634 = true
                                             end
-                                            ::_inline_end1567::
+                                            ::_inline_end1568::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", start = start - step, stop = stop, step = step, flag = ITER_SEQ}
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret640
                                                     do
@@ -7686,7 +7692,7 @@ return function (plume)
                                                         _ret640 = value
                                                     end
                                                     local result = _ret640
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -7707,7 +7713,7 @@ return function (plume)
                                             local args = _ret641.table
                                             local _ret642
                                             do
-                                                local _ret643 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local _ret643 = type (args[1]) == "table" and (args[1] == plumeObjEmpty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
                                                 local t = _ret643
                                                 if t ~= "table" then
                                                     if not vmerr then
@@ -7716,17 +7722,17 @@ return function (plume)
                                                         end
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)"))
                                                                 do
@@ -7741,12 +7747,12 @@ return function (plume)
                                                                     end
                                                                     local _ret645
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret645 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret646
                                                                             do
@@ -7755,7 +7761,7 @@ return function (plume)
                                                                                 _ret646 = value
                                                                             end
                                                                             local result = _ret646
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -7778,15 +7784,15 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret642 = false
-                                                    goto _inline_end1588
+                                                    goto _inline_end1589
                                                 end
                                                 _ret642 = true
                                             end
-                                            ::_inline_end1588::
+                                            ::_inline_end1589::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named}
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret648
                                                     do
@@ -7795,7 +7801,7 @@ return function (plume)
                                                         _ret648 = value
                                                     end
                                                     local result = _ret648
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -7814,7 +7820,7 @@ return function (plume)
                                             local args = _ret649.table
                                             local _ret650
                                             do
-                                                local _ret651 = type (args[1]) == "table" and (args[1] == empty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
+                                                local _ret651 = type (args[1]) == "table" and (args[1] == plumeObjEmpty and "empty" or args[1].type) or (type (args[1]) == "cdata" and args[1].type) or type (args[1])
                                                 local t = _ret651
                                                 if t ~= "table" then
                                                     if not vmerr then
@@ -7823,17 +7829,17 @@ return function (plume)
                                                         end
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)"))
                                                                 do
@@ -7848,12 +7854,12 @@ return function (plume)
                                                                     end
                                                                     local _ret653
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret653 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret654
                                                                             do
@@ -7862,7 +7868,7 @@ return function (plume)
                                                                                 _ret654 = value
                                                                             end
                                                                             local result = _ret654
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -7885,15 +7891,15 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret650 = false
-                                                    goto _inline_end1609
+                                                    goto _inline_end1610
                                                 end
                                                 _ret650 = true
                                             end
-                                            ::_inline_end1609::
+                                            ::_inline_end1610::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS}
                                             do
-                                                local call = table.remove (runtime.callstack)
+                                                local call = table.remove (runtimeCallstack)
                                                 if call and call.safe then
                                                     local _ret656
                                                     do
@@ -7902,7 +7908,7 @@ return function (plume)
                                                         _ret656 = value
                                                     end
                                                     local result = _ret656
-                                                    local safeResult = plume.obj.table (0, 2)
+                                                    local safeResult = plumeObjTable (0, 2)
                                                     safeResult:setItem ("success", true)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
@@ -7923,12 +7929,12 @@ return function (plume)
                                                 _ret657 = value
                                             end
                                             local args = _ret657
-                                            local firstFilename = runtime.files[1].name
-                                            local lastFilename = runtime.files[fileStack[fileStackPointer]].name
+                                            local firstFilename = runtimeFiles[1].name
+                                            local lastFilename = runtimeFiles[fileStack[fileStackPointer]].name
                                             local _ret658
                                             do
                                                 local lastfile
-                                                local files = runtime.files
+                                                local files = runtimeFiles
                                                 local ip = ip
                                                 for _, file in ipairs (files)
                                                  do
@@ -7945,7 +7951,7 @@ return function (plume)
                                             local currentFile = _ret658
                                             local _ret659
                                             do
-                                                local _ret660 = type (args.table[1]) == "table" and (args.table[1] == empty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
+                                                local _ret660 = type (args.table[1]) == "table" and (args.table[1] == plumeObjEmpty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
                                                 local t = _ret660
                                                 if t ~= "string" then
                                                     if not vmerr then
@@ -7954,17 +7960,17 @@ return function (plume)
                                                         end
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                 do
@@ -7979,12 +7985,12 @@ return function (plume)
                                                                     end
                                                                     local _ret662
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret662 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret663
                                                                             do
@@ -7993,7 +7999,7 @@ return function (plume)
                                                                                 _ret663 = value
                                                                             end
                                                                             local result = _ret663
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -8016,28 +8022,28 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret659 = false
-                                                    goto _inline_end1631
+                                                    goto _inline_end1632
                                                 end
                                                 _ret659 = true
                                             end
-                                            ::_inline_end1631::
+                                            ::_inline_end1632::
                                             local assertion = _ret659
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
                                                 if filename then
                                                     local success = true
                                                     local err
-                                                    local chunk = runtime.files[filename]
+                                                    local chunk = runtimeFiles[filename]
                                                     if not chunk then
-                                                        chunk = plume.obj.macro (filename, runtime)
+                                                        chunk = plumeObjMacro (filename, runtime)
                                                         local code = futf8.read (filename)
                                                         success, err = pcall (plume.compileFile, code, filename, chunk, runtime)
-                                                        runtime.files[filename] = chunk
+                                                        runtimeFiles[filename] = chunk
                                                     end
                                                     if success then
                                                         fileParams = {}
                                                         if chunk.variadicParam then
-                                                            table.insert (fileParams, {offset = chunk.variadicParam.offset, key = chunk.variadicParam.name, value = plume.obj.table (0, 0)
+                                                            table.insert (fileParams, {offset = chunk.variadicParam.offset, key = chunk.variadicParam.name, value = plumeObjTable (0, 0)
                                                             })
                                                         end
                                                         for _, key in ipairs (args.keys)
@@ -8062,17 +8068,17 @@ return function (plume)
                                                                 elseif chunk.futureFlagUnknownParamError then
                                                                     do
                                                                         local safeCallIndex
-                                                                        for i = #runtime.callstack, 1, -1 do
-                                                                            local call = runtime.callstack[i]
+                                                                        for i = #runtimeCallstack, 1, -1 do
+                                                                            local call = runtimeCallstack[i]
                                                                             if call.safe then
                                                                                 safeCallIndex = i
                                                                             end
                                                                         end
                                                                         if safeCallIndex then
-                                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                                table.remove (runtime.callstack)
+                                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                                table.remove (runtimeCallstack)
                                                                             end
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", false)
                                                                             safeResult:setItem ("result", plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                             do
@@ -8087,12 +8093,12 @@ return function (plume)
                                                                                 end
                                                                                 local _ret666
                                                                                 do
-                                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                                    closureStackPointer = closureStackPointer - 1
+                                                                                    local value = closureStack[closureStackPointer + 1]
                                                                                     _ret666 = value
                                                                                 end
                                                                                 do
-                                                                                    local call = table.remove (runtime.callstack)
+                                                                                    local call = table.remove (runtimeCallstack)
                                                                                     if call and call.safe then
                                                                                         local _ret667
                                                                                         do
@@ -8101,7 +8107,7 @@ return function (plume)
                                                                                             _ret667 = value
                                                                                         end
                                                                                         local result = _ret667
-                                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                                        local safeResult = plumeObjTable (0, 2)
                                                                                         safeResult:setItem ("success", true)
                                                                                         safeResult:setItem ("result", result)
                                                                                         mainStackPointer = mainStackPointer + 1
@@ -8129,7 +8135,7 @@ return function (plume)
                                                             end
                                                         end
                                                         local cacheId, paramMutableWarning = plume.getModuleCacheId (filename, fileParams)
-                                                        local result = runtime.cache.results[cacheId]
+                                                        local result = runtimeCache.results[cacheId]
                                                         if result and currentFile.futureFlagImportCache then
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = result
@@ -8158,17 +8164,17 @@ return function (plume)
                                                     else
                                                         do
                                                             local safeCallIndex
-                                                            for i = #runtime.callstack, 1, -1 do
-                                                                local call = runtime.callstack[i]
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
                                                                 if call.safe then
                                                                     safeCallIndex = i
                                                                 end
                                                             end
                                                             if safeCallIndex then
-                                                                for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                    table.remove (runtime.callstack)
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
                                                                 end
-                                                                local safeResult = plume.obj.table (0, 2)
+                                                                local safeResult = plumeObjTable (0, 2)
                                                                 safeResult:setItem ("success", false)
                                                                 safeResult:setItem ("result", err)
                                                                 do
@@ -8183,12 +8189,12 @@ return function (plume)
                                                                     end
                                                                     local _ret671
                                                                     do
-                                                                        closureStack.pointer = closureStack.pointer - 1
-                                                                        local value = closureStack[closureStack.pointer + 1]
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
                                                                         _ret671 = value
                                                                     end
                                                                     do
-                                                                        local call = table.remove (runtime.callstack)
+                                                                        local call = table.remove (runtimeCallstack)
                                                                         if call and call.safe then
                                                                             local _ret672
                                                                             do
@@ -8197,7 +8203,7 @@ return function (plume)
                                                                                 _ret672 = value
                                                                             end
                                                                             local result = _ret672
-                                                                            local safeResult = plume.obj.table (0, 2)
+                                                                            local safeResult = plumeObjTable (0, 2)
                                                                             safeResult:setItem ("success", true)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
@@ -8222,17 +8228,17 @@ return function (plume)
                                                 else
                                                     do
                                                         local safeCallIndex
-                                                        for i = #runtime.callstack, 1, -1 do
-                                                            local call = runtime.callstack[i]
+                                                        for i = #runtimeCallstack, 1, -1 do
+                                                            local call = runtimeCallstack[i]
                                                             if call.safe then
                                                                 safeCallIndex = i
                                                             end
                                                         end
                                                         if safeCallIndex then
-                                                            for i = #runtime.callstack, safeCallIndex, -1 do
-                                                                table.remove (runtime.callstack)
+                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                table.remove (runtimeCallstack)
                                                             end
-                                                            local safeResult = plume.obj.table (0, 2)
+                                                            local safeResult = plumeObjTable (0, 2)
                                                             safeResult:setItem ("success", false)
                                                             safeResult:setItem ("result", plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                             do
@@ -8247,12 +8253,12 @@ return function (plume)
                                                                 end
                                                                 local _ret675
                                                                 do
-                                                                    closureStack.pointer = closureStack.pointer - 1
-                                                                    local value = closureStack[closureStack.pointer + 1]
+                                                                    closureStackPointer = closureStackPointer - 1
+                                                                    local value = closureStack[closureStackPointer + 1]
                                                                     _ret675 = value
                                                                 end
                                                                 do
-                                                                    local call = table.remove (runtime.callstack)
+                                                                    local call = table.remove (runtimeCallstack)
                                                                     if call and call.safe then
                                                                         local _ret676
                                                                         do
@@ -8261,7 +8267,7 @@ return function (plume)
                                                                             _ret676 = value
                                                                         end
                                                                         local result = _ret676
-                                                                        local safeResult = plume.obj.table (0, 2)
+                                                                        local safeResult = plumeObjTable (0, 2)
                                                                         safeResult:setItem ("success", true)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1

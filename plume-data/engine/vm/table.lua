@@ -70,7 +70,7 @@ function TABLE_INDEX (vm, arg1, arg2)
     local key = _STACK_POP(vm, vm.mainStack)
     key = tonumber(key) or key
 
-    if key == vm.empty then
+    if key == vm.plume.obj.empty then
         if arg1 == 1 then
             LOAD_EMPTY(vm)
         else
@@ -129,7 +129,7 @@ end
 --! inline
 function TABLE_INDEX_CHECK_IS_NIL(vm)
     local top = _STACK_GET(vm, vm.mainStack)
-    if top == vm.empty then
+    if top == vm.plume.obj.empty then
        _ERROR(vm, vm.plume.error.getindexReturnsEmpty())
     end
 end
@@ -189,7 +189,7 @@ function TABLE_SET (vm, arg1, arg2)
             -- for preventing infinite loop with next TABLE_SET
             -- quite dirty an vulnerable (ex: meta set this key to nil)
             -- may be rewrited in the futur
-            t:setItem(key, vm.empty )
+            t:setItem(key, vm.plume.obj.empty )
 
             -- table & key
             _STACK_PUSH(vm, vm.mainStack, t)

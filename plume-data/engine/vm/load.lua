@@ -70,5 +70,5 @@ end
 --- Stack 1, `empty`
 --! inline
 function LOAD_EMPTY (vm, arg1, arg2)
-    _STACK_PUSH(vm, vm.mainStack, vm.empty)
+    _STACK_PUSH(vm, vm.mainStack, vm.plume.obj.empty)
 end

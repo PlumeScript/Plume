@@ -33,6 +33,7 @@ return function (plume)
 		require "plume-data/engine/vm/table"
 		require "plume-data/engine/vm/utils"
 		local op, arg1, arg2, vmerr, vmserr
+		_VM_OPT_INIT(vm)
 		--! copyvm
 		vm.ip      = startip - 1
 		_VM_INIT_VARS(vm, fileID)

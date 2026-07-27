@@ -64,7 +64,7 @@ end
 --! inline
 function JUMP_IF_EMPTY (vm, arg1, arg2)
     local test = _STACK_POP(vm, vm.mainStack)
-    if test == vm.empty then
+    if test == vm.plume.obj.empty then
         vm.jump = arg2
     end
 end
@@ -75,7 +75,7 @@ end
 --! inline
 function JUMP_IF_NOT_EMPTY (vm, arg1, arg2)
     local test = _STACK_POP(vm, vm.mainStack)
-    if test ~= vm.empty then
+    if test ~= vm.plume.obj.empty then
         vm.jump = arg2
     end
 end

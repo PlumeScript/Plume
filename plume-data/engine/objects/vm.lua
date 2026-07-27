@@ -9,8 +9,7 @@ return function(plume)
 	function plume.obj.vm(runtime)
 		local vm = {
 			--- to remove? ----
-			plume      = plume, 
-			empty      = plume.obj.empty,
+			plume      = plume,
 			-------------------
 			ip         = 0,
 			tic        = 0,
@@ -59,7 +58,6 @@ return function(plume)
 		-- Context
 		vm.runtime.localStack         = table.new(2^8, 0)
 		vm.runtime.localStack.pointer = 0
-		vm.globalStackCache           = vm.globalStackCache  or table.new(0, 2^8)
 		vm.contextStackCache          = table.new(2^8, 0)
 		vm.contextStackCache.pointer  = 0
 

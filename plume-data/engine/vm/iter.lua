@@ -85,14 +85,14 @@ function FOR_ITER (vm, arg1, arg2)
         state = state+1
 
         if state > #obj then
-            result = vm.empty
+            result = vm.plume.obj.empty
         else
             result = obj[state]
         end
     elseif flag == vm.flag.ITER_SEQ then
         state = state + obj.step
         if state > obj.stop then
-            result = vm.empty
+            result = vm.plume.obj.empty
         else
             result = state
         end
@@ -100,7 +100,7 @@ function FOR_ITER (vm, arg1, arg2)
         state = state+1
 
         if state > #obj.ref.table then
-            result = vm.empty
+            result = vm.plume.obj.empty
         else
             -- Could be optimized
             result = vm.plume.obj.table(2, 0)
@@ -117,7 +117,7 @@ function FOR_ITER (vm, arg1, arg2)
         end
 
         if state > #obj.ref.keys then
-            result = vm.empty
+            result = vm.plume.obj.empty
         else
             -- Could be optimized
             result = vm.plume.obj.table(2, 0)
@@ -147,7 +147,7 @@ function FOR_ITER (vm, arg1, arg2)
         -- Save state. Offset 1 for local var #2
         _STACK_SET_FRAMED(vm, vm.variableStack, 1, 0, state)
 
-        if result == vm.empty then
+        if result == vm.plume.obj.empty then
             JUMP (vm, 0, arg2)
         else
             _STACK_PUSH(vm, vm.mainStack, result)

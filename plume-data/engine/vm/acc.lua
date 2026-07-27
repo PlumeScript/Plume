@@ -217,14 +217,14 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
     local value = _STACK_GET(vm, vm.mainStack)
     local t     = _GET_TYPE(vm, value)
 
-    if value == vm.empty then
+    if value == vm.plume.obj.empty then
         _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), "")
     elseif t == "number" then
         local plumeTable =vm.runtime.plume.table
         local locale = plumeTable.locale:get()
         local file = _GET_CURRENT_FILE(vm)
 
-        if locale ~= vm.empty and locale ~= "none" and not file.flagRawNumbers then
+        if locale ~= vm.plume.obj.empty and locale ~= "none" and not file.flagRawNumbers then
             local success, result = vm.plume.formatNumber(
                 value, 
                 plumeTable.localeNumberFormat:get(),

@@ -9,7 +9,7 @@ Licensed under the MIT License — see LICENSE for details.
 --- @return string Type of x
 --! inline
 function _GET_TYPE(vm, x)
-    return type(x) == "table" and (x == vm.empty and "empty" or x.type) or (type(x) == "cdata" and x.type) or type(x)
+    return type(x) == "table" and (x == vm.plume.obj.empty and "empty" or x.type) or (type(x) == "cdata" and x.type) or type(x)
 end
 
 --- Throw an error
@@ -43,7 +43,7 @@ end
 --- @return any|false Return false if x is empty, else x it self.
 --! inline
 function _CHECK_BOOL (vm, x)
-    if x == vm.empty then
+    if x == vm.plume.obj.empty then
         return false
     end
     return x

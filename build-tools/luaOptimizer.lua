@@ -79,22 +79,28 @@ local function copyvm()
 	local vars = {
 		{"bytecode", "runtime.bytecode"},
 		{"constants", "runtime.constants"},
+		{"runtimeCallstack", "runtime.callstack"},
+		{"runtimeFiles", "runtime.files"},
+		{"runtimeCache", "runtime.cache"},
+		{"runtimePlume", "runtime.plume"},
+
 		{"fileParams", "fileParams"}
 	}
 	local rec = {flag=true}
 	local fakevm = plume.obj.vm({})
-	local fakevmkeys = {}
+	local fakekeys = {}
 	for k, v in pairs(fakevm) do
-		table.insert(fakevmkeys, {k, v})
+		table.insert(fakekeys, {k, v})
 	end
 
+
 	local function sort()
-		table.sort(fakevmkeys, function (x, y) return x[1]<y[1] end) -- deterministic engine-opt
+		table.sort(fakekeys, function (x, y) return x[1]<y[1] end) -- deterministic engine-opt
 	end
 
 	sort()
-	while #fakevmkeys>0 do
-		local infos = table.remove(fakevmkeys)
+	while #fakekeys>0 do
+		local infos = table.remove(fakekeys)
 		local k = infos[1]
 		local v = infos[2]
 		local alias = infos[3] or k
@@ -110,7 +116,7 @@ local function copyvm()
 		end
 		if rec[k] then
 			for kk, vv in pairs(v) do
-				table.insert(fakevmkeys, {kk, vv, k.."."..kk})
+				table.insert(fakekeys, {kk, vv, k.."."..kk})
 			end
 			sort()
 		end
@@ -121,6 +127,12 @@ local function copyvm()
 	for _, var in ipairs(vars) do
 		table.insert(result, string.format("local %s = vmstate.%s", var[1], var[2]))
 	end
+
+	-- plume.obj
+	table.insert(result, string.format("local plumeObjTable = vmstate.plume.obj.table"))
+	table.insert(result, string.format("local plumeObjMacro = vmstate.plume.obj.macro"))
+	table.insert(result, string.format("local plumeObjFragment = vmstate.plume.obj.fragment"))
+	table.insert(result, string.format("local plumeObjEmpty = vmstate.plume.obj.empty"))
 
 	return table.concat(result, "\n")
 end

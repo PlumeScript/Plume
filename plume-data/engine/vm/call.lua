@@ -90,7 +90,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         if success then
             
             if result == nil then
-                result = vm.empty
+                result = vm.plume.obj.empty
             end
             
             _STACK_PUSH(vm, vm.mainStack, result)
@@ -268,6 +268,6 @@ function HOST_UPDATE(vm)
     else
         _POP_CALLSTACK(vm)
         _STACK_POP(vm, vm.mainStack)
-        _STACK_PUSH(vm, vm.mainStack, context.RETURN_VALUE or vm.empty)
+        _STACK_PUSH(vm, vm.mainStack, context.RETURN_VALUE or vm.plume.obj.empty)
     end
 end

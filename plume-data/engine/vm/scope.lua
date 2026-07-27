@@ -17,7 +17,7 @@ function ENTER_SCOPE (vm, arg1, arg2)
     )
     
     for i = 1, arg2-arg1 do
-        _STACK_PUSH(vm, vm.variableStack, vm.empty)
+        _STACK_PUSH(vm, vm.variableStack, vm.plume.obj.empty)
     end
 end
 

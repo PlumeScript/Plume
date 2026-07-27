@@ -50,10 +50,9 @@ function _INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamO
     end
 end
 
---- Declare all vm variables
---- @param runtime runtime The runtime to execute
---! inline-nodo
-function _VM_INIT_VARS(vm, fileID)
+--- Only to inject directive to engine-opt
+--! inline
+function _VM_OPT_INIT(vm)
     --! index-to-inline vm.err vmerr
     --! index-to-inline vm.serr vmserr
     --! index-to-inline vm.* *
@@ -65,7 +64,18 @@ function _VM_INIT_VARS(vm, fileID)
     --! index-to-inline macroStack.*
     --! index-to-inline injectionStack.*
     --! index-to-inline contextStackCache.*
+    --! index-to-inline closureStack.*
     --! index-to-inline flag.* *
+    --! index-to-inline runtime.*
+    --! index-to-inline plume.obj
+    --! index-to-inline plumeObj.*
+end
+
+--- Declare all vm variables
+--- @param runtime runtime The runtime to execute
+--! inline-nodo
+function _VM_INIT_VARS(vm, fileID)
+    
 
     --=====================--
     -- Instruction format --
