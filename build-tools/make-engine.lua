@@ -28,7 +28,7 @@ Licensed under the MIT License — see LICENSE for details.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (runtime, startip, fileID, variadicParam, namedParamOffset, initFileParams, vm)
+	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
 ]=]
 
 local import = {}
@@ -42,6 +42,7 @@ import = table.concat(import)
 
 local init = [[
 		local op, arg1, arg2, vmerr, vmserr
+		--! copyvm
 		vm.ip      = startip - 1
 		_VM_INIT_VARS(vm, fileID)
 		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)

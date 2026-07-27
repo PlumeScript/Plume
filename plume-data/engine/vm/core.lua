@@ -9,7 +9,7 @@ Licensed under the MIT License — see LICENSE for details.
 -- Initalization --
 --===============--
 
-
+--! inline
 function _INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
     local currentFile = vm.runtime.files[fileID]
 
@@ -64,7 +64,7 @@ function _VM_INIT_VARS(vm, fileID)
     --! index-to-inline fileStack.*
     --! index-to-inline macroStack.*
     --! index-to-inline injectionStack.*
-    --! index-to-inline contextStack.*
+    --! index-to-inline contextStackCache.*
     --! index-to-inline flag.* *
 
     --=====================--
@@ -98,6 +98,7 @@ function _VM_INIT_VARS(vm, fileID)
     --! to-remove-end
 end
 
+--! to-remove-begin
 --- Register opcodes usages
 function _STAT_REGISTER(vm, op)
     -- Update history
@@ -105,6 +106,7 @@ function _STAT_REGISTER(vm, op)
     -- Update sequences
     vm.stats.opseq[vm.stats.ophist] = 1 + (vm.stats.opseq[vm.stats.ophist] or 0)
 end
+--! to-remove-end
 
 --- Called at each instruction.
 --- Jump if needed and increment instruction counter

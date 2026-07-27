@@ -7,7 +7,7 @@ Licensed under the MIT License — see LICENSE for details.
 
 local Parser = require "parser"
 local ast = require "parser.lua.ast"
-
+local plume = require"plume-data/engine/init"
 local function printTable(t)
 	print(tolua(t))
 end
@@ -75,6 +75,56 @@ local functionsToInline = {}
 local usedInlinedFunctions = {}
 local indexToInline = {}
 
+local function copyvm()
+	local vars = {
+		{"bytecode", "runtime.bytecode"},
+		{"constants", "runtime.constants"},
+		{"fileParams", "fileParams"}
+	}
+	local rec = {flag=true}
+	local fakevm = plume.obj.vm({})
+	local fakevmkeys = {}
+	for k, v in pairs(fakevm) do
+		table.insert(fakevmkeys, {k, v})
+	end
+
+	local function sort()
+		table.sort(fakevmkeys, function (x, y) return x[1]<y[1] end) -- deterministic engine-opt
+	end
+
+	sort()
+	while #fakevmkeys>0 do
+		local infos = table.remove(fakevmkeys)
+		local k = infos[1]
+		local v = infos[2]
+		local alias = infos[3] or k
+		table.insert(vars, {k, alias})
+		if type(v)=="table"  then
+			if v.frames then
+				table.insert(vars, {k.."Frames", k..".frames"})
+				table.insert(vars, {k.."FramesPointer", k..".frames.pointer"})
+			end
+			if v.pointer then
+				table.insert(vars, {k.."Pointer", k..".pointer"})
+			end
+		end
+		if rec[k] then
+			for kk, vv in pairs(v) do
+				table.insert(fakevmkeys, {kk, vv, k.."."..kk})
+			end
+			sort()
+		end
+	end
+
+	local result = {"local vmstate = vm"} -- bypass agressive inlining
+
+	for _, var in ipairs(vars) do
+		table.insert(result, string.format("local %s = vmstate.%s", var[1], var[2]))
+	end
+
+	return table.concat(result, "\n")
+end
+
 local function applyCommands(code)
 	for optn, name in code:gmatch('%-%-! inline([^\n]*)\n%s*function%s+([a-zA-Z_0-9]*)') do
 		local optns = {}
@@ -94,6 +144,9 @@ local function applyCommands(code)
 	code = code:gsub('%-%-! to%-remove%-begin.-%-%-! to%-remove%-end', '')
 	code = code:gsub('[^\n]+%-%-! to%-remove', '')
 	code = code:gsub('%-%-! to%-add ([^\n]+)', '%1')
+
+	code = code:gsub('%-%-! copyvm', copyvm())
+
 	for command in code:gmatch('%-%-! ([^\n]*)') do
 		if not command:match("^inline") and not command:match("^index%-to%-inline") then
 			print("Error: unknown command '" .. command .. "'.")
@@ -331,7 +384,7 @@ optimizer = {
 		tree:traverse(optimizer.inlineIndex)
 		tree:traverse(optimizer.inlineIndex)
 		tree:traverse(optimizer.inlineIndex)
-		tree:traverse(optimizer.tolocal)
+		-- tree:traverse(optimizer.tolocal) -- broken: generate `local t[1] =` and at least one another error
 
 		optimizer.checkUselessFunctions()
 

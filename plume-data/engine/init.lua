@@ -62,7 +62,7 @@ function plume.run(runtime, chunk, fileParams)
 	end
 
 	local vm = plume.obj.vm(runtime)
-	return plume.safeRun(run, vm, runtime, chunk.offset, chunk.fileID, chunk.variadicParam, chunk.namedParamOffset, fileParams)
+	return plume.safeRun(run, vm, chunk.offset, chunk.fileID, chunk.variadicParam, chunk.namedParamOffset, fileParams)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain)
