@@ -123,6 +123,9 @@ function TABLE_INDEX (vm, arg1, arg2)
     end
 end
 
+--- @opcode
+--- Check the return value of a `getindex` meta-macro call.
+--- If the result is empty, raise an error (the key was not found).
 --! inline
 function TABLE_INDEX_CHECK_IS_NIL(vm)
     local top = _STACK_GET(vm, vm.mainStack)
@@ -235,6 +238,8 @@ function TABLE_EXPAND (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Set a custom field (from the constant pool) on the table at stack top.
+--- The table is not popped. Used internally by the engine for table metadata.
 --! inline
 function TABLE_CUSTOM_FIELD (vm, arg1, arg2)
     local field = vm.constants[arg2]

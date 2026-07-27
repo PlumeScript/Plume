@@ -14,7 +14,7 @@ function JUMP (vm, arg1, arg2)
 end
 
 --- @opcode
---- Unstack 1, and jump to a given instruction if false
+--- Pop 1, and jump to a given instruction if falsy (false or empty)
 --- @param arg2 jump offset
 --! inline
 function JUMP_IF_NOT (vm, arg1, arg2)
@@ -47,7 +47,7 @@ function JUMP_IF_PEEK (vm, arg1, arg2)
 end
 
 --- @opcode
---- Jump to a given instruction if stack top is false
+--- Jump to a given instruction if stack top is falsy (false or empty), without popping
 --- @param arg2 jump offset
 --! inline
 function JUMP_IF_NOT_PEEK (vm, arg1, arg2)

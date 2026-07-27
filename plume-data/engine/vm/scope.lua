@@ -29,6 +29,10 @@ function LEAVE_SCOPE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Return from the current file execution.
+--- Closes the file scope, pops the file stack and the callstack.
+--- If the file stack is empty, signals program termination.
+--- Otherwise jumps back to the caller and caches the result if applicable.
 --! inline
 function RETURN_FILE(vm, arg1, arg2)
     LEAVE_SCOPE(vm)
@@ -49,6 +53,8 @@ function RETURN_FILE(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Distribute file parameters (saved by `STD_IMPORT`) into local variable slots.
+--- Runs once at the start of file execution, then clears the parameter list.
 --! inline
 function FILE_INIT_PARAMS(vm, arg1, arg2)
     local params = vm.fileParams
@@ -61,6 +67,7 @@ function FILE_INIT_PARAMS(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Pop a message from the stack and raise a runtime error.
 --! inline
 function RAISE(vm, arg1, arg2)
     local msg = _STACK_POP(vm, vm.mainStack)

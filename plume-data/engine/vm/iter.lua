@@ -6,10 +6,10 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 --- @opcode
---- Unstack 1 iterable object and stack 1 iterator.
---- If object as a meta field `next`, it's already and iterator, and will be returned as it.
---- If object as a meta field `iter`, call it.
---- Else, stack the defaut iterator
+--- Pop 1 iterable object and push its iterator triple (flag, state, value).
+--- If object has a meta field `next`, it's already an iterator, and will be returned as-is.
+--- If object has a meta field `iter`, call it.
+--- Else, push the default sequence iterator.
 --- Raise an error if the object isn't a table.
 --! inline
 function GET_ITER (vm, arg1, arg2)
@@ -70,8 +70,9 @@ function GET_ITER (vm, arg1, arg2)
 end
 
 --- @opcode
---- Unstack 1 iterator and call it
---- If empty, jump to for loop end.
+--- Advance the iterator stored in local variables (obj, state, flag).
+--- If the result is empty, jump to the loop end.
+--- Otherwise, push the next value onto the value stack.
 --- @param arg2 number Offset of the loop end
 --! inline
 function FOR_ITER (vm, arg1, arg2)
@@ -155,8 +156,9 @@ function FOR_ITER (vm, arg1, arg2)
 end
 
 --- @opcode
---- If stack top is empty, pop it and jump.
---- Else, do nothing
+--- Check the result of a custom iterator's `next` meta-macro call.
+--- If the value is falsy (false or empty), pop it and jump to the loop end.
+--- Otherwise, leave the value on the stack for the loop body.
 --- @param arg2 jump offset
 --! inline
 function JUMP_FOR (vm, arg1, arg2)

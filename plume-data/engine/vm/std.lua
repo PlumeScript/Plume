@@ -29,6 +29,7 @@ function _ASSERT_STD_TYPE(vm, macroName, argPos, value, expected, signature)
 end
 
 --- @opcode
+--- Return the length of a table (list part) or string on stack top.
 --! inline
 function STD_LEN(vm, arg1, arg2)
 	local t = _STACK_POP(vm, vm.mainStack).table[1]
@@ -55,6 +56,7 @@ function STD_LEN(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Return the type name of the value on stack top.
 --! inline
 function STD_TYPE(vm, arg1, arg2)
     local t = _STACK_POP(vm, vm.mainStack).table[1]
@@ -64,6 +66,8 @@ function STD_TYPE(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Create an arithmetic sequence iterator from start to stop with a given step.
+--- If only one argument is provided, it is used as stop and start defaults to 1.
 --! inline
 function STD_SEQ(vm, arg1, arg2)
     local signature = "numbers stop|start, stop|start, stop, step"
@@ -98,6 +102,8 @@ function STD_SEQ(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Create a key-value iterator over a table.
+--- Iterates over hash entries in insertion order.
 --! inline
 function STD_ITEMS(vm, arg1, arg2)
     local args = _STACK_POP(vm, vm.mainStack).table
@@ -115,6 +121,8 @@ function STD_ITEMS(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Create an index-value iterator over a table.
+--- Yields pairs `(index, item)` for each list entry.
 --! inline
 function STD_ENUMERATE(vm, arg1, arg2)
     local args = _STACK_POP(vm, vm.mainStack).table
@@ -131,6 +139,10 @@ function STD_ENUMERATE(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Import and execute another Plume file.
+--- Compiles (or retrieves cached) the file, distributes its parameters,
+--- pushes the fileID onto `fileStack`, and jumps to the file's code offset.
+--- Results are cached by parameter identity for future imports.
 --! inline
 function STD_IMPORT(vm, arg1, arg2)
     local args = _STACK_POP(vm, vm.mainStack)

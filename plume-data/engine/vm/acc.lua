@@ -30,6 +30,11 @@ function _MAKE_FRAGMENT(vm, start, count)
     return fragment
 end
 
+--- @opcode
+--- Concatenate all values in the current frame into a single fragment.
+--- Pops every value down to the frame marker, concatenates them, and pushes the result.
+--- Small, flat sequences of strings/numbers are optimized via direct `table.concat`;
+--- larger or nested sequences produce a *fragment* (a lazy array of parts).
 --! inline
 function CONCAT_TEXT (vm, arg1, arg2)
     local start = _STACK_GET(vm, vm.mainStack.frames)
@@ -75,6 +80,9 @@ function CONCAT_TEXT (vm, arg1, arg2)
     _END_ACC(vm)
 end
 
+--- @opcode
+--- Recursively flatten a fragment on stack top into a single string.
+--- If the value is not a fragment, does nothing.
 --! inline
 function FORCE_FRAGMENT (vm, arg1, arg2)
     local fragment = _STACK_GET(vm, vm.mainStack)

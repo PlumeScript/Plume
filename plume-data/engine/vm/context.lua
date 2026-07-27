@@ -6,6 +6,9 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 --- @opcode
+--- Pop a table of context-variable bindings from the stack.
+--- For each key-value pair, pushes the variable's current value onto a cache stack
+--- and updates the variable to the new value.
 --! inline
 function PUSH_CONTEXT(vm, arg1, arg2)
     local values = _STACK_POP(vm, vm.mainStack)
@@ -25,6 +28,8 @@ function PUSH_CONTEXT(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Restore all context variables to their previous values
+--- by popping the cache stack filled by `PUSH_CONTEXT`.
 --! inline
 function POP_CONTEXT(vm, arg1, arg2)
     local cache = _STACK_POP(vm, vm.contextStackCache)

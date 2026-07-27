@@ -11,6 +11,8 @@ function _UPVALUE_OFFSET(vm, localoffset, scopeoffset)
 end
 
 --- @opcode
+--- Register a local variable slot as an open upvalue by its absolute offset.
+--- Future `CLOSURE` calls will bind the cell at this offset.
 --- @param arg2 local offset
 --! inline
 function OPEN_UPVALUE (vm, arg1, arg2)
@@ -22,6 +24,8 @@ function OPEN_UPVALUE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Pop a key from the stack and register a pending reference upvalue for it.
+--- The reference is resolved to a table field when `CLOSE_REF_UPVALUE` runs.
 --! inline
 function OPEN_REF_UPVALUE (vm, arg1, arg2)
 	local key = _STACK_POP(vm, vm.mainStack)
@@ -36,6 +40,9 @@ function OPEN_REF_UPVALUE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Freeze an open upvalue by copying the variable's current value into a cell.
+--- The upvalue cell then references the cell instead of the live variable stack.
+--- @param arg2 local offset
 --! inline
 function CLOSE_UPVALUE (vm, arg1, arg2)
 	local offset  = _UPVALUE_OFFSET(vm, arg2)
@@ -49,6 +56,8 @@ function CLOSE_UPVALUE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Pop a key from the stack and resolve the matching reference upvalue.
+--- Binds it to the table field at that key (stack top is the newly created table).
 --! inline
 function CLOSE_REF_UPVALUE (vm, arg1, arg2)
 	local key = _STACK_POP(vm, vm.mainStack)
@@ -76,6 +85,7 @@ function CLOSE_REF_UPVALUE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Push the value of an upvalue from the current closure's upvalue table.
 --- @param arg2 local offset
 --! inline
 function LOAD_UPVALUE (vm, arg1, arg2)
@@ -84,6 +94,7 @@ function LOAD_UPVALUE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Pop a value and store it into an upvalue cell in the current closure's upvalue table.
 --! inline
 function STORE_UPVALUE (vm, arg1, arg2)
 	local upvalue = _STACK_GET(vm, vm.closureStack)[arg2]
@@ -91,6 +102,9 @@ function STORE_UPVALUE (vm, arg1, arg2)
 end
 
 --- @opcode
+--- Create a closure object from the macro reference on stack top.
+--- Binds all declared upvalues (by parent offset, ref key, or local offset)
+--- into a new upvalue table. Replaces the macro with the closure on the stack.
 --! inline
 function CLOSURE (vm, arg1, arg2)
 	local macro = _STACK_GET(vm, vm.mainStack)

@@ -202,6 +202,9 @@ function _CALL_MACRO(vm, chunk, isValidator, safe)
 end
 
 --- @opcode
+--- Return from the current macro call.
+--- Closes the macro scope, pops the closure stack, pops the callstack,
+--- and jumps back to the saved return address.
 --! inline
 function RETURN(vm, arg1, arg2)
     LEAVE_SCOPE(vm, 0, 0) -- close macro scope
@@ -211,6 +214,9 @@ function RETURN(vm, arg1, arg2)
 end
 
 --- @opcode
+--- Receive the next value from a host callback context.
+--- Pops the callback result from the stack; if it is falsy, ends the host call.
+--- Otherwise handles jump precedence over injected instructions.
 --! inline
 function HOST_NEXT(vm)
     local value   = _STACK_POP(vm, vm.mainStack)
@@ -238,6 +244,9 @@ function HOST_NEXT(vm)
 end
 
 --- @opcode
+--- Resume a host callback context after its macro call completes.
+--- If the context has a pending callback, re-injects HOST_NEXT + CONCAT_CALL.
+--- Otherwise pops the callstack and pushes the context's return value.
 --! inline
 function HOST_UPDATE(vm)
     local context = _STACK_GET(vm, vm.mainStack)
