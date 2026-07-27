@@ -61,8 +61,7 @@ function plume.run(runtime, chunk, fileParams)
 	else
 		run = plume._run
 	end
-
-	return plume.safeRun(run, runtime, chunk, fileParams)
+	return plume.safeRun(run, runtime, chunk.offset, chunk.fileID, chunk.variadicParam, chunk.namedParamOffset, fileParams)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain)

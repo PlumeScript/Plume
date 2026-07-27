@@ -11,21 +11,21 @@ Licensed under the MIT License — see LICENSE for details.
 --- Initiialize the VM
 --- @param runtime runtime The runtime to execute
 --! inline-nodo
-function _VM_INIT (plume, runtime, chunk, initFileParams)
+function _VM_INIT (plume, runtime, startip, fileID, variadicParam, namedParamOffset, initFileParams)
     local vm = {} --! to-remove
     
     -- to avoid context injection
     vm.plume = plume --! to-remove
 
-    _VM_INIT_VARS(vm, runtime, chunk)
+    _VM_INIT_VARS(vm, runtime, startip, fileID)
 
     -- Inject file params
-    local currentFile = runtime.files[chunk.fileID]
+    local currentFile = runtime.files[fileID]
 
     vm.fileParams = {}
-    if chunk.variadicParam then
+    if variadicParam then
         table.insert(vm.fileParams, {
-            offset = chunk.variadicParam.offset,
+            offset = variadicParam.offset,
             value  = vm.plume.obj.table(0, 0)
         })
     end
@@ -42,15 +42,15 @@ function _VM_INIT (plume, runtime, chunk, initFileParams)
                     varKey = key
                 end
 
-                local offset = chunk.namedParamOffset[varKey]
-                if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
+                local offset = namedParamOffset[varKey]
+                if offset and (not variadicParam or offset ~= variadicParam.offset) then
                     table.insert(vm.fileParams, {offset=offset, value=value})
-                elseif chunk.variadicParam then
+                elseif variadicParam then
                     local variadic = vm.fileParams[1].value
                     variadic:setItem(key, value)
                 elseif currentFile.futureFlagUnknownParamError then
-                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, chunk.namedParamOffset))
-                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, chunk.namedParamOffset)) -- dirty fix
+                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, namedParamOffset))
+                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, namedParamOffset)) -- dirty fix
                 else
                      vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, vm.runtime, vm.ip, {886, 981})
                 end
@@ -64,7 +64,7 @@ end
 --- Declare all vm variables
 --- @param runtime runtime The runtime to execute
 --! inline-nodo
-function _VM_INIT_VARS(vm, runtime, chunk)
+function _VM_INIT_VARS(vm, runtime, startip, fileID)
     --! index-to-inline vm.err vmerr
     --! index-to-inline vm.serr vmserr
     --! index-to-inline vm.* *
@@ -83,7 +83,7 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.constants = runtime.constants
 
     -- instruction pointer
-    vm.ip      = chunk.offset - 1
+    vm.ip      = startip - 1
     -- total instruction count
     vm.tic     = 0
 
@@ -102,7 +102,7 @@ function _VM_INIT_VARS(vm, runtime, chunk)
     vm.closureStack.pointer         = 0
 
     vm.fileStack = table.new(2^8, 0)
-    vm.fileStack[1] = chunk.fileID
+    vm.fileStack[1] = fileID
     vm.fileStack.pointer = 1
 
     vm.macroStack = table.new(2^8, 0)

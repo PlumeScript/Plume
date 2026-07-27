@@ -13,7 +13,7 @@ Licensed under the MIT License — see LICENSE for details.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (runtime, chunk, initFileParams)
+	function plume._run_dev (runtime, startip, fileID, variadicParam, namedParamOffset, initFileParams)
 		require "plume-data/engine/vm/acc"
 		require "plume-data/engine/vm/alu"
 		require "plume-data/engine/vm/call"
@@ -35,7 +35,7 @@ return function (plume)
 		-- Creates stacks, handle arguments
 		local op, arg1, arg2, vmerr, vmserr
 		local vm =  --! to-remove
-			_VM_INIT(plume, runtime, chunk, initFileParams)
+			_VM_INIT(plume, runtime, startip, fileID, variadicParam, namedParamOffset, initFileParams)
 		
 		
 		::DISPATCH::
