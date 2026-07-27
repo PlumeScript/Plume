@@ -15,4 +15,5 @@ return function(plume)
 	require 'plume-data/engine/objects/macro'      (plume)
 	require 'plume-data/engine/objects/runtime'    (plume)
 	require 'plume-data/engine/objects/utils'      (plume)
+	require 'plume-data/engine/objects/vm'         (plume)
 end

@@ -8,19 +8,10 @@ Licensed under the MIT License — see LICENSE for details.
 --================--
 -- Initalization --
 --===============--
---- Initiialize the VM
---- @param runtime runtime The runtime to execute
---! inline-nodo
-function _VM_INIT (plume, runtime, startip, fileID, variadicParam, namedParamOffset, initFileParams)
-    local vm = {} --! to-remove
-    
-    -- to avoid context injection
-    vm.plume = plume --! to-remove
 
-    _VM_INIT_VARS(vm, runtime, startip, fileID)
 
-    -- Inject file params
-    local currentFile = runtime.files[fileID]
+function _INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
+    local currentFile = vm.runtime.files[fileID]
 
     vm.fileParams = {}
     if variadicParam then
@@ -57,14 +48,12 @@ function _VM_INIT (plume, runtime, startip, fileID, variadicParam, namedParamOff
             end
         end
     end
-
-    return vm --! to-remove
 end
 
 --- Declare all vm variables
 --- @param runtime runtime The runtime to execute
 --! inline-nodo
-function _VM_INIT_VARS(vm, runtime, startip, fileID)
+function _VM_INIT_VARS(vm, fileID)
     --! index-to-inline vm.err vmerr
     --! index-to-inline vm.serr vmserr
     --! index-to-inline vm.* *
@@ -77,64 +66,6 @@ function _VM_INIT_VARS(vm, runtime, startip, fileID)
     --! index-to-inline injectionStack.*
     --! index-to-inline contextStack.*
     --! index-to-inline flag.* *
-
-    vm.runtime   = runtime
-    vm.bytecode  = runtime.bytecode
-    vm.constants = runtime.constants
-
-    -- instruction pointer
-    vm.ip      = startip - 1
-    -- total instruction count
-    vm.tic     = 0
-
-    vm.mainStack                = table.new(2^14, 0)
-    vm.mainStack.frames         = table.new(2^8, 0)
-    vm.mainStack.pointer        = 0
-    vm.mainStack.frames.pointer = 0
-
-    vm.variableStack                = table.new(2^10, 0)
-    vm.variableStack.frames         = table.new(2^8, 0)
-    vm.variableStack.pointer        = 0
-    vm.variableStack.frames.pointer = 0
-    vm.upvalueMap                 = table.new(2^10, 0)
-
-    vm.closureStack                 = table.new(2^8, 0)
-    vm.closureStack.pointer         = 0
-
-    vm.fileStack = table.new(2^8, 0)
-    vm.fileStack[1] = fileID
-    vm.fileStack.pointer = 1
-
-    vm.macroStack = table.new(2^8, 0)
-    vm.macroStack.pointer = 0
-
-    vm.injectionStack         = table.new(64, 0)
-    vm.injectionStack.pointer = 0
-
-    vm.tagStack = table.new(2^14, 0)
-
-    vm.fileParams = nil
-
-    -- easier debuging than setting vm.ip
-    vm.jump    = 0
-
-    -- local variables
-    vm.empty = vm.plume.obj.empty
-
-    -- Context
-    vm.runtime.localStack         = table.new(2^8, 0)
-    vm.runtime.localStack.pointer = 0
-    vm.globalStackCache          = vm.globalStackCache  or table.new(0, 2^8)
-    vm.contextStackCache         = table.new(2^8, 0)
-    vm.contextStackCache.pointer = 0
-
-    -- flag
-    vm.flag = {}
-    vm.flag.ITER_TABLE  = 0
-    vm.flag.ITER_SEQ    = 1
-    vm.flag.ITER_ITEMS  = 2
-    vm.flag.ITER_ENUMS  = 3
-    vm.flag.ITER_CUSTOM = 4
 
     --=====================--
     -- Instruction format --
@@ -150,6 +81,10 @@ function _VM_INIT_VARS(vm, runtime, startip, fileID)
     vm.band       = bit.band
     vm.rshift     = bit.rshift
     ---------------------------
+
+    if #vm.fileStack == 0 then
+        vm.fileStack[1] = fileID
+    end
 
     --! to-remove-begin
     if vm.plume.runStatFlag then
