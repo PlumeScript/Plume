@@ -41,7 +41,7 @@ end
 import = table.concat(import)
 
 local init = [[
-		local op, arg1, arg2, vmerr, vmserr
+		local op, arg1, arg2, vmerr, vmserr, vmerrip
 		_VM_OPT_INIT(vm)
 		--! copyvm
 		vm.ip      = startip - 1
@@ -49,9 +49,7 @@ local init = [[
 		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		::DISPATCH::
-			if vm.err then 
-				return false, vm.err, vm.ip
-			end
+			
 
 			op, arg1, arg2 = _VM_DECODE_CURRENT_INSTRUCTION(vm)
 
@@ -137,6 +135,9 @@ end
 
 local footer = [[
 		::END::
+		if vm.err then 
+			return false, vm.err, vm.errip
+		end
 		--! to-remove-begin
 		local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
 		if not finalSuccess then
@@ -151,6 +152,7 @@ local footer = [[
 				plume.stats = {opseq=vm.stats.opseq}
 			end
 		end
+		
 		--! to-remove-end
 		return true, _STACK_GET(vm, vm.mainStack)
 	end

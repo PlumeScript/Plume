@@ -32,7 +32,7 @@ return function (plume)
 		require "plume-data/engine/vm/store"
 		require "plume-data/engine/vm/table"
 		require "plume-data/engine/vm/utils"
-		local op, arg1, arg2, vmerr, vmserr
+		local op, arg1, arg2, vmerr, vmserr, vmerrip
 		_VM_OPT_INIT(vm)
 		--! copyvm
 		vm.ip      = startip - 1
@@ -40,9 +40,7 @@ return function (plume)
 		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		::DISPATCH::
-			if vm.err then 
-				return false, vm.err, vm.ip
-			end
+			
 
 			op, arg1, arg2 = _VM_DECODE_CURRENT_INSTRUCTION(vm)
 
@@ -359,6 +357,9 @@ return function (plume)
 				end
 			end
 goto DISPATCH		::END::
+		if vm.err then 
+			return false, vm.err, vm.errip
+		end
 		--! to-remove-begin
 		local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
 		if not finalSuccess then
@@ -373,6 +374,7 @@ goto DISPATCH		::END::
 				plume.stats = {opseq=vm.stats.opseq}
 			end
 		end
+		
 		--! to-remove-end
 		return true, _STACK_GET(vm, vm.mainStack)
 	end

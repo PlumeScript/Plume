@@ -36,6 +36,8 @@ function _ERROR (vm, msg)
         _STACK_PUSH(vm, vm.mainStack, safeResult)
     else
         vm.err = msg
+        vm.errip = vm.ip
+        _JUMP_END(vm)
     end
 end
 

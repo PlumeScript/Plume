@@ -38,7 +38,8 @@ function _POP_CALLSTACK(vm)
     if call and call.base then
         if call.base == #vm.runtime.callstack+1 then
             _SAVE_SCALAR(vm)
-            -- quit run - how?
+            _JUMP_END(vm)
+            return true
         end
     end
 end
@@ -221,8 +222,10 @@ end
 function RETURN(vm, arg1, arg2)
     LEAVE_SCOPE(vm, 0, 0) -- close macro scope
     _STACK_POP(vm, vm.closureStack)
-    _POP_CALLSTACK(vm)
-    JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
+    local exit = _POP_CALLSTACK(vm)
+    if not exit then
+        JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
+    end
 end
 
 --- @opcode
@@ -250,7 +253,7 @@ function HOST_NEXT(vm)
             _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0) -- Reinject HOST_UPDATE to clean host
         else
             vm.ip = vm.jump-1
-            JUMP(vm, 0, 0)
+            _RESET_JUMP(vm)
         end
     end
 end

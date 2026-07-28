@@ -10,7 +10,16 @@ Licensed under the MIT License — see LICENSE for details.
 --- @param arg2 jump offset
 --! inline
 function JUMP (vm, arg1, arg2)
-    vm.jump = arg2
+    if vm.jump > 0 and (vm.err or vm.serr) then
+        -- dont erase error jump
+    else
+        vm.jump = arg2
+    end
+end
+
+--! inline
+function _RESET_JUMP (vm)
+    vm.jump = 0-- 0 instead of nil to preserve type
 end
 
 --- @opcode
@@ -78,4 +87,9 @@ function JUMP_IF_NOT_EMPTY (vm, arg1, arg2)
     if test ~= vm.plume.obj.empty then
         JUMP(vm, 0, arg2)
     end
+end
+
+--! inline
+function _JUMP_END(vm)
+    JUMP(vm, 0, #vm.bytecode)
 end

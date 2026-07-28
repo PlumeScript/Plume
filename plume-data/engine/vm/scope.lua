@@ -42,6 +42,11 @@ function RETURN_FILE(vm, arg1, arg2)
     if _STACK_POS(vm, vm.fileStack) == 0 then
         _INJECTION_PUSH(vm, vm.plume.ops.END, 0, 0) -- last file, end the program
     else
+        --! to-remove-begin
+        if vm.jump > 0 then
+            _ERROR(vm, "[VM] RETURN_FILE overwriting a pending jump.")
+        end
+        --! to-remove-end
         JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
     end
 

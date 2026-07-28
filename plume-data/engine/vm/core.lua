@@ -55,6 +55,7 @@ end
 function _VM_OPT_INIT(vm)
     --! index-to-inline vm.err vmerr
     --! index-to-inline vm.serr vmserr
+    --! index-to-inline vm.errip vmerrip
     --! index-to-inline vm.* *
     --! index-to-inline mainStack.*
     --! index-to-inline variableStack.*
@@ -122,7 +123,7 @@ end
 function _VM_TICK (vm)
     if vm.jump>0 then
         vm.ip = vm.jump
-        JUMP(vm, 0, 0)-- 0 instead of nil to preserve type
+        _RESET_JUMP(vm)
     else
         vm.ip = vm.ip+1
     end

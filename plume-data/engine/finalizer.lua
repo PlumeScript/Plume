@@ -79,6 +79,9 @@ return function (plume)
 		local bytecodeSize = #runtime.bytecode
 		local instructionsCount = #runtime.linkedInstructions
 
+		instructionsCount = instructionsCount+1
+		table.insert(runtime.linkedInstructions, {plume.ops.END, 0, 0})
+
 		if bytecodeSize + instructionsCount > plume.MASK_ARG2 then
 			plume.error.toManyInstructions(
 				findNode(runtime.linkedInstructions, instructionsCount),

@@ -47,6 +47,24 @@ There is no dedicated "static memory" region. File-level parameters are managed 
 *   `FILE_INIT_PARAMS`: Distributes saved file parameters into local variable slots at the start of file execution.
 *   `RETURN_FILE`: Pops the file stack, pops the callstack, caches the result if applicable, and jumps back to the caller. If the file stack is empty, signals program termination.
 
+#### Program Termination
+There are two paths for VM termination:
+
+*   **`RETURN_FILE` with empty file stack:** As described above, returning from a file when no file is active signals program termination.
+*   **Jump past bytecode end (#1076):** Since #1076, the compiler guarantees that the last byte of any compiled unit is an `END` opcode. This allows the VM to terminate by setting `jump = #bytecode`, effectively jumping to the position just after the END instruction. The VM exit condition checks if the jump offset reaches or exceeds the bytecode length, providing a clean termination without requiring a dedicated terminal instruction in the source code.
+
+#### The `vm.jump` Register and Pending-Jump Fragility
+
+`vm.jump` is a deferred jump register: opcodes like `JUMP`, `JUMP_IF`, etc. set it, and `_VM_TICK` consumes it at the start of the next instruction cycle (setting `vm.ip = vm.jump` then resetting `vm.jump = 0`). This deferral is necessary because multiple opcodes may need to influence control flow within a single dispatch cycle (e.g., an injection taking precedence over a return jump).
+
+This design has a critical invariant: **a pending `vm.jump > 0` must not be silently overwritten**. Several opcodes unconditionally write `vm.jump`, and if a previous jump is still pending, it is lost. This is particularly fragile in the following situations:
+
+*   **`RETURN` and `RETURN_FILE`**: Both call `_POP_CALLSTACK` (which may set `vm.jump` via `_JUMP_END` to end a recursive run) and then unconditionally call `JUMP` with the return address from `macroStack`. If the recursive-exit jump is pending, the `JUMP` call overwrites it. `RETURN` guards against this by checking the return value of `_POP_CALLSTACK`; `RETURN_FILE` does not (it is not concerned by recursive runs per #1075, but a dev-mode guard checks `vm.jump > 0` and raises an error if this invariant is violated).
+*   **`_ERROR`**: Sets `vm.jump` to `#bytecode` via `_JUMP_END` to skip to `END`. The `JUMP` opcode itself has a guard: if `vm.jump > 0` and `vm.err` (or `vm.serr`) is set, it refuses to overwrite the jump. This ensures error jumps survive any intervening `JUMP` opcodes between the error site and the `END` label.
+*   **`HOST_NEXT`**: Checks `vm.jump == #vm.bytecode` (the error/end jump) and injects `END` + `HOST_UPDATE` instead of resetting, to handle the interaction between host callbacks and error termination.
+
+When adding new opcodes or modifying existing ones that call `JUMP`, always consider whether a pending `vm.jump` could be overwritten. The dev-mode guards in `RETURN_FILE` and the guard in `JUMP` itself exist to catch violations of this invariant.
+
 ### 3. The Accumulation Mechanism
 
 The "Accumulation Block" is Plume's core evaluation model, implemented on the value stack.
