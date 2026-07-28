@@ -9,7 +9,7 @@ Licensed under the MIT License — see LICENSE for details.
 -- It is an inlined and optimized version of engine.lua
 return function (plume)
     function plume._run (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
-        local op, arg1, arg2, vmerr, vmserr, vmerrip
+        local op, arg1, arg2, vmerr, vmerrip
         local vmstate = vm
         local bytecode = vmstate.runtime.bytecode
         local constants = vmstate.runtime.constants
@@ -153,7 +153,7 @@ return function (plume)
                                                     vmstate.fileStackPointer = fileStackPointer
                                                     vmstate.contextStackCachePointer = contextStackCachePointer
                                                     vmstate.closureStackPointer = closureStackPointer
-                                                    if jump > 0 and (vmerr or vmserr) then
+                                                    if jump > 0 and vmerr then
                                                     else
                                                         jump = #bytecode
                                                     end
@@ -171,7 +171,7 @@ return function (plume)
                                                 local value = macroStack[macroStackPointer + 1]
                                                 _ret5 = value
                                             end
-                                            if jump > 0 and (vmerr or vmserr) then
+                                            if jump > 0 and vmerr then
                                             else
                                                 jump = _ret5
                                             end
@@ -182,7 +182,7 @@ return function (plume)
                                 else
                                     vmerr = plume.error.unknownParamError (varKey, namedParamOffset)
                                     vmerrip = ip
-                                    if jump > 0 and (vmerr or vmserr) then
+                                    if jump > 0 and vmerr then
                                     else
                                         jump = #bytecode
                                     end
@@ -247,7 +247,7 @@ return function (plume)
                                                     vmstate.fileStackPointer = fileStackPointer
                                                     vmstate.contextStackCachePointer = contextStackCachePointer
                                                     vmstate.closureStackPointer = closureStackPointer
-                                                    if jump > 0 and (vmerr or vmserr) then
+                                                    if jump > 0 and vmerr then
                                                     else
                                                         jump = #bytecode
                                                     end
@@ -265,7 +265,7 @@ return function (plume)
                                                 local value = macroStack[macroStackPointer + 1]
                                                 _ret10 = value
                                             end
-                                            if jump > 0 and (vmerr or vmserr) then
+                                            if jump > 0 and vmerr then
                                             else
                                                 jump = _ret10
                                             end
@@ -276,7 +276,7 @@ return function (plume)
                                 else
                                     vmerr = plume.error.unknownParamError (varKey, namedParamOffset)
                                     vmerrip = ip
-                                    if jump > 0 and (vmerr or vmserr) then
+                                    if jump > 0 and vmerr then
                                     else
                                         jump = #bytecode
                                     end
@@ -877,7 +877,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -895,7 +895,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret77 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret77
                                                                 end
@@ -906,7 +906,7 @@ return function (plume)
                                                     else
                                                         vmerr = plume.error.cannotSetIndexReadonlyTable ()
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -1046,7 +1046,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -1064,7 +1064,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret87 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret87
                                                                     end
@@ -1075,7 +1075,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.cannotUseEmptyAsKey ()
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -1164,7 +1164,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -1182,7 +1182,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret92 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret92
                                                                         end
@@ -1193,7 +1193,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.cannotIndexValue (tt)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -1308,7 +1308,7 @@ return function (plume)
                                                                                     vmstate.fileStackPointer = fileStackPointer
                                                                                     vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                     vmstate.closureStackPointer = closureStackPointer
-                                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                                    if jump > 0 and vmerr then
                                                                                     else
                                                                                         jump = #bytecode
                                                                                     end
@@ -1326,7 +1326,7 @@ return function (plume)
                                                                                 local value = macroStack[macroStackPointer + 1]
                                                                                 _ret100 = value
                                                                             end
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = _ret100
                                                                             end
@@ -1337,7 +1337,7 @@ return function (plume)
                                                                 else
                                                                     vmerr = plume.error.unregisteredKey (t, key)
                                                                     vmerrip = ip
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = #bytecode
                                                                     end
@@ -1506,7 +1506,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -1524,7 +1524,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret117 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret117
                                                                 end
@@ -1535,7 +1535,7 @@ return function (plume)
                                                     else
                                                         vmerr = plume.error.cannotExpandValue (tt)
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -1617,7 +1617,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -1635,7 +1635,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret123 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret123
                                                                 end
@@ -1646,7 +1646,7 @@ return function (plume)
                                                     else
                                                         vmerr = plume.error.getindexReturnsEmpty ()
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -1844,7 +1844,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -1862,7 +1862,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret141 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret141
                                                                 end
@@ -1873,7 +1873,7 @@ return function (plume)
                                                     else
                                                         vmerr = err
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -2054,7 +2054,7 @@ return function (plume)
                                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = #bytecode
                                                                                         end
@@ -2072,7 +2072,7 @@ return function (plume)
                                                                                     local value = macroStack[macroStackPointer + 1]
                                                                                     _ret160 = value
                                                                                 end
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = _ret160
                                                                                 end
@@ -2083,7 +2083,7 @@ return function (plume)
                                                                     else
                                                                         vmerr = plume.error.cannotUseMetaKey
                                                                         vmerrip = ip
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -2307,7 +2307,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -2325,7 +2325,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret180 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret180
                                                                     end
@@ -2336,7 +2336,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -2476,7 +2476,7 @@ return function (plume)
                                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                                if jump > 0 and vmerr then
                                                                                                 else
                                                                                                     jump = #bytecode
                                                                                                 end
@@ -2494,7 +2494,7 @@ return function (plume)
                                                                                             local value = macroStack[macroStackPointer + 1]
                                                                                             _ret216 = value
                                                                                         end
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = _ret216
                                                                                         end
@@ -2505,7 +2505,7 @@ return function (plume)
                                                                             else
                                                                                 vmerr = plume.error.cannotUseMetaKey
                                                                                 vmerrip = ip
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -2590,7 +2590,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -2608,7 +2608,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret185 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret185
                                                                         end
@@ -2619,7 +2619,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -2685,7 +2685,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -2703,7 +2703,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret195 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret195
                                                                         end
@@ -2714,7 +2714,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -2780,7 +2780,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -2798,7 +2798,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret190 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret190
                                                                         end
@@ -2809,7 +2809,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.unknownParameter (unknownNamed, tocall)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -2889,7 +2889,7 @@ return function (plume)
                                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = #bytecode
                                                                                         end
@@ -2907,7 +2907,7 @@ return function (plume)
                                                                                     local value = macroStack[macroStackPointer + 1]
                                                                                     _ret201 = value
                                                                                 end
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = _ret201
                                                                                 end
@@ -2918,7 +2918,7 @@ return function (plume)
                                                                     else
                                                                         vmerr = plume.error.stackOverflow ()
                                                                         vmerrip = ip
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -2937,7 +2937,7 @@ return function (plume)
                                                         end
                                                         macroStackPointer = macroStackPointer + 1
                                                         macroStack[macroStackPointer] = ip + 1
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = tocall.offset
                                                         end
@@ -3017,7 +3017,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -3035,7 +3035,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret335 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret335
                                                                     end
@@ -3046,7 +3046,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -3186,7 +3186,7 @@ return function (plume)
                                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                                if jump > 0 and vmerr then
                                                                                                 else
                                                                                                     jump = #bytecode
                                                                                                 end
@@ -3204,7 +3204,7 @@ return function (plume)
                                                                                             local value = macroStack[macroStackPointer + 1]
                                                                                             _ret371 = value
                                                                                         end
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = _ret371
                                                                                         end
@@ -3215,7 +3215,7 @@ return function (plume)
                                                                             else
                                                                                 vmerr = plume.error.cannotUseMetaKey
                                                                                 vmerrip = ip
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -3300,7 +3300,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -3318,7 +3318,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret340 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret340
                                                                         end
@@ -3329,7 +3329,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -3395,7 +3395,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -3413,7 +3413,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret350 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret350
                                                                         end
@@ -3424,7 +3424,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -3490,7 +3490,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -3508,7 +3508,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret345 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret345
                                                                         end
@@ -3519,7 +3519,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.unknownParameter (unknownNamed, tocall.macro)
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -3599,7 +3599,7 @@ return function (plume)
                                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = #bytecode
                                                                                         end
@@ -3617,7 +3617,7 @@ return function (plume)
                                                                                     local value = macroStack[macroStackPointer + 1]
                                                                                     _ret356 = value
                                                                                 end
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = _ret356
                                                                                 end
@@ -3628,7 +3628,7 @@ return function (plume)
                                                                     else
                                                                         vmerr = plume.error.stackOverflow ()
                                                                         vmerrip = ip
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -3647,7 +3647,7 @@ return function (plume)
                                                         end
                                                         macroStackPointer = macroStackPointer + 1
                                                         macroStack[macroStackPointer] = ip + 1
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = tocall.macro.offset
                                                         end
@@ -3780,7 +3780,7 @@ return function (plume)
                                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                                if jump > 0 and vmerr then
                                                                                                 else
                                                                                                     jump = #bytecode
                                                                                                 end
@@ -3798,7 +3798,7 @@ return function (plume)
                                                                                             local value = macroStack[macroStackPointer + 1]
                                                                                             _ret312 = value
                                                                                         end
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = _ret312
                                                                                         end
@@ -3809,7 +3809,7 @@ return function (plume)
                                                                             else
                                                                                 vmerr = plume.error.cannotUseMetaKey
                                                                                 vmerrip = ip
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -3910,7 +3910,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -3928,7 +3928,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret319 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret319
                                                                         end
@@ -3939,7 +3939,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.stackOverflow ()
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -4006,7 +4006,7 @@ return function (plume)
                                                                     vmstate.fileStackPointer = fileStackPointer
                                                                     vmstate.contextStackCachePointer = contextStackCachePointer
                                                                     vmstate.closureStackPointer = closureStackPointer
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = #bytecode
                                                                     end
@@ -4077,7 +4077,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -4095,7 +4095,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret329 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret329
                                                                     end
@@ -4106,7 +4106,7 @@ return function (plume)
                                                         else
                                                             vmerr = result
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -4238,7 +4238,7 @@ return function (plume)
                                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                                if jump > 0 and vmerr then
                                                                                                 else
                                                                                                     jump = #bytecode
                                                                                                 end
@@ -4256,7 +4256,7 @@ return function (plume)
                                                                                             local value = macroStack[macroStackPointer + 1]
                                                                                             _ret284 = value
                                                                                         end
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = _ret284
                                                                                         end
@@ -4267,7 +4267,7 @@ return function (plume)
                                                                             else
                                                                                 vmerr = plume.error.cannotUseMetaKey
                                                                                 vmerrip = ip
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -4366,7 +4366,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -4384,7 +4384,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret291 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret291
                                                                     end
@@ -4395,7 +4395,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.wrongArgsCountStd (tocall.name, #args.table, tocall.minArgs, tocall.maxArgs)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -4465,7 +4465,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -4483,7 +4483,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret296 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret296
                                                                         end
@@ -4494,7 +4494,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.stackOverflow ()
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -4638,7 +4638,7 @@ return function (plume)
                                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                                if jump > 0 and vmerr then
                                                                                                 else
                                                                                                     jump = #bytecode
                                                                                                 end
@@ -4656,7 +4656,7 @@ return function (plume)
                                                                                             local value = macroStack[macroStackPointer + 1]
                                                                                             _ret266 = value
                                                                                         end
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = _ret266
                                                                                         end
@@ -4667,7 +4667,7 @@ return function (plume)
                                                                             else
                                                                                 vmerr = plume.error.cannotUseMetaKey
                                                                                 vmerrip = ip
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -4838,7 +4838,7 @@ return function (plume)
                                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                                if jump > 0 and vmerr then
                                                                                                 else
                                                                                                     jump = #bytecode
                                                                                                 end
@@ -4856,7 +4856,7 @@ return function (plume)
                                                                                             local value = macroStack[macroStackPointer + 1]
                                                                                             _ret249 = value
                                                                                         end
-                                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                                        if jump > 0 and vmerr then
                                                                                         else
                                                                                             jump = _ret249
                                                                                         end
@@ -4867,7 +4867,7 @@ return function (plume)
                                                                             else
                                                                                 vmerr = plume.error.cannotUseMetaKey
                                                                                 vmerrip = ip
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -5024,7 +5024,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -5042,7 +5042,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret227 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret227
                                                                     end
@@ -5053,7 +5053,7 @@ return function (plume)
                                                         else
                                                             vmerr = string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -5143,7 +5143,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -5161,7 +5161,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret378 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret378
                                                                 end
@@ -5172,7 +5172,7 @@ return function (plume)
                                                     else
                                                         vmerr = plume.error.cannotCallValue (t)
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -5282,7 +5282,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -5300,7 +5300,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret397 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret397
                                                                         end
@@ -5311,7 +5311,7 @@ return function (plume)
                                                             else
                                                                 vmerr = result
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -5418,7 +5418,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -5436,7 +5436,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret390 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret390
                                                                     end
@@ -5447,7 +5447,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.cannotConcatValue (t)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -5521,7 +5521,7 @@ return function (plume)
                                             _ret403 = test
                                             ::_inline_end1063::
                                             if _ret403 then
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = arg2
                                                 end
@@ -5546,7 +5546,7 @@ return function (plume)
                                             _ret405 = test
                                             ::_inline_end1067::
                                             if not _ret405 then
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = arg2
                                                 end
@@ -5562,7 +5562,7 @@ return function (plume)
                                             end
                                             local test = _ret406
                                             if test ~= plumeObjEmpty then
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = arg2
                                                 end
@@ -5596,14 +5596,14 @@ return function (plume)
                                                     local value = mainStack[mainStackPointer + 1]
                                                     _ret408 = value
                                                 end
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = arg2
                                                 end
                                             end
                                         end
                                     else
-                                        if jump > 0 and (vmerr or vmserr) then
+                                        if jump > 0 and vmerr then
                                         else
                                             jump = arg2
                                         end
@@ -5625,7 +5625,7 @@ return function (plume)
                                             _ret411 = test
                                             ::_inline_end1080::
                                             if _ret411 then
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = arg2
                                                 end
@@ -5647,7 +5647,7 @@ return function (plume)
                                             _ret413 = test
                                             ::_inline_end1084::
                                             if not _ret413 then
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = arg2
                                                 end
@@ -5754,7 +5754,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -5772,7 +5772,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret420 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret420
                                                                 end
@@ -5783,7 +5783,7 @@ return function (plume)
                                                     else
                                                         vmerr = plume.error.cannotIterateValue (tobj)
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -5966,7 +5966,7 @@ return function (plume)
                                                     variableStack[_ret435 + 1] = state
                                                 end
                                                 if result == plumeObjEmpty then
-                                                    if jump > 0 and (vmerr or vmserr) then
+                                                    if jump > 0 and vmerr then
                                                     else
                                                         jump = arg2
                                                     end
@@ -6183,7 +6183,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -6201,7 +6201,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret448 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret448
                                                                         end
@@ -6212,7 +6212,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -6432,7 +6432,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -6450,7 +6450,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret468 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret468
                                                                         end
@@ -6461,7 +6461,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -6689,7 +6689,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -6707,7 +6707,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret488 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret488
                                                                         end
@@ -6718,7 +6718,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -6938,7 +6938,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -6956,7 +6956,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret508 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret508
                                                                         end
@@ -6967,7 +6967,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -7116,7 +7116,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -7134,7 +7134,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret528 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret528
                                                                     end
@@ -7145,7 +7145,7 @@ return function (plume)
                                                         else
                                                             vmerr = err
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -7363,7 +7363,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -7381,7 +7381,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret542 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret542
                                                                         end
@@ -7392,7 +7392,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -7616,7 +7616,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -7634,7 +7634,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret562 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret562
                                                                         end
@@ -7645,7 +7645,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -7865,7 +7865,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -7883,7 +7883,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret582 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret582
                                                                         end
@@ -7894,7 +7894,7 @@ return function (plume)
                                                             else
                                                                 vmerr = lerr or rerr
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -8179,7 +8179,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -8197,7 +8197,7 @@ return function (plume)
                                                     local value = macroStack[macroStackPointer + 1]
                                                     _ret617 = value
                                                 end
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = _ret617
                                                 end
@@ -8248,7 +8248,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -8278,7 +8278,7 @@ return function (plume)
                                                     local value = macroStack[macroStackPointer + 1]
                                                     _ret624 = value
                                                 end
-                                                if jump > 0 and (vmerr or vmserr) then
+                                                if jump > 0 and vmerr then
                                                 else
                                                     jump = _ret624
                                                 end
@@ -8405,7 +8405,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -8423,7 +8423,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret633 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret633
                                                                     end
@@ -8434,7 +8434,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.wrongContextType (var)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -8547,7 +8547,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -8565,7 +8565,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret640 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret640
                                                                 end
@@ -8576,7 +8576,7 @@ return function (plume)
                                                     else
                                                         vmerr = result
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -8654,7 +8654,7 @@ return function (plume)
                                                             vmstate.fileStackPointer = fileStackPointer
                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                             vmstate.closureStackPointer = closureStackPointer
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end
@@ -8754,7 +8754,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -8772,7 +8772,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret653 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret653
                                                                 end
@@ -8783,7 +8783,7 @@ return function (plume)
                                                     else
                                                         vmerr = result
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -8887,7 +8887,7 @@ return function (plume)
                                                                     vmstate.fileStackPointer = fileStackPointer
                                                                     vmstate.contextStackCachePointer = contextStackCachePointer
                                                                     vmstate.closureStackPointer = closureStackPointer
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = #bytecode
                                                                     end
@@ -8905,7 +8905,7 @@ return function (plume)
                                                                 local value = macroStack[macroStackPointer + 1]
                                                                 _ret661 = value
                                                             end
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = _ret661
                                                             end
@@ -8916,7 +8916,7 @@ return function (plume)
                                                 else
                                                     vmerr = msg
                                                     vmerrip = ip
-                                                    if jump > 0 and (vmerr or vmserr) then
+                                                    if jump > 0 and vmerr then
                                                     else
                                                         jump = #bytecode
                                                     end
@@ -9003,7 +9003,7 @@ return function (plume)
                                                                         vmstate.fileStackPointer = fileStackPointer
                                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                                         vmstate.closureStackPointer = closureStackPointer
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
                                                                         end
@@ -9021,7 +9021,7 @@ return function (plume)
                                                                     local value = macroStack[macroStackPointer + 1]
                                                                     _ret668 = value
                                                                 end
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = _ret668
                                                                 end
@@ -9032,7 +9032,7 @@ return function (plume)
                                                     else
                                                         vmerr = plume.error.hasNoLen (tt)
                                                         vmerrip = ip
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -9069,7 +9069,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -9126,7 +9126,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -9218,7 +9218,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -9236,7 +9236,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret682 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret682
                                                                         end
@@ -9247,7 +9247,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgTypeStd (1, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -9332,7 +9332,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -9350,7 +9350,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret689 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret689
                                                                         end
@@ -9361,7 +9361,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgTypeStd (2, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -9442,7 +9442,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -9460,7 +9460,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret696 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret696
                                                                         end
@@ -9471,7 +9471,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgTypeStd (3, "seq", t, "number", "$" .. "seq" .. "(" .. signature .. ")")
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -9516,7 +9516,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -9606,7 +9606,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -9624,7 +9624,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret706 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret706
                                                                         end
@@ -9635,7 +9635,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgTypeStd (1, "items", t, "table", "$items(table t)")
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -9678,7 +9678,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -9766,7 +9766,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -9784,7 +9784,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret716 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret716
                                                                         end
@@ -9795,7 +9795,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgTypeStd (1, "enumerate", t, "table", "$enumerate(table t)")
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -9838,7 +9838,7 @@ return function (plume)
                                                         vmstate.fileStackPointer = fileStackPointer
                                                         vmstate.contextStackCachePointer = contextStackCachePointer
                                                         vmstate.closureStackPointer = closureStackPointer
-                                                        if jump > 0 and (vmerr or vmserr) then
+                                                        if jump > 0 and vmerr then
                                                         else
                                                             jump = #bytecode
                                                         end
@@ -9950,7 +9950,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -9968,7 +9968,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret727 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret727
                                                                         end
@@ -9979,7 +9979,7 @@ return function (plume)
                                                             else
                                                                 vmerr = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -10090,7 +10090,7 @@ return function (plume)
                                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                                            if jump > 0 and vmerr then
                                                                                             else
                                                                                                 jump = #bytecode
                                                                                             end
@@ -10108,7 +10108,7 @@ return function (plume)
                                                                                         local value = macroStack[macroStackPointer + 1]
                                                                                         _ret732 = value
                                                                                     end
-                                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                                    if jump > 0 and vmerr then
                                                                                     else
                                                                                         jump = _ret732
                                                                                     end
@@ -10119,7 +10119,7 @@ return function (plume)
                                                                         else
                                                                             vmerr = plume.error.unknownParamError (varKey, chunk.namedParamOffset)
                                                                             vmerrip = ip
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -10218,7 +10218,7 @@ return function (plume)
                                                                                 vmstate.fileStackPointer = fileStackPointer
                                                                                 vmstate.contextStackCachePointer = contextStackCachePointer
                                                                                 vmstate.closureStackPointer = closureStackPointer
-                                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                                if jump > 0 and vmerr then
                                                                                 else
                                                                                     jump = #bytecode
                                                                                 end
@@ -10236,7 +10236,7 @@ return function (plume)
                                                                             local value = macroStack[macroStackPointer + 1]
                                                                             _ret738 = value
                                                                         end
-                                                                        if jump > 0 and (vmerr or vmserr) then
+                                                                        if jump > 0 and vmerr then
                                                                         else
                                                                             jump = _ret738
                                                                         end
@@ -10247,7 +10247,7 @@ return function (plume)
                                                             else
                                                                 vmerr = err
                                                                 vmerrip = ip
-                                                                if jump > 0 and (vmerr or vmserr) then
+                                                                if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
                                                                 end
@@ -10314,7 +10314,7 @@ return function (plume)
                                                                             vmstate.fileStackPointer = fileStackPointer
                                                                             vmstate.contextStackCachePointer = contextStackCachePointer
                                                                             vmstate.closureStackPointer = closureStackPointer
-                                                                            if jump > 0 and (vmerr or vmserr) then
+                                                                            if jump > 0 and vmerr then
                                                                             else
                                                                                 jump = #bytecode
                                                                             end
@@ -10332,7 +10332,7 @@ return function (plume)
                                                                         local value = macroStack[macroStackPointer + 1]
                                                                         _ret743 = value
                                                                     end
-                                                                    if jump > 0 and (vmerr or vmserr) then
+                                                                    if jump > 0 and vmerr then
                                                                     else
                                                                         jump = _ret743
                                                                     end
@@ -10343,7 +10343,7 @@ return function (plume)
                                                         else
                                                             vmerr = plume.error.cannotOpenFile (args.table[1], searchPaths)
                                                             vmerrip = ip
-                                                            if jump > 0 and (vmerr or vmserr) then
+                                                            if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
                                                             end

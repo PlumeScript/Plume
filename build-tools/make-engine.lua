@@ -41,7 +41,7 @@ end
 import = table.concat(import)
 
 local init = [[
-		local op, arg1, arg2, vmerr, vmserr, vmerrip
+		local op, arg1, arg2, vmerr, vmerrip
 		_VM_OPT_INIT(vm)
 		--! copyvm
 		vm.ip      = startip - 1

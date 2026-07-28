@@ -10,7 +10,7 @@ Licensed under the MIT License — see LICENSE for details.
 --- @param arg2 jump offset
 --! inline
 function JUMP (vm, arg1, arg2)
-    if vm.jump > 0 and (vm.err or vm.serr) then
+    if vm.jump > 0 and vm.err then
         -- dont erase error jump
     else
         vm.jump = arg2

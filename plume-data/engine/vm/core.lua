@@ -54,7 +54,6 @@ end
 --! inline
 function _VM_OPT_INIT(vm)
     --! index-to-inline vm.err vmerr
-    --! index-to-inline vm.serr vmserr
     --! index-to-inline vm.errip vmerrip
     --! index-to-inline vm.* *
     --! index-to-inline mainStack.*
