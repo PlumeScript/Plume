@@ -36,7 +36,7 @@ return function (plume)
 		_VM_OPT_INIT(vm)
 		--! copyvm
 		vm.ip      = startip - 1
-		_VM_INIT_VARS(vm, fileID)
+		_VM_INIT(vm, fileID)
 		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		::DISPATCH::

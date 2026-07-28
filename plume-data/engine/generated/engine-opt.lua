@@ -141,6 +141,19 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = safeResult
                                             end
+                                            if call and call.base then
+                                                if call.base == #runtimeCallstack + 1 then
+                                                    vmstate.ip = ip
+                                                    vmstate.jump = jump
+                                                    vmstate.variableStackPointer = variableStackPointer
+                                                    vmstate.mainStackPointer = mainStackPointer
+                                                    vmstate.macroStackPointer = macroStackPointer
+                                                    vmstate.injectionStackPointer = injectionStackPointer
+                                                    vmstate.fileStackPointer = fileStackPointer
+                                                    vmstate.contextStackCachePointer = contextStackCachePointer
+                                                    vmstate.closureStackPointer = closureStackPointer
+                                                end
+                                            end
                                         end
                                         local _ret4
                                         do
@@ -202,6 +215,19 @@ return function (plume)
                                                 safeResult:setItem ("result", result)
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = safeResult
+                                            end
+                                            if call and call.base then
+                                                if call.base == #runtimeCallstack + 1 then
+                                                    vmstate.ip = ip
+                                                    vmstate.jump = jump
+                                                    vmstate.variableStackPointer = variableStackPointer
+                                                    vmstate.mainStackPointer = mainStackPointer
+                                                    vmstate.macroStackPointer = macroStackPointer
+                                                    vmstate.injectionStackPointer = injectionStackPointer
+                                                    vmstate.fileStackPointer = fileStackPointer
+                                                    vmstate.contextStackCachePointer = contextStackCachePointer
+                                                    vmstate.closureStackPointer = closureStackPointer
+                                                end
                                             end
                                         end
                                         local _ret8
@@ -386,12 +412,12 @@ return function (plume)
                                                         end
                                                         if _ret31 == key then
                                                             _ret26 = i - 1
-                                                            goto _inline_end55
+                                                            goto _inline_end57
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end55::
+                                            ::_inline_end57::
                                             local pos = _ret26
                                             if pos then
                                                 local _ret32
@@ -519,12 +545,12 @@ return function (plume)
                                                         end
                                                         if _ret46 == key then
                                                             _ret41 = i - 1
-                                                            goto _inline_end80
+                                                            goto _inline_end82
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end80::
+                                            ::_inline_end82::
                                             mainStack[_ret41] = value
                                         end
                                     end
@@ -675,12 +701,12 @@ return function (plume)
                                                                         end
                                                                         if _ret62 == upvalueInfos.key then
                                                                             _ret57 = i - 1
-                                                                            goto _inline_end103
+                                                                            goto _inline_end105
                                                                         end
                                                                     end
                                                                 end
                                                             end
-                                                            ::_inline_end103::
+                                                            ::_inline_end105::
                                                             upvalue.offset = _ret57
                                                         end
                                                     else
@@ -803,6 +829,19 @@ return function (plume)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
+                                                                end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
                                                                 end
                                                             end
                                                             local _ret74
@@ -941,6 +980,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret83
                                                                 do
@@ -1026,6 +1078,19 @@ return function (plume)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
+                                                                        end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
                                                                         end
                                                                     end
                                                                     local _ret87
@@ -1138,6 +1203,19 @@ return function (plume)
                                                                                 safeResult:setItem ("result", result)
                                                                                 mainStackPointer = mainStackPointer + 1
                                                                                 mainStack[mainStackPointer] = safeResult
+                                                                            end
+                                                                            if call and call.base then
+                                                                                if call.base == #runtimeCallstack + 1 then
+                                                                                    vmstate.ip = ip
+                                                                                    vmstate.jump = jump
+                                                                                    vmstate.variableStackPointer = variableStackPointer
+                                                                                    vmstate.mainStackPointer = mainStackPointer
+                                                                                    vmstate.macroStackPointer = macroStackPointer
+                                                                                    vmstate.injectionStackPointer = injectionStackPointer
+                                                                                    vmstate.fileStackPointer = fileStackPointer
+                                                                                    vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                    vmstate.closureStackPointer = closureStackPointer
+                                                                                end
                                                                             end
                                                                         end
                                                                         local _ret94
@@ -1305,6 +1383,19 @@ return function (plume)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
+                                                                end
                                                             end
                                                             local _ret110
                                                             do
@@ -1383,6 +1474,19 @@ return function (plume)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
+                                                                end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
                                                                 end
                                                             end
                                                             local _ret115
@@ -1504,32 +1608,32 @@ return function (plume)
                                                     if t == "macro" then
                                                         if metaValue.positionalParamCount ~= expectedParamCount then
                                                             _ret124, _ret125 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
-                                                            goto _inline_end290
+                                                            goto _inline_end298
                                                         end
                                                         if metaValue.namedParamCount > 1 then
                                                             _ret124, _ret125 = false, plume.error.metaMacroWithoutNamedParameter (name)
-                                                            goto _inline_end290
+                                                            goto _inline_end298
                                                         end
                                                     else
                                                         _ret124, _ret125 = false, plume.error.wrongMetaFieldType (name, t, "macro")
-                                                        goto _inline_end290
+                                                        goto _inline_end298
                                                     end
                                                 else
                                                     local _ret127, _ret128
                                                     if plume.validMetaNames[name] then
                                                         _ret127 = true
-                                                        goto _inline_end292
+                                                        goto _inline_end300
                                                     else
                                                         _ret127, _ret128 = false, "'" .. name .. "' isn't a valid meta-macro name."
-                                                        goto _inline_end292
+                                                        goto _inline_end300
                                                     end
-                                                    ::_inline_end292::
+                                                    ::_inline_end300::
                                                     _ret124, _ret125 = _ret127, _ret128
-                                                    goto _inline_end290
+                                                    goto _inline_end298
                                                 end
                                                 _ret124, _ret125 = true
                                             end
-                                            ::_inline_end290::
+                                            ::_inline_end298::
                                             local valid, err = _ret124, _ret125
                                             if not valid then
                                                 do
@@ -1578,6 +1682,19 @@ return function (plume)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
+                                                                end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
                                                                 end
                                                             end
                                                             local _ret132
@@ -1756,6 +1873,19 @@ return function (plume)
                                                                                     safeResult:setItem ("result", result)
                                                                                     mainStackPointer = mainStackPointer + 1
                                                                                     mainStack[mainStackPointer] = safeResult
+                                                                                end
+                                                                                if call and call.base then
+                                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                                        vmstate.ip = ip
+                                                                                        vmstate.jump = jump
+                                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                                    end
                                                                                 end
                                                                             end
                                                                             local _ret150
@@ -1978,6 +2108,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret169
                                                                 do
@@ -2115,6 +2258,19 @@ return function (plume)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
+                                                                                        if call and call.base then
+                                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                                vmstate.ip = ip
+                                                                                                vmstate.jump = jump
+                                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                                            end
+                                                                                        end
                                                                                     end
                                                                                     local _ret200
                                                                                     do
@@ -2197,6 +2353,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret173
                                                                     do
@@ -2259,6 +2428,19 @@ return function (plume)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
+                                                                        end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
                                                                         end
                                                                     end
                                                                     local _ret181
@@ -2323,6 +2505,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret177
                                                                     do
@@ -2349,68 +2544,84 @@ return function (plume)
                                                                 variableStack[_ret187 + (tocall.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
-                                                        table.insert (runtimeCallstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
-                                                        if #runtimeCallstack > 1000 then
-                                                            do
-                                                                local safeCallIndex
-                                                                for i = #runtimeCallstack, 1, -1 do
-                                                                    local call = runtimeCallstack[i]
-                                                                    if call.safe then
-                                                                        safeCallIndex = i
+                                                        do
+                                                            local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
+                                                            table.insert (runtimeCallstack, callinfos)
+                                                            if #runtimeCallstack > 1000 then
+                                                                do
+                                                                    local safeCallIndex
+                                                                    for i = #runtimeCallstack, 1, -1 do
+                                                                        local call = runtimeCallstack[i]
+                                                                        if call.safe then
+                                                                            safeCallIndex = i
+                                                                        end
                                                                     end
-                                                                end
-                                                                if safeCallIndex then
-                                                                    for i = #runtimeCallstack, safeCallIndex, -1 do
-                                                                        table.remove (runtimeCallstack)
-                                                                    end
-                                                                    local safeResult = plumeObjTable (0, 2)
-                                                                    safeResult:setItem ("success", false)
-                                                                    safeResult:setItem ("result", plume.error.stackOverflow ())
-                                                                    do
+                                                                    if safeCallIndex then
+                                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                            table.remove (runtimeCallstack)
+                                                                        end
+                                                                        local safeResult = plumeObjTable (0, 2)
+                                                                        safeResult:setItem ("success", false)
+                                                                        safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                         do
-                                                                            local _ret183
                                                                             do
-                                                                                variableStackFramesPointer = variableStackFramesPointer - 1
-                                                                                local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                _ret183 = value
-                                                                            end
-                                                                            variableStackPointer = _ret183 - 1
-                                                                        end
-                                                                        local _ret184
-                                                                        do
-                                                                            closureStackPointer = closureStackPointer - 1
-                                                                            local value = closureStack[closureStackPointer + 1]
-                                                                            _ret184 = value
-                                                                        end
-                                                                        do
-                                                                            local call = table.remove (runtimeCallstack)
-                                                                            if call and call.safe then
-                                                                                local _ret185
+                                                                                local _ret183
                                                                                 do
-                                                                                    mainStackPointer = mainStackPointer - 1
-                                                                                    local value = mainStack[mainStackPointer + 1]
-                                                                                    _ret185 = value
+                                                                                    variableStackFramesPointer = variableStackFramesPointer - 1
+                                                                                    local value = variableStackFrames[variableStackFramesPointer + 1]
+                                                                                    _ret183 = value
                                                                                 end
-                                                                                local result = _ret185
-                                                                                local safeResult = plumeObjTable (0, 2)
-                                                                                safeResult:setItem ("success", true)
-                                                                                safeResult:setItem ("result", result)
-                                                                                mainStackPointer = mainStackPointer + 1
-                                                                                mainStack[mainStackPointer] = safeResult
+                                                                                variableStackPointer = _ret183 - 1
                                                                             end
+                                                                            local _ret184
+                                                                            do
+                                                                                closureStackPointer = closureStackPointer - 1
+                                                                                local value = closureStack[closureStackPointer + 1]
+                                                                                _ret184 = value
+                                                                            end
+                                                                            do
+                                                                                local call = table.remove (runtimeCallstack)
+                                                                                if call and call.safe then
+                                                                                    local _ret185
+                                                                                    do
+                                                                                        mainStackPointer = mainStackPointer - 1
+                                                                                        local value = mainStack[mainStackPointer + 1]
+                                                                                        _ret185 = value
+                                                                                    end
+                                                                                    local result = _ret185
+                                                                                    local safeResult = plumeObjTable (0, 2)
+                                                                                    safeResult:setItem ("success", true)
+                                                                                    safeResult:setItem ("result", result)
+                                                                                    mainStackPointer = mainStackPointer + 1
+                                                                                    mainStack[mainStackPointer] = safeResult
+                                                                                end
+                                                                                if call and call.base then
+                                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                                        vmstate.ip = ip
+                                                                                        vmstate.jump = jump
+                                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                                    end
+                                                                                end
+                                                                            end
+                                                                            local _ret186
+                                                                            do
+                                                                                macroStackPointer = macroStackPointer - 1
+                                                                                local value = macroStack[macroStackPointer + 1]
+                                                                                _ret186 = value
+                                                                            end
+                                                                            jump = _ret186
                                                                         end
-                                                                        local _ret186
-                                                                        do
-                                                                            macroStackPointer = macroStackPointer - 1
-                                                                            local value = macroStack[macroStackPointer + 1]
-                                                                            _ret186 = value
-                                                                        end
-                                                                        jump = _ret186
+                                                                        mainStackPointer = mainStackPointer + 1
+                                                                        mainStack[mainStackPointer] = safeResult
+                                                                    else
+                                                                        vmerr = plume.error.stackOverflow ()
                                                                     end
-                                                                    mainStackPointer = mainStackPointer + 1
-                                                                    mainStack[mainStackPointer] = safeResult
-                                                                else
-                                                                    vmerr = plume.error.stackOverflow ()
                                                                 end
                                                             end
                                                         end
@@ -2489,6 +2700,19 @@ return function (plume)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
+                                                                    end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
                                                                     end
                                                                 end
                                                                 local _ret308
@@ -2627,6 +2851,19 @@ return function (plume)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
+                                                                                        if call and call.base then
+                                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                                vmstate.ip = ip
+                                                                                                vmstate.jump = jump
+                                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                                            end
+                                                                                        end
                                                                                     end
                                                                                     local _ret339
                                                                                     do
@@ -2709,6 +2946,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret312
                                                                     do
@@ -2771,6 +3021,19 @@ return function (plume)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
+                                                                        end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
                                                                         end
                                                                     end
                                                                     local _ret320
@@ -2835,6 +3098,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret316
                                                                     do
@@ -2861,68 +3137,84 @@ return function (plume)
                                                                 variableStack[_ret326 + (tocall.macro.variadicOffset - 1 or 0)] = variadicTable
                                                             end
                                                         end
-                                                        table.insert (runtimeCallstack, {runtime = runtime, macro = tocall.macro, ip = ip, safe = arg2 == 1})
-                                                        if #runtimeCallstack > 1000 then
-                                                            do
-                                                                local safeCallIndex
-                                                                for i = #runtimeCallstack, 1, -1 do
-                                                                    local call = runtimeCallstack[i]
-                                                                    if call.safe then
-                                                                        safeCallIndex = i
+                                                        do
+                                                            local callinfos = {runtime = runtime, macro = tocall.macro, ip = ip, safe = arg2 == 1}
+                                                            table.insert (runtimeCallstack, callinfos)
+                                                            if #runtimeCallstack > 1000 then
+                                                                do
+                                                                    local safeCallIndex
+                                                                    for i = #runtimeCallstack, 1, -1 do
+                                                                        local call = runtimeCallstack[i]
+                                                                        if call.safe then
+                                                                            safeCallIndex = i
+                                                                        end
                                                                     end
-                                                                end
-                                                                if safeCallIndex then
-                                                                    for i = #runtimeCallstack, safeCallIndex, -1 do
-                                                                        table.remove (runtimeCallstack)
-                                                                    end
-                                                                    local safeResult = plumeObjTable (0, 2)
-                                                                    safeResult:setItem ("success", false)
-                                                                    safeResult:setItem ("result", plume.error.stackOverflow ())
-                                                                    do
+                                                                    if safeCallIndex then
+                                                                        for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                            table.remove (runtimeCallstack)
+                                                                        end
+                                                                        local safeResult = plumeObjTable (0, 2)
+                                                                        safeResult:setItem ("success", false)
+                                                                        safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                         do
-                                                                            local _ret322
                                                                             do
-                                                                                variableStackFramesPointer = variableStackFramesPointer - 1
-                                                                                local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                                _ret322 = value
-                                                                            end
-                                                                            variableStackPointer = _ret322 - 1
-                                                                        end
-                                                                        local _ret323
-                                                                        do
-                                                                            closureStackPointer = closureStackPointer - 1
-                                                                            local value = closureStack[closureStackPointer + 1]
-                                                                            _ret323 = value
-                                                                        end
-                                                                        do
-                                                                            local call = table.remove (runtimeCallstack)
-                                                                            if call and call.safe then
-                                                                                local _ret324
+                                                                                local _ret322
                                                                                 do
-                                                                                    mainStackPointer = mainStackPointer - 1
-                                                                                    local value = mainStack[mainStackPointer + 1]
-                                                                                    _ret324 = value
+                                                                                    variableStackFramesPointer = variableStackFramesPointer - 1
+                                                                                    local value = variableStackFrames[variableStackFramesPointer + 1]
+                                                                                    _ret322 = value
                                                                                 end
-                                                                                local result = _ret324
-                                                                                local safeResult = plumeObjTable (0, 2)
-                                                                                safeResult:setItem ("success", true)
-                                                                                safeResult:setItem ("result", result)
-                                                                                mainStackPointer = mainStackPointer + 1
-                                                                                mainStack[mainStackPointer] = safeResult
+                                                                                variableStackPointer = _ret322 - 1
                                                                             end
+                                                                            local _ret323
+                                                                            do
+                                                                                closureStackPointer = closureStackPointer - 1
+                                                                                local value = closureStack[closureStackPointer + 1]
+                                                                                _ret323 = value
+                                                                            end
+                                                                            do
+                                                                                local call = table.remove (runtimeCallstack)
+                                                                                if call and call.safe then
+                                                                                    local _ret324
+                                                                                    do
+                                                                                        mainStackPointer = mainStackPointer - 1
+                                                                                        local value = mainStack[mainStackPointer + 1]
+                                                                                        _ret324 = value
+                                                                                    end
+                                                                                    local result = _ret324
+                                                                                    local safeResult = plumeObjTable (0, 2)
+                                                                                    safeResult:setItem ("success", true)
+                                                                                    safeResult:setItem ("result", result)
+                                                                                    mainStackPointer = mainStackPointer + 1
+                                                                                    mainStack[mainStackPointer] = safeResult
+                                                                                end
+                                                                                if call and call.base then
+                                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                                        vmstate.ip = ip
+                                                                                        vmstate.jump = jump
+                                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                                    end
+                                                                                end
+                                                                            end
+                                                                            local _ret325
+                                                                            do
+                                                                                macroStackPointer = macroStackPointer - 1
+                                                                                local value = macroStack[macroStackPointer + 1]
+                                                                                _ret325 = value
+                                                                            end
+                                                                            jump = _ret325
                                                                         end
-                                                                        local _ret325
-                                                                        do
-                                                                            macroStackPointer = macroStackPointer - 1
-                                                                            local value = macroStack[macroStackPointer + 1]
-                                                                            _ret325 = value
-                                                                        end
-                                                                        jump = _ret325
+                                                                        mainStackPointer = mainStackPointer + 1
+                                                                        mainStack[mainStackPointer] = safeResult
+                                                                    else
+                                                                        vmerr = plume.error.stackOverflow ()
                                                                     end
-                                                                    mainStackPointer = mainStackPointer + 1
-                                                                    mainStack[mainStackPointer] = safeResult
-                                                                else
-                                                                    vmerr = plume.error.stackOverflow ()
                                                                 end
                                                             end
                                                         end
@@ -3055,6 +3347,19 @@ return function (plume)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
+                                                                                        if call and call.base then
+                                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                                vmstate.ip = ip
+                                                                                                vmstate.jump = jump
+                                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                                            end
+                                                                                        end
                                                                                     end
                                                                                     local _ret289
                                                                                     do
@@ -3102,68 +3407,84 @@ return function (plume)
                                                     mainStack[mainStackPointer] = resultTable
                                                     _ret276 = resultTable
                                                 end
-                                                table.insert (runtimeCallstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
-                                                if #runtimeCallstack > 1000 then
-                                                    do
-                                                        local safeCallIndex
-                                                        for i = #runtimeCallstack, 1, -1 do
-                                                            local call = runtimeCallstack[i]
-                                                            if call.safe then
-                                                                safeCallIndex = i
+                                                do
+                                                    local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
+                                                    table.insert (runtimeCallstack, callinfos)
+                                                    if #runtimeCallstack > 1000 then
+                                                        do
+                                                            local safeCallIndex
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
+                                                                if call.safe then
+                                                                    safeCallIndex = i
+                                                                end
                                                             end
-                                                        end
-                                                        if safeCallIndex then
-                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
-                                                                table.remove (runtimeCallstack)
-                                                            end
-                                                            local safeResult = plumeObjTable (0, 2)
-                                                            safeResult:setItem ("success", false)
-                                                            safeResult:setItem ("result", plume.error.stackOverflow ())
-                                                            do
+                                                            if safeCallIndex then
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
+                                                                end
+                                                                local safeResult = plumeObjTable (0, 2)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                 do
-                                                                    local _ret292
                                                                     do
-                                                                        variableStackFramesPointer = variableStackFramesPointer - 1
-                                                                        local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret292 = value
-                                                                    end
-                                                                    variableStackPointer = _ret292 - 1
-                                                                end
-                                                                local _ret293
-                                                                do
-                                                                    closureStackPointer = closureStackPointer - 1
-                                                                    local value = closureStack[closureStackPointer + 1]
-                                                                    _ret293 = value
-                                                                end
-                                                                do
-                                                                    local call = table.remove (runtimeCallstack)
-                                                                    if call and call.safe then
-                                                                        local _ret294
+                                                                        local _ret292
                                                                         do
-                                                                            mainStackPointer = mainStackPointer - 1
-                                                                            local value = mainStack[mainStackPointer + 1]
-                                                                            _ret294 = value
+                                                                            variableStackFramesPointer = variableStackFramesPointer - 1
+                                                                            local value = variableStackFrames[variableStackFramesPointer + 1]
+                                                                            _ret292 = value
                                                                         end
-                                                                        local result = _ret294
-                                                                        local safeResult = plumeObjTable (0, 2)
-                                                                        safeResult:setItem ("success", true)
-                                                                        safeResult:setItem ("result", result)
-                                                                        mainStackPointer = mainStackPointer + 1
-                                                                        mainStack[mainStackPointer] = safeResult
+                                                                        variableStackPointer = _ret292 - 1
                                                                     end
+                                                                    local _ret293
+                                                                    do
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
+                                                                        _ret293 = value
+                                                                    end
+                                                                    do
+                                                                        local call = table.remove (runtimeCallstack)
+                                                                        if call and call.safe then
+                                                                            local _ret294
+                                                                            do
+                                                                                mainStackPointer = mainStackPointer - 1
+                                                                                local value = mainStack[mainStackPointer + 1]
+                                                                                _ret294 = value
+                                                                            end
+                                                                            local result = _ret294
+                                                                            local safeResult = plumeObjTable (0, 2)
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
+                                                                            mainStackPointer = mainStackPointer + 1
+                                                                            mainStack[mainStackPointer] = safeResult
+                                                                        end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                    local _ret295
+                                                                    do
+                                                                        macroStackPointer = macroStackPointer - 1
+                                                                        local value = macroStack[macroStackPointer + 1]
+                                                                        _ret295 = value
+                                                                    end
+                                                                    jump = _ret295
                                                                 end
-                                                                local _ret295
-                                                                do
-                                                                    macroStackPointer = macroStackPointer - 1
-                                                                    local value = macroStack[macroStackPointer + 1]
-                                                                    _ret295 = value
-                                                                end
-                                                                jump = _ret295
+                                                                mainStackPointer = mainStackPointer + 1
+                                                                mainStack[mainStackPointer] = safeResult
+                                                            else
+                                                                vmerr = plume.error.stackOverflow ()
                                                             end
-                                                            mainStackPointer = mainStackPointer + 1
-                                                            mainStack[mainStackPointer] = safeResult
-                                                        else
-                                                            vmerr = plume.error.stackOverflow ()
                                                         end
                                                     end
                                                 end
@@ -3214,6 +3535,19 @@ return function (plume)
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
                                                             end
+                                                            if call and call.base then
+                                                                if call.base == #runtimeCallstack + 1 then
+                                                                    vmstate.ip = ip
+                                                                    vmstate.jump = jump
+                                                                    vmstate.variableStackPointer = variableStackPointer
+                                                                    vmstate.mainStackPointer = mainStackPointer
+                                                                    vmstate.macroStackPointer = macroStackPointer
+                                                                    vmstate.injectionStackPointer = injectionStackPointer
+                                                                    vmstate.fileStackPointer = fileStackPointer
+                                                                    vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                    vmstate.closureStackPointer = closureStackPointer
+                                                                end
+                                                            end
                                                         end
                                                     end
                                                 else
@@ -3263,6 +3597,19 @@ return function (plume)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
+                                                                    end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
                                                                     end
                                                                 end
                                                                 local _ret303
@@ -3393,6 +3740,19 @@ return function (plume)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
+                                                                                        if call and call.base then
+                                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                                vmstate.ip = ip
+                                                                                                vmstate.jump = jump
+                                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                                            end
+                                                                                        end
                                                                                     end
                                                                                     local _ret264
                                                                                     do
@@ -3489,6 +3849,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret270
                                                                 do
@@ -3505,68 +3878,84 @@ return function (plume)
                                                         end
                                                     end
                                                 end
-                                                table.insert (runtimeCallstack, {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1})
-                                                if #runtimeCallstack > 1000 then
-                                                    do
-                                                        local safeCallIndex
-                                                        for i = #runtimeCallstack, 1, -1 do
-                                                            local call = runtimeCallstack[i]
-                                                            if call.safe then
-                                                                safeCallIndex = i
+                                                do
+                                                    local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
+                                                    table.insert (runtimeCallstack, callinfos)
+                                                    if #runtimeCallstack > 1000 then
+                                                        do
+                                                            local safeCallIndex
+                                                            for i = #runtimeCallstack, 1, -1 do
+                                                                local call = runtimeCallstack[i]
+                                                                if call.safe then
+                                                                    safeCallIndex = i
+                                                                end
                                                             end
-                                                        end
-                                                        if safeCallIndex then
-                                                            for i = #runtimeCallstack, safeCallIndex, -1 do
-                                                                table.remove (runtimeCallstack)
-                                                            end
-                                                            local safeResult = plumeObjTable (0, 2)
-                                                            safeResult:setItem ("success", false)
-                                                            safeResult:setItem ("result", plume.error.stackOverflow ())
-                                                            do
+                                                            if safeCallIndex then
+                                                                for i = #runtimeCallstack, safeCallIndex, -1 do
+                                                                    table.remove (runtimeCallstack)
+                                                                end
+                                                                local safeResult = plumeObjTable (0, 2)
+                                                                safeResult:setItem ("success", false)
+                                                                safeResult:setItem ("result", plume.error.stackOverflow ())
                                                                 do
-                                                                    local _ret271
                                                                     do
-                                                                        variableStackFramesPointer = variableStackFramesPointer - 1
-                                                                        local value = variableStackFrames[variableStackFramesPointer + 1]
-                                                                        _ret271 = value
-                                                                    end
-                                                                    variableStackPointer = _ret271 - 1
-                                                                end
-                                                                local _ret272
-                                                                do
-                                                                    closureStackPointer = closureStackPointer - 1
-                                                                    local value = closureStack[closureStackPointer + 1]
-                                                                    _ret272 = value
-                                                                end
-                                                                do
-                                                                    local call = table.remove (runtimeCallstack)
-                                                                    if call and call.safe then
-                                                                        local _ret273
+                                                                        local _ret271
                                                                         do
-                                                                            mainStackPointer = mainStackPointer - 1
-                                                                            local value = mainStack[mainStackPointer + 1]
-                                                                            _ret273 = value
+                                                                            variableStackFramesPointer = variableStackFramesPointer - 1
+                                                                            local value = variableStackFrames[variableStackFramesPointer + 1]
+                                                                            _ret271 = value
                                                                         end
-                                                                        local result = _ret273
-                                                                        local safeResult = plumeObjTable (0, 2)
-                                                                        safeResult:setItem ("success", true)
-                                                                        safeResult:setItem ("result", result)
-                                                                        mainStackPointer = mainStackPointer + 1
-                                                                        mainStack[mainStackPointer] = safeResult
+                                                                        variableStackPointer = _ret271 - 1
                                                                     end
+                                                                    local _ret272
+                                                                    do
+                                                                        closureStackPointer = closureStackPointer - 1
+                                                                        local value = closureStack[closureStackPointer + 1]
+                                                                        _ret272 = value
+                                                                    end
+                                                                    do
+                                                                        local call = table.remove (runtimeCallstack)
+                                                                        if call and call.safe then
+                                                                            local _ret273
+                                                                            do
+                                                                                mainStackPointer = mainStackPointer - 1
+                                                                                local value = mainStack[mainStackPointer + 1]
+                                                                                _ret273 = value
+                                                                            end
+                                                                            local result = _ret273
+                                                                            local safeResult = plumeObjTable (0, 2)
+                                                                            safeResult:setItem ("success", true)
+                                                                            safeResult:setItem ("result", result)
+                                                                            mainStackPointer = mainStackPointer + 1
+                                                                            mainStack[mainStackPointer] = safeResult
+                                                                        end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
+                                                                    end
+                                                                    local _ret274
+                                                                    do
+                                                                        macroStackPointer = macroStackPointer - 1
+                                                                        local value = macroStack[macroStackPointer + 1]
+                                                                        _ret274 = value
+                                                                    end
+                                                                    jump = _ret274
                                                                 end
-                                                                local _ret274
-                                                                do
-                                                                    macroStackPointer = macroStackPointer - 1
-                                                                    local value = macroStack[macroStackPointer + 1]
-                                                                    _ret274 = value
-                                                                end
-                                                                jump = _ret274
+                                                                mainStackPointer = mainStackPointer + 1
+                                                                mainStack[mainStackPointer] = safeResult
+                                                            else
+                                                                vmerr = plume.error.stackOverflow ()
                                                             end
-                                                            mainStackPointer = mainStackPointer + 1
-                                                            mainStack[mainStackPointer] = safeResult
-                                                        else
-                                                            vmerr = plume.error.stackOverflow ()
                                                         end
                                                     end
                                                 end
@@ -3693,6 +4082,19 @@ return function (plume)
                                                                                             safeResult:setItem ("result", result)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
+                                                                                        end
+                                                                                        if call and call.base then
+                                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                                vmstate.ip = ip
+                                                                                                vmstate.jump = jump
+                                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                                            end
                                                                                         end
                                                                                     end
                                                                                     local _ret247
@@ -3862,6 +4264,19 @@ return function (plume)
                                                                                             mainStackPointer = mainStackPointer + 1
                                                                                             mainStack[mainStackPointer] = safeResult
                                                                                         end
+                                                                                        if call and call.base then
+                                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                                vmstate.ip = ip
+                                                                                                vmstate.jump = jump
+                                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                                            end
+                                                                                        end
                                                                                     end
                                                                                     local _ret231
                                                                                     do
@@ -4016,6 +4431,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret210
                                                                 do
@@ -4102,6 +4530,19 @@ return function (plume)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
+                                                                end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
                                                                 end
                                                             end
                                                             local _ret345
@@ -4210,6 +4651,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret362
                                                                     do
@@ -4314,6 +4768,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret356
                                                                 do
@@ -4392,10 +4859,10 @@ return function (plume)
                                             local _ret368
                                             if test == plumeObjEmpty then
                                                 _ret368 = false
-                                                goto _inline_end888
+                                                goto _inline_end923
                                             end
                                             _ret368 = test
-                                            ::_inline_end888::
+                                            ::_inline_end923::
                                             if _ret368 then
                                                 jump = arg2
                                             end
@@ -4414,10 +4881,10 @@ return function (plume)
                                             local _ret370
                                             if test == plumeObjEmpty then
                                                 _ret370 = false
-                                                goto _inline_end891
+                                                goto _inline_end926
                                             end
                                             _ret370 = test
-                                            ::_inline_end891::
+                                            ::_inline_end926::
                                             if not _ret370 then
                                                 jump = arg2
                                             end
@@ -4452,10 +4919,10 @@ return function (plume)
                                             local _ret374
                                             if test == plumeObjEmpty then
                                                 _ret374 = false
-                                                goto _inline_end898
+                                                goto _inline_end933
                                             end
                                             _ret374 = test
-                                            ::_inline_end898::
+                                            ::_inline_end933::
                                             if not _ret374 then
                                                 local _ret373
                                                 do
@@ -4481,10 +4948,10 @@ return function (plume)
                                             local _ret376
                                             if test == plumeObjEmpty then
                                                 _ret376 = false
-                                                goto _inline_end902
+                                                goto _inline_end937
                                             end
                                             _ret376 = test
-                                            ::_inline_end902::
+                                            ::_inline_end937::
                                             if _ret376 then
                                                 jump = arg2
                                             end
@@ -4500,10 +4967,10 @@ return function (plume)
                                             local _ret378
                                             if test == plumeObjEmpty then
                                                 _ret378 = false
-                                                goto _inline_end905
+                                                goto _inline_end940
                                             end
                                             _ret378 = test
-                                            ::_inline_end905::
+                                            ::_inline_end940::
                                             if not _ret378 then
                                                 jump = arg2
                                             end
@@ -4596,6 +5063,19 @@ return function (plume)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
+                                                                end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
                                                                 end
                                                             end
                                                             local _ret384
@@ -4831,7 +5311,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret416, _ret417 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1016
+                                                            goto _inline_end1053
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -4840,15 +5320,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret416, _ret417 = _CALL (vm, meta, params)
-                                                            goto _inline_end1016
+                                                            goto _inline_end1053
                                                         else
                                                             _ret416, _ret417 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1016
+                                                            goto _inline_end1053
                                                         end
                                                     end
                                                     _ret416, _ret417 = right
                                                 end
-                                                ::_inline_end1016::
+                                                ::_inline_end1053::
                                                 right, rerr = _ret416, _ret417
                                                 local _ret413, _ret414
                                                 do
@@ -4858,7 +5338,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret413, _ret414 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1014
+                                                            goto _inline_end1051
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -4867,15 +5347,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret413, _ret414 = _CALL (vm, meta, params)
-                                                            goto _inline_end1014
+                                                            goto _inline_end1051
                                                         else
                                                             _ret413, _ret414 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1014
+                                                            goto _inline_end1051
                                                         end
                                                     end
                                                     _ret413, _ret414 = left
                                                 end
-                                                ::_inline_end1014::
+                                                ::_inline_end1051::
                                                 left, lerr = _ret413, _ret414
                                                 if lerr or rerr then
                                                     local _ret403
@@ -4991,6 +5471,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret411
                                                                     do
@@ -5048,7 +5541,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret435, _ret436 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1060
+                                                            goto _inline_end1098
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5057,15 +5550,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret435, _ret436 = _CALL (vm, meta, params)
-                                                            goto _inline_end1060
+                                                            goto _inline_end1098
                                                         else
                                                             _ret435, _ret436 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1060
+                                                            goto _inline_end1098
                                                         end
                                                     end
                                                     _ret435, _ret436 = right
                                                 end
-                                                ::_inline_end1060::
+                                                ::_inline_end1098::
                                                 right, rerr = _ret435, _ret436
                                                 local _ret432, _ret433
                                                 do
@@ -5075,7 +5568,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret432, _ret433 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1058
+                                                            goto _inline_end1096
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5084,15 +5577,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret432, _ret433 = _CALL (vm, meta, params)
-                                                            goto _inline_end1058
+                                                            goto _inline_end1096
                                                         else
                                                             _ret432, _ret433 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1058
+                                                            goto _inline_end1096
                                                         end
                                                     end
                                                     _ret432, _ret433 = left
                                                 end
-                                                ::_inline_end1058::
+                                                ::_inline_end1096::
                                                 left, lerr = _ret432, _ret433
                                                 if lerr or rerr then
                                                     local _ret422
@@ -5208,6 +5701,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret430
                                                                     do
@@ -5273,7 +5779,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret454, _ret455 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1104
+                                                            goto _inline_end1143
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5282,15 +5788,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret454, _ret455 = _CALL (vm, meta, params)
-                                                            goto _inline_end1104
+                                                            goto _inline_end1143
                                                         else
                                                             _ret454, _ret455 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1104
+                                                            goto _inline_end1143
                                                         end
                                                     end
                                                     _ret454, _ret455 = right
                                                 end
-                                                ::_inline_end1104::
+                                                ::_inline_end1143::
                                                 right, rerr = _ret454, _ret455
                                                 local _ret451, _ret452
                                                 do
@@ -5300,7 +5806,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret451, _ret452 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1102
+                                                            goto _inline_end1141
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5309,15 +5815,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret451, _ret452 = _CALL (vm, meta, params)
-                                                            goto _inline_end1102
+                                                            goto _inline_end1141
                                                         else
                                                             _ret451, _ret452 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1102
+                                                            goto _inline_end1141
                                                         end
                                                     end
                                                     _ret451, _ret452 = left
                                                 end
-                                                ::_inline_end1102::
+                                                ::_inline_end1141::
                                                 left, lerr = _ret451, _ret452
                                                 if lerr or rerr then
                                                     local _ret441
@@ -5433,6 +5939,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret449
                                                                     do
@@ -5490,7 +6009,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret473, _ret474 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1148
+                                                            goto _inline_end1188
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5499,15 +6018,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret473, _ret474 = _CALL (vm, meta, params)
-                                                            goto _inline_end1148
+                                                            goto _inline_end1188
                                                         else
                                                             _ret473, _ret474 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1148
+                                                            goto _inline_end1188
                                                         end
                                                     end
                                                     _ret473, _ret474 = right
                                                 end
-                                                ::_inline_end1148::
+                                                ::_inline_end1188::
                                                 right, rerr = _ret473, _ret474
                                                 local _ret470, _ret471
                                                 do
@@ -5517,7 +6036,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret470, _ret471 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1146
+                                                            goto _inline_end1186
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5526,15 +6045,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret470, _ret471 = _CALL (vm, meta, params)
-                                                            goto _inline_end1146
+                                                            goto _inline_end1186
                                                         else
                                                             _ret470, _ret471 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1146
+                                                            goto _inline_end1186
                                                         end
                                                     end
                                                     _ret470, _ret471 = left
                                                 end
-                                                ::_inline_end1146::
+                                                ::_inline_end1186::
                                                 left, lerr = _ret470, _ret471
                                                 if lerr or rerr then
                                                     local _ret460
@@ -5650,6 +6169,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret468
                                                                     do
@@ -5694,7 +6226,7 @@ return function (plume)
                                                     if not tonumber (x)
                                                      then
                                                         _ret477, _ret478 = x, plume.error.cannotConvertToString (x)
-                                                        goto _inline_end1153
+                                                        goto _inline_end1193
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
@@ -5703,15 +6235,15 @@ return function (plume)
                                                         local meta = mtonumber
                                                         local params = {}
                                                         _ret477, _ret478 = _CALL (vm, meta, params)
-                                                        goto _inline_end1153
+                                                        goto _inline_end1193
                                                     else
                                                         _ret477, _ret478 = x, plume.error.cannotDoArithmeticWith (tx)
-                                                        goto _inline_end1153
+                                                        goto _inline_end1193
                                                     end
                                                 end
                                                 _ret477, _ret478 = x
                                             end
-                                            ::_inline_end1153::
+                                            ::_inline_end1193::
                                             x, err = _ret477, _ret478
                                             if err then
                                                 local _ret480
@@ -5796,6 +6328,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret487
                                                                 do
@@ -5851,7 +6396,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret505, _ret506 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1228
+                                                            goto _inline_end1270
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5860,15 +6405,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret505, _ret506 = _CALL (vm, meta, params)
-                                                            goto _inline_end1228
+                                                            goto _inline_end1270
                                                         else
                                                             _ret505, _ret506 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1228
+                                                            goto _inline_end1270
                                                         end
                                                     end
                                                     _ret505, _ret506 = right
                                                 end
-                                                ::_inline_end1228::
+                                                ::_inline_end1270::
                                                 right, rerr = _ret505, _ret506
                                                 local _ret502, _ret503
                                                 do
@@ -5878,7 +6423,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret502, _ret503 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1226
+                                                            goto _inline_end1268
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5887,15 +6432,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret502, _ret503 = _CALL (vm, meta, params)
-                                                            goto _inline_end1226
+                                                            goto _inline_end1268
                                                         else
                                                             _ret502, _ret503 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1226
+                                                            goto _inline_end1268
                                                         end
                                                     end
                                                     _ret502, _ret503 = left
                                                 end
-                                                ::_inline_end1226::
+                                                ::_inline_end1268::
                                                 left, lerr = _ret502, _ret503
                                                 if lerr or rerr then
                                                     local _ret492
@@ -6011,6 +6556,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret500
                                                                     do
@@ -6072,7 +6630,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret524, _ret525 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1272
+                                                            goto _inline_end1315
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6081,15 +6639,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret524, _ret525 = _CALL (vm, meta, params)
-                                                            goto _inline_end1272
+                                                            goto _inline_end1315
                                                         else
                                                             _ret524, _ret525 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1272
+                                                            goto _inline_end1315
                                                         end
                                                     end
                                                     _ret524, _ret525 = right
                                                 end
-                                                ::_inline_end1272::
+                                                ::_inline_end1315::
                                                 right, rerr = _ret524, _ret525
                                                 local _ret521, _ret522
                                                 do
@@ -6099,7 +6657,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret521, _ret522 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1270
+                                                            goto _inline_end1313
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6108,15 +6666,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret521, _ret522 = _CALL (vm, meta, params)
-                                                            goto _inline_end1270
+                                                            goto _inline_end1313
                                                         else
                                                             _ret521, _ret522 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1270
+                                                            goto _inline_end1313
                                                         end
                                                     end
                                                     _ret521, _ret522 = left
                                                 end
-                                                ::_inline_end1270::
+                                                ::_inline_end1313::
                                                 left, lerr = _ret521, _ret522
                                                 if lerr or rerr then
                                                     local _ret511
@@ -6232,6 +6790,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret519
                                                                     do
@@ -6289,7 +6860,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret543, _ret544 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1316
+                                                            goto _inline_end1360
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6298,15 +6869,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret543, _ret544 = _CALL (vm, meta, params)
-                                                            goto _inline_end1316
+                                                            goto _inline_end1360
                                                         else
                                                             _ret543, _ret544 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1316
+                                                            goto _inline_end1360
                                                         end
                                                     end
                                                     _ret543, _ret544 = right
                                                 end
-                                                ::_inline_end1316::
+                                                ::_inline_end1360::
                                                 right, rerr = _ret543, _ret544
                                                 local _ret540, _ret541
                                                 do
@@ -6316,7 +6887,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret540, _ret541 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1314
+                                                            goto _inline_end1358
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6325,15 +6896,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret540, _ret541 = _CALL (vm, meta, params)
-                                                            goto _inline_end1314
+                                                            goto _inline_end1358
                                                         else
                                                             _ret540, _ret541 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1314
+                                                            goto _inline_end1358
                                                         end
                                                     end
                                                     _ret540, _ret541 = left
                                                 end
-                                                ::_inline_end1314::
+                                                ::_inline_end1358::
                                                 left, lerr = _ret540, _ret541
                                                 if lerr or rerr then
                                                     local _ret530
@@ -6448,6 +7019,19 @@ return function (plume)
                                                                             safeResult:setItem ("result", result)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
+                                                                        end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
                                                                         end
                                                                     end
                                                                     local _ret538
@@ -6581,18 +7165,18 @@ return function (plume)
                                             local _ret555
                                             if right == plumeObjEmpty then
                                                 _ret555 = false
-                                                goto _inline_end1345
+                                                goto _inline_end1389
                                             end
                                             _ret555 = right
-                                            ::_inline_end1345::
+                                            ::_inline_end1389::
                                             right = _ret555
                                             local _ret556
                                             if left == plumeObjEmpty then
                                                 _ret556 = false
-                                                goto _inline_end1346
+                                                goto _inline_end1390
                                             end
                                             _ret556 = left
-                                            ::_inline_end1346::
+                                            ::_inline_end1390::
                                             left = _ret556
                                             local _ret557 = left and right
                                             mainStackPointer = mainStackPointer + 1
@@ -6616,10 +7200,10 @@ return function (plume)
                                             local _ret559
                                             if x == plumeObjEmpty then
                                                 _ret559 = false
-                                                goto _inline_end1352
+                                                goto _inline_end1396
                                             end
                                             _ret559 = x
-                                            ::_inline_end1352::
+                                            ::_inline_end1396::
                                             x = _ret559
                                             local _ret560 = not x
                                             mainStackPointer = mainStackPointer + 1
@@ -6644,18 +7228,18 @@ return function (plume)
                                             local _ret563
                                             if right == plumeObjEmpty then
                                                 _ret563 = false
-                                                goto _inline_end1359
+                                                goto _inline_end1403
                                             end
                                             _ret563 = right
-                                            ::_inline_end1359::
+                                            ::_inline_end1403::
                                             right = _ret563
                                             local _ret564
                                             if left == plumeObjEmpty then
                                                 _ret564 = false
-                                                goto _inline_end1360
+                                                goto _inline_end1404
                                             end
                                             _ret564 = left
-                                            ::_inline_end1360::
+                                            ::_inline_end1404::
                                             left = _ret564
                                             local _ret565 = left or right
                                             mainStackPointer = mainStackPointer + 1
@@ -6731,6 +7315,19 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
                                                 end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
+                                                end
                                             end
                                             local _ret572
                                             do
@@ -6772,6 +7369,19 @@ return function (plume)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
+                                                end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
                                                 end
                                             end
                                             local _ret577 = fileStackPointer
@@ -6906,6 +7516,19 @@ return function (plume)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
                                                                     end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
+                                                                    end
                                                                 end
                                                                 local _ret586
                                                                 do
@@ -7016,6 +7639,19 @@ return function (plume)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
+                                                                end
                                                             end
                                                             local _ret592
                                                             do
@@ -7090,6 +7726,19 @@ return function (plume)
                                                         safeResult:setItem ("result", result)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = safeResult
+                                                    end
+                                                    if call and call.base then
+                                                        if call.base == #runtimeCallstack + 1 then
+                                                            vmstate.ip = ip
+                                                            vmstate.jump = jump
+                                                            vmstate.variableStackPointer = variableStackPointer
+                                                            vmstate.mainStackPointer = mainStackPointer
+                                                            vmstate.macroStackPointer = macroStackPointer
+                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                            vmstate.fileStackPointer = fileStackPointer
+                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                            vmstate.closureStackPointer = closureStackPointer
+                                                        end
                                                     end
                                                 end
                                                 local _ret596
@@ -7169,6 +7818,19 @@ return function (plume)
                                                                     safeResult:setItem ("result", result)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
+                                                                end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
                                                                 end
                                                             end
                                                             local _ret603
@@ -7271,6 +7933,19 @@ return function (plume)
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = safeResult
                                                             end
+                                                            if call and call.base then
+                                                                if call.base == #runtimeCallstack + 1 then
+                                                                    vmstate.ip = ip
+                                                                    vmstate.jump = jump
+                                                                    vmstate.variableStackPointer = variableStackPointer
+                                                                    vmstate.mainStackPointer = mainStackPointer
+                                                                    vmstate.macroStackPointer = macroStackPointer
+                                                                    vmstate.injectionStackPointer = injectionStackPointer
+                                                                    vmstate.fileStackPointer = fileStackPointer
+                                                                    vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                    vmstate.closureStackPointer = closureStackPointer
+                                                                end
+                                                            end
                                                         end
                                                         local _ret610
                                                         do
@@ -7355,6 +8030,19 @@ return function (plume)
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = safeResult
                                                                 end
+                                                                if call and call.base then
+                                                                    if call.base == #runtimeCallstack + 1 then
+                                                                        vmstate.ip = ip
+                                                                        vmstate.jump = jump
+                                                                        vmstate.variableStackPointer = variableStackPointer
+                                                                        vmstate.mainStackPointer = mainStackPointer
+                                                                        vmstate.macroStackPointer = macroStackPointer
+                                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                                        vmstate.fileStackPointer = fileStackPointer
+                                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                        vmstate.closureStackPointer = closureStackPointer
+                                                                    end
+                                                                end
                                                             end
                                                             local _ret616
                                                             do
@@ -7388,6 +8076,19 @@ return function (plume)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
+                                                end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
                                                 end
                                             end
                                         end
@@ -7424,6 +8125,19 @@ return function (plume)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
+                                                end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
                                                 end
                                             end
                                         end
@@ -7496,6 +8210,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret627
                                                                     do
@@ -7513,11 +8240,11 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret622 = false
-                                                    goto _inline_end1538
+                                                    goto _inline_end1592
                                                 end
                                                 _ret622 = true
                                             end
-                                            ::_inline_end1538::
+                                            ::_inline_end1592::
                                             if not stop then
                                                 stop = start
                                                 start = 1
@@ -7578,6 +8305,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret633
                                                                     do
@@ -7595,11 +8335,11 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret628 = false
-                                                    goto _inline_end1553
+                                                    goto _inline_end1608
                                                 end
                                                 _ret628 = true
                                             end
-                                            ::_inline_end1553::
+                                            ::_inline_end1608::
                                             local _ret634
                                             do
                                                 local _ret635 = type (step) == "table" and (step == plumeObjEmpty and "empty" or step.type) or (type (step) == "cdata" and step.type) or type (step)
@@ -7656,6 +8396,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret639
                                                                     do
@@ -7673,11 +8426,11 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret634 = false
-                                                    goto _inline_end1568
+                                                    goto _inline_end1624
                                                 end
                                                 _ret634 = true
                                             end
-                                            ::_inline_end1568::
+                                            ::_inline_end1624::
                                             start = tonumber (start)
                                             stop = tonumber (stop)
                                             mainStackPointer = mainStackPointer + 1
@@ -7697,6 +8450,19 @@ return function (plume)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
+                                                end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
                                                 end
                                             end
                                         end
@@ -7767,6 +8533,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret647
                                                                     do
@@ -7784,11 +8563,11 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret642 = false
-                                                    goto _inline_end1589
+                                                    goto _inline_end1647
                                                 end
                                                 _ret642 = true
                                             end
-                                            ::_inline_end1589::
+                                            ::_inline_end1647::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ITEMS, named = args.named}
                                             do
@@ -7806,6 +8585,19 @@ return function (plume)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
+                                                end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
                                                 end
                                             end
                                         end
@@ -7874,6 +8666,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret655
                                                                     do
@@ -7891,11 +8696,11 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret650 = false
-                                                    goto _inline_end1610
+                                                    goto _inline_end1670
                                                 end
                                                 _ret650 = true
                                             end
-                                            ::_inline_end1610::
+                                            ::_inline_end1670::
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = {type = "stdIterator", ref = args[1], flag = ITER_ENUMS}
                                             do
@@ -7913,6 +8718,19 @@ return function (plume)
                                                     safeResult:setItem ("result", result)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = safeResult
+                                                end
+                                                if call and call.base then
+                                                    if call.base == #runtimeCallstack + 1 then
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStackPointer = variableStackPointer
+                                                        vmstate.mainStackPointer = mainStackPointer
+                                                        vmstate.macroStackPointer = macroStackPointer
+                                                        vmstate.injectionStackPointer = injectionStackPointer
+                                                        vmstate.fileStackPointer = fileStackPointer
+                                                        vmstate.contextStackCachePointer = contextStackCachePointer
+                                                        vmstate.closureStackPointer = closureStackPointer
+                                                    end
                                                 end
                                             end
                                         end
@@ -8005,6 +8823,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret664
                                                                     do
@@ -8022,11 +8853,11 @@ return function (plume)
                                                         end
                                                     end
                                                     _ret659 = false
-                                                    goto _inline_end1632
+                                                    goto _inline_end1694
                                                 end
                                                 _ret659 = true
                                             end
-                                            ::_inline_end1632::
+                                            ::_inline_end1694::
                                             local assertion = _ret659
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -8112,6 +8943,19 @@ return function (plume)
                                                                                         safeResult:setItem ("result", result)
                                                                                         mainStackPointer = mainStackPointer + 1
                                                                                         mainStack[mainStackPointer] = safeResult
+                                                                                    end
+                                                                                    if call and call.base then
+                                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                                            vmstate.ip = ip
+                                                                                            vmstate.jump = jump
+                                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                                        end
                                                                                     end
                                                                                 end
                                                                                 local _ret668
@@ -8209,6 +9053,19 @@ return function (plume)
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = safeResult
                                                                         end
+                                                                        if call and call.base then
+                                                                            if call.base == #runtimeCallstack + 1 then
+                                                                                vmstate.ip = ip
+                                                                                vmstate.jump = jump
+                                                                                vmstate.variableStackPointer = variableStackPointer
+                                                                                vmstate.mainStackPointer = mainStackPointer
+                                                                                vmstate.macroStackPointer = macroStackPointer
+                                                                                vmstate.injectionStackPointer = injectionStackPointer
+                                                                                vmstate.fileStackPointer = fileStackPointer
+                                                                                vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                                vmstate.closureStackPointer = closureStackPointer
+                                                                            end
+                                                                        end
                                                                     end
                                                                     local _ret673
                                                                     do
@@ -8272,6 +9129,19 @@ return function (plume)
                                                                         safeResult:setItem ("result", result)
                                                                         mainStackPointer = mainStackPointer + 1
                                                                         mainStack[mainStackPointer] = safeResult
+                                                                    end
+                                                                    if call and call.base then
+                                                                        if call.base == #runtimeCallstack + 1 then
+                                                                            vmstate.ip = ip
+                                                                            vmstate.jump = jump
+                                                                            vmstate.variableStackPointer = variableStackPointer
+                                                                            vmstate.mainStackPointer = mainStackPointer
+                                                                            vmstate.macroStackPointer = macroStackPointer
+                                                                            vmstate.injectionStackPointer = injectionStackPointer
+                                                                            vmstate.fileStackPointer = fileStackPointer
+                                                                            vmstate.contextStackCachePointer = contextStackCachePointer
+                                                                            vmstate.closureStackPointer = closureStackPointer
+                                                                        end
                                                                     end
                                                                 end
                                                                 local _ret677

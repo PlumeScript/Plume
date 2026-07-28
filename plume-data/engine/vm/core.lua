@@ -74,9 +74,7 @@ end
 --- Declare all vm variables
 --- @param runtime runtime The runtime to execute
 --! inline-nodo
-function _VM_INIT_VARS(vm, fileID)
-    
-
+function _VM_INIT(vm, fileID)
     --=====================--
     -- Instruction format --
     --=====================--

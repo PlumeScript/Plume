@@ -9,8 +9,13 @@ Licensed under the MIT License — see LICENSE for details.
 ---@param vm VM The virtual machine instance.
 ---@param macro table The called macro
 --! inline
-function _PUSH_CALLSTACK(vm, macro, safe)
-    table.insert(vm.runtime.callstack, {runtime=vm.runtime, macro=macro, ip=vm.ip, safe=safe})
+function _PUSH_CALLSTACK(vm, macro, safe, rec)
+    local callinfos = {runtime=vm.runtime, macro=macro, ip=vm.ip, safe=safe}
+    if rec then
+        callinfos.base = #vm.runtime.callstack
+    end
+
+    table.insert(vm.runtime.callstack, callinfos)
     if #vm.runtime.callstack>1000 then
         _ERROR (vm, vm.plume.error.stackOverflow())
     end
@@ -28,6 +33,13 @@ function _POP_CALLSTACK(vm)
         safeResult:setItem("success", true)
         safeResult:setItem("result", result)
         _STACK_PUSH(vm, vm.mainStack, safeResult)
+    end
+
+    if call and call.base then
+        if call.base == #vm.runtime.callstack+1 then
+            _SAVE_SCALAR(vm)
+            -- quit run - how?
+        end
     end
 end
 
