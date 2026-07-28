@@ -118,3 +118,13 @@ function _FINAL_CHECKS (vm)
 
     return true
 end  
+
+--! inline
+function _SAVE_SCALAR(vm)
+    --! save-scalar
+end
+
+--! inline
+function _UPDATE_SCALAR(vm)
+    --! update-scalar
+end

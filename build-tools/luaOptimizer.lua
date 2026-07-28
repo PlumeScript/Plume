@@ -74,8 +74,10 @@ end
 local functionsToInline = {}
 local usedInlinedFunctions = {}
 local indexToInline = {}
+local scalars
 
 local function copyvm()
+	scalars = {"ip", "jump"}
 	local vars = {
 		{"bytecode", "runtime.bytecode"},
 		{"constants", "runtime.constants"},
@@ -112,6 +114,7 @@ local function copyvm()
 			end
 			if v.pointer then
 				table.insert(vars, {k.."Pointer", k..".pointer"})
+				table.insert(scalars, k.."Pointer")
 			end
 		end
 		if rec[k] then
@@ -158,6 +161,20 @@ local function applyCommands(code)
 	code = code:gsub('%-%-! to%-add ([^\n]+)', '%1')
 
 	code = code:gsub('%-%-! copyvm', copyvm())
+	code = code:gsub('%-%-! save%-scalar', function()
+		local result = {}
+		for _, scalar in ipairs(scalars) do
+			table.insert(result, string.format('vmstate.%s = %s', scalar, scalar))
+		end
+		return table.concat(result, "\n")
+	end)
+	code = code:gsub('%-%-! update%-scalar', function()
+		local result = {}
+		for _, scalar in ipairs(scalars) do
+			table.insert(result, string.format('%s = vmstate.%s', scalar, scalar))
+		end
+		return table.concat(result, "\n")
+	end)
 
 	for command in code:gmatch('%-%-! ([^\n]*)') do
 		if not command:match("^inline") and not command:match("^index%-to%-inline") then
