@@ -122,8 +122,8 @@ local function makeDispatchFlat()
 	table.insert(dispatch, "end\n")
 end
 
-makeDispatchBinary()
--- makeDispatchFlat()
+-- makeDispatchBinary()
+makeDispatchFlat()
 
 dispatch = table.concat(dispatch)
 
@@ -135,11 +135,9 @@ end
 
 local footer = [[
 		::END::
-		if vm.err then 
-			return false, vm.err, vm.errip
-		end
+		
 		--! to-remove-begin
-		if _STACK_POS(vm, vm.recursiveStack) == 0 then
+		if not vm.err and _STACK_POS(vm, vm.recursiveStack) == 0 then
 			local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
 			if not finalSuccess then
 				return false, finalMsg, #vm.runtime.bytecode
@@ -157,6 +155,9 @@ local footer = [[
 		--! to-remove-end
 
 		_RUN_END(vm)
+		if vm.err then 
+			return false, vm.err, vm.errip
+		end
 
 		return true, _STACK_GET(vm, vm.mainStack)
 	end

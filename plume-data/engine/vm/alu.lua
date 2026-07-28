@@ -96,7 +96,7 @@ function _HANDLE_META_UN (vm, x, name)
         BEGIN_ACC(vm, 0, 0)
         _PUSH_SELF(vm, x)
         _STACK_PUSH(vm, vm.mainStack, meta)
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0) -- wait for remove: #1081
+        _CONCAT_CALL_REC(vm)
     end
 
     return meta

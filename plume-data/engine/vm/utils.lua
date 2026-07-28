@@ -25,14 +25,28 @@ function _ERROR (vm, msg)
         end
     end
 
+    -- Logic duplication with _POP_CALLSTACK - see #1084
     if safeCallIndex then
+        local returnRun = false
         for i=#vm.runtime.callstack, safeCallIndex, -1 do
-            table.remove(vm.runtime.callstack)
+            local call = table.remove(vm.runtime.callstack)
+            if call and call.base then
+                if call.base == #vm.runtime.callstack then
+                    returnRun = true
+                    _JUMP_END(vm)
+                end
+            end
+            LEAVE_SCOPE(vm, 0, 0)
+            -- Waiting length fix
+            -- _STACK_POP(vm, vm.closureStack)
+            -- _STACK_POP(vm, vm.macroStack)
         end
         local safeResult = vm.plume.obj.table(0, 2)
         safeResult:setItem("success", false)
         safeResult:setItem("result", msg)
-        RETURN(vm)
+        if not returnRun then
+            RETURN(vm)
+        end
         _STACK_PUSH(vm, vm.mainStack, safeResult)
     else
         vm.err = msg

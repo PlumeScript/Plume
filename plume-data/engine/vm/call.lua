@@ -11,7 +11,7 @@ Licensed under the MIT License — see LICENSE for details.
 --! inline
 function _PUSH_CALLSTACK(vm, macro, safe)
     local callinfos = {runtime=vm.runtime, macro=macro, ip=vm.ip, safe=safe}
-    if vm.ip == vm.plume.sops.CONCAT_CALL then --recursive call
+    if vm.ip == vm.plume.sops.CONCAT_CALL or vm.ip == vm.plume.sops.CONCAT_CALL_SAFE then --recursive call
         callinfos.base = #vm.runtime.callstack
         callinfos.ip = _STACK_GET(vm, vm.recursiveStack)
     end
@@ -162,8 +162,10 @@ function CONCAT_CALL (vm, arg1, arg2)
             vm.mainStack[i] = vm.mainStack[i+1]
         end
         vm.mainStack[frameEnd] = macro
-
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1) -- wait for remove: endless rec
+        
+        _PUSH_CALLSTACK(vm, tocall, arg2==1)
+        _CONCAT_CALL_SAFE_REC(vm)
+        _POP_CALLSTACK(vm)
     else
         _ERROR (vm, vm.plume.error.cannotCallValue(t))
     end
@@ -206,7 +208,6 @@ function _CALL_MACRO(vm, chunk, isValidator, safe)
             if chunk.variadicOffset then
                 _STACK_SET_FRAMED(vm, vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
             end
-
             _PUSH_CALLSTACK(vm, chunk, safe)
             _STACK_POP_FRAME(vm, vm.mainStack)        -- Clean stack from arguments
             _STACK_PUSH(vm, vm.macroStack, vm.ip + 1) -- Set the return pointer

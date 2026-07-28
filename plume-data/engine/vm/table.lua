@@ -113,8 +113,8 @@ function TABLE_INDEX (vm, arg1, arg2)
                     _STACK_PUSH(vm, vm.mainStack, key)
                     _PUSH_SELF(vm, t)
                     _STACK_PUSH(vm, vm.mainStack, mgetindex)
-                    _INJECTION_PUSH(vm, vm.plume.ops.TABLE_INDEX_CHECK_IS_NIL, 0, 0)
-                    _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)-- wait for remove: #1081?
+                    _CONCAT_CALL_REC(vm)
+                    TABLE_INDEX_CHECK_IS_NIL(vm)
                 else
                     _ERROR (vm, vm.plume.error.unregisteredKey(t, key))
                 end
@@ -163,20 +163,14 @@ end
 --- @opcode
 --- Unstack 3, in order: table, key, value
 --- Set the table.key to value
---- @param arg1 number If set to 1, take table, key, value in reverse order
 --! inline
 function TABLE_SET (vm, arg1, arg2)
     local t, key, value
 
-    if arg1 == 1 then
-        value = _STACK_POP(vm, vm.mainStack)
-        key   = _STACK_POP(vm, vm.mainStack)
-        t     = _STACK_POP(vm, vm.mainStack)
-    else
-        t     = _STACK_POP(vm, vm.mainStack)
-        key   = _STACK_POP(vm, vm.mainStack)
-        value = _STACK_POP(vm, vm.mainStack)
-    end
+    t     = _STACK_POP(vm, vm.mainStack)
+    key   = _STACK_POP(vm, vm.mainStack)
+    value = _STACK_POP(vm, vm.mainStack)
+
     local mreadonly = t:getMetaItem("readonly")
     local msetindex
     key = tonumber(key) or key
@@ -186,25 +180,15 @@ function TABLE_SET (vm, arg1, arg2)
     elseif not t.table[key] then
         msetindex = t:getMetaItem("setindex")
         if msetindex then
-            -- for preventing infinite loop with next TABLE_SET
-            -- quite dirty an vulnerable (ex: meta set this key to nil)
-            -- may be rewrited in the futur
-            t:setItem(key, vm.plume.obj.empty )
-
-            -- table & key
-            _STACK_PUSH(vm, vm.mainStack, t)
-            _STACK_PUSH(vm, vm.mainStack, key)
-
             -- value
             BEGIN_ACC(vm, 0, 0)
             _STACK_PUSH(vm, vm.mainStack, key)
             _STACK_PUSH(vm, vm.mainStack, value)
             _PUSH_SELF(vm, t)
             _STACK_PUSH(vm, vm.mainStack, msetindex)
+            _CONCAT_CALL_REC(vm)
 
-            -- wait for remove: #1081?
-            _INJECTION_PUSH(vm, vm.plume.ops.TABLE_SET, 1, 0)   -- set
-            _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0) -- call
+            value = _STACK_POP(vm, vm.mainStack)
         end
     end
 
