@@ -20,7 +20,7 @@ end
 function JUMP_IF_NOT (vm, arg1, arg2)
     local test = _STACK_POP(vm, vm.mainStack)
     if not _CHECK_BOOL (vm, test) then
-        vm.jump = arg2
+        JUMP(vm, 0, arg2)
     end
 end
 
@@ -31,7 +31,7 @@ end
 function JUMP_IF (vm, arg1, arg2)
     local test = _STACK_POP(vm, vm.mainStack)
     if _CHECK_BOOL (vm, test) then
-        vm.jump = arg2
+        JUMP(vm, 0, arg2)
     end
 end
 
@@ -42,7 +42,7 @@ end
 function JUMP_IF_PEEK (vm, arg1, arg2)
     local test = _STACK_GET(vm, vm.mainStack)
     if _CHECK_BOOL (vm, test) then
-        vm.jump = arg2
+        JUMP(vm, 0, arg2)
     end
 end
 
@@ -53,7 +53,7 @@ end
 function JUMP_IF_NOT_PEEK (vm, arg1, arg2)
     local test = _STACK_GET(vm, vm.mainStack)
     if not _CHECK_BOOL (vm, test) then
-        vm.jump = arg2
+        JUMP(vm, 0, arg2)
     end
 end
 
@@ -65,7 +65,7 @@ end
 function JUMP_IF_EMPTY (vm, arg1, arg2)
     local test = _STACK_POP(vm, vm.mainStack)
     if test == vm.plume.obj.empty then
-        vm.jump = arg2
+        JUMP(vm, 0, arg2)
     end
 end
 
@@ -76,6 +76,6 @@ end
 function JUMP_IF_NOT_EMPTY (vm, arg1, arg2)
     local test = _STACK_POP(vm, vm.mainStack)
     if test ~= vm.plume.obj.empty then
-        vm.jump = arg2
+        JUMP(vm, 0, arg2)
     end
 end

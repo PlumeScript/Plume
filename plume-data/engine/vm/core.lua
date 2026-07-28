@@ -122,7 +122,7 @@ end
 function _VM_TICK (vm)
     if vm.jump>0 then
         vm.ip = vm.jump
-        vm.jump = 0-- 0 instead of nil to preserve type
+        JUMP(vm, 0, 0)-- 0 instead of nil to preserve type
     else
         vm.ip = vm.ip+1
     end
