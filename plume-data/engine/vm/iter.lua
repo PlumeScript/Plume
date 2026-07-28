@@ -57,7 +57,7 @@ function GET_ITER (vm, arg1, arg2)
             BEGIN_ACC(vm, 0, 0)
             _PUSH_SELF(vm, obj)
             _STACK_PUSH(vm, vm.mainStack, iter)
-            _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
+            CONCAT_CALL(vm, 0, 0)
         else
             _STACK_PUSH(vm, vm.mainStack, value)
         end
@@ -136,7 +136,7 @@ function FOR_ITER (vm, arg1, arg2)
             _STACK_PUSH(vm, vm.mainStack, iter)
 
 
-            _INJECTION_PUSH(vm, vm.plume.ops.JUMP_FOR, 0, arg2)
+            _INJECTION_PUSH(vm, vm.plume.ops.JUMP_FOR, 0, arg2)-- wait for remove: #1081?
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
         end
     else

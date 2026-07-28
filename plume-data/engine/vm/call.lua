@@ -108,7 +108,7 @@ function CONCAT_CALL (vm, arg1, arg2)
             
             _STACK_PUSH(vm, vm.mainStack, result)
             if isHosted then
-                _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
+                HOST_UPDATE(vm, 0, 0)
             else
                 _POP_CALLSTACK(vm)
             end
@@ -124,7 +124,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
         
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
-        _INJECTION_PUSH(vm, tocall.opcode, 0, 0)
+        _INJECTION_PUSH(vm, tocall.opcode, 0, 0) -- wait for remove: #1055
 
     -- Contextal variables
     elseif t == "context" then
@@ -143,7 +143,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         _STACK_POP_FRAME(vm, vm.mainStack)
         _STACK_PUSH(vm, vm.mainStack, value)
         -- Should check for to many arguments, instead of ignoring them
-        _INJECTION_PUSH(vm, vm.plume.ops.CHECK_IS_TEXT, 0, 0)
+        _INJECTION_PUSH(vm, vm.plume.ops.CHECK_IS_TEXT, 0, 0) -- wait for remove: endless rec (use CONCAT_CALL)
         _INJECTION_PUSH(vm, vm.plume.ops.FORCE_FRAGMENT, 0, 0)
 
     elseif tocall == vm.plume.std.attempt then
@@ -162,7 +162,7 @@ function CONCAT_CALL (vm, arg1, arg2)
         end
         vm.mainStack[frameEnd] = macro
 
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1)
+        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1) -- wait for remove: endless rec
     else
         _ERROR (vm, vm.plume.error.cannotCallValue(t))
     end
@@ -249,7 +249,7 @@ function HOST_NEXT(vm)
             -- Pretty dirty.
             -- The implementation of injections is a bit shaky
             -- and doesn't handle the end of bytecode very well.     
-            _INJECTION_PUSH(vm, vm.plume.ops.END,   0, 0)
+            _INJECTION_PUSH(vm, vm.plume.ops.END,   0, 0) -- wait for remove: #1050
             _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0) -- Reinject HOST_UPDATE to clean host
         else
             vm.ip = vm.jump-1
@@ -277,7 +277,7 @@ function HOST_UPDATE(vm)
 
         _STACK_PUSH(vm, vm.mainStack, context.PLUME_CALLBACK)
         
-        _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
+        _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0) -- wait for remove: #1050
         _INJECTION_PUSH(vm, vm.plume.ops.HOST_NEXT,   0, 0)
         _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
     else

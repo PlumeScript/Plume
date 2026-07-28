@@ -250,7 +250,7 @@ function CHECK_IS_TEXT (vm, arg1, arg2)
             BEGIN_ACC(vm, 0, 0)
             _PUSH_SELF(vm, value)
             _STACK_PUSH(vm, vm.mainStack, meta)
-            _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
+            CONCAT_CALL(vm, 0, 0)
         elseif t == "boolean" then
             _STACK_SET(vm, vm.mainStack, _STACK_POS(vm, vm.mainStack), tostring(value))
         else

@@ -114,7 +114,7 @@ function TABLE_INDEX (vm, arg1, arg2)
                     _PUSH_SELF(vm, t)
                     _STACK_PUSH(vm, vm.mainStack, mgetindex)
                     _INJECTION_PUSH(vm, vm.plume.ops.TABLE_INDEX_CHECK_IS_NIL, 0, 0)
-                    _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
+                    _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)-- wait for remove: #1081?
                 else
                     _ERROR (vm, vm.plume.error.unregisteredKey(t, key))
                 end
@@ -202,6 +202,7 @@ function TABLE_SET (vm, arg1, arg2)
             _PUSH_SELF(vm, t)
             _STACK_PUSH(vm, vm.mainStack, msetindex)
 
+            -- wait for remove: #1081?
             _INJECTION_PUSH(vm, vm.plume.ops.TABLE_SET, 1, 0)   -- set
             _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0) -- call
         end

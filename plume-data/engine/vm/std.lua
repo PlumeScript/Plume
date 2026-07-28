@@ -223,7 +223,7 @@ function STD_IMPORT(vm, arg1, arg2)
                     _STACK_PUSH(vm, vm.fileStack, chunk.fileID)
                     _STACK_PUSH(vm, vm.macroStack, vm.ip + 1)
                     -- ENTER_SCOPE is already the first file instruction
-                    _INJECTION_PUSH(vm, vm.plume.ops.JUMP, 0, chunk.offset)
+                    JUMP(vm, 0, chunk.offset)
                 end
             else
                 _ERROR(vm, err)
