@@ -69,6 +69,10 @@ function _VM_OPT_INIT(vm)
     --! index-to-inline runtime.*
     --! index-to-inline plume.obj
     --! index-to-inline plumeObj.*
+    --! index-to-inline plume._run_dev run
+    --! index-to-inline plume.sops sops
+    --! index-to-inline sops.* sops_*
+
 end
 
 --- Declare all vm variables

@@ -26,6 +26,7 @@ return function (plume)
 		require "plume-data/engine/vm/load"
 		require "plume-data/engine/vm/meta"
 		require "plume-data/engine/vm/others"
+		require "plume-data/engine/vm/run"
 		require "plume-data/engine/vm/scope"
 		require "plume-data/engine/vm/stack"
 		require "plume-data/engine/vm/std"
@@ -361,9 +362,11 @@ goto DISPATCH		::END::
 			return false, vm.err, vm.errip
 		end
 		--! to-remove-begin
-		local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
-		if not finalSuccess then
-			return false, finalMsg, #vm.runtime.bytecode
+		if _STACK_POS(vm, vm.recursiveStack) == 0 then
+			local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
+			if not finalSuccess then
+				return false, finalMsg, #vm.runtime.bytecode
+			end
 		end
 		if plume.runStatFlag then
 			if plume.stats then
@@ -373,9 +376,11 @@ goto DISPATCH		::END::
 			else
 				plume.stats = {opseq=vm.stats.opseq}
 			end
-		end
-		
+		end		
 		--! to-remove-end
+
+		_RUN_END(vm)
+
 		return true, _STACK_GET(vm, vm.mainStack)
 	end
 end

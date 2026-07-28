@@ -53,6 +53,9 @@ return function(plume)
 		vm.injectionStack         = table.new(64, 0)
 		vm.injectionStack.pointer = 0
 
+		vm.recursiveStack         = table.new(64, 0)
+		vm.recursiveStack.pointer = 0
+
 		vm.tagStack = table.new(2^14, 0)
 
 		-- Context

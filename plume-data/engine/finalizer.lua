@@ -23,8 +23,8 @@ return function (plume)
 
 	local function addHeader(instr, chunk)
 		local pos = 1
-		for name in plume.sops_names:gmatch("%S+") do
-			table.insert(instr, pos, {plume.ops[name], 0, 0})
+		for index, infos in ipairs(plume.sops_config) do
+			table.insert(instr, pos, {infos[1], infos[2], infos[2]})
 			pos = pos+1
 			chunk.offset = chunk.offset+1
 		end

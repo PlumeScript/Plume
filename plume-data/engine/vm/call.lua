@@ -9,10 +9,11 @@ Licensed under the MIT License — see LICENSE for details.
 ---@param vm VM The virtual machine instance.
 ---@param macro table The called macro
 --! inline
-function _PUSH_CALLSTACK(vm, macro, safe, rec)
+function _PUSH_CALLSTACK(vm, macro, safe)
     local callinfos = {runtime=vm.runtime, macro=macro, ip=vm.ip, safe=safe}
-    if rec then
+    if vm.ip == vm.plume.sops.CONCAT_CALL then --recursive call
         callinfos.base = #vm.runtime.callstack
+        callinfos.ip = _STACK_GET(vm, vm.recursiveStack)
     end
 
     table.insert(vm.runtime.callstack, callinfos)
@@ -36,8 +37,7 @@ function _POP_CALLSTACK(vm)
     end
 
     if call and call.base then
-        if call.base == #vm.runtime.callstack+1 then
-            _SAVE_SCALAR(vm)
+        if call.base == #vm.runtime.callstack then
             _JUMP_END(vm)
             return true
         end
@@ -56,6 +56,7 @@ function CONCAT_CALL (vm, arg1, arg2)
     local t = _GET_TYPE(vm, tocall)
     local self
 
+
     -- Table can be called with, if exists, the meta-field call
     if t == "table" then
         local mvalidate = tocall:getMetaItem("validate")
@@ -70,7 +71,7 @@ function CONCAT_CALL (vm, arg1, arg2)
             t = tocall.type
         end
     end
-
+    
     -- Macro
     if t == "macro"  then
         if self then
@@ -223,8 +224,9 @@ function RETURN(vm, arg1, arg2)
     LEAVE_SCOPE(vm, 0, 0) -- close macro scope
     _STACK_POP(vm, vm.closureStack)
     local exit = _POP_CALLSTACK(vm)
+    local ret  = _STACK_POP(vm, vm.macroStack)
     if not exit then
-        JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
+        JUMP(vm, 0, ret) -- return in the previous position
     end
 end
 

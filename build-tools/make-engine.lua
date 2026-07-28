@@ -139,9 +139,11 @@ local footer = [[
 			return false, vm.err, vm.errip
 		end
 		--! to-remove-begin
-		local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
-		if not finalSuccess then
-			return false, finalMsg, #vm.runtime.bytecode
+		if _STACK_POS(vm, vm.recursiveStack) == 0 then
+			local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
+			if not finalSuccess then
+				return false, finalMsg, #vm.runtime.bytecode
+			end
 		end
 		if plume.runStatFlag then
 			if plume.stats then
@@ -151,9 +153,11 @@ local footer = [[
 			else
 				plume.stats = {opseq=vm.stats.opseq}
 			end
-		end
-		
+		end		
 		--! to-remove-end
+
+		_RUN_END(vm)
+
 		return true, _STACK_GET(vm, vm.mainStack)
 	end
 end]]

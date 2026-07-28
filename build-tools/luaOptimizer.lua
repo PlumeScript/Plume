@@ -77,7 +77,7 @@ local indexToInline = {}
 local scalars
 
 local function copyvm()
-	scalars = {"ip", "jump"}
+	scalars = {{"ip", "ip"},{"jump", "jump"}}
 	local vars = {
 		{"bytecode", "runtime.bytecode"},
 		{"constants", "runtime.constants"},
@@ -86,7 +86,9 @@ local function copyvm()
 		{"runtimeCache", "runtime.cache"},
 		{"runtimePlume", "runtime.plume"},
 
-		{"fileParams", "fileParams"}
+		{"fileParams", "fileParams"},
+
+		{"run", "plume._run"},
 	}
 	local rec = {flag=true}
 	local fakevm = plume.obj.vm({})
@@ -94,7 +96,6 @@ local function copyvm()
 	for k, v in pairs(fakevm) do
 		table.insert(fakekeys, {k, v})
 	end
-
 
 	local function sort()
 		table.sort(fakekeys, function (x, y) return x[1]<y[1] end) -- deterministic engine-opt
@@ -111,10 +112,11 @@ local function copyvm()
 			if v.frames then
 				table.insert(vars, {k.."Frames", k..".frames"})
 				table.insert(vars, {k.."FramesPointer", k..".frames.pointer"})
+				table.insert(scalars, {k.."FramesPointer", k..".frames.pointer"})
 			end
 			if v.pointer then
 				table.insert(vars, {k.."Pointer", k..".pointer"})
-				table.insert(scalars, k.."Pointer")
+				table.insert(scalars, {k.."Pointer", k..".pointer"})
 			end
 		end
 		if rec[k] then
@@ -136,6 +138,11 @@ local function copyvm()
 	table.insert(result, string.format("local plumeObjMacro = vmstate.plume.obj.macro"))
 	table.insert(result, string.format("local plumeObjFragment = vmstate.plume.obj.fragment"))
 	table.insert(result, string.format("local plumeObjEmpty = vmstate.plume.obj.empty"))
+
+	-- plume.sops
+	for index, infos in ipairs(plume.sops_config) do
+		table.insert(result, string.format(string.format("local sops_%s = %i", infos.name, plume.sops[infos.name])))
+	end
 
 	return table.concat(result, "\n")
 end
@@ -164,14 +171,14 @@ local function applyCommands(code)
 	code = code:gsub('%-%-! save%-scalar', function()
 		local result = {}
 		for _, scalar in ipairs(scalars) do
-			table.insert(result, string.format('vmstate.%s = %s', scalar, scalar))
+			table.insert(result, string.format('vmstate.%s = %s', scalar[2], scalar[1]))
 		end
 		return table.concat(result, "\n")
 	end)
 	code = code:gsub('%-%-! update%-scalar', function()
 		local result = {}
 		for _, scalar in ipairs(scalars) do
-			table.insert(result, string.format('%s = vmstate.%s', scalar, scalar))
+			table.insert(result, string.format('%s = vmstate.%s', scalar[1], scalar[2]))
 		end
 		return table.concat(result, "\n")
 	end)

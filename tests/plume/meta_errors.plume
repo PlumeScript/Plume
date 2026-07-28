@@ -139,7 +139,7 @@ $(t+1)
 │      │    ^^^^^^                                                               │
 │                                                                                │
 │  ↳...                                                                          │
-│  ↳(previous block is repeated 998 more times)                                  │
+│  ↳(previous block is repeated 18 more times)                                   │
 │  ↳...                                                                          │
 │                                                                                │
 │  ↳ (same file)                                                                 │
