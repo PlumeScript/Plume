@@ -21,6 +21,15 @@ return function (plume)
 		end
 	end
 
+	local function addHeader(instr, chunk)
+		local pos = 1
+		for name in plume.sops_names:gmatch("%S+") do
+			table.insert(instr, pos, {plume.ops[name], 0, 0})
+			pos = pos+1
+			chunk.offset = chunk.offset+1
+		end
+	end
+
 	local function link(runtime)
 		local bytecodeSize = runtime.bytecode and #runtime.bytecode or 0
 
@@ -111,7 +120,10 @@ return function (plume)
 		runtime.linkedInstructions = {}
 	end
 
-	function plume.finalize(runtime)
+	function plume.finalize(runtime, chunk)
+		if #runtime.bytecode == 0 then
+			addHeader(runtime.instructions, chunk)
+		end
 		-- Proceed all insertion
 		insert(runtime)
 		-- replaces labels/goto by jumps

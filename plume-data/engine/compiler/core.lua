@@ -37,7 +37,7 @@ return function(plume)
 		-- Save file offset
 		chunk.offset = (runtime.bytecode and #runtime.bytecode or 0) + 1
 		-- Encode OP, compute goto offsets
-		plume.finalize(runtime)
+		plume.finalize(runtime, chunk)
 
 		-- Restore instructions
 		if context.savedInstructions then
