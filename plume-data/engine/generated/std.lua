@@ -1402,47 +1402,6 @@ return function(plume)
 	
 	
 	
-	local function replaceUpdate(context)
-		local s       = context.string
-		local pos     = context.pos
-		local pattern = context.pattern
-		local acc     = context.acc
-	
-		local bpos, epos = s:sub(pos, -1):find(pattern)
-	
-		if bpos then
-			context.PLUME_CALLBACK = context.macro
-			table.insert(acc, s:sub(pos, pos+bpos-2))
-			context.PLUME_CALLBACK_ARGS = {s:sub(pos+bpos-1, pos+epos-1)}
-			context.pos = context.pos+epos
-		else
-			context.PLUME_CALLBACK = nil
-			table.insert(acc, s:sub(pos, -1))
-			context.pos = #s+1
-			context.RETURN_VALUE = table.concat(acc)
-		end
-		return true
-	end
-	
-	local function replaceNext(context, value)
-		local t = type(value) == "table" and value.type or type(value)
-		---- <TEMP> ----
-		if t == "fragment" then
-			value = plume.makeFragment(value)
-			t = "string"
-		end
-		---- </TEMP> ----
-	
-		if t ~= "string" and t ~= "number" and t ~= "empty" then
-			return false, string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
-		end
-	
-		if (type(value) ~= "table" or value.type ~= "empty") then
-			table.insert(context.acc, value)
-		end
-		return true
-	end
-	
 	plume.std.String = plume.obj.quickTable {
 	
 		-- Manipulation
@@ -1471,7 +1430,7 @@ return function(plume)
 			return true, string.lower(s)
 		end),
 	
-		replace = plume.obj.luaMacro("replace", function (args)
+		replace = plume.obj.luaMacro("replace", function (args, vm, _, self)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
 			local __name      = "replace"
 			local __signature = "`$replace(string s, string pattern, string|macro sub, ?rich)`"
@@ -1497,7 +1456,9 @@ return function(plume)
 				end
 			end
 	
-			if type(sub) ~= "string" then
+			if type(sub) == "string" then
+				return true, (s:gsub(pattern, sub))
+			else
 				-- In case of closure - we should have an api for that
 				local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
 				if positionalParamCount ~= 1 then
@@ -1507,20 +1468,64 @@ return function(plume)
 					)
 				end
 	
-				local context = {
-					type         = "hostContext",
-					string       = s,
-					pattern      = pattern,
-					pos          = 1,
-					macro        = sub,
-					acc          = {},
-					HOST_UPDATE  = replaceUpdate,
-					HOST_NEXT    = replaceNext
-				}
-				return true, context, true
-			end
+				local success = true
+				local errmsg, result, callvmerrip
+				local callerip = vm.ip
+				s = s:gsub(pattern, function (match)
+					if not success then
+						return
+					end
+					-- We write vm code here
+					-- #1091 will try to make this cleaner
 	
-			return true, (s:gsub(pattern, sub))
+					-- BEGIN_ACC
+					vm.mainStack.frames.pointer = vm.mainStack.frames.pointer+1
+					vm.mainStack.frames[vm.mainStack.frames.pointer] = vm.mainStack.pointer+1
+	        		-- _STACK_PUSH match
+					vm.mainStack.pointer = vm.mainStack.pointer+1
+					vm.mainStack[vm.mainStack.pointer] = match
+					-- _STACK_PUSH macro
+					vm.mainStack.pointer = vm.mainStack.pointer+1
+					vm.mainStack[vm.mainStack.pointer] = sub
+	
+					-- begin of _RUN_START
+					vm.recursiveStack.pointer = vm.recursiveStack.pointer+1
+					vm.recursiveStack[vm.recursiveStack.pointer] = callerip
+	
+					-- Always use _run_dev, even in no dev mode.
+					-- #1091 should fix this
+					success, result, callvmerrip = plume._run_dev(vm, plume.sops.CONCAT_CALL)
+	
+					-- _STACK_POP
+					vm.mainStack.pointer = vm.mainStack.pointer - 1
+	
+					-- Type check
+					if success then
+						local t = type(result) == "table" and result.type or type(result)
+						if t == "fragment" then
+							result = plume.makeFragment(result)
+						elseif t ~= "string" and t ~= "number" and t ~= "empty" then
+							success = false
+							result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
+						end
+					end
+	
+					if success then
+						return result
+					else
+						if not callvmerrip then
+							-- end of _RUN_START
+							local macro = sub.macro or sub
+							callvmerrip = macro.offset-1
+						end
+	
+						vm.ip = callvmerrip or callerip
+						errmsg = result
+					end
+				end)
+	
+				return success, errmsg or s
+			end
 		end),
 	
 		-- Tests

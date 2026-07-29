@@ -1908,7 +1908,31 @@ return function (plume)
                                                     _ret215 = value
                                                 end
                                                 local currentFile = _ret215
+                                                vmstate.ip = ip
+                                                vmstate.jump = jump
+                                                vmstate.variableStack.frames.pointer = variableStackFramesPointer
+                                                vmstate.variableStack.pointer = variableStackPointer
+                                                vmstate.recursiveStack.pointer = recursiveStackPointer
+                                                vmstate.mainStack.frames.pointer = mainStackFramesPointer
+                                                vmstate.mainStack.pointer = mainStackPointer
+                                                vmstate.macroStack.pointer = macroStackPointer
+                                                vmstate.injectionStack.pointer = injectionStackPointer
+                                                vmstate.fileStack.pointer = fileStackPointer
+                                                vmstate.contextStackCache.pointer = contextStackCachePointer
+                                                vmstate.closureStack.pointer = closureStackPointer
                                                 local success, result, isHosted = tocall.callable (args, vm, currentFile)
+                                                ip = vmstate.ip
+                                                jump = vmstate.jump
+                                                variableStackFramesPointer = vmstate.variableStack.frames.pointer
+                                                variableStackPointer = vmstate.variableStack.pointer
+                                                recursiveStackPointer = vmstate.recursiveStack.pointer
+                                                mainStackFramesPointer = vmstate.mainStack.frames.pointer
+                                                mainStackPointer = vmstate.mainStack.pointer
+                                                macroStackPointer = vmstate.macroStack.pointer
+                                                injectionStackPointer = vmstate.injectionStack.pointer
+                                                fileStackPointer = vmstate.fileStack.pointer
+                                                contextStackCachePointer = vmstate.contextStackCache.pointer
+                                                closureStackPointer = vmstate.closureStack.pointer
                                                 if success then
                                                     if result == nil then
                                                         result = plumeObjEmpty
@@ -1994,11 +2018,11 @@ return function (plume)
                                                                                 jump = #bytecode
                                                                             end
                                                                             _ret221 = true
-                                                                            goto _inline_end428
+                                                                            goto _inline_end430
                                                                         end
                                                                     end
                                                                 end
-                                                                ::_inline_end428::
+                                                                ::_inline_end430::
                                                                 local _ret220
                                                                 do
                                                                     mainStackPointer = mainStackPointer - 1
@@ -2034,11 +2058,11 @@ return function (plume)
                                                                         jump = #bytecode
                                                                     end
                                                                     _ret223 = true
-                                                                    goto _inline_end433
+                                                                    goto _inline_end435
                                                                 end
                                                             end
                                                         end
-                                                        ::_inline_end433::
+                                                        ::_inline_end435::
                                                     end
                                                 else
                                                     _ERROR (vm, result)
@@ -3180,7 +3204,31 @@ return function (plume)
                                                                 _ret332 = value
                                                             end
                                                             local currentFile = _ret332
+                                                            vmstate.ip = ip
+                                                            vmstate.jump = jump
+                                                            vmstate.variableStack.frames.pointer = variableStackFramesPointer
+                                                            vmstate.variableStack.pointer = variableStackPointer
+                                                            vmstate.recursiveStack.pointer = recursiveStackPointer
+                                                            vmstate.mainStack.frames.pointer = mainStackFramesPointer
+                                                            vmstate.mainStack.pointer = mainStackPointer
+                                                            vmstate.macroStack.pointer = macroStackPointer
+                                                            vmstate.injectionStack.pointer = injectionStackPointer
+                                                            vmstate.fileStack.pointer = fileStackPointer
+                                                            vmstate.contextStackCache.pointer = contextStackCachePointer
+                                                            vmstate.closureStack.pointer = closureStackPointer
                                                             local success, result, isHosted = tocall.callable (args, vm, currentFile)
+                                                            ip = vmstate.ip
+                                                            jump = vmstate.jump
+                                                            variableStackFramesPointer = vmstate.variableStack.frames.pointer
+                                                            variableStackPointer = vmstate.variableStack.pointer
+                                                            recursiveStackPointer = vmstate.recursiveStack.pointer
+                                                            mainStackFramesPointer = vmstate.mainStack.frames.pointer
+                                                            mainStackPointer = vmstate.mainStack.pointer
+                                                            macroStackPointer = vmstate.macroStack.pointer
+                                                            injectionStackPointer = vmstate.injectionStack.pointer
+                                                            fileStackPointer = vmstate.fileStack.pointer
+                                                            contextStackCachePointer = vmstate.contextStackCache.pointer
+                                                            closureStackPointer = vmstate.closureStack.pointer
                                                             if success then
                                                                 if result == nil then
                                                                     result = plumeObjEmpty
@@ -3266,11 +3314,11 @@ return function (plume)
                                                                                             jump = #bytecode
                                                                                         end
                                                                                         _ret338 = true
-                                                                                        goto _inline_end665
+                                                                                        goto _inline_end669
                                                                                     end
                                                                                 end
                                                                             end
-                                                                            ::_inline_end665::
+                                                                            ::_inline_end669::
                                                                             local _ret337
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
@@ -3306,11 +3354,11 @@ return function (plume)
                                                                                     jump = #bytecode
                                                                                 end
                                                                                 _ret340 = true
-                                                                                goto _inline_end670
+                                                                                goto _inline_end674
                                                                             end
                                                                         end
                                                                     end
-                                                                    ::_inline_end670::
+                                                                    ::_inline_end674::
                                                                 end
                                                             else
                                                                 _ERROR (vm, result)
@@ -3677,11 +3725,11 @@ return function (plume)
                                                                             jump = #bytecode
                                                                         end
                                                                         _ret287 = true
-                                                                        goto _inline_end562
+                                                                        goto _inline_end564
                                                                     end
                                                                 end
                                                             end
-                                                            ::_inline_end562::
+                                                            ::_inline_end564::
                                                         elseif tocall == plume.std.import then
                                                             local _ret262
                                                             do
@@ -3838,11 +3886,11 @@ return function (plume)
                                                                             _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                         end
                                                                         _ret277 = false
-                                                                        goto _inline_end540
+                                                                        goto _inline_end542
                                                                     end
                                                                     _ret277 = true
                                                                 end
-                                                                ::_inline_end540::
+                                                                ::_inline_end542::
                                                                 local assertion = _ret277
                                                                 if assertion then
                                                                     local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -3989,10 +4037,10 @@ return function (plume)
                                             local _ret365
                                             if test == plumeObjEmpty then
                                                 _ret365 = false
-                                                goto _inline_end722
+                                                goto _inline_end726
                                             end
                                             _ret365 = test
-                                            ::_inline_end722::
+                                            ::_inline_end726::
                                             if _ret365 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4014,10 +4062,10 @@ return function (plume)
                                             local _ret367
                                             if test == plumeObjEmpty then
                                                 _ret367 = false
-                                                goto _inline_end726
+                                                goto _inline_end730
                                             end
                                             _ret367 = test
-                                            ::_inline_end726::
+                                            ::_inline_end730::
                                             if not _ret367 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4058,10 +4106,10 @@ return function (plume)
                                             local _ret371
                                             if test == plumeObjEmpty then
                                                 _ret371 = false
-                                                goto _inline_end734
+                                                goto _inline_end738
                                             end
                                             _ret371 = test
-                                            ::_inline_end734::
+                                            ::_inline_end738::
                                             if not _ret371 then
                                                 local _ret370
                                                 do
@@ -4093,10 +4141,10 @@ return function (plume)
                                             local _ret373
                                             if test == plumeObjEmpty then
                                                 _ret373 = false
-                                                goto _inline_end739
+                                                goto _inline_end743
                                             end
                                             _ret373 = test
-                                            ::_inline_end739::
+                                            ::_inline_end743::
                                             if _ret373 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4115,10 +4163,10 @@ return function (plume)
                                             local _ret375
                                             if test == plumeObjEmpty then
                                                 _ret375 = false
-                                                goto _inline_end743
+                                                goto _inline_end747
                                             end
                                             _ret375 = test
-                                            ::_inline_end743::
+                                            ::_inline_end747::
                                             if not _ret375 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4648,7 +4696,31 @@ return function (plume)
                                                             _ret466 = value
                                                         end
                                                         local currentFile = _ret466
+                                                        vmstate.ip = ip
+                                                        vmstate.jump = jump
+                                                        vmstate.variableStack.frames.pointer = variableStackFramesPointer
+                                                        vmstate.variableStack.pointer = variableStackPointer
+                                                        vmstate.recursiveStack.pointer = recursiveStackPointer
+                                                        vmstate.mainStack.frames.pointer = mainStackFramesPointer
+                                                        vmstate.mainStack.pointer = mainStackPointer
+                                                        vmstate.macroStack.pointer = macroStackPointer
+                                                        vmstate.injectionStack.pointer = injectionStackPointer
+                                                        vmstate.fileStack.pointer = fileStackPointer
+                                                        vmstate.contextStackCache.pointer = contextStackCachePointer
+                                                        vmstate.closureStack.pointer = closureStackPointer
                                                         local success, result, isHosted = tocall.callable (args, vm, currentFile)
+                                                        ip = vmstate.ip
+                                                        jump = vmstate.jump
+                                                        variableStackFramesPointer = vmstate.variableStack.frames.pointer
+                                                        variableStackPointer = vmstate.variableStack.pointer
+                                                        recursiveStackPointer = vmstate.recursiveStack.pointer
+                                                        mainStackFramesPointer = vmstate.mainStack.frames.pointer
+                                                        mainStackPointer = vmstate.mainStack.pointer
+                                                        macroStackPointer = vmstate.macroStack.pointer
+                                                        injectionStackPointer = vmstate.injectionStack.pointer
+                                                        fileStackPointer = vmstate.fileStack.pointer
+                                                        contextStackCachePointer = vmstate.contextStackCache.pointer
+                                                        closureStackPointer = vmstate.closureStack.pointer
                                                         if success then
                                                             if result == nil then
                                                                 result = plumeObjEmpty
@@ -4734,11 +4806,11 @@ return function (plume)
                                                                                         jump = #bytecode
                                                                                     end
                                                                                     _ret472 = true
-                                                                                    goto _inline_end938
+                                                                                    goto _inline_end944
                                                                                 end
                                                                             end
                                                                         end
-                                                                        ::_inline_end938::
+                                                                        ::_inline_end944::
                                                                         local _ret471
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
@@ -4774,11 +4846,11 @@ return function (plume)
                                                                                 jump = #bytecode
                                                                             end
                                                                             _ret474 = true
-                                                                            goto _inline_end943
+                                                                            goto _inline_end949
                                                                         end
                                                                     end
                                                                 end
-                                                                ::_inline_end943::
+                                                                ::_inline_end949::
                                                             end
                                                         else
                                                             _ERROR (vm, result)
@@ -5145,11 +5217,11 @@ return function (plume)
                                                                         jump = #bytecode
                                                                     end
                                                                     _ret421 = true
-                                                                    goto _inline_end835
+                                                                    goto _inline_end839
                                                                 end
                                                             end
                                                         end
-                                                        ::_inline_end835::
+                                                        ::_inline_end839::
                                                     elseif tocall == plume.std.import then
                                                         local _ret396
                                                         do
@@ -5306,11 +5378,11 @@ return function (plume)
                                                                         _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                     end
                                                                     _ret411 = false
-                                                                    goto _inline_end813
+                                                                    goto _inline_end817
                                                                 end
                                                                 _ret411 = true
                                                             end
-                                                            ::_inline_end813::
+                                                            ::_inline_end817::
                                                             local assertion = _ret411
                                                             if assertion then
                                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -5551,10 +5623,10 @@ return function (plume)
                                                         local _ret502
                                                         if test == plumeObjEmpty then
                                                             _ret502 = false
-                                                            goto _inline_end995
+                                                            goto _inline_end1001
                                                         end
                                                         _ret502 = test
-                                                        ::_inline_end995::
+                                                        ::_inline_end1001::
                                                         if not _ret502 then
                                                             local _ret501
                                                             do
@@ -5628,7 +5700,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret518, _ret519 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1048
+                                                            goto _inline_end1054
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5637,15 +5709,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret518, _ret519 = _CALL (vm, meta, params)
-                                                            goto _inline_end1048
+                                                            goto _inline_end1054
                                                         else
                                                             _ret518, _ret519 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1048
+                                                            goto _inline_end1054
                                                         end
                                                     end
                                                     _ret518, _ret519 = right
                                                 end
-                                                ::_inline_end1048::
+                                                ::_inline_end1054::
                                                 right, rerr = _ret518, _ret519
                                                 local _ret515, _ret516
                                                 do
@@ -5655,7 +5727,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret515, _ret516 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1046
+                                                            goto _inline_end1052
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5664,15 +5736,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret515, _ret516 = _CALL (vm, meta, params)
-                                                            goto _inline_end1046
+                                                            goto _inline_end1052
                                                         else
                                                             _ret515, _ret516 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1046
+                                                            goto _inline_end1052
                                                         end
                                                     end
                                                     _ret515, _ret516 = left
                                                 end
-                                                ::_inline_end1046::
+                                                ::_inline_end1052::
                                                 left, lerr = _ret515, _ret516
                                                 if lerr or rerr then
                                                     local _ret509
@@ -5815,7 +5887,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret533, _ret534 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1081
+                                                            goto _inline_end1087
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5824,15 +5896,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret533, _ret534 = _CALL (vm, meta, params)
-                                                            goto _inline_end1081
+                                                            goto _inline_end1087
                                                         else
                                                             _ret533, _ret534 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1081
+                                                            goto _inline_end1087
                                                         end
                                                     end
                                                     _ret533, _ret534 = right
                                                 end
-                                                ::_inline_end1081::
+                                                ::_inline_end1087::
                                                 right, rerr = _ret533, _ret534
                                                 local _ret530, _ret531
                                                 do
@@ -5842,7 +5914,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret530, _ret531 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1079
+                                                            goto _inline_end1085
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5851,15 +5923,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret530, _ret531 = _CALL (vm, meta, params)
-                                                            goto _inline_end1079
+                                                            goto _inline_end1085
                                                         else
                                                             _ret530, _ret531 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1079
+                                                            goto _inline_end1085
                                                         end
                                                     end
                                                     _ret530, _ret531 = left
                                                 end
-                                                ::_inline_end1079::
+                                                ::_inline_end1085::
                                                 left, lerr = _ret530, _ret531
                                                 if lerr or rerr then
                                                     local _ret524
@@ -6010,7 +6082,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret548, _ret549 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1114
+                                                            goto _inline_end1120
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6019,15 +6091,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret548, _ret549 = _CALL (vm, meta, params)
-                                                            goto _inline_end1114
+                                                            goto _inline_end1120
                                                         else
                                                             _ret548, _ret549 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1114
+                                                            goto _inline_end1120
                                                         end
                                                     end
                                                     _ret548, _ret549 = right
                                                 end
-                                                ::_inline_end1114::
+                                                ::_inline_end1120::
                                                 right, rerr = _ret548, _ret549
                                                 local _ret545, _ret546
                                                 do
@@ -6037,7 +6109,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret545, _ret546 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1112
+                                                            goto _inline_end1118
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6046,15 +6118,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret545, _ret546 = _CALL (vm, meta, params)
-                                                            goto _inline_end1112
+                                                            goto _inline_end1118
                                                         else
                                                             _ret545, _ret546 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1112
+                                                            goto _inline_end1118
                                                         end
                                                     end
                                                     _ret545, _ret546 = left
                                                 end
-                                                ::_inline_end1112::
+                                                ::_inline_end1118::
                                                 left, lerr = _ret545, _ret546
                                                 if lerr or rerr then
                                                     local _ret539
@@ -6197,7 +6269,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret563, _ret564 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1147
+                                                            goto _inline_end1153
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6206,15 +6278,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret563, _ret564 = _CALL (vm, meta, params)
-                                                            goto _inline_end1147
+                                                            goto _inline_end1153
                                                         else
                                                             _ret563, _ret564 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1147
+                                                            goto _inline_end1153
                                                         end
                                                     end
                                                     _ret563, _ret564 = right
                                                 end
-                                                ::_inline_end1147::
+                                                ::_inline_end1153::
                                                 right, rerr = _ret563, _ret564
                                                 local _ret560, _ret561
                                                 do
@@ -6224,7 +6296,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret560, _ret561 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1145
+                                                            goto _inline_end1151
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6233,15 +6305,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret560, _ret561 = _CALL (vm, meta, params)
-                                                            goto _inline_end1145
+                                                            goto _inline_end1151
                                                         else
                                                             _ret560, _ret561 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1145
+                                                            goto _inline_end1151
                                                         end
                                                     end
                                                     _ret560, _ret561 = left
                                                 end
-                                                ::_inline_end1145::
+                                                ::_inline_end1151::
                                                 left, lerr = _ret560, _ret561
                                                 if lerr or rerr then
                                                     local _ret554
@@ -6371,7 +6443,7 @@ return function (plume)
                                                     if not tonumber (x)
                                                      then
                                                         _ret567, _ret568 = x, plume.error.cannotConvertToString (x)
-                                                        goto _inline_end1152
+                                                        goto _inline_end1158
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
@@ -6380,15 +6452,15 @@ return function (plume)
                                                         local meta = mtonumber
                                                         local params = {}
                                                         _ret567, _ret568 = _CALL (vm, meta, params)
-                                                        goto _inline_end1152
+                                                        goto _inline_end1158
                                                     else
                                                         _ret567, _ret568 = x, plume.error.cannotDoArithmeticWith (tx)
-                                                        goto _inline_end1152
+                                                        goto _inline_end1158
                                                     end
                                                 end
                                                 _ret567, _ret568 = x
                                             end
-                                            ::_inline_end1152::
+                                            ::_inline_end1158::
                                             x, err = _ret567, _ret568
                                             if err then
                                                 local _ret570
@@ -6498,7 +6570,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret587, _ret588 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1205
+                                                            goto _inline_end1211
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6507,15 +6579,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret587, _ret588 = _CALL (vm, meta, params)
-                                                            goto _inline_end1205
+                                                            goto _inline_end1211
                                                         else
                                                             _ret587, _ret588 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1205
+                                                            goto _inline_end1211
                                                         end
                                                     end
                                                     _ret587, _ret588 = right
                                                 end
-                                                ::_inline_end1205::
+                                                ::_inline_end1211::
                                                 right, rerr = _ret587, _ret588
                                                 local _ret584, _ret585
                                                 do
@@ -6525,7 +6597,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret584, _ret585 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1203
+                                                            goto _inline_end1209
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6534,15 +6606,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret584, _ret585 = _CALL (vm, meta, params)
-                                                            goto _inline_end1203
+                                                            goto _inline_end1209
                                                         else
                                                             _ret584, _ret585 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1203
+                                                            goto _inline_end1209
                                                         end
                                                     end
                                                     _ret584, _ret585 = left
                                                 end
-                                                ::_inline_end1203::
+                                                ::_inline_end1209::
                                                 left, lerr = _ret584, _ret585
                                                 if lerr or rerr then
                                                     local _ret578
@@ -6689,7 +6761,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret602, _ret603 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1238
+                                                            goto _inline_end1244
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6698,15 +6770,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret602, _ret603 = _CALL (vm, meta, params)
-                                                            goto _inline_end1238
+                                                            goto _inline_end1244
                                                         else
                                                             _ret602, _ret603 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1238
+                                                            goto _inline_end1244
                                                         end
                                                     end
                                                     _ret602, _ret603 = right
                                                 end
-                                                ::_inline_end1238::
+                                                ::_inline_end1244::
                                                 right, rerr = _ret602, _ret603
                                                 local _ret599, _ret600
                                                 do
@@ -6716,7 +6788,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret599, _ret600 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1236
+                                                            goto _inline_end1242
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6725,15 +6797,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret599, _ret600 = _CALL (vm, meta, params)
-                                                            goto _inline_end1236
+                                                            goto _inline_end1242
                                                         else
                                                             _ret599, _ret600 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1236
+                                                            goto _inline_end1242
                                                         end
                                                     end
                                                     _ret599, _ret600 = left
                                                 end
-                                                ::_inline_end1236::
+                                                ::_inline_end1242::
                                                 left, lerr = _ret599, _ret600
                                                 if lerr or rerr then
                                                     local _ret593
@@ -6876,7 +6948,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret617, _ret618 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1271
+                                                            goto _inline_end1277
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6885,15 +6957,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret617, _ret618 = _CALL (vm, meta, params)
-                                                            goto _inline_end1271
+                                                            goto _inline_end1277
                                                         else
                                                             _ret617, _ret618 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1271
+                                                            goto _inline_end1277
                                                         end
                                                     end
                                                     _ret617, _ret618 = right
                                                 end
-                                                ::_inline_end1271::
+                                                ::_inline_end1277::
                                                 right, rerr = _ret617, _ret618
                                                 local _ret614, _ret615
                                                 do
@@ -6903,7 +6975,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret614, _ret615 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1269
+                                                            goto _inline_end1275
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6912,15 +6984,15 @@ return function (plume)
                                                             local meta = mtonumber
                                                             local params = {}
                                                             _ret614, _ret615 = _CALL (vm, meta, params)
-                                                            goto _inline_end1269
+                                                            goto _inline_end1275
                                                         else
                                                             _ret614, _ret615 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1269
+                                                            goto _inline_end1275
                                                         end
                                                     end
                                                     _ret614, _ret615 = left
                                                 end
-                                                ::_inline_end1269::
+                                                ::_inline_end1275::
                                                 left, lerr = _ret614, _ret615
                                                 if lerr or rerr then
                                                     local _ret608
@@ -7169,18 +7241,18 @@ return function (plume)
                                             local _ret629
                                             if right == plumeObjEmpty then
                                                 _ret629 = false
-                                                goto _inline_end1302
+                                                goto _inline_end1308
                                             end
                                             _ret629 = right
-                                            ::_inline_end1302::
+                                            ::_inline_end1308::
                                             right = _ret629
                                             local _ret630
                                             if left == plumeObjEmpty then
                                                 _ret630 = false
-                                                goto _inline_end1303
+                                                goto _inline_end1309
                                             end
                                             _ret630 = left
-                                            ::_inline_end1303::
+                                            ::_inline_end1309::
                                             left = _ret630
                                             local _ret631 = left and right
                                             mainStackPointer = mainStackPointer + 1
@@ -7204,10 +7276,10 @@ return function (plume)
                                             local _ret633
                                             if x == plumeObjEmpty then
                                                 _ret633 = false
-                                                goto _inline_end1309
+                                                goto _inline_end1315
                                             end
                                             _ret633 = x
-                                            ::_inline_end1309::
+                                            ::_inline_end1315::
                                             x = _ret633
                                             local _ret634 = not x
                                             mainStackPointer = mainStackPointer + 1
@@ -7232,18 +7304,18 @@ return function (plume)
                                             local _ret637
                                             if right == plumeObjEmpty then
                                                 _ret637 = false
-                                                goto _inline_end1316
+                                                goto _inline_end1322
                                             end
                                             _ret637 = right
-                                            ::_inline_end1316::
+                                            ::_inline_end1322::
                                             right = _ret637
                                             local _ret638
                                             if left == plumeObjEmpty then
                                                 _ret638 = false
-                                                goto _inline_end1317
+                                                goto _inline_end1323
                                             end
                                             _ret638 = left
-                                            ::_inline_end1317::
+                                            ::_inline_end1323::
                                             left = _ret638
                                             local _ret639 = left or right
                                             mainStackPointer = mainStackPointer + 1
@@ -7327,11 +7399,11 @@ return function (plume)
                                                             jump = #bytecode
                                                         end
                                                         _ret645 = true
-                                                        goto _inline_end1334
+                                                        goto _inline_end1340
                                                     end
                                                 end
                                             end
-                                            ::_inline_end1334::
+                                            ::_inline_end1340::
                                             local exit = _ret645
                                             local _ret647
                                             do
@@ -7388,11 +7460,11 @@ return function (plume)
                                                             jump = #bytecode
                                                         end
                                                         _ret650 = true
-                                                        goto _inline_end1347
+                                                        goto _inline_end1353
                                                     end
                                                 end
                                             end
-                                            ::_inline_end1347::
+                                            ::_inline_end1353::
                                             local _ret652 = fileStackPointer
                                             if _ret652 == 0 then
                                                 if jump > 0 and vmerr then
@@ -7592,11 +7664,11 @@ return function (plume)
                                                                 jump = #bytecode
                                                             end
                                                             _ret664 = true
-                                                            goto _inline_end1394
+                                                            goto _inline_end1400
                                                         end
                                                     end
                                                 end
-                                                ::_inline_end1394::
+                                                ::_inline_end1400::
                                                 local _ret663
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
@@ -7715,11 +7787,11 @@ return function (plume)
                                                         _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                     end
                                                     _ret673 = false
-                                                    goto _inline_end1420
+                                                    goto _inline_end1426
                                                 end
                                                 _ret673 = true
                                             end
-                                            ::_inline_end1420::
+                                            ::_inline_end1426::
                                             local assertion = _ret673
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)

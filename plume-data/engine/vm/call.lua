@@ -93,17 +93,13 @@ function CONCAT_CALL (vm, arg1, arg2)
     elseif t == "luaMacro" then
         CONCAT_TABLE(vm)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
-        
-        -- local success, result, isHosted = tocall.callable (
-        --     _STACK_POP(vm, vm.mainStack),
-        --     vm.runtime,
-        --     _STACK_GET(vm, vm.fileStack),
-        --     vm.ip
-        -- )
 
         local args        = _STACK_POP(vm, vm.mainStack)
         local currentFile = _STACK_GET(vm, vm.fileStack)
+
+        _SAVE_SCALAR(vm)
         local success, result, isHosted = tocall.callable (args, vm, currentFile)
+        _UPDATE_SCALAR(vm)
 
         if success then
             
@@ -117,6 +113,7 @@ function CONCAT_CALL (vm, arg1, arg2)
             else
                 _POP_CALLSTACK(vm)
             end
+            
         else
             _ERROR(vm, result)
         end
