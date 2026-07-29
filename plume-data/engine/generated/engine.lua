@@ -14,38 +14,15 @@ Licensed under the MIT License — see LICENSE for details.
 -- Add all needed functions are loaded as globals
 return function (plume)
 	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
-				require "plume-data/engine/vm/core"
- 
 		local op, arg1, arg2, vmerr, vmerrip
-		_VM_OPT_INIT(vm)
+		vm:_VM_OPT_INIT()
 		--! copyvm
 		vm.ip      = startip - 1
-		_VM_INIT(vm, fileID)
-				require "plume-data/engine/vm/acc"
-		require "plume-data/engine/vm/alu"
-		require "plume-data/engine/vm/call"
-		require "plume-data/engine/vm/closures"
-		require "plume-data/engine/vm/context"
-		require "plume-data/engine/vm/injection"
-		require "plume-data/engine/vm/iter"
-		require "plume-data/engine/vm/jump"
-		require "plume-data/engine/vm/load"
-		require "plume-data/engine/vm/meta"
-		require "plume-data/engine/vm/others"
-		require "plume-data/engine/vm/run"
-		require "plume-data/engine/vm/scope"
-		require "plume-data/engine/vm/stack"
-		require "plume-data/engine/vm/std"
-		require "plume-data/engine/vm/store"
-		require "plume-data/engine/vm/table"
-		require "plume-data/engine/vm/utils"
-
-		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
+		vm:_VM_INIT(fileID)
+		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		::DISPATCH::
-			
-
-			op, arg1, arg2 = _VM_DECODE_CURRENT_INSTRUCTION(vm)
+			op, arg1, arg2 = vm:_VM_DECODE_CURRENT_INSTRUCTION()
 			if op < 64 then
 				if op < 32 then
 					if op < 16 then
@@ -54,27 +31,27 @@ return function (plume)
 								if op < 2 then
 									if op < 1 then
 									else
-										LOAD_CONSTANT(vm, arg1, arg2)
+										vm:LOAD_CONSTANT(arg1, arg2)
 									end
 								else
 									if op < 3 then
-										LOAD_TRUE(vm, arg1, arg2)
+										vm:LOAD_TRUE(arg1, arg2)
 									else
-										LOAD_FALSE(vm, arg1, arg2)
+										vm:LOAD_FALSE(arg1, arg2)
 									end
 								end
 							else
 								if op < 6 then
 									if op < 5 then
-										LOAD_EMPTY(vm, arg1, arg2)
+										vm:LOAD_EMPTY(arg1, arg2)
 									else
-										LOAD_LOCAL(vm, arg1, arg2)
+										vm:LOAD_LOCAL(arg1, arg2)
 									end
 								else
 									if op < 7 then
-										LOAD_REF(vm, arg1, arg2)
+										vm:LOAD_REF(arg1, arg2)
 									else
-										LOAD_UPVALUE(vm, arg1, arg2)
+										vm:LOAD_UPVALUE(arg1, arg2)
 									end
 								end
 							end
@@ -82,29 +59,29 @@ return function (plume)
 							if op < 12 then
 								if op < 10 then
 									if op < 9 then
-										STORE_LOCAL(vm, arg1, arg2)
+										vm:STORE_LOCAL(arg1, arg2)
 									else
-										STORE_VOID(vm, arg1, arg2)
+										vm:STORE_VOID(arg1, arg2)
 									end
 								else
 									if op < 11 then
-										STORE_UPVALUE(vm, arg1, arg2)
+										vm:STORE_UPVALUE(arg1, arg2)
 									else
-										STORE_REF(vm, arg1, arg2)
+										vm:STORE_REF(arg1, arg2)
 									end
 								end
 							else
 								if op < 14 then
 									if op < 13 then
-										OPEN_UPVALUE(vm, arg1, arg2)
+										vm:OPEN_UPVALUE(arg1, arg2)
 									else
-										CLOSE_UPVALUE(vm, arg1, arg2)
+										vm:CLOSE_UPVALUE(arg1, arg2)
 									end
 								else
 									if op < 15 then
-										OPEN_REF_UPVALUE(vm, arg1, arg2)
+										vm:OPEN_REF_UPVALUE(arg1, arg2)
 									else
-										CLOSE_REF_UPVALUE(vm, arg1, arg2)
+										vm:CLOSE_REF_UPVALUE(arg1, arg2)
 									end
 								end
 							end
@@ -114,29 +91,29 @@ return function (plume)
 							if op < 20 then
 								if op < 18 then
 									if op < 17 then
-										CLOSURE(vm, arg1, arg2)
+										vm:CLOSURE(arg1, arg2)
 									else
-										TABLE_NEW(vm, arg1, arg2)
+										vm:TABLE_NEW(arg1, arg2)
 									end
 								else
 									if op < 19 then
-										TABLE_SET(vm, arg1, arg2)
+										vm:TABLE_SET(arg1, arg2)
 									else
-										TABLE_INDEX(vm, arg1, arg2)
+										vm:TABLE_INDEX(arg1, arg2)
 									end
 								end
 							else
 								if op < 22 then
 									if op < 21 then
-										TABLE_REGISTER_SELF(vm, arg1, arg2)
+										vm:TABLE_REGISTER_SELF(arg1, arg2)
 									else
-										TABLE_SET_META(vm, arg1, arg2)
+										vm:TABLE_SET_META(arg1, arg2)
 									end
 								else
 									if op < 23 then
-										TABLE_SET_ACC(vm, arg1, arg2)
+										vm:TABLE_SET_ACC(arg1, arg2)
 									else
-										TABLE_EXPAND(vm, arg1, arg2)
+										vm:TABLE_EXPAND(arg1, arg2)
 									end
 								end
 							end
@@ -144,29 +121,29 @@ return function (plume)
 							if op < 28 then
 								if op < 26 then
 									if op < 25 then
-										TABLE_INDEX_CHECK_IS_NIL(vm, arg1, arg2)
+										vm:TABLE_INDEX_CHECK_IS_NIL(arg1, arg2)
 									else
-										TABLE_CUSTOM_FIELD(vm, arg1, arg2)
+										vm:TABLE_CUSTOM_FIELD(arg1, arg2)
 									end
 								else
 									if op < 27 then
-										CALL_INDEX_REGISTER_SELF(vm, arg1, arg2)
+										vm:CALL_INDEX_REGISTER_SELF(arg1, arg2)
 									else
-										TAG_META_KEY(vm, arg1, arg2)
+										vm:TAG_META_KEY(arg1, arg2)
 									end
 								end
 							else
 								if op < 30 then
 									if op < 29 then
-										TAG_KEY(vm, arg1, arg2)
+										vm:TAG_KEY(arg1, arg2)
 									else
-										ENTER_SCOPE(vm, arg1, arg2)
+										vm:ENTER_SCOPE(arg1, arg2)
 									end
 								else
 									if op < 31 then
-										LEAVE_SCOPE(vm, arg1, arg2)
+										vm:LEAVE_SCOPE(arg1, arg2)
 									else
-										BEGIN_ACC(vm, arg1, arg2)
+										vm:BEGIN_ACC(arg1, arg2)
 									end
 								end
 							end
@@ -178,29 +155,29 @@ return function (plume)
 							if op < 36 then
 								if op < 34 then
 									if op < 33 then
-										CONCAT_TABLE(vm, arg1, arg2)
+										vm:CONCAT_TABLE(arg1, arg2)
 									else
-										CONCAT_TEXT(vm, arg1, arg2)
+										vm:CONCAT_TEXT(arg1, arg2)
 									end
 								else
 									if op < 35 then
-										CONCAT_CALL(vm, arg1, arg2)
+										vm:CONCAT_CALL(arg1, arg2)
 									else
-										CHECK_IS_TEXT(vm, arg1, arg2)
+										vm:CHECK_IS_TEXT(arg1, arg2)
 									end
 								end
 							else
 								if op < 38 then
 									if op < 37 then
-										FORCE_FRAGMENT(vm, arg1, arg2)
+										vm:FORCE_FRAGMENT(arg1, arg2)
 									else
-										JUMP_IF(vm, arg1, arg2)
+										vm:JUMP_IF(arg1, arg2)
 									end
 								else
 									if op < 39 then
-										JUMP_IF_NOT(vm, arg1, arg2)
+										vm:JUMP_IF_NOT(arg1, arg2)
 									else
-										JUMP_IF_NOT_EMPTY(vm, arg1, arg2)
+										vm:JUMP_IF_NOT_EMPTY(arg1, arg2)
 									end
 								end
 							end
@@ -208,29 +185,29 @@ return function (plume)
 							if op < 44 then
 								if op < 42 then
 									if op < 41 then
-										JUMP_FOR(vm, arg1, arg2)
+										vm:JUMP_FOR(arg1, arg2)
 									else
-										JUMP(vm, arg1, arg2)
+										vm:JUMP(arg1, arg2)
 									end
 								else
 									if op < 43 then
-										JUMP_IF_PEEK(vm, arg1, arg2)
+										vm:JUMP_IF_PEEK(arg1, arg2)
 									else
-										JUMP_IF_NOT_PEEK(vm, arg1, arg2)
+										vm:JUMP_IF_NOT_PEEK(arg1, arg2)
 									end
 								end
 							else
 								if op < 46 then
 									if op < 45 then
-										GET_ITER(vm, arg1, arg2)
+										vm:GET_ITER(arg1, arg2)
 									else
-										FOR_ITER(vm, arg1, arg2)
+										vm:FOR_ITER(arg1, arg2)
 									end
 								else
 									if op < 47 then
-										OP_ADD(vm, arg1, arg2)
+										vm:OP_ADD(arg1, arg2)
 									else
-										OP_MUL(vm, arg1, arg2)
+										vm:OP_MUL(arg1, arg2)
 									end
 								end
 							end
@@ -240,29 +217,29 @@ return function (plume)
 							if op < 52 then
 								if op < 50 then
 									if op < 49 then
-										OP_SUB(vm, arg1, arg2)
+										vm:OP_SUB(arg1, arg2)
 									else
-										OP_DIV(vm, arg1, arg2)
+										vm:OP_DIV(arg1, arg2)
 									end
 								else
 									if op < 51 then
-										OP_NEG(vm, arg1, arg2)
+										vm:OP_NEG(arg1, arg2)
 									else
-										OP_MOD(vm, arg1, arg2)
+										vm:OP_MOD(arg1, arg2)
 									end
 								end
 							else
 								if op < 54 then
 									if op < 53 then
-										OP_POW(vm, arg1, arg2)
+										vm:OP_POW(arg1, arg2)
 									else
-										OP_LT(vm, arg1, arg2)
+										vm:OP_LT(arg1, arg2)
 									end
 								else
 									if op < 55 then
-										OP_EQ(vm, arg1, arg2)
+										vm:OP_EQ(arg1, arg2)
 									else
-										OP_AND(vm, arg1, arg2)
+										vm:OP_AND(arg1, arg2)
 									end
 								end
 							end
@@ -270,29 +247,29 @@ return function (plume)
 							if op < 60 then
 								if op < 58 then
 									if op < 57 then
-										OP_NOT(vm, arg1, arg2)
+										vm:OP_NOT(arg1, arg2)
 									else
-										OP_OR(vm, arg1, arg2)
+										vm:OP_OR(arg1, arg2)
 									end
 								else
 									if op < 59 then
-										DUPLICATE(vm, arg1, arg2)
+										vm:DUPLICATE(arg1, arg2)
 									else
-										SWITCH(vm, arg1, arg2)
+										vm:SWITCH(arg1, arg2)
 									end
 								end
 							else
 								if op < 62 then
 									if op < 61 then
-										RETURN(vm, arg1, arg2)
+										vm:RETURN(arg1, arg2)
 									else
-										RETURN_FILE(vm, arg1, arg2)
+										vm:RETURN_FILE(arg1, arg2)
 									end
 								else
 									if op < 63 then
-										FILE_INIT_PARAMS(vm, arg1, arg2)
+										vm:FILE_INIT_PARAMS(arg1, arg2)
 									else
-										PUSH_CONTEXT(vm, arg1, arg2)
+										vm:PUSH_CONTEXT(arg1, arg2)
 									end
 								end
 							end
@@ -306,29 +283,29 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
-										POP_CONTEXT(vm, arg1, arg2)
+										vm:POP_CONTEXT(arg1, arg2)
 									else
-										LOAD_CONTEXT(vm, arg1, arg2)
+										vm:LOAD_CONTEXT(arg1, arg2)
 									end
 								else
 									if op < 67 then
-										CREATE_CONTEXT(vm, arg1, arg2)
+										vm:CREATE_CONTEXT(arg1, arg2)
 									else
-										HOST_UPDATE(vm, arg1, arg2)
+										vm:HOST_UPDATE(arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
-										HOST_NEXT(vm, arg1, arg2)
+										vm:HOST_NEXT(arg1, arg2)
 									else
-										RAISE(vm, arg1, arg2)
+										vm:RAISE(arg1, arg2)
 									end
 								else
 									if op < 71 then
 										goto END
 									else
-										STD_IMPORT(vm, arg1, arg2)
+										vm:STD_IMPORT(arg1, arg2)
 									end
 								end
 							end
@@ -339,8 +316,8 @@ return function (plume)
 goto DISPATCH		::END::
 		
 		--! to-remove-begin
-		if not vm.err and _STACK_POS(vm, vm.recursiveStack) == 0 then
-			local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
+		if not vm.err and vm:_STACK_POS(vm.recursiveStack) == 0 then
+			local finalSuccess, finalMsg = vm:_FINAL_CHECKS ()
 			if not finalSuccess then
 				return false, finalMsg, #vm.runtime.bytecode
 			end
@@ -356,11 +333,11 @@ goto DISPATCH		::END::
 		end		
 		--! to-remove-end
 
-		_RUN_END(vm)
+		vm:_RUN_END(vm)
 		if vm.err then 
 			return false, vm.err, vm.errip
 		end
 
-		return true, _STACK_GET(vm, vm.mainStack)
+		return true, vm:_STACK_GET(vm.mainStack)
 	end
 end

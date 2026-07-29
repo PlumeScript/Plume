@@ -29,32 +29,16 @@ Licensed under the MIT License — see LICENSE for details.
 -- Add all needed functions are loaded as globals
 return function (plume)
 	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
-		%s 
 		local op, arg1, arg2, vmerr, vmerrip
-		_VM_OPT_INIT(vm)
+		vm:_VM_OPT_INIT()
 		--! copyvm
 		vm.ip      = startip - 1
-		_VM_INIT(vm, fileID)
-		%s
-		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
+		vm:_VM_INIT(fileID)
+		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		::DISPATCH::
-			
-
-			op, arg1, arg2 = _VM_DECODE_CURRENT_INSTRUCTION(vm)
+			op, arg1, arg2 = vm:_VM_DECODE_CURRENT_INSTRUCTION()
 ]=]
-
-local importCore = "\t\trequire \"plume-data/engine/vm/core\"\n"
-local import = {}
-for file in lfs.dir("plume-data/engine/vm") do
-	if file:match('%.lua$') then
-		file = file:gsub('%.lua$', '')
-		if file ~= "core" then
-			table.insert(import, string.format("\t\trequire \"plume-data/engine/vm/%s\"\n", file))
-		end
-	end
-end
-import = table.concat(import)
 
 local uselabelGoto = false
 
@@ -81,7 +65,7 @@ local function handleChoice(limDown, limUp, indent)
 			if  uselabelGoto or op_namesTable[middlePoint-1] == "END" then
 				table.insert(dispatch, string.format(indent.."\tgoto %s\n", op_namesTable[middlePoint-1]))
 			else
-				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\t%s(vm, arg1, arg2)\n", op_namesTable[middlePoint-1]))
+				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\tvm:%s(arg1, arg2)\n", op_namesTable[middlePoint-1]))
 			end
 		end
 	end
@@ -94,7 +78,7 @@ local function handleChoice(limDown, limUp, indent)
 			if uselabelGoto or op_namesTable[middlePoint] == "END" then
 				table.insert(dispatch, string.format(indent.."\tgoto %s\n", op_namesTable[middlePoint]))
 			else
-				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\t%s(vm, arg1, arg2)\n", op_namesTable[middlePoint]))
+				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\tvm:%s(arg1, arg2)\n", op_namesTable[middlePoint]))
 			end
 		end
 	end
@@ -138,8 +122,8 @@ local footer = [[
 		::END::
 		
 		--! to-remove-begin
-		if not vm.err and _STACK_POS(vm, vm.recursiveStack) == 0 then
-			local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
+		if not vm.err and vm:_STACK_POS(vm.recursiveStack) == 0 then
+			local finalSuccess, finalMsg = vm:_FINAL_CHECKS ()
 			if not finalSuccess then
 				return false, finalMsg, #vm.runtime.bytecode
 			end
@@ -155,17 +139,17 @@ local footer = [[
 		end		
 		--! to-remove-end
 
-		_RUN_END(vm)
+		vm:_RUN_END(vm)
 		if vm.err then 
 			return false, vm.err, vm.errip
 		end
 
-		return true, _STACK_GET(vm, vm.mainStack)
+		return true, vm:_STACK_GET(vm.mainStack)
 	end
 end]]
 
 
-local result = {string.format(header, importCore, import), dispatch, labels, footer}
+local result = {header, dispatch, labels, footer}
 
 
 local f = io.open("plume-data/engine/generated/engine.lua", "w")
