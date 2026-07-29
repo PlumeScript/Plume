@@ -103,7 +103,8 @@ plume.std.Map.meta = plume.obj.quickTable{
 
 plume.std.lua = plume.obj.table(0, 0)
 
-plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, runtime, fileID)
+plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm, fileID)
+	local runtime = vm.runtime
 	local firstFilename = runtime.files[1].name
 	local lastFilename  = runtime.files[fileID].name
 
@@ -149,8 +150,9 @@ plume.std.Context = plume.obj.luaMacro("Context", function(args)
 end)
 
 -- Basic implementation, prone to memory leaks
-plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 	--!signature string code, [string filename], ?safe
+	local runtime = vm.runtime
 	local success, result = plume.executeString(code, filename or "<string>", runtime)
 	if safe then
 		local safeResult = plume.obj.table(0, 2)

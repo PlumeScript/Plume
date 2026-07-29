@@ -94,12 +94,16 @@ function CONCAT_CALL (vm, arg1, arg2)
         CONCAT_TABLE(vm)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
         
-        local success, result, isHosted = tocall.callable (
-            _STACK_POP(vm, vm.mainStack),
-            vm.runtime,
-            _STACK_GET(vm, vm.fileStack),
-            vm.ip
-        )
+        -- local success, result, isHosted = tocall.callable (
+        --     _STACK_POP(vm, vm.mainStack),
+        --     vm.runtime,
+        --     _STACK_GET(vm, vm.fileStack),
+        --     vm.ip
+        -- )
+
+        local args        = _STACK_POP(vm, vm.mainStack)
+        local currentFile = _STACK_GET(vm, vm.fileStack)
+        local success, result, isHosted = tocall.callable (args, vm, currentFile)
 
         if success then
             

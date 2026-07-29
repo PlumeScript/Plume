@@ -223,7 +223,8 @@ return function(plume)
 	
 	plume.std.lua = plume.obj.table(0, 0)
 	
-	plume.std.lua:setItem("require", plume.obj.luaMacro("require", function (args, runtime, fileID)
+	plume.std.lua:setItem("require", plume.obj.luaMacro("require", function (args, vm, fileID)
+		local runtime = vm.runtime
 		local firstFilename = runtime.files[1].name
 		local lastFilename  = runtime.files[fileID].name
 	
@@ -279,7 +280,7 @@ return function(plume)
 	end)
 	
 	-- Basic implementation, prone to memory leaks
-	plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+	plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 		local __name      = "Context"
 		local __signature = "`$Context(string code, [string filename], ?safe)`"
 		local __s, __e, self, code, filename
@@ -291,6 +292,7 @@ return function(plume)
 		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "2", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		local runtime = vm.runtime
 		local success, result = plume.executeString(code, filename or "<string>", runtime)
 		if safe then
 			local safeResult = plume.obj.table(0, 2)
@@ -671,7 +673,7 @@ return function(plume)
 				x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator
 			)
 		end),
-		localize = plume.obj.luaMacro("format", function (args, runtime)
+		localize = plume.obj.luaMacro("format", function (args, vm)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
 			local __name      = "format"
 			local __signature = "`$format(number x, [string locale])`"
@@ -682,6 +684,7 @@ return function(plume)
 			if __s and locale then __s, __e, locale = plume.stdCheckType(locale, "string", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			local runtime = vm.runtime
 			if not locale then
 				locale = runtime.plume.table.locale:get()
 			end

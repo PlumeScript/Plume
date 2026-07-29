@@ -1897,16 +1897,18 @@ return function (plume)
                                                 end
                                                 local _ret211
                                                 do
-                                                    local value = fileStack[fileStackPointer]
-                                                    _ret211 = value
-                                                end
-                                                local _ret212
-                                                do
                                                     mainStackPointer = mainStackPointer - 1
                                                     local value = mainStack[mainStackPointer + 1]
+                                                    _ret211 = value
+                                                end
+                                                local args = _ret211
+                                                local _ret212
+                                                do
+                                                    local value = fileStack[fileStackPointer]
                                                     _ret212 = value
                                                 end
-                                                local success, result, isHosted = tocall.callable (_ret212, runtime, _ret211, ip)
+                                                local currentFile = _ret212
+                                                local success, result, isHosted = tocall.callable (args, vm, currentFile)
                                                 if success then
                                                     if result == nil then
                                                         result = plumeObjEmpty
@@ -3062,16 +3064,18 @@ return function (plume)
                                                             end
                                                             local _ret325
                                                             do
-                                                                local value = fileStack[fileStackPointer]
-                                                                _ret325 = value
-                                                            end
-                                                            local _ret326
-                                                            do
                                                                 mainStackPointer = mainStackPointer - 1
                                                                 local value = mainStack[mainStackPointer + 1]
+                                                                _ret325 = value
+                                                            end
+                                                            local args = _ret325
+                                                            local _ret326
+                                                            do
+                                                                local value = fileStack[fileStackPointer]
                                                                 _ret326 = value
                                                             end
-                                                            local success, result, isHosted = tocall.callable (_ret326, runtime, _ret325, ip)
+                                                            local currentFile = _ret326
+                                                            local success, result, isHosted = tocall.callable (args, vm, currentFile)
                                                             if success then
                                                                 if result == nil then
                                                                     result = plumeObjEmpty
@@ -4423,16 +4427,18 @@ return function (plume)
                                                         end
                                                         local _ret456
                                                         do
-                                                            local value = fileStack[fileStackPointer]
-                                                            _ret456 = value
-                                                        end
-                                                        local _ret457
-                                                        do
                                                             mainStackPointer = mainStackPointer - 1
                                                             local value = mainStack[mainStackPointer + 1]
+                                                            _ret456 = value
+                                                        end
+                                                        local args = _ret456
+                                                        local _ret457
+                                                        do
+                                                            local value = fileStack[fileStackPointer]
                                                             _ret457 = value
                                                         end
-                                                        local success, result, isHosted = tocall.callable (_ret457, runtime, _ret456, ip)
+                                                        local currentFile = _ret457
+                                                        local success, result, isHosted = tocall.callable (args, vm, currentFile)
                                                         if success then
                                                             if result == nil then
                                                                 result = plumeObjEmpty
