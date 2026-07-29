@@ -328,28 +328,6 @@ return function (plume)
 									if op < 71 then
 										goto END
 									else
-										STD_LEN(vm, arg1, arg2)
-									end
-								end
-							end
-						else
-							if op < 76 then
-								if op < 74 then
-									if op < 73 then
-										STD_TYPE(vm, arg1, arg2)
-									else
-										STD_SEQ(vm, arg1, arg2)
-									end
-								else
-									if op < 75 then
-										STD_ITEMS(vm, arg1, arg2)
-									else
-										STD_ENUMERATE(vm, arg1, arg2)
-									end
-								end
-							else
-								if op < 78 then
-									if op < 77 then
 										STD_IMPORT(vm, arg1, arg2)
 									end
 								end

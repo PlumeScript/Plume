@@ -120,17 +120,6 @@ function CONCAT_CALL (vm, arg1, arg2)
         else
             _ERROR(vm, result)
         end
-
-    -- Some harcoded std functions
-    elseif t == "stdMacro" then
-        local args = CONCAT_TABLE(vm)
-        if #args.table < tocall.minArgs or (tocall.maxArgs ~= "inf" and #args.table > tocall.maxArgs) then
-            _ERROR(vm, vm.plume.error.wrongArgsCountStd(tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
-        end
-        
-        _PUSH_CALLSTACK(vm, tocall, arg2==1)
-        _INJECTION_PUSH(vm, tocall.opcode, 0, 0) -- wait for remove: #1055
-
     -- Contextal variables
     elseif t == "context" then
         CONCAT_TABLE(vm)
@@ -170,6 +159,10 @@ function CONCAT_CALL (vm, arg1, arg2)
         _PUSH_CALLSTACK(vm, tocall, arg2==1)
         _CONCAT_CALL_SAFE_REC(vm)
         _POP_CALLSTACK(vm)
+    elseif tocall == vm.plume.std.import then
+        local args = CONCAT_TABLE(vm)
+        _PUSH_CALLSTACK(vm, tocall, arg2==1)
+        STD_IMPORT(vm)
     else
         _ERROR (vm, vm.plume.error.cannotCallValue(t))
     end

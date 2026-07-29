@@ -55,6 +55,65 @@ plume.std.max = plume.obj.luaMacro("max", function(args)
 	return true, math.max(unpack(args.table))
 end)
 
+plume.std.len = plume.obj.luaMacro("len", function(args)
+	--!signature table|string x
+	return true, type(x) == "table" and #x.table or #x
+end)
+
+plume.std.type = plume.obj.luaMacro("type", function(args)
+	--!signature any x
+	return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+end)
+
+plume.std.seq = plume.obj.luaMacro("seq", function(args, vm)
+	--!signature number start, [number stop], [number step]
+
+	local start = tonumber(args.table[1])
+	local stop  = tonumber(args.table[2])
+	local step  = tonumber(args.table[3] or 1)
+
+	if not stop then
+		stop = start
+		start = 1
+	end
+
+	local result = {
+		type = "stdIterator",
+		start=start-step,
+		stop=stop,
+		step=step,
+		flag = vm.flag.ITER_SEQ
+	}
+
+	return true, result
+end)
+
+plume.std.items = plume.obj.luaMacro("items", function(args, vm)
+	--!signature table t, ?named
+
+   local result = {
+        type = "stdIterator",
+        ref  = t,
+        flag = vm.flag.ITER_ITEMS,
+        named = named,
+    }
+
+	return true, result
+end)
+
+plume.std.enumerate = plume.obj.luaMacro("items", function(args, vm)
+	--!signature table t
+
+   local result = {
+        type = "stdIterator",
+        ref = t,
+        flag = vm.flag.ITER_ENUMS
+    }
+
+	return true, result
+end)
+
+
 plume.std.List = plume.obj.table(0, 0)
 plume.std.List.meta = plume.obj.quickTable{
 	call = plume.obj.luaMacro ("call", function(args)

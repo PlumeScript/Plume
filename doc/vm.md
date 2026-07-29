@@ -438,21 +438,6 @@ The VM decodes instructions via bit operations and dispatches through a generate
 
 ### vm/std.lua
 
-#### STD_LEN
-<br>Return the length of a table (list part) or string on stack top. 
-
-#### STD_TYPE
-<br>Return the type name of the value on stack top. 
-
-#### STD_SEQ
-<br>Create an arithmetic sequence iterator from start to stop with a given step. <br>If only one argument is provided, it is used as stop and start defaults to 1. 
-
-#### STD_ITEMS
-<br>Create a key-value iterator over a table. <br>Iterates over hash entries in insertion order. 
-
-#### STD_ENUMERATE
-<br>Create an index-value iterator over a table. <br>Yields pairs `(index, item)` for each list entry. 
-
 #### STD_IMPORT
 <br>Import and execute another Plume file. <br>Compiles (or retrieves cached) the file, distributes its parameters, pushes the fileID onto `fileStack`, and jumps to the file's code offset. <br>Results are cached by parameter identity for future imports. 
 

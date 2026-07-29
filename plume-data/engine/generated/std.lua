@@ -147,6 +147,108 @@ return function(plume)
 		return true, math.max(unpack(args.table))
 	end)
 	
+	plume.std.len = plume.obj.luaMacro("len", function (args)
+		local __name      = "len"
+		local __signature = "`$len(table|string x)`"
+		local __s, __e, self, x
+		__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and x then
+			__s, __e, x = plume.stdCheckType(x, "table", "1", __name, __signature)
+			if not __s then
+				__s, __e, x = plume.stdCheckType(x, "string", "1", __name, __signature)
+			end
+		end
+		if not __s then return false, __e end
+		------------
+		return true, type(x) == "table" and #x.table or #x
+	end)
+	
+	plume.std.type = plume.obj.luaMacro("type", function (args)
+		local __name      = "type"
+		local __signature = "`$type(any x)`"
+		local __s, __e, self, x
+		__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+	end)
+	
+	plume.std.seq = plume.obj.luaMacro("seq", function (args, vm)
+		local __name      = "seq"
+		local __signature = "`$seq(number start, [number stop], [number step])`"
+		local __s, __e, self, start, stop, step
+		__s, __e, start, stop, step = plume.stdUnpackPositional(args, 1, 3,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and start then __s, __e, start = plume.stdCheckType(start, "number", "1", __name, __signature) end
+		if __s and stop then __s, __e, stop = plume.stdCheckType(stop, "number", "2", __name, __signature) end
+		if __s and step then __s, __e, step = plume.stdCheckType(step, "number", "3", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+	
+		local start = tonumber(args.table[1])
+		local stop  = tonumber(args.table[2])
+		local step  = tonumber(args.table[3] or 1)
+	
+		if not stop then
+			stop = start
+			start = 1
+		end
+	
+		local result = {
+			type = "stdIterator",
+			start=start-step,
+			stop=stop,
+			step=step,
+			flag = vm.flag.ITER_SEQ
+		}
+	
+		return true, result
+	end)
+	
+	plume.std.items = plume.obj.luaMacro("items", function (args, vm)
+		local __name      = "items"
+		local __signature = "`$items(table t, ?named)`"
+		local __s, __e, self, t
+		__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		local named
+		if __s then __s, __e, self, named = plume.stdUnpackNamed(args, {"self", "named"}, __name, __signature) end
+		named = named or false
+		if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+	
+	   local result = {
+	        type = "stdIterator",
+	        ref  = t,
+	        flag = vm.flag.ITER_ITEMS,
+	        named = named,
+	    }
+	
+		return true, result
+	end)
+	
+	plume.std.enumerate = plume.obj.luaMacro("items", function (args, vm)
+		local __name      = "items"
+		local __signature = "`$items(table t)`"
+		local __s, __e, self, t
+		__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+	
+	   local result = {
+	        type = "stdIterator",
+	        ref = t,
+	        flag = vm.flag.ITER_ENUMS
+	    }
+	
+		return true, result
+	end)
+	
+	
 	plume.std.List = plume.obj.table(0, 0)
 	plume.std.List.meta = plume.obj.quickTable{
 		call = plume.obj.luaMacro ("call", function (args)
@@ -2854,11 +2956,7 @@ return function(plume)
 	
 	end
 	
-	registerLuaStdFunction("len", 1)
-	registerLuaStdFunction("type", 1)
-	registerLuaStdFunction("seq", 1, 3)
-	registerLuaStdFunction("items", 1)
-	registerLuaStdFunction("enumerate", 1)
+	
 	registerLuaStdFunction("import", 1, "inf")
 	
 	for name, obj in pairs(plume.stdVM) do
