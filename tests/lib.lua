@@ -309,6 +309,16 @@ function lib.executeTests(allTests, plumeEngine)
                             end
                         end
                     end
+
+                    -- Generate a concise error message (simple style) for text report
+                    if testData.obtained.error and plumeEngine.lastErrorInfos
+                        and not testData.obtained.output:match("^TIMEOUT:") then
+                        plumeEngine.config.errorStyle = nil
+                        testData.obtained.conciseOutput = normalizeOutput(
+                            plumeEngine.error.formatError(plumeEngine.lastErrorInfos)
+                        )
+                        plumeEngine.config.errorStyle = "fancy"
+                    end
                 end
             end
         end
@@ -847,14 +857,133 @@ function openBytecodeTab(evt, tabId) {
     
     local finalHtml = table.concat(htmlParts, "\n")
     local file, err = io.open( outputPath, "w" )
-    
+
     if not file then
         return false, "Failed to open output file: " .. tostring(err)
     end
-    
+
     file:write(finalHtml)
     file:close()
-    
+
+    return true
+end
+
+--- Generates a plain-text report containing only failures, formatted for LLM consumption.
+-- @param allTests The main test table, populated with results and statistics.
+-- @param outputPath The file path where the text report will be saved.
+-- @return boolean, string `true` on success, or `false` and an error message on failure.
+function lib.generateTextReport(allTests, outputPath)
+    local lines = {}
+    local stats = allTests.stats or { success = 0, fails = 0, total = 0 }
+
+    table.insert(lines, "# Plume Test Report")
+    table.insert(lines, "")
+    table.insert(lines, string.format(
+        "Summary: %d passed, %d failed / %d total",
+        stats.success, stats.fails, stats.total
+    ))
+
+    if stats.fails == 0 then
+        table.insert(lines, "")
+        table.insert(lines, "All tests passed.")
+    else
+        local fileEntries = {}
+        for fileName, fileData in pairs(allTests) do
+            if fileName ~= "stats" and type(fileData) == "table" and fileData.stats and fileData.stats.fails > 0 then
+                table.insert(fileEntries, { name = fileName, data = fileData })
+            end
+        end
+        table.sort(fileEntries, function(a, b) return a.name < b.name end)
+
+        local failureIndex = 0
+        for _, entry in ipairs(fileEntries) do
+            local fileName = entry.name
+            local fileData = entry.data
+
+            for _, test in ipairs(getSortedTests(fileData)) do
+                if test.data.status == "fail" then
+                    failureIndex = failureIndex + 1
+                    table.insert(lines, "")
+                    table.insert(lines, "---")
+                    table.insert(lines, "")
+                    table.insert(lines, string.format("## Failure %d: %s — %s", failureIndex, fileName, test.name))
+
+                    if test.data.opt then
+                        table.insert(lines, "")
+                        table.insert(lines, "Note: passed in dev mode, failed in optimized mode.")
+                    end
+
+                    table.insert(lines, "")
+                    table.insert(lines, "### Input")
+                    table.insert(lines, "```plume")
+                    table.insert(lines, test.data.input or "")
+                    table.insert(lines, "```")
+
+                    table.insert(lines, "")
+                    table.insert(lines, string.format("### Expected (%s)", test.data.expected.error and "error" or "output"))
+                    table.insert(lines, "```")
+                    table.insert(lines, test.data.expected.output or "")
+                    table.insert(lines, "```")
+
+                    table.insert(lines, "")
+                    table.insert(lines, string.format("### Obtained (%s)", test.data.obtained.error and "error" or "output"))
+                    table.insert(lines, "```")
+                    table.insert(lines, test.data.obtained.conciseOutput or test.data.obtained.output or "")
+                    table.insert(lines, "```")
+                end
+            end
+        end
+    end
+
+    local content = table.concat(lines, "\n") .. "\n"
+    local file, err = io.open(outputPath, "w")
+    if not file then
+        return false, "Failed to open output file: " .. tostring(err)
+    end
+    file:write(content)
+    file:close()
+    return true
+end
+
+--- Updates the tests badge in readme.md, next to the version badge.
+-- Removes any existing tests badge before inserting the new one.
+-- @param stats The global stats table { success, fails, total }.
+-- @param readmePath The path to the readme file.
+-- @return boolean, string `true` on success, or `false` and an error message on failure.
+function lib.updateReadmeBadge(stats, readmePath)
+    local file = io.open(readmePath, "r")
+    if not file then
+        return false, "Failed to read readme: " .. readmePath
+    end
+    local content = file:read("*all")
+    file:close()
+
+    -- Remove any existing tests badge (and trailing whitespace after it)
+    content = content:gsub("!%[Tests%]%([^)]*%)%s*", "")
+
+    -- Build the new badge
+    local color = stats.fails == 0 and "brightgreen" or "red"
+    local message = string.format("%d/%d passed", stats.success, stats.total)
+    -- URL-encode special characters for shields.io
+    message = message:gsub(" ", "%%20"):gsub("/", "%%2F")
+    local badge = string.format("![Tests](https://img.shields.io/badge/tests-%s-%s.svg)", message, color)
+
+    -- Insert the tests badge right after the version badge
+    -- Escape % in the replacement string so gsub doesn't treat them as capture references
+    local badgeEscaped = badge:gsub("%%", "%%%%")
+    local found = false
+    content, found = content:gsub("(!%[Version%]%([^)]*%))", "%1 " .. badgeEscaped .. " ")
+    if found == 0 then
+        -- Fallback: prepend the badge at the top of the file
+        content = badge .. "\n" .. content
+    end
+
+    file = io.open(readmePath, "w")
+    if not file then
+        return false, "Failed to write readme: " .. readmePath
+    end
+    file:write(content)
+    file:close()
     return true
 end
 
