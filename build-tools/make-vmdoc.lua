@@ -24,7 +24,7 @@ local function parse_file(filename, content)
     
     -- Pattern pour capturer le bloc de commentaire avant une fonction
     -- On cherche @opcode suivi de tout jusqu'à "function"
-    for block, func_name in content:gmatch("(%-%-%- @opcode.-)%s+function%s+([%w_]+)") do
+    for block, func_name in content:gmatch("(%-%-%- @opcode.-)%s+function%s+vm:([%w_]+)") do
         local entry = {
             name = func_name,
             comment = "",

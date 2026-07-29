@@ -114,7 +114,7 @@ return function(vm)
 	    right = self:_CHECK_BOOL(right)
 	    left  = self:_CHECK_BOOL(left)
 
-		self:_STACK_PUSH(self.mainStack, op(left, right))
+		self:_STACK_PUSH(self.mainStack, op(self, left, right))
 	end
 
 	--- Unstack 1 value, apply an boolean operation, stack the result.
@@ -124,7 +124,7 @@ return function(vm)
 	function vm:_UN_OP_BOOL(op)
 	    local x = self:_STACK_POP(self.mainStack)
 	    x = self:_CHECK_BOOL(x)
-		self:_STACK_PUSH(self.mainStack, op(x))
+		self:_STACK_PUSH(self.mainStack, op(self, x))
 	end
 
 	--- `_BIN_OP_NUMBER` isn't an opcode, but tag as opcode for be integrated in the documentation.
@@ -144,7 +144,7 @@ return function(vm)
 
 		-- Only number
 		if rightNumber and leftNumber then
-			local result = op(leftNumber, rightNumber)
+			local result = op(self, leftNumber, rightNumber)
 			self:_STACK_PUSH(self.mainStack, result)
 		else
 
@@ -161,7 +161,7 @@ return function(vm)
 				end
 			-- table with tonumber metafield
 			else
-				local result = op(left, right)
+				local result = op(self, left, right)
 				self:_STACK_PUSH(self.mainStack, result)
 			end
 
@@ -185,7 +185,7 @@ return function(vm)
 	             self:_ERROR(err)
 	        end
 	    else
-			self:_STACK_PUSH(self.mainStack, op(x))
+			self:_STACK_PUSH(self.mainStack, op(self, x))
 	    end
 	end
 
@@ -193,82 +193,112 @@ return function(vm)
 	--- Arithmetics
 	----------------
 
-	local _ADD = function(x, y) return x+y end
-	local _MUL = function(x, y) return x*y end
-	local _SUB = function(x, y) return x-y end
-	local _DIV = function(x, y) return x/y end
-	local _MOD = function(x, y) return x%y end
-	local _POW = function(x, y) return x^y end
-	local _NEG = function(x)    return -x end
+	--! inline
+	function vm:_ADD(x, y)
+		return x+y
+	end
+	--! inline
+	function vm:_MUL(x, y)
+		return x*y
+	end
+	--! inline
+	function vm:_SUB(x, y)
+		return x-y
+	end
+	--! inline
+	function vm:_DIV(x, y)
+		return x/y
+	end
+	--! inline
+	function vm:_MOD(x, y)
+		return x%y
+	end
+	--! inline
+	function vm:_POW(x, y)
+		return x^y
+	end
+	--! inline
+	function vm:_NEG(x)
+		return -x
+	end
 
 	--- @opcode
 	--- Add two stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_ADD(arg1, arg2)
-		self:_BIN_OP_NUMBER(_ADD,   "add")
+		self:_BIN_OP_NUMBER(vm._ADD,   "add")
 	end
 	--- @opcode
 	--- Multiply two stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_MUL(arg1, arg2)
-		self:_BIN_OP_NUMBER(_MUL,   "mul")
+		self:_BIN_OP_NUMBER(vm._MUL,   "mul")
 	end
 	--- @opcode
 	--- Substract two stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_SUB(arg1, arg2)
-		self:_BIN_OP_NUMBER(_SUB,   "sub")
+		self:_BIN_OP_NUMBER(vm._SUB,   "sub")
 	end
 	--- @opcode
 	--- Divide two stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_DIV(arg1, arg2)
-		self:_BIN_OP_NUMBER(_DIV,   "div")
+		self:_BIN_OP_NUMBER(vm._DIV,   "div")
 	end
 	--- @opcode
 	--- Take the modulo of stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_MOD(arg1, arg2)
-		self:_BIN_OP_NUMBER(_MOD,   "mod")
+		self:_BIN_OP_NUMBER(vm._MOD,   "mod")
 	end
 	--- @opcode
 	--- Take the power of two stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_POW(arg1, arg2)
-		self:_BIN_OP_NUMBER(_POW,   "pow")
+		self:_BIN_OP_NUMBER(vm._POW,   "pow")
 	end
 	--- @opcode
 	--- Give opposite of a value
 	--! inline
 	function vm:OP_NEG(arg1, arg2)
-		self:_UN_OP_NUMBER(_NEG,   "minus")
+		self:_UN_OP_NUMBER(vm._NEG,   "minus")
 	end
 
 	---------
 	--- Bool
 	---------
 
-	local _AND = function(x, y) return x and y end
-	local _OR  = function(x, y)  return x or y end
-	local _NOT = function(x)    return not x end
+	--! inline
+	function vm:_AND(x, y)
+		return x and y
+	end
+	--! inline
+	function vm:_OR(x, y)
+		return x or y
+	end
+	--! inline
+	function vm:_NOT(x)
+		return not x
+	end
 
 	--- @opcode
 	--- Do boolean `and` between two stack top values based on `_BIN_OP_BOOL`.
 	--! inline
 	function vm:OP_AND(arg1, arg2)
-		self:_BIN_OP_BOOL(_AND)
+		self:_BIN_OP_BOOL(vm._AND)
 	end
 	--- @opcode
 	--- Do boolean `or` between two stack top values based on `_BIN_OP_BOOL`.
 	--! inline
 	function vm:OP_OR(arg1, arg2)
-		self:_BIN_OP_BOOL(_OR)
+		self:_BIN_OP_BOOL(vm._OR)
 	end
 	--- @opcode
 	--- Do boolean `not` between stack top value based on `_BIN_OP_BOOL`.
 	--! inline
 	function vm:OP_NOT(arg1, arg2)
-		self:_UN_OP_BOOL(_NOT)
+		self:_UN_OP_BOOL(vm._NOT)
 	end
 
 	---------------
@@ -278,13 +308,16 @@ return function(vm)
 	--- Do comparison `<` between two stack top values based on `_BIN_OP_NUMBER`.
 	--- @param x left value
 	--- @param y right value
-	local _LT = function(x, y) return x < y end
+	--! inline
+	function vm:_LT(x, y)
+		return x < y
+	end
 
 	--- @opcode
 	--- Do comparison `<` between two stack top values based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_LT(arg1, arg2)
-		self:_BIN_OP_NUMBER(_LT, "lt")
+		self:_BIN_OP_NUMBER(vm._LT, "lt")
 	end
 
 	--- @opcode

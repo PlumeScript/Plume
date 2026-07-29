@@ -178,7 +178,7 @@ function lib.executeTests(allTests, plumeEngine)
             for _, test in ipairs(getSortedListByKey(tests)) do
                 local testName = test.key
                 local testData = test.value
-
+                print(testName)
                 if testData.lua then
                     local result, error
 

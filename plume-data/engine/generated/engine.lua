@@ -14,8 +14,30 @@ Licensed under the MIT License — see LICENSE for details.
 -- Add all needed functions are loaded as globals
 return function (plume)
 	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
+		--! index-to-inline self.err vmerr
+	    --! index-to-inline self.errip vmerrip
+	    --! index-to-inline vm.err vmerr
+	    --! index-to-inline vm.errip vmerrip
+	    --! index-to-inline self.* *
+	    --! index-to-inline vm.* *
+	    --! index-to-inline mainStack.*
+	    --! index-to-inline variableStack.*
+	    --! index-to-inline mainStackFrames.*
+	    --! index-to-inline variableStackFrames.*
+	    --! index-to-inline fileStack.*
+	    --! index-to-inline macroStack.*
+	    --! index-to-inline injectionStack.*
+	    --! index-to-inline contextStackCache.*
+	    --! index-to-inline closureStack.*
+	    --! index-to-inline flag.* *
+	    --! index-to-inline runtime.*
+	    --! index-to-inline plume.obj
+	    --! index-to-inline plumeObj.*
+	    --! index-to-inline plume._run_dev run
+	    --! index-to-inline sops.* sops_*
+	    
 		local op, arg1, arg2, vmerr, vmerrip
-		vm:_VM_OPT_INIT()
+		local self = vm
 		--! copyvm
 		vm.ip      = startip - 1
 		vm:_VM_INIT(fileID)

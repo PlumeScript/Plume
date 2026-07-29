@@ -10,6 +10,7 @@ Licensed under the MIT License — see LICENSE for details.
 return function (plume)
     function plume._run (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
         local op, arg1, arg2, vmerr, vmerrip
+        local self = vm
         local vmstate = vm
         local bytecode = vmstate.runtime.bytecode
         local constants = vmstate.runtime.constants
@@ -58,21 +59,7 @@ return function (plume)
         local plumeObjEmpty = vmstate.plume.obj.empty
         local sops_CONCAT_CALL = 1
         local sops_CONCAT_CALL_SAFE = 2
-        ip = startip - 1
-        OP_BITS = plume.OP_BITS
-        ARG1_BITS = plume.ARG1_BITS
-        ARG2_BITS = plume.ARG2_BITS
-        ARG1_SHIFT = ARG2_BITS
-        OP_SHIFT = ARG1_BITS + ARG2_BITS
-        MASK_OP = bit.lshift (1, OP_BITS) - 1
-        MASK_ARG1 = bit.lshift (1, ARG1_BITS) - 1
-        MASK_ARG2 = bit.lshift (1, ARG2_BITS) - 1
-        band = bit.band
-        rshift = bit.rshift
-        if #fileStack == 0 then
-            fileStack[1] = fileID
-        end
-        local function _ERROR (vm, msg)
+        local function _ERROR (msg)
             local safeCallIndex
             for i = #runtimeCallstack, 1, -1 do
                 local call = runtimeCallstack[i]
@@ -159,11 +146,11 @@ return function (plume)
                                         jump = #bytecode
                                     end
                                     _ret6 = true
-                                    goto _inline_end17
+                                    goto _inline_end15
                                 end
                             end
                         end
-                        ::_inline_end17::
+                        ::_inline_end15::
                         local exit = _ret6
                         local _ret8
                         do
@@ -190,6 +177,20 @@ return function (plume)
                     jump = #bytecode
                 end
             end
+        end
+        ip = startip - 1
+        OP_BITS = plume.OP_BITS
+        ARG1_BITS = plume.ARG1_BITS
+        ARG2_BITS = plume.ARG2_BITS
+        ARG1_SHIFT = ARG2_BITS
+        OP_SHIFT = ARG1_BITS + ARG2_BITS
+        MASK_OP = bit.lshift (1, OP_BITS) - 1
+        MASK_ARG1 = bit.lshift (1, ARG1_BITS) - 1
+        MASK_ARG2 = bit.lshift (1, ARG2_BITS) - 1
+        band = bit.band
+        rshift = bit.rshift
+        if #fileStack == 0 then
+            fileStack[1] = fileID
         end
         do
             local currentFile = runtimeFiles[fileID]
@@ -218,8 +219,8 @@ return function (plume)
                             local variadic = fileParams[1].value
                             variadic:setItem (key, value)
                         elseif currentFile.futureFlagUnknownParamError then
-                            _ERROR (vm, plume.error.unknownParamError (varKey, namedParamOffset))
-                            _ERROR (vm, plume.error.unknownParamError (varKey, namedParamOffset))
+                            _ERROR (plume.error.unknownParamError (varKey, namedParamOffset))
+                            _ERROR (plume.error.unknownParamError (varKey, namedParamOffset))
                         else
                             plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                             , nil, runtime, ip, {886, 981})
@@ -385,12 +386,12 @@ return function (plume)
                                                         end
                                                         if _ret31 == key then
                                                             _ret26 = i - 1
-                                                            goto _inline_end54
+                                                            goto _inline_end53
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end54::
+                                            ::_inline_end53::
                                             local pos = _ret26
                                             if pos then
                                                 local _ret32
@@ -518,12 +519,12 @@ return function (plume)
                                                         end
                                                         if _ret46 == key then
                                                             _ret41 = i - 1
-                                                            goto _inline_end79
+                                                            goto _inline_end78
                                                         end
                                                     end
                                                 end
                                             end
-                                            ::_inline_end79::
+                                            ::_inline_end78::
                                             mainStack[_ret41] = value
                                         end
                                     end
@@ -674,12 +675,12 @@ return function (plume)
                                                                         end
                                                                         if _ret62 == upvalueInfos.key then
                                                                             _ret57 = i - 1
-                                                                            goto _inline_end102
+                                                                            goto _inline_end101
                                                                         end
                                                                     end
                                                                 end
                                                             end
-                                                            ::_inline_end102::
+                                                            ::_inline_end101::
                                                             upvalue.offset = _ret57
                                                         end
                                                     else
@@ -732,7 +733,7 @@ return function (plume)
                                             local msetindex
                                             key = tonumber (key) or key
                                             if mreadonly then
-                                                _ERROR (vm, plume.error.cannotSetIndexReadonlyTable ())
+                                                _ERROR (plume.error.cannotSetIndexReadonlyTable ())
                                             elseif not t.table[key] then
                                                 msetindex = t:getMetaItem ("setindex")
                                                 if msetindex then
@@ -756,7 +757,7 @@ return function (plume)
                                                     do
                                                         local _ret69 = recursiveStack.pointer
                                                         if _ret69 > 20 then
-                                                            _ERROR (vm, plume.error.stackOverflow ())
+                                                            _ERROR (plume.error.stackOverflow ())
                                                         else
                                                             vmstate.ip = ip
                                                             vmstate.jump = jump
@@ -772,7 +773,7 @@ return function (plume)
                                                             vmstate.closureStack.pointer = closureStackPointer
                                                             recursiveStack.pointer = recursiveStack.pointer + 1
                                                             recursiveStack[recursiveStack.pointer] = ip
-                                                            local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                            local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                             ip = vmstate.ip
                                                             jump = vmstate.jump
                                                             variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -787,7 +788,7 @@ return function (plume)
                                                             closureStackPointer = vmstate.closureStack.pointer
                                                             if not success then
                                                                 ip = callvmerrip
-                                                                _ERROR (vm, callvmerr)
+                                                                _ERROR (callvmerr)
                                                                 if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
@@ -830,7 +831,7 @@ return function (plume)
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = plumeObjEmpty
                                                 else
-                                                    _ERROR (vm, plume.error.cannotUseEmptyAsKey ())
+                                                    _ERROR (plume.error.cannotUseEmptyAsKey ())
                                                 end
                                             else
                                                 local _ret76 = type (t) == "table" and (t == plumeObjEmpty and "empty" or t.type) or (type (t) == "cdata" and t.type) or type (t)
@@ -855,7 +856,7 @@ return function (plume)
                                                         mainStackPointer = mainStackPointer + 1
                                                         mainStack[mainStackPointer] = plumeObjEmpty
                                                     else
-                                                        _ERROR (vm, plume.error.cannotIndexValue (tt))
+                                                        _ERROR (plume.error.cannotIndexValue (tt))
                                                     end
                                                 else
                                                     local value = t.table[key]
@@ -886,7 +887,7 @@ return function (plume)
                                                             do
                                                                 local _ret74 = recursiveStack.pointer
                                                                 if _ret74 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -902,7 +903,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -917,7 +918,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -933,11 +934,11 @@ return function (plume)
                                                                 end
                                                                 local top = _ret75
                                                                 if top == plumeObjEmpty then
-                                                                    _ERROR (vm, plume.error.getindexReturnsEmpty ())
+                                                                    _ERROR (plume.error.getindexReturnsEmpty ())
                                                                 end
                                                             end
                                                         else
-                                                            _ERROR (vm, plume.error.unregisteredKey (t, key))
+                                                            _ERROR (plume.error.unregisteredKey (t, key))
                                                         end
                                                     end
                                                 end
@@ -948,7 +949,7 @@ return function (plume)
                             else
                                 if op < 22 then
                                     if op < 21 then
-                                        TABLE_REGISTER_SELF (vm, arg1, arg2)
+                                        vm:TABLE_REGISTER_SELF (arg1, arg2)
                                     else
                                         do
                                             local _ret77
@@ -1042,7 +1043,7 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                _ERROR (vm, plume.error.cannotExpandValue (tt))
+                                                _ERROR (plume.error.cannotExpandValue (tt))
                                             end
                                         end
                                     end
@@ -1060,7 +1061,7 @@ return function (plume)
                                             end
                                             local top = _ret88
                                             if top == plumeObjEmpty then
-                                                _ERROR (vm, plume.error.getindexReturnsEmpty ())
+                                                _ERROR (plume.error.getindexReturnsEmpty ())
                                             end
                                         end
                                     else
@@ -1166,35 +1167,35 @@ return function (plume)
                                                     if t == "macro" then
                                                         if metaValue.positionalParamCount ~= expectedParamCount then
                                                             _ret97, _ret98 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
-                                                            goto _inline_end201
+                                                            goto _inline_end200
                                                         end
                                                         if metaValue.namedParamCount > 1 then
                                                             _ret97, _ret98 = false, plume.error.metaMacroWithoutNamedParameter (name)
-                                                            goto _inline_end201
+                                                            goto _inline_end200
                                                         end
                                                     else
                                                         _ret97, _ret98 = false, plume.error.wrongMetaFieldType (name, t, "macro")
-                                                        goto _inline_end201
+                                                        goto _inline_end200
                                                     end
                                                 else
                                                     local _ret100, _ret101
                                                     if plume.validMetaNames[name] then
                                                         _ret100 = true
-                                                        goto _inline_end203
+                                                        goto _inline_end202
                                                     else
                                                         _ret100, _ret101 = false, "'" .. name .. "' isn't a valid meta-macro name."
-                                                        goto _inline_end203
+                                                        goto _inline_end202
                                                     end
-                                                    ::_inline_end203::
+                                                    ::_inline_end202::
                                                     _ret97, _ret98 = _ret100, _ret101
-                                                    goto _inline_end201
+                                                    goto _inline_end200
                                                 end
                                                 _ret97, _ret98 = true
                                             end
-                                            ::_inline_end201::
+                                            ::_inline_end200::
                                             local valid, err = _ret97, _ret98
                                             if not valid then
-                                                _ERROR (vm, err)
+                                                _ERROR (err)
                                             end
                                             local _ret102 = mainStackPointer
                                             local pos = _ret102
@@ -1311,7 +1312,7 @@ return function (plume)
                                                                     variableStack[_ret115 + (argOffset - 1 or 0)] = value
                                                                 end
                                                             else
-                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                             end
                                                         else
                                                             if variadicTable then
@@ -1444,24 +1445,24 @@ return function (plume)
                                             local tocall = _ret128
                                             local _ret129 = type (tocall) == "table" and (tocall == plumeObjEmpty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
                                             local t = _ret129
-                                            local self
+                                            local self_param
                                             if t == "table" then
                                                 local mvalidate = tocall:getMetaItem ("validate")
                                                 local mcall = tocall:getMetaItem ("call")
                                                 if arg1 == 1 and mvalidate then
-                                                    self = tocall
+                                                    self_param = tocall
                                                     tocall = mvalidate
                                                     t = tocall.type
                                                 elseif mcall then
-                                                    self = tocall
+                                                    self_param = tocall
                                                     tocall = mcall
                                                     t = tocall.type
                                                 end
                                             end
                                             if t == "macro" then
-                                                if self then
+                                                if self_param then
                                                     mainStackPointer = mainStackPointer + 1
-                                                    mainStack[mainStackPointer] = self
+                                                    mainStack[mainStackPointer] = self_param
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
@@ -1471,7 +1472,7 @@ return function (plume)
                                                     end
                                                 end
                                                 if arg1 == 1 and tocall.positionalParamCount ~= 1 then
-                                                    _ERROR (vm, plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount))
+                                                    _ERROR (plume.error.wrongValidatorArgsCount (tocall, tocall.positionalParamCount))
                                                 else
                                                     do
                                                         local _ret144 = variableStackPointer
@@ -1547,7 +1548,7 @@ return function (plume)
                                                                             variableStack[_ret142 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                        _ERROR (plume.error.cannotUseMetaKey)
                                                                     end
                                                                 else
                                                                     if variadicTable then
@@ -1568,11 +1569,11 @@ return function (plume)
                                                     end
                                                     local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret134, _ret135, _ret136, _ret137
                                                     if tomanyPositionnalCounter > 0 then
-                                                        _ERROR (vm, plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
+                                                        _ERROR (plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
                                                     elseif capturedCount < tocall.positionalParamCount then
-                                                        _ERROR (vm, plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
+                                                        _ERROR (plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
                                                     elseif unknownNamed then
-                                                        _ERROR (vm, plume.error.unknownParameter (unknownNamed, tocall))
+                                                        _ERROR (plume.error.unknownParameter (unknownNamed, tocall))
                                                     else
                                                         if tocall.variadicOffset then
                                                             do
@@ -1586,7 +1587,7 @@ return function (plume)
                                                         end
                                                         do
                                                             local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
-                                                            if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                            if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                 callinfos.base = #runtimeCallstack
                                                                 local _ret132
                                                                 do
@@ -1597,7 +1598,7 @@ return function (plume)
                                                             end
                                                             table.insert (runtimeCallstack, callinfos)
                                                             if #runtimeCallstack > 1000 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             end
                                                         end
                                                         do
@@ -1620,9 +1621,9 @@ return function (plume)
                                                 closureStackPointer = closureStackPointer + 1
                                                 closureStack[closureStackPointer] = {}
                                             elseif t == "closure" then
-                                                if self then
+                                                if self_param then
                                                     mainStackPointer = mainStackPointer + 1
-                                                    mainStack[mainStackPointer] = self
+                                                    mainStack[mainStackPointer] = self_param
                                                     mainStackPointer = mainStackPointer + 1
                                                     mainStack[mainStackPointer] = "self"
                                                     do
@@ -1632,7 +1633,7 @@ return function (plume)
                                                     end
                                                 end
                                                 if arg1 == 1 and tocall.macro.positionalParamCount ~= 1 then
-                                                    _ERROR (vm, plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount))
+                                                    _ERROR (plume.error.wrongValidatorArgsCount (tocall.macro, tocall.macro.positionalParamCount))
                                                 else
                                                     do
                                                         local _ret239 = variableStackPointer
@@ -1708,7 +1709,7 @@ return function (plume)
                                                                             variableStack[_ret237 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                        _ERROR (plume.error.cannotUseMetaKey)
                                                                     end
                                                                 else
                                                                     if variadicTable then
@@ -1729,11 +1730,11 @@ return function (plume)
                                                     end
                                                     local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret229, _ret230, _ret231, _ret232
                                                     if tomanyPositionnalCounter > 0 then
-                                                        _ERROR (vm, plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
+                                                        _ERROR (plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
                                                     elseif capturedCount < tocall.macro.positionalParamCount then
-                                                        _ERROR (vm, plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
+                                                        _ERROR (plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
                                                     elseif unknownNamed then
-                                                        _ERROR (vm, plume.error.unknownParameter (unknownNamed, tocall.macro))
+                                                        _ERROR (plume.error.unknownParameter (unknownNamed, tocall.macro))
                                                     else
                                                         if tocall.macro.variadicOffset then
                                                             do
@@ -1747,7 +1748,7 @@ return function (plume)
                                                         end
                                                         do
                                                             local callinfos = {runtime = runtime, macro = tocall.macro, ip = ip, safe = arg2 == 1}
-                                                            if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                            if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                 callinfos.base = #runtimeCallstack
                                                                 local _ret227
                                                                 do
@@ -1758,7 +1759,7 @@ return function (plume)
                                                             end
                                                             table.insert (runtimeCallstack, callinfos)
                                                             if #runtimeCallstack > 1000 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             end
                                                         end
                                                         do
@@ -1846,7 +1847,7 @@ return function (plume)
                                                                             variableStack[_ret210 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                        _ERROR (plume.error.cannotUseMetaKey)
                                                                     end
                                                                 else
                                                                     if variadicTable then
@@ -1881,7 +1882,7 @@ return function (plume)
                                                 end
                                                 do
                                                     local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
-                                                    if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                    if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                         callinfos.base = #runtimeCallstack
                                                         local _ret213
                                                         do
@@ -1892,7 +1893,7 @@ return function (plume)
                                                     end
                                                     table.insert (runtimeCallstack, callinfos)
                                                     if #runtimeCallstack > 1000 then
-                                                        _ERROR (vm, plume.error.stackOverflow ())
+                                                        _ERROR (plume.error.stackOverflow ())
                                                     end
                                                 end
                                                 local _ret214
@@ -1920,7 +1921,7 @@ return function (plume)
                                                 vmstate.fileStack.pointer = fileStackPointer
                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                 vmstate.closureStack.pointer = closureStackPointer
-                                                local success, result, isHosted = tocall.callable (args, vm, currentFile)
+                                                local success, result, isHosted = tocall.callable (args, self, currentFile)
                                                 ip = vmstate.ip
                                                 jump = vmstate.jump
                                                 variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -1949,7 +1950,7 @@ return function (plume)
                                                             local context = _ret216
                                                             local success, result = context:HOST_UPDATE ()
                                                             if not success then
-                                                                _ERROR (vm, result)
+                                                                _ERROR (result)
                                                             elseif context.PLUME_CALLBACK then
                                                                 mainStackFramesPointer = mainStackFramesPointer + 1
                                                                 mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -2018,11 +2019,11 @@ return function (plume)
                                                                                 jump = #bytecode
                                                                             end
                                                                             _ret221 = true
-                                                                            goto _inline_end430
+                                                                            goto _inline_end429
                                                                         end
                                                                     end
                                                                 end
-                                                                ::_inline_end430::
+                                                                ::_inline_end429::
                                                                 local _ret220
                                                                 do
                                                                     mainStackPointer = mainStackPointer - 1
@@ -2058,14 +2059,14 @@ return function (plume)
                                                                         jump = #bytecode
                                                                     end
                                                                     _ret223 = true
-                                                                    goto _inline_end435
+                                                                    goto _inline_end434
                                                                 end
                                                             end
                                                         end
-                                                        ::_inline_end435::
+                                                        ::_inline_end434::
                                                     end
                                                 else
-                                                    _ERROR (vm, result)
+                                                    _ERROR (result)
                                                 end
                                             elseif t == "context" then
                                                 local _ret188
@@ -2133,7 +2134,7 @@ return function (plume)
                                                                             variableStack[_ret197 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                        _ERROR (plume.error.cannotUseMetaKey)
                                                                     end
                                                                 else
                                                                     if variadicTable then
@@ -2240,7 +2241,7 @@ return function (plume)
                                                                             variableStack[_ret185 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                        _ERROR (plume.error.cannotUseMetaKey)
                                                                     end
                                                                 else
                                                                     if variadicTable then
@@ -2333,7 +2334,7 @@ return function (plume)
                                                 local _ret165 = type (macro) == "table" and (macro == plumeObjEmpty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
                                                 local tmacro = _ret165
                                                 if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
-                                                    _ERROR (vm, string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
+                                                    _ERROR (string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
                                                 end
                                                 local _ret166
                                                 do
@@ -2349,7 +2350,7 @@ return function (plume)
                                                 mainStack[frameEnd] = macro
                                                 do
                                                     local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
-                                                    if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                    if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                         callinfos.base = #runtimeCallstack
                                                         local _ret168
                                                         do
@@ -2360,13 +2361,13 @@ return function (plume)
                                                     end
                                                     table.insert (runtimeCallstack, callinfos)
                                                     if #runtimeCallstack > 1000 then
-                                                        _ERROR (vm, plume.error.stackOverflow ())
+                                                        _ERROR (plume.error.stackOverflow ())
                                                     end
                                                 end
                                                 do
                                                     local _ret169 = recursiveStack.pointer
                                                     if _ret169 > 20 then
-                                                        _ERROR (vm, plume.error.stackOverflow ())
+                                                        _ERROR (plume.error.stackOverflow ())
                                                     else
                                                         vmstate.ip = ip
                                                         vmstate.jump = jump
@@ -2382,7 +2383,7 @@ return function (plume)
                                                         vmstate.closureStack.pointer = closureStackPointer
                                                         recursiveStack.pointer = recursiveStack.pointer + 1
                                                         recursiveStack[recursiveStack.pointer] = ip
-                                                        local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL_SAFE)
+                                                        local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL_SAFE)
                                                         ip = vmstate.ip
                                                         jump = vmstate.jump
                                                         variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -2397,7 +2398,7 @@ return function (plume)
                                                         closureStackPointer = vmstate.closureStack.pointer
                                                         if not success then
                                                             ip = callvmerrip
-                                                            _ERROR (vm, callvmerr)
+                                                            _ERROR (callvmerr)
                                                             if jump > 0 and vmerr then
                                                             else
                                                                 jump = #bytecode
@@ -2429,11 +2430,11 @@ return function (plume)
                                                                 jump = #bytecode
                                                             end
                                                             _ret170 = true
-                                                            goto _inline_end325
+                                                            goto _inline_end324
                                                         end
                                                     end
                                                 end
-                                                ::_inline_end325::
+                                                ::_inline_end324::
                                             elseif tocall == plume.std.import then
                                                 local _ret145
                                                 do
@@ -2500,7 +2501,7 @@ return function (plume)
                                                                             variableStack[_ret154 + (argOffset - 1 or 0)] = value
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                        _ERROR (plume.error.cannotUseMetaKey)
                                                                     end
                                                                 else
                                                                     if variadicTable then
@@ -2536,7 +2537,7 @@ return function (plume)
                                                 local args = _ret145
                                                 do
                                                     local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = arg2 == 1}
-                                                    if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                    if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                         callinfos.base = #runtimeCallstack
                                                         local _ret157
                                                         do
@@ -2547,7 +2548,7 @@ return function (plume)
                                                     end
                                                     table.insert (runtimeCallstack, callinfos)
                                                     if #runtimeCallstack > 1000 then
-                                                        _ERROR (vm, plume.error.stackOverflow ())
+                                                        _ERROR (plume.error.stackOverflow ())
                                                     end
                                                 end
                                                 do
@@ -2587,14 +2588,14 @@ return function (plume)
                                                                 if t == "nil" then
                                                                     t = "empty"
                                                                 end
-                                                                _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
+                                                                _ERROR (plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                             end
                                                             _ret160 = false
-                                                            goto _inline_end303
+                                                            goto _inline_end302
                                                         end
                                                         _ret160 = true
                                                     end
-                                                    ::_inline_end303::
+                                                    ::_inline_end302::
                                                     local assertion = _ret160
                                                     if assertion then
                                                         local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -2634,7 +2635,7 @@ return function (plume)
                                                                             local variadic = fileParams[1].value
                                                                             variadic:setItem (key, value)
                                                                         elseif chunk.futureFlagUnknownParamError then
-                                                                            _ERROR (vm, plume.error.unknownParamError (varKey, chunk.namedParamOffset))
+                                                                            _ERROR (plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                         else
                                                                             plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                                                                             , nil, runtime, ip, {886, 981})
@@ -2662,15 +2663,15 @@ return function (plume)
                                                                     end
                                                                 end
                                                             else
-                                                                _ERROR (vm, err)
+                                                                _ERROR (err)
                                                             end
                                                         else
-                                                            _ERROR (vm, plume.error.cannotOpenFile (args.table[1], searchPaths))
+                                                            _ERROR (plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                         end
                                                     end
                                                 end
                                             else
-                                                _ERROR (vm, plume.error.cannotCallValue (t))
+                                                _ERROR (plume.error.cannotCallValue (t))
                                             end
                                         end
                                     else
@@ -2716,7 +2717,7 @@ return function (plume)
                                                         local _ret359 = mainStackPointer
                                                         mainStack[_ret359] = result
                                                     else
-                                                        _ERROR (vm, result)
+                                                        _ERROR (result)
                                                     end
                                                 else
                                                     local _ret360 = mainStackPointer
@@ -2754,18 +2755,18 @@ return function (plume)
                                                         local tocall = _ret245
                                                         local _ret246 = type (tocall) == "table" and (tocall == plumeObjEmpty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
                                                         local t = _ret246
-                                                        local self
+                                                        local self_param
                                                         if t == "table" then
                                                             local mvalidate = tocall:getMetaItem ("validate")
                                                             local mcall = tocall:getMetaItem ("call")
                                                             if mcall then
-                                                                self = tocall
+                                                                self_param = tocall
                                                             end
                                                         end
                                                         if t == "macro" then
-                                                            if self then
+                                                            if self_param then
                                                                 mainStackPointer = mainStackPointer + 1
-                                                                mainStack[mainStackPointer] = self
+                                                                mainStack[mainStackPointer] = self_param
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = "self"
                                                                 do
@@ -2848,7 +2849,7 @@ return function (plume)
                                                                                     variableStack[_ret259 + (argOffset - 1 or 0)] = value
                                                                                 end
                                                                             else
-                                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                                             end
                                                                         else
                                                                             if variadicTable then
@@ -2869,11 +2870,11 @@ return function (plume)
                                                             end
                                                             local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret251, _ret252, _ret253, _ret254
                                                             if tomanyPositionnalCounter > 0 then
-                                                                _ERROR (vm, plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
+                                                                _ERROR (plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
                                                             elseif capturedCount < tocall.positionalParamCount then
-                                                                _ERROR (vm, plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
+                                                                _ERROR (plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
                                                             elseif unknownNamed then
-                                                                _ERROR (vm, plume.error.unknownParameter (unknownNamed, tocall))
+                                                                _ERROR (plume.error.unknownParameter (unknownNamed, tocall))
                                                             else
                                                                 if tocall.variadicOffset then
                                                                     do
@@ -2887,7 +2888,7 @@ return function (plume)
                                                                 end
                                                                 do
                                                                     local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                                    if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                    if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                         callinfos.base = #runtimeCallstack
                                                                         local _ret249
                                                                         do
@@ -2898,7 +2899,7 @@ return function (plume)
                                                                     end
                                                                     table.insert (runtimeCallstack, callinfos)
                                                                     if #runtimeCallstack > 1000 then
-                                                                        _ERROR (vm, plume.error.stackOverflow ())
+                                                                        _ERROR (plume.error.stackOverflow ())
                                                                     end
                                                                 end
                                                                 do
@@ -2920,9 +2921,9 @@ return function (plume)
                                                             closureStackPointer = closureStackPointer + 1
                                                             closureStack[closureStackPointer] = {}
                                                         elseif t == "closure" then
-                                                            if self then
+                                                            if self_param then
                                                                 mainStackPointer = mainStackPointer + 1
-                                                                mainStack[mainStackPointer] = self
+                                                                mainStack[mainStackPointer] = self_param
                                                                 mainStackPointer = mainStackPointer + 1
                                                                 mainStack[mainStackPointer] = "self"
                                                                 do
@@ -3005,7 +3006,7 @@ return function (plume)
                                                                                     variableStack[_ret354 + (argOffset - 1 or 0)] = value
                                                                                 end
                                                                             else
-                                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                                             end
                                                                         else
                                                                             if variadicTable then
@@ -3026,11 +3027,11 @@ return function (plume)
                                                             end
                                                             local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret346, _ret347, _ret348, _ret349
                                                             if tomanyPositionnalCounter > 0 then
-                                                                _ERROR (vm, plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
+                                                                _ERROR (plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
                                                             elseif capturedCount < tocall.macro.positionalParamCount then
-                                                                _ERROR (vm, plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
+                                                                _ERROR (plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
                                                             elseif unknownNamed then
-                                                                _ERROR (vm, plume.error.unknownParameter (unknownNamed, tocall.macro))
+                                                                _ERROR (plume.error.unknownParameter (unknownNamed, tocall.macro))
                                                             else
                                                                 if tocall.macro.variadicOffset then
                                                                     do
@@ -3044,7 +3045,7 @@ return function (plume)
                                                                 end
                                                                 do
                                                                     local callinfos = {runtime = runtime, macro = tocall.macro, ip = ip, safe = false}
-                                                                    if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                    if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                         callinfos.base = #runtimeCallstack
                                                                         local _ret344
                                                                         do
@@ -3055,7 +3056,7 @@ return function (plume)
                                                                     end
                                                                     table.insert (runtimeCallstack, callinfos)
                                                                     if #runtimeCallstack > 1000 then
-                                                                        _ERROR (vm, plume.error.stackOverflow ())
+                                                                        _ERROR (plume.error.stackOverflow ())
                                                                     end
                                                                 end
                                                                 do
@@ -3142,7 +3143,7 @@ return function (plume)
                                                                                         variableStack[_ret327 + (argOffset - 1 or 0)] = value
                                                                                     end
                                                                                 else
-                                                                                    _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                    _ERROR (plume.error.cannotUseMetaKey)
                                                                                 end
                                                                             else
                                                                                 if variadicTable then
@@ -3177,7 +3178,7 @@ return function (plume)
                                                             end
                                                             do
                                                                 local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                                if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                     callinfos.base = #runtimeCallstack
                                                                     local _ret330
                                                                     do
@@ -3188,7 +3189,7 @@ return function (plume)
                                                                 end
                                                                 table.insert (runtimeCallstack, callinfos)
                                                                 if #runtimeCallstack > 1000 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 end
                                                             end
                                                             local _ret331
@@ -3216,7 +3217,7 @@ return function (plume)
                                                             vmstate.fileStack.pointer = fileStackPointer
                                                             vmstate.contextStackCache.pointer = contextStackCachePointer
                                                             vmstate.closureStack.pointer = closureStackPointer
-                                                            local success, result, isHosted = tocall.callable (args, vm, currentFile)
+                                                            local success, result, isHosted = tocall.callable (args, self, currentFile)
                                                             ip = vmstate.ip
                                                             jump = vmstate.jump
                                                             variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -3245,7 +3246,7 @@ return function (plume)
                                                                         local context = _ret333
                                                                         local success, result = context:HOST_UPDATE ()
                                                                         if not success then
-                                                                            _ERROR (vm, result)
+                                                                            _ERROR (result)
                                                                         elseif context.PLUME_CALLBACK then
                                                                             mainStackFramesPointer = mainStackFramesPointer + 1
                                                                             mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -3314,11 +3315,11 @@ return function (plume)
                                                                                             jump = #bytecode
                                                                                         end
                                                                                         _ret338 = true
-                                                                                        goto _inline_end669
+                                                                                        goto _inline_end668
                                                                                     end
                                                                                 end
                                                                             end
-                                                                            ::_inline_end669::
+                                                                            ::_inline_end668::
                                                                             local _ret337
                                                                             do
                                                                                 mainStackPointer = mainStackPointer - 1
@@ -3354,14 +3355,14 @@ return function (plume)
                                                                                     jump = #bytecode
                                                                                 end
                                                                                 _ret340 = true
-                                                                                goto _inline_end674
+                                                                                goto _inline_end673
                                                                             end
                                                                         end
                                                                     end
-                                                                    ::_inline_end674::
+                                                                    ::_inline_end673::
                                                                 end
                                                             else
-                                                                _ERROR (vm, result)
+                                                                _ERROR (result)
                                                             end
                                                         elseif t == "context" then
                                                             local _ret305
@@ -3429,7 +3430,7 @@ return function (plume)
                                                                                         variableStack[_ret314 + (argOffset - 1 or 0)] = value
                                                                                     end
                                                                                 else
-                                                                                    _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                    _ERROR (plume.error.cannotUseMetaKey)
                                                                                 end
                                                                             else
                                                                                 if variadicTable then
@@ -3536,7 +3537,7 @@ return function (plume)
                                                                                         variableStack[_ret302 + (argOffset - 1 or 0)] = value
                                                                                     end
                                                                                 else
-                                                                                    _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                    _ERROR (plume.error.cannotUseMetaKey)
                                                                                 end
                                                                             else
                                                                                 if variadicTable then
@@ -3629,7 +3630,7 @@ return function (plume)
                                                             local _ret282 = type (macro) == "table" and (macro == plumeObjEmpty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
                                                             local tmacro = _ret282
                                                             if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
-                                                                _ERROR (vm, string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
+                                                                _ERROR (string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
                                                             end
                                                             local _ret283
                                                             do
@@ -3645,7 +3646,7 @@ return function (plume)
                                                             mainStack[frameEnd] = macro
                                                             do
                                                                 local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                                if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                     callinfos.base = #runtimeCallstack
                                                                     local _ret285
                                                                     do
@@ -3656,13 +3657,13 @@ return function (plume)
                                                                 end
                                                                 table.insert (runtimeCallstack, callinfos)
                                                                 if #runtimeCallstack > 1000 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 end
                                                             end
                                                             do
                                                                 local _ret286 = recursiveStack.pointer
                                                                 if _ret286 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -3678,7 +3679,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL_SAFE)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL_SAFE)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -3693,7 +3694,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -3725,11 +3726,11 @@ return function (plume)
                                                                             jump = #bytecode
                                                                         end
                                                                         _ret287 = true
-                                                                        goto _inline_end564
+                                                                        goto _inline_end563
                                                                     end
                                                                 end
                                                             end
-                                                            ::_inline_end564::
+                                                            ::_inline_end563::
                                                         elseif tocall == plume.std.import then
                                                             local _ret262
                                                             do
@@ -3796,7 +3797,7 @@ return function (plume)
                                                                                         variableStack[_ret271 + (argOffset - 1 or 0)] = value
                                                                                     end
                                                                                 else
-                                                                                    _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                    _ERROR (plume.error.cannotUseMetaKey)
                                                                                 end
                                                                             else
                                                                                 if variadicTable then
@@ -3832,7 +3833,7 @@ return function (plume)
                                                             local args = _ret262
                                                             do
                                                                 local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                                if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                     callinfos.base = #runtimeCallstack
                                                                     local _ret274
                                                                     do
@@ -3843,7 +3844,7 @@ return function (plume)
                                                                 end
                                                                 table.insert (runtimeCallstack, callinfos)
                                                                 if #runtimeCallstack > 1000 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 end
                                                             end
                                                             do
@@ -3883,14 +3884,14 @@ return function (plume)
                                                                             if t == "nil" then
                                                                                 t = "empty"
                                                                             end
-                                                                            _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
+                                                                            _ERROR (plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                         end
                                                                         _ret277 = false
-                                                                        goto _inline_end542
+                                                                        goto _inline_end541
                                                                     end
                                                                     _ret277 = true
                                                                 end
-                                                                ::_inline_end542::
+                                                                ::_inline_end541::
                                                                 local assertion = _ret277
                                                                 if assertion then
                                                                     local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -3930,7 +3931,7 @@ return function (plume)
                                                                                         local variadic = fileParams[1].value
                                                                                         variadic:setItem (key, value)
                                                                                     elseif chunk.futureFlagUnknownParamError then
-                                                                                        _ERROR (vm, plume.error.unknownParamError (varKey, chunk.namedParamOffset))
+                                                                                        _ERROR (plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                                     else
                                                                                         plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                                                                                         , nil, runtime, ip, {886, 981})
@@ -3958,22 +3959,22 @@ return function (plume)
                                                                                 end
                                                                             end
                                                                         else
-                                                                            _ERROR (vm, err)
+                                                                            _ERROR (err)
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, plume.error.cannotOpenFile (args.table[1], searchPaths))
+                                                                        _ERROR (plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                                     end
                                                                 end
                                                             end
                                                         else
-                                                            _ERROR (vm, plume.error.cannotCallValue (t))
+                                                            _ERROR (plume.error.cannotCallValue (t))
                                                         end
                                                     end
                                                 elseif t == "boolean" then
                                                     local _ret357 = mainStackPointer
                                                     mainStack[_ret357] = tostring (value)
                                                 else
-                                                    _ERROR (vm, plume.error.cannotConcatValue (t))
+                                                    _ERROR (plume.error.cannotConcatValue (t))
                                                 end
                                             end
                                         end
@@ -4037,10 +4038,10 @@ return function (plume)
                                             local _ret365
                                             if test == plumeObjEmpty then
                                                 _ret365 = false
-                                                goto _inline_end726
+                                                goto _inline_end725
                                             end
                                             _ret365 = test
-                                            ::_inline_end726::
+                                            ::_inline_end725::
                                             if _ret365 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4062,10 +4063,10 @@ return function (plume)
                                             local _ret367
                                             if test == plumeObjEmpty then
                                                 _ret367 = false
-                                                goto _inline_end730
+                                                goto _inline_end729
                                             end
                                             _ret367 = test
-                                            ::_inline_end730::
+                                            ::_inline_end729::
                                             if not _ret367 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4106,10 +4107,10 @@ return function (plume)
                                             local _ret371
                                             if test == plumeObjEmpty then
                                                 _ret371 = false
-                                                goto _inline_end738
+                                                goto _inline_end737
                                             end
                                             _ret371 = test
-                                            ::_inline_end738::
+                                            ::_inline_end737::
                                             if not _ret371 then
                                                 local _ret370
                                                 do
@@ -4141,10 +4142,10 @@ return function (plume)
                                             local _ret373
                                             if test == plumeObjEmpty then
                                                 _ret373 = false
-                                                goto _inline_end743
+                                                goto _inline_end742
                                             end
                                             _ret373 = test
-                                            ::_inline_end743::
+                                            ::_inline_end742::
                                             if _ret373 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4163,10 +4164,10 @@ return function (plume)
                                             local _ret375
                                             if test == plumeObjEmpty then
                                                 _ret375 = false
-                                                goto _inline_end747
+                                                goto _inline_end746
                                             end
                                             _ret375 = test
-                                            ::_inline_end747::
+                                            ::_inline_end746::
                                             if not _ret375 then
                                                 if jump > 0 and vmerr then
                                                 else
@@ -4216,7 +4217,7 @@ return function (plume)
                                                 flag = obj.flag
                                                 start = obj.start or start
                                             else
-                                                _ERROR (vm, plume.error.cannotIterateValue (tobj))
+                                                _ERROR (plume.error.cannotIterateValue (tobj))
                                             end
                                             mainStackPointer = mainStackPointer + 1
                                             mainStack[mainStackPointer] = flag
@@ -4246,18 +4247,18 @@ return function (plume)
                                                     local tocall = _ret379
                                                     local _ret380 = type (tocall) == "table" and (tocall == plumeObjEmpty and "empty" or tocall.type) or (type (tocall) == "cdata" and tocall.type) or type (tocall)
                                                     local t = _ret380
-                                                    local self
+                                                    local self_param
                                                     if t == "table" then
                                                         local mvalidate = tocall:getMetaItem ("validate")
                                                         local mcall = tocall:getMetaItem ("call")
                                                         if mcall then
-                                                            self = tocall
+                                                            self_param = tocall
                                                         end
                                                     end
                                                     if t == "macro" then
-                                                        if self then
+                                                        if self_param then
                                                             mainStackPointer = mainStackPointer + 1
-                                                            mainStack[mainStackPointer] = self
+                                                            mainStack[mainStackPointer] = self_param
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
@@ -4340,7 +4341,7 @@ return function (plume)
                                                                                 variableStack[_ret393 + (argOffset - 1 or 0)] = value
                                                                             end
                                                                         else
-                                                                            _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                            _ERROR (plume.error.cannotUseMetaKey)
                                                                         end
                                                                     else
                                                                         if variadicTable then
@@ -4361,11 +4362,11 @@ return function (plume)
                                                         end
                                                         local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret385, _ret386, _ret387, _ret388
                                                         if tomanyPositionnalCounter > 0 then
-                                                            _ERROR (vm, plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
+                                                            _ERROR (plume.error.wrongArgsCount (tocall, tocall.positionalParamCount + tomanyPositionnalCounter, tocall.positionalParamCount))
                                                         elseif capturedCount < tocall.positionalParamCount then
-                                                            _ERROR (vm, plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
+                                                            _ERROR (plume.error.wrongArgsCount (tocall, capturedCount, tocall.positionalParamCount))
                                                         elseif unknownNamed then
-                                                            _ERROR (vm, plume.error.unknownParameter (unknownNamed, tocall))
+                                                            _ERROR (plume.error.unknownParameter (unknownNamed, tocall))
                                                         else
                                                             if tocall.variadicOffset then
                                                                 do
@@ -4379,7 +4380,7 @@ return function (plume)
                                                             end
                                                             do
                                                                 local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                                if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                     callinfos.base = #runtimeCallstack
                                                                     local _ret383
                                                                     do
@@ -4390,7 +4391,7 @@ return function (plume)
                                                                 end
                                                                 table.insert (runtimeCallstack, callinfos)
                                                                 if #runtimeCallstack > 1000 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 end
                                                             end
                                                             do
@@ -4412,9 +4413,9 @@ return function (plume)
                                                         closureStackPointer = closureStackPointer + 1
                                                         closureStack[closureStackPointer] = {}
                                                     elseif t == "closure" then
-                                                        if self then
+                                                        if self_param then
                                                             mainStackPointer = mainStackPointer + 1
-                                                            mainStack[mainStackPointer] = self
+                                                            mainStack[mainStackPointer] = self_param
                                                             mainStackPointer = mainStackPointer + 1
                                                             mainStack[mainStackPointer] = "self"
                                                             do
@@ -4497,7 +4498,7 @@ return function (plume)
                                                                                 variableStack[_ret488 + (argOffset - 1 or 0)] = value
                                                                             end
                                                                         else
-                                                                            _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                            _ERROR (plume.error.cannotUseMetaKey)
                                                                         end
                                                                     else
                                                                         if variadicTable then
@@ -4518,11 +4519,11 @@ return function (plume)
                                                         end
                                                         local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _ret480, _ret481, _ret482, _ret483
                                                         if tomanyPositionnalCounter > 0 then
-                                                            _ERROR (vm, plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
+                                                            _ERROR (plume.error.wrongArgsCount (tocall.macro, tocall.macro.positionalParamCount + tomanyPositionnalCounter, tocall.macro.positionalParamCount))
                                                         elseif capturedCount < tocall.macro.positionalParamCount then
-                                                            _ERROR (vm, plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
+                                                            _ERROR (plume.error.wrongArgsCount (tocall.macro, capturedCount, tocall.macro.positionalParamCount))
                                                         elseif unknownNamed then
-                                                            _ERROR (vm, plume.error.unknownParameter (unknownNamed, tocall.macro))
+                                                            _ERROR (plume.error.unknownParameter (unknownNamed, tocall.macro))
                                                         else
                                                             if tocall.macro.variadicOffset then
                                                                 do
@@ -4536,7 +4537,7 @@ return function (plume)
                                                             end
                                                             do
                                                                 local callinfos = {runtime = runtime, macro = tocall.macro, ip = ip, safe = false}
-                                                                if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                                if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                     callinfos.base = #runtimeCallstack
                                                                     local _ret478
                                                                     do
@@ -4547,7 +4548,7 @@ return function (plume)
                                                                 end
                                                                 table.insert (runtimeCallstack, callinfos)
                                                                 if #runtimeCallstack > 1000 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 end
                                                             end
                                                             do
@@ -4634,7 +4635,7 @@ return function (plume)
                                                                                     variableStack[_ret461 + (argOffset - 1 or 0)] = value
                                                                                 end
                                                                             else
-                                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                                             end
                                                                         else
                                                                             if variadicTable then
@@ -4669,7 +4670,7 @@ return function (plume)
                                                         end
                                                         do
                                                             local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                            if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                            if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                 callinfos.base = #runtimeCallstack
                                                                 local _ret464
                                                                 do
@@ -4680,7 +4681,7 @@ return function (plume)
                                                             end
                                                             table.insert (runtimeCallstack, callinfos)
                                                             if #runtimeCallstack > 1000 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             end
                                                         end
                                                         local _ret465
@@ -4708,7 +4709,7 @@ return function (plume)
                                                         vmstate.fileStack.pointer = fileStackPointer
                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                         vmstate.closureStack.pointer = closureStackPointer
-                                                        local success, result, isHosted = tocall.callable (args, vm, currentFile)
+                                                        local success, result, isHosted = tocall.callable (args, self, currentFile)
                                                         ip = vmstate.ip
                                                         jump = vmstate.jump
                                                         variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -4737,7 +4738,7 @@ return function (plume)
                                                                     local context = _ret467
                                                                     local success, result = context:HOST_UPDATE ()
                                                                     if not success then
-                                                                        _ERROR (vm, result)
+                                                                        _ERROR (result)
                                                                     elseif context.PLUME_CALLBACK then
                                                                         mainStackFramesPointer = mainStackFramesPointer + 1
                                                                         mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -4806,11 +4807,11 @@ return function (plume)
                                                                                         jump = #bytecode
                                                                                     end
                                                                                     _ret472 = true
-                                                                                    goto _inline_end944
+                                                                                    goto _inline_end943
                                                                                 end
                                                                             end
                                                                         end
-                                                                        ::_inline_end944::
+                                                                        ::_inline_end943::
                                                                         local _ret471
                                                                         do
                                                                             mainStackPointer = mainStackPointer - 1
@@ -4846,14 +4847,14 @@ return function (plume)
                                                                                 jump = #bytecode
                                                                             end
                                                                             _ret474 = true
-                                                                            goto _inline_end949
+                                                                            goto _inline_end948
                                                                         end
                                                                     end
                                                                 end
-                                                                ::_inline_end949::
+                                                                ::_inline_end948::
                                                             end
                                                         else
-                                                            _ERROR (vm, result)
+                                                            _ERROR (result)
                                                         end
                                                     elseif t == "context" then
                                                         local _ret439
@@ -4921,7 +4922,7 @@ return function (plume)
                                                                                     variableStack[_ret448 + (argOffset - 1 or 0)] = value
                                                                                 end
                                                                             else
-                                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                                             end
                                                                         else
                                                                             if variadicTable then
@@ -5028,7 +5029,7 @@ return function (plume)
                                                                                     variableStack[_ret436 + (argOffset - 1 or 0)] = value
                                                                                 end
                                                                             else
-                                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                                             end
                                                                         else
                                                                             if variadicTable then
@@ -5121,7 +5122,7 @@ return function (plume)
                                                         local _ret416 = type (macro) == "table" and (macro == plumeObjEmpty and "empty" or macro.type) or (type (macro) == "cdata" and macro.type) or type (macro)
                                                         local tmacro = _ret416
                                                         if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
-                                                            _ERROR (vm, string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
+                                                            _ERROR (string.format ("`attempt` first argument must be a macro, not a '%s'.", tmacro))
                                                         end
                                                         local _ret417
                                                         do
@@ -5137,7 +5138,7 @@ return function (plume)
                                                         mainStack[frameEnd] = macro
                                                         do
                                                             local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                            if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                            if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                 callinfos.base = #runtimeCallstack
                                                                 local _ret419
                                                                 do
@@ -5148,13 +5149,13 @@ return function (plume)
                                                             end
                                                             table.insert (runtimeCallstack, callinfos)
                                                             if #runtimeCallstack > 1000 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             end
                                                         end
                                                         do
                                                             local _ret420 = recursiveStack.pointer
                                                             if _ret420 > 20 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             else
                                                                 vmstate.ip = ip
                                                                 vmstate.jump = jump
@@ -5170,7 +5171,7 @@ return function (plume)
                                                                 vmstate.closureStack.pointer = closureStackPointer
                                                                 recursiveStack.pointer = recursiveStack.pointer + 1
                                                                 recursiveStack[recursiveStack.pointer] = ip
-                                                                local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL_SAFE)
+                                                                local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL_SAFE)
                                                                 ip = vmstate.ip
                                                                 jump = vmstate.jump
                                                                 variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -5185,7 +5186,7 @@ return function (plume)
                                                                 closureStackPointer = vmstate.closureStack.pointer
                                                                 if not success then
                                                                     ip = callvmerrip
-                                                                    _ERROR (vm, callvmerr)
+                                                                    _ERROR (callvmerr)
                                                                     if jump > 0 and vmerr then
                                                                     else
                                                                         jump = #bytecode
@@ -5217,11 +5218,11 @@ return function (plume)
                                                                         jump = #bytecode
                                                                     end
                                                                     _ret421 = true
-                                                                    goto _inline_end839
+                                                                    goto _inline_end838
                                                                 end
                                                             end
                                                         end
-                                                        ::_inline_end839::
+                                                        ::_inline_end838::
                                                     elseif tocall == plume.std.import then
                                                         local _ret396
                                                         do
@@ -5288,7 +5289,7 @@ return function (plume)
                                                                                     variableStack[_ret405 + (argOffset - 1 or 0)] = value
                                                                                 end
                                                                             else
-                                                                                _ERROR (vm, plume.error.cannotUseMetaKey)
+                                                                                _ERROR (plume.error.cannotUseMetaKey)
                                                                             end
                                                                         else
                                                                             if variadicTable then
@@ -5324,7 +5325,7 @@ return function (plume)
                                                         local args = _ret396
                                                         do
                                                             local callinfos = {runtime = runtime, macro = tocall, ip = ip, safe = false}
-                                                            if ip == sops_CONCAT_CALL or ip == sops_CONCAT_CALL_SAFE then
+                                                            if ip == plume.sops.CONCAT_CALL or ip == plume.sops.CONCAT_CALL_SAFE then
                                                                 callinfos.base = #runtimeCallstack
                                                                 local _ret408
                                                                 do
@@ -5335,7 +5336,7 @@ return function (plume)
                                                             end
                                                             table.insert (runtimeCallstack, callinfos)
                                                             if #runtimeCallstack > 1000 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             end
                                                         end
                                                         do
@@ -5375,14 +5376,14 @@ return function (plume)
                                                                         if t == "nil" then
                                                                             t = "empty"
                                                                         end
-                                                                        _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
+                                                                        _ERROR (plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                                     end
                                                                     _ret411 = false
-                                                                    goto _inline_end817
+                                                                    goto _inline_end816
                                                                 end
                                                                 _ret411 = true
                                                             end
-                                                            ::_inline_end817::
+                                                            ::_inline_end816::
                                                             local assertion = _ret411
                                                             if assertion then
                                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -5422,7 +5423,7 @@ return function (plume)
                                                                                     local variadic = fileParams[1].value
                                                                                     variadic:setItem (key, value)
                                                                                 elseif chunk.futureFlagUnknownParamError then
-                                                                                    _ERROR (vm, plume.error.unknownParamError (varKey, chunk.namedParamOffset))
+                                                                                    _ERROR (plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                                 else
                                                                                     plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                                                                                     , nil, runtime, ip, {886, 981})
@@ -5450,15 +5451,15 @@ return function (plume)
                                                                             end
                                                                         end
                                                                     else
-                                                                        _ERROR (vm, err)
+                                                                        _ERROR (err)
                                                                     end
                                                                 else
-                                                                    _ERROR (vm, plume.error.cannotOpenFile (args.table[1], searchPaths))
+                                                                    _ERROR (plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                                 end
                                                             end
                                                         end
                                                     else
-                                                        _ERROR (vm, plume.error.cannotCallValue (t))
+                                                        _ERROR (plume.error.cannotCallValue (t))
                                                     end
                                                 end
                                             else
@@ -5574,7 +5575,7 @@ return function (plume)
                                                     do
                                                         local _ret503 = recursiveStack.pointer
                                                         if _ret503 > 20 then
-                                                            _ERROR (vm, plume.error.stackOverflow ())
+                                                            _ERROR (plume.error.stackOverflow ())
                                                         else
                                                             vmstate.ip = ip
                                                             vmstate.jump = jump
@@ -5590,7 +5591,7 @@ return function (plume)
                                                             vmstate.closureStack.pointer = closureStackPointer
                                                             recursiveStack.pointer = recursiveStack.pointer + 1
                                                             recursiveStack[recursiveStack.pointer] = ip
-                                                            local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                            local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                             ip = vmstate.ip
                                                             jump = vmstate.jump
                                                             variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -5605,7 +5606,7 @@ return function (plume)
                                                             closureStackPointer = vmstate.closureStack.pointer
                                                             if not success then
                                                                 ip = callvmerrip
-                                                                _ERROR (vm, callvmerr)
+                                                                _ERROR (callvmerr)
                                                                 if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
@@ -5623,10 +5624,10 @@ return function (plume)
                                                         local _ret502
                                                         if test == plumeObjEmpty then
                                                             _ret502 = false
-                                                            goto _inline_end1001
+                                                            goto _inline_end1000
                                                         end
                                                         _ret502 = test
-                                                        ::_inline_end1001::
+                                                        ::_inline_end1000::
                                                         if not _ret502 then
                                                             local _ret501
                                                             do
@@ -5700,7 +5701,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret518, _ret519 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1054
+                                                            goto _inline_end1053
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5708,16 +5709,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret518, _ret519 = _CALL (vm, meta, params)
-                                                            goto _inline_end1054
+                                                            _ret518, _ret519 = self:_CALL (meta, params)
+                                                            goto _inline_end1053
                                                         else
                                                             _ret518, _ret519 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1054
+                                                            goto _inline_end1053
                                                         end
                                                     end
                                                     _ret518, _ret519 = right
                                                 end
-                                                ::_inline_end1054::
+                                                ::_inline_end1053::
                                                 right, rerr = _ret518, _ret519
                                                 local _ret515, _ret516
                                                 do
@@ -5727,7 +5728,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret515, _ret516 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1052
+                                                            goto _inline_end1051
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5735,16 +5736,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret515, _ret516 = _CALL (vm, meta, params)
-                                                            goto _inline_end1052
+                                                            _ret515, _ret516 = self:_CALL (meta, params)
+                                                            goto _inline_end1051
                                                         else
                                                             _ret515, _ret516 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1052
+                                                            goto _inline_end1051
                                                         end
                                                     end
                                                     _ret515, _ret516 = left
                                                 end
-                                                ::_inline_end1052::
+                                                ::_inline_end1051::
                                                 left, lerr = _ret515, _ret516
                                                 if lerr or rerr then
                                                     local _ret509
@@ -5800,7 +5801,7 @@ return function (plume)
                                                             do
                                                                 local _ret513 = recursiveStack.pointer
                                                                 if _ret513 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -5816,7 +5817,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -5831,7 +5832,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -5844,7 +5845,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret509
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret514 = left + right
@@ -5887,7 +5888,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret533, _ret534 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1087
+                                                            goto _inline_end1086
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -5895,16 +5896,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret533, _ret534 = _CALL (vm, meta, params)
-                                                            goto _inline_end1087
+                                                            _ret533, _ret534 = self:_CALL (meta, params)
+                                                            goto _inline_end1086
                                                         else
                                                             _ret533, _ret534 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1087
+                                                            goto _inline_end1086
                                                         end
                                                     end
                                                     _ret533, _ret534 = right
                                                 end
-                                                ::_inline_end1087::
+                                                ::_inline_end1086::
                                                 right, rerr = _ret533, _ret534
                                                 local _ret530, _ret531
                                                 do
@@ -5914,7 +5915,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret530, _ret531 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1085
+                                                            goto _inline_end1084
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -5922,16 +5923,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret530, _ret531 = _CALL (vm, meta, params)
-                                                            goto _inline_end1085
+                                                            _ret530, _ret531 = self:_CALL (meta, params)
+                                                            goto _inline_end1084
                                                         else
                                                             _ret530, _ret531 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1085
+                                                            goto _inline_end1084
                                                         end
                                                     end
                                                     _ret530, _ret531 = left
                                                 end
-                                                ::_inline_end1085::
+                                                ::_inline_end1084::
                                                 left, lerr = _ret530, _ret531
                                                 if lerr or rerr then
                                                     local _ret524
@@ -5987,7 +5988,7 @@ return function (plume)
                                                             do
                                                                 local _ret528 = recursiveStack.pointer
                                                                 if _ret528 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -6003,7 +6004,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -6018,7 +6019,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -6031,7 +6032,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret524
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret529 = left * right
@@ -6082,7 +6083,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret548, _ret549 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1120
+                                                            goto _inline_end1119
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6090,16 +6091,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret548, _ret549 = _CALL (vm, meta, params)
-                                                            goto _inline_end1120
+                                                            _ret548, _ret549 = self:_CALL (meta, params)
+                                                            goto _inline_end1119
                                                         else
                                                             _ret548, _ret549 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1120
+                                                            goto _inline_end1119
                                                         end
                                                     end
                                                     _ret548, _ret549 = right
                                                 end
-                                                ::_inline_end1120::
+                                                ::_inline_end1119::
                                                 right, rerr = _ret548, _ret549
                                                 local _ret545, _ret546
                                                 do
@@ -6109,7 +6110,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret545, _ret546 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1118
+                                                            goto _inline_end1117
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6117,16 +6118,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret545, _ret546 = _CALL (vm, meta, params)
-                                                            goto _inline_end1118
+                                                            _ret545, _ret546 = self:_CALL (meta, params)
+                                                            goto _inline_end1117
                                                         else
                                                             _ret545, _ret546 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1118
+                                                            goto _inline_end1117
                                                         end
                                                     end
                                                     _ret545, _ret546 = left
                                                 end
-                                                ::_inline_end1118::
+                                                ::_inline_end1117::
                                                 left, lerr = _ret545, _ret546
                                                 if lerr or rerr then
                                                     local _ret539
@@ -6182,7 +6183,7 @@ return function (plume)
                                                             do
                                                                 local _ret543 = recursiveStack.pointer
                                                                 if _ret543 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -6198,7 +6199,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -6213,7 +6214,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -6226,7 +6227,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret539
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret544 = left - right
@@ -6269,7 +6270,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret563, _ret564 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1153
+                                                            goto _inline_end1152
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6277,16 +6278,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret563, _ret564 = _CALL (vm, meta, params)
-                                                            goto _inline_end1153
+                                                            _ret563, _ret564 = self:_CALL (meta, params)
+                                                            goto _inline_end1152
                                                         else
                                                             _ret563, _ret564 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1153
+                                                            goto _inline_end1152
                                                         end
                                                     end
                                                     _ret563, _ret564 = right
                                                 end
-                                                ::_inline_end1153::
+                                                ::_inline_end1152::
                                                 right, rerr = _ret563, _ret564
                                                 local _ret560, _ret561
                                                 do
@@ -6296,7 +6297,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret560, _ret561 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1151
+                                                            goto _inline_end1150
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6304,16 +6305,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret560, _ret561 = _CALL (vm, meta, params)
-                                                            goto _inline_end1151
+                                                            _ret560, _ret561 = self:_CALL (meta, params)
+                                                            goto _inline_end1150
                                                         else
                                                             _ret560, _ret561 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1151
+                                                            goto _inline_end1150
                                                         end
                                                     end
                                                     _ret560, _ret561 = left
                                                 end
-                                                ::_inline_end1151::
+                                                ::_inline_end1150::
                                                 left, lerr = _ret560, _ret561
                                                 if lerr or rerr then
                                                     local _ret554
@@ -6369,7 +6370,7 @@ return function (plume)
                                                             do
                                                                 local _ret558 = recursiveStack.pointer
                                                                 if _ret558 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -6385,7 +6386,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -6400,7 +6401,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -6413,7 +6414,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret554
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret559 = left / right
@@ -6443,7 +6444,7 @@ return function (plume)
                                                     if not tonumber (x)
                                                      then
                                                         _ret567, _ret568 = x, plume.error.cannotConvertToString (x)
-                                                        goto _inline_end1158
+                                                        goto _inline_end1157
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
@@ -6451,16 +6452,16 @@ return function (plume)
                                                     if tx == "table" and mtonumber then
                                                         local meta = mtonumber
                                                         local params = {}
-                                                        _ret567, _ret568 = _CALL (vm, meta, params)
-                                                        goto _inline_end1158
+                                                        _ret567, _ret568 = self:_CALL (meta, params)
+                                                        goto _inline_end1157
                                                     else
                                                         _ret567, _ret568 = x, plume.error.cannotDoArithmeticWith (tx)
-                                                        goto _inline_end1158
+                                                        goto _inline_end1157
                                                     end
                                                 end
                                                 _ret567, _ret568 = x
                                             end
-                                            ::_inline_end1158::
+                                            ::_inline_end1157::
                                             x, err = _ret567, _ret568
                                             if err then
                                                 local _ret570
@@ -6485,7 +6486,7 @@ return function (plume)
                                                         do
                                                             local _ret573 = recursiveStack.pointer
                                                             if _ret573 > 20 then
-                                                                _ERROR (vm, plume.error.stackOverflow ())
+                                                                _ERROR (plume.error.stackOverflow ())
                                                             else
                                                                 vmstate.ip = ip
                                                                 vmstate.jump = jump
@@ -6501,7 +6502,7 @@ return function (plume)
                                                                 vmstate.closureStack.pointer = closureStackPointer
                                                                 recursiveStack.pointer = recursiveStack.pointer + 1
                                                                 recursiveStack[recursiveStack.pointer] = ip
-                                                                local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                 ip = vmstate.ip
                                                                 jump = vmstate.jump
                                                                 variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -6516,7 +6517,7 @@ return function (plume)
                                                                 closureStackPointer = vmstate.closureStack.pointer
                                                                 if not success then
                                                                     ip = callvmerrip
-                                                                    _ERROR (vm, callvmerr)
+                                                                    _ERROR (callvmerr)
                                                                     if jump > 0 and vmerr then
                                                                     else
                                                                         jump = #bytecode
@@ -6529,7 +6530,7 @@ return function (plume)
                                                 end
                                                 meta = _ret570
                                                 if not meta then
-                                                    _ERROR (vm, err)
+                                                    _ERROR (err)
                                                 end
                                             else
                                                 local _ret574 = -x
@@ -6570,7 +6571,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret587, _ret588 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1211
+                                                            goto _inline_end1210
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6578,16 +6579,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret587, _ret588 = _CALL (vm, meta, params)
-                                                            goto _inline_end1211
+                                                            _ret587, _ret588 = self:_CALL (meta, params)
+                                                            goto _inline_end1210
                                                         else
                                                             _ret587, _ret588 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1211
+                                                            goto _inline_end1210
                                                         end
                                                     end
                                                     _ret587, _ret588 = right
                                                 end
-                                                ::_inline_end1211::
+                                                ::_inline_end1210::
                                                 right, rerr = _ret587, _ret588
                                                 local _ret584, _ret585
                                                 do
@@ -6597,7 +6598,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret584, _ret585 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1209
+                                                            goto _inline_end1208
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6605,16 +6606,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret584, _ret585 = _CALL (vm, meta, params)
-                                                            goto _inline_end1209
+                                                            _ret584, _ret585 = self:_CALL (meta, params)
+                                                            goto _inline_end1208
                                                         else
                                                             _ret584, _ret585 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1209
+                                                            goto _inline_end1208
                                                         end
                                                     end
                                                     _ret584, _ret585 = left
                                                 end
-                                                ::_inline_end1209::
+                                                ::_inline_end1208::
                                                 left, lerr = _ret584, _ret585
                                                 if lerr or rerr then
                                                     local _ret578
@@ -6670,7 +6671,7 @@ return function (plume)
                                                             do
                                                                 local _ret582 = recursiveStack.pointer
                                                                 if _ret582 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -6686,7 +6687,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -6701,7 +6702,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -6714,7 +6715,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret578
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret583 = left % right
@@ -6761,7 +6762,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret602, _ret603 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1244
+                                                            goto _inline_end1243
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6769,16 +6770,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret602, _ret603 = _CALL (vm, meta, params)
-                                                            goto _inline_end1244
+                                                            _ret602, _ret603 = self:_CALL (meta, params)
+                                                            goto _inline_end1243
                                                         else
                                                             _ret602, _ret603 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1244
+                                                            goto _inline_end1243
                                                         end
                                                     end
                                                     _ret602, _ret603 = right
                                                 end
-                                                ::_inline_end1244::
+                                                ::_inline_end1243::
                                                 right, rerr = _ret602, _ret603
                                                 local _ret599, _ret600
                                                 do
@@ -6788,7 +6789,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret599, _ret600 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1242
+                                                            goto _inline_end1241
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6796,16 +6797,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret599, _ret600 = _CALL (vm, meta, params)
-                                                            goto _inline_end1242
+                                                            _ret599, _ret600 = self:_CALL (meta, params)
+                                                            goto _inline_end1241
                                                         else
                                                             _ret599, _ret600 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1242
+                                                            goto _inline_end1241
                                                         end
                                                     end
                                                     _ret599, _ret600 = left
                                                 end
-                                                ::_inline_end1242::
+                                                ::_inline_end1241::
                                                 left, lerr = _ret599, _ret600
                                                 if lerr or rerr then
                                                     local _ret593
@@ -6861,7 +6862,7 @@ return function (plume)
                                                             do
                                                                 local _ret597 = recursiveStack.pointer
                                                                 if _ret597 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -6877,7 +6878,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -6892,7 +6893,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -6905,7 +6906,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret593
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret598 = left ^ right
@@ -6948,7 +6949,7 @@ return function (plume)
                                                         if not tonumber (right)
                                                          then
                                                             _ret617, _ret618 = right, plume.error.cannotConvertToString (right)
-                                                            goto _inline_end1277
+                                                            goto _inline_end1276
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
@@ -6956,16 +6957,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret617, _ret618 = _CALL (vm, meta, params)
-                                                            goto _inline_end1277
+                                                            _ret617, _ret618 = self:_CALL (meta, params)
+                                                            goto _inline_end1276
                                                         else
                                                             _ret617, _ret618 = right, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1277
+                                                            goto _inline_end1276
                                                         end
                                                     end
                                                     _ret617, _ret618 = right
                                                 end
-                                                ::_inline_end1277::
+                                                ::_inline_end1276::
                                                 right, rerr = _ret617, _ret618
                                                 local _ret614, _ret615
                                                 do
@@ -6975,7 +6976,7 @@ return function (plume)
                                                         if not tonumber (left)
                                                          then
                                                             _ret614, _ret615 = left, plume.error.cannotConvertToString (left)
-                                                            goto _inline_end1275
+                                                            goto _inline_end1274
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
@@ -6983,16 +6984,16 @@ return function (plume)
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
-                                                            _ret614, _ret615 = _CALL (vm, meta, params)
-                                                            goto _inline_end1275
+                                                            _ret614, _ret615 = self:_CALL (meta, params)
+                                                            goto _inline_end1274
                                                         else
                                                             _ret614, _ret615 = left, plume.error.cannotDoArithmeticWith (tx)
-                                                            goto _inline_end1275
+                                                            goto _inline_end1274
                                                         end
                                                     end
                                                     _ret614, _ret615 = left
                                                 end
-                                                ::_inline_end1275::
+                                                ::_inline_end1274::
                                                 left, lerr = _ret614, _ret615
                                                 if lerr or rerr then
                                                     local _ret608
@@ -7048,7 +7049,7 @@ return function (plume)
                                                             do
                                                                 local _ret612 = recursiveStack.pointer
                                                                 if _ret612 > 20 then
-                                                                    _ERROR (vm, plume.error.stackOverflow ())
+                                                                    _ERROR (plume.error.stackOverflow ())
                                                                 else
                                                                     vmstate.ip = ip
                                                                     vmstate.jump = jump
@@ -7064,7 +7065,7 @@ return function (plume)
                                                                     vmstate.closureStack.pointer = closureStackPointer
                                                                     recursiveStack.pointer = recursiveStack.pointer + 1
                                                                     recursiveStack[recursiveStack.pointer] = ip
-                                                                    local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                                    local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                                     ip = vmstate.ip
                                                                     jump = vmstate.jump
                                                                     variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -7079,7 +7080,7 @@ return function (plume)
                                                                     closureStackPointer = vmstate.closureStack.pointer
                                                                     if not success then
                                                                         ip = callvmerrip
-                                                                        _ERROR (vm, callvmerr)
+                                                                        _ERROR (callvmerr)
                                                                         if jump > 0 and vmerr then
                                                                         else
                                                                             jump = #bytecode
@@ -7092,7 +7093,7 @@ return function (plume)
                                                     end
                                                     local meta = _ret608
                                                     if not meta then
-                                                        _ERROR (vm, lerr or rerr)
+                                                        _ERROR (lerr or rerr)
                                                     end
                                                 else
                                                     local _ret613 = left < right
@@ -7173,7 +7174,7 @@ return function (plume)
                                                     do
                                                         local _ret626 = recursiveStack.pointer
                                                         if _ret626 > 20 then
-                                                            _ERROR (vm, plume.error.stackOverflow ())
+                                                            _ERROR (plume.error.stackOverflow ())
                                                         else
                                                             vmstate.ip = ip
                                                             vmstate.jump = jump
@@ -7189,7 +7190,7 @@ return function (plume)
                                                             vmstate.closureStack.pointer = closureStackPointer
                                                             recursiveStack.pointer = recursiveStack.pointer + 1
                                                             recursiveStack[recursiveStack.pointer] = ip
-                                                            local success, callvmerr, callvmerrip = run (vm, sops_CONCAT_CALL)
+                                                            local success, callvmerr, callvmerrip = run (self, plume.sops.CONCAT_CALL)
                                                             ip = vmstate.ip
                                                             jump = vmstate.jump
                                                             variableStackFramesPointer = vmstate.variableStack.frames.pointer
@@ -7204,7 +7205,7 @@ return function (plume)
                                                             closureStackPointer = vmstate.closureStack.pointer
                                                             if not success then
                                                                 ip = callvmerrip
-                                                                _ERROR (vm, callvmerr)
+                                                                _ERROR (callvmerr)
                                                                 if jump > 0 and vmerr then
                                                                 else
                                                                     jump = #bytecode
@@ -7241,18 +7242,18 @@ return function (plume)
                                             local _ret629
                                             if right == plumeObjEmpty then
                                                 _ret629 = false
-                                                goto _inline_end1308
+                                                goto _inline_end1307
                                             end
                                             _ret629 = right
-                                            ::_inline_end1308::
+                                            ::_inline_end1307::
                                             right = _ret629
                                             local _ret630
                                             if left == plumeObjEmpty then
                                                 _ret630 = false
-                                                goto _inline_end1309
+                                                goto _inline_end1308
                                             end
                                             _ret630 = left
-                                            ::_inline_end1309::
+                                            ::_inline_end1308::
                                             left = _ret630
                                             local _ret631 = left and right
                                             mainStackPointer = mainStackPointer + 1
@@ -7276,10 +7277,10 @@ return function (plume)
                                             local _ret633
                                             if x == plumeObjEmpty then
                                                 _ret633 = false
-                                                goto _inline_end1315
+                                                goto _inline_end1314
                                             end
                                             _ret633 = x
-                                            ::_inline_end1315::
+                                            ::_inline_end1314::
                                             x = _ret633
                                             local _ret634 = not x
                                             mainStackPointer = mainStackPointer + 1
@@ -7304,18 +7305,18 @@ return function (plume)
                                             local _ret637
                                             if right == plumeObjEmpty then
                                                 _ret637 = false
-                                                goto _inline_end1322
+                                                goto _inline_end1321
                                             end
                                             _ret637 = right
-                                            ::_inline_end1322::
+                                            ::_inline_end1321::
                                             right = _ret637
                                             local _ret638
                                             if left == plumeObjEmpty then
                                                 _ret638 = false
-                                                goto _inline_end1323
+                                                goto _inline_end1322
                                             end
                                             _ret638 = left
-                                            ::_inline_end1323::
+                                            ::_inline_end1322::
                                             left = _ret638
                                             local _ret639 = left or right
                                             mainStackPointer = mainStackPointer + 1
@@ -7399,11 +7400,11 @@ return function (plume)
                                                             jump = #bytecode
                                                         end
                                                         _ret645 = true
-                                                        goto _inline_end1340
+                                                        goto _inline_end1339
                                                     end
                                                 end
                                             end
-                                            ::_inline_end1340::
+                                            ::_inline_end1339::
                                             local exit = _ret645
                                             local _ret647
                                             do
@@ -7460,11 +7461,11 @@ return function (plume)
                                                             jump = #bytecode
                                                         end
                                                         _ret650 = true
-                                                        goto _inline_end1353
+                                                        goto _inline_end1352
                                                     end
                                                 end
                                             end
-                                            ::_inline_end1353::
+                                            ::_inline_end1352::
                                             local _ret652 = fileStackPointer
                                             if _ret652 == 0 then
                                                 if jump > 0 and vmerr then
@@ -7546,7 +7547,7 @@ return function (plume)
                                              do
                                                 local value = values.table[var]
                                                 if type (var) ~= "table" or var.type ~= "context" then
-                                                    _ERROR (vm, plume.error.wrongContextType (var))
+                                                    _ERROR (plume.error.wrongContextType (var))
                                                 else
                                                     var:push (value)
                                                     table.insert (cache, var)
@@ -7580,11 +7581,11 @@ return function (plume)
                                             end
                                         end
                                     else
-                                        LOAD_CONTEXT (vm, arg1, arg2)
+                                        vm:LOAD_CONTEXT (arg1, arg2)
                                     end
                                 else
                                     if op < 67 then
-                                        CREATE_CONTEXT (vm, arg1, arg2)
+                                        vm:CREATE_CONTEXT (arg1, arg2)
                                     else
                                         do
                                             local _ret659
@@ -7595,7 +7596,7 @@ return function (plume)
                                             local context = _ret659
                                             local success, result = context:HOST_UPDATE ()
                                             if not success then
-                                                _ERROR (vm, result)
+                                                _ERROR (result)
                                             elseif context.PLUME_CALLBACK then
                                                 mainStackFramesPointer = mainStackFramesPointer + 1
                                                 mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -7664,11 +7665,11 @@ return function (plume)
                                                                 jump = #bytecode
                                                             end
                                                             _ret664 = true
-                                                            goto _inline_end1400
+                                                            goto _inline_end1399
                                                         end
                                                     end
                                                 end
-                                                ::_inline_end1400::
+                                                ::_inline_end1399::
                                                 local _ret663
                                                 do
                                                     mainStackPointer = mainStackPointer - 1
@@ -7700,7 +7701,7 @@ return function (plume)
                                             local context = _ret667
                                             local success, result = context:HOST_NEXT (value)
                                             if not success then
-                                                _ERROR (vm, result)
+                                                _ERROR (result)
                                             elseif jump > 0 then
                                                 if jump == #bytecode then
                                                     do
@@ -7740,7 +7741,7 @@ return function (plume)
                                                 _ret670 = value
                                             end
                                             local msg = _ret670
-                                            _ERROR (vm, msg)
+                                            _ERROR (msg)
                                         end
                                     end
                                 else
@@ -7784,14 +7785,14 @@ return function (plume)
                                                         if t == "nil" then
                                                             t = "empty"
                                                         end
-                                                        _ERROR (vm, plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
+                                                        _ERROR (plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)"))
                                                     end
                                                     _ret673 = false
-                                                    goto _inline_end1426
+                                                    goto _inline_end1425
                                                 end
                                                 _ret673 = true
                                             end
-                                            ::_inline_end1426::
+                                            ::_inline_end1425::
                                             local assertion = _ret673
                                             if assertion then
                                                 local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
@@ -7831,7 +7832,7 @@ return function (plume)
                                                                     local variadic = fileParams[1].value
                                                                     variadic:setItem (key, value)
                                                                 elseif chunk.futureFlagUnknownParamError then
-                                                                    _ERROR (vm, plume.error.unknownParamError (varKey, chunk.namedParamOffset))
+                                                                    _ERROR (plume.error.unknownParamError (varKey, chunk.namedParamOffset))
                                                                 else
                                                                     plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
                                                                     , nil, runtime, ip, {886, 981})
@@ -7859,10 +7860,10 @@ return function (plume)
                                                             end
                                                         end
                                                     else
-                                                        _ERROR (vm, err)
+                                                        _ERROR (err)
                                                     end
                                                 else
-                                                    _ERROR (vm, plume.error.cannotOpenFile (args.table[1], searchPaths))
+                                                    _ERROR (plume.error.cannotOpenFile (args.table[1], searchPaths))
                                                 end
                                             end
                                         end

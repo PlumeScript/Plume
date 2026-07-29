@@ -50,30 +50,6 @@ return function(vm)
 	    end
 	end
 
-	--- Only to inject directive to engine-opt
-	--! inline
-	function vm:_VM_OPT_INIT()
-	    --! index-to-inline vm.err vmerr
-	    --! index-to-inline vm.errip vmerrip
-	    --! index-to-inline vm.* *
-	    --! index-to-inline mainStack.*
-	    --! index-to-inline variableStack.*
-	    --! index-to-inline mainStackFrames.*
-	    --! index-to-inline variableStackFrames.*
-	    --! index-to-inline fileStack.*
-	    --! index-to-inline macroStack.*
-	    --! index-to-inline injectionStack.*
-	    --! index-to-inline contextStackCache.*
-	    --! index-to-inline closureStack.*
-	    --! index-to-inline flag.* *
-	    --! index-to-inline runtime.*
-	    --! index-to-inline plume.obj
-	    --! index-to-inline plumeObj.*
-	    --! index-to-inline plume._run_dev run
-	    --! index-to-inline sops.* sops_*
-
-	end
-
 	--- Declare all vm variables
 	--- @param runtime runtime The runtime to execute
 	--! inline-nodo
@@ -109,15 +85,15 @@ return function(vm)
 	    --! to-remove-end
 	end
 
-	--! to-remove-begin
 	--- Register opcodes usages
 	function vm:_STAT_REGISTER(op)
+		--! to-remove-begin
 	    -- Update history
 	    self.stats.ophist = ((self.stats.ophist % self.stats.histmask) * 128) + op
 	    -- Update sequences
 	    self.stats.opseq[self.stats.ophist] = 1 + (self.stats.opseq[self.stats.ophist] or 0)
+	    --! to-remove-end
 	end
-	--! to-remove-end
 
 	--- Called at each instruction.
 	--- Jump if needed and increment instruction counter

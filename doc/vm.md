@@ -255,8 +255,10 @@ The VM decodes instructions via bit operations and dispatches through a generate
 
 ### vm/alu.lua
 
-#### Operation
+#### _BIN_OP_NUMBER
 <br>Unstack 2 value, apply an operation, stack the result. <br>Try to convert values to number. <br>If cannot, try to call meta macro based on operator name 
+- **op** *(function)*: Operation to apply
+- **name** *(string)*: Name used to find meta macro and debug messages
 
 #### OP_ADD
 <br>Add two stack top value and stack the result based on `_BIN_OP_NUMBER`. 
