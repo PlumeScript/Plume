@@ -29,31 +29,32 @@ Licensed under the MIT License — see LICENSE for details.
 -- Add all needed functions are loaded as globals
 return function (plume)
 	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
-]=]
-
-local import = {}
-for file in lfs.dir("plume-data/engine/vm") do
-	if file:match('%.lua$') then
-		file = file:gsub('%.lua$', '')
-		table.insert(import, string.format("\t\trequire \"plume-data/engine/vm/%s\"\n", file))
-	end
-end
-import = table.concat(import)
-
-local init = [[
+		%s 
 		local op, arg1, arg2, vmerr, vmerrip
 		_VM_OPT_INIT(vm)
 		--! copyvm
 		vm.ip      = startip - 1
 		_VM_INIT(vm, fileID)
+		%s
 		_INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		::DISPATCH::
 			
 
 			op, arg1, arg2 = _VM_DECODE_CURRENT_INSTRUCTION(vm)
+]=]
 
-]]
+local importCore = "\t\trequire \"plume-data/engine/vm/core\"\n"
+local import = {}
+for file in lfs.dir("plume-data/engine/vm") do
+	if file:match('%.lua$') then
+		file = file:gsub('%.lua$', '')
+		if file ~= "core" then
+			table.insert(import, string.format("\t\trequire \"plume-data/engine/vm/%s\"\n", file))
+		end
+	end
+end
+import = table.concat(import)
 
 local uselabelGoto = false
 
@@ -122,8 +123,8 @@ local function makeDispatchFlat()
 	table.insert(dispatch, "end\n")
 end
 
--- makeDispatchBinary()
-makeDispatchFlat()
+makeDispatchBinary()
+-- makeDispatchFlat()
 
 dispatch = table.concat(dispatch)
 
@@ -164,7 +165,7 @@ local footer = [[
 end]]
 
 
-local result = {header, import, init, dispatch, labels, footer}
+local result = {string.format(header, importCore, import), dispatch, labels, footer}
 
 
 local f = io.open("plume-data/engine/generated/engine.lua", "w")

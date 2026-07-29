@@ -59,6 +59,7 @@ Licensed under the MIT License — see LICENSE for details.
 -- It is an inlined and optimized version of engine.lua
 ]=] .. finalCode
 
+	finalCode = finalCode:gsub('function _ERROR', 'local function _ERROR') -- dirty fix waiting for #1072
 
 	local f = io.open('plume-data/engine/generated/engine-opt.lua', 'w')
 		f:write(finalCode)

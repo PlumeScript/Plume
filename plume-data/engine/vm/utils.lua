@@ -15,7 +15,6 @@ end
 --- Throw an error
 --- @param msg string
 --- @return nil
---! inline-keepret
 function _ERROR (vm, msg)
     local safeCallIndex
     for i = #vm.runtime.callstack, 1, -1 do
@@ -37,9 +36,8 @@ function _ERROR (vm, msg)
                 end
             end
             LEAVE_SCOPE(vm, 0, 0)
-            -- Waiting length fix
-            -- _STACK_POP(vm, vm.closureStack)
-            -- _STACK_POP(vm, vm.macroStack)
+            _STACK_POP(vm, vm.closureStack)
+            _STACK_POP(vm, vm.macroStack)
         end
         local safeResult = vm.plume.obj.table(0, 2)
         safeResult:setItem("success", false)
