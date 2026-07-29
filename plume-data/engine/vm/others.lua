@@ -5,20 +5,22 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
---- @opcode
---- Switch two top stack values
---! inline
-function SWITCH (vm, arg1, arg2)
-    local x = _STACK_POP(vm, vm.mainStack)
-    local y = _STACK_POP(vm, vm.mainStack)
-    _STACK_PUSH(vm, vm.mainStack, x)
-    _STACK_PUSH(vm, vm.mainStack, y)
-    
-end
+return function(vm)
+	--- @opcode
+	--- Switch two top stack values
+	--! inline
+	function vm:SWITCH(arg1, arg2)
+	    local x = self:_STACK_POP(self.mainStack)
+	    local y = self:_STACK_POP(self.mainStack)
+		self:_STACK_PUSH(self.mainStack, x)
+		self:_STACK_PUSH(self.mainStack, y)
 
---- @opcode
---- Stack 1 more top stack value
---! inline
-function DUPLICATE (vm, arg1, arg2)
-    _STACK_PUSH(vm, vm.mainStack, _STACK_GET(vm, vm.mainStack))
+	end
+
+	--- @opcode
+	--- Stack 1 more top stack value
+	--! inline
+	function vm:DUPLICATE(arg1, arg2)
+		self:_STACK_PUSH(self.mainStack, self:_STACK_GET(self.mainStack))
+	end
 end

@@ -5,38 +5,40 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
---! inline
-function _RUN_END(vm)
-	if _STACK_POS(vm, vm.recursiveStack) > 0 then
-		vm.ip = _STACK_POP(vm, vm.recursiveStack)
-		_RESET_JUMP(vm)
-		_SAVE_SCALAR(vm)
-	end
-end
-
---! inline
-function _RUN_START(vm, destip)
-	if _STACK_POS(vm, vm.recursiveStack) > 20 then
-		_ERROR (vm, vm.plume.error.stackOverflow())
-	else
-		_SAVE_SCALAR(vm)
-		_STACK_PUSH(vm, vm.recursiveStack, vm.ip)
-		local success, callvmerr, callvmerrip = vm.plume._run_dev(vm, destip)
-		_UPDATE_SCALAR(vm)
-		if not success then
-			vm.ip = callvmerrip
-			_ERROR(vm, callvmerr)
-			_JUMP_END(vm)
+return function(vm)
+	--! inline
+	function vm:_RUN_END()
+		if self:_STACK_POS(self.recursiveStack) > 0 then
+			self.ip = self:_STACK_POP(self.recursiveStack)
+			self:_RESET_JUMP()
+			self:_SAVE_SCALAR()
 		end
 	end
-end
 
---! inline
-function _CONCAT_CALL_REC(vm)
-	_RUN_START(vm, vm.plume.sops.CONCAT_CALL)
-end
+	--! inline
+	function vm:_RUN_START(destip)
+		if self:_STACK_POS(self.recursiveStack) > 20 then
+			self:_ERROR(self.plume.error.stackOverflow())
+		else
+			self:_SAVE_SCALAR()
+			self:_STACK_PUSH(self.recursiveStack, self.ip)
+			local success, callvmerr, callvmerrip = self.plume._run_dev(self, destip)
+			self:_UPDATE_SCALAR()
+			if not success then
+				self.ip = callvmerrip
+				self:_ERROR(callvmerr)
+				self:_JUMP_END()
+			end
+		end
+	end
 
---! inline
-function _CONCAT_CALL_SAFE_REC(vm)
-	_RUN_START(vm, vm.plume.sops.CONCAT_CALL_SAFE)
+	--! inline
+	function vm:_CONCAT_CALL_REC()
+		self:_RUN_START(self.plume.sops.CONCAT_CALL)
+	end
+
+	--! inline
+	function vm:_CONCAT_CALL_SAFE_REC()
+		self:_RUN_START(self.plume.sops.CONCAT_CALL_SAFE)
+	end
 end

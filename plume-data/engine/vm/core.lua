@@ -9,152 +9,152 @@ Licensed under the MIT License — see LICENSE for details.
 -- Initalization --
 --===============--
 
---! inline
-function _INIT_FILE_PARAM(vm, fileID, initFileParams, variadicParam, namedParamOffset)
-    local currentFile = vm.runtime.files[fileID]
+return function(vm)
+	--! inline
+	function vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
+	    local currentFile = self.runtime.files[fileID]
 
-    vm.fileParams = {}
-    if variadicParam then
-        table.insert(vm.fileParams, {
-            offset = variadicParam.offset,
-            value  = vm.plume.obj.table(0, 0)
-        })
-    end
+	    self.fileParams = {}
+	    if variadicParam then
+	        table.insert(self.fileParams, {
+	            offset = variadicParam.offset,
+	            value  = self.plume.obj.table(0, 0)
+	        })
+	    end
 
-    if initFileParams then
-        
-        for key, value in pairs(initFileParams) do
-            if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
-                local varKey
-                if tonumber(key) then
-                    key = key-1-- 1 is the file path
-                    varKey = "arg" .. key
-                else
-                    varKey = key
-                end
+	    if initFileParams then
+	        for key, value in pairs(initFileParams) do
+	            if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
+	                local varKey
+	                if tonumber(key) then
+	                    key = key-1-- 1 is the file path
+	                    varKey = "arg" .. key
+	                else
+	                    varKey = key
+	                end
 
-                local offset = namedParamOffset[varKey]
-                if offset and (not variadicParam or offset ~= variadicParam.offset) then
-                    table.insert(vm.fileParams, {offset=offset, value=value})
-                elseif variadicParam then
-                    local variadic = vm.fileParams[1].value
-                    variadic:setItem(key, value)
-                elseif currentFile.futureFlagUnknownParamError then
-                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, namedParamOffset))
-                    _ERROR(vm, vm.plume.error.unknownParamError(varKey, namedParamOffset)) -- dirty fix
-                else
-                     vm.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, vm.runtime, vm.ip, {886, 981})
-                end
-            end
-        end
-    end
-end
+	                local offset = namedParamOffset[varKey]
+	                if offset and (not variadicParam or offset ~= variadicParam.offset) then
+	                    table.insert(self.fileParams, {offset=offset, value=value})
+	                elseif variadicParam then
+	                    local variadic = self.fileParams[1].value
+	                    variadic:setItem(key, value)
+	                elseif currentFile.futureFlagUnknownParamError then
+	                    self:_ERROR(self.plume.error.unknownParamError(varKey, namedParamOffset))
+	                    self:_ERROR(self.plume.error.unknownParamError(varKey, namedParamOffset)) -- dirty fix
+	                else
+	                     self.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, self.runtime, self.ip, {886, 981})
+	                end
+	            end
+	        end
+	    end
+	end
 
---- Only to inject directive to engine-opt
---! inline
-function _VM_OPT_INIT(vm)
-    --! index-to-inline vm.err vmerr
-    --! index-to-inline vm.errip vmerrip
-    --! index-to-inline vm.* *
-    --! index-to-inline mainStack.*
-    --! index-to-inline variableStack.*
-    --! index-to-inline mainStackFrames.*
-    --! index-to-inline variableStackFrames.*
-    --! index-to-inline fileStack.*
-    --! index-to-inline macroStack.*
-    --! index-to-inline injectionStack.*
-    --! index-to-inline contextStackCache.*
-    --! index-to-inline closureStack.*
-    --! index-to-inline flag.* *
-    --! index-to-inline runtime.*
-    --! index-to-inline plume.obj
-    --! index-to-inline plumeObj.*
-    --! index-to-inline plume._run_dev run
-    --! index-to-inline plume.sops sops
-    --! index-to-inline sops.* sops_*
+	--- Only to inject directive to engine-opt
+	--! inline
+	function vm:_VM_OPT_INIT()
+	    --! index-to-inline vm.err vmerr
+	    --! index-to-inline vm.errip vmerrip
+	    --! index-to-inline vm.* *
+	    --! index-to-inline mainStack.*
+	    --! index-to-inline variableStack.*
+	    --! index-to-inline mainStackFrames.*
+	    --! index-to-inline variableStackFrames.*
+	    --! index-to-inline fileStack.*
+	    --! index-to-inline macroStack.*
+	    --! index-to-inline injectionStack.*
+	    --! index-to-inline contextStackCache.*
+	    --! index-to-inline closureStack.*
+	    --! index-to-inline flag.* *
+	    --! index-to-inline runtime.*
+	    --! index-to-inline plume.obj
+	    --! index-to-inline plumeObj.*
+	    --! index-to-inline plume._run_dev run
+	    --! index-to-inline sops.* sops_*
 
-end
+	end
 
---- Declare all vm variables
---- @param runtime runtime The runtime to execute
---! inline-nodo
-function _VM_INIT(vm, fileID)
-    --=====================--
-    -- Instruction format --
-    --=====================--
-    vm.OP_BITS    = vm.plume.OP_BITS
-    vm.ARG1_BITS  = vm.plume.ARG1_BITS
-    vm.ARG2_BITS  = vm.plume.ARG2_BITS
-    vm.ARG1_SHIFT = vm.ARG2_BITS
-    vm.OP_SHIFT   = vm.ARG1_BITS + vm.ARG2_BITS
-    vm.MASK_OP    = bit.lshift(1, vm.OP_BITS) - 1
-    vm.MASK_ARG1  = bit.lshift(1, vm.ARG1_BITS) - 1
-    vm.MASK_ARG2  = bit.lshift(1, vm.ARG2_BITS) - 1
-    vm.band       = bit.band
-    vm.rshift     = bit.rshift
-    ---------------------------
+	--- Declare all vm variables
+	--- @param runtime runtime The runtime to execute
+	--! inline-nodo
+	function vm:_VM_INIT(fileID)
+	    --=====================--
+	    -- Instruction format --
+	    --=====================--
+	    self.OP_BITS    = self.plume.OP_BITS
+	    self.ARG1_BITS  = self.plume.ARG1_BITS
+	    self.ARG2_BITS  = self.plume.ARG2_BITS
+	    self.ARG1_SHIFT = self.ARG2_BITS
+	    self.OP_SHIFT   = self.ARG1_BITS + self.ARG2_BITS
+	    self.MASK_OP    = bit.lshift(1, self.OP_BITS) - 1
+	    self.MASK_ARG1  = bit.lshift(1, self.ARG1_BITS) - 1
+	    self.MASK_ARG2  = bit.lshift(1, self.ARG2_BITS) - 1
+	    self.band       = bit.band
+	    self.rshift     = bit.rshift
+	    ---------------------------
 
-    if #vm.fileStack == 0 then
-        vm.fileStack[1] = fileID
-    end
+	    if #self.fileStack == 0 then
+	        self.fileStack[1] = fileID
+	    end
 
-    --! to-remove-begin
-    if vm.plume.runStatFlag then
-        vm.stats = {}
-        vm.stats.opseq = {} -- opcode sequences
-        
-        -- queue for opcodes history
-        vm.stats.ophist = 0
-        vm.stats.histmask = 128^vm.plume.runStatDeep
-    end
-    --! to-remove-end
-end
+	    --! to-remove-begin
+	    if self.plume.runStatFlag then
+	        self.stats = {}
+	        self.stats.opseq = {} -- opcode sequences
 
---! to-remove-begin
---- Register opcodes usages
-function _STAT_REGISTER(vm, op)
-    -- Update history
-    vm.stats.ophist = ((vm.stats.ophist % vm.stats.histmask) * 128) + op
-    -- Update sequences
-    vm.stats.opseq[vm.stats.ophist] = 1 + (vm.stats.opseq[vm.stats.ophist] or 0)
-end
---! to-remove-end
+	        -- queue for opcodes history
+	        self.stats.ophist = 0
+	        self.stats.histmask = 128^self.plume.runStatDeep
+	    end
+	    --! to-remove-end
+	end
 
---- Called at each instruction.
---- Jump if needed and increment instruction counter
---! inline-nodo
-function _VM_TICK (vm)
-    if vm.jump>0 then
-        vm.ip = vm.jump
-        _RESET_JUMP(vm)
-    else
-        vm.ip = vm.ip+1
-    end
-    vm.tic = vm.tic+1
-end
+	--! to-remove-begin
+	--- Register opcodes usages
+	function vm:_STAT_REGISTER(op)
+	    -- Update history
+	    self.stats.ophist = ((self.stats.ophist % self.stats.histmask) * 128) + op
+	    -- Update sequences
+	    self.stats.opseq[self.stats.ophist] = 1 + (self.stats.opseq[self.stats.ophist] or 0)
+	end
+	--! to-remove-end
 
---- Decoding opcode and arguments from instruction
---! inline-nodo
-function _VM_DECODE_CURRENT_INSTRUCTION(vm)
-    local op, arg1, arg2
-    if _CAN_INJECT(vm) then
-        op, arg1, arg2 = _INJECTION_POP(vm)
-    else    
-        _VM_TICK(vm)
-        local instr = vm.bytecode[vm.ip]
-        op    = vm.band(vm.rshift(instr, vm.OP_SHIFT), vm.MASK_OP)
-        arg1  = vm.band(vm.rshift(instr, vm.ARG1_SHIFT), vm.MASK_ARG1)
-        arg2  = vm.band(instr, vm.MASK_ARG2)
-    end
+	--- Called at each instruction.
+	--- Jump if needed and increment instruction counter
+	--! inline-nodo
+	function vm:_VM_TICK()
+	    if self.jump>0 then
+	        self.ip = self.jump
+	        self:_RESET_JUMP()
+	    else
+	        self.ip = self.ip+1
+	    end
+	    self.tic = self.tic+1
+	end
 
-    --! to-remove-begin
-    if vm.plume.hook then
-        vm.plume.hook (vm)    
-    end
-    if vm.plume.runStatFlag then
-        _STAT_REGISTER(vm, op)
-    end
-    --! to-remove-end
+	--- Decoding opcode and arguments from instruction
+	--! inline-nodo
+	function vm:_VM_DECODE_CURRENT_INSTRUCTION()
+	    local op, arg1, arg2
+	    if self:_CAN_INJECT() then
+	        op, arg1, arg2 = self:_INJECTION_POP()
+	    else
+	        self:_VM_TICK()
+	        local instr = self.bytecode[self.ip]
+	        op    = self.band(self.rshift(instr, self.OP_SHIFT), self.MASK_OP)
+	        arg1  = self.band(self.rshift(instr, self.ARG1_SHIFT), self.MASK_ARG1)
+	        arg2  = self.band(instr, self.MASK_ARG2)
+	    end
 
-    return op, arg1, arg2
+	    --! to-remove-begin
+	    if self.plume.hook then
+	        self.plume.hook (self)
+	    end
+	    if self.plume.runStatFlag then
+	        self:_STAT_REGISTER(op)
+	    end
+	    --! to-remove-end
+
+	    return op, arg1, arg2
+	end
 end
