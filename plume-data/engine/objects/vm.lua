@@ -64,6 +64,11 @@ return function(plume)
 		vm.contextStackCache          = table.new(2^8, 0)
 		vm.contextStackCache.pointer  = 0
 
+		-- opcodes & utils
+		for _, loader in ipairs(plume.vmLoaders) do
+			loader(vm)
+		end
+
 		return vm
 	end
 end
