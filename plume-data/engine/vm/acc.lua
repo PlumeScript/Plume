@@ -86,37 +86,53 @@ return function(vm)
 	--- If the value is not a fragment, does nothing.
 	--! inline
 	function vm:FORCE_FRAGMENT(arg1, arg2)
-	    local fragment = self:_STACK_GET(self.mainStack)
+	    while true do
+	    	local fragment = self:_STACK_GET(self.mainStack)
+	    	local t = self:_GET_TYPE(fragment)
+	    	
+		    if t == "fragment" then
+		        local result        = {}
+		        local stackFragment = {fragment}
+		        local stackIndex    = {}
+		        local depth         = 0
 
-	    if self:_GET_TYPE(fragment) == "fragment" then
-	        local result        = {}
-	        local stackFragment = {fragment}
-	        local stackIndex    = {}
-	        local depth         = 0
-
-	        while #stackFragment > 0 do
-	            depth = #stackFragment
-	            local top = table.remove(stackFragment)
-	            local quickExit = false
-	            for i=(stackIndex[depth] or 1), #top do
-	                local item = top[i]
-	                if type(item) == "table" then -- by construction, must be a fragment
-	                    stackIndex[depth] = i+1
-	                    table.insert(stackFragment, top)
-	                    table.insert(stackFragment, item)
-	                    quickExit = true
-	                    break
-	                else
-	                    table.insert(result, item)
-	                end
-	            end
-	            if not quickExit then
-	                stackIndex[depth] = 1
-	            end
-	        end
-			self:_STACK_POP(self.mainStack)
-			self:_STACK_PUSH(self.mainStack, table.concat(result))
-	    end
+		        while #stackFragment > 0 do
+		            depth = #stackFragment
+		            local top = table.remove(stackFragment)
+		            local quickExit = false
+		            for i=(stackIndex[depth] or 1), #top do
+		                local item = top[i]
+		                if type(item) == "table" then -- by construction, must be a fragment
+		                    stackIndex[depth] = i+1
+		                    table.insert(stackFragment, top)
+		                    table.insert(stackFragment, item)
+		                    quickExit = true
+		                    break
+		                else
+		                    table.insert(result, item)
+		                end
+		            end
+		            if not quickExit then
+		                stackIndex[depth] = 1
+		            end
+		        end
+				self:_STACK_POP(self.mainStack)
+				self:_STACK_PUSH(self.mainStack, table.concat(result))
+			elseif t == "table" then
+				local meta = fragment:getMetaItem("fragment")
+				if meta then
+					self:_STACK_POP(self.mainStack)
+					self:BEGIN_ACC(0, 0)
+					self:_PUSH_SELF(fragment)
+					self:_STACK_PUSH(self.mainStack, meta)
+					self:_CONCAT_CALL_REC()
+				else
+					break
+				end
+			else
+				break
+			end
+		end
 	end
 
 	--- @opcode
