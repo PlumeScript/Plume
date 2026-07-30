@@ -79,15 +79,17 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(index, plume.ops.LOAD_CONSTANT, 0, offset)
 			end
 
-			if child.name:match('INDEX') then
-				context.registerOP(node, plume.ops.FORCE_FRAGMENT)
-			end
+			-- if child.name:match('INDEX') then
+			-- 	context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+			-- end
 		end
 		context.toggleConcatOff()
 		context.nodeHandler(node.children[1]) -- Load the "root" value
 		context.toggleConcatPop()
 
-		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+		if #node.children < 2 or not node.children[2].name:match('INDEX') then
+			context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+		end
 
 		-- Push all index and call opcodes in order
 		for i=2, #node.children do
