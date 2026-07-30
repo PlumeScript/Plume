@@ -6578,130 +6578,6 @@ return function (plume)
                                 if op < 70 then
                                     if op < 69 then
                                         goto END
-                                    else
-                                        do
-                                            local _ret607
-                                            do
-                                                mainStackPointer = mainStackPointer - 1
-                                                local value = mainStack[mainStackPointer + 1]
-                                                _ret607 = value
-                                            end
-                                            local args = _ret607
-                                            local firstFilename = runtimeFiles[1].name
-                                            local lastFilename = runtimeFiles[fileStack[fileStackPointer]].name
-                                            local _ret608
-                                            do
-                                                local lastfile
-                                                local files = runtimeFiles
-                                                local ip = ip
-                                                for _, file in ipairs (files)
-                                                 do
-                                                    if file.offset then
-                                                        if file.offset <= ip then
-                                                            if not lastfile or file.offset > lastfile.offset then
-                                                                lastfile = file
-                                                            end
-                                                        end
-                                                    end
-                                                end
-                                                _ret608 = lastfile
-                                            end
-                                            local currentFile = _ret608
-                                            local _ret609
-                                            do
-                                                local _ret610 = type (args.table[1]) == "table" and (args.table[1] == plumeObjEmpty and "empty" or args.table[1].type) or (type (args.table[1]) == "cdata" and args.table[1].type) or type (args.table[1])
-                                                local t = _ret610
-                                                if t ~= "string" then
-                                                    if not vmerr then
-                                                        if t == "nil" then
-                                                            t = "empty"
-                                                        end
-                                                        vmerr = plume.error.wrongArgTypeStd (1, "import", t, "string", "$import(string path, ...params)")
-                                                        goto ERROR
-                                                    end
-                                                    _ret609 = false
-                                                    goto _inline_end1225
-                                                end
-                                                _ret609 = true
-                                            end
-                                            ::_inline_end1225::
-                                            local assertion = _ret609
-                                            if assertion then
-                                                local filename, searchPaths = plume.getFilenameFromPath (args.table[1], false, runtime, firstFilename, lastFilename)
-                                                if filename then
-                                                    local success = true
-                                                    local err
-                                                    local chunk = runtimeFiles[filename]
-                                                    if not chunk then
-                                                        chunk = plumeObjMacro (filename, runtime)
-                                                        local code = futf8.read (filename)
-                                                        success, err = pcall (plume.compileFile, code, filename, chunk, runtime)
-                                                        runtimeFiles[filename] = chunk
-                                                    end
-                                                    if success then
-                                                        fileParams = {}
-                                                        if chunk.variadicParam then
-                                                            table.insert (fileParams, {offset = chunk.variadicParam.offset, key = chunk.variadicParam.name, value = plumeObjTable (0, 0)
-                                                            })
-                                                        end
-                                                        for _, key in ipairs (args.keys)
-                                                         do
-                                                            if key ~= 1 and (chunk.futureFlagPositionnalFileParam or not tonumber (key)
-                                                            ) then
-                                                                local value = args.table[key]
-                                                                local varKey
-                                                                if tonumber (key)
-                                                                 then
-                                                                    key = key - 1
-                                                                    varKey = "arg" .. key
-                                                                else
-                                                                    varKey = key
-                                                                end
-                                                                local offset = chunk.namedParamOffset[varKey]
-                                                                if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
-                                                                    table.insert (fileParams, {offset = offset, key = varKey, value = value})
-                                                                elseif chunk.variadicParam then
-                                                                    local variadic = fileParams[1].value
-                                                                    variadic:setItem (key, value)
-                                                                elseif chunk.futureFlagUnknownParamError then
-                                                                    vmerr = plume.error.unknownParamError (varKey, chunk.namedParamOffset)
-                                                                    goto ERROR
-                                                                else
-                                                                    plume.warning.runtimeWarning (string.format ("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey)
-                                                                    , nil, runtime, ip, {886, 981})
-                                                                end
-                                                            end
-                                                        end
-                                                        local cacheId, paramMutableWarning = plume.getModuleCacheId (filename, fileParams)
-                                                        local result = runtimeCache.results[cacheId]
-                                                        if result and currentFile.futureFlagImportCache then
-                                                            mainStackPointer = mainStackPointer + 1
-                                                            mainStack[mainStackPointer] = result
-                                                            if paramMutableWarning then
-                                                                plume.warning.runtimeWarning (string.format ("Import call skipped (cached).\nAny modifications of the mutable parameter `%s` will be ignored.", paramMutableWarning)
-                                                                , nil, runtime, ip, {890})
-                                                            end
-                                                        else
-                                                            chunk.cacheId = cacheId
-                                                            fileStackPointer = fileStackPointer + 1
-                                                            fileStack[fileStackPointer] = chunk.fileID
-                                                            macroStackPointer = macroStackPointer + 1
-                                                            macroStack[macroStackPointer] = ip + 1
-                                                            if jump > 0 and vmerr then
-                                                            else
-                                                                jump = chunk.offset
-                                                            end
-                                                        end
-                                                    else
-                                                        vmerr = err
-                                                        goto ERROR
-                                                    end
-                                                else
-                                                    vmerr = plume.error.cannotOpenFile (args.table[1], searchPaths)
-                                                    goto ERROR
-                                                end
-                                            end
-                                        end
                                     end
                                 end
                             end
@@ -6731,25 +6607,25 @@ return function (plume)
                             end
                         end
                         do
-                            local _ret611
+                            local _ret607
                             do
                                 variableStackFramesPointer = variableStackFramesPointer - 1
                                 local value = variableStackFrames[variableStackFramesPointer + 1]
-                                _ret611 = value
+                                _ret607 = value
                             end
-                            variableStackPointer = _ret611 - 1
+                            variableStackPointer = _ret607 - 1
                         end
-                        local _ret612
+                        local _ret608
                         do
                             closureStackPointer = closureStackPointer - 1
                             local value = closureStack[closureStackPointer + 1]
-                            _ret612 = value
+                            _ret608 = value
                         end
-                        local _ret613
+                        local _ret609
                         do
                             macroStackPointer = macroStackPointer - 1
                             local value = macroStack[macroStackPointer + 1]
-                            _ret613 = value
+                            _ret609 = value
                         end
                     end
                     local safeResult = plumeObjTable (0, 2)
@@ -6758,31 +6634,31 @@ return function (plume)
                     if not returnRun then
                         do
                             do
-                                local _ret614
+                                local _ret610
                                 do
                                     variableStackFramesPointer = variableStackFramesPointer - 1
                                     local value = variableStackFrames[variableStackFramesPointer + 1]
-                                    _ret614 = value
+                                    _ret610 = value
                                 end
-                                variableStackPointer = _ret614 - 1
+                                variableStackPointer = _ret610 - 1
                             end
-                            local _ret615
+                            local _ret611
                             do
                                 closureStackPointer = closureStackPointer - 1
                                 local value = closureStack[closureStackPointer + 1]
-                                _ret615 = value
+                                _ret611 = value
                             end
-                            local _ret616
+                            local _ret612
                             do
                                 local call = table.remove (runtimeCallstack)
                                 if call and call.safe then
-                                    local _ret617
+                                    local _ret613
                                     do
                                         mainStackPointer = mainStackPointer - 1
                                         local value = mainStack[mainStackPointer + 1]
-                                        _ret617 = value
+                                        _ret613 = value
                                     end
-                                    local result = _ret617
+                                    local result = _ret613
                                     local safeResult = plumeObjTable (0, 2)
                                     safeResult:setItem ("success", true)
                                     safeResult:setItem ("result", result)
@@ -6795,20 +6671,20 @@ return function (plume)
                                         else
                                             jump = #bytecode
                                         end
-                                        _ret616 = true
-                                        goto _inline_end1248
+                                        _ret612 = true
+                                        goto _inline_end1235
                                     end
                                 end
                             end
-                            ::_inline_end1248::
-                            local exit = _ret616
-                            local _ret618
+                            ::_inline_end1235::
+                            local exit = _ret612
+                            local _ret614
                             do
                                 macroStackPointer = macroStackPointer - 1
                                 local value = macroStack[macroStackPointer + 1]
-                                _ret618 = value
+                                _ret614 = value
                             end
-                            local ret = _ret618
+                            local ret = _ret614
                             if not exit then
                                 if jump > 0 and vmerr then
                                 else
@@ -6826,15 +6702,15 @@ return function (plume)
         end
         ::END::
         do
-            local _ret620 = recursiveStack.pointer
-            if _ret620 > 0 then
-                local _ret619
+            local _ret616 = recursiveStack.pointer
+            if _ret616 > 0 then
+                local _ret615
                 do
                     recursiveStack.pointer = recursiveStack.pointer - 1
                     local value = recursiveStack[recursiveStack.pointer + 1]
-                    _ret619 = value
+                    _ret615 = value
                 end
-                ip = _ret619
+                ip = _ret615
                 jump = 0
                 vmstate.ip = ip
                 vmstate.jump = jump
@@ -6852,11 +6728,11 @@ return function (plume)
         if vmerr then
             return false, vmerr, vmerrip
         end
-        local _ret621
+        local _ret617
         do
             local value = mainStack[mainStackPointer]
-            _ret621 = value
+            _ret617 = value
         end
-        return true, _ret621
+        return true, _ret617
     end
 end

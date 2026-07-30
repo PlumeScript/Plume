@@ -331,8 +331,6 @@ return function (plume)
 								if op < 70 then
 									if op < 69 then
 										goto END
-									else
-										vm:STD_IMPORT(arg1, arg2)
 									end
 								end
 							end

@@ -5,33 +5,4 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-plume.stdVM = {}
-local function registerLuaStdFunction(name, minArgs, maxArgs)
-	if not minArgs then
-		minArgs = 0
-	end
-	if not maxArgs then
-		maxArgs = minArgs
-	end
-
-	plume.stdVM[name] = {
-		type = "stdMacro",
-		name = name,
-		opcode = plume.ops_count,
-		minArgs = minArgs,
-		maxArgs = maxArgs
-	}
-	
-	local opName = "STD_" .. name:upper()
-	plume.ops[opName] = plume.ops_count
-	plume.ops_names = plume.ops_names .. " " .. opName
-	plume.ops_count = plume.ops_count + 1
-
-end
-
-
-registerLuaStdFunction("import", 1, "inf")
-
-for name, obj in pairs(plume.stdVM) do
-	plume.std[name] = obj
-end
+plume.std.import = {type="stdMacro"}
