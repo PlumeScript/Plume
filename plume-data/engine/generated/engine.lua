@@ -26,7 +26,6 @@ return function (plume)
 	    --! index-to-inline variableStackFrames.*
 	    --! index-to-inline fileStack.*
 	    --! index-to-inline macroStack.*
-	    --! index-to-inline injectionStack.*
 	    --! index-to-inline contextStackCache.*
 	    --! index-to-inline closureStack.*
 	    --! index-to-inline flag.* *

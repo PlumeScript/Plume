@@ -50,9 +50,6 @@ return function(plume)
 		vm.macroStack         = table.new(2^8, 0)
 		vm.macroStack.pointer = 0
 
-		vm.injectionStack         = table.new(64, 0)
-		vm.injectionStack.pointer = 0
-
 		vm.recursiveStack         = table.new(64, 0)
 		vm.recursiveStack.pointer = 0
 

@@ -39,8 +39,6 @@ return function (plume)
         local macroStackPointer = vmstate.macroStack.pointer
         local jump = vmstate.jump
         local ip = vmstate.ip
-        local injectionStack = vmstate.injectionStack
-        local injectionStackPointer = vmstate.injectionStack.pointer
         local flag = vmstate.flag
         local fileStack = vmstate.fileStack
         local fileStackPointer = vmstate.fileStack.pointer
@@ -620,7 +618,6 @@ return function (plume)
                                                                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                 vmstate.mainStack.pointer = mainStackPointer
                                                                 vmstate.macroStack.pointer = macroStackPointer
-                                                                vmstate.injectionStack.pointer = injectionStackPointer
                                                                 vmstate.fileStack.pointer = fileStackPointer
                                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                 vmstate.closureStack.pointer = closureStackPointer
@@ -635,7 +632,6 @@ return function (plume)
                                                                 mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                 mainStackPointer = vmstate.mainStack.pointer
                                                                 macroStackPointer = vmstate.macroStack.pointer
-                                                                injectionStackPointer = vmstate.injectionStack.pointer
                                                                 fileStackPointer = vmstate.fileStack.pointer
                                                                 contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                 closureStackPointer = vmstate.closureStack.pointer
@@ -763,7 +759,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -778,7 +773,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -1807,7 +1801,6 @@ return function (plume)
                                                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                 vmstate.mainStack.pointer = mainStackPointer
                                                 vmstate.macroStack.pointer = macroStackPointer
-                                                vmstate.injectionStack.pointer = injectionStackPointer
                                                 vmstate.fileStack.pointer = fileStackPointer
                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                 vmstate.closureStack.pointer = closureStackPointer
@@ -1820,7 +1813,6 @@ return function (plume)
                                                 mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                 mainStackPointer = vmstate.mainStack.pointer
                                                 macroStackPointer = vmstate.macroStack.pointer
-                                                injectionStackPointer = vmstate.injectionStack.pointer
                                                 fileStackPointer = vmstate.fileStack.pointer
                                                 contextStackCachePointer = vmstate.contextStackCache.pointer
                                                 closureStackPointer = vmstate.closureStack.pointer
@@ -2224,7 +2216,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -2239,7 +2230,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -2337,7 +2327,6 @@ return function (plume)
                                                             vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                             vmstate.mainStack.pointer = mainStackPointer
                                                             vmstate.macroStack.pointer = macroStackPointer
-                                                            vmstate.injectionStack.pointer = injectionStackPointer
                                                             vmstate.fileStack.pointer = fileStackPointer
                                                             vmstate.contextStackCache.pointer = contextStackCachePointer
                                                             vmstate.closureStack.pointer = closureStackPointer
@@ -2352,7 +2341,6 @@ return function (plume)
                                                             mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                             mainStackPointer = vmstate.mainStack.pointer
                                                             macroStackPointer = vmstate.macroStack.pointer
-                                                            injectionStackPointer = vmstate.injectionStack.pointer
                                                             fileStackPointer = vmstate.fileStack.pointer
                                                             contextStackCachePointer = vmstate.contextStackCache.pointer
                                                             closureStackPointer = vmstate.closureStack.pointer
@@ -2737,7 +2725,6 @@ return function (plume)
                                                                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                 vmstate.mainStack.pointer = mainStackPointer
                                                                 vmstate.macroStack.pointer = macroStackPointer
-                                                                vmstate.injectionStack.pointer = injectionStackPointer
                                                                 vmstate.fileStack.pointer = fileStackPointer
                                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                 vmstate.closureStack.pointer = closureStackPointer
@@ -2752,7 +2739,6 @@ return function (plume)
                                                                 mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                 mainStackPointer = vmstate.mainStack.pointer
                                                                 macroStackPointer = vmstate.macroStack.pointer
-                                                                injectionStackPointer = vmstate.injectionStack.pointer
                                                                 fileStackPointer = vmstate.fileStack.pointer
                                                                 contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                 closureStackPointer = vmstate.closureStack.pointer
@@ -3519,7 +3505,6 @@ return function (plume)
                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                         vmstate.mainStack.pointer = mainStackPointer
                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                         vmstate.fileStack.pointer = fileStackPointer
                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -3532,7 +3517,6 @@ return function (plume)
                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                         mainStackPointer = vmstate.mainStack.pointer
                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                         fileStackPointer = vmstate.fileStack.pointer
                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -3936,7 +3920,6 @@ return function (plume)
                                                                                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                                 vmstate.mainStack.pointer = mainStackPointer
                                                                                 vmstate.macroStack.pointer = macroStackPointer
-                                                                                vmstate.injectionStack.pointer = injectionStackPointer
                                                                                 vmstate.fileStack.pointer = fileStackPointer
                                                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                                 vmstate.closureStack.pointer = closureStackPointer
@@ -3951,7 +3934,6 @@ return function (plume)
                                                                                 mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                                 mainStackPointer = vmstate.mainStack.pointer
                                                                                 macroStackPointer = vmstate.macroStack.pointer
-                                                                                injectionStackPointer = vmstate.injectionStack.pointer
                                                                                 fileStackPointer = vmstate.fileStack.pointer
                                                                                 contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                                 closureStackPointer = vmstate.closureStack.pointer
@@ -4049,7 +4031,6 @@ return function (plume)
                                                                     vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                     vmstate.mainStack.pointer = mainStackPointer
                                                                     vmstate.macroStack.pointer = macroStackPointer
-                                                                    vmstate.injectionStack.pointer = injectionStackPointer
                                                                     vmstate.fileStack.pointer = fileStackPointer
                                                                     vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                     vmstate.closureStack.pointer = closureStackPointer
@@ -4064,7 +4045,6 @@ return function (plume)
                                                                     mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                     mainStackPointer = vmstate.mainStack.pointer
                                                                     macroStackPointer = vmstate.macroStack.pointer
-                                                                    injectionStackPointer = vmstate.injectionStack.pointer
                                                                     fileStackPointer = vmstate.fileStack.pointer
                                                                     contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                     closureStackPointer = vmstate.closureStack.pointer
@@ -4487,7 +4467,6 @@ return function (plume)
                                                                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                 vmstate.mainStack.pointer = mainStackPointer
                                                                 vmstate.macroStack.pointer = macroStackPointer
-                                                                vmstate.injectionStack.pointer = injectionStackPointer
                                                                 vmstate.fileStack.pointer = fileStackPointer
                                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                 vmstate.closureStack.pointer = closureStackPointer
@@ -4502,7 +4481,6 @@ return function (plume)
                                                                 mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                 mainStackPointer = vmstate.mainStack.pointer
                                                                 macroStackPointer = vmstate.macroStack.pointer
-                                                                injectionStackPointer = vmstate.injectionStack.pointer
                                                                 fileStackPointer = vmstate.fileStack.pointer
                                                                 contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                 closureStackPointer = vmstate.closureStack.pointer
@@ -4724,7 +4702,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -4739,7 +4716,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -4923,7 +4899,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -4938,7 +4913,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -5130,7 +5104,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -5145,7 +5118,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -5329,7 +5301,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -5344,7 +5315,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -5457,7 +5427,6 @@ return function (plume)
                                                                     vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                     vmstate.mainStack.pointer = mainStackPointer
                                                                     vmstate.macroStack.pointer = macroStackPointer
-                                                                    vmstate.injectionStack.pointer = injectionStackPointer
                                                                     vmstate.fileStack.pointer = fileStackPointer
                                                                     vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                     vmstate.closureStack.pointer = closureStackPointer
@@ -5472,7 +5441,6 @@ return function (plume)
                                                                     mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                     mainStackPointer = vmstate.mainStack.pointer
                                                                     macroStackPointer = vmstate.macroStack.pointer
-                                                                    injectionStackPointer = vmstate.injectionStack.pointer
                                                                     fileStackPointer = vmstate.fileStack.pointer
                                                                     contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                     closureStackPointer = vmstate.closureStack.pointer
@@ -5654,7 +5622,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -5669,7 +5636,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -5857,7 +5823,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -5872,7 +5837,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -6056,7 +6020,6 @@ return function (plume)
                                                                         vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                         vmstate.mainStack.pointer = mainStackPointer
                                                                         vmstate.macroStack.pointer = macroStackPointer
-                                                                        vmstate.injectionStack.pointer = injectionStackPointer
                                                                         vmstate.fileStack.pointer = fileStackPointer
                                                                         vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                         vmstate.closureStack.pointer = closureStackPointer
@@ -6071,7 +6034,6 @@ return function (plume)
                                                                         mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                         mainStackPointer = vmstate.mainStack.pointer
                                                                         macroStackPointer = vmstate.macroStack.pointer
-                                                                        injectionStackPointer = vmstate.injectionStack.pointer
                                                                         fileStackPointer = vmstate.fileStack.pointer
                                                                         contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                         closureStackPointer = vmstate.closureStack.pointer
@@ -6193,7 +6155,6 @@ return function (plume)
                                                                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                                                                 vmstate.mainStack.pointer = mainStackPointer
                                                                 vmstate.macroStack.pointer = macroStackPointer
-                                                                vmstate.injectionStack.pointer = injectionStackPointer
                                                                 vmstate.fileStack.pointer = fileStackPointer
                                                                 vmstate.contextStackCache.pointer = contextStackCachePointer
                                                                 vmstate.closureStack.pointer = closureStackPointer
@@ -6208,7 +6169,6 @@ return function (plume)
                                                                 mainStackFramesPointer = vmstate.mainStack.frames.pointer
                                                                 mainStackPointer = vmstate.mainStack.pointer
                                                                 macroStackPointer = vmstate.macroStack.pointer
-                                                                injectionStackPointer = vmstate.injectionStack.pointer
                                                                 fileStackPointer = vmstate.fileStack.pointer
                                                                 contextStackCachePointer = vmstate.contextStackCache.pointer
                                                                 closureStackPointer = vmstate.closureStack.pointer
@@ -6890,7 +6850,6 @@ return function (plume)
                 vmstate.mainStack.frames.pointer = mainStackFramesPointer
                 vmstate.mainStack.pointer = mainStackPointer
                 vmstate.macroStack.pointer = macroStackPointer
-                vmstate.injectionStack.pointer = injectionStackPointer
                 vmstate.fileStack.pointer = fileStackPointer
                 vmstate.contextStackCache.pointer = contextStackCachePointer
                 vmstate.closureStack.pointer = closureStackPointer
