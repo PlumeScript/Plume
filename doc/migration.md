@@ -5,11 +5,6 @@ Escape all non-eval `$`: `\$`
 
 ## Leave affect only the current accumulation block instead of the whole macro #916
 
-## Add an error when using non-escaped `$` #900
-Escape all non-eval `$`: `\$`
-
-## Leave affect only the current accumulation block instead of the whole macro #916
-
 ## Add an error when using undefined files params #981
 
 ## String representation rework #650
