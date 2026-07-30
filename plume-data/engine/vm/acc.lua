@@ -251,6 +251,7 @@ return function(vm)
 							variadicTable:setItem(key, value)
 						elseif tag == "metakey" then
 							variadicTable:setMetaItem(key, value)
+							self:_CHECK_META_FRAGMENT(variadicTable.meta, key)
 						end
 					elseif not unknownNamed then -- should capture all unknown?
 						unknownNamed = key

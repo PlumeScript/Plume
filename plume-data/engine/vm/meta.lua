@@ -65,6 +65,21 @@ return function(vm)
 	end
 
 	--! inline
+	function vm:_CHECK_META_FRAGMENT(meta, name)
+		local fragmentIncompatible = "add addr addl mul mull mulr div divr divl sub subr subl mod modr modl pow powl powr eq lt minus call tostring validate readonly"
+		if meta then
+			for s in fragmentIncompatible:gmatch('%S+') do
+				if meta.table[s] and name == "fragment" or meta.table.fragment and s == name then
+					self:_ERROR(
+						self.plume.error.incompatibleMetaFields(name, s),
+						self:_STACK_GET(self.mainStack.frames)-1-- move errip to frame bottom
+					)
+				end
+			end
+		end
+	end
+
+	--! inline
 	function vm:_META_CHECK_NAME(name)
 		if self.plume.validMetaNames[name] then
 			return true

@@ -83,4 +83,10 @@ return function(plume)
 		end
 		return string.format("Circular fragment reference: The table `%s` references itself within its meta-macro fragment.", repr)
 	end
+
+	function plume.error.incompatibleMetaFields(a, b)
+		return string.format(
+			"Unable to create a table with both '%s' and '%s' metafields.\n(i) Check 'doc/expert.md' for more information.",
+			a, b)
+	end
 end
