@@ -4,7 +4,7 @@ local path = "plume-data/engine/vm"
 local vmFiles = {}
 
 for file in lfs.dir(path) do
-	if not file:match('^%.+$') then
+	if  file:match('%.lua$') then
 		table.insert(vmFiles, string.format("require '%s'", path .. "/" .. file:gsub('%.lua$', '')))
 	end
 end
