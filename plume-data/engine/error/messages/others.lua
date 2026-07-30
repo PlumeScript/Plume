@@ -75,4 +75,12 @@ return function(plume)
 	function plume.error.cannotSetIndexReadonlyTable()
 		return "Cannot set index of a readonly table."
 	end
+
+	function plume.error.tryToUseFragmentInsideItSelf(fragment)
+		local repr = plume.repr(fragment)
+		if #repr > 20 then
+			repr = repr:sub(1, 16) .. "...)"
+		end
+		return string.format("Circular fragment reference: The table `%s` references itself within its meta-macro fragment.", repr)
+	end
 end

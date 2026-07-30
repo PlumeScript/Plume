@@ -85,16 +85,23 @@ return function(vm)
 	function vm:_FORCE_FRAGMENT_META(fragment)
 		local meta = fragment:getMetaItem("fragment")
 		local tmeta = self:_GET_TYPE(meta)
+
 		if tmeta == "macro" or tmeta == "closure" then
-			self:BEGIN_ACC(0, 0)
-			self:_PUSH_SELF(fragment)
-			self:_STACK_PUSH(self.mainStack, meta)
-			self:_CONCAT_CALL_REC()
+			if not fragment.isRendering then -- detect infinite loop
+				fragment.isRendering = true
 
-			local render = self:_STACK_POP(self.mainStack)
-			fragment:setMetaItem("fragment", render)
+				self:BEGIN_ACC(0, 0)
+				self:_PUSH_SELF(fragment)
+				self:_STACK_PUSH(self.mainStack, meta)
+				self:_CONCAT_CALL_REC()
 
-			return render
+				local render = self:_STACK_POP(self.mainStack)
+				fragment:setMetaItem("fragment", render)
+
+				return render
+			else
+				self:_ERROR(self.plume.error.tryToUseFragmentInsideItSelf(fragment))
+			end
 		elseif tmeta ~= "nil" and tmeta ~= "empty" then
 			return meta
 		end
@@ -105,10 +112,9 @@ return function(vm)
 	--- If the value is not a fragment, does nothing.
 	--! inline
 	function vm:FORCE_FRAGMENT(arg1, arg2)
-	    while true do
+	    while not self.err do
 	    	local fragment = self:_STACK_GET(self.mainStack)
 	    	local t = self:_GET_TYPE(fragment)
-	    	
 		    if t == "fragment" then
 		        local result        = {}
 		        local stackFragment = {fragment}
@@ -156,7 +162,6 @@ return function(vm)
 				self:_STACK_POP(self.mainStack)
 				self:_STACK_PUSH(self.mainStack, table.concat(result))
 			elseif t == "table" then
-				
 				local value = self:_FORCE_FRAGMENT_META(fragment)
 				if value then
 					self:_STACK_POP(self.mainStack)
@@ -299,7 +304,6 @@ return function(vm)
 	        if t == "table" then
 	        	tostringMeta = value:getMetaItem("tostring")
 	        	if not tostringMeta then
-	        		print('---------')
 		        	fragmentValue = self:_FORCE_FRAGMENT_META(value)
 		        end
 	        end
