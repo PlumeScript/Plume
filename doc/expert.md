@@ -101,7 +101,7 @@ The $wing is ready.
 
 ## Lazy Rendering: `fragment`
 
-When the VM needs a concrete value from a table — for arithmetic, comparison, indexing or final text output — it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
+When the VM needs a concrete value from a table — for arithmetic, comparison or final text output — it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
 
 ```plume
 let t = do
@@ -114,7 +114,7 @@ $t
 // → rendered
 ```
 
-Unlike `tostring`, which controls the *text representation* of a value, `fragment` is a *pre-rendering hook*: it fires earlier in the pipeline (before `tostring`) and may return any type — a number, a restructured table, `empty` — not just text.
+Unlike `tostring`, which renders the table eagerly at each text interpolation, `fragment` renders **lazily** — once, at the last possible moment — and may return any type: a number, a restructured table, `empty` — not just text.
 
 ```plume
 let counter = do
@@ -127,7 +127,14 @@ $(counter + 8)
 // → 50
 ```
 
-When both `fragment` and `tostring` are present, `fragment` runs first; if it returns a table, `tostring` then applies to that table.
+A fragment-table is best understood as a **lazy value**: its render is deferred until a concrete value is needed. The table's other fields are generation parameters for that deferred render — they stay inspectable (indexing, iteration) even after rendering, and `Table.materialize` (below) processes them as data.
+
+Constraints: the metafield value must be a macro. Because `fragment` intercepts the very triggers these other metafields rely on, defining it alongside any of them is an error:
+
+*   `tostring` — both define how the table becomes text; `fragment` would shadow it.
+*   `call` — the table is rendered before the call, so `call` would never fire.
+*   Arithmetic operators (`add`, `sub`, `mul`, `div`, `mod`, `pow` and their `r`/`l` variants, `minus`) — the table is rendered before the operation, so the operator metamacro would never fire.
+*   Comparison operators (`eq`, `lt`) — the table is rendered before the comparison, for the same reason.
 
 The `fragment` metafield does **not** fire on table operations that access structure rather than rendering — iteration (`for x in t`), indexing (`t.field`), or table expansion (`...t`) leave the table untouched. Only the explicit need for a concrete value triggers it.
 

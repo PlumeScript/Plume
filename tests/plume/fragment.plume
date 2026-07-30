@@ -1,0 +1,206 @@
+/// Test fragment meta basic
+let t = do
+    meta fragment: macro()
+        rendered
+    end
+end
+$t
+/// Output
+rendered
+/// End
+
+/// Test fragment returning empty
+let t = do
+    meta fragment: macro()
+        $empty
+    end
+end
+prefix-$t-suffix
+/// Output
+prefix--suffix
+/// End
+
+/// Test fragment not triggered by iteration
+let t = do
+    meta fragment: macro()
+        rendered
+    end
+    - a
+    - b
+end
+for x in t
+    $x
+end
+/// Output
+ab
+/// End
+
+/// Test fragment meta nested order
+let counters = $Table()
+macro List(...items)
+    meta fragment: macro()
+        $Table.append($counters, 0)
+        let top = $len($counters)
+        \n
+        for i, x in enumerate(items)
+            set counters[top] += 1
+            $Table.join(sep: ., ...counters) $x\n
+        end
+        run $Table.remove($counters)
+    end
+end
+@List
+    - Wing
+    - Nib
+    - @List
+        - Blue
+        - Red
+        - Yellow
+    end
+    - Quill
+    - @List
+        - Green
+        - @List
+            - Black
+            - White
+        end
+        - Purple
+    end
+end
+/// Output
+1 Wing
+2 Nib
+3 
+3.1 Blue
+3.2 Red
+3.3 Yellow
+
+4 Quill
+5 
+5.1 Green
+5.2 
+5.2.1 Black
+5.2.2 White
+
+5.3 Purple
+/// End
+
+/// Test fragment meta cache
+let count = 0
+let t = do
+    meta fragment: macro()
+        set count += 1
+        $count
+    end
+end
+$t$t$t
+$count
+/// Output
+1111
+/// End
+
+/// Test fragment returning another fragment
+let t1 = do
+    meta fragment: macro()
+        rendered
+    end
+end
+let t2 = do
+    meta fragment: macro()
+        $t1
+    end
+end
+$t2
+/// Output
+rendered
+/// End
+
+
+/// Test fragment in arithmetic
+let t = do
+    meta fragment: macro()
+        42
+    end
+end
+$(t + 8)
+/// Output
+50
+/// End
+
+/// Test fragment meta self access
+let t = do
+    value: 42
+    meta fragment: macro()
+        value is $self.value
+    end
+end
+$t
+/// Output
+value is 42
+/// End
+
+/// Test fragment not triggered by indexation
+let t = do
+    value: 42
+    meta fragment: macro()
+        rendered
+    end
+end
+$t.value
+/// Output
+42
+/// End
+
+/// Test fragment overflow
+let t = do
+    value: 42
+    meta fragment: macro()
+       a$t
+    end
+end
+a$t
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Circular fragment reference: The table `(value: 42)` references itself       │
+│   within its meta-macro fragment.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │meta fragment: macro()                                                   │
+│    4 │   a$t                                                                   │
+│      │     ^                                                                   │
+│    5 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    7 │a$t                                                                      │
+│      │  ^                                                                      │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test fragment incompatible type
+let t = do
+    meta tostring: macro ()
+    end
+
+    meta fragment: macro()
+       a$t
+    end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unable to create a table with both 'fragment' and 'tostring' metafields.     │
+│   (i) Check 'doc/expert.md' for more information.                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = do                                                               │
+│      │       ^^^                                                               │
+│    2 │    meta tostring: macro ()                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
