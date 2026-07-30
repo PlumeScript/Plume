@@ -101,7 +101,7 @@ plume.std.items = plume.obj.luaMacro("items", function(args, vm)
 	return true, result
 end)
 
-plume.std.enumerate = plume.obj.luaMacro("items", function(args, vm)
+plume.std.enumerate = plume.obj.luaMacro("enumerate", function(args, vm)
 	--!signature table t
 
    local result = {

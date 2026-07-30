@@ -229,9 +229,9 @@ return function(plume)
 		return true, result
 	end)
 	
-	plume.std.enumerate = plume.obj.luaMacro("items", function (args, vm)
-		local __name      = "items"
-		local __signature = "`$items(table t)`"
+	plume.std.enumerate = plume.obj.luaMacro("enumerate", function (args, vm)
+		local __name      = "enumerate"
+		local __signature = "`$enumerate(table t)`"
 		local __s, __e, self, t
 		__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
