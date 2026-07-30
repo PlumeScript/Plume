@@ -39,6 +39,7 @@ return function (plume)
 	    --! index-to-inline variableStack.*
 	    --! index-to-inline mainStackFrames.*
 	    --! index-to-inline variableStackFrames.*
+	    --! index-to-inline recursiveStack.*
 	    --! index-to-inline fileStack.*
 	    --! index-to-inline macroStack.*
 	    --! index-to-inline contextStackCache.*

@@ -23,8 +23,8 @@ return function(vm)
 			result  = self.plume.error.stackOverflow()
 			self:_ERROR(result)
 		else
-			self:_SAVE_SCALAR()
 			self:_STACK_PUSH(self.recursiveStack, self.ip)
+			self:_SAVE_SCALAR()
 			success, result, callvmerrip = vm:_RUN(destip)
 			self:_UPDATE_SCALAR()
 			if not success then
