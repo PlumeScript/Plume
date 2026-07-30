@@ -99,22 +99,15 @@ return function(vm)
 	        local currentFile = self:_STACK_GET(self.fileStack)
 
 			self:_SAVE_SCALAR()
-	        local success, result, isHosted = tocall.callable (args, self, currentFile)
+	        local success, result = tocall.callable (args, self, currentFile)
 			self:_UPDATE_SCALAR()
 
 	        if success then
-
 	            if result == nil then
 	                result = self.plume.obj.empty
 	            end
-
 				self:_STACK_PUSH(self.mainStack, result)
-	            if isHosted then
-					self:HOST_UPDATE(0, 0)
-	            else
-					self:_POP_CALLSTACK()
-	            end
-
+	            self:_POP_CALLSTACK()
 	        else
 	            self:_ERROR(result)
 	        end
@@ -223,64 +216,5 @@ return function(vm)
 		if not exit then
 			self:JUMP(0, ret) -- return in the previous position
 		end
-	end
-
-	--- @opcode
-	--- Receive the next value from a host callback context.
-	--- Pops the callback result from the stack; if it is falsy, ends the host call.
-	--- Otherwise handles jump precedence over injected instructions.
-	--! inline
-	function vm:HOST_NEXT(arg1, arg2)
-	    local value   = self:_STACK_POP(self.mainStack)
-	    local context = self:_STACK_GET(self.mainStack)
-
-	    local success, result = context:HOST_NEXT(value)
-
-	    if not success then
-	        self:_ERROR(result)
-	    -- An injection takes precedence over a JUMP.
-	    -- This results in the JUMP RETURN being overwritten
-	    -- by a new JUMP to the macro to be called, unless the jump is forced here.
-	    elseif self.jump>0  then
-	        if self.jump == #self.bytecode then
-	            -- Pretty dirty.
-	            -- The implementation of injections is a bit shaky
-	            -- and doesn't handle the end of bytecode very well.
-				self:_INJECTION_PUSH(self.plume.ops.END,   0, 0) -- wait for remove: #1050
-				self:_INJECTION_PUSH(self.plume.ops.HOST_UPDATE, 0, 0) -- Reinject HOST_UPDATE to clean host
-	        else
-	            self.ip = self.jump-1
-				self:_RESET_JUMP()
-	        end
-	    end
-	end
-
-	--- @opcode
-	--- Resume a host callback context after its macro call completes.
-	--- If the context has a pending callback, re-injects HOST_NEXT + CONCAT_CALL.
-	--- Otherwise pops the callstack and pushes the context's return value.
-	--! inline
-	function vm:HOST_UPDATE(arg1, arg2)
-	    local context = self:_STACK_GET(self.mainStack)
-
-	    local success, result = context:HOST_UPDATE()
-	    if not success then
-	        self:_ERROR(result)
-	    elseif context.PLUME_CALLBACK then
-	        self:BEGIN_ACC(0, 0)
-	        for _, value in ipairs(context.PLUME_CALLBACK_ARGS or {}) do
-				self:_STACK_PUSH(self.mainStack, value)
-	        end
-
-			self:_STACK_PUSH(self.mainStack, context.PLUME_CALLBACK)
-
-			self:_INJECTION_PUSH(self.plume.ops.HOST_UPDATE, 0, 0) -- wait for remove: #1050
-			self:_INJECTION_PUSH(self.plume.ops.HOST_NEXT,   0, 0)
-			self:_INJECTION_PUSH(self.plume.ops.CONCAT_CALL, 0, 0)
-	    else
-			self:_POP_CALLSTACK()
-			self:_STACK_POP(self.mainStack)
-			self:_STACK_PUSH(self.mainStack, context.RETURN_VALUE or self.plume.obj.empty)
-	    end
 	end
 end

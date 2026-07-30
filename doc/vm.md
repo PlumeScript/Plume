@@ -304,12 +304,6 @@ The VM decodes instructions via bit operations and dispatches through a generate
 #### RETURN
 <br>Return from the current macro call. <br>Closes the macro scope, pops the closure stack, pops the callstack, and jumps back to the saved return address. 
 
-#### HOST_NEXT
-<br>Receive the next value from a host callback context. <br>Pops the callback result from the stack; if it is falsy, ends the host call. <br>Otherwise handles jump precedence over injected instructions. 
-
-#### HOST_UPDATE
-<br>Resume a host callback context after its macro call completes. <br>If the context has a pending callback, re-injects HOST_NEXT + CONCAT_CALL. <br>Otherwise pops the callstack and pushes the context's return value. 
-
 ### vm/closures.lua
 
 #### OPEN_UPVALUE
