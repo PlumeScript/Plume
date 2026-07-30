@@ -6561,14 +6561,6 @@ return function (plume)
                                     if op < 67 then
                                         vm:CREATE_CONTEXT (arg1, arg2)
                                     else
-                                        vm:HOST_UPDATE (arg1, arg2)
-                                    end
-                                end
-                            else
-                                if op < 70 then
-                                    if op < 69 then
-                                        vm:HOST_NEXT (arg1, arg2)
-                                    else
                                         do
                                             local _ret606
                                             do
@@ -6581,8 +6573,10 @@ return function (plume)
                                             goto ERROR
                                         end
                                     end
-                                else
-                                    if op < 71 then
+                                end
+                            else
+                                if op < 70 then
+                                    if op < 69 then
                                         goto END
                                     else
                                         do

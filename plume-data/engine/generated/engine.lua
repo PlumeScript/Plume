@@ -324,18 +324,12 @@ return function (plume)
 									if op < 67 then
 										vm:CREATE_CONTEXT(arg1, arg2)
 									else
-										vm:HOST_UPDATE(arg1, arg2)
+										vm:RAISE(arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
-										vm:HOST_NEXT(arg1, arg2)
-									else
-										vm:RAISE(arg1, arg2)
-									end
-								else
-									if op < 71 then
 										goto END
 									else
 										vm:STD_IMPORT(arg1, arg2)
