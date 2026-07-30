@@ -80,7 +80,7 @@ local _temp_save_scalar_code, _temp_update_scalar_code
 local _temp_save_scalar, _temp_update_scalar
 
 local function copyvm()
-	scalars = {{"ip", "ip"},{"jump", "jump"}}
+	scalars = {{"ip", "ip"}, {"tic", "tic"},{"jump", "jump"}}
 	local vars = {
 		{"bytecode", "runtime.bytecode"},
 		{"constants", "runtime.constants"},
