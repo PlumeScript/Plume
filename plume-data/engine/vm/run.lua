@@ -30,7 +30,7 @@ return function(vm)
 			if not success then
 				self.ip = callvmerrip
 				self:_ERROR(result)
-				self:_JUMP_END()
+				self:_JUMP_END() --! to-remove
 			end
 		end
 		return success, result, callvmerrip
