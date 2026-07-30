@@ -1871,42 +1871,6 @@ return function(plume)
 	plume.std.String.name = "String"
 	plume.std.String:setMetaItem('readonly', true)
 	
-	local function sortUpdate(context)
-		if context.j == context.i then
-			table.insert(context.result, context.source.table[context.i])
-			context.i = context.i + 1
-			context.j = 1
-		end
-	
-		if context.i <= #context.source.table then
-			context.PLUME_CALLBACK = context.compare
-			context.PLUME_CALLBACK_ARGS = {
-				context.result[context.j],
-				context.source.table[context.i]
-			}
-		else
-			context.PLUME_CALLBACK = nil
-			for _, key in ipairs(context.source.keys) do
-				if tonumber(key) then
-					context.source.table[key] = context.result[key]
-				end
-			end
-		end
-	
-		return true
-	end
-	
-	local function sortNext(context, value)
-		if value then
-			context.j = context.j + 1
-		else
-			table.insert(context.result, context.j, context.source.table[context.i])
-			context.i = context.i + 1
-			context.j = 1
-		end
-		return true
-	end
-	
 	function plume.stdUtils.copy(t, deep, nt)
 		nt = nt or plume.obj.table(#t.table, #t.keys)
 	
@@ -2175,7 +2139,7 @@ return function(plume)
 			return true, result
 		end),
 	
-		sort = plume.obj.luaMacro("sort", function (args)
+		sort = plume.obj.luaMacro("sort", function (args, vm)
 			local __name      = "sort"
 			local __signature = "`$sort(table t, macro compare:)`"
 			local __s, __e, self, t
@@ -2205,17 +2169,33 @@ return function(plume)
 					)
 				end
 	
-				local context = {
-					type         = "hostContext",
-					source       = t,
-					compare      = compare,
-					i            = 2,
-					j            = 1,
-					result       = {t.table[1]}, 
-					HOST_UPDATE  = sortUpdate,
-					HOST_NEXT    = sortNext
-				}
-				return true, context, true
+				local success = true
+				local errmsg, result, callvmerrip
+				table.sort(t.table, function(x, y)
+					if not success then
+						return
+					end
+					vm:BEGIN_ACC()
+					vm:_STACK_PUSH(vm.mainStack, x)
+					vm:_STACK_PUSH(vm.mainStack,  y)
+					
+					vm:_STACK_PUSH(vm.mainStack, compare)
+					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
+					vm:_STACK_POP(vm.mainStack)
+	
+					__callervmip = __callervmip or (compare.offset or compare.macro.offset) - 1
+	
+					success, result, callvmerrip  = __success, __result, __callervmip
+	
+					if success then
+						return result
+					else
+						vm.ip = callvmerrip
+						errmsg = result
+					end
+				end)
+	
+				return success, errmsg
 			else
 				table.sort(t.table)
 				return true
