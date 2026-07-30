@@ -359,7 +359,7 @@ return function(plume)
 				local t = type(result)
 				if t == nil then
 					result = plume.obj.empty
-				elseif r ~= "string" and t ~= "number" then
+				elseif t ~= "string" and t ~= "number" then
 					return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
 				end
 			end
