@@ -63,7 +63,6 @@ return function (plume)
         local plumeObjMacro = vmstate.plume.obj.macro
         local plumeObjFragment = vmstate.plume.obj.fragment
         local plumeObjEmpty = vmstate.plume.obj.empty
-        local plumeObjEmpty = vmstate.plume.obj.empty
         local sops_CONCAT_CALL = 1
         local sops_CONCAT_CALL_SAFE = 2
         local rshift = bit.rshift

@@ -16,7 +16,7 @@ Several specialized stacks support specific mechanisms:
 *   **Macro Stack (`macroStack`):** Stores return instruction pointers for macro and file calls.
 *   **File Stack (`fileStack`):** Tracks the chain of imported files during execution.
 *   **Closure Stack (`closureStack`):** Holds the upvalue table for the currently executing macro, enabling closure access to captured variables.
-*   **Injection Stack (`injectionStack`):** Holds deferred opcodes to be executed before the next bytecode instruction, used for meta-macro dispatch and host callbacks.
+*   **Recursive Stack (`recursiveStack`):** Stores return instruction pointers for recursive VM calls (via `_RUN_START`/`_RUN_END`). Enables reentrant dispatch for meta-macros and std callbacks that need to invoke Plume macros synchronously.
 *   **Tag Stack (`tagStack`):** Parallel to the value stack; marks stack entries as `key` or `metakey` during table accumulation.
 *   **Context Cache (`contextStackCache`):** Tracks pushed context variables for restoration on `POP_CONTEXT`.
 
@@ -55,13 +55,12 @@ There are two paths for VM termination:
 
 #### The `vm.jump` Register and Pending-Jump Fragility
 
-`vm.jump` is a deferred jump register: opcodes like `JUMP`, `JUMP_IF`, etc. set it, and `_VM_TICK` consumes it at the start of the next instruction cycle (setting `vm.ip = vm.jump` then resetting `vm.jump = 0`). This deferral is necessary because multiple opcodes may need to influence control flow within a single dispatch cycle (e.g., an injection taking precedence over a return jump).
+`vm.jump` is a deferred jump register: opcodes like `JUMP`, `JUMP_IF`, etc. set it, and `_VM_TICK` consumes it at the start of the next instruction cycle (setting `vm.ip = vm.jump` then resetting `vm.jump = 0`). This deferral is necessary because multiple opcodes may need to influence control flow within a single dispatch cycle.
 
 This design has a critical invariant: **a pending `vm.jump > 0` must not be silently overwritten**. Several opcodes unconditionally write `vm.jump`, and if a previous jump is still pending, it is lost. This is particularly fragile in the following situations:
 
 *   **`RETURN` and `RETURN_FILE`**: Both call `_POP_CALLSTACK` (which may set `vm.jump` via `_JUMP_END` to end a recursive run) and then unconditionally call `JUMP` with the return address from `macroStack`. If the recursive-exit jump is pending, the `JUMP` call overwrites it. `RETURN` guards against this by checking the return value of `_POP_CALLSTACK`; `RETURN_FILE` does not (it is not concerned by recursive runs per #1075, but a dev-mode guard checks `vm.jump > 0` and raises an error if this invariant is violated).
 *   **`_ERROR`**: Sets `vm.jump` to `#bytecode` via `_JUMP_END` to skip to `END`. The `JUMP` opcode itself has a guard: if `vm.jump > 0` and `vm.err` is set, it refuses to overwrite the jump. This ensures error jumps survive any intervening `JUMP` opcodes between the error site and the `END` label.
-*   **`HOST_NEXT`**: Checks `vm.jump == #vm.bytecode` (the error/end jump) and injects `END` + `HOST_UPDATE` instead of resetting, to handle the interaction between host callbacks and error termination.
 
 When adding new opcodes or modifying existing ones that call `JUMP`, always consider whether a pending `vm.jump` could be overwritten. The dev-mode guards in `RETURN_FILE` and the guard in `JUMP` itself exist to catch violations of this invariant.
 
@@ -126,7 +125,7 @@ Standard calls (`$m()`) and block calls (`@m ... end`) generate similar bytecode
     *   **`macro`**: Creates a new scope via `ENTER_SCOPE`, distributes arguments into local variable slots via `_CONCAT_TABLE`, saves the return address on `macroStack`, and jumps to the macro body.
     *   **`closure`**: Same as macro, but also pushes the closure's captured upvalue table onto `closureStack`.
     *   **`luaMacro`**: Concatenates arguments into a Plume table, calls the Lua function directly, and pushes the result.
-    *   **`stdMacro`**: Concatenates arguments, validates argument count, and injects the dedicated opcode (e.g., `STD_LEN`).
+    *   **`stdMacro`** (`import` only): Concatenates arguments and calls the `STD_IMPORT` opcode directly.
     *   **`context`**: Evaluates the context variable's current value.
     *   **Tables with `call` or `validate` metafields**: Redirects to the metafield macro.
 
@@ -203,13 +202,8 @@ Iteration is built around a three-local-variable protocol: an object, a state, a
 
 ### 12. Standard Library Opcodes
 
-Some standard library functions are implemented as dedicated opcodes rather than `luaMacro` calls:
+Most standard library functions (`len`, `type`, `seq`, `items`, `enumerate`) are implemented as `luaMacro` calls that return `stdIterator` objects consumed by `GET_ITER`/`FOR_ITER`. Only one std function remains a dedicated opcode:
 
-*   **`STD_LEN`**: Returns the length of a table or string.
-*   **`STD_TYPE`**: Returns the type name of a value.
-*   **`STD_SEQ`**: Creates an arithmetic sequence iterator (start, stop, step).
-*   **`STD_ITEMS`**: Creates a key-value iterator over a table.
-*   **`STD_ENUMERATE`**: Creates an index-value iterator over a table.
 *   **`STD_IMPORT`**: Imports and executes another Plume file, managing the file stack and parameter distribution.
 
 ### 13. Error Handling
