@@ -51,7 +51,7 @@ return function (plume)
 	    --! index-to-inline plume._run_dev run
 	    --! index-to-inline sops.* sops_*
 	    
-		local op, arg1, arg2, vmerr, vmerrip
+		local op, arg1, arg2, vmerr, vmerrip, customerrip
 		local self = vm
 		--! copyvm
 		--! to-add local
@@ -154,7 +154,7 @@ end
 
 local footer = [[
 		--! to-add ::ERROR::
-		--! to-add vm:_HANDLE_ERROR()
+		--! to-add vm:_HANDLE_ERROR(customerrip)
 		::END::
 		
 		--! to-remove-begin

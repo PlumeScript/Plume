@@ -18,14 +18,15 @@ return function(vm)
 	--- @param msg string
 	--- @return nil
 	--! inline
-	function vm:_ERROR(msg)
+	function vm:_ERROR(msg, _customerrip)
 		self.err = msg
-	    self:_HANDLE_ERROR() --! to-remove
+	    self:_HANDLE_ERROR(_customerrip) --! to-remove
+	    --! to-add customerrip = _customerrip
 	    --! to-add _temp_goto_error()
 	end
 
 	--! inline
-	function vm:_HANDLE_ERROR()
+	function vm:_HANDLE_ERROR(customerrip)
 	    local safeCallIndex
 	    for i = #self.runtime.callstack, 1, -1 do
 	        local call = self.runtime.callstack[i]
@@ -61,7 +62,7 @@ return function(vm)
 	        self:_STACK_PUSH(self.mainStack, safeResult)
 
 	    else
-	        self.errip = self.ip
+	        self.errip = customerrip or self.ip
 	        self:_JUMP_END() --! to-remove
 	    end
 	end
