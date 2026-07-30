@@ -120,12 +120,20 @@ return function(vm)
 				self:_STACK_PUSH(self.mainStack, table.concat(result))
 			elseif t == "table" then
 				local meta = fragment:getMetaItem("fragment")
-				if meta then
+				local tmeta = self:_GET_TYPE(meta)
+
+				if tmeta == "macro" then
 					self:_STACK_POP(self.mainStack)
 					self:BEGIN_ACC(0, 0)
 					self:_PUSH_SELF(fragment)
 					self:_STACK_PUSH(self.mainStack, meta)
 					self:_CONCAT_CALL_REC()
+
+					local value = self:_STACK_GET(self.mainStack)
+					fragment:setMetaItem("fragment", value)
+				elseif tmeta ~= "nil" and tmeta ~= "empty" then
+					self:_STACK_POP(self.mainStack)
+					self:_STACK_PUSH(self.mainStack, meta)
 				else
 					break
 				end
