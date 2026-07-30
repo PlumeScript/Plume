@@ -128,8 +128,8 @@ return function(vm)
 			self:_STACK_POP_FRAME(self.mainStack)
 			self:_STACK_PUSH(self.mainStack, value)
 	        -- Should check for to many arguments, instead of ignoring them
-			self:_INJECTION_PUSH(self.plume.ops.CHECK_IS_TEXT, 0, 0) -- wait for remove: endless rec (use CONCAT_CALL)
-			self:_INJECTION_PUSH(self.plume.ops.FORCE_FRAGMENT, 0, 0)
+	        self:FORCE_FRAGMENT()
+			self:CHECK_IS_TEXT()
 
 	    elseif tocall == self.plume.std.attempt then
 	        local macro = self:_STACK_GET_FRAMED(self.mainStack, 0)

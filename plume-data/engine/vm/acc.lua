@@ -251,7 +251,7 @@ return function(vm)
 	            self:BEGIN_ACC(0, 0)
 	            self:_PUSH_SELF(value)
 	            self:_STACK_PUSH(self.mainStack, meta)
-	            self:CONCAT_CALL(0, 0)
+	            self:_CONCAT_CALL_REC()
 	        elseif t == "boolean" then
 	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	        else
