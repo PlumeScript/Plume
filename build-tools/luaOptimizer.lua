@@ -155,14 +155,14 @@ local function copyvm()
 		
 	end
 	_temp_save_scalar_code = table.concat(save, "\n")
-	_temp_save_scalar = Parser.parse(_temp_save_scalar_code, file, '5.2', true)
+	_temp_save_scalar = Parser.parse(_temp_save_scalar_code, nil, '5.2', true)
 
 	local update = {}
 	for _, scalar in ipairs(scalars) do
 		table.insert(update, string.format('%s = vmstate.%s', scalar[1], scalar[2]))
 	end
 	_temp_update_scalar_code = table.concat(update, "\n")
-	_temp_update_scalar = Parser.parse(_temp_update_scalar_code, file, '5.2', true)
+	_temp_update_scalar = Parser.parse(_temp_update_scalar_code, nil, '5.2', true)
 
 	-- table.insert(result, (functionsToInline['_HANDLE_ERROR'].body:toLua():gsub('function', 'local function _HANDLE_ERROR')))
 
