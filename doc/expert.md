@@ -99,6 +99,57 @@ The $wing is ready.
 // → The wing(size 12) is ready.
 ```
 
+## Lazy Rendering: `fragment`
+
+When the VM needs a concrete value from a table — for arithmetic, comparison, indexing or final text output — it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
+
+```plume
+let t = do
+    meta fragment: macro ()
+        rendered
+    end
+end
+
+$t
+// → rendered
+```
+
+Unlike `tostring`, which controls the *text representation* of a value, `fragment` is a *pre-rendering hook*: it fires earlier in the pipeline (before `tostring`) and may return any type — a number, a restructured table, `empty` — not just text.
+
+```plume
+let counter = do
+    meta fragment: macro ()
+        42
+    end
+end
+
+$(counter + 8)
+// → 50
+```
+
+When both `fragment` and `tostring` are present, `fragment` runs first; if it returns a table, `tostring` then applies to that table.
+
+The `fragment` metafield does **not** fire on table operations that access structure rather than rendering — iteration (`for x in t`), indexing (`t.field`), or table expansion (`...t`) leave the table untouched. Only the explicit need for a concrete value triggers it.
+
+To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
+
+```plume
+let deep = do
+    - do
+        meta fragment: macro ()
+            inner-rendered
+        end
+    end
+    - plain
+end
+
+let m = $Table.materialize($deep)
+// m is a table whose first item is the string "inner-rendered"
+// and second item is the string "plain"
+```
+
+`Table.materialize` returns a **new** table; the original is never mutated. Non-table values pass through unchanged.
+
 ## Custom Iterators: `next` and `iter`
 
 A table becomes usable in a `for` loop through two metafields:
