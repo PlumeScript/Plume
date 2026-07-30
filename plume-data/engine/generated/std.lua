@@ -1470,34 +1470,21 @@ return function(plume)
 	
 				local success = true
 				local errmsg, result, callvmerrip
-				local callerip = vm.ip
 				s = s:gsub(pattern, function (match)
 					if not success then
 						return
 					end
-					-- We write vm code here
-					-- #1091 will try to make this cleaner
 	
-					-- BEGIN_ACC
-					vm.mainStack.frames.pointer = vm.mainStack.frames.pointer+1
-					vm.mainStack.frames[vm.mainStack.frames.pointer] = vm.mainStack.pointer+1
-	        		-- _STACK_PUSH match
-					vm.mainStack.pointer = vm.mainStack.pointer+1
-					vm.mainStack[vm.mainStack.pointer] = match
-					-- _STACK_PUSH macro
-					vm.mainStack.pointer = vm.mainStack.pointer+1
-					vm.mainStack[vm.mainStack.pointer] = sub
+					vm:BEGIN_ACC()
+					vm:_STACK_PUSH(vm.mainStack, match)
+					
+					vm:_STACK_PUSH(vm.mainStack, sub)
+					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
+					vm:_STACK_POP(vm.mainStack)
 	
-					-- begin of _RUN_START
-					vm.recursiveStack.pointer = vm.recursiveStack.pointer+1
-					vm.recursiveStack[vm.recursiveStack.pointer] = callerip
+					__callervmip = __callervmip or (sub.offset or sub.macro.offset) - 1
 	
-					-- Always use _run_dev, even in no dev mode.
-					-- #1091 should fix this
-					success, result, callvmerrip = plume._run_dev(vm, plume.sops.CONCAT_CALL)
-	
-					-- _STACK_POP
-					vm.mainStack.pointer = vm.mainStack.pointer - 1
+					success, result, callvmerrip  = __success, __result, __callervmip
 	
 					-- Type check
 					if success then
@@ -1513,13 +1500,7 @@ return function(plume)
 					if success then
 						return result
 					else
-						if not callvmerrip then
-							-- end of _RUN_START
-							local macro = sub.macro or sub
-							callvmerrip = macro.offset-1
-						end
-	
-						vm.ip = callvmerrip or callerip
+						vm.ip = callvmerrip
 						errmsg = result
 					end
 				end)

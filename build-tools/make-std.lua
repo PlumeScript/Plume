@@ -237,6 +237,27 @@ local function process(f)
 
 	f = f:gsub('%-%-!override%-self%-(%S+)', 'if args.table.self and args.table.self ~= %1 then table.insert(args.table, 1, args.table.self) end')
 
+	local breakline = "\n\t\t\t\t"
+	f = f:gsub('%-%-!vmcall%s*([^=]*)%s*=%s(%w+)%s*%(([^\n]+)%)', function(vars, macro, args)
+		local push_args = {}
+
+
+		for arg in args:gmatch('[^,]+') do
+			table.insert(push_args, string.format("vm:_STACK_PUSH(vm.mainStack, %s)", arg))
+			table.insert(push_args, breakline)
+		end
+		return string.format([[vm:BEGIN_ACC()
+				%s
+				vm:_STACK_PUSH(vm.mainStack, %s)
+				local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
+				vm:_STACK_POP(vm.mainStack)
+
+				__callervmip = __callervmip or (%s.offset or %s.macro.offset) - 1
+
+				%s = __success, __result, __callervmip]],
+			table.concat(push_args), macro, macro, macro, vars)
+	end)
+
 	for m in f:gmatch('%-%-![^\n]+') do
 		print(string.format("Warning: missed '%s'", m))
 	end

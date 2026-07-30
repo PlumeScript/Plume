@@ -39,6 +39,11 @@ return function (plume)
 		local op, arg1, arg2, vmerr, vmerrip
 		local self = vm
 		--! copyvm
+		--! to-remove-begin
+		vm._RUN    = plume._run_dev
+		--! to-remove-end
+		--! to-add vmstate._RUN = plume._run
+		--! to-add local _RUN = vmstate._run
 		vm.ip      = startip - 1
 		vm:_VM_INIT(fileID)
 		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)

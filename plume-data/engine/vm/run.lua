@@ -17,28 +17,32 @@ return function(vm)
 
 	--! inline
 	function vm:_RUN_START(destip)
+		local success, result, callvmerrip
 		if self:_STACK_POS(self.recursiveStack) > 20 then
-			self:_ERROR(self.plume.error.stackOverflow())
+			success = false
+			result  = self.plume.error.stackOverflow()
+			self:_ERROR(result)
 		else
 			self:_SAVE_SCALAR()
 			self:_STACK_PUSH(self.recursiveStack, self.ip)
-			local success, callvmerr, callvmerrip = self.plume._run_dev(self, destip)
+			success, result, callvmerrip = vm:_RUN(destip)
 			self:_UPDATE_SCALAR()
 			if not success then
 				self.ip = callvmerrip
-				self:_ERROR(callvmerr)
+				self:_ERROR(result)
 				self:_JUMP_END()
 			end
 		end
+		return success, result, callvmerrip
 	end
 
 	--! inline
 	function vm:_CONCAT_CALL_REC()
-		self:_RUN_START(self.plume.sops.CONCAT_CALL)
+		return self:_RUN_START(self.plume.sops.CONCAT_CALL)
 	end
 
 	--! inline
 	function vm:_CONCAT_CALL_SAFE_REC()
-		self:_RUN_START(self.plume.sops.CONCAT_CALL_SAFE)
+		return self:_RUN_START(self.plume.sops.CONCAT_CALL_SAFE)
 	end
 end
