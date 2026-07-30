@@ -217,14 +217,7 @@ Some standard library functions are implemented as dedicated opcodes rather than
 *   **`RAISE`**: Pops a message from the value stack and raises a runtime error.
 *   **Safe calls**: `CONCAT_CALL` with `arg2=1` wraps the call in a safe mode. If the call (or any nested call) errors, the error is caught, the callstack is unwound to the safe call boundary, and a table `{success: false, result: msg}` is pushed instead.
 
-### 14. Instruction Injection
-
-The injection stack allows the VM to queue opcodes that execute before the next bytecode instruction. This mechanism is used when a single source-level operation requires multiple VM steps — for example, dispatching to a meta-macro and then processing its result.
-
-*   `_INJECTION_PUSH`: Queues an opcode (with its arguments) tagged with the current `macroStack` depth.
-*   `_CAN_INJECT`: Returns true if the injection stack is non-empty and the top entry's depth matches the current `macroStack` depth, ensuring injections execute within the correct macro context.
-
-### 15. Instruction Format
+### 14. Instruction Format
 
 Each bytecode instruction is a 32-bit word:
 *   **OP** (7 bits): Opcode identifier.

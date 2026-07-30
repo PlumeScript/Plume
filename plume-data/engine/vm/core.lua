@@ -112,15 +112,11 @@ return function(vm)
 	--! inline-nodo
 	function vm:_VM_DECODE_CURRENT_INSTRUCTION()
 	    local op, arg1, arg2
-	    if self:_CAN_INJECT() then
-	        op, arg1, arg2 = self:_INJECTION_POP()
-	    else
-	        self:_VM_TICK()
-	        local instr = self.bytecode[self.ip]
-	        op    = self.band(self.rshift(instr, self.OP_SHIFT), self.MASK_OP)
-	        arg1  = self.band(self.rshift(instr, self.ARG1_SHIFT), self.MASK_ARG1)
-	        arg2  = self.band(instr, self.MASK_ARG2)
-	    end
+        self:_VM_TICK()
+        local instr = self.bytecode[self.ip]
+        op    = self.band(self.rshift(instr, self.OP_SHIFT), self.MASK_OP)
+        arg1  = self.band(self.rshift(instr, self.ARG1_SHIFT), self.MASK_ARG1)
+        arg2  = self.band(instr, self.MASK_ARG2)
 
 	    --! to-remove-begin
 	    if self.plume.hook then
