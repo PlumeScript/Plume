@@ -94,7 +94,7 @@ return function(vm)
 	end
 
 	--- Decoding opcode and arguments from instruction
-	--! inline-nodo
+	--! inline
 	function vm:_VM_DECODE_CURRENT_INSTRUCTION()
 	    local op, arg1, arg2
         self:_VM_TICK()

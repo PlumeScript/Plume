@@ -13,10 +13,19 @@ return function(vm)
 	    return type(x) == "table" and (x == self.plume.obj.empty and "empty" or x.type) or (type(x) == "cdata" and x.type) or type(x)
 	end
 
+
 	--- Throw an error
 	--- @param msg string
 	--- @return nil
+	--! inline
 	function vm:_ERROR(msg)
+		self.err = msg
+	    self:_HANDLE_ERROR() --! to-remove
+	    --! to-add _temp_goto_error()
+	end
+
+	--! inline
+	function vm:_HANDLE_ERROR()
 	    local safeCallIndex
 	    for i = #self.runtime.callstack, 1, -1 do
 	        local call = self.runtime.callstack[i]
@@ -27,13 +36,15 @@ return function(vm)
 
 	    -- Logic duplication with _POP_CALLSTACK - see #1084
 	    if safeCallIndex then
+	    	local msg = self.err
+	    	self.err = nil
 	        local returnRun = false
 	        for i=#self.runtime.callstack, safeCallIndex, -1 do
 	            local call = table.remove(self.runtime.callstack)
 	            if call and call.base then
 	                if call.base == #self.runtime.callstack then
 	                    returnRun = true
-	                    self:_JUMP_END()
+	                    self:_JUMP_END() --! to-remove
 	                end
 	            end
 	            self:LEAVE_SCOPE(0, 0)
@@ -45,12 +56,13 @@ return function(vm)
 	        safeResult:setItem("result", msg)
 	        if not returnRun then
 	            self:RETURN()
+	            --! to-add _temp_goto_dispatch()
 	        end
 	        self:_STACK_PUSH(self.mainStack, safeResult)
+
 	    else
-	        self.err = msg
 	        self.errip = self.ip
-	        self:_JUMP_END()
+	        self:_JUMP_END() --! to-remove
 	    end
 	end
 

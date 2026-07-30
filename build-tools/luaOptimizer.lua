@@ -166,7 +166,7 @@ local function copyvm()
 	_temp_update_scalar_code = table.concat(update, "\n")
 	_temp_update_scalar = Parser.parse(_temp_update_scalar_code, file, '5.2', true)
 
-	table.insert(result, (functionsToInline['_ERROR'].body:toLua():gsub('function', 'local function _ERROR')))
+	-- table.insert(result, (functionsToInline['_HANDLE_ERROR'].body:toLua():gsub('function', 'local function _HANDLE_ERROR')))
 
 	return table.concat(result, "\n")
 end
@@ -314,14 +314,15 @@ local function inlineFunctions(node)
 	                end
 					return result
 				end
-			elseif fname == "_ERROR" then
-				node.func.name = "_ERROR"
-				return node
 			end
 		elseif node.func.name == "_temp_save_scalar" then
 			return _temp_save_scalar
 		elseif node.func.name == "_temp_update_scalar" then
 			return _temp_update_scalar
+		elseif node.func.name == "_temp_goto_error" then
+			return ast._goto('ERROR')
+		elseif node.func.name == "_temp_goto_dispatch" then
+			return ast._goto('DISPATCH')
 		end
 
 	end

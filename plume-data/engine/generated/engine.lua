@@ -39,6 +39,10 @@ return function (plume)
 		local op, arg1, arg2, vmerr, vmerrip
 		local self = vm
 		--! copyvm
+		--! to-add local
+		rshift = bit.rshift
+		--! to-add local
+		band = bit.band
 		--! to-remove-begin
 		vm._RUN    = plume._run_dev
 		--! to-remove-end
@@ -48,12 +52,11 @@ return function (plume)
 		vm:_VM_INIT(fileID)
 		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
 		
-		--! to-add local
-		rshift = bit.rshift
-		--! to-add local
-		band = bit.band
+		
 		::DISPATCH::
-			op, arg1, arg2 = vm:_VM_DECODE_CURRENT_INSTRUCTION()
+			do -- prevent
+				op, arg1, arg2 = vm:_VM_DECODE_CURRENT_INSTRUCTION()
+			end
 			if op < 64 then
 				if op < 32 then
 					if op < 16 then
@@ -344,7 +347,9 @@ return function (plume)
 					end
 				end
 			end
-goto DISPATCH		::END::
+goto DISPATCH		--! to-add ::ERROR::
+		--! to-add vm:_HANDLE_ERROR()
+		::END::
 		
 		--! to-remove-begin
 		if not vm.err and vm:_STACK_POS(vm.recursiveStack) == 0 then
