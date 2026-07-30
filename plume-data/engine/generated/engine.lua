@@ -48,6 +48,10 @@ return function (plume)
 		vm:_VM_INIT(fileID)
 		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
 		
+		--! to-add local
+		rshift = bit.rshift
+		--! to-add local
+		band = bit.band
 		::DISPATCH::
 			op, arg1, arg2 = vm:_VM_DECODE_CURRENT_INSTRUCTION()
 			if op < 64 then

@@ -54,21 +54,6 @@ return function(vm)
 	--- @param runtime runtime The runtime to execute
 	--! inline-nodo
 	function vm:_VM_INIT(fileID)
-	    --=====================--
-	    -- Instruction format --
-	    --=====================--
-	    self.OP_BITS    = self.plume.OP_BITS
-	    self.ARG1_BITS  = self.plume.ARG1_BITS
-	    self.ARG2_BITS  = self.plume.ARG2_BITS
-	    self.ARG1_SHIFT = self.ARG2_BITS
-	    self.OP_SHIFT   = self.ARG1_BITS + self.ARG2_BITS
-	    self.MASK_OP    = bit.lshift(1, self.OP_BITS) - 1
-	    self.MASK_ARG1  = bit.lshift(1, self.ARG1_BITS) - 1
-	    self.MASK_ARG2  = bit.lshift(1, self.ARG2_BITS) - 1
-	    self.band       = bit.band
-	    self.rshift     = bit.rshift
-	    ---------------------------
-
 	    if #self.fileStack == 0 then
 	        self.fileStack[1] = fileID
 	    end
@@ -114,9 +99,9 @@ return function(vm)
 	    local op, arg1, arg2
         self:_VM_TICK()
         local instr = self.bytecode[self.ip]
-        op    = self.band(self.rshift(instr, self.OP_SHIFT), self.MASK_OP)
-        arg1  = self.band(self.rshift(instr, self.ARG1_SHIFT), self.MASK_ARG1)
-        arg2  = self.band(instr, self.MASK_ARG2)
+        op    = band(rshift(instr, self.OP_SHIFT), self.MASK_OP)
+        arg1  = band(rshift(instr, self.ARG1_SHIFT), self.MASK_ARG1)
+        arg2  = band(instr, self.MASK_ARG2)
 
 	    --! to-remove-begin
 	    if self.plume.hook then

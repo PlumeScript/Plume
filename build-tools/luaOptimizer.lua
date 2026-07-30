@@ -144,6 +144,8 @@ local function copyvm()
 	table.insert(result, string.format("local plumeObjFragment = vmstate.plume.obj.fragment"))
 	table.insert(result, string.format("local plumeObjEmpty = vmstate.plume.obj.empty"))
 
+	table.insert(result, string.format("local plumeObjEmpty = vmstate.plume.obj.empty"))
+
 	-- plume.sops
 	for index, infos in ipairs(plume.sops_config) do
 		table.insert(result, string.format(string.format("local sops_%s = %i", infos.name, plume.sops[infos.name])))

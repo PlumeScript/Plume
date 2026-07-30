@@ -48,14 +48,23 @@ return function (plume)
         local contextStackCachePointer = vmstate.contextStackCache.pointer
         local closureStack = vmstate.closureStack
         local closureStackPointer = vmstate.closureStack.pointer
+        local OP_SHIFT = vmstate.OP_SHIFT
+        local OP_BITS = vmstate.OP_BITS
+        local MASK_OP = vmstate.MASK_OP
+        local MASK_ARG2 = vmstate.MASK_ARG2
+        local MASK_ARG1 = vmstate.MASK_ARG1
         local ITER_TABLE = vmstate.flag.ITER_TABLE
         local ITER_SEQ = vmstate.flag.ITER_SEQ
         local ITER_ITEMS = vmstate.flag.ITER_ITEMS
         local ITER_ENUMS = vmstate.flag.ITER_ENUMS
         local ITER_CUSTOM = vmstate.flag.ITER_CUSTOM
+        local ARG2_BITS = vmstate.ARG2_BITS
+        local ARG1_SHIFT = vmstate.ARG1_SHIFT
+        local ARG1_BITS = vmstate.ARG1_BITS
         local plumeObjTable = vmstate.plume.obj.table
         local plumeObjMacro = vmstate.plume.obj.macro
         local plumeObjFragment = vmstate.plume.obj.fragment
+        local plumeObjEmpty = vmstate.plume.obj.empty
         local plumeObjEmpty = vmstate.plume.obj.empty
         local sops_CONCAT_CALL = 1
         local sops_CONCAT_CALL_SAFE = 2
@@ -181,16 +190,6 @@ return function (plume)
         vmstate._RUN = plume._run
         local _RUN = vmstate._run
         ip = startip - 1
-        OP_BITS = plume.OP_BITS
-        ARG1_BITS = plume.ARG1_BITS
-        ARG2_BITS = plume.ARG2_BITS
-        ARG1_SHIFT = ARG2_BITS
-        OP_SHIFT = ARG1_BITS + ARG2_BITS
-        MASK_OP = bit.lshift (1, OP_BITS) - 1
-        MASK_ARG1 = bit.lshift (1, ARG1_BITS) - 1
-        MASK_ARG2 = bit.lshift (1, ARG2_BITS) - 1
-        band = bit.band
-        rshift = bit.rshift
         if #fileStack == 0 then
             fileStack[1] = fileID
         end
@@ -231,6 +230,8 @@ return function (plume)
                 end
             end
         end
+        local rshift = bit.rshift
+        local band = bit.band
         ::DISPATCH::
             local _ret9, _ret10, _ret11
             local op, arg1, arg2

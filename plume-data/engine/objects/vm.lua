@@ -69,6 +69,10 @@ return function(plume)
 			loader(vm)
 		end
 
+		for name in ("OP_BITS ARG1_BITS ARG2_BITS ARG1_SHIFT OP_SHIFT MASK_OP MASK_ARG1 MASK_ARG2"):gmatch('%S+') do
+			vm[name] = plume[name]
+		end
+
 		return vm
 	end
 end
