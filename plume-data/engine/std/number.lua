@@ -106,9 +106,10 @@ plume.std.Number = plume.obj.quickTable{
 			x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator
 		)
 	end),
-	localize = plume.obj.luaMacro("format", function (args, runtime)
+	localize = plume.obj.luaMacro("format", function (args, vm)
 		--!override-self-plume.std.Number
 		--!signature number x, [string locale]
+		local runtime = vm.runtime
 		if not locale then
 			locale = runtime.plume.table.locale:get()
 		end

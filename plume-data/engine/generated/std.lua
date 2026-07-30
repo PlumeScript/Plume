@@ -147,6 +147,108 @@ return function(plume)
 		return true, math.max(unpack(args.table))
 	end)
 	
+	plume.std.len = plume.obj.luaMacro("len", function (args)
+		local __name      = "len"
+		local __signature = "`$len(table|string x)`"
+		local __s, __e, self, x
+		__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and x then
+			__s, __e, x = plume.stdCheckType(x, "table", "1", __name, __signature)
+			if not __s then
+				__s, __e, x = plume.stdCheckType(x, "string", "1", __name, __signature)
+			end
+		end
+		if not __s then return false, __e end
+		------------
+		return true, type(x) == "table" and #x.table or #x
+	end)
+	
+	plume.std.type = plume.obj.luaMacro("type", function (args)
+		local __name      = "type"
+		local __signature = "`$type(any x)`"
+		local __s, __e, self, x
+		__s, __e, x = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+	end)
+	
+	plume.std.seq = plume.obj.luaMacro("seq", function (args, vm)
+		local __name      = "seq"
+		local __signature = "`$seq(number start, [number stop], [number step])`"
+		local __s, __e, self, start, stop, step
+		__s, __e, start, stop, step = plume.stdUnpackPositional(args, 1, 3,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and start then __s, __e, start = plume.stdCheckType(start, "number", "1", __name, __signature) end
+		if __s and stop then __s, __e, stop = plume.stdCheckType(stop, "number", "2", __name, __signature) end
+		if __s and step then __s, __e, step = plume.stdCheckType(step, "number", "3", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+	
+		local start = tonumber(args.table[1])
+		local stop  = tonumber(args.table[2])
+		local step  = tonumber(args.table[3] or 1)
+	
+		if not stop then
+			stop = start
+			start = 1
+		end
+	
+		local result = {
+			type = "stdIterator",
+			start=start-step,
+			stop=stop,
+			step=step,
+			flag = vm.flag.ITER_SEQ
+		}
+	
+		return true, result
+	end)
+	
+	plume.std.items = plume.obj.luaMacro("items", function (args, vm)
+		local __name      = "items"
+		local __signature = "`$items(table t, ?named)`"
+		local __s, __e, self, t
+		__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		local named
+		if __s then __s, __e, self, named = plume.stdUnpackNamed(args, {"self", "named"}, __name, __signature) end
+		named = named or false
+		if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+	
+	   local result = {
+	        type = "stdIterator",
+	        ref  = t,
+	        flag = vm.flag.ITER_ITEMS,
+	        named = named,
+	    }
+	
+		return true, result
+	end)
+	
+	plume.std.enumerate = plume.obj.luaMacro("enumerate", function (args, vm)
+		local __name      = "enumerate"
+		local __signature = "`$enumerate(table t)`"
+		local __s, __e, self, t
+		__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if __s and t then __s, __e, t = plume.stdCheckType(t, "table", "1", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+	
+	   local result = {
+	        type = "stdIterator",
+	        ref = t,
+	        flag = vm.flag.ITER_ENUMS
+	    }
+	
+		return true, result
+	end)
+	
+	
 	plume.std.List = plume.obj.table(0, 0)
 	plume.std.List.meta = plume.obj.quickTable{
 		call = plume.obj.luaMacro ("call", function (args)
@@ -223,7 +325,8 @@ return function(plume)
 	
 	plume.std.lua = plume.obj.table(0, 0)
 	
-	plume.std.lua:setItem("require", plume.obj.luaMacro("require", function (args, runtime, fileID)
+	plume.std.lua:setItem("require", plume.obj.luaMacro("require", function (args, vm, fileID)
+		local runtime = vm.runtime
 		local firstFilename = runtime.files[1].name
 		local lastFilename  = runtime.files[fileID].name
 	
@@ -256,7 +359,7 @@ return function(plume)
 				local t = type(result)
 				if t == nil then
 					result = plume.obj.empty
-				elseif r ~= "string" and t ~= "number" then
+				elseif t ~= "string" and t ~= "number" then
 					return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
 				end
 			end
@@ -279,7 +382,7 @@ return function(plume)
 	end)
 	
 	-- Basic implementation, prone to memory leaks
-	plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+	plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 		local __name      = "Context"
 		local __signature = "`$Context(string code, [string filename], ?safe)`"
 		local __s, __e, self, code, filename
@@ -291,6 +394,7 @@ return function(plume)
 		if __s and filename then __s, __e, filename = plume.stdCheckType(filename, "string", "2", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		local runtime = vm.runtime
 		local success, result = plume.executeString(code, filename or "<string>", runtime)
 		if safe then
 			local safeResult = plume.obj.table(0, 2)
@@ -671,7 +775,7 @@ return function(plume)
 				x, format, locale, thousandsSeparator, decimalSeparator, thousandthsSeparator
 			)
 		end),
-		localize = plume.obj.luaMacro("format", function (args, runtime)
+		localize = plume.obj.luaMacro("format", function (args, vm)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
 			local __name      = "format"
 			local __signature = "`$format(number x, [string locale])`"
@@ -682,6 +786,7 @@ return function(plume)
 			if __s and locale then __s, __e, locale = plume.stdCheckType(locale, "string", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			local runtime = vm.runtime
 			if not locale then
 				locale = runtime.plume.table.locale:get()
 			end
@@ -1297,47 +1402,6 @@ return function(plume)
 	
 	
 	
-	local function replaceUpdate(context)
-		local s       = context.string
-		local pos     = context.pos
-		local pattern = context.pattern
-		local acc     = context.acc
-	
-		local bpos, epos = s:sub(pos, -1):find(pattern)
-	
-		if bpos then
-			context.PLUME_CALLBACK = context.macro
-			table.insert(acc, s:sub(pos, pos+bpos-2))
-			context.PLUME_CALLBACK_ARGS = {s:sub(pos+bpos-1, pos+epos-1)}
-			context.pos = context.pos+epos
-		else
-			context.PLUME_CALLBACK = nil
-			table.insert(acc, s:sub(pos, -1))
-			context.pos = #s+1
-			context.RETURN_VALUE = table.concat(acc)
-		end
-		return true
-	end
-	
-	local function replaceNext(context, value)
-		local t = type(value) == "table" and value.type or type(value)
-		---- <TEMP> ----
-		if t == "fragment" then
-			value = plume.makeFragment(value)
-			t = "string"
-		end
-		---- </TEMP> ----
-	
-		if t ~= "string" and t ~= "number" and t ~= "empty" then
-			return false, string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
-		end
-	
-		if (type(value) ~= "table" or value.type ~= "empty") then
-			table.insert(context.acc, value)
-		end
-		return true
-	end
-	
 	plume.std.String = plume.obj.quickTable {
 	
 		-- Manipulation
@@ -1366,7 +1430,7 @@ return function(plume)
 			return true, string.lower(s)
 		end),
 	
-		replace = plume.obj.luaMacro("replace", function (args)
+		replace = plume.obj.luaMacro("replace", function (args, vm, _, self)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
 			local __name      = "replace"
 			local __signature = "`$replace(string s, string pattern, string|macro sub, ?rich)`"
@@ -1392,7 +1456,9 @@ return function(plume)
 				end
 			end
 	
-			if type(sub) ~= "string" then
+			if type(sub) == "string" then
+				return true, (s:gsub(pattern, sub))
+			else
 				-- In case of closure - we should have an api for that
 				local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
 				if positionalParamCount ~= 1 then
@@ -1402,20 +1468,45 @@ return function(plume)
 					)
 				end
 	
-				local context = {
-					type         = "hostContext",
-					string       = s,
-					pattern      = pattern,
-					pos          = 1,
-					macro        = sub,
-					acc          = {},
-					HOST_UPDATE  = replaceUpdate,
-					HOST_NEXT    = replaceNext
-				}
-				return true, context, true
-			end
+				local success = true
+				local errmsg, result, callvmerrip
+				s = s:gsub(pattern, function (match)
+					if not success then
+						return
+					end
 	
-			return true, (s:gsub(pattern, sub))
+					vm:BEGIN_ACC()
+					vm:_STACK_PUSH(vm.mainStack, match)
+					
+					vm:_STACK_PUSH(vm.mainStack, sub)
+					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
+					vm:_STACK_POP(vm.mainStack)
+	
+					__callervmip = __callervmip or (sub.offset or sub.macro.offset) - 1
+	
+					success, result, callvmerrip  = __success, __result, __callervmip
+	
+					-- Type check
+					if success then
+						local t = type(result) == "table" and result.type or type(result)
+						if t == "fragment" then
+							result = plume.makeFragment(result)
+						elseif t ~= "string" and t ~= "number" and t ~= "empty" then
+							success = false
+							result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
+						end
+					end
+	
+					if success then
+						return result
+					else
+						vm.ip = callvmerrip
+						errmsg = result
+					end
+				end)
+	
+				return success, errmsg or s
+			end
 		end),
 	
 		-- Tests
@@ -1780,42 +1871,6 @@ return function(plume)
 	plume.std.String.name = "String"
 	plume.std.String:setMetaItem('readonly', true)
 	
-	local function sortUpdate(context)
-		if context.j == context.i then
-			table.insert(context.result, context.source.table[context.i])
-			context.i = context.i + 1
-			context.j = 1
-		end
-	
-		if context.i <= #context.source.table then
-			context.PLUME_CALLBACK = context.compare
-			context.PLUME_CALLBACK_ARGS = {
-				context.result[context.j],
-				context.source.table[context.i]
-			}
-		else
-			context.PLUME_CALLBACK = nil
-			for _, key in ipairs(context.source.keys) do
-				if tonumber(key) then
-					context.source.table[key] = context.result[key]
-				end
-			end
-		end
-	
-		return true
-	end
-	
-	local function sortNext(context, value)
-		if value then
-			context.j = context.j + 1
-		else
-			table.insert(context.result, context.j, context.source.table[context.i])
-			context.i = context.i + 1
-			context.j = 1
-		end
-		return true
-	end
-	
 	function plume.stdUtils.copy(t, deep, nt)
 		nt = nt or plume.obj.table(#t.table, #t.keys)
 	
@@ -2084,7 +2139,7 @@ return function(plume)
 			return true, result
 		end),
 	
-		sort = plume.obj.luaMacro("sort", function (args)
+		sort = plume.obj.luaMacro("sort", function (args, vm)
 			local __name      = "sort"
 			local __signature = "`$sort(table t, macro compare:)`"
 			local __s, __e, self, t
@@ -2114,17 +2169,33 @@ return function(plume)
 					)
 				end
 	
-				local context = {
-					type         = "hostContext",
-					source       = t,
-					compare      = compare,
-					i            = 2,
-					j            = 1,
-					result       = {t.table[1]}, 
-					HOST_UPDATE  = sortUpdate,
-					HOST_NEXT    = sortNext
-				}
-				return true, context, true
+				local success = true
+				local errmsg, result, callvmerrip
+				table.sort(t.table, function(x, y)
+					if not success then
+						return
+					end
+					vm:BEGIN_ACC()
+					vm:_STACK_PUSH(vm.mainStack, x)
+					vm:_STACK_PUSH(vm.mainStack,  y)
+					
+					vm:_STACK_PUSH(vm.mainStack, compare)
+					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
+					vm:_STACK_POP(vm.mainStack)
+	
+					__callervmip = __callervmip or (compare.offset or compare.macro.offset) - 1
+	
+					success, result, callvmerrip  = __success, __result, __callervmip
+	
+					if success then
+						return result
+					else
+						vm.ip = callvmerrip
+						errmsg = result
+					end
+				end)
+	
+				return success, errmsg
 			else
 				table.sort(t.table)
 				return true
@@ -2827,40 +2898,7 @@ return function(plume)
 		end
 	end
 	
-	plume.stdVM = {}
-	local function registerLuaStdFunction(name, minArgs, maxArgs)
-		if not minArgs then
-			minArgs = 0
-		end
-		if not maxArgs then
-			maxArgs = minArgs
-		end
-	
-		plume.stdVM[name] = {
-			type = "stdMacro",
-			name = name,
-			opcode = plume.ops_count,
-			minArgs = minArgs,
-			maxArgs = maxArgs
-		}
-		
-		local opName = "STD_" .. name:upper()
-		plume.ops[opName] = plume.ops_count
-		plume.ops_names = plume.ops_names .. " " .. opName
-		plume.ops_count = plume.ops_count + 1
-	
-	end
-	
-	registerLuaStdFunction("len", 1)
-	registerLuaStdFunction("type", 1)
-	registerLuaStdFunction("seq", 1, 3)
-	registerLuaStdFunction("items", 1)
-	registerLuaStdFunction("enumerate", 1)
-	registerLuaStdFunction("import", 1, "inf")
-	
-	for name, obj in pairs(plume.stdVM) do
-		plume.std[name] = obj
-	end
+	plume.std.import = {type="stdMacro"}
 	
 	-- Copy string methods to Number and empty
 	

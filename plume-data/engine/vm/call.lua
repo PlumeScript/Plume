@@ -5,260 +5,216 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
---- Add a macro to the callstack, with current ip
----@param vm VM The virtual machine instance.
----@param macro table The called macro
---! inline
-function _PUSH_CALLSTACK(vm, macro, safe)
-    table.insert(vm.runtime.callstack, {runtime=vm.runtime, macro=macro, ip=vm.ip, safe=safe})
-    if #vm.runtime.callstack>1000 then
-        _ERROR (vm, vm.plume.error.stackOverflow())
-    end
-end
+return function(vm)
+	--- Add a macro to the callstack, with current ip
+	---@param vm VM The virtual machine instance.
+	---@param macro table The called macro
+	--! inline
+	function vm:_PUSH_CALLSTACK(macro, safe)
+		local callinfos = {runtime=self.runtime, macro=macro, ip=self.ip, safe=safe}
+		if self.ip == self.plume.sops.CONCAT_CALL or self.ip == self.plume.sops.CONCAT_CALL_SAFE then --recursive call
+			callinfos.base = #self.runtime.callstack
+			callinfos.ip = self:_STACK_GET(self.recursiveStack)
+		end
 
---- Remove a macro from callstack
----@param vm VM The virtual machine instance.
---! inline
-function _POP_CALLSTACK(vm)
-    local call = table.remove(vm.runtime.callstack)
+		table.insert(self.runtime.callstack, callinfos)
+		if #self.runtime.callstack>1000 then
+			self:_ERROR(self.plume.error.stackOverflow())
+		end
+	end
 
-    if call and call.safe then
-        local result = _STACK_POP(vm, vm.mainStack)
-        local safeResult = vm.plume.obj.table(0, 2)
-        safeResult:setItem("success", true)
-        safeResult:setItem("result", result)
-        _STACK_PUSH(vm, vm.mainStack, safeResult)
-    end
-end
+	--- Remove a macro from callstack
+	---@param vm VM The virtual machine instance.
+	--! inline
+	function vm:_POP_CALLSTACK()
+	    local call = table.remove(self.runtime.callstack)
 
---- @opcode
---- @param arg1 Flag, 1 for a validator flag
---- @param arg2 Flag, 1 for the safe mode
---- Take the stack top to call, with all elements of the current frame as parameters.
---- Stack the call result (or empty if nil)
---- Handle macros and luaMacro
---! inline
-function CONCAT_CALL (vm, arg1, arg2)
-    local tocall = _STACK_POP(vm, vm.mainStack)
-    local t = _GET_TYPE(vm, tocall)
-    local self
+	    if call and call.safe then
+	        local result = self:_STACK_POP(self.mainStack)
+	        local safeResult = self.plume.obj.table(0, 2)
+	        safeResult:setItem("success", true)
+	        safeResult:setItem("result", result)
+			self:_STACK_PUSH(self.mainStack, safeResult)
+	    end
 
-    -- Table can be called with, if exists, the meta-field call
-    if t == "table" then
-        local mvalidate = tocall:getMetaItem("validate")
-        local mcall     = tocall:getMetaItem("call")
-        if arg1==1 and mvalidate then
-            self = tocall
-            tocall = mvalidate
-            t = tocall.type
-        elseif mcall then
-            self = tocall
-            tocall = mcall
-            t = tocall.type
-        end
-    end
+	    if call and call.base then
+	        if call.base == #self.runtime.callstack then
+	            self:_JUMP_END()
+	            return true
+	        end
+	    end
+	end
 
-    -- Macro
-    if t == "macro"  then
-        if self then
-            _PUSH_SELF(vm, self)
-        end
+	--- @opcode
+	--- @param arg1 Flag, 1 for a validator flag
+	--- @param arg2 Flag, 1 for the safe mode
+	--- Take the stack top to call, with all elements of the current frame as parameters.
+	--- Stack the call result (or empty if nil)
+	--- Handle macros and luaMacro
+	--! inline
+	function vm:CONCAT_CALL(arg1, arg2)
+	    local tocall = self:_STACK_POP(self.mainStack)
+	    local t = self:_GET_TYPE(tocall)
+	    local self_param
 
-        _CALL_MACRO(vm, tocall, arg1==1, arg2==1)
-        _STACK_PUSH(vm, vm.closureStack, {})
 
-    elseif t == "closure" then
-        if self then
-            _PUSH_SELF(vm, self)
-        end
+	    -- Table can be called with, if exists, the meta-field call
+	    if t == "table" then
+	        local mvalidate = tocall:getMetaItem("validate")
+	        local mcall     = tocall:getMetaItem("call")
+	        if arg1==1 and mvalidate then
+	            self_param = tocall
+	            tocall = mvalidate
+	            t = tocall.type
+	        elseif mcall then
+	            self_param = tocall
+	            tocall = mcall
+	            t = tocall.type
+	        end
+	    end
 
-        _CALL_MACRO(vm, tocall.macro, arg1==1, arg2==1)
-        _STACK_PUSH(vm, vm.closureStack, tocall.upvalues)
+	    -- Macro
+	    if t == "macro"  then
+	        if self_param then
+				self:_PUSH_SELF(self_param)
+	        end
 
-    -- Std functions defined in lua or user lua functions
-    elseif t == "luaMacro" then
-        CONCAT_TABLE(vm)
-        _PUSH_CALLSTACK(vm, tocall, arg2==1)
-        
-        local success, result, isHosted = tocall.callable (
-            _STACK_POP(vm, vm.mainStack),
-            vm.runtime,
-            _STACK_GET(vm, vm.fileStack),
-            vm.ip
-        )
+			self:_CALL_MACRO(tocall, arg1==1, arg2==1)
+			self:_STACK_PUSH(self.closureStack, {})
 
-        if success then
-            
-            if result == nil then
-                result = vm.empty
-            end
-            
-            _STACK_PUSH(vm, vm.mainStack, result)
-            if isHosted then
-                _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
-            else
-                _POP_CALLSTACK(vm)
-            end
-        else
-            _ERROR(vm, result)
-        end
+	    elseif t == "closure" then
+	        if self_param then
+				self:_PUSH_SELF(self_param)
+	        end
 
-    -- Some harcoded std functions
-    elseif t == "stdMacro" then
-        local args = CONCAT_TABLE(vm)
-        if #args.table < tocall.minArgs or (tocall.maxArgs ~= "inf" and #args.table > tocall.maxArgs) then
-            _ERROR(vm, vm.plume.error.wrongArgsCountStd(tocall.name, #args.table, tocall.minArgs, tocall.maxArgs))
-        end
-        
-        _PUSH_CALLSTACK(vm, tocall, arg2==1)
-        _INJECTION_PUSH(vm, tocall.opcode, 0, 0)
+			self:_CALL_MACRO(tocall.macro, arg1==1, arg2==1)
+			self:_STACK_PUSH(self.closureStack, tocall.upvalues)
 
-    -- Contextal variables
-    elseif t == "context" then
-        CONCAT_TABLE(vm)
-        _STACK_POP(vm, vm.mainStack) -- Remove args
-        _STACK_PUSH(vm, vm.mainStack, tocall:get())
+	    -- Std functions defined in lua or user lua functions
+	    elseif t == "luaMacro" then
+	        self:CONCAT_TABLE()
+			self:_PUSH_CALLSTACK(tocall, arg2==1)
 
-    -- @table ... end just return the accumulated table
-    elseif tocall == vm.plume.std.Table then
-        CONCAT_TABLE(vm)
+	        local args        = self:_STACK_POP(self.mainStack)
+	        local currentFile = self:_STACK_GET(self.fileStack)
 
-    -- FORCE_FRAGMENT do exactly the same thing as tostring
-    elseif tocall == vm.plume.std.String then
+			self:_SAVE_SCALAR()
+	        local success, result = tocall.callable (args, self, currentFile)
+			self:_UPDATE_SCALAR()
 
-        local value = _STACK_POP(vm, vm.mainStack)
-        _STACK_POP_FRAME(vm, vm.mainStack)
-        _STACK_PUSH(vm, vm.mainStack, value)
-        -- Should check for to many arguments, instead of ignoring them
-        _INJECTION_PUSH(vm, vm.plume.ops.CHECK_IS_TEXT, 0, 0)
-        _INJECTION_PUSH(vm, vm.plume.ops.FORCE_FRAGMENT, 0, 0)
+	        if success then
+	            if result == nil then
+	                result = self.plume.obj.empty
+	            end
+				self:_STACK_PUSH(self.mainStack, result)
+	            self:_POP_CALLSTACK()
+	        else
+	            self:_ERROR(result)
+	        end
+	    -- Contextal variables
+	    elseif t == "context" then
+	        self:CONCAT_TABLE()
+			self:_STACK_POP(self.mainStack) -- Remove args
+			self:_STACK_PUSH(self.mainStack, tocall:get())
 
-    elseif tocall == vm.plume.std.attempt then
-        local macro = _STACK_GET_FRAMED(vm, vm.mainStack, 0)
-        local tmacro = _GET_TYPE(vm, macro)
+	    -- @table ... end just return the accumulated table
+	    elseif tocall == self.plume.std.Table then
+	        self:CONCAT_TABLE()
 
-        if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
-            _ERROR(vm, string.format("`attempt` first argument must be a macro, not a '%s'.", tmacro))
-        end
+	    -- FORCE_FRAGMENT do exactly the same thing as tostring
+	    elseif tocall == self.plume.std.String then
 
-        -- Macro should be at the end
-        local frameBegin = _STACK_GET(vm, vm.mainStack.frames)
-        local frameEnd   = _STACK_POS(vm, vm.mainStack)
-        for i = frameBegin, frameEnd-1 do
-            vm.mainStack[i] = vm.mainStack[i+1]
-        end
-        vm.mainStack[frameEnd] = macro
+	        local value = self:_STACK_POP(self.mainStack)
+			self:_STACK_POP_FRAME(self.mainStack)
+			self:_STACK_PUSH(self.mainStack, value)
+	        -- Should check for to many arguments, instead of ignoring them
+	        self:FORCE_FRAGMENT()
+			self:CHECK_IS_TEXT()
 
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 1)
-    else
-        _ERROR (vm, vm.plume.error.cannotCallValue(t))
-    end
-end
+	    elseif tocall == self.plume.std.attempt then
+	        local macro = self:_STACK_GET_FRAMED(self.mainStack, 0)
+	        local tmacro = self:_GET_TYPE(macro)
 
----@param vm VM The virtual machine instance.
----@param chunk table The function chunk to call.
----@param bool isValidator
---! inline
-function _CALL_MACRO(vm, chunk, isValidator, safe)
-    if isValidator and chunk.positionalParamCount ~= 1 then
-        _ERROR(vm, vm.plume.error.wrongValidatorArgsCount(chunk, chunk.positionalParamCount))
-    else   
-        ENTER_SCOPE(vm, 0, chunk.localsCount) -- Create a new scope
+	        if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
+	            self:_ERROR(string.format("`attempt` first argument must be a macro, not a '%s'.", tmacro))
+	        end
 
-        -- Distribute arguments to locals and get the overflow table
-        local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = _CONCAT_TABLE(
-            vm,
-            chunk.positionalParamCount,
-            chunk.namedParamOffset,
-            chunk.variadicOffset
-        )
+	        -- Macro should be at the end
+	        local frameBegin = self:_STACK_GET(self.mainStack.frames)
+	        local frameEnd   = self:_STACK_POS(self.mainStack)
+	        for i = frameBegin, frameEnd-1 do
+	            self.mainStack[i] = self.mainStack[i+1]
+	        end
+	        self.mainStack[frameEnd] = macro
 
-        if tomanyPositionnalCounter>0 then
-            _ERROR(vm, vm.plume.error.wrongArgsCount(
-                chunk,
-                chunk.positionalParamCount+tomanyPositionnalCounter,
-                chunk.positionalParamCount
-            ))
-        elseif capturedCount < chunk.positionalParamCount then
-            _ERROR(vm, vm.plume.error.wrongArgsCount(
-                chunk,
-                capturedCount,
-                chunk.positionalParamCount
-            ))
-        elseif unknownNamed then
-            _ERROR(vm, vm.plume.error.unknownParameter(unknownNamed, chunk))
-        else
-            -- If the chunk expects a variadic argument, assign the table to the specific register
-            if chunk.variadicOffset then
-                _STACK_SET_FRAMED(vm, vm.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
-            end
+			self:_PUSH_CALLSTACK(tocall, arg2==1)
+			self:_CONCAT_CALL_SAFE_REC()
+			self:_POP_CALLSTACK()
+	    elseif tocall == self.plume.std.import then
+	        local args = self:CONCAT_TABLE()
+			self:_PUSH_CALLSTACK(tocall, arg2==1)
+			self:STD_IMPORT()
+	    else
+	        self:_ERROR(self.plume.error.cannotCallValue(t))
+	    end
+	end
 
-            _PUSH_CALLSTACK(vm, chunk, safe)
-            _STACK_POP_FRAME(vm, vm.mainStack)        -- Clean stack from arguments
-            _STACK_PUSH(vm, vm.macroStack, vm.ip + 1) -- Set the return pointer
-            JUMP(vm, 0, chunk.offset)             -- Jump to macro body  
-        end
-    end
-end
+	---@param vm VM The virtual machine instance.
+	---@param chunk table The function chunk to call.
+	---@param bool isValidator
+	--! inline
+	function vm:_CALL_MACRO(chunk, isValidator, safe)
+	    if isValidator and chunk.positionalParamCount ~= 1 then
+	        self:_ERROR(self.plume.error.wrongValidatorArgsCount(chunk, chunk.positionalParamCount))
+	    else
+			self:ENTER_SCOPE(0, chunk.localsCount) -- Create a new scope
 
---- @opcode
---! inline
-function RETURN(vm, arg1, arg2)
-    LEAVE_SCOPE(vm, 0, 0) -- close macro scope
-    _STACK_POP(vm, vm.closureStack)
-    _POP_CALLSTACK(vm)
-    JUMP(vm, 0, _STACK_POP(vm, vm.macroStack)) -- return in the previous position
-end
+	        -- Distribute arguments to locals and get the overflow table
+	        local variadicTable, tomanyPositionnalCounter, capturedCount, unknownNamed = self:_CONCAT_TABLE(
+	            chunk.positionalParamCount,
+	            chunk.namedParamOffset,
+	            chunk.variadicOffset
+	        )
 
---- @opcode
---! inline
-function HOST_NEXT(vm)
-    local value   = _STACK_POP(vm, vm.mainStack)
-    local context = _STACK_GET(vm, vm.mainStack)
+	        if tomanyPositionnalCounter>0 then
+	            self:_ERROR(self.plume.error.wrongArgsCount(
+	                chunk,
+	                chunk.positionalParamCount+tomanyPositionnalCounter,
+	                chunk.positionalParamCount
+	            ))
+	        elseif capturedCount < chunk.positionalParamCount then
+	            self:_ERROR(self.plume.error.wrongArgsCount(
+	                chunk,
+	                capturedCount,
+	                chunk.positionalParamCount
+	            ))
+	        elseif unknownNamed then
+	            self:_ERROR(self.plume.error.unknownParameter(unknownNamed, chunk))
+	        else
+	            -- If the chunk expects a variadic argument, assign the table to the specific register
+	            if chunk.variadicOffset then
+					self:_STACK_SET_FRAMED(self.variableStack, chunk.variadicOffset - 1, 0, variadicTable)
+	            end
+				self:_PUSH_CALLSTACK(chunk, safe)
+				self:_STACK_POP_FRAME(self.mainStack)        -- Clean stack from arguments
+				self:_STACK_PUSH(self.macroStack, self.ip + 1) -- Set the return pointer
+				self:JUMP(0, chunk.offset)             -- Jump to macro body
+	        end
+	    end
+	end
 
-    local success, result = context:HOST_NEXT(value)
-
-    if not success then
-        _ERROR(vm, result)
-    -- An injection takes precedence over a JUMP.
-    -- This results in the JUMP RETURN being overwritten
-    -- by a new JUMP to the macro to be called, unless the jump is forced here.
-    elseif vm.jump>0  then
-        if vm.jump == #vm.bytecode then
-            -- Pretty dirty.
-            -- The implementation of injections is a bit shaky
-            -- and doesn't handle the end of bytecode very well.     
-            _INJECTION_PUSH(vm, vm.plume.ops.END,   0, 0)
-            _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0) -- Reinject HOST_UPDATE to clean host
-        else
-            vm.ip = vm.jump-1
-            vm.jump = 0
-        end
-    end
-end
-
---- @opcode
---! inline
-function HOST_UPDATE(vm)
-    local context = _STACK_GET(vm, vm.mainStack)
-
-    local success, result = context:HOST_UPDATE()
-    if not success then
-        _ERROR(vm, result)
-    elseif context.PLUME_CALLBACK then
-        BEGIN_ACC(vm, 0, 0)
-        for _, value in ipairs(context.PLUME_CALLBACK_ARGS or {}) do
-            _STACK_PUSH(vm, vm.mainStack, value)
-        end
-
-        _STACK_PUSH(vm, vm.mainStack, context.PLUME_CALLBACK)
-        
-        _INJECTION_PUSH(vm, vm.plume.ops.HOST_UPDATE, 0, 0)
-        _INJECTION_PUSH(vm, vm.plume.ops.HOST_NEXT,   0, 0)
-        _INJECTION_PUSH(vm, vm.plume.ops.CONCAT_CALL, 0, 0)
-    else
-        _POP_CALLSTACK(vm)
-        _STACK_POP(vm, vm.mainStack)
-        _STACK_PUSH(vm, vm.mainStack, context.RETURN_VALUE or vm.empty)
-    end
+	--- @opcode
+	--- Return from the current macro call.
+	--- Closes the macro scope, pops the closure stack, pops the callstack,
+	--- and jumps back to the saved return address.
+	--! inline
+	function vm:RETURN(arg1, arg2)
+		self:LEAVE_SCOPE(0, 0) -- close macro scope
+		self:_STACK_POP(self.closureStack)
+		local exit = self:_POP_CALLSTACK()
+		local ret  = self:_STACK_POP(self.macroStack)
+		if not exit then
+			self:JUMP(0, ret) -- return in the previous position
+		end
+	end
 end

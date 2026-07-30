@@ -7,7 +7,8 @@ Licensed under the MIT License — see LICENSE for details.
 
 local Parser = require "parser"
 local ast = require "parser.lua.ast"
-
+local plume = require"plume-data/engine/init"
+local loadvm = require"build-tools/loadvm"
 local function printTable(t)
 	print(tolua(t))
 end
@@ -71,20 +72,104 @@ local function findAnchor(node)
 	return insertPoint, assignPoint
 end
 
-local functionsToInline = {}
-local usedInlinedFunctions = {}
+local functionsToInline, usedInlinedFunctions = loadvm()
 local indexToInline = {}
+local scalars
 
-local function applyCommands(code)
-	for optn, name in code:gmatch('%-%-! inline([^\n]*)\n%s*function%s+([a-zA-Z_0-9]*)') do
-		local optns = {}
-		for k in optn:gmatch('[^-]+') do
-			optns[k] = true
-		end
-		functionsToInline[name] = optns
-		usedInlinedFunctions[name] = false
+local _temp_save_scalar_code, _temp_update_scalar_code
+local _temp_save_scalar, _temp_update_scalar
+
+local function copyvm()
+	scalars = {{"ip", "ip"},{"jump", "jump"}}
+	local vars = {
+		{"bytecode", "runtime.bytecode"},
+		{"constants", "runtime.constants"},
+		{"runtimeCallstack", "runtime.callstack"},
+		{"runtimeFiles", "runtime.files"},
+		{"runtimeCache", "runtime.cache"},
+		{"runtimePlume", "runtime.plume"},
+
+		{"fileParams", "fileParams"},
+
+		{"run", "plume._run"},
+	}
+	local rec = {flag=true}
+	local fakevm = plume.obj.vm({})
+	local fakekeys = {}
+	for k, v in pairs(fakevm) do
+		table.insert(fakekeys, {k, v})
 	end
 
+	local function sort()
+		table.sort(fakekeys, function (x, y) return x[1]<y[1] end) -- deterministic engine-opt
+	end
+
+	sort()
+	while #fakekeys>0 do
+		local infos = table.remove(fakekeys)
+		local k = infos[1]
+		local v = infos[2]
+		local alias = infos[3] or k
+		if type(v) ~= "function" then
+			table.insert(vars, {k, alias})
+			if type(v)=="table"  then
+				if v.frames then
+					table.insert(vars, {k.."Frames", k..".frames"})
+					table.insert(vars, {k.."FramesPointer", k..".frames.pointer"})
+					table.insert(scalars, {k.."FramesPointer", k..".frames.pointer"})
+				end
+				if v.pointer then
+					table.insert(vars, {k.."Pointer", k..".pointer"})
+					table.insert(scalars, {k.."Pointer", k..".pointer"})
+				end
+			end
+			if rec[k] then
+				for kk, vv in pairs(v) do
+					table.insert(fakekeys, {kk, vv, k.."."..kk})
+				end
+				sort()
+			end
+		end
+	end
+
+	local result = {"local vmstate = vm"} -- bypass agressive inlining
+
+	for _, var in ipairs(vars) do
+		table.insert(result, string.format("local %s = vmstate.%s", var[1], var[2]))
+	end
+
+	-- plume.obj
+	table.insert(result, string.format("local plumeObjTable = vmstate.plume.obj.table"))
+	table.insert(result, string.format("local plumeObjMacro = vmstate.plume.obj.macro"))
+	table.insert(result, string.format("local plumeObjFragment = vmstate.plume.obj.fragment"))
+	table.insert(result, string.format("local plumeObjEmpty = vmstate.plume.obj.empty"))
+
+	-- plume.sops
+	for index, infos in ipairs(plume.sops_config) do
+		table.insert(result, string.format(string.format("local sops_%s = %i", infos.name, plume.sops[infos.name])))
+	end
+
+	local save = {}
+	for _, scalar in ipairs(scalars) do
+		table.insert(save, string.format('vmstate.%s = %s', scalar[2], scalar[1]))
+		
+	end
+	_temp_save_scalar_code = table.concat(save, "\n")
+	_temp_save_scalar = Parser.parse(_temp_save_scalar_code, nil, '5.2', true)
+
+	local update = {}
+	for _, scalar in ipairs(scalars) do
+		table.insert(update, string.format('%s = vmstate.%s', scalar[1], scalar[2]))
+	end
+	_temp_update_scalar_code = table.concat(update, "\n")
+	_temp_update_scalar = Parser.parse(_temp_update_scalar_code, nil, '5.2', true)
+
+	-- table.insert(result, (functionsToInline['_HANDLE_ERROR'].body:toLua():gsub('function', 'local function _HANDLE_ERROR')))
+
+	return table.concat(result, "\n")
+end
+
+local function applyCommands(code)
 	for value, rpl in code:gmatch('%-%-! index%-to%-inline ([^%s]+) ?([^\n]*)') do
 		local expr, key = value:match('(.-)%.(.*)')
 		rpl = rpl~=""and rpl or expr..key:sub(1, 1):upper()..key:sub(2, -1)
@@ -94,6 +179,11 @@ local function applyCommands(code)
 	code = code:gsub('%-%-! to%-remove%-begin.-%-%-! to%-remove%-end', '')
 	code = code:gsub('[^\n]+%-%-! to%-remove', '')
 	code = code:gsub('%-%-! to%-add ([^\n]+)', '%1')
+
+	code = code:gsub('%-%-! copyvm', copyvm())
+	code = code:gsub('%-%-! save%-scalar', _temp_save_scalar_code)
+	code = code:gsub('%-%-! update%-scalar', _temp_update_scalar_code)
+
 	for command in code:gmatch('%-%-! ([^\n]*)') do
 		if not command:match("^inline") and not command:match("^index%-to%-inline") then
 			print("Error: unknown command '" .. command .. "'.")
@@ -129,84 +219,110 @@ end
 
 local function inlineFunctions(node)
 	if node.type == "call" then
-		local f = functionsToInline[node.func.name]
-		if f then
-			usedInlinedFunctions[node.func.name] = true
-			local body = f.body:copy()
-			
-			local args = node.args
-			local params = f.params
-			for i, param in ipairs(params) do
-				local arg = node.args[i] or ast._nil()
-				body:traverse(function(node)
-					if node.type == "var" and node.name == param.name then
-						return arg:copy()
-					end
-					return node
-				end)
-			end
-
-			local labend = getulabend()
-			local rets = {}
-			if not f.optn.keepret then
-				body:traverse(function(node)
-					if node.type == "return" then
-						for i=1, #node.exprs do
-							if #rets<i then
-								table.insert(rets, ast._var(geturet()))
-							end
-						end
-						return ast._block(
-							ast._assign(rets, node.exprs),
-							ast._goto(labend)
-						)
-					end
-					return node
-				end)
-			end
-
-			local init
-			if #rets>0 then
-				init = ast._local(rets)
-			end
-
-			body:traverse(nil, inlineFunctions)
-
-			local parent = ast._do
-			if f.optn['nodo'] then
-				parent = ast._block
-			end
-			
-			local result = parent(unpack(body))
-			if init then
-				result = ast._block(init, result)
-			end
-			if #rets>0 then
-				result = ast._block(result, ast._label(labend))
-			end
-			local insertPoint, assignPoint = findAnchor(node)
-			if insertPoint and insertPoint ~= node then
-				if insertPoint.insertBefore then
-					insertPoint.insertBefore = ast._block(insertPoint.insertBefore, result)
-				else
-					insertPoint.insertBefore = result
-				end
-
-				if #rets>1 then
-					assignPoint.exprs = rets
-					return
-				elseif #rets == 1 then
-					return rets[1]
-				else
-					return ast._nil()
-				end
-			else
-				if node.insertBefore then
-                    result = ast._block(node.insertBefore, result)
-                end
-				return result
-			end
+		local fname = node.func.key
+		if fname and type(fname) == "table" then
+			fname = fname.value
 		end
+		
+		local toinline = node.func.expr and (node.func.expr.name == "self" or node.func.expr.name == "vm")
+			
+
+		if toinline and fname then
+			local f = functionsToInline[fname]
+			if f and f.inline then
+				local firstArg = node.args[1]
+				if firstArg and firstArg.name=="self" then
+					table.remove(node.args, 1)
+				end
+
+				usedInlinedFunctions[fname] = true
+				local body = f.body:copy()
+				
+				local args = node.args
+				local params = f.params
+				for i, param in ipairs(params) do
+					
+
+					local arg = node.args[i] or ast._nil()
+					body:traverse(function(node)
+						if node.type == "var" and node.name == param.name then
+							return arg:copy()
+						end
+						return node
+					end)
+				end
+
+				local labend = getulabend()
+				local rets = {}
+				if not f.optn.keepret then
+					body:traverse(function(node)
+						if node.type == "return" then
+							for i=1, #node.exprs do
+								if #rets<i then
+									table.insert(rets, ast._var(geturet()))
+								end
+							end
+							return ast._block(
+								ast._assign(rets, node.exprs),
+								ast._goto(labend)
+							)
+						end
+						return node
+					end)
+				end
+
+				local init
+				if #rets>0 then
+					init = ast._local(rets)
+				end
+
+				body:traverse(nil, inlineFunctions)
+
+				local parent = ast._do
+				if f.optn['nodo'] then
+					parent = ast._block
+				end
+				
+				local result = parent(unpack(body))
+				if init then
+					result = ast._block(init, result)
+				end
+				if #rets>0 then
+					result = ast._block(result, ast._label(labend))
+				end
+				local insertPoint, assignPoint = findAnchor(node)
+				if insertPoint and insertPoint ~= node then
+					if insertPoint.insertBefore then
+						insertPoint.insertBefore = ast._block(insertPoint.insertBefore, result)
+					else
+						insertPoint.insertBefore = result
+					end
+
+					if #rets>1 then
+						assignPoint.exprs = rets
+						return
+					elseif #rets == 1 then
+						return rets[1]
+					else
+						return ast._nil()
+					end
+				else
+					if node.insertBefore then
+	                    result = ast._block(node.insertBefore, result)
+	                end
+					return result
+				end
+			end
+		elseif node.func.name == "_temp_save_scalar" then
+			return _temp_save_scalar
+		elseif node.func.name == "_temp_update_scalar" then
+			return _temp_update_scalar
+		elseif node.func.name == "_temp_goto_error" then
+			return ast._goto('ERROR')
+		elseif node.func.name == "_temp_goto_dispatch" then
+			return ast._goto('DISPATCH')
+		end
+
 	end
 	return node
 end
@@ -279,20 +395,6 @@ optimizer = {
 	applyCommands = applyCommands,
 	applyInsertBefore=applyInsertBefore,
 	applyInsertExprs=applyInsertExprs,
-	saveFunctionsToInline = function(node)
-		if node.type == "function" and node.name then
-			local name = node.name.name
-			if functionsToInline[name] then
-				functionsToInline[name] = {
-					body = node,
-					params = node.args,
-					optn = functionsToInline[name],
-				}
-				return ast._block()
-			end
-		end
-		return node
-	end,
 	inlineFunctions = inlineFunctions,
 	inlineIndex = inlineIndex,
 	tolocal = tolocal,
@@ -306,7 +408,7 @@ optimizer = {
 
 	checkUselessFunctions = function()
 		for k, v in pairs(usedInlinedFunctions) do
-			if not v then
+			if not v and functionsToInline[k].inline then
 				print(string.format("Warning: function %s not used", k))
 			end
 		end
@@ -322,16 +424,14 @@ optimizer = {
 	end,
 
 	optimize = function (tree)
-		tree:traverse(optimizer.inlineRequire)
 		tree:traverse(optimizer.renameRun)
-		tree:traverse(optimizer.saveFunctionsToInline)
 		tree:traverse(optimizer.inlineFunctions)
 		tree:traverse(optimizer.applyInsertBefore)
 		tree:traverse(optimizer.applyInsertExprs)
 		tree:traverse(optimizer.inlineIndex)
 		tree:traverse(optimizer.inlineIndex)
 		tree:traverse(optimizer.inlineIndex)
-		tree:traverse(optimizer.tolocal)
+		-- tree:traverse(optimizer.tolocal) -- broken: generate `local t[1] =` and at least one another error
 
 		optimizer.checkUselessFunctions()
 

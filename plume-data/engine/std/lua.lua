@@ -55,6 +55,65 @@ plume.std.max = plume.obj.luaMacro("max", function(args)
 	return true, math.max(unpack(args.table))
 end)
 
+plume.std.len = plume.obj.luaMacro("len", function(args)
+	--!signature table|string x
+	return true, type(x) == "table" and #x.table or #x
+end)
+
+plume.std.type = plume.obj.luaMacro("type", function(args)
+	--!signature any x
+	return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+end)
+
+plume.std.seq = plume.obj.luaMacro("seq", function(args, vm)
+	--!signature number start, [number stop], [number step]
+
+	local start = tonumber(args.table[1])
+	local stop  = tonumber(args.table[2])
+	local step  = tonumber(args.table[3] or 1)
+
+	if not stop then
+		stop = start
+		start = 1
+	end
+
+	local result = {
+		type = "stdIterator",
+		start=start-step,
+		stop=stop,
+		step=step,
+		flag = vm.flag.ITER_SEQ
+	}
+
+	return true, result
+end)
+
+plume.std.items = plume.obj.luaMacro("items", function(args, vm)
+	--!signature table t, ?named
+
+   local result = {
+        type = "stdIterator",
+        ref  = t,
+        flag = vm.flag.ITER_ITEMS,
+        named = named,
+    }
+
+	return true, result
+end)
+
+plume.std.enumerate = plume.obj.luaMacro("enumerate", function(args, vm)
+	--!signature table t
+
+   local result = {
+        type = "stdIterator",
+        ref = t,
+        flag = vm.flag.ITER_ENUMS
+    }
+
+	return true, result
+end)
+
+
 plume.std.List = plume.obj.table(0, 0)
 plume.std.List.meta = plume.obj.quickTable{
 	call = plume.obj.luaMacro ("call", function(args)
@@ -103,7 +162,8 @@ plume.std.Map.meta = plume.obj.quickTable{
 
 plume.std.lua = plume.obj.table(0, 0)
 
-plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, runtime, fileID)
+plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm, fileID)
+	local runtime = vm.runtime
 	local firstFilename = runtime.files[1].name
 	local lastFilename  = runtime.files[fileID].name
 
@@ -126,7 +186,7 @@ plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args)
 			local t = type(result)
 			if t == nil then
 				result = plume.obj.empty
-			elseif r ~= "string" and t ~= "number" then
+			elseif t ~= "string" and t ~= "number" then
 				return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
 			end
 		end
@@ -149,8 +209,9 @@ plume.std.Context = plume.obj.luaMacro("Context", function(args)
 end)
 
 -- Basic implementation, prone to memory leaks
-plume.std.eval = plume.obj.luaMacro("eval", function(args, runtime)
+plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 	--!signature string code, [string filename], ?safe
+	local runtime = vm.runtime
 	local success, result = plume.executeString(code, filename or "<string>", runtime)
 	if safe then
 		local safeResult = plume.obj.table(0, 2)

@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b58 (Owl Edition)
+Plume🪶 b59 (Owl Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,21 +30,21 @@ else
 end
 
 local plume = {}
-plume.VERSION = "b58 (Owl Edition)"
+plume.VERSION = "b59 (Owl Edition)"
 
 require 'plume-data/engine/debug/core'           (plume)
 require 'plume-data/engine/error/core'           (plume)
 require 'plume-data/engine/warning'              (plume)
 require 'plume-data/engine/utils'                (plume)
 require 'plume-data/engine/ast'                  (plume)
-require 'plume-data/engine/objects'              (plume)
-
+require 'plume-data/engine/objects/core'         (plume)
 require 'plume-data/engine/parser'               (plume)
 require 'plume-data/engine/compiler/core'        (plume)
 require 'plume-data/engine/generated/std'        (plume)
 require 'plume-data/engine/generated/stddoc'     (plume)
 require 'plume-data/engine/generated/engine'     (plume)
 require 'plume-data/engine/generated/engine-opt' (plume)
+require 'plume-data/engine/generated/vmloaders'  (plume)
 require 'plume-data/engine/finalizer'            (plume)
 require 'plume-data/engine/config'               (plume)
 require 'plume-data/engine/profiler'             (plume)
@@ -62,7 +62,8 @@ function plume.run(runtime, chunk, fileParams)
 		run = plume._run
 	end
 
-	return plume.safeRun(run, runtime, chunk, fileParams)
+	local vm = plume.obj.vm(runtime)
+	return plume.safeRun(run, vm, chunk.offset, chunk.fileID, chunk.variadicParam, chunk.namedParamOffset, fileParams)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain)

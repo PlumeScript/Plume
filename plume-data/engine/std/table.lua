@@ -5,42 +5,6 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-local function sortUpdate(context)
-	if context.j == context.i then
-		table.insert(context.result, context.source.table[context.i])
-		context.i = context.i + 1
-		context.j = 1
-	end
-
-	if context.i <= #context.source.table then
-		context.PLUME_CALLBACK = context.compare
-		context.PLUME_CALLBACK_ARGS = {
-			context.result[context.j],
-			context.source.table[context.i]
-		}
-	else
-		context.PLUME_CALLBACK = nil
-		for _, key in ipairs(context.source.keys) do
-			if tonumber(key) then
-				context.source.table[key] = context.result[key]
-			end
-		end
-	end
-
-	return true
-end
-
-local function sortNext(context, value)
-	if value then
-		context.j = context.j + 1
-	else
-		table.insert(context.result, context.j, context.source.table[context.i])
-		context.i = context.i + 1
-		context.j = 1
-	end
-	return true
-end
-
 function plume.stdUtils.copy(t, deep, nt)
 	nt = nt or plume.obj.table(#t.table, #t.keys)
 
@@ -242,7 +206,7 @@ plume.std.Table = plume.obj.quickTable{
 		return true, result
 	end),
 
-	sort = plume.obj.luaMacro("sort", function(args)
+	sort = plume.obj.luaMacro("sort", function(args, vm)
 		--!signature table t, macro compare:
 
 		for i, x in ipairs(t.table) do
@@ -262,17 +226,24 @@ plume.std.Table = plume.obj.quickTable{
 				)
 			end
 
-			local context = {
-				type         = "hostContext",
-				source       = t,
-				compare      = compare,
-				i            = 2,
-				j            = 1,
-				result       = {t.table[1]}, 
-				HOST_UPDATE  = sortUpdate,
-				HOST_NEXT    = sortNext
-			}
-			return true, context, true
+			local success = true
+			local errmsg, result, callvmerrip
+			table.sort(t.table, function(x, y)
+				if not success then
+					return
+				end
+				--!vmcall
+				success, result, callvmerrip = compare(x, y)
+
+				if success then
+					return result
+				else
+					vm.ip = callvmerrip
+					errmsg = result
+				end
+			end)
+
+			return success, errmsg
 		else
 			table.sort(t.table)
 			return true

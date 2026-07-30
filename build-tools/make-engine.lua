@@ -28,33 +28,50 @@ Licensed under the MIT License — see LICENSE for details.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (runtime, chunk, initFileParams)
-]=]
-
-local import = {}
-for file in lfs.dir("plume-data/engine/vm") do
-	if file:match('%.lua$') then
-		file = file:gsub('%.lua$', '')
-		table.insert(import, string.format("\t\trequire \"plume-data/engine/vm/%s\"\n", file))
-	end
-end
-import = table.concat(import)
-
-local init = [[
-		-- Creates stacks, handle arguments
-		local op, arg1, arg2, vmerr, vmserr
-		local vm =  --! to-remove
-			_VM_INIT(plume, runtime, chunk, initFileParams)
+	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
+		--! index-to-inline self.err vmerr
+	    --! index-to-inline self.errip vmerrip
+	    --! index-to-inline vm.err vmerr
+	    --! index-to-inline vm.errip vmerrip
+	    --! index-to-inline self.* *
+	    --! index-to-inline vm.* *
+	    --! index-to-inline mainStack.*
+	    --! index-to-inline variableStack.*
+	    --! index-to-inline mainStackFrames.*
+	    --! index-to-inline variableStackFrames.*
+	    --! index-to-inline fileStack.*
+	    --! index-to-inline macroStack.*
+	    --! index-to-inline contextStackCache.*
+	    --! index-to-inline closureStack.*
+	    --! index-to-inline flag.* *
+	    --! index-to-inline runtime.*
+	    --! index-to-inline plume.obj
+	    --! index-to-inline plumeObj.*
+	    --! index-to-inline plume._run_dev run
+	    --! index-to-inline sops.* sops_*
+	    
+		local op, arg1, arg2, vmerr, vmerrip
+		local self = vm
+		--! copyvm
+		--! to-add local
+		rshift = bit.rshift
+		--! to-add local
+		band = bit.band
+		--! to-remove-begin
+		vm._RUN    = plume._run_dev
+		--! to-remove-end
+		--! to-add vmstate._RUN = plume._run
+		--! to-add local _RUN = vmstate._run
+		vm.ip      = startip - 1
+		vm:_VM_INIT(fileID)
+		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
 		
 		
 		::DISPATCH::
-			if vm.err then 
-				return false, vm.err, vm.ip
+			do -- prevent
+				op, arg1, arg2 = vm:_VM_DECODE_CURRENT_INSTRUCTION()
 			end
-
-			op, arg1, arg2 = _VM_DECODE_CURRENT_INSTRUCTION(vm)
-
-]]
+]=]
 
 local uselabelGoto = false
 
@@ -81,7 +98,7 @@ local function handleChoice(limDown, limUp, indent)
 			if  uselabelGoto or op_namesTable[middlePoint-1] == "END" then
 				table.insert(dispatch, string.format(indent.."\tgoto %s\n", op_namesTable[middlePoint-1]))
 			else
-				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\t%s(vm, arg1, arg2)\n", op_namesTable[middlePoint-1]))
+				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\tvm:%s(arg1, arg2)\n", op_namesTable[middlePoint-1]))
 			end
 		end
 	end
@@ -94,7 +111,7 @@ local function handleChoice(limDown, limUp, indent)
 			if uselabelGoto or op_namesTable[middlePoint] == "END" then
 				table.insert(dispatch, string.format(indent.."\tgoto %s\n", op_namesTable[middlePoint]))
 			else
-				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\t%s(vm, arg1, arg2)\n", op_namesTable[middlePoint]))
+				table.insert(dispatch,string.format("\t\t\t\t\t\t\t\t\t\tvm:%s(arg1, arg2)\n", op_namesTable[middlePoint]))
 			end
 		end
 	end
@@ -135,11 +152,16 @@ else
 end
 
 local footer = [[
+		--! to-add ::ERROR::
+		--! to-add vm:_HANDLE_ERROR()
 		::END::
+		
 		--! to-remove-begin
-		local finalSuccess, finalMsg = _FINAL_CHECKS (vm)
-		if not finalSuccess then
-			return false, finalMsg, #vm.runtime.bytecode
+		if not vm.err and vm:_STACK_POS(vm.recursiveStack) == 0 then
+			local finalSuccess, finalMsg = vm:_FINAL_CHECKS ()
+			if not finalSuccess then
+				return false, finalMsg, #vm.runtime.bytecode
+			end
 		end
 		if plume.runStatFlag then
 			if plume.stats then
@@ -149,14 +171,20 @@ local footer = [[
 			else
 				plume.stats = {opseq=vm.stats.opseq}
 			end
-		end
+		end		
 		--! to-remove-end
-		return true, _STACK_GET(vm, vm.mainStack)
+
+		vm:_RUN_END(vm)
+		if vm.err then 
+			return false, vm.err, vm.errip
+		end
+
+		return true, vm:_STACK_GET(vm.mainStack)
 	end
 end]]
 
 
-local result = {header, import, init, dispatch, labels, footer}
+local result = {header, dispatch, labels, footer}
 
 
 local f = io.open("plume-data/engine/generated/engine.lua", "w")

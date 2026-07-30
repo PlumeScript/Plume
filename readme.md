@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-Owl_58-blue.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
+![Version](https://img.shields.io/badge/version-Owl_59-blue.svg) ![Tests](https://img.shields.io/badge/tests-774%2F774%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
 
 ## Introduction
 
@@ -100,7 +100,10 @@ end
 
 ### Documentation
 
-[Reference](doc/reference.md) (not necessarily very pedagogical) and, for the curious, [documentation of the VM](doc/vm.md).
+*   [Core](doc/core.md) — the minimum you need to write Plume programs.
+*   [Advanced](doc/advanced.md) — destructuring, variadic macros, modules, error handling...
+*   [Expert](doc/expert.md) — metatables, contextual variables, directives, Lua interop, for library authors.
+*   [Standard library](doc/reference_std.md) and, for the curious, [documentation of the VM](doc/vm.md).
 
 [Lot of examples](https://html-preview.github.io/?url=https://github.com/ErwanBarbedor/PlumeScript/blob/main/tests/report.html) in the tests suite, with bytecode.
 

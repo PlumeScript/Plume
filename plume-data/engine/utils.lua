@@ -43,8 +43,8 @@ return function (plume)
 		RETURN RETURN_FILE FILE_INIT_PARAMS
 
 		PUSH_CONTEXT POP_CONTEXT LOAD_CONTEXT CREATE_CONTEXT
-
-		HOST_UPDATE HOST_NEXT RAISE
+	
+		RAISE
 
 		END
 ]]
@@ -58,7 +58,20 @@ return function (plume)
 		return t
 	end
 
+	local function makeSNames(all_infos)
+		local t = {}
+		for index, infos in ipairs(all_infos) do
+			t[infos.name] = index
+		end
+		return t
+	end
+
 	plume.ops = makeNames(plume.ops_names)
+	plume.sops_config = {
+		{name="CONCAT_CALL", plume.ops.CONCAT_CALL, 0, 0},
+		{name="CONCAT_CALL_SAFE", plume.ops.CONCAT_CALL, 0, 1}
+	}
+	plume.sops = makeSNames(plume.sops_config)
 
 	plume.validMetaNames = {}
 	for name in ([[

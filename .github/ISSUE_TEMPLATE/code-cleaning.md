@@ -1,10 +1,30 @@
 ---
 name: Code cleaning
-about: Describe this issue template's purpose here.
+about: Factoring, rewriting, comments — improvements that don't change behavior
 title: "[CLEANING]"
 labels: ''
 assignees: ''
 
 ---
 
-Factoring, more elegant rewriting, adding comments...
+## Zone
+[ ] Parser / AST
+[ ] Compiler
+[ ] VM
+[ ] Std / library
+[ ] Build tools
+[ ] Documentation
+[ ] Other
+
+## Description
+What to refactor and why.
+
+## Current state
+```
+Code before
+```
+
+## Proposed state
+```
+Code after (or description of the target structure)
+```
