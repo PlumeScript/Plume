@@ -148,25 +148,6 @@ $(t+1)
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test wrong meta field type
-let t = do
-  meta add: +
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'string' for meta field 'add'. Expected 'macro'.                  │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta add: +                                                            │
-│      │  ^^^^^^^^^^^                                                            │
-│    3 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
 /// Test readonly
 let t = do
   meta readonly: $true
@@ -195,7 +176,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'string' for meta field 'add'. Expected 'macro'.                  │
+│ → Wrong type 'string' for meta field 'add'. Expected 'callable'.               │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -214,7 +195,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'string' for meta field 'call'. Expected 'macro'.                 │
+│ → Wrong type 'string' for meta field 'call'. Expected 'callable'.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -233,7 +214,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for meta field 'fragment'. Expected 'macro'.              │
+│ → Wrong type 'table' for meta field 'fragment'. Expected 'callable'.           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -252,7 +233,8 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for meta field 'tostring'. Expected 'macro or string'.    │
+│ → Wrong type 'table' for meta field 'tostring'. Expected 'callable or          │
+│   string'.                                                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

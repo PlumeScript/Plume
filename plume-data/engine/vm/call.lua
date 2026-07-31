@@ -147,22 +147,23 @@ return function(vm)
 	    elseif tocall == self.plume.std.attempt then
 	        local macro = self:_STACK_GET_FRAMED(self.mainStack, 0)
 	        local tmacro = self:_GET_TYPE(macro)
-	        if tmacro ~= "macro" and tmacro ~= "closure" and tmacro ~= "luaMacro" then
-	            self:_ERROR(string.format("`attempt` first argument must be a macro, not a '%s'.", tmacro))
+	        
+	        if vm:_IS_CALLABLE(macro) then
+	        	 -- Macro should be at the end
+		        local frameBegin = self:_STACK_GET(self.mainStack.frames)
+		        local frameEnd   = self:_STACK_POS(self.mainStack)
+		        for i = frameBegin, frameEnd-1 do
+		            self.mainStack[i] = self.mainStack[i+1]
+		        end
+		        self.mainStack[frameEnd] = macro
+
+				self:_PUSH_CALLSTACK(tocall, arg2==1)
+				self:_CONCAT_CALL_SAFE_REC()
+				self:_POP_CALLSTACK()
+			else
+	            self:_ERROR(string.format("`attempt` first argument must be a callable, not a '%s'.", tmacro))
 	        end
 
-	        -- Macro should be at the end
-	        local frameBegin = self:_STACK_GET(self.mainStack.frames)
-	        local frameEnd   = self:_STACK_POS(self.mainStack)
-	        for i = frameBegin, frameEnd-1 do
-	            self.mainStack[i] = self.mainStack[i+1]
-	        end
-	        self.mainStack[frameEnd] = macro
-
-			self:_PUSH_CALLSTACK(tocall, arg2==1)
-			self:_CONCAT_CALL_SAFE_REC()
-			self:_POP_CALLSTACK()
-	       
 	    elseif tocall == self.plume.std.import then
 	        local args = self:CONCAT_TABLE()
 			self:_PUSH_CALLSTACK(tocall, arg2==1)

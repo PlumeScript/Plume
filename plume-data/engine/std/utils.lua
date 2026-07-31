@@ -61,8 +61,8 @@ function plume.stdCheckType(vm, arg, expected, argName, name, signature)
 			given = arg.type
 		end
 	end
-	if given == "luaMacro" or given == "stdMacro" or given == "closure" then
-		given = "macro"
+	if expected == "callable" and vm:_IS_CALLABLE(arg) then
+		return true, nil, arg
 	end
 
 	if given == "string" and expected == "number" then

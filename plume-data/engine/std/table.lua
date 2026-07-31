@@ -200,7 +200,7 @@ plume.std.Table = plume.obj.quickTable{
 	end),
 
 	sort = plume.obj.luaMacro("sort", function(args, vm)
-		--!signature table t, macro compare:
+		--!signature table t, callable compare:
 
 		for i, x in ipairs(t.table) do
 			local _type = type(x) == "table" and x.type or type(x)

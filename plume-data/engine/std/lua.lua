@@ -15,7 +15,7 @@ plume.std.print = plume.obj.luaMacro("print", function(args)
 end)
 
 plume.std.help = plume.obj.luaMacro("help", function (args)
-	--!signature macro|table m
+	--!signature callable|table m
 	print(plume.makedoc(m))
 	return true
 end)

@@ -14,7 +14,7 @@ end
 
 plume.std.plume = plume.obj.quickTable {
 	doc = plume.obj.luaMacro("doc", function (args)
-		--!signature macro|table m
+		--!signature callable|table m
 		return true, plume.makedoc(m)
 	end)
 }

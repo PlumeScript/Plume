@@ -253,10 +253,12 @@ local function process(f)
 				local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
 				vm:_STACK_POP(vm.mainStack)
 
-				__callervmip = __callervmip or (%s.offset or %s.macro.offset) - 1
+				__callervmip = __callervmip or
+					(%s.offset or %s.macro and %s.macro.offset or 2) -- dirty fix ; waiting for #1126
+					- 1
 
 				%s = __success, __result, __callervmip]],
-			table.concat(push_args), macro, macro, macro, vars)
+			table.concat(push_args), macro, macro, macro, macro, vars)
 	end)
 
 	for m in f:gmatch('%-%-![^\n]+') do

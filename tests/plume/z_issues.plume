@@ -1577,3 +1577,23 @@ end
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1106
+$attempt($String, a)
+/// Output
+(success: true, result: a)
+/// End
+
+/// Test #1123
+let t = do
+    meta tostring: $String
+end
+/// Output
+/// End
+
+/// Test #1124
+let x = a
+$x.replace(a, $String)
+/// Output
+a
+/// End

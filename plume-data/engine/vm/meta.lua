@@ -49,8 +49,10 @@ return function(vm)
 				t = "macro"
 			end
 
-			if t == "macro" then
-				if expectedParamCount ~= -1 then
+			if vm:_IS_CALLABLE(metaValue) then
+				if expectedParamCount ~= -1
+					and metaValue.positionalParamCount -- dirty fix ; waiting for #1126
+				then
 					if metaValue.positionalParamCount ~= expectedParamCount then
 						return false, self.plume.error.wrongArgsCountMetaDefinition(
 							name, metaValue.positionalParamCount, expectedParamCount
@@ -63,9 +65,9 @@ return function(vm)
 			elseif (t ~= "string" or name ~= "tostring") then
 				local expected
 				if name == "tostring" then
-					expected = "macro or string"
+					expected = "callable or string"
 				else
-					expected = "macro"
+					expected = "callable"
 				end
 				return false, self.plume.error.wrongMetaFieldType(name, t, expected)
 			end

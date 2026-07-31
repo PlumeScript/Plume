@@ -13,6 +13,11 @@ return function(vm)
 	    return type(x) == "table" and (x == self.plume.obj.empty and "empty" or x.type) or (type(x) == "cdata" and x.type) or type(x)
 	end
 
+	--! inline
+	function vm:_IS_CALLABLE(x)
+		local _type = vm:_GET_TYPE(x)
+		return _type == "macro" or _type == "closure" or _type == "luaMacro" or _type == "stdMacro" or (_type == "table" and x.meta and x.meta.table.call) or x == self.plume.std.Table or x == self.plume.std.String or x == self.plume.std.attempt
+	end
 
 	--- Throw an error
 	--- @param msg string

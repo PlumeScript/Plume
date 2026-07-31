@@ -47,12 +47,12 @@ return function(plume)
 	
 	plume.std.help = plume.obj.luaMacro("help", function (args)
 		local __name      = "print"
-		local __signature = "`$print(macro|table m)`"
+		local __signature = "`$print(callable|table m)`"
 		local __s, __e, self, m
 		__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 		if __s and m then
-			__s, __e, m = plume.stdCheckType(vm, m, "macro", "1", __name, __signature)
+			__s, __e, m = plume.stdCheckType(vm, m, "callable", "1", __name, __signature)
 			if not __s then
 				__s, __e, m = plume.stdCheckType(vm, m, "table", "1", __name, __signature)
 			end
@@ -1238,12 +1238,12 @@ return function(plume)
 	plume.std.plume = plume.obj.quickTable {
 		doc = plume.obj.luaMacro("doc", function (args, vm, currentFile)
 			local __name      = "doc"
-			local __signature = "`$doc(macro|table m)`"
+			local __signature = "`$doc(callable|table m)`"
 			local __s, __e, self, m
 			__s, __e, m = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and m then
-				__s, __e, m = plume.stdCheckType(vm, m, "macro", "1", __name, __signature)
+				__s, __e, m = plume.stdCheckType(vm, m, "callable", "1", __name, __signature)
 				if not __s then
 					__s, __e, m = plume.stdCheckType(vm, m, "table", "1", __name, __signature)
 				end
@@ -1433,7 +1433,7 @@ return function(plume)
 		replace = plume.obj.luaMacro("replace", function (args, vm, currentFile)
 			if args.table.self and args.table.self ~= plume.std.String then table.insert(args.table, 1, args.table.self) end
 			local __name      = "replace"
-			local __signature = "`$replace(string s, string pattern, string|macro sub, ?rich)`"
+			local __signature = "`$replace(string s, string pattern, string|callable sub, ?rich)`"
 			local __s, __e, self, s, pattern, sub
 			__s, __e, s, pattern, sub = plume.stdUnpackPositional(args, 3, 3,  __name, __signature)
 			local rich
@@ -1444,7 +1444,7 @@ return function(plume)
 			if __s and sub then
 				__s, __e, sub = plume.stdCheckType(vm, sub, "string", "3", __name, __signature)
 				if not __s then
-					__s, __e, sub = plume.stdCheckType(vm, sub, "macro", "3", __name, __signature)
+					__s, __e, sub = plume.stdCheckType(vm, sub, "callable", "3", __name, __signature)
 				end
 			end
 			if not __s then return false, __e end
@@ -1460,7 +1460,8 @@ return function(plume)
 				return true, (s:gsub(pattern, sub))
 			else
 				-- In case of closure - we should have an api for that
-				local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
+				local positionalParamCount = sub.positionalParamCount or (sub.macro and sub.macro.positionalParamCount)
+					or 1 -- dirty fix ; waiting for #1126
 				if positionalParamCount ~= 1 then
 					return false, string.format(
 						"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
@@ -1482,7 +1483,9 @@ return function(plume)
 					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
 					vm:_STACK_POP(vm.mainStack)
 	
-					__callervmip = __callervmip or (sub.offset or sub.macro.offset) - 1
+					__callervmip = __callervmip or
+						(sub.offset or sub.macro and sub.macro.offset or 2) -- dirty fix ; waiting for #1126
+						- 1
 	
 					success, result, callvmerrip  = __success, __result, __callervmip
 	
@@ -2134,14 +2137,14 @@ return function(plume)
 	
 		sort = plume.obj.luaMacro("sort", function (args, vm, currentFile)
 			local __name      = "sort"
-			local __signature = "`$sort(table t, macro compare:)`"
+			local __signature = "`$sort(table t, callable compare:)`"
 			local __s, __e, self, t
 			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 			local compare
 			if __s then __s, __e, self, compare = plume.stdUnpackNamed(args, {"self", "compare"}, __name, __signature) end
 			compare = compare or nil
 			if __s and t then __s, __e, t = plume.stdCheckType(vm, t, "table", "1", __name, __signature) end
-			if __s and compare then __s, __e, compare = plume.stdCheckType(vm, compare, "macro", "compare", __name, __signature) end
+			if __s and compare then __s, __e, compare = plume.stdCheckType(vm, compare, "callable", "compare", __name, __signature) end
 			if not __s then return false, __e end
 			------------
 	
@@ -2176,7 +2179,9 @@ return function(plume)
 					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
 					vm:_STACK_POP(vm.mainStack)
 	
-					__callervmip = __callervmip or (compare.offset or compare.macro.offset) - 1
+					__callervmip = __callervmip or
+						(compare.offset or compare.macro and compare.macro.offset or 2) -- dirty fix ; waiting for #1126
+						- 1
 	
 					success, result, callvmerrip  = __success, __result, __callervmip
 	
@@ -2862,8 +2867,8 @@ return function(plume)
 				given = arg.type
 			end
 		end
-		if given == "luaMacro" or given == "stdMacro" or given == "closure" then
-			given = "macro"
+		if expected == "callable" and vm:_IS_CALLABLE(arg) then
+			return true, nil, arg
 		end
 	
 		if given == "string" and expected == "number" then
