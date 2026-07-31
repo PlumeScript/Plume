@@ -2360,6 +2360,26 @@ return function(plume)
 			end
 	
 			return true, result
+		end),
+	
+		materialize = plume.obj.luaMacro("materialize", function (args, vm, currentFile)
+			local __name      = "materialize"
+			local __signature = "`$materialize(table t)`"
+			local __s, __e, self, t
+			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+			if __s and t then __s, __e, t = plume.stdCheckType(vm, t, "table", "1", __name, __signature) end
+			if not __s then return false, __e end
+			------------
+			local result = plume.callForceFragment(vm, t)
+	
+			if type(result) == "table" and result.type == "table" then
+				for _, key in ipairs(result.keys) do
+					result.table[key] = plume.callForceFragment(vm, result.table[key])
+				end
+			end
+	
+			return true, result
 		end)
 	}
 	

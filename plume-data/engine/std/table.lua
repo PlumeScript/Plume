@@ -338,6 +338,19 @@ plume.std.Table = plume.obj.quickTable{
 		end
 
 		return true, result
+	end),
+
+	materialize = plume.obj.luaMacro("materialize", function(args, vm)
+		--!signature table t
+		local result = plume.callForceFragment(vm, t)
+
+		if type(result) == "table" and result.type == "table" then
+			for _, key in ipairs(result.keys) do
+				result.table[key] = plume.callForceFragment(vm, result.table[key])
+			end
+		end
+
+		return true, result
 	end)
 }
 

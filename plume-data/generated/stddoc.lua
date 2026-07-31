@@ -102,6 +102,7 @@ return function(plume)
 	plume.std.Table.table.getMeta.doc = [[`Table.getMeta(t)`]]
 	plume.std.Table.table.hasKey.doc = [[`Table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.]]
 	plume.std.Table.table.join.doc = [[`Table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).]]
+	plume.std.Table.table.materialize.doc = [[`Table.materialize(x)`: Returns a fully rendered copy of `x`. If `x` is a table with a `fragment` metafield, the meta macro runs and its result replaces `x`. If `x` is a table without `fragment`, a new table is produced with `Table.materialize` applied to every child. Non-table values pass through unchanged. The original table is never mutated. See [expert.md](expert.md) § Lazy Rendering.]]
 	plume.std.Table.table.remove.doc = [[`Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.]]
 	plume.std.Table.table.removeKey.doc = [[`Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied. Raise an error if `table.key` doesn't exist.]]
 	plume.std.Table.table.setAt.doc = [[`Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.]]
