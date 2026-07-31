@@ -310,14 +310,20 @@ return function(vm)
 	        end
 
 	        if tostringMeta then
-	            self:_STACK_POP(self.mainStack)
+	        	local tostringMetaType = self:_GET_TYPE(tostringMeta)
+	        	local stringValue
 
-	            self:BEGIN_ACC(0, 0)
-	            self:_PUSH_SELF(value)
-	            self:_STACK_PUSH(self.mainStack, tostringMeta)
-	            self:_CONCAT_CALL_REC()
+	        	self:_STACK_POP(self.mainStack)
+	        	if tostringMetaType == "macro" then
+		            self:BEGIN_ACC(0, 0)
+		            self:_PUSH_SELF(value)
+		            self:_STACK_PUSH(self.mainStack, tostringMeta)
+		            self:_CONCAT_CALL_REC()
+		        else
+		        	self:_STACK_PUSH(self.mainStack, tostringMeta)
+	           	end
 
-	            local stringValue     = self:_STACK_GET(self.mainStack)
+	           	local stringValue = self:_STACK_GET(self.mainStack)
 	            local stringValueType = self:_GET_TYPE(stringValue)
 	            if stringValueType ~= "string" and stringValueType ~= "empty" then
 					self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)

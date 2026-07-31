@@ -252,7 +252,7 @@ end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for meta field 'tostring'. Expected 'macro'.              │
+│ → Wrong type 'table' for meta field 'tostring'. Expected 'macro or string'.    │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

@@ -60,8 +60,14 @@ return function(vm)
 						return false, self.plume.error.metaMacroWithoutNamedParameter(name)
 					end
 				end
-			else
-				return false, self.plume.error.wrongMetaFieldType(name, t, "macro")
+			elseif (t ~= "string" or name ~= "tostring") then
+				local expected
+				if name == "tostring" then
+					expected = "macro or string"
+				else
+					expected = "macro"
+				end
+				return false, self.plume.error.wrongMetaFieldType(name, t, expected)
 			end
 		else
 			return self:_META_CHECK_NAME(name)
