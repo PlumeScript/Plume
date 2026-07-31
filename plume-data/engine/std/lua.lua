@@ -176,7 +176,7 @@ plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm
 	end
 end))
 
-plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args)
+plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args, vm)
 	--!signature string code, [string filename], ?safe
 	local success, result = load(code, filename)
 

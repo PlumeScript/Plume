@@ -38,6 +38,7 @@ local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
 	f = f:gsub('%"([^"]+)%",%s*function%s*%(([^)]+)%)\n(%s*)(.-)%-%-!signature ([^\n]*)', function(name, args, indent, left, signature)
+		args = "args, vm, currentFile"
 
 		local options = {}
 		if signature:match('!') then
@@ -204,7 +205,7 @@ local function process(f)
 								table.insert(checks, "\tif not __s then\n\t\t")
 							end
 							table.insert(checks, string.format(
-							'__s, __e, %s = plume.stdCheckType(%s, "%s", %s, __name, __signature)\n',
+							'__s, __e, %s = plume.stdCheckType(vm, %s, "%s", %s, __name, __signature)\n',
 								checkArgVar, checkArgVar, m, checkArgName
 							))
 							if first then
@@ -216,7 +217,7 @@ local function process(f)
 						table.insert(checks, "end\n")
 					else
 						table.insert(checks, string.format(
-						'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", %s, __name, __signature) end\n',
+						'if __s and %s then __s, __e, %s = plume.stdCheckType(vm, %s, "%s", %s, __name, __signature) end\n',
 							checkArgVar, checkArgVar, checkArgVar, expected, checkArgName
 						))
 					end
