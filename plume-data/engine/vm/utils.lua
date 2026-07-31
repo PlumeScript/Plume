@@ -53,9 +53,13 @@ return function(vm)
 	                    self:_JUMP_END() --! to-remove
 	                end
 	            end
-	            self:LEAVE_SCOPE(0, 0)
-	            self:_STACK_POP(self.closureStack)
-	            self:_STACK_POP(self.macroStack)
+	            
+	            local t = self:_GET_TYPE(call.macro)
+	            if t == "macro" or t == "closure" then
+	            	self:LEAVE_SCOPE(0, 0)
+		            self:_STACK_POP(self.closureStack)
+		            self:_STACK_POP(self.macroStack)
+		        end
 	        end
 	        local safeResult = self.plume.obj.table(0, 2)
 	        safeResult:setItem("success", false)

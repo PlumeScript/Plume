@@ -1592,6 +1592,13 @@ $attempt($String, a)
 (success: true, result: a)
 /// End
 
+/// Test #1107
+$attempt($Math.sin, a)
+/// Output
+(success: false, result: Wrong type 'string' for parameter '1' of macro 'sin'. Expected: 'number'.
+Usage: `$sin(number x, ?deg, ?rad)`)
+/// End
+
 /// Test #1123
 let t = do
     meta tostring: $String
