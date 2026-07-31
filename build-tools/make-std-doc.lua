@@ -60,6 +60,6 @@ for _, info in ipairs(infos) do
 	table.insert(docs, "\tplume.std." .. info[1] .. ".doc = [[" .. info[2] .. "]]")
 end
 
-f = io.open("plume-data/engine/generated/stddoc.lua", "w")
+f = io.open("plume-data/generated/stddoc.lua", "w")
 	f:write(string.format(template, table.concat(docs, "\n")))
 f:close()

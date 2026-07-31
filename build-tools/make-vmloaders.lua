@@ -9,7 +9,7 @@ for file in lfs.dir(path) do
 	end
 end
 
-local f = io.open('plume-data/engine/generated/vmloaders.lua', "w")
+local f = io.open('plume-data/generated/vmloaders.lua', "w")
 	f:write(string.format([=[--[[
 This file is part of Plume🪶
 

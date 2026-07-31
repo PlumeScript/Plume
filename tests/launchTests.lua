@@ -1,5 +1,6 @@
 local lib = require "tests/lib"
 local plume = require"plume-data/engine/init"
+require"debug-tools/core" (plume)
 plume.debugForcedRoot = ""
 local tests = lib.loadTests("tests/plume")
 lib.loadTests("tests/plume/std", tests)
