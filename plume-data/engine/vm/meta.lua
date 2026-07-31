@@ -14,9 +14,8 @@ return function(vm)
 	function vm:_META_CHECK(name, obj)
 		local comopps = "add mul div sub mod pow"
 		local binopps = "eq lt"
-		local unopps = "minus"
-
-
+		local unopps  = "minus fragment tostring"
+		local varopps = "call"
 
 		local expectedParamCount
 		for opp in comopps:gmatch('%S+') do
@@ -36,6 +35,11 @@ return function(vm)
 				expectedParamCount = 0
 			end
 		end
+		for opp in varopps:gmatch('%S+') do
+			if name == opp then
+				expectedParamCount = -1
+			end
+		end
 
 		if expectedParamCount then
 			local t = self:_GET_TYPE(obj)
@@ -46,13 +50,15 @@ return function(vm)
 			end
 
 			if t == "macro" then
-				if metaValue.positionalParamCount ~= expectedParamCount then
-					return false, self.plume.error.wrongArgsCountMetaDefinition(
-						name, metaValue.positionalParamCount, expectedParamCount
-					)
-				end
-				if metaValue.namedParamCount > 1 then -- 1 for self
-					return false, self.plume.error.metaMacroWithoutNamedParameter(name)
+				if expectedParamCount ~= -1 then
+					if metaValue.positionalParamCount ~= expectedParamCount then
+						return false, self.plume.error.wrongArgsCountMetaDefinition(
+							name, metaValue.positionalParamCount, expectedParamCount
+						)
+					end
+					if metaValue.namedParamCount > 1 then -- 1 for self
+						return false, self.plume.error.metaMacroWithoutNamedParameter(name)
+					end
 				end
 			else
 				return false, self.plume.error.wrongMetaFieldType(name, t, "macro")

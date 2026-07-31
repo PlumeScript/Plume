@@ -1286,7 +1286,8 @@ return function (plume)
                                             do
                                                 local comopps = "add mul div sub mod pow"
                                                 local binopps = "eq lt"
-                                                local unopps = "minus"
+                                                local unopps = "minus fragment tostring"
+                                                local varopps = "call"
                                                 local expectedParamCount
                                                 for opp in comopps:gmatch ("%S+")
                                                  do
@@ -1309,6 +1310,12 @@ return function (plume)
                                                         expectedParamCount = 0
                                                     end
                                                 end
+                                                for opp in varopps:gmatch ("%S+")
+                                                 do
+                                                    if name == opp then
+                                                        expectedParamCount = -1
+                                                    end
+                                                end
                                                 if expectedParamCount then
                                                     local _ret114 = type (value) == "table" and (value == plumeObjEmpty and "empty" or value.type) or (type (value) == "cdata" and value.type) or type (value)
                                                     local t = _ret114
@@ -1318,13 +1325,15 @@ return function (plume)
                                                         t = "macro"
                                                     end
                                                     if t == "macro" then
-                                                        if metaValue.positionalParamCount ~= expectedParamCount then
-                                                            _ret112, _ret113 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
-                                                            goto _inline_end228
-                                                        end
-                                                        if metaValue.namedParamCount > 1 then
-                                                            _ret112, _ret113 = false, plume.error.metaMacroWithoutNamedParameter (name)
-                                                            goto _inline_end228
+                                                        if expectedParamCount ~= -1 then
+                                                            if metaValue.positionalParamCount ~= expectedParamCount then
+                                                                _ret112, _ret113 = false, plume.error.wrongArgsCountMetaDefinition (name, metaValue.positionalParamCount, expectedParamCount)
+                                                                goto _inline_end228
+                                                            end
+                                                            if metaValue.namedParamCount > 1 then
+                                                                _ret112, _ret113 = false, plume.error.metaMacroWithoutNamedParameter (name)
+                                                                goto _inline_end228
+                                                            end
                                                         end
                                                     else
                                                         _ret112, _ret113 = false, plume.error.wrongMetaFieldType (name, t, "macro")
