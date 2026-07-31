@@ -251,7 +251,9 @@ local function process(f)
 				%s
 				vm:_STACK_PUSH(vm.mainStack, %s)
 				local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
-				vm:_STACK_POP(vm.mainStack)
+				if __success then
+					vm:_STACK_POP(vm.mainStack)
+				end
 
 				__callervmip = __callervmip or
 					(%s.offset or %s.macro and %s.macro.offset or 2) -- dirty fix ; waiting for #1126

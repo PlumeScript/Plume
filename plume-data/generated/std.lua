@@ -1481,7 +1481,9 @@ return function(plume)
 					
 					vm:_STACK_PUSH(vm.mainStack, sub)
 					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
-					vm:_STACK_POP(vm.mainStack)
+					if __success then
+						vm:_STACK_POP(vm.mainStack)
+					end
 	
 					__callervmip = __callervmip or
 						(sub.offset or sub.macro and sub.macro.offset or 2) -- dirty fix ; waiting for #1126
@@ -2177,7 +2179,9 @@ return function(plume)
 					
 					vm:_STACK_PUSH(vm.mainStack, compare)
 					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
-					vm:_STACK_POP(vm.mainStack)
+					if __success then
+						vm:_STACK_POP(vm.mainStack)
+					end
 	
 					__callervmip = __callervmip or
 						(compare.offset or compare.macro and compare.macro.offset or 2) -- dirty fix ; waiting for #1126

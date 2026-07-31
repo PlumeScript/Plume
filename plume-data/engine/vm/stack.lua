@@ -19,7 +19,7 @@ return function(vm)
 		local value = stack[index or stack.pointer]
 		--! to-remove-begin
 	    if value == nil then
-	        self:_ERROR("[VM] get nil from stack.")
+	        error("[VM] get nil from stack.")
 	    end
 	    --! to-remove-end
 		return value
@@ -34,7 +34,7 @@ return function(vm)
 		local value = stack[stack.pointer + offset]
 		--! to-remove-begin
 	    if value == nil then
-	        self:_ERROR("[VM] get nil from stack.")
+	        error("[VM] get nil from stack.")
 	    end
 	    --! to-remove-end
 		return value
@@ -48,7 +48,7 @@ return function(vm)
 	function vm:_STACK_SET(stack, index, value)
 		--! to-remove-begin
 	    if index > stack.pointer then
-	        self:_ERROR("[VM] add value to stack out of bounds.")
+	        error("[VM] add value to stack out of bounds.")
 	    end
 	    --! to-remove-end
 		stack[index] = value
@@ -71,7 +71,7 @@ return function(vm)
 		local value = stack[stack.pointer + 1]
 		--! to-remove-begin
 	    if value == nil then
-	        self:_ERROR("[VM] get nil from stack.")
+	        error("[VM] get nil from stack.")
 	    end
 	    --! to-remove-end
 		return value
@@ -85,7 +85,7 @@ return function(vm)
 		stack.pointer = stack.pointer + 1
 		--! to-remove-begin
 	    if value == nil then
-	        self:_ERROR("[VM] get nil from stack.")
+	        error("[VM] get nil from stack.")
 		end
 	    --! to-remove-end
 		stack[stack.pointer] = value

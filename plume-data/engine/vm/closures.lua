@@ -67,10 +67,10 @@ return function(vm)
 		local map = self.upvalueMap[key]
 	    --! to-remove-begin
 	    if map == nil then
-	        self:_ERROR(string.format("[VM] Not upvalue map for key '%s'.", key))
+	        error(string.format("[VM] Not upvalue map for key '%s'.", key))
 	        return
 	    elseif #map==0 then
-	    	self:_ERROR("[VM] Empty upvalueMap.")
+	    	error("[VM] Empty upvalueMap.")
 	    	return
 	    end
 	    --! to-remove-end

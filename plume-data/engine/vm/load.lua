@@ -18,7 +18,7 @@ return function(vm)
 
 	    --! to-remove-begin
 	    if value == nil then
-	        self:_ERROR("[VM] Try to load a nil value.")
+	        error("[VM] Try to load a nil value.")
 	    end
 	    --! to-remove-end
 

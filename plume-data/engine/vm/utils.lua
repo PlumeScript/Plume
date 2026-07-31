@@ -105,11 +105,11 @@ return function(vm)
 
 	    --! to-remove-begin
 	    if not frameTop or frameTop <= 0 then
-	        self:_ERROR("[VM] Wrong frameTop, cannot find current ref.")
+	        error("[VM] Wrong frameTop, cannot find current ref.")
 	        return
 	    end
 	    if not frameBottom or frameBottom <= 0 then
-	        self:_ERROR("[VM] Wrong frameBottom, cannot find current ref.")
+	        error("[VM] Wrong frameBottom, cannot find current ref.")
 	        return
 	    end
 	    --! to-remove-end

@@ -45,7 +45,7 @@ return function(vm)
 		else
 		    --! to-remove-begin
 		    if self.jump > 0 then
-		        self:_ERROR("[VM] RETURN_FILE overwriting a pending jump.")
+		        error("[VM] RETURN_FILE overwriting a pending jump.")
 		    end
 		    --! to-remove-end
 			self:JUMP(0, self:_STACK_POP(self.macroStack)) -- return in the previous position
