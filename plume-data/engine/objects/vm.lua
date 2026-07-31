@@ -70,6 +70,46 @@ return function(plume)
 			vm[name] = plume[name]
 		end
 
+		function vm:initFileParams(chunk, initFileParams)
+			local currentFile = self.runtime.files[chunk.fileID]
+
+			self.fileParams = {}
+			if chunk.variadicParam then
+				table.insert(self.fileParams, {
+					offset = chunk.variadicParam.offset,
+					value  = self.plume.obj.table(0, 0)
+				})
+			end
+
+			if initFileParams then
+				for key, value in pairs(initFileParams) do
+					if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
+						local varKey
+						if tonumber(key) then
+							key = key-1-- 1 is the file path
+							varKey = "arg" .. key
+						else
+							varKey = key
+						end
+
+						local offset = chunk.namedParamOffset[varKey]
+						if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
+							table.insert(self.fileParams, {offset=offset, value=value})
+						elseif chunk.variadicParam then
+							local variadic = self.fileParams[1].value
+							variadic:setItem(key, value)
+						elseif currentFile.futureFlagUnknownParamError then
+							return false, self.plume.error.unknownParamError(varKey, chunk.namedParamOffset), 1
+						else
+							 self.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, self.runtime, self.ip, {886, 981})
+						end
+					end
+				end
+			end
+
+			return true
+		end
+
 		return vm
 	end
 end

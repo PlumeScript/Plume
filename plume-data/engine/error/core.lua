@@ -88,8 +88,8 @@ return function(plume)
         end
 		return {msg=msg, ip=ip or 1}
 	end
-	function plume.safeRun(run, vm,  startip, fileId, variadicParam, namedParamOffset, fileParams)
-		local novmcrash, success, result, ip = xpcall(run, plume.error.vmCrashHandler, vm, startip, fileId, variadicParam, namedParamOffset, fileParams)
+	function plume.safeRun(run, vm,  startip, fileId)
+		local novmcrash, success, result, ip = xpcall(run, plume.error.vmCrashHandler, vm, startip, fileId)
 		if not novmcrash then
 			result = success.msg or (type(success) == "string" and unexpectedHeading.."\n"..success)
 			ip = success.ip or 1
