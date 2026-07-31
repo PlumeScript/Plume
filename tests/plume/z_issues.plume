@@ -1560,6 +1560,14 @@ end
 (wing: macro<???>, nib: macro<nib>)
 /// End
 
+/// Test #1057
+let w = (1, 3, 2)
+run $Table.sort($w, compare: macro (a, b) $(a < b))
+$w
+/// Output
+(1, 2, 3)
+/// End
+
 /// Test #1061
 raise do
     a$1a$1a$1a$1a$1a$1a$1a$1a$1a$1

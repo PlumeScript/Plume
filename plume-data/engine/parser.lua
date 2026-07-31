@@ -368,8 +368,8 @@ return function (plume)
 				* os * P")"
 			)
 		-- local paramlistM = paramlist + E(plume.error.missingParamList)
-		local nMacroStart = K"macro" * s * name * os * paramlist^-1
-		local aMacroStart = K"macro" * os * paramlist^-1
+		local nMacroStart = K"macro" * s * name * os * paramlist^-1 * os
+		local aMacroStart = K"macro" * os * paramlist^-1 * os
 		local lMacroBody      = body * _end
 		local sMacroBody = Ct("BODY", V"firstStatement")
 		local sMacroBodyic = Ct("BODY", V"textic")
