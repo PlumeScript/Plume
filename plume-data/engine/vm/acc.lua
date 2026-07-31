@@ -316,6 +316,14 @@ return function(vm)
 	            self:_PUSH_SELF(value)
 	            self:_STACK_PUSH(self.mainStack, tostringMeta)
 	            self:_CONCAT_CALL_REC()
+
+	            local stringValue     = self:_STACK_GET(self.mainStack)
+	            local stringValueType = self:_GET_TYPE(stringValue)
+	            if stringValueType ~= "string" and stringValueType ~= "empty" then
+					self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
+	            	self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))
+	            end
+
 	        elseif fragmentValue then
 	        	self:_STACK_POP(self.mainStack)
 	        	self:_STACK_PUSH(self.mainStack, fragmentValue)

@@ -23,6 +23,12 @@ return function(vm)
 		end
 	end
 
+	--! inline
+	function vm:_ADD_CALLSTACK_DEBUG_INFO(macro, customip)
+		local callinfos = {runtime=self.runtime, macro=macro, ip=customip or self.ip}
+		table.insert(self.runtime.callstack, callinfos)
+	end
+
 	--- Remove a macro from callstack
 	---@param vm VM The virtual machine instance.
 	--! inline
