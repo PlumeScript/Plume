@@ -42,7 +42,7 @@ function plume.stdUnpackNamed(args, nameds, name, signature)
 end
 
 ---- <TEMP> ----
-function plume.makeFragment(s)
+function plume.makeFragment(vm, s)
 	local result        = {}
 	local stackFragment = {s}
 	local stackIndex    = {}
@@ -71,13 +71,13 @@ function plume.makeFragment(s)
 	return table.concat(result)
 end
 ---- </TEMP> ----
-function plume.stdCheckType(arg, expected, argName, name, signature)
+function plume.stdCheckType(vm, arg, expected, argName, name, signature)
 	local given = type(arg)
 	if type(arg) == "table" and arg.type then
 		---- <TEMP> ----
 		if arg.type == "fragment" then
 			given = "string"
-			arg = plume.makeFragment(arg)
+			arg = plume.makeFragment(vm, arg)
 		---- </TEMP> ----
 		elseif expected ~= "table" and arg.subtype then
 			given = arg.subtype

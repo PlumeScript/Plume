@@ -55,7 +55,7 @@ plume.std.String = plume.obj.quickTable {
 				if success then
 					local t = type(result) == "table" and result.type or type(result)
 					if t == "fragment" then
-						result = plume.makeFragment(result)
+						result = plume.makeFragment(vm, result)
 					elseif t ~= "string" and t ~= "number" and t ~= "empty" then
 						success = false
 						result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
