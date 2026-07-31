@@ -179,7 +179,7 @@ return function (plume)
 	end
 
 	local function saveHTML(dest, data)
-		local src = "plume-data/engine/debug/run.html"
+		local src = "debug-tools/run.html"
 		local fsrc  = io.open(src)
 		local fdest = io.open(dest, "w")
 		fdest:write((fsrc:read("*a"):gsub('%%BODY%%', makeBody(data))))
