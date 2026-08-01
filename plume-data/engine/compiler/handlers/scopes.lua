@@ -144,6 +144,8 @@ return function (plume, context, nodeHandlerTable)
 		context.safeClose(node, macro)
 		context.safeClose(node, loop, loop and loop.leave)
 		
+		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+		context.registerOP(node, plume.ops.CHECK_IS_TEXT)
 		context.registerOP(node, plume.ops.RAISE)
 	end
 end

@@ -38,17 +38,18 @@ Constraints enforced at compile time: right/left variants take exactly one param
 These metafields trigger only when the accessed key is **missing** from the table.
 
 *   `getindex` — `macro(name)`: the returned value becomes the result of the access. Returning `empty` raises an index error.
-*   `setindex` — `macro(name, value)`: a *value transformer* — the assignment stores whatever the macro returns.
+*   `setindex` — `macro(name, value)`: a *value transformer* — called only when the key is missing (like Lua's `__newindex`). The macro receives the key and the value; the assignment does not store the transformed value, so the macro must store it itself (e.g. via `rawset` or a side effect).
 
 ```plume
+let side
 let t = do
     meta setindex: macro (name, value)
-        Modified: $value
+        set side = Modified\: $value
     end
 end
 
 set t.nib = 5
-$(t.nib)
+$side
 // → Modified: 5
 ```
 
@@ -91,13 +92,91 @@ $counter()$counter()
 let wing = do
     size: 12
     meta tostring: macro ()
-        wing(size $(self.size))
+        $String(wing(size $(self.size)))
     end
 end
 
 The $wing is ready.
 // → The wing(size 12) is ready.
 ```
+
+## Lazy Rendering: `fragment`
+
+When the VM needs a concrete value from a table — for arithmetic, comparison or final text output — it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
+
+The real payoff is nested rendering. Because `fragment` fires at the last possible moment, the deepest fragments run first — so a nested structure renders with intuitive, correct nesting:
+
+```plume
+let depth = 0
+let item_count = 0
+macro List(...items)
+    meta fragment: macro
+        set depth += 1
+        <$depth>
+        for x in items
+            set item_count += 1
+            $item_count$x
+        end
+        </$depth>
+        set depth -= 1
+    end
+end
+
+@List
+    - a
+    - @List
+        - b
+        - c
+    end
+    - d
+end
+// → <1>1a2<2>3b4c</2>5d</1>
+```
+
+With a plain macro (eager), the inner `List` would render while `depth` is still `1`, producing wrong nesting (`<1>...<1>...</1>...</1>`). Here the inner fragment runs to completion first, so the tags nest correctly.
+
+Unlike `tostring`, which renders the table eagerly at each text interpolation, `fragment` renders **lazily** — once, at the last possible moment — and may return any type: a number, a restructured table, `empty` — not just text.
+
+```plume
+let counter = do
+    meta fragment: macro ()
+        42
+    end
+end
+
+$(counter + 8)
+// → 50
+```
+
+A fragment-table is best understood as a **lazy value**: its render is deferred until a concrete value is needed. The table's other fields are generation parameters for that deferred render — they stay inspectable (indexing, iteration) even after rendering, and `Table.materialize` (below) processes them as data.
+
+Constraints: the metafield value must be a macro. Because `fragment` intercepts the very triggers these other metafields rely on, defining it alongside any of them is an error:
+
+*   `tostring` — both define how the table becomes text; `fragment` would shadow it.
+*   `call` — the table is rendered before the call, so `call` would never fire.
+*   Arithmetic operators (`add`, `sub`, `mul`, `div`, `mod`, `pow` and their `r`/`l` variants, `minus`) — the table is rendered before the operation, so the operator metamacro would never fire.
+*   Comparison operators (`eq`, `lt`) — the table is rendered before the comparison, for the same reason.
+
+The `fragment` metafield does **not** fire on table operations that access structure rather than rendering — iteration (`for x in t`), indexing (`t.field`), or table expansion (`...t`) leave the table untouched. Only the explicit need for a concrete value triggers it.
+
+To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
+
+```plume
+let deep = do
+    - do
+        meta fragment: macro ()
+            inner-rendered
+        end
+    end
+    - plain
+end
+
+let m = $Table.materialize($deep)
+// m is a table whose first item is the string "inner-rendered"
+// and second item is the string "plain"
+```
+
+`Table.materialize` returns a **new** table; the original is never mutated. Non-table values pass through unchanged.
 
 ## Custom Iterators: `next` and `iter`
 
@@ -145,7 +224,8 @@ end
 
 let x = $String(1)
 $wing($x)
-// → string — the argument was converted before entering the body
+// the argument was converted to a number before entering the body
+// → number
 ```
 
 `macro wing (Number size)` is syntactic sugar for:
@@ -203,10 +283,11 @@ with ($ink: red)
     end
     $paint()
 end
-// → Painted in blue.
-// → Painted in red.
-// → Painted in green.
-// → Painted in red.
+// →
+Painted in blue.
+Painted in red.
+Painted in green.
+Painted in red.
 ```
 
 *   `$Context([default])` creates the variable; `$ctx()` reads its current value.
@@ -266,7 +347,9 @@ Currently available features:
 ```plume
 $eval(\$(1 + 1))
 // → 2
+```
 
+```plume
 let outcome = $(eval(raise wing, ?safe))
 // outcome is (success: false, result: ...wing...)
 ```
@@ -291,7 +374,7 @@ end
 ```
 
 ```plume
-let double = $lua.require(./double.lua)
+let double = $lua.require(tests/plume/toimport/double)
 $double(21)
 // → 42
 ```

@@ -28,7 +28,7 @@ Licensed under the MIT License — see LICENSE for details.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (vm, startip, fileID, variadicParam, namedParamOffset, initFileParams)
+	function plume._run_dev (vm, startip)
 		--! index-to-inline self.err vmerr
 	    --! index-to-inline self.errip vmerrip
 	    --! index-to-inline vm.err vmerr
@@ -39,6 +39,7 @@ return function (plume)
 	    --! index-to-inline variableStack.*
 	    --! index-to-inline mainStackFrames.*
 	    --! index-to-inline variableStackFrames.*
+	    --! index-to-inline recursiveStack.*
 	    --! index-to-inline fileStack.*
 	    --! index-to-inline macroStack.*
 	    --! index-to-inline contextStackCache.*
@@ -50,7 +51,7 @@ return function (plume)
 	    --! index-to-inline plume._run_dev run
 	    --! index-to-inline sops.* sops_*
 	    
-		local op, arg1, arg2, vmerr, vmerrip
+		local op, arg1, arg2, vmerr, vmerrip, customerrip
 		local self = vm
 		--! copyvm
 		--! to-add local
@@ -63,9 +64,7 @@ return function (plume)
 		--! to-add vmstate._RUN = plume._run
 		--! to-add local _RUN = vmstate._run
 		vm.ip      = startip - 1
-		vm:_VM_INIT(fileID)
-		vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
-		
+		vm:_VM_STAT_INIT()
 		
 		::DISPATCH::
 			do -- prevent
@@ -153,7 +152,7 @@ end
 
 local footer = [[
 		--! to-add ::ERROR::
-		--! to-add vm:_HANDLE_ERROR()
+		--! to-add vm:_HANDLE_ERROR(customerrip)
 		::END::
 		
 		--! to-remove-begin
@@ -187,6 +186,6 @@ end]]
 local result = {header, dispatch, labels, footer}
 
 
-local f = io.open("plume-data/engine/generated/engine.lua", "w")
+local f = io.open("plume-data/generated/engine.lua", "w")
 	f:write(table.concat( result, ""))
 f:close()

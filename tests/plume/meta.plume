@@ -296,5 +296,15 @@ let m = $Table.getMeta($t)
 set m.readonly = $false
 
 set t.wing = blue
-/// Result
+/// Output
+/// End
+
+/// Test tostring simple value
+let t = do
+  meta tostring: I'm a table.
+end
+
+$String($t)
+/// Output
+I'm a table.
 /// End

@@ -13,19 +13,25 @@ return function(vm)
 	    return type(x) == "table" and (x == self.plume.obj.empty and "empty" or x.type) or (type(x) == "cdata" and x.type) or type(x)
 	end
 
+	--! inline
+	function vm:_IS_CALLABLE(x)
+		local _type = vm:_GET_TYPE(x)
+		return _type == "macro" or _type == "closure" or _type == "luaMacro" or _type == "stdMacro" or (_type == "table" and x.meta and x.meta.table.call) or x == self.plume.std.Table or x == self.plume.std.String or x == self.plume.std.attempt
+	end
 
 	--- Throw an error
 	--- @param msg string
 	--- @return nil
 	--! inline
-	function vm:_ERROR(msg)
+	function vm:_ERROR(msg, _customerrip)
 		self.err = msg
-	    self:_HANDLE_ERROR() --! to-remove
+	    self:_HANDLE_ERROR(_customerrip) --! to-remove
+	    --! to-add customerrip = _customerrip
 	    --! to-add _temp_goto_error()
 	end
 
 	--! inline
-	function vm:_HANDLE_ERROR()
+	function vm:_HANDLE_ERROR(customerrip)
 	    local safeCallIndex
 	    for i = #self.runtime.callstack, 1, -1 do
 	        local call = self.runtime.callstack[i]
@@ -47,9 +53,13 @@ return function(vm)
 	                    self:_JUMP_END() --! to-remove
 	                end
 	            end
-	            self:LEAVE_SCOPE(0, 0)
-	            self:_STACK_POP(self.closureStack)
-	            self:_STACK_POP(self.macroStack)
+	            
+	            local t = self:_GET_TYPE(call.macro)
+	            if t == "macro" or t == "closure" then
+	            	self:LEAVE_SCOPE(0, 0)
+		            self:_STACK_POP(self.closureStack)
+		            self:_STACK_POP(self.macroStack)
+		        end
 	        end
 	        local safeResult = self.plume.obj.table(0, 2)
 	        safeResult:setItem("success", false)
@@ -61,7 +71,7 @@ return function(vm)
 	        self:_STACK_PUSH(self.mainStack, safeResult)
 
 	    else
-	        self.errip = self.ip
+	        self.errip = customerrip or self.ip
 	        self:_JUMP_END() --! to-remove
 	    end
 	end
@@ -99,11 +109,11 @@ return function(vm)
 
 	    --! to-remove-begin
 	    if not frameTop or frameTop <= 0 then
-	        self:_ERROR("[VM] Wrong frameTop, cannot find current ref.")
+	        error("[VM] Wrong frameTop, cannot find current ref.")
 	        return
 	    end
 	    if not frameBottom or frameBottom <= 0 then
-	        self:_ERROR("[VM] Wrong frameBottom, cannot find current ref.")
+	        error("[VM] Wrong frameBottom, cannot find current ref.")
 	        return
 	    end
 	    --! to-remove-end

@@ -38,6 +38,7 @@ local function process(f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
 	f = f:gsub('%"([^"]+)%",%s*function%s*%(([^)]+)%)\n(%s*)(.-)%-%-!signature ([^\n]*)', function(name, args, indent, left, signature)
+		args = "args, vm, currentFile"
 
 		local options = {}
 		if signature:match('!') then
@@ -204,7 +205,7 @@ local function process(f)
 								table.insert(checks, "\tif not __s then\n\t\t")
 							end
 							table.insert(checks, string.format(
-							'__s, __e, %s = plume.stdCheckType(%s, "%s", %s, __name, __signature)\n',
+							'__s, __e, %s = plume.stdCheckType(vm, %s, "%s", %s, __name, __signature)\n',
 								checkArgVar, checkArgVar, m, checkArgName
 							))
 							if first then
@@ -216,7 +217,7 @@ local function process(f)
 						table.insert(checks, "end\n")
 					else
 						table.insert(checks, string.format(
-						'if __s and %s then __s, __e, %s = plume.stdCheckType(%s, "%s", %s, __name, __signature) end\n',
+						'if __s and %s then __s, __e, %s = plume.stdCheckType(vm, %s, "%s", %s, __name, __signature) end\n',
 							checkArgVar, checkArgVar, checkArgVar, expected, checkArgName
 						))
 					end
@@ -250,12 +251,16 @@ local function process(f)
 				%s
 				vm:_STACK_PUSH(vm.mainStack, %s)
 				local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
-				vm:_STACK_POP(vm.mainStack)
+				if __success then
+					vm:_STACK_POP(vm.mainStack)
+				end
 
-				__callervmip = __callervmip or (%s.offset or %s.macro.offset) - 1
+				__callervmip = __callervmip or
+					(%s.offset or %s.macro and %s.macro.offset or 2) -- dirty fix ; waiting for #1126
+					- 1
 
 				%s = __success, __result, __callervmip]],
-			table.concat(push_args), macro, macro, macro, vars)
+			table.concat(push_args), macro, macro, macro, macro, vars)
 	end)
 
 	for m in f:gmatch('%-%-![^\n]+') do
@@ -282,7 +287,7 @@ end
 
 
 result = string.format(template, (table.concat(result):gsub('\n', '\n\t')))
-local out = io.open("plume-data/engine/generated/std.lua", "w")
+local out = io.open("plume-data/generated/std.lua", "w")
 	out:write(result)
 out:close()
 

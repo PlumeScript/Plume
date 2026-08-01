@@ -78,8 +78,16 @@ return function(vm)
 	            self:_ERROR(self.plume.error.cannotUseEmptyAsKey())
 	        end
 	    else
-	        local tt = self:_GET_TYPE(t)
+	        
+	    	local tt = self:_GET_TYPE(t)
+	        if tt == "fragment" then
+	        	self:_STACK_PUSH(self.mainStack, t)
+	        	self:FORCE_FRAGMENT()
+	        	t  = self:_STACK_POP(self.mainStack)
+	        	tt = self:_GET_TYPE(t)
+	        end
 
+	        
 	        if not tonumber(key) then
 	            if tt == "string" then
 	                t = self.plume.std.String
@@ -94,6 +102,8 @@ return function(vm)
 	                tt = "table"
 	            end
 	        end
+
+
 
 	        if tt ~= "table" then
 	            if arg1 == 1 then

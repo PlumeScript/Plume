@@ -31,7 +31,7 @@ local function sleep(s)
 	while os.clock() - t <= s do end
 end
 
-local ddadd = plume.obj.luaMacro("add", function(args)
+local ddadd = plume.obj.luaMacro("add", function(args, vm)
 	local x = args.table[1]
 	local y = args.table[2]
 
@@ -58,7 +58,7 @@ local ddadd = plume.obj.luaMacro("add", function(args)
 	end
 end)
 
-local ddsub = plume.obj.luaMacro("sub", function(args)
+local ddsub = plume.obj.luaMacro("sub", function(args, vm)
 	local x = args.table[1]
 	local y = args.table[2]
 
@@ -85,7 +85,7 @@ local ddsub = plume.obj.luaMacro("sub", function(args)
 	end
 end)
 
-local ddmul = plume.obj.luaMacro("mul", function(args)
+local ddmul = plume.obj.luaMacro("mul", function(args, vm)
 	local x = args.table[1]
 	local y = args.table[2]
 
@@ -112,7 +112,7 @@ local ddmul = plume.obj.luaMacro("mul", function(args)
 	return createDuration(result)
 end)
 
-local dddiv = plume.obj.luaMacro("div", function(args)
+local dddiv = plume.obj.luaMacro("div", function(args, vm)
 	local x = args.table[1]
 	local y = args.table[2]
 
@@ -185,11 +185,11 @@ function createDate (args)
 	end
 
 	time.meta = plume.obj.quickTable{
-		tostring = plume.obj.luaMacro ("tostring", function(args)
+		tostring = plume.obj.luaMacro ("tostring", function(args, vm)
 			local self = args.table.self
 			return true, os.date("%x", self.table.timestamp)
 		end),
-		setindex = plume.obj.luaMacro ("setindex", function(args)
+		setindex = plume.obj.luaMacro ("setindex", function(args, vm)
 			local self   = args.table.self
 			local key    = args.table[1]
 			local value  = args.table[2]
@@ -204,7 +204,7 @@ function createDate (args)
 
 			return true
 		end),
-		getindex = plume.obj.luaMacro ("getindex", function(args)
+		getindex = plume.obj.luaMacro ("getindex", function(args, vm)
 			local self = args.table.self
 			local key = args.table[1]
 			local values = self:getFromTimestamp()
@@ -218,7 +218,7 @@ function createDate (args)
 		sub = ddsub,
 		mul = ddmul,
 		div = dddiv,
-		eq = plume.obj.luaMacro("eq", function(args)
+		eq = plume.obj.luaMacro("eq", function(args, vm)
 			local x = args.table[1]
 			local y = args.table[2]
 
@@ -231,7 +231,7 @@ function createDate (args)
 
 			return true, x.table.timestamp == y.table.timestamp
 		end),
-		lt = plume.obj.luaMacro("lt", function(args)
+		lt = plume.obj.luaMacro("lt", function(args, vm)
 			local x = args.table[1]
 			local y = args.table[2]
 
@@ -258,14 +258,14 @@ function createDuration(s)
 	duration.table.type = "Duration"
 
 	duration.meta = plume.obj.quickTable({
-		tostring = plume.obj.luaMacro ("tostring", function(args)
+		tostring = plume.obj.luaMacro ("tostring", function(args, vm)
 			local self = args.table.self
 			return true, self.value
 		end),
-		setindex = plume.obj.luaMacro ("setindex", function(args)
+		setindex = plume.obj.luaMacro ("setindex", function(args, vm)
 			return false, "Cannot edit 'duration' fields."
 		end),
-		getindex = plume.obj.luaMacro ("getindex", function(args)
+		getindex = plume.obj.luaMacro ("getindex", function(args, vm)
 			local self = args.table.self
 			local key = args.table[1]
 			
@@ -287,7 +287,7 @@ function createDuration(s)
 		mul = ddmul,
 		div = dddiv,
 
-		eq = plume.obj.luaMacro("eq", function(args)
+		eq = plume.obj.luaMacro("eq", function(args, vm)
 			local x = args.table[1]
 			local y = args.table[2]
 
@@ -301,7 +301,7 @@ function createDuration(s)
 			return true, x.value == y.value
 		end),
 
-		lt = plume.obj.luaMacro("lt", function(args)
+		lt = plume.obj.luaMacro("lt", function(args, vm)
 			local x = args.table[1]
 			local y = args.table[2]
 
@@ -324,7 +324,7 @@ local function ignoreSuccess(_, y)
 end
 
 plume.std.Time = plume.obj.quickTable{
-	date = plume.obj.luaMacro("date", function(args)
+	date = plume.obj.luaMacro("date", function(args, vm)
 		--!signature number year: 1970, number month: 1, number day: 1, number hour: 1, number minute: 0, number second: 0, string zone:, string locale:, number timestamp: 0
 		return createDate(args)
 	end),

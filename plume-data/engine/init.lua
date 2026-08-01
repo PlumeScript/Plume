@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b59 (Owl Edition)
+Plume🪶 b60 (Owl Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,24 +30,22 @@ else
 end
 
 local plume = {}
-plume.VERSION = "b59 (Owl Edition)"
+plume.VERSION = "b60 (Owl Edition)"
 
-require 'plume-data/engine/debug/core'           (plume)
-require 'plume-data/engine/error/core'           (plume)
-require 'plume-data/engine/warning'              (plume)
-require 'plume-data/engine/utils'                (plume)
-require 'plume-data/engine/ast'                  (plume)
-require 'plume-data/engine/objects/core'         (plume)
-require 'plume-data/engine/parser'               (plume)
-require 'plume-data/engine/compiler/core'        (plume)
-require 'plume-data/engine/generated/std'        (plume)
-require 'plume-data/engine/generated/stddoc'     (plume)
-require 'plume-data/engine/generated/engine'     (plume)
-require 'plume-data/engine/generated/engine-opt' (plume)
-require 'plume-data/engine/generated/vmloaders'  (plume)
-require 'plume-data/engine/finalizer'            (plume)
-require 'plume-data/engine/config'               (plume)
-require 'plume-data/engine/profiler'             (plume)
+require 'plume-data/engine/error/core'    (plume)
+require 'plume-data/engine/warning'       (plume)
+require 'plume-data/engine/utils'         (plume)
+require 'plume-data/engine/ast'           (plume)
+require 'plume-data/engine/objects/core'  (plume)
+require 'plume-data/engine/parser'        (plume)
+require 'plume-data/engine/compiler/core' (plume)
+require 'plume-data/generated/std'        (plume)
+require 'plume-data/generated/stddoc'     (plume)
+require 'plume-data/generated/engine'     (plume)
+require 'plume-data/generated/engine-opt' (plume)
+require 'plume-data/generated/vmloaders'  (plume)
+require 'plume-data/engine/finalizer'     (plume)
+require 'plume-data/engine/config'        (plume)
 
 function plume.run(runtime, chunk, fileParams)
 	if plume.runStatFlag then
@@ -62,8 +60,15 @@ function plume.run(runtime, chunk, fileParams)
 		run = plume._run
 	end
 
-	local vm = plume.obj.vm(runtime)
-	return plume.safeRun(run, vm, chunk.offset, chunk.fileID, chunk.variadicParam, chunk.namedParamOffset, fileParams)
+	runtime.vm = runtime.vm or plume.obj.vm(runtime)
+	local success, result, errip = runtime.vm:initFileParams(chunk, fileParams and plume.obj.quickTable(fileParams))
+	if not success then
+		return false, result, errip
+	end
+
+	runtime.vm:_STACK_PUSH(runtime.vm.fileStack, chunk.fileID)
+	
+	return plume.safeRun(run, runtime.vm, chunk.offset)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain)

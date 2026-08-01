@@ -119,4 +119,18 @@ return function (plume)
 			plume.debug.printAST(child, indent .. " ")
 		end
 	end
+
+	--- Compact single-line representation of a value, truncated to maxlength.
+	function plume.debug.repr(obj, maxlength)
+		local s = plume.repr(obj)
+		if maxlength and #s > maxlength then
+			s = s:sub(1, maxlength) .. "..."
+		end
+		return s
+	end
+
+	--- Decode a bytecode instruction into {op, name, arg1, arg2, value}.
+	function plume.debug.getInstrInfos(instr, runtime)
+		return getInstrInfos(instr, runtime)
+	end
 end

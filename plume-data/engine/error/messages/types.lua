@@ -47,4 +47,8 @@ return function(plume)
 	function plume.error.wrongMetaFieldType(name, _type, expected)
 		return string.format("Wrong type '%s' for meta field '%s'. Expected '%s'.", _type, name, expected)
 	end
+
+	function plume.error.wrongTostringReturnType(stringValueType)
+		return string.format("`tostring` metamacro returning `%s` instead of `string`.", stringValueType)
+	end
 end

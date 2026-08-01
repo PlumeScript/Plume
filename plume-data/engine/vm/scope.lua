@@ -40,22 +40,13 @@ return function(vm)
 		self:_STACK_POP(self.fileStack)
 		self:_POP_CALLSTACK()
 
-		if self:_STACK_POS(self.fileStack) == 0 then
-			self:_JUMP_END()
-		else
-		    --! to-remove-begin
-		    if self.jump > 0 then
-		        self:_ERROR("[VM] RETURN_FILE overwriting a pending jump.")
-		    end
-		    --! to-remove-end
-			self:JUMP(0, self:_STACK_POP(self.macroStack)) -- return in the previous position
-		end
-
 	    -- Cache result
 	    local file = self:_GET_CURRENT_FILE()
 	    if file and file.cacheId then
 	        self.runtime.cache.results[file.cacheId] = self:_STACK_GET(self.mainStack)
 	    end
+
+	    self:_JUMP_END()
 	end
 
 	--- @opcode

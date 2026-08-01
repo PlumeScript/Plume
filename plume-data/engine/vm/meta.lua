@@ -14,9 +14,8 @@ return function(vm)
 	function vm:_META_CHECK(name, obj)
 		local comopps = "add mul div sub mod pow"
 		local binopps = "eq lt"
-		local unopps = "minus"
-
-
+		local unopps  = "minus fragment tostring"
+		local varopps = "call"
 
 		local expectedParamCount
 		for opp in comopps:gmatch('%S+') do
@@ -36,6 +35,11 @@ return function(vm)
 				expectedParamCount = 0
 			end
 		end
+		for opp in varopps:gmatch('%S+') do
+			if name == opp then
+				expectedParamCount = -1
+			end
+		end
 
 		if expectedParamCount then
 			local t = self:_GET_TYPE(obj)
@@ -45,23 +49,48 @@ return function(vm)
 				t = "macro"
 			end
 
-			if t == "macro" then
-				if metaValue.positionalParamCount ~= expectedParamCount then
-					return false, self.plume.error.wrongArgsCountMetaDefinition(
-						name, metaValue.positionalParamCount, expectedParamCount
-					)
+			if vm:_IS_CALLABLE(metaValue) then
+				if expectedParamCount ~= -1
+					and metaValue.positionalParamCount -- dirty fix ; waiting for #1126
+				then
+					if metaValue.positionalParamCount ~= expectedParamCount then
+						return false, self.plume.error.wrongArgsCountMetaDefinition(
+							name, metaValue.positionalParamCount, expectedParamCount
+						)
+					end
+					if metaValue.namedParamCount > 1 then -- 1 for self
+						return false, self.plume.error.metaMacroWithoutNamedParameter(name)
+					end
 				end
-				if metaValue.namedParamCount > 1 then -- 1 for self
-					return false, self.plume.error.metaMacroWithoutNamedParameter(name)
+			elseif (t ~= "string" or name ~= "tostring") then
+				local expected
+				if name == "tostring" then
+					expected = "callable or string"
+				else
+					expected = "callable"
 				end
-			else
-				return false, self.plume.error.wrongMetaFieldType(name, t, "macro")
+				return false, self.plume.error.wrongMetaFieldType(name, t, expected)
 			end
 		else
 			return self:_META_CHECK_NAME(name)
 		end
 
 		return true
+	end
+
+	--! inline
+	function vm:_CHECK_META_FRAGMENT(meta, name)
+		local fragmentIncompatible = "add addr addl mul mull mulr div divr divl sub subr subl mod modr modl pow powl powr eq lt minus call tostring validate readonly"
+		if meta then
+			for s in fragmentIncompatible:gmatch('%S+') do
+				if meta.table[s] and name == "fragment" or meta.table.fragment and s == name then
+					self:_ERROR(
+						self.plume.error.incompatibleMetaFields(name, s),
+						self:_STACK_GET(self.mainStack.frames)-1-- move errip to frame bottom
+					)
+				end
+			end
+		end
 	end
 
 	--! inline

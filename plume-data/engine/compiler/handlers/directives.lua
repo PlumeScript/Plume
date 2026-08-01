@@ -26,7 +26,7 @@ return function (plume, context, nodeHandlerTable)
 		local pathNode = plume.ast.get(node, "NAME")
 		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
 
-		local fileParams = {}
+		local fileParams = {""} -- first slot always taken (why?)
 		local fileParamsForCache = {}
 		local posIndex = 1 -- 1 is for file path
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
@@ -77,7 +77,10 @@ return function (plume, context, nodeHandlerTable)
 			if not success then
 				plume.error.cannotExecuteFile(pathNode, path, result)
 			end
-			 context.runtime.cache.results[cacheId] = result
+			context.runtime.cache.results[cacheId] = result
+			-- clean stack
+			local vm = context.runtime.vm
+			vm:_STACK_POP(vm.mainStack)
 		end
 
 		local t = type(result) == "table" and result.type or type(result)

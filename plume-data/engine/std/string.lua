@@ -21,7 +21,7 @@ plume.std.String = plume.obj.quickTable {
 
 	replace = plume.obj.luaMacro("replace", function (args, vm, _, self)
 		--!override-self-plume.std.String
-		--!signature string s, string pattern, string|macro sub, ?rich
+		--!signature string s, string pattern, string|callable sub, ?rich
 		if not rich then
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 			if type(sub) == "string" then
@@ -33,7 +33,8 @@ plume.std.String = plume.obj.quickTable {
 			return true, (s:gsub(pattern, sub))
 		else
 			-- In case of closure - we should have an api for that
-			local positionalParamCount = sub.positionalParamCount or sub.macro.positionalParamCount
+			local positionalParamCount = sub.positionalParamCount or (sub.macro and sub.macro.positionalParamCount)
+				or 1 -- dirty fix ; waiting for #1126
 			if positionalParamCount ~= 1 then
 				return false, string.format(
 					"Macro sub for `String.replace` must take exactly '1' argument, not '%i'.",
@@ -55,7 +56,7 @@ plume.std.String = plume.obj.quickTable {
 				if success then
 					local t = type(result) == "table" and result.type or type(result)
 					if t == "fragment" then
-						result = plume.makeFragment(result)
+						result = plume.callForceFragment(vm, result)
 					elseif t ~= "string" and t ~= "number" and t ~= "empty" then
 						success = false
 						result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)

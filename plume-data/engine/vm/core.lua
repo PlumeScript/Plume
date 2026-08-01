@@ -10,58 +10,16 @@ Licensed under the MIT License — see LICENSE for details.
 --===============--
 
 return function(vm)
-	--! inline
-	function vm:_INIT_FILE_PARAM(fileID, initFileParams, variadicParam, namedParamOffset)
-	    local currentFile = self.runtime.files[fileID]
-
-	    self.fileParams = {}
-	    if variadicParam then
-	        table.insert(self.fileParams, {
-	            offset = variadicParam.offset,
-	            value  = self.plume.obj.table(0, 0)
-	        })
-	    end
-
-	    if initFileParams then
-	        for key, value in pairs(initFileParams) do
-	            if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
-	                local varKey
-	                if tonumber(key) then
-	                    key = key-1-- 1 is the file path
-	                    varKey = "arg" .. key
-	                else
-	                    varKey = key
-	                end
-
-	                local offset = namedParamOffset[varKey]
-	                if offset and (not variadicParam or offset ~= variadicParam.offset) then
-	                    table.insert(self.fileParams, {offset=offset, value=value})
-	                elseif variadicParam then
-	                    local variadic = self.fileParams[1].value
-	                    variadic:setItem(key, value)
-	                elseif currentFile.futureFlagUnknownParamError then
-	                    self:_ERROR(self.plume.error.unknownParamError(varKey, namedParamOffset))
-	                    self:_ERROR(self.plume.error.unknownParamError(varKey, namedParamOffset)) -- dirty fix
-	                else
-	                     self.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, self.runtime, self.ip, {886, 981})
-	                end
-	            end
-	        end
-	    end
-	end
-
 	--- Declare all vm variables
 	--- @param runtime runtime The runtime to execute
 	--! inline-nodo
-	function vm:_VM_INIT(fileID)
-	    if #self.fileStack == 0 then
-	        self.fileStack[1] = fileID
-	    end
+	function vm:_VM_STAT_INIT()
 
 	    --! to-remove-begin
 	    if self.plume.runStatFlag then
 	        self.stats = {}
 	        self.stats.opseq = {} -- opcode sequences
+	        self.stats.ipcount = {} -- instruction count per ip
 
 	        -- queue for opcodes history
 	        self.stats.ophist = 0
@@ -77,6 +35,8 @@ return function(vm)
 	    self.stats.ophist = ((self.stats.ophist % self.stats.histmask) * 128) + op
 	    -- Update sequences
 	    self.stats.opseq[self.stats.ophist] = 1 + (self.stats.opseq[self.stats.ophist] or 0)
+	    -- Update per-ip count
+	    self.stats.ipcount[self.ip] = 1 + (self.stats.ipcount[self.ip] or 0)
 	    --! to-remove-end
 	end
 

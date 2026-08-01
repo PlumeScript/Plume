@@ -79,15 +79,17 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(index, plume.ops.LOAD_CONSTANT, 0, offset)
 			end
 
-			if child.name:match('INDEX') then
-				context.registerOP(node, plume.ops.FORCE_FRAGMENT)
-			end
+			-- if child.name:match('INDEX') then
+			-- 	context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+			-- end
 		end
 		context.toggleConcatOff()
 		context.nodeHandler(node.children[1]) -- Load the "root" value
 		context.toggleConcatPop()
 
-		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+		if #node.children < 2 or not node.children[2].name:match('INDEX') then
+			context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+		end
 
 		-- Push all index and call opcodes in order
 		for i=2, #node.children do
@@ -124,6 +126,9 @@ return function (plume, context, nodeHandlerTable)
 		end
 	end
 
+	local function emitForceFragmentIfNeeded(node) -- atm always, waiting #1043 to filter cases.
+		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
+	end
 
 	--- Same logic for most of operators
 	--- `a OPP b` is treated as `load a;load b; do OPP`
@@ -132,8 +137,10 @@ return function (plume, context, nodeHandlerTable)
 	for opName in opNames:gmatch("%S+") do
 		nodeHandlerTable[opName] = function(node)
 			context.nodeHandler(node.children[1])
+			emitForceFragmentIfNeeded(node.children[1])
 			if node.children[2] then--only binary
 				context.nodeHandler(node.children[2])
+				emitForceFragmentIfNeeded(node.children[2])
 			end
 			context.registerOP(node, plume.ops["OP_" .. opName])
 		end
@@ -152,8 +159,10 @@ return function (plume, context, nodeHandlerTable)
 	--- x GT y := y LT x
 	nodeHandlerTable.GT = function(node)
 		context.nodeHandler(node.children[2])
+		emitForceFragmentIfNeeded(node.children[2])
 		if node.children[2] then
 			context.nodeHandler(node.children[1])
+			emitForceFragmentIfNeeded(node.children[1])
 		end
 		context.registerOP(node, plume.ops.OP_LT)
 	end
@@ -177,8 +186,10 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.OR = function(node)
 		local uid = context.getUID()
 		context.nodeHandler(node.children[1])
+		emitForceFragmentIfNeeded(node.children[1])
 		context.registerGoto(node, "or_end_"..uid, "JUMP_IF_PEEK") -- If first membre is true, skip the second
 		context.nodeHandler(node.children[2])
+		emitForceFragmentIfNeeded(node.children[2])
 		context.registerOP(node, plume.ops["OP_OR"])
 		context.registerLabel(node, "or_end_"..uid)
 	end
@@ -186,8 +197,10 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.AND = function(node)
 		local uid = context.getUID()
 		context.nodeHandler(node.children[1])
+		emitForceFragmentIfNeeded(node.children[1])
 		context.registerGoto(node, "and_end_"..uid, "JUMP_IF_NOT_PEEK") -- If first membre is false, skip the second
 		context.nodeHandler(node.children[2])
+		emitForceFragmentIfNeeded(node.children[2])
 		context.registerOP(node, plume.ops["OP_AND"])
 		context.registerLabel(node, "and_end_"..uid)
 	end

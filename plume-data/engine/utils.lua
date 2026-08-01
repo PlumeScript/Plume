@@ -81,7 +81,7 @@ return function (plume)
 		eq lt minus
 		call getindex setindex
 		iter next tostring validate
-		readonly
+		readonly fragment
 	]]):gmatch("%S+") do
 		plume.validMetaNames[name] = true
 	end

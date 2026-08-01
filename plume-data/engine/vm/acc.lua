@@ -81,42 +81,98 @@ return function(vm)
 		self:_END_ACC()
 	end
 
+	--! inline
+	function vm:_FORCE_FRAGMENT_META(fragment)
+		local meta = fragment:getMetaItem("fragment")
+		local tmeta = self:_GET_TYPE(meta)
+
+		if tmeta == "macro" or tmeta == "closure" then
+			if not fragment.isRendering then -- detect infinite loop
+				fragment.isRendering = true
+
+				self:BEGIN_ACC(0, 0)
+				self:_PUSH_SELF(fragment)
+				self:_STACK_PUSH(self.mainStack, meta)
+				self:_CONCAT_CALL_REC()
+
+				local render = self:_STACK_POP(self.mainStack)
+				fragment:setMetaItem("fragment", render)
+
+				return render
+			else
+				self:_ERROR(self.plume.error.tryToUseFragmentInsideItSelf(fragment))
+			end
+		elseif tmeta ~= "nil" and tmeta ~= "empty" then
+			return meta
+		end
+	end
+
 	--- @opcode
 	--- Recursively flatten a fragment on stack top into a single string.
 	--- If the value is not a fragment, does nothing.
 	--! inline
 	function vm:FORCE_FRAGMENT(arg1, arg2)
-	    local fragment = self:_STACK_GET(self.mainStack)
+	    while not self.err do
+	    	local fragment = self:_STACK_GET(self.mainStack)
+	    	local t = self:_GET_TYPE(fragment)
+		    if t == "fragment" then
+		        local result        = {}
+		        local stackFragment = {fragment}
+		        local stackIndex    = {}
+		        local depth         = 0
 
-	    if self:_GET_TYPE(fragment) == "fragment" then
-	        local result        = {}
-	        local stackFragment = {fragment}
-	        local stackIndex    = {}
-	        local depth         = 0
-
-	        while #stackFragment > 0 do
-	            depth = #stackFragment
-	            local top = table.remove(stackFragment)
-	            local quickExit = false
-	            for i=(stackIndex[depth] or 1), #top do
-	                local item = top[i]
-	                if type(item) == "table" then -- by construction, must be a fragment
-	                    stackIndex[depth] = i+1
-	                    table.insert(stackFragment, top)
-	                    table.insert(stackFragment, item)
-	                    quickExit = true
-	                    break
-	                else
-	                    table.insert(result, item)
-	                end
-	            end
-	            if not quickExit then
-	                stackIndex[depth] = 1
-	            end
-	        end
-			self:_STACK_POP(self.mainStack)
-			self:_STACK_PUSH(self.mainStack, table.concat(result))
-	    end
+		        while #stackFragment > 0 do
+		            depth = #stackFragment
+		            local top = table.remove(stackFragment)
+		            local quickExit = false
+		            for i=(stackIndex[depth] or 1), #top do
+		                local item = top[i]
+		                
+		                while true do
+			                local titem = self:_GET_TYPE(item)
+			                if titem == "fragment" then
+			                    stackIndex[depth] = i+1
+			                    table.insert(stackFragment, top)
+			                    table.insert(stackFragment, item)
+			                    quickExit = true
+			                    break
+			                elseif titem == "table" then
+			                	local value = self:_FORCE_FRAGMENT_META(item)
+			                	if value then
+			                		item = value
+			                	else
+			                		table.insert(result, item)
+			                    	break
+			                	end
+			                elseif titem == "empty" then
+			                	break
+			                else
+			                    table.insert(result, item)
+			                    break
+			                end
+			            end
+			            if quickExit then
+			            	break
+			            end
+		            end
+		            if not quickExit then
+		                stackIndex[depth] = 1
+		            end
+		        end
+				self:_STACK_POP(self.mainStack)
+				self:_STACK_PUSH(self.mainStack, table.concat(result))
+			elseif t == "table" then
+				local value = self:_FORCE_FRAGMENT_META(fragment)
+				if value then
+					self:_STACK_POP(self.mainStack)
+					self:_STACK_PUSH(self.mainStack, value)
+				else
+					break
+				end
+			else
+				break
+			end
+		end
 	end
 
 	--- @opcode
@@ -195,6 +251,7 @@ return function(vm)
 							variadicTable:setItem(key, value)
 						elseif tag == "metakey" then
 							variadicTable:setMetaItem(key, value)
+							self:_CHECK_META_FRAGMENT(variadicTable.meta, key)
 						end
 					elseif not unknownNamed then -- should capture all unknown?
 						unknownNamed = key
@@ -244,14 +301,38 @@ return function(vm)
 	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	        end
 	    elseif t ~= "string" and t ~= "fragment" then
-	        local meta = t == "table" and value:getMetaItem("tostring")
-	        if  meta then
-	            self:_STACK_POP(self.mainStack)
+	        local tostringMeta, fragmentValue
+	        if t == "table" then
+	        	tostringMeta = value:getMetaItem("tostring")
+	        	if not tostringMeta then
+		        	fragmentValue = self:_FORCE_FRAGMENT_META(value)
+		        end
+	        end
 
-	            self:BEGIN_ACC(0, 0)
-	            self:_PUSH_SELF(value)
-	            self:_STACK_PUSH(self.mainStack, meta)
-	            self:_CONCAT_CALL_REC()
+	        if tostringMeta then
+	        	local tostringMetaType = self:_GET_TYPE(tostringMeta)
+	        	local stringValue
+
+	        	self:_STACK_POP(self.mainStack)
+	        	if tostringMetaType == "macro" then
+		            self:BEGIN_ACC(0, 0)
+		            self:_PUSH_SELF(value)
+		            self:_STACK_PUSH(self.mainStack, tostringMeta)
+		            self:_CONCAT_CALL_REC()
+		        else
+		        	self:_STACK_PUSH(self.mainStack, tostringMeta)
+	           	end
+
+	           	local stringValue = self:_STACK_GET(self.mainStack)
+	            local stringValueType = self:_GET_TYPE(stringValue)
+	            if stringValueType ~= "string" and stringValueType ~= "empty" then
+					self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
+	            	self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))
+	            end
+
+	        elseif fragmentValue then
+	        	self:_STACK_POP(self.mainStack)
+	        	self:_STACK_PUSH(self.mainStack, fragmentValue)
 	        elseif t == "boolean" then
 	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	        else

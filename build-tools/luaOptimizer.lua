@@ -23,15 +23,22 @@ for _, k in ipairs(recAnchor) do
 	recAnchor[k] = true
 end
 
+local inlineStack = {}
+local debugmap = {}
+
 local _ret = 0
 local function geturet()
 	_ret = _ret + 1
-	return "_ret".._ret
+	local name = "_ret".._ret
+	table.insert(debugmap, {name, table.concat(inlineStack, '/')})
+	return name
 end
 local _labend = 0
 local function getulabend()
 	_labend = _labend + 1
-	return "_inline_end".._labend
+	local name = "_inline_end".._labend
+	table.insert(debugmap, {name, table.concat(inlineStack, '/')})
+	return name
 end
 
 
@@ -76,11 +83,17 @@ local functionsToInline, usedInlinedFunctions = loadvm()
 local indexToInline = {}
 local scalars
 
+
 local _temp_save_scalar_code, _temp_update_scalar_code
 local _temp_save_scalar, _temp_update_scalar
 
 local function copyvm()
-	scalars = {{"ip", "ip"},{"jump", "jump"}}
+	scalars = {
+		{"ip", "ip"},
+		{"tic", "tic"},
+		{"jump", "jump"},
+		{"fileParams", "fileParams"}
+	}
 	local vars = {
 		{"bytecode", "runtime.bytecode"},
 		{"constants", "runtime.constants"},
@@ -230,6 +243,8 @@ local function inlineFunctions(node)
 		if toinline and fname then
 			local f = functionsToInline[fname]
 			if f and f.inline then
+				table.insert(inlineStack, fname)
+
 				local firstArg = node.args[1]
 				if firstArg and firstArg.name=="self" then
 					table.remove(node.args, 1)
@@ -277,6 +292,7 @@ local function inlineFunctions(node)
 				end
 
 				body:traverse(nil, inlineFunctions)
+				table.remove(inlineStack)
 
 				local parent = ast._do
 				if f.optn['nodo'] then
@@ -434,6 +450,12 @@ optimizer = {
 		-- tree:traverse(optimizer.tolocal) -- broken: generate `local t[1] =` and at least one another error
 
 		optimizer.checkUselessFunctions()
+
+		local f = io.open("build-tools/luaOptimizer.map", "w")
+			for _, item in ipairs(debugmap) do
+				f:write(item[1]..": "..item[2].."\n")
+			end
+		f:close()
 
 		return tree
 	end

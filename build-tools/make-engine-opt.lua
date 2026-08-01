@@ -30,7 +30,7 @@ if debug then
 _ADD(self, 1, 2)
 ]], false)
 else
-	tree = optimizer.loadCode('plume-data/engine/generated/engine.lua', true)
+	tree = optimizer.loadCode('plume-data/generated/engine.lua', true)
 end
 
 -- printTable(tree)
@@ -52,7 +52,7 @@ Licensed under the MIT License — see LICENSE for details.
 -- It is an inlined and optimized version of engine.lua
 ]=] .. finalCode
 
-	local f = io.open('plume-data/engine/generated/engine-opt.lua', 'w')
+	local f = io.open('plume-data/generated/engine-opt.lua', 'w')
 		f:write(finalCode)
 	f:close()
 end

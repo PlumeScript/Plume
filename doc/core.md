@@ -56,14 +56,21 @@ A backslash before any other character makes it literal. This is how you write c
 wing
 nib
 // → wingnib
+```
 
+```plume
 wing\nnib
-// → wing
-// → nib
+// →
+wing
+nib
+```
 
+```plume
 wing\s\sink
 // → wing  ink
+```
 
+```plume
 The \$wing variable, price\: 5
 // → The $wing variable, price: 5
 ```
@@ -107,18 +114,16 @@ As a shortcut, `$` directly followed by a number literal evaluates that literal:
 ```plume
 let wing = 5
 let nib = 2
-
-wing + nib = $(wing + nib)
-// → wing + nib = 7
-
-$(wing * nib) and $wing
-// → 10 and 5
-
+wing + nib = $(wing + nib)\n
+$(wing * nib) and $wing\n
 macro double (x)
     $(2 * x)
 end
 $(double(wing) + 1)
-// → 11
+// →
+wing + nib = 7
+10 and 5
+11
 ```
 
 If you need a literal `$` character, escape it: `\$`. A bare `$` that starts no valid evaluation is currently treated as text, but this tolerance is scheduled to become an error in a future edition — always escape intended literal `$`.
@@ -158,7 +163,7 @@ Mixing text and table items at the same level of a block is a compile-time error
 ```plume
 - wing
 some text
-// → Error: Invalid 'TEXT' content in a 'TABLE' block.
+// → SYNTAX ERROR: Invalid 'TEXT' content in a 'TABLE' block.
 ```
 
 A TABLE block forbids raw text and bare evaluations at item level, but **statements remain allowed** — `let`, `set`, `if`, `for`... can appear between items, making it possible to compute values while building a table:
@@ -190,18 +195,26 @@ Plume values have one of six types: `empty`, `boolean`, `number`, `string`, `tab
 These constants are accessed with the usual prefix: `$empty`, `$true`, `$false`.
 
 ```plume
-let wing        // wing is empty
-Wing is $(wing).// → Wing is .
+let wing
+// wing is empty
+Wing is $(wing).
+// → Wing is .
+```
 
+```plume
 if 0
     Zero is truthy in Plume.
 end
 // → Zero is truthy in Plume.
+```
 
-let nib = "quill\tink"
-$(nib)
-// → quill    ink (with a real tab)
+```plume
+quill\tink
+// →
+quill	ink
+```
 
+```plume
 let color = red // bare word: the string "red"
 $(color == "red")
 // → true
@@ -211,13 +224,21 @@ $(color == "red")
 
 ```plume
 let wing = 1
-$type($wing)          // → number
+$type($wing)\n
 set wing = $String($wing)
-$type($wing)          // → string
-$(wing + 1)           // → 2 — no error, "1" is converted back to a number
+$type($wing)\n
+$(wing + 1)
+// no error: "1" is converted back to a number
+// →
+number
+string
+2
+```
 
+```plume
+let wing = 1
 $(wing + "abc")
-// → Runtime error: Cannot convert the string value 'abc' to a number.
+// → RUNTIME ERROR: Cannot convert the string value 'abc' to a number.
 ```
 
 ## Variables: `let` and `set`
@@ -254,9 +275,10 @@ Every block body (`if`, `for`, `while`, `macro`, `do`...) creates a new scope. A
 let wing = outer
 if true
     let wing = inner   // shadows the outer wing
-    $wing              // → inner
+    $wing\n            // → inner
 end
-$wing                  // → outer
+$wing
+// → outer
 ```
 
 `let` and `set` can also extract several values at once from a table — see *Destructuring* in [advanced.md](advanced.md).
@@ -288,7 +310,9 @@ else
     Small wing.
 end
 // → Big wing.
+```
 
+```plume
 let size = if wing > 2
     big
 else
@@ -413,15 +437,18 @@ Inside its body, a macro sees the variables of its enclosing scopes (parameters,
 **Standard call** — `$name(...)`, with positional arguments in order, named arguments as `key: value`, flags as `?flag`. Inside a `$(...)` evaluation, calls are written without the `$` prefix:
 
 ```plume
-$praise(quill)
-$praise(nib, adjective: splendid)
-$praise(ink, adjective: dark, ?loud)
-// → The quill is great.
-// → The nib is splendid.
-// → The ink is dark.
-
+macro praise (wing, adjective: great, ?loud)
+    The $wing is $adjective.
+end
+$praise(quill)\n
+$praise(nib, adjective: splendid)\n
+$praise(ink, adjective: dark, ?loud)\n
 $(praise(wing))
-// → The wing is great.
+// →
+The quill is great.
+The nib is splendid.
+The ink is dark.
+The wing is great.
 ```
 
 **Block call** — `@name ... end`: the block supplies the last missings parameters. This is the foundation of Plume's DSL style:
@@ -461,15 +488,15 @@ Inline arguments and block content can also be mixed, and block calls chained on
 ```plume
 macro collect (limit)
     - for i in seq(1, 100)
-        - if i > limit
-            leave   // exits collect with the items gathered so far
+        if i > limit
+            leave
+            // exits collect with the items gathered so far
         end
         - $(i * 10)
     end
 end
-
 $collect(3)
-// → the table (10, 20, 30)
+// → $Table((10, 20, 30))
 ```
 
 *   `leave` must appear on its own line.
@@ -531,14 +558,12 @@ let wing = do
     - green
     nib: sharp
 end
-
-$(wing[1])     // → red
-$(wing.nib)    // → sharp
-
+$(wing[1])\n     // → red
+$(wing.nib)\n    // → sharp
 set wing[2] = blue
 set wing.ink = dark
-$(wing[2])     // → blue
-$(wing.ink)    // → dark
+$(wing[2])\n     // → blue
+$(wing.ink)\n    // → dark
 ```
 
 When a missing key should yield `empty` instead of an error, use the safe accessors `t.key?` / `t["key"]?` — see [advanced.md](advanced.md).

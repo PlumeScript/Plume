@@ -15,7 +15,7 @@ plume.std.print = plume.obj.luaMacro("print", function(args)
 end)
 
 plume.std.help = plume.obj.luaMacro("help", function (args)
-	--!signature macro|table m
+	--!signature callable|table m
 	print(plume.makedoc(m))
 	return true
 end)
@@ -162,10 +162,10 @@ plume.std.Map.meta = plume.obj.quickTable{
 
 plume.std.lua = plume.obj.table(0, 0)
 
-plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm, fileID)
+plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm, currentFile)
 	local runtime = vm.runtime
 	local firstFilename = runtime.files[1].name
-	local lastFilename  = runtime.files[fileID].name
+	local lastFilename  = runtime.files[currentFile].name
 
 	local filename, searchPaths = plume.getFilenameFromPath(args.table[1], true, runtime, firstFilename, lastFilename)
 	if filename then
@@ -176,7 +176,7 @@ plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm
 	end
 end))
 
-plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args)
+plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args, vm)
 	--!signature string code, [string filename], ?safe
 	local success, result = load(code, filename)
 
@@ -211,8 +211,30 @@ end)
 -- Basic implementation, prone to memory leaks
 plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 	--!signature string code, [string filename], ?safe
+
+	local success, result, errip
+	filename = filename or "<string>"
+
+	-- compile
 	local runtime = vm.runtime
-	local success, result = plume.executeString(code, filename or "<string>", runtime)
+	-- local success, result = plume.executeString(code, filename or "<string>", runtime, nil, nil, false)
+	local chunk = plume.obj.macro(filename, runtime)
+	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
+
+	if success then
+		-- prepare stack
+		vm:_STACK_PUSH(vm.fileStack, chunk.fileID)
+		vm:_STACK_PUSH(vm.recursiveStack, vm.ip+1)
+
+		-- execute
+		success, result, errip = plume.run(runtime, chunk)
+		
+		if success then
+			-- clean stack
+			vm:_STACK_POP(vm.mainStack)
+		end
+	end
+	
 	if safe then
 		local safeResult = plume.obj.table(0, 2)
 		safeResult:setItem("success", success)
