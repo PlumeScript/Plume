@@ -27,6 +27,7 @@ plume-debug <action> <srcfile>
 | `decomp <srcfile>` | Disassembles the bytecode (one instruction per line, with source mapping). |
 | `hotspots <srcfile>` | Runs the program and prints the source lines sorted by number of executed instructions (hotspots). |
 | `opusage1..X <srcfile>` | Runs the program in devmode and prints the most used opcode sequences, sorted by occurrence. `X` = sequence depth (e.g. `opusage3` = triplets). |
+| `profile-quick <srcfile>` | Statistical JIT profile: % of time in compiled code, top 5 hot lines, and JIT NYI aborts. **Requires the stock luajit** (the CLI switches to it automatically for this action — the custom `bin\luajit` crashes with `jit.profile`). |
 
 ---
 
@@ -57,6 +58,11 @@ plume-debug <action> <srcfile>
 | Function | Description |
 |----------|-------------|
 | `executeFile(input, output, isMain)` | HTML execution trace (AST + bytecode + stacks + error), written to `output.html`. |
+
+### profile.lua
+| Function | Description |
+|----------|-------------|
+| `profileQuick(srcfile)` | Statistical JIT profile of a program: % of time in compiled code (vmstate distribution), top 5 hot lines (via `jit.profile` + `dumpstack`), and JIT NYI aborts (via `jit.attach`). Returns the report string. |
 
 ---
 

@@ -112,6 +112,12 @@ elseif action == "hotspots" then
 		local pp = 100 * s.count / total
 		print(string.format("%-30s %6d (%2d%%)  %s", s.filename .. ":" .. s.line, s.count, pp, content))
 	end
+elseif action == "profile-quick" then
+	if not srcfile then
+		io.stderr:write("Usage: plume-debug profile-quick <srcfile>\n")
+		return
+	end
+	print(plume.debug.profileQuick(srcfile))
 else
 	local deep = action:match("^opusage(%d+)$")
 	if deep then
@@ -130,6 +136,6 @@ else
 		end
 	else
 		io.stderr:write("Unknown action '" .. tostring(action) .. "'\n")
-		io.stderr:write("Available actions: decomp, hotspots, opusage1, opusage2, ...\n")
+		io.stderr:write("Available actions: decomp, hotspots, opusage1, opusage2, ..., profile-quick\n")
 	end
 end
