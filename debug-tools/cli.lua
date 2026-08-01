@@ -42,6 +42,23 @@ if action == "decomp" then
 		io.stderr:write(result .. "\n")
 	end
 else
-	io.stderr:write("Unknown action '" .. tostring(action) .. "'\n")
-	io.stderr:write("Available actions: decomp\n")
+	local deep = action:match("^opusage(%d+)$")
+	if deep then
+		if not srcfile then
+			io.stderr:write("Usage: plume-debug opusage" .. deep .. " <srcfile>\n")
+			return
+		end
+		plume.runStatFlag = true
+		plume.runStatDeep = tonumber(deep)
+		local success, result = plume.executeFile(srcfile, nil, nil, nil, true)
+		if not success then
+			io.stderr:write(result .. "\n")
+		end
+		if plume.stats then
+			print(plume.getOpcodeUsageReport())
+		end
+	else
+		io.stderr:write("Unknown action '" .. tostring(action) .. "'\n")
+		io.stderr:write("Available actions: decomp, opusage1, opusage2, ...\n")
+	end
 end
