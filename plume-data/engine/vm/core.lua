@@ -22,6 +22,7 @@ return function(vm)
 	    if self.plume.runStatFlag then
 	        self.stats = {}
 	        self.stats.opseq = {} -- opcode sequences
+	        self.stats.ipcount = {} -- instruction count per ip
 
 	        -- queue for opcodes history
 	        self.stats.ophist = 0
@@ -37,6 +38,8 @@ return function(vm)
 	    self.stats.ophist = ((self.stats.ophist % self.stats.histmask) * 128) + op
 	    -- Update sequences
 	    self.stats.opseq[self.stats.ophist] = 1 + (self.stats.opseq[self.stats.ophist] or 0)
+	    -- Update per-ip count
+	    self.stats.ipcount[self.ip] = 1 + (self.stats.ipcount[self.ip] or 0)
 	    --! to-remove-end
 	end
 
