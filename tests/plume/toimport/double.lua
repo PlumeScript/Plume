@@ -1,0 +1,7 @@
+-- double.lua
+return function (plume)
+    return plume.obj.luaMacro("double", function (args)
+        local x = args.table[1]
+        return true, 2 * x -- success, result
+    end)
+end

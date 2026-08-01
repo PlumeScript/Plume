@@ -150,6 +150,121 @@ function lib.loadTests(directory, allTests)
     return allTests
 end
 
+--- Parses the content of a doc markdown file, extracting ```plume blocks
+-- and their `// → ` output markers as tests.
+-- A block is turned into a test only when it carries at least one `// → `
+-- marker. Two marker forms are supported:
+--   * inline: `code // → output` — a single output line for that code line;
+--   * full-line: `// →` (optionally followed by the first output line) on its
+--     own line — everything after it, up to the closing ```, is the output.
+-- Blocks whose output denotes an error (`... ERROR:`) are turned into error
+-- tests flagged `docError`: the doc shows the plain first line of the error,
+-- which `analyzeResults` compares against the engine's plain (non-fancy) first
+-- line.
+-- @param content The string content of the doc file.
+-- @return A table of tests indexed by their names, or nil if none.
+local function parseDocFile(content)
+    local tests = {}
+    local index = 0
+    local inBlock = false
+    local codeLines = {}
+    local outputLines = {}
+    local hasOutput = false
+    local isError = false
+    local inOutput = false
+
+    for line in content:gmatch("[^\r\n]+") do
+        if not inBlock then
+            if line:match("^```plume%s*$") then
+                inBlock = true
+                codeLines = {}
+                outputLines = {}
+                hasOutput = false
+                isError = false
+                inOutput = false
+            end
+        else
+            if line:match("^```%s*$") then
+                inBlock = false
+                if hasOutput then
+                    index = index + 1
+                    local test = {
+                        input = table.concat(codeLines, "\n"),
+                        expected = {
+                            output = normalizeOutput(table.concat(outputLines, "\n")),
+                            error = isError,
+                        },
+                        obtained = {},
+                    }
+                    if isError then
+                        test.docError = true
+                    end
+                    tests["example " .. index] = test
+                end
+            else
+                if inOutput then
+                    table.insert(outputLines, line)
+                    hasOutput = true
+                    if line:match("ERROR:") then
+                        isError = true
+                    end
+                else
+                    local code, out = line:match("^(.-)// → (.*)$")
+                    if code then
+                        if code == "" then
+                            -- Full-line marker: everything after is the output.
+                            inOutput = true
+                            if out ~= "" then
+                                table.insert(outputLines, out)
+                                hasOutput = true
+                                if out:match("ERROR:") then
+                                    isError = true
+                                end
+                            end
+                        else
+                            -- Inline marker: single output line for this code line.
+                            table.insert(codeLines, code)
+                            table.insert(outputLines, out)
+                            hasOutput = true
+                            if out:match("ERROR:") then
+                                isError = true
+                            end
+                        end
+                    else
+                        table.insert(codeLines, line)
+                    end
+                end
+            end
+        end
+    end
+
+    if next(tests) then return tests end
+    return nil
+end
+
+--- Loads doc markdown files from a directory, extracting ```plume code
+-- examples and their `// → ` output markers as tests.
+-- @param directory The path to the directory containing doc files.
+-- @param allTests The table to add the tests to.
+-- @return The `allTests` table.
+function lib.loadDocTests(directory, allTests)
+    allTests = allTests or {}
+    local path = directory:gsub("/*$", "")
+
+    for filename in lfs.dir(path) do
+        if filename:match("%.md$") then
+            local fullPath = path .. "/" .. filename
+            local content = futf8.read(fullPath)
+            local parsedTests = parseDocFile(content)
+            if parsedTests then
+                allTests[fullPath:gsub('^tests/', '')] = parsedTests
+            end
+        end
+    end
+
+    return allTests
+end
+
 function getSortedListByKey(t)
     local sortedList = {}
     local keys = {}
@@ -346,7 +461,14 @@ function lib.analyzeResults(allTests)
                     if testName ~= "stats" then
                         -- Both the result type (error/output) and content must match
                         local sameType = (testData.expected.error == testData.obtained.error)
-                        local sameOutput = (testData.expected.output == testData.obtained.output)
+                        local sameOutput
+                        if testData.docError then
+                            -- Doc error examples show the plain (non-fancy) first line.
+                            local firstLine = (testData.obtained.conciseOutput or ""):match("^[^\n]*")
+                            sameOutput = (testData.expected.output == normalizeOutput(firstLine))
+                        else
+                            sameOutput = (testData.expected.output == testData.obtained.output)
+                        end
 
                         if sameType and sameOutput then
                             testData.status = "pass"

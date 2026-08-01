@@ -5,6 +5,7 @@ plume.debugForcedRoot = ""
 local tests = lib.loadTests("tests/plume")
 lib.loadTests("tests/plume/std", tests)
 lib.loadTests("tests/cli", tests)
+lib.loadDocTests("doc", tests)
 lib.executeTests(tests, plume)
 lib.analyzeResults(tests)
 

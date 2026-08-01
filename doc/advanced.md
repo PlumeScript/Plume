@@ -73,11 +73,12 @@ macro list (title, ...items)
 end
 
 $list(Wings, quill, nib, mode: dark)
-// → Wings:
-// → quill
-// → nib
 // items is the table ("quill", "nib", mode: "dark") — note how
 // the named argument is captured too (in the table's map part).
+// →
+Wings:
+quill
+nib
 ```
 
 *   Leftover positional arguments become list items, leftover named arguments become named items, in call order.
@@ -146,7 +147,8 @@ end
 let c1 = $makeCounter()
 let c2 = $makeCounter()
 $c1()$c1()$c2()
-// → 121 — each counter owns its private count
+// each counter owns its private count
+// → 121
 ```
 
 Captures chain through any number of nested scopes, and a macro can return another macro — calls then chain naturally: `$factory()()`.
@@ -295,12 +297,16 @@ end
 // geometry.plume
 pi: 3.14159
 double: macro (x) $(2 * x)
+```
 
+```plume
 // main.plume
-let geometry = $import(./geometry)
-$(geometry.pi)     // → 3.14159
+let geometry = $import(tests/plume/toimport/geometry)
+$(geometry.pi)
 $geometry.double(21)
-// → 42
+// →
+3.14159
+42
 ```
 
 *   **Dynamic paths:** the path is an ordinary expression, so `$import(./themes/$themeName)` works.
@@ -373,8 +379,9 @@ Hello, $name!
 ```
 
 ```plume
-$import(./greeter, name: wing)   // → Hello, wing!
-use greeter(name: nib)           // → Hello, nib!
+$import(tests/plume/toimport/greeter, name: wing)
+// →
+Hello, wing!
 ```
 
 *   A `param` variable is implicitly `const`. Without a caller-provided value, it takes its default — or `empty` when no default is declared.

@@ -38,17 +38,18 @@ Constraints enforced at compile time: right/left variants take exactly one param
 These metafields trigger only when the accessed key is **missing** from the table.
 
 *   `getindex` — `macro(name)`: the returned value becomes the result of the access. Returning `empty` raises an index error.
-*   `setindex` — `macro(name, value)`: a *value transformer* — the assignment stores whatever the macro returns.
+*   `setindex` — `macro(name, value)`: a *value transformer* — called only when the key is missing (like Lua's `__newindex`). The macro receives the key and the value; the assignment does not store the transformed value, so the macro must store it itself (e.g. via `rawset` or a side effect).
 
 ```plume
+let side
 let t = do
     meta setindex: macro (name, value)
-        Modified: $value
+        set side = Modified\: $value
     end
 end
 
 set t.nib = 5
-$(t.nib)
+$side
 // → Modified: 5
 ```
 
@@ -91,7 +92,7 @@ $counter()$counter()
 let wing = do
     size: 12
     meta tostring: macro ()
-        wing(size $(self.size))
+        $String(wing(size $(self.size)))
     end
 end
 
@@ -223,7 +224,8 @@ end
 
 let x = $String(1)
 $wing($x)
-// → string — the argument was converted before entering the body
+// the argument was converted to a number before entering the body
+// → number
 ```
 
 `macro wing (Number size)` is syntactic sugar for:
@@ -281,10 +283,11 @@ with ($ink: red)
     end
     $paint()
 end
-// → Painted in blue.
-// → Painted in red.
-// → Painted in green.
-// → Painted in red.
+// →
+Painted in blue.
+Painted in red.
+Painted in green.
+Painted in red.
 ```
 
 *   `$Context([default])` creates the variable; `$ctx()` reads its current value.
@@ -344,7 +347,9 @@ Currently available features:
 ```plume
 $eval(\$(1 + 1))
 // → 2
+```
 
+```plume
 let outcome = $(eval(raise wing, ?safe))
 // outcome is (success: false, result: ...wing...)
 ```
@@ -369,7 +374,7 @@ end
 ```
 
 ```plume
-let double = $lua.require(./double.lua)
+let double = $lua.require(tests/plume/toimport/double)
 $double(21)
 // → 42
 ```
