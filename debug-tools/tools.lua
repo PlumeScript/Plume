@@ -180,4 +180,32 @@ return function (plume)
 			print(footer)
 		end
 	end
+
+	--- Compile a Plume source string and print its bytecode, one instruction
+	--- per line. Returns the bytecode grid (see bytecodeGrid) on success.
+	--- @param code string The Plume source code
+	--- @param filename string|nil Source name used for error messages
+	--- @return boolean success
+	--- @return table|string grid on success, error message on failure
+	function plume.debug.decomp(code, filename)
+		filename = filename or "<input>"
+
+		local runtime = plume.obj.runtime()
+		local chunk   = plume.obj.macro(filename, runtime)
+
+		local success, result = pcall(plume.compileFile, code, filename, chunk, runtime, true)
+		if not success then
+			return false, result
+		end
+
+		local grid = plume.debug.bytecodeGrid(runtime)
+		for i, row in ipairs(grid) do
+			local line = string.format("[%d] %s %d %d", i, row[2], row[3], row[4])
+			if row[5] and row[5] ~= "" then
+				line = line .. "  -- " .. row[5]
+			end
+			print(line)
+		end
+		return true, grid
+	end
 end
