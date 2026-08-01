@@ -103,16 +103,36 @@ The $wing is ready.
 
 When the VM needs a concrete value from a table — for arithmetic, comparison or final text output — it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
 
+The real payoff is nested rendering. Because `fragment` fires at the last possible moment, the deepest fragments run first — so a nested structure renders with intuitive, correct nesting:
+
 ```plume
-let t = do
-    meta fragment: macro ()
-        rendered
+let depth = 0
+let item_count = 0
+macro List(...items)
+    meta fragment: macro
+        set depth += 1
+        <$depth>
+        for x in items
+            set item_count += 1
+            $item_count$x
+        end
+        </$depth>
+        set depth -= 1
     end
 end
 
-$t
-// → rendered
+@List
+    - a
+    - @List
+        - b
+        - c
+    end
+    - d
+end
+// → <1>1a2<2>3b4c</2>5d</1>
 ```
+
+With a plain macro (eager), the inner `List` would render while `depth` is still `1`, producing wrong nesting (`<1>...<1>...</1>...</1>`). Here the inner fragment runs to completion first, so the tags nest correctly.
 
 Unlike `tostring`, which renders the table eagerly at each text interpolation, `fragment` renders **lazily** — once, at the last possible moment — and may return any type: a number, a restructured table, `empty` — not just text.
 
