@@ -118,6 +118,12 @@ elseif action == "profile-quick" then
 		return
 	end
 	print(plume.debug.profileQuick(srcfile))
+elseif action == "profile" then
+	if not srcfile then
+		io.stderr:write("Usage: plume-debug profile <srcfile>\n")
+		return
+	end
+	print(plume.debug.profileFull(srcfile))
 else
 	local deep = action:match("^opusage(%d+)$")
 	if deep then
@@ -136,6 +142,6 @@ else
 		end
 	else
 		io.stderr:write("Unknown action '" .. tostring(action) .. "'\n")
-		io.stderr:write("Available actions: decomp, hotspots, opusage1, opusage2, ..., profile-quick\n")
+		io.stderr:write("Available actions: decomp, hotspots, opusage1, opusage2, ..., profile-quick, profile\n")
 	end
 end

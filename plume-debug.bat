@@ -3,6 +3,8 @@ chcp 65001 >nul
 setlocal
     if /i "%1"=="profile-quick" (
         luajit "%~dp0debug-tools\cli.lua" "%~dp0\" %*
+    ) else if /i "%1"=="profile" (
+        luajit "%~dp0debug-tools\cli.lua" "%~dp0\" %*
     ) else (
         %~dp0\bin\luajit "%~dp0debug-tools\cli.lua" "%~dp0\" %*
     )
