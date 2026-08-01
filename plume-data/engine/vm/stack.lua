@@ -85,7 +85,7 @@ return function(vm)
 		stack.pointer = stack.pointer + 1
 		--! to-remove-begin
 	    if value == nil then
-	        error("[VM] get nil from stack.")
+	        error("[VM] push nil to stack.")
 		end
 	    --! to-remove-end
 		stack[stack.pointer] = value
