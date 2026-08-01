@@ -11,8 +11,8 @@ return function(vm)
 		if self:_STACK_POS(self.recursiveStack) > 0 then
 			self.ip = self:_STACK_POP(self.recursiveStack)
 			self:_RESET_JUMP()
-			self:_SAVE_SCALAR()
 		end
+		self:_SAVE_SCALAR()
 	end
 
 	--! inline

@@ -60,12 +60,12 @@ function plume.run(runtime, chunk, fileParams)
 		run = plume._run
 	end
 
-	local vm = plume.obj.vm(runtime)
-	local success, result, errip = vm:initFileParams(chunk, fileParams)
+	runtime.vm = runtime.vm or plume.obj.vm(runtime)
+	local success, result, errip = runtime.vm:initFileParams(chunk, fileParams)
 	if not success then
 		return false, result, errip
 	end
-	return plume.safeRun(run, vm, chunk.offset, chunk.fileID)
+	return plume.safeRun(run, runtime.vm, chunk.offset, chunk.fileID)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain)

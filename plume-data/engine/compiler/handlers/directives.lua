@@ -77,7 +77,10 @@ return function (plume, context, nodeHandlerTable)
 			if not success then
 				plume.error.cannotExecuteFile(pathNode, path, result)
 			end
-			 context.runtime.cache.results[cacheId] = result
+			context.runtime.cache.results[cacheId] = result
+			-- clean stack
+			local vm = context.runtime.vm
+			vm:_STACK_POP(vm.mainStack)
 		end
 
 		local t = type(result) == "table" and result.type or type(result)

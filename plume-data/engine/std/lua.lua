@@ -211,8 +211,30 @@ end)
 -- Basic implementation, prone to memory leaks
 plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 	--!signature string code, [string filename], ?safe
+
+	local success, result, errip
+	filename = filename or "<string>"
+
+	-- compile
 	local runtime = vm.runtime
-	local success, result = plume.executeString(code, filename or "<string>", runtime)
+	-- local success, result = plume.executeString(code, filename or "<string>", runtime, nil, nil, false)
+	local chunk = plume.obj.macro(filename, runtime)
+	success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
+
+	if success then
+		-- prepare stack
+		vm:_STACK_PUSH(vm.fileStack, chunk.fileID)
+		vm:_STACK_PUSH(vm.recursiveStack, vm.ip+1)
+
+		-- execute
+		success, result, errip = plume.run(runtime, chunk, {})
+		
+		if success then
+			-- clean stack
+			vm:_STACK_POP(vm.mainStack)
+		end
+	end
+	
 	if safe then
 		local safeResult = plume.obj.table(0, 2)
 		safeResult:setItem("success", success)

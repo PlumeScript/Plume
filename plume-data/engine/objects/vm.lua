@@ -45,7 +45,7 @@ return function(plume)
 		vm.closureStack.pointer         = 0
 
 		vm.fileStack         = table.new(2^8, 0)
-		vm.fileStack.pointer = 1
+		vm.fileStack.pointer = 0
 
 		vm.macroStack         = table.new(2^8, 0)
 		vm.macroStack.pointer = 0

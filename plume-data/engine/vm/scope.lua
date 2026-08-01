@@ -40,7 +40,7 @@ return function(vm)
 		self:_STACK_POP(self.fileStack)
 		self:_POP_CALLSTACK()
 
-		if self:_STACK_POS(self.fileStack) == 0 then
+		if self:_STACK_POS(self.fileStack) == 0 or self:_STACK_POS(self.recursiveStack) > 0 then
 			self:_JUMP_END()
 		else
 		    --! to-remove-begin

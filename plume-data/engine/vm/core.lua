@@ -14,8 +14,8 @@ return function(vm)
 	--- @param runtime runtime The runtime to execute
 	--! inline-nodo
 	function vm:_VM_INIT(fileID)
-	    if #self.fileStack == 0 then
-	        self.fileStack[1] = fileID
+	    if self:_STACK_POS(self.fileStack) == 0  then
+			self:_STACK_PUSH(self.fileStack, fileID)
 	    end
 
 	    --! to-remove-begin
