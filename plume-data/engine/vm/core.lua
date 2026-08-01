@@ -13,10 +13,7 @@ return function(vm)
 	--- Declare all vm variables
 	--- @param runtime runtime The runtime to execute
 	--! inline-nodo
-	function vm:_VM_INIT(fileID)
-	    if self:_STACK_POS(self.fileStack) == 0  then
-			self:_STACK_PUSH(self.fileStack, fileID)
-	    end
+	function vm:_VM_STAT_INIT()
 
 	    --! to-remove-begin
 	    if self.plume.runStatFlag then

@@ -28,7 +28,7 @@ Licensed under the MIT License — see LICENSE for details.
 
 -- Add all needed functions are loaded as globals
 return function (plume)
-	function plume._run_dev (vm, startip, fileID)
+	function plume._run_dev (vm, startip)
 		--! index-to-inline self.err vmerr
 	    --! index-to-inline self.errip vmerrip
 	    --! index-to-inline vm.err vmerr
@@ -64,7 +64,7 @@ return function (plume)
 		--! to-add vmstate._RUN = plume._run
 		--! to-add local _RUN = vmstate._run
 		vm.ip      = startip - 1
-		vm:_VM_INIT(fileID)
+		vm:_VM_STAT_INIT()
 		
 		::DISPATCH::
 			do -- prevent

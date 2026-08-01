@@ -65,7 +65,10 @@ function plume.run(runtime, chunk, fileParams)
 	if not success then
 		return false, result, errip
 	end
-	return plume.safeRun(run, runtime.vm, chunk.offset, chunk.fileID)
+
+	runtime.vm:_STACK_PUSH(runtime.vm.fileStack, chunk.fileID)
+	
+	return plume.safeRun(run, runtime.vm, chunk.offset)
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain)
