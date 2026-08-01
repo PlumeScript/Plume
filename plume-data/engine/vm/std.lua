@@ -107,11 +107,9 @@ return function(vm)
 	                    end
 	                else
 	                    chunk.cacheId = cacheId
-	                    -- prepare stack and jumps
+	                    
 						self:_STACK_PUSH(self.fileStack, chunk.fileID)
-						self:_STACK_PUSH(self.macroStack, self.ip + 1)
-	                    -- ENTER_SCOPE is already the first file instruction
-						self:JUMP(0, chunk.offset)
+						vm:_RUN_START(chunk.offset)
 	                end
 	            else
 	                self:_ERROR(err)
