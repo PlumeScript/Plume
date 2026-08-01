@@ -328,7 +328,7 @@ return function(plume)
 	plume.std.lua:setItem("require", plume.obj.luaMacro("require", function (args, vm, currentFile)
 		local runtime = vm.runtime
 		local firstFilename = runtime.files[1].name
-		local lastFilename  = runtime.files[fileID].name
+		local lastFilename  = runtime.files[currentFile].name
 	
 		local filename, searchPaths = plume.getFilenameFromPath(args.table[1], true, runtime, firstFilename, lastFilename)
 		if filename then
