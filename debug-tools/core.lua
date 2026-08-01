@@ -10,4 +10,5 @@ return function (plume)
 
 	require 'debug-tools/utils' (plume)
 	require 'debug-tools/run'   (plume)
+	require 'debug-tools/tools' (plume)
 end
