@@ -26,7 +26,7 @@ return function (plume, context, nodeHandlerTable)
 		local pathNode = plume.ast.get(node, "NAME")
 		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
 
-		local fileParams = {}
+		local fileParams = {""} -- first slot always taken (why?)
 		local fileParamsForCache = {}
 		local posIndex = 1 -- 1 is for file path
 		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do

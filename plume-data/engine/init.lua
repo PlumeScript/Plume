@@ -61,7 +61,7 @@ function plume.run(runtime, chunk, fileParams)
 	end
 
 	runtime.vm = runtime.vm or plume.obj.vm(runtime)
-	local success, result, errip = runtime.vm:initFileParams(chunk, fileParams)
+	local success, result, errip = runtime.vm:initFileParams(chunk, fileParams and plume.obj.quickTable(fileParams))
 	if not success then
 		return false, result, errip
 	end

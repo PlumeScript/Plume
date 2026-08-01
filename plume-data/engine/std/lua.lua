@@ -227,7 +227,7 @@ plume.std.eval = plume.obj.luaMacro("eval", function(args, vm)
 		vm:_STACK_PUSH(vm.recursiveStack, vm.ip+1)
 
 		-- execute
-		success, result, errip = plume.run(runtime, chunk, {})
+		success, result, errip = plume.run(runtime, chunk)
 		
 		if success then
 			-- clean stack

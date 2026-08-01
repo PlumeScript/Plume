@@ -62,41 +62,14 @@ return function(vm)
 	                self.runtime.files[filename] = chunk
 	            end
 	            if success then
-	                -- Save params for FILE_INIT_PARAMS
-	                self.fileParams = {}
+	            	self:_SAVE_SCALAR()
+	            	local success, result = vm:initFileParams(chunk, args)
+	            	self:_UPDATE_SCALAR()
 
-	                if chunk.variadicParam then
-	                    table.insert(self.fileParams, {
-	                        offset = chunk.variadicParam.offset,
-	                        key    = chunk.variadicParam.name,
-	                        value  = self.plume.obj.table(0, 0)
-	                    })
-	                end
-
-	                for _, key in ipairs(args.keys) do
-	                    if key ~= 1 and (chunk.futureFlagPositionnalFileParam or not tonumber(key)) then
-	                        local value = args.table[key]
-	                        local varKey
-	                        if tonumber(key) then
-	                            key = key-1-- 1 is the file path
-	                            varKey = "arg" .. key
-	                        else
-	                            varKey = key
-	                        end
-	                        local offset = chunk.namedParamOffset[varKey]
-	                        if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
-	                            table.insert(self.fileParams, {offset=offset, key=varKey, value=value})
-	                        elseif chunk.variadicParam then
-	                            local variadic = self.fileParams[1].value
-	                            variadic:setItem(key, value)
-	                        elseif chunk.futureFlagUnknownParamError then
-	                            self:_ERROR(self.plume.error.unknownParamError(varKey, chunk.namedParamOffset))
-	                        else
-	                             self.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, self.runtime, self.ip, {886, 981})
-	                        end
-	                    end
-	                end
-
+	            	if not success then
+	            		self:_ERROR(result)
+	            	end
+	            	
 	                local cacheId, paramMutableWarning = self.plume.getModuleCacheId(filename, self.fileParams)
 	                local result = self.runtime.cache.results[cacheId]
 

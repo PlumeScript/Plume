@@ -77,13 +77,15 @@ return function(plume)
 			if chunk.variadicParam then
 				table.insert(self.fileParams, {
 					offset = chunk.variadicParam.offset,
+	                key    = chunk.variadicParam.name,
 					value  = self.plume.obj.table(0, 0)
 				})
 			end
 
 			if initFileParams then
-				for key, value in pairs(initFileParams) do
+				for _, key in ipairs(initFileParams.keys) do
 					if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
+						local value = initFileParams.table[key]
 						local varKey
 						if tonumber(key) then
 							key = key-1-- 1 is the file path
@@ -94,7 +96,7 @@ return function(plume)
 
 						local offset = chunk.namedParamOffset[varKey]
 						if offset and (not chunk.variadicParam or offset ~= chunk.variadicParam.offset) then
-							table.insert(self.fileParams, {offset=offset, value=value})
+							table.insert(self.fileParams, {offset=offset, key=varKey, value=value})
 						elseif chunk.variadicParam then
 							local variadic = self.fileParams[1].value
 							variadic:setItem(key, value)

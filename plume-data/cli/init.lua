@@ -207,7 +207,7 @@ local function parseArgs()
 				return
 			end
 		elseif content == "--params" then
-			args.fileParams = {}
+			args.fileParams = {""} -- first slot always taken (why?)
 			while arg[pos+1] do
 				pos = pos+1
 				local arg = arg[pos]
