@@ -212,7 +212,7 @@ return function (plume)
 	--- Build a report of the most used opcode sequences, sorted by count.
 	--- Requires plume.runStatFlag to have been enabled during the run.
 	--- @return string The report, or a message if statistics were not gathered
-	function plume.getOpcodeUsageReport()
+	function plume.debug.getOpcodeUsageReport()
 		if not plume.runStatFlag then
 			return "Turn on plume.runStatFlag to gather statistics about opcode usages."
 		end

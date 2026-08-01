@@ -51,7 +51,7 @@ plume-debug <action> <srcfile>
 | `printCallstack(vm)` | Prints the runtime callstack (innermost call first). |
 | `printVM(vm, filter)` | Prints the full VM state, filterable (`"state"`, `"stacks"`, `"callstack"`). |
 | `decomp(code, filename)` | Compiles a source and prints its bytecode. |
-| `getOpcodeUsageReport()` | Report of the most used opcode sequences (sorted). *(on `plume`, not `plume.debug`)* |
+| `getOpcodeUsageReport()` | Report of the most used opcode sequences (sorted). |
 
 ### run.lua
 | Function | Description |

@@ -126,7 +126,7 @@ else
 			io.stderr:write(result .. "\n")
 		end
 		if plume.stats then
-			print(plume.getOpcodeUsageReport())
+			print(plume.debug.getOpcodeUsageReport())
 		end
 	else
 		io.stderr:write("Unknown action '" .. tostring(action) .. "'\n")
