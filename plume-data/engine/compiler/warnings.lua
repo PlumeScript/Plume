@@ -114,4 +114,28 @@ return function (plume, context)
 			end
 		end
 	end
+
+	function context.emitQuoteWarning(node, op, arg1, arg2)
+		if op == plume.ops.LOAD_CONSTANT and node and node.name == "TEXT" then
+			local constant = context.constants[arg2]
+			if type(constant) == "string" then
+				if constant:sub(1, 1) == '"' and constant:sub(-1) == '"'
+				or constant:sub(1, 1) == "'" and constant:sub(-1) == "'" then
+					local delimiter = '"'
+					if constant:sub(1, 1) == '"' then
+						delimiter = "'"
+					end
+					plume.warning.throwWarning(
+						string.format(
+							"You just created the string %s, not %s.",
+							delimiter .. constant .. delimiter,
+							delimiter .. constant:sub(2, -2) .. delimiter
+						),
+						"Quotes are only needed inside an evaluation.",
+						node, {381, 1150}
+					)
+				end
+			end
+		end
+	end
 end

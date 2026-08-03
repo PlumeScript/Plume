@@ -93,6 +93,8 @@ return function (plume, context)
 		else
 			table.insert(current, instr)
 		end
+
+		context.emitQuoteWarning(node, op, arg1, arg2)
 	end
 
 	--- Return the last scope of context.scopes
