@@ -25,7 +25,12 @@ return function(plume)
 	end
 
 	function plume.error.cannotIndexValue(t)
-		return string.format("Cannot index a non-table '%s' value.", t)
+		local hint = ""
+		if t == "context" then
+			hint = "\n(i) Use `$varname()` to get the value and `with ($varname: value)` to set it."
+		end
+
+		return string.format("Cannot index a non-table '%s' value.%s", t, hint)
 	end
 
 	function plume.error.cannotExpandValue(t)
