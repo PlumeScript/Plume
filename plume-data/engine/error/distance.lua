@@ -14,6 +14,20 @@
 -- ]]
 
 return function(plume)
+	local hardCodedSuggestions = {
+		range    = {"seq"},
+		pairs    = {"enumerate"},
+		["nil"]  = {"empty"},
+		None     = {"empty"},
+		tonumber = {"Number"},
+		tostring = {"String"},
+		pcall    = {"attempt"},
+		error    = {"raise"},
+		require  = {"import"},
+		int      = {"Number", "Number.round", "Number.floor"},
+		str      = {"String"},
+	}
+
 	local function damerauLevenshtein(a, b)
 		local m, n = #a, #b
 		if m == 0 then return n end
@@ -139,12 +153,23 @@ return function(plume)
 		end)
 		  
 		local result = {}
-		for i, m in ipairs(matches) do
-			result[i] = m.text
-			if i >= maxResult then
-				break
+
+		if hardCodedSuggestions[input] then
+			for _, s in ipairs(hardCodedSuggestions[input]) do
+				if #result >= maxResult then
+					break
+				end
+				table.insert(result, s)
 			end
 		end
+
+		for i, m in ipairs(matches) do
+			if #result >= maxResult then
+				break
+			end
+			table.insert(result, m.text)
+		end
+
 		return result
 	end
 end
