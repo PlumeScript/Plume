@@ -99,8 +99,7 @@ return function (plume, context, nodeHandlerTable)
 		return result
 	end
 
-	local directivesHandler
-	directivesHandler = {
+	context.directivesHandler = {
 		warning = {
 			checkArgs = {
 				mode   = {"normal", "ignore", "strict"},
@@ -141,7 +140,7 @@ return function (plume, context, nodeHandlerTable)
 			method = function(node, args)
 				args.issues = "381"
 				args.mode = args.mode or "normal"
-				directivesHandler.warning.method(node, args)
+				context.directivesHandler.warning.method(node, args)
 			end
 		},
 
@@ -202,7 +201,7 @@ return function (plume, context, nodeHandlerTable)
 		}
 	}
 
-	for _, handler in pairs(directivesHandler) do
+	for _, handler in pairs(context.directivesHandler) do
 		if handler.checkArgs then
 			for name, values in pairs(handler.checkArgs) do
 				if type(values) == "table" then
@@ -218,7 +217,7 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.USE_DIRECTIVE = function(node)
 		local directiveNameNode = plume.ast.get(node, "NAME")
 		local directiveName = directiveNameNode.content
-		local handler = directivesHandler[directiveName]
+		local handler = context.directivesHandler[directiveName]
 		if not handler then
 			plume.error.unknownDirective(directiveNameNode, directiveName)
 		end
