@@ -217,6 +217,7 @@ return function (plume, context, nodeHandlerTable)
 
 			-- Handle compound assignment (+=, -=, etc.)
 			if compound then
+				local opName = compound.children[1].name
 				if var.getKey then
 					var.getKey()
 					context.registerOP(node, plume.ops.TABLE_INDEX)
@@ -224,8 +225,14 @@ return function (plume, context, nodeHandlerTable)
 					context.nodeHandler(var.ref)
 				end
 				context.registerOP(var.ref, plume.ops.FORCE_FRAGMENT)
+				if opName == "CONCAT" then
+					context.registerOP(var.ref, plume.ops.CHECK_IS_TEXT)
+				end
 				context.scope(context.accBlock())(body)
-				context.registerOP(var.ref, plume.ops["OP_" .. compound.children[1].name])
+				if opName == "CONCAT" then
+					context.registerOP(var.ref, plume.ops.CHECK_IS_TEXT)
+				end
+				context.registerOP(var.ref, plume.ops["OP_" .. opName])
 			end
 
 			-- Handle object destructuring (FROM)

@@ -285,7 +285,7 @@ return function (plume)
 			{{"AND", "and"}},
 			{{"NOT", "not"}, unary=true},
 			{{"EQ", "=="}, {"NEQ", "!="}, {"LTE", "<="}, {"GTE", ">="}, {"LT", "<"}, {"GT", ">"}},
-			{{"ADD", "+"}, {"SUB", "-"}},
+			{{"ADD", "+"}, {"SUB", "-"}, {"CONCAT", ".."}},
 			{{"MUL", "*"}, {"DIV", "/"}, {"MOD", "%"}},
 			{{"POW", "^"}},
 			{{"NEG", "-"}, unary=true}
@@ -442,7 +442,7 @@ return function (plume)
 		local lbody    = Ct("BODY", V"firstStatement")
 		local lbodynlb = Ct("BODY", V"firstStatementNLB")
 		local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
-					   + C("MUL", P"*") + C("DIV", P"/"))
+					   + C("MUL", P"*") + C("DIV", P"/") + C("CONCAT", P".."))
 		local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1
 		
 

@@ -146,6 +146,18 @@ return function (plume, context, nodeHandlerTable)
 		end
 	end
 
+	--- CONCAT is like other binary operators, but each operand is
+	--- checked to be text before concatenating.
+	nodeHandlerTable.CONCAT = function(node)
+		context.nodeHandler(node.children[1])
+		emitForceFragmentIfNeeded(node.children[1])
+		context.registerOP(node, plume.ops.CHECK_IS_TEXT)
+		context.nodeHandler(node.children[2])
+		emitForceFragmentIfNeeded(node.children[2])
+		context.registerOP(node, plume.ops.CHECK_IS_TEXT)
+		context.registerOP(node, plume.ops.OP_CONCAT)
+	end
+
 	---------------------------------------------------------
 	--- NEQ, GT, LTE and GTE are emulated from EQ, LT and NOT
 	---------------------------------------------------------

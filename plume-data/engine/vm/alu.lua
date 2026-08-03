@@ -234,6 +234,15 @@ return function(vm)
 		self:_BIN_OP_NUMBER(vm._ADD,   "add")
 	end
 	--- @opcode
+	--- Concatenate two stack top values and stack the result.
+	--- Both operands are guaranteed to be text by CHECK_IS_TEXT.
+	--! inline
+	function vm:OP_CONCAT(arg1, arg2)
+		local right = self:_STACK_POP(self.mainStack)
+		local left  = self:_STACK_POP(self.mainStack)
+		self:_STACK_PUSH(self.mainStack, left .. right)
+	end
+	--- @opcode
 	--- Multiply two stack top value and stack the result based on `_BIN_OP_NUMBER`.
 	--! inline
 	function vm:OP_MUL(arg1, arg2)

@@ -131,6 +131,38 @@ $(t["nib"]?)       // same, with brackets
 $(t.nib? or 1)     // handy for defaults
 ```
 
+## String Concatenation: `..`
+
+Inside an evaluation context, the `..` operator concatenates two values as text:
+
+```plume
+let a = hello
+let b = world
+$(a .. b)
+// → helloworld
+```
+
+Numbers are converted to text, so `$(1 .. 2)` is `12`. The compound form `..=` appends to any assignable target:
+
+```plume
+let s = foo
+set s ..= bar
+$s
+// → foobar
+```
+
+**This operator is niche.** Plume's text accumulation already concatenates for you in most cases — `let c = $a$b` or `let d = prefix_$c` is enough and reads more naturally. Reach for `..` only in the rare cases where you must build a string *inside* an evaluation, where text accumulation can't help — for example a dynamic table key:
+
+```plume
+let t = do
+    item_1: first
+    item_2: second
+end
+let n = 2
+$t["item_"..n]
+// → second
+```
+
 ## Closures
 
 A macro captures the variables of its enclosing scopes at the point of definition. The capture is a *live binding*: the macro and its birth scope share the same variable, and mutations are visible on both sides. The capture survives the end of the enclosing scope, which enables factory patterns:
