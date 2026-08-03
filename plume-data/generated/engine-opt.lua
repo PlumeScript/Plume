@@ -6648,7 +6648,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -6675,7 +6675,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -6698,10 +6698,10 @@ return function (plume)
                                                         local tleft = _ret596
                                                         local _ret597 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret597
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("addr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("addl")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("add")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("add")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "addr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "addl")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "add")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "add")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -6848,7 +6848,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -6875,7 +6875,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -6898,10 +6898,10 @@ return function (plume)
                                                         local tleft = _ret615
                                                         local _ret616 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret616
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("mulr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("mull")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("mul")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("mul")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "mulr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "mull")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "mul")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "mul")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -7056,7 +7056,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7083,7 +7083,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7106,10 +7106,10 @@ return function (plume)
                                                         local tleft = _ret634
                                                         local _ret635 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret635
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("subr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("subl")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("sub")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("sub")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "subr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "subl")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "sub")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "sub")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -7256,7 +7256,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7283,7 +7283,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7306,10 +7306,10 @@ return function (plume)
                                                         local tleft = _ret653
                                                         local _ret654 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret654
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("divr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("divl")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("div")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("div")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "divr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "divl")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "div")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "div")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -7443,7 +7443,7 @@ return function (plume)
                                                     end
                                                     x = tonumber (x)
                                                 elseif tx ~= "number" then
-                                                    local mtonumber = x:getMetaItem ("tonumber")
+                                                    local mtonumber = safeGetMetaItem (x, "tonumber")
                                                     if tx == "table" and mtonumber then
                                                         local meta = mtonumber
                                                         local params = {}
@@ -7463,7 +7463,7 @@ return function (plume)
                                                 do
                                                     local meta, paramself
                                                     local _ret673 = type (x) == "table" and (x == plumeObjEmpty and "empty" or x.type) or (type (x) == "cdata" and x.type) or type (x)
-                                                    meta = _ret673 == "table" and x:getMetaItem ("minus")
+                                                    meta = _ret673 == "table" and safeGetMetaItem (x, "minus")
                                                     if meta then
                                                         mainStackFramesPointer = mainStackFramesPointer + 1
                                                         mainStackFrames[mainStackFramesPointer] = mainStackPointer + 1
@@ -7583,7 +7583,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7610,7 +7610,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7633,10 +7633,10 @@ return function (plume)
                                                         local tleft = _ret685
                                                         local _ret686 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret686
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("modr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("modl")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("mod")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("mod")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "modr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "modl")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "mod")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "mod")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -7787,7 +7787,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7814,7 +7814,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -7837,10 +7837,10 @@ return function (plume)
                                                         local tleft = _ret704
                                                         local _ret705 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret705
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("powr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("powl")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("pow")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("pow")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "powr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "powl")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "pow")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "pow")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -7987,7 +7987,7 @@ return function (plume)
                                                         end
                                                         right = tonumber (right)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = right:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (right, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -8014,7 +8014,7 @@ return function (plume)
                                                         end
                                                         left = tonumber (left)
                                                     elseif tx ~= "number" then
-                                                        local mtonumber = left:getMetaItem ("tonumber")
+                                                        local mtonumber = safeGetMetaItem (left, "tonumber")
                                                         if tx == "table" and mtonumber then
                                                             local meta = mtonumber
                                                             local params = {}
@@ -8037,10 +8037,10 @@ return function (plume)
                                                         local tleft = _ret723
                                                         local _ret724 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                         local tright = _ret724
-                                                        local leftmetar = tleft == "table" and left:getMetaItem ("ltr")
-                                                        local rightmetal = tright == "table" and right:getMetaItem ("ltl")
-                                                        local leftmeta = tleft == "table" and left:getMetaItem ("lt")
-                                                        local rightmeta = tright == "table" and right:getMetaItem ("lt")
+                                                        local leftmetar = tleft == "table" and safeGetMetaItem (left, "ltr")
+                                                        local rightmetal = tright == "table" and safeGetMetaItem (right, "ltl")
+                                                        local leftmeta = tleft == "table" and safeGetMetaItem (left, "lt")
+                                                        local rightmeta = tright == "table" and safeGetMetaItem (right, "lt")
                                                         if leftmetar then
                                                             meta = leftmetar
                                                             param1 = right
@@ -8175,10 +8175,10 @@ return function (plume)
                                                 local tleft = _ret741
                                                 local _ret742 = type (right) == "table" and (right == plumeObjEmpty and "empty" or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                 local tright = _ret742
-                                                local leftmetar = tleft == "table" and left:getMetaItem ("eqr")
-                                                local rightmetal = tright == "table" and right:getMetaItem ("eql")
-                                                local leftmeta = tleft == "table" and left:getMetaItem ("eq")
-                                                local rightmeta = tright == "table" and right:getMetaItem ("eq")
+                                                local leftmetar = tleft == "table" and safeGetMetaItem (left, "eqr")
+                                                local rightmetal = tright == "table" and safeGetMetaItem (right, "eql")
+                                                local leftmeta = tleft == "table" and safeGetMetaItem (left, "eq")
+                                                local rightmeta = tright == "table" and safeGetMetaItem (right, "eq")
                                                 if leftmetar then
                                                     meta = leftmetar
                                                     param1 = right
