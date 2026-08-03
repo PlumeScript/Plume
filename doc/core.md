@@ -250,7 +250,7 @@ string
 ```plume
 let wing = 1
 $(wing + "abc")
-// → RUNTIME ERROR: Cannot convert the string value 'abc' to a number.
+// → RUNTIME ERROR: Cannot convert the string value 'abc' to a number. (i) Consider using the `..` concat operator.
 ```
 
 ## Variables: `let` and `set`

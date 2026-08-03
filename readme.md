@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-Owl_61-blue.svg) ![Tests](https://img.shields.io/badge/tests-847%2F847%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
+![Version](https://img.shields.io/badge/version-Owl_61-blue.svg) ![Tests](https://img.shields.io/badge/tests-850%2F850%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
 
 ## Introduction
 

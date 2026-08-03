@@ -162,6 +162,13 @@ return function(vm)
 			if lerr or rerr then
 				local meta = self:_HANDLE_META_BIN(left, right, name)
 				if not meta then
+					if name == "add" then
+						if type(right) == "string" then
+							lerr = self.plume.error.cannotConvertToString(right, true)
+						elseif type(left) == "string" then
+							lerr = self.plume.error.cannotConvertToString(left, true)
+						end
+					end
 					self:_ERROR(lerr or rerr)
 				end
 			-- table with tonumber metafield

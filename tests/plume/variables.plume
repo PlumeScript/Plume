@@ -143,6 +143,7 @@ use tests/plume/toimport/badlib
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Cannot convert the string value 'a' to a number.                             │
+│   (i) Consider using the `..` concat operator.                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ tests/plume/toimport/badlib.plume                                           │

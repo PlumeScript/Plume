@@ -41,8 +41,12 @@ return function(plume)
 		return string.format("Type '%s' has no len.", tt)
 	end
 
-	function plume.error.cannotConvertToString(x)
-		return string.format("Cannot convert the string value '%s' to a number.", plume.repr(x))
+	function plume.error.cannotConvertToString(x, addHint)
+		local hint = ""
+		if addHint then
+			hint = "\n(i) Consider using the `..` concat operator."
+		end
+		return string.format("Cannot convert the string value '%s' to a number.%s", plume.repr(x), hint)
 	end
 
 	function plume.error.cannotDoArithmeticWith(_type)

@@ -1625,6 +1625,7 @@ set x += 1
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Cannot convert the string value 'a1' to a number.                            │
+│   (i) Consider using the `..` concat operator.                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
