@@ -267,7 +267,7 @@ local function main()
 	
 	local plume = require "plume-data/engine/init"
 	if args.showHelp then
-		print((help:gsub('!VERSION!', plume._VERSION)))
+		print((help:gsub('!VERSION!', plume.VERSION)))
 	elseif args.showVersion then
 		print("Plume🪶" .. plume.VERSION)
 	elseif args.inputFilename or args.inputString then
