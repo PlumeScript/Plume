@@ -6799,12 +6799,10 @@ return function (plume)
                                                     end
                                                     local meta = _ret595
                                                     if not meta then
-                                                        if "add" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
+                                                        if type (right) == "string" then
+                                                            lerr = plume.error.cannotConvertToString (right, true)
+                                                        elseif type (left) == "string" then
+                                                            lerr = plume.error.cannotConvertToString (left, true)
                                                         end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
@@ -7006,13 +7004,6 @@ return function (plume)
                                                     end
                                                     local meta = _ret614
                                                     if not meta then
-                                                        if "mul" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
-                                                        end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
                                                         goto ERROR
@@ -7221,13 +7212,6 @@ return function (plume)
                                                     end
                                                     local meta = _ret633
                                                     if not meta then
-                                                        if "sub" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
-                                                        end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
                                                         goto ERROR
@@ -7428,13 +7412,6 @@ return function (plume)
                                                     end
                                                     local meta = _ret652
                                                     if not meta then
-                                                        if "div" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
-                                                        end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
                                                         goto ERROR
@@ -7762,13 +7739,6 @@ return function (plume)
                                                     end
                                                     local meta = _ret684
                                                     if not meta then
-                                                        if "mod" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
-                                                        end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
                                                         goto ERROR
@@ -7973,13 +7943,6 @@ return function (plume)
                                                     end
                                                     local meta = _ret703
                                                     if not meta then
-                                                        if "pow" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
-                                                        end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
                                                         goto ERROR
@@ -8201,13 +8164,6 @@ return function (plume)
                                                     end
                                                     local meta = _ret724
                                                     if not meta then
-                                                        if "lt" == "add" then
-                                                            if type (right) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (right, true)
-                                                            elseif type (left) == "string" then
-                                                                lerr = plume.error.cannotConvertToString (left, true)
-                                                            end
-                                                        end
                                                         vmerr = lerr or rerr
                                                         customerrip = nil
                                                         goto ERROR
