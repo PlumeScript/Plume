@@ -68,6 +68,7 @@ return function(plume)
 		context.scopesUp    = {}
 		context.roots       = {}
 
+		context.importedVariablesSource = {}
 		context.importedVariables = {}
 
 		context.accBlockDeep = 0

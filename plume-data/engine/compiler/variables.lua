@@ -15,6 +15,8 @@ return function (plume, context)
 
 		if scope[name] then
 			return scope[name].source
+		elseif context.importedVariablesSource[name] then
+			return context.importedVariablesSource[name]
 		end
 	end
 
@@ -293,8 +295,14 @@ return function (plume, context)
 			end
 		end
 
-		if (name == "plume" and context.runtime.plume) or plume.std[name] then
-			local source = context.getNameNode(node, name)
+		local source = context.getNameNode(node, name)
+		if context.importedVariablesSource[name] then
+			plume.warning.throwWarning(
+				string.format("Shadowing '%s' imported from `%s`.", name, context.importedVariablesSource[name]),
+				nil,
+				source, {381, 1162}
+			)
+		elseif (name == "plume" and context.runtime.plume) or plume.std[name] then
 			plume.warning.throwWarning(
 				string.format("Shadowing `%s` from the std.", name),
 				"Consider using a different name.",

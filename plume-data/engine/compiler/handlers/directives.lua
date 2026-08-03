@@ -92,7 +92,21 @@ return function (plume, context, nodeHandlerTable)
 			if context.scopes[#context.scopes][key] then
 				plume.error.useExistingVariable(pathNode, key, path)
 			end
+			if context.importedVariablesSource[key] then
+				plume.warning.throwWarning(
+					string.format(
+						"'%s' declares a variable named '%s', shadowing that one imported from `%s`.",
+						path,
+						key,
+						context.importedVariablesSource[key]
+					),
+					nil,
+					pathNode, {381, 583}
+				)
+			end
+
 			context.importedVariables[key] = result.table[key]
+			context.importedVariablesSource[key] = path
 		end
 
 		table.remove(plume.currentUseProcessing)
