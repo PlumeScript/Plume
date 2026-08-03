@@ -314,7 +314,7 @@ return function(vm)
 	        	local stringValue
 
 	        	self:_STACK_POP(self.mainStack)
-	        	if tostringMetaType == "macro" then
+	        	if self:_IS_CALLABLE(tostringMeta) then
 		            self:BEGIN_ACC(0, 0)
 		            self:_PUSH_SELF(value)
 		            self:_STACK_PUSH(self.mainStack, tostringMeta)
@@ -325,6 +325,7 @@ return function(vm)
 
 	           	local stringValue = self:_STACK_GET(self.mainStack)
 	            local stringValueType = self:_GET_TYPE(stringValue)
+	            
 	            if stringValueType ~= "string" and stringValueType ~= "empty" then
 					self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
 	            	self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))

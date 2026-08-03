@@ -1612,3 +1612,8 @@ $x.replace(a, $String)
 /// Output
 a
 /// End
+
+/// Test #1149
+let x = $(String(os.Path()))
+/// Output
+/// End
