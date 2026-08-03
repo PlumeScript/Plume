@@ -20,7 +20,7 @@ local function mkdirs(path, isFile)
 		end
 
 		local attr = lfs.attributes(fullPath)
-		if not attr then
+		if not attr and not fullPath:match('^[A-Z]:$') then
 			local success, result = lfs.mkdir(fullPath)
 			if not success then
 				return false, result
