@@ -71,7 +71,6 @@ local function constantFolding(node)
 				return ast._false()
 			end
 		elseif node[1].type == "string" and node[2].type == "string" then
-			print(node[1].value, node[2].value)
 			if node[1].value == node[2].value then
 				return ast._true()
 			else
