@@ -75,7 +75,7 @@ return function (plume, context)
 	end
 
 	function context.checkCallWarning(node)
-		local name  = plume.ast.get(node, "NAME")
+		local name  = plume.ast.get(node, "NAME") or plume.ast.get(node, "IDENTIFIER")
 		local index = plume.ast.get(node, "INDEX") or plume.ast.get(node, "DIRECT_INDEX")
 		local call  = plume.ast.get(node, "CALL")
 		local bcall = plume.ast.get(node, "BLOCK_CALL")
