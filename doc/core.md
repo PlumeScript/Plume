@@ -62,6 +62,8 @@ As a consequence, **consecutive text lines concatenate with no separator**. To i
 
 A backslash before any other character makes it literal. This is how you write characters that would otherwise start a language construct, such as `\$`, `\:`, `\,` or `\\` itself. Escaping an ordinary letter simply yields that letter (`\F` is `F`).
 
+A future edition will restrict escapes to a fixed set and add a null escape `\0` (empty text that prevents keyword recognition); that behavior is already available via `use #future(newEscape)` — see [expert.md](expert.md).
+
 ```plume
 wing
 nib
