@@ -201,7 +201,7 @@ return function (plume)
 
 		local libname = Cmt(Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist), applyDirective)
 					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
-		local use = K"use" * s * libname * (os*P","*os*libname)^0
+		local use = K"use" * (s * libname * (os*P","*os*libname)^0 + E(plume.error.emptyUse))
 
 		----------
 		-- eval --
@@ -434,10 +434,10 @@ return function (plume)
 		local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar + E(plume.error.missingValue, P","))^0)
 		local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar + E(plume.error.missingValue, P","))^0)
 		
-		local let = Ct("LET", K"let" * statconst * s * letvarlist * (
+		local let = Ct("LET", K"let" * (statconst * s * letvarlist * (
 								  os * E(plume.error.letCompound, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody
 								+ s  * C("FROM", K"from") * s * lbody
-							)^-1)
+							)^-1 + E(plume.error.emptyLet)))
 
 		local set = Ct("SET", K"set" * s * setvarlist * (
 					  os * compound^-1 * P"=" * lbody
@@ -477,9 +477,9 @@ return function (plume)
 				  		* (P"end"   + E(plume.error.missingEnd, -P(1))))
 
 		local with = Ct('WITH',
-		K"with" * os * (
+		K"with" * (os * (
 			Ct("PARAMLIST", inlinetable + eval)
-		) * body * _end)
+		) * body * _end + E(plume.error.emptyWith)))
 
 		-- Warning
 		local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") /
@@ -505,15 +505,15 @@ return function (plume)
 			firstStatement = os * (-V"statementTerminator")
 								* (
 									  V"command"
-									+ Ct("RUN", K"run" * s * V"firstStatement")
-									+ Ct("RAISE", K"raise" * s * V"firstStatement")
+									+ Ct("RUN", K"run" * (s * V"firstStatement" + E(plume.error.emptyRun)))
+									+ Ct("RAISE", K"raise" * (s * V"firstStatement" + E(plume.error.emptyRaise)))
 									+ V"invalid"^-1 * (fakeAffectation^-1 * V"text" + fakeAffectation)
 								),
 			firstStatementNLB = os * (-V"statementTerminator")
 								* (
 									  V"commandStd"
-									+ Ct("RUN", K"run" * s * V"firstStatementNLB")
-									+ Ct("RAISE", K"raise" * s * V"firstStatementNLB")
+									+ Ct("RUN", K"run" * (s * V"firstStatementNLB" + E(plume.error.emptyRun)))
+									+ Ct("RAISE", K"raise" * (s * V"firstStatementNLB" + E(plume.error.emptyRaise)))
 									+ V"invalid"^-1 * V"text"
 								),
 			statement    = lt * V"firstStatement",
