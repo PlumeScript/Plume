@@ -494,6 +494,37 @@ return function (plume)
 			return x
 		end
 
+		-- Foreign keywords that would be silently treated as text, with their Plume equivalent
+		local foreignKeywords = {
+			["local"]    = "`let`",
+			["function"] = "`macro`",
+			["return"]   = "`leave`",
+			def          = "`macro`",
+			try          = "`attempt`",
+			except       = "`attempt`",
+			elif         = "`elseif`",
+			class        = "a table with metafields",
+			lambda       = "an anonymous `macro`",
+			var          = "`let`",
+			echo         = "`$print`",
+			puts         = "`$print`",
+		}
+
+		local foreignKeywordPattern
+		for word in pairs(foreignKeywords) do
+			local p = K(word)
+			foreignKeywordPattern = foreignKeywordPattern and (foreignKeywordPattern + p) or p
+		end
+
+		local foreignKeyword = C("TEXT", foreignKeywordPattern * (s + P"(" + P":") * (P(1) - S"\n")^0) /
+		function(x)
+			local word = x.content:match("^([%a_]+)")
+			x.warning = string.format("`%s` is not a Plume keyword, this line is plain text.", word)
+			x.warningHint = string.format("Do you mean %s ?", foreignKeywords[word])
+			x.issues = {381, 1160}
+			return x
+		end
+
 		----------
 		-- main --
 		----------
@@ -507,7 +538,7 @@ return function (plume)
 									  V"command"
 									+ Ct("RUN", K"run" * (s * V"firstStatement" + E(plume.error.emptyRun)))
 									+ Ct("RAISE", K"raise" * (s * V"firstStatement" + E(plume.error.emptyRaise)))
-									+ V"invalid"^-1 * (fakeAffectation^-1 * V"text" + fakeAffectation)
+									+ V"invalid"^-1 * (foreignKeyword + fakeAffectation^-1 * V"text" + fakeAffectation)
 								),
 			firstStatementNLB = os * (-V"statementTerminator")
 								* (
