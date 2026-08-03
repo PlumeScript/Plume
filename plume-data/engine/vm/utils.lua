@@ -132,6 +132,18 @@ return function(vm)
 	    local lastfile
 	    local files = self.runtime.files
 	    local ip    = self.ip
+
+	    -- During a recursive run, ip points to an engine opcode, not a file.
+	    -- Recover the real caller ip from the recursiveStack.
+	    if ip <= #self.plume.sops_config then
+	        --! to-remove-begin
+	        if self.recursiveStack.pointer == 0 then
+	            error("[VM] _GET_CURRENT_FILE: fake offset with no recursive caller.")
+	        end
+	        --! to-remove-end
+	        ip = self:_STACK_GET(self.recursiveStack)
+	    end
+
 	    for _, file in ipairs(files) do
 	        if file.offset then
 	            if file.offset <= ip then
@@ -141,6 +153,12 @@ return function(vm)
 	            end
 	        end
 	    end
+
+	    --! to-remove-begin
+	    if not lastfile then
+	        error("[VM] _GET_CURRENT_FILE: no current file found.")
+	    end
+	    --! to-remove-end
 
 	    return lastfile
 	end
