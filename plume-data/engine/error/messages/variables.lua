@@ -14,13 +14,17 @@ return function(plume)
 	function plume.error.useUnknownVariable(node, varName, visiblesVariables, isValidator)
 		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, varName, visiblesVariables, true)
 		local validatorHint = ""
+		local hardcodedHint = ""
 		if isValidator then
 			validatorHint = "\nOnly visibles variables can be used as validator."
 		end
+		if varName == "ipairs" then
+			hardcodedHint = "\n(i) You don't need `ipairs` to iterate, just do `for item in iterable`"
+		end
 
 		local message = string.format(
-			"Cannot use variable '%s', it isn't defined in the current scope.%s%s",
-			varName, visiblesVariableHint, validatorHint
+			"Cannot use variable '%s', it isn't defined in the current scope.%s%s%s",
+			varName, visiblesVariableHint, validatorHint, hardcodedHint
 		)
 		plume.error.throwCompilationError(node, message)
 	end

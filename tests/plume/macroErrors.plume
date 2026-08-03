@@ -561,6 +561,7 @@ $double(a)
 │ RUNTIME ERROR:                                                                 │
 │ → Validator 'valid' failed:                                                    │
 │   Cannot convert the string value 'a' to a number.                             │
+│   (i) Consider using the `..` concat operator.                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

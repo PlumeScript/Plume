@@ -28,10 +28,12 @@ return function(plume)
 			return ""
 		else
 			for i, relatedName in ipairs(related) do
-				if visiblesVariables[relatedName].source then
-					related[i] = visiblesVariables[relatedName].source .. "." .. related[i]
+				if visiblesVariables[relatedName] then
+					if visiblesVariables[relatedName].source then
+						related[i] = visiblesVariables[relatedName].source .. "." .. related[i]
+					end
+					plume.error.addContext(node, visiblesVariables[relatedName].node)
 				end
-				plume.error.addContext(node, visiblesVariables[relatedName].node)
 			end
 
 			return string.format("\nPerhaps you mean '%s'?", table.concat( related, "', '"):gsub(', ([^,]-)$', ' or %1'))

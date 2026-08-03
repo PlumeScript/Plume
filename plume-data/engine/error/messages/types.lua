@@ -25,7 +25,12 @@ return function(plume)
 	end
 
 	function plume.error.cannotIndexValue(t)
-		return string.format("Cannot index a non-table '%s' value.", t)
+		local hint = ""
+		if t == "context" then
+			hint = "\n(i) Use `$varname()` to get the value and `with ($varname: value)` to set it."
+		end
+
+		return string.format("Cannot index a non-table '%s' value.%s", t, hint)
 	end
 
 	function plume.error.cannotExpandValue(t)
@@ -36,8 +41,12 @@ return function(plume)
 		return string.format("Type '%s' has no len.", tt)
 	end
 
-	function plume.error.cannotConvertToString(x)
-		return string.format("Cannot convert the string value '%s' to a number.", plume.repr(x))
+	function plume.error.cannotConvertToString(x, addHint)
+		local hint = ""
+		if addHint then
+			hint = "\n(i) Consider using the `..` concat operator."
+		end
+		return string.format("Cannot convert the string value '%s' to a number.%s", plume.repr(x), hint)
 	end
 
 	function plume.error.cannotDoArithmeticWith(_type)

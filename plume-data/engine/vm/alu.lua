@@ -6,6 +6,11 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function(vm)
+	--! inline
+	function safeGetMetaItem(t, name)
+		return t.getMetaItem and t:getMetaItem(name)
+	end
+
 	--- Try to convert any value into number.
 	--- Via tonumber, or try to call the metafield tonumber.
 	--- @param x any
@@ -19,7 +24,7 @@ return function(vm)
 	        end
 	        x = tonumber(x)
 	    elseif tx  ~= "number" then
-	        local mtonumber = x:getMetaItem("tonumber")
+	        local mtonumber = safeGetMetaItem(x, "tonumber")
 	        if tx  == "table" and mtonumber then
 	            local meta = mtonumber
 	            local params = {}
@@ -43,10 +48,10 @@ return function(vm)
 	    local tleft  = self:_GET_TYPE(left)
 	    local tright = self:_GET_TYPE(right)
 
-	    local leftmetar  = tleft == "table" and left:getMetaItem(name.."r")
-	    local rightmetal = tright == "table" and right:getMetaItem(name.."l")
-	    local leftmeta   = tleft == "table" and left:getMetaItem(name)
-	    local rightmeta  = tright == "table" and right:getMetaItem(name)
+	    local leftmetar  = tleft == "table" and safeGetMetaItem(left, name.."r")
+	    local rightmetal = tright == "table" and safeGetMetaItem(right, name.."l")
+	    local leftmeta   = tleft == "table" and safeGetMetaItem(left, name)
+	    local rightmeta  = tright == "table"and safeGetMetaItem(right, name)
 
 	    if leftmetar then
 	        meta = leftmetar
@@ -91,7 +96,7 @@ return function(vm)
 	--! inline
 	function vm:_HANDLE_META_UN(x, name)
 	    local meta, paramself
-	    meta = self:_GET_TYPE(x) == "table" and x:getMetaItem(name)
+	    meta = self:_GET_TYPE(x) == "table" and safeGetMetaItem(x, name)
 
 	    if meta then
 	        self:BEGIN_ACC(0, 0)
@@ -157,6 +162,13 @@ return function(vm)
 			if lerr or rerr then
 				local meta = self:_HANDLE_META_BIN(left, right, name)
 				if not meta then
+					if name == "add" then
+						if type(right) == "string" then
+							lerr = self.plume.error.cannotConvertToString(right, true)
+						elseif type(left) == "string" then
+							lerr = self.plume.error.cannotConvertToString(left, true)
+						end
+					end
 					self:_ERROR(lerr or rerr)
 				end
 			-- table with tonumber metafield
@@ -227,6 +239,15 @@ return function(vm)
 	--! inline
 	function vm:OP_ADD(arg1, arg2)
 		self:_BIN_OP_NUMBER(vm._ADD,   "add")
+	end
+	--- @opcode
+	--- Concatenate two stack top values and stack the result.
+	--- Both operands are guaranteed to be text by CHECK_IS_TEXT.
+	--! inline
+	function vm:OP_CONCAT(arg1, arg2)
+		local right = self:_STACK_POP(self.mainStack)
+		local left  = self:_STACK_POP(self.mainStack)
+		self:_STACK_PUSH(self.mainStack, left .. right)
 	end
 	--- @opcode
 	--- Multiply two stack top value and stack the result based on `_BIN_OP_NUMBER`.

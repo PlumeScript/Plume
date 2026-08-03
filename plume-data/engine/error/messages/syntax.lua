@@ -132,6 +132,62 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	-- Build the "write as text" hint. A keyword whose first letter is a special
+	-- escape (r/t/n/s) cannot be written as `\keyword` (e.g. `\r` is a carriage
+	-- return); escape that first letter as a string instead: `$("r")aise`.
+	local function emptyKeywordMessage(keyword, what)
+		local message = string.format("The keyword `%s` must be followed by a %s.", keyword, what)
+		local first = keyword:sub(1, 1)
+		local hint
+		if first:match("[rtns]") then
+			hint = string.format("$(%q)%s", first, keyword:sub(2))
+		else
+			hint = "\\" .. keyword
+		end
+		message = message .. string.format("\nIf you want to write the word '%s' as text, write '%s'.", keyword, hint)
+		return message
+	end
+
+	function plume.error.emptyRaise(node)
+		local message = emptyKeywordMessage("raise", "message")
+		-- The error node's bpos points just after the keyword; shift back to highlight it.
+		node.errorbpos = node.bpos - #("raise")
+		node.errorepos = node.bpos - 1
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.emptyRun(node)
+		local message = emptyKeywordMessage("run", "statement")
+		-- The error node's bpos points just after the keyword; shift back to highlight it.
+		node.errorbpos = node.bpos - #("run")
+		node.errorepos = node.bpos - 1
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.emptyLet(node)
+		local message = emptyKeywordMessage("let", "variable name")
+		-- The error node's bpos points just after the keyword; shift back to highlight it.
+		node.errorbpos = node.bpos - #("let")
+		node.errorepos = node.bpos - 1
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.emptyUse(node)
+		local message = emptyKeywordMessage("use", "library name")
+		-- The error node's bpos points just after the keyword; shift back to highlight it.
+		node.errorbpos = node.bpos - #("use")
+		node.errorepos = node.bpos - 1
+		plume.error.throwSyntaxError(node, message)
+	end
+
+	function plume.error.emptyWith(node)
+		local message = emptyKeywordMessage("with", "table")
+		-- The error node's bpos points just after the keyword; shift back to highlight it.
+		node.errorbpos = node.bpos - #("with")
+		node.errorepos = node.bpos - 1
+		plume.error.throwSyntaxError(node, message)
+	end
+
 	function plume.error.letCompound(node)
 		local message = "Using let with a compound assignment."
 		plume.error.throwSyntaxError(node, message)
@@ -271,7 +327,7 @@ return function(plume)
 	end
 
 	function plume.error.leaveInValueBlock(node)
-		local message = "Cannot use `leave` in a value block.\n(i) `leave` is designed to stop accumulation,\nbut this macro returns a single value.\nYou should instead, use an `if` with an empty branch."
+		local message = "Cannot use `leave` here.\n(i) `leave` is designed to stop accumulation,\nbut this macro returns a single value.\nYou should instead, use an `if` with an empty branch."
 		plume.error.throwSyntaxError(node, message)
 	end
 end

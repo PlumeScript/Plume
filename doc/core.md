@@ -6,6 +6,16 @@ This document covers the **core** of Plume: the minimum set of concepts and synt
 *   For features intended for library authors (metatables, contextual variables, directives...), see [expert.md](expert.md).
 *   Standard library functions (`String`, `Table`, `Math`...) are documented separately in [reference_std.md](reference_std.md).
 
+## Development Warnings: `use #devWarnings`
+
+Plume can warn you about common mistakes while you develop. Enable the warnings at the top of a program with:
+
+```plume
+use #devWarnings
+```
+
+The output is verbose and may include false positives, so it is not always pleasant to develop with. But it catches and explains many frequent errors — for example `x = 5` instead of `set x = 5`, `function wing` instead of `macro wing`, or `let x = "a"` instead of `let x = a`. Turn it on systematically for your first programs, and switch it back on whenever you encounter surprising results. (The `-w` CLI flag is equivalent; see [advanced.md](advanced.md) for the full warning system.)
+
 ## Text-First: Text and Statements
 
 Plume is a text-first language: any sequence of characters that is not part of a language construct is literal text. Writing content requires no quoting or special delimiters.
@@ -51,6 +61,8 @@ As a consequence, **consecutive text lines concatenate with no separator**. To i
 | `\r`     | Carriage return  |
 
 A backslash before any other character makes it literal. This is how you write characters that would otherwise start a language construct, such as `\$`, `\:`, `\,` or `\\` itself. Escaping an ordinary letter simply yields that letter (`\F` is `F`).
+
+A future edition will restrict escapes to a fixed set and add a null escape `\0` (empty text that prevents keyword recognition); that behavior is already available via `use #future(newEscape)` — see [expert.md](expert.md).
 
 ```plume
 wing
@@ -238,7 +250,7 @@ string
 ```plume
 let wing = 1
 $(wing + "abc")
-// → RUNTIME ERROR: Cannot convert the string value 'abc' to a number.
+// → RUNTIME ERROR: Cannot convert the string value 'abc' to a number. (i) Consider using the `..` concat operator.
 ```
 
 ## Variables: `let` and `set`

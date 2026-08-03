@@ -250,6 +250,9 @@ The VM decodes instructions via bit operations and dispatches through a generate
 #### OP_ADD
 <br>Add two stack top value and stack the result based on `_BIN_OP_NUMBER`. 
 
+#### OP_CONCAT
+<br>Concatenate two stack top values and stack the result. <br>Both operands are guaranteed to be text by CHECK_IS_TEXT. 
+
 #### OP_MUL
 <br>Multiply two stack top value and stack the result based on `_BIN_OP_NUMBER`. 
 

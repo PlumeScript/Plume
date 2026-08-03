@@ -154,6 +154,9 @@ return function (plume)
 					if key == "lineEval" or key == "all" or key == "raven" then
 						dynamicParseData.futureFlagLineEval = true
 					end
+					if key == "newEscape" or key == "all" or key == "raven" then
+						dynamicParseData.futureFlagNewEscape = true
+					end
 				end
 			end
 			return pos, node
@@ -178,11 +181,38 @@ return function (plume)
 				  + C("FALSE", K"false") * -idns
 				  + C("EMPTY", K"empty") * -idns
 				  + idns
-		local escaped =  C("SPECIAL_TEXT", P"\\s")
-					  +  C("SPECIAL_TEXT", P"\\t")
-					  +  C("SPECIAL_TEXT", P"\\n")
-					  +  C("SPECIAL_TEXT", P"\\r")
-					  +  P"\\"*C("TEXT", P(1))
+		local function unknownEscape(node)
+			local s = node.content:sub(2, 2)
+			plume.error.unknownEscapeSequence(node, s)
+		end
+
+		-- Restricted escape set, enabled by `use #future(newEscape)`
+		local escapedNew =  C("SPECIAL_TEXT", P"\\s")
+						+  C("SPECIAL_TEXT", P"\\t")
+						+  C("SPECIAL_TEXT", P"\\n")
+						+  C("SPECIAL_TEXT", P"\\r")
+						+  C("SPECIAL_TEXT", P"\\$")
+						+  C("SPECIAL_TEXT", P"\\(")
+						+  C("SPECIAL_TEXT", P"\\)")
+						+  C("SPECIAL_TEXT", P"\\:")
+						+  C("SPECIAL_TEXT", P"\\,")
+						+  C("SPECIAL_TEXT", P"\\\\")
+						+  C("SPECIAL_TEXT", P"\\0")
+						+  E(unknownEscape, P"\\" * P(1))
+		local escapedOld =  C("SPECIAL_TEXT", P"\\s")
+						+  C("SPECIAL_TEXT", P"\\t")
+						+  C("SPECIAL_TEXT", P"\\n")
+						+  C("SPECIAL_TEXT", P"\\r")
+						+  P"\\"*C("TEXT", P(1)) / function(x)
+							if x.content:match("^[a-zA-Z]$") then
+								x.warning = "From Raven edition, escaping an ordinary letter will be an error; only a fixed set of escapes will be valid."
+								x.warningHint = "Use `\\0` to write a keyword as literal text (e.g. `\\0set`)."
+								x.issues = {886, 1157}
+							end
+							return x
+						end
+		local escaped = P(function() return dynamicParseData.futureFlagNewEscape end) * escapedNew
+					  + escapedOld
 		
 
 		---------------------------
@@ -201,7 +231,7 @@ return function (plume)
 
 		local libname = Cmt(Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist), applyDirective)
 					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
-		local use = K"use" * s * libname * (os*P","*os*libname)^0
+		local use = K"use" * (s * libname * (os*P","*os*libname)^0 + E(plume.error.emptyUse))
 
 		----------
 		-- eval --
@@ -255,7 +285,7 @@ return function (plume)
 			{{"AND", "and"}},
 			{{"NOT", "not"}, unary=true},
 			{{"EQ", "=="}, {"NEQ", "!="}, {"LTE", "<="}, {"GTE", ">="}, {"LT", "<"}, {"GT", ">"}},
-			{{"ADD", "+"}, {"SUB", "-"}},
+			{{"ADD", "+"}, {"SUB", "-"}, {"CONCAT", ".."}},
 			{{"MUL", "*"}, {"DIV", "/"}, {"MOD", "%"}},
 			{{"POW", "^"}},
 			{{"NEG", "-"}, unary=true}
@@ -412,7 +442,7 @@ return function (plume)
 		local lbody    = Ct("BODY", V"firstStatement")
 		local lbodynlb = Ct("BODY", V"firstStatementNLB")
 		local compound = Ct("COMPOUND", C("ADD", P"+") + C("SUB", P"-")
-					   + C("MUL", P"*") + C("DIV", P"/"))
+					   + C("MUL", P"*") + C("DIV", P"/") + C("CONCAT", P".."))
 		local statconst = (s * C("CONST", K"const"))^-1 * (s * C("PARAM", K"param"))^-1
 		
 
@@ -434,10 +464,10 @@ return function (plume)
 		local letvarlist = Ct("VARLIST", letvar * (os * P"," * os * letvar + E(plume.error.missingValue, P","))^0)
 		local setvarlist = Ct("VARLIST", setvar * (os * P"," * os * setvar + E(plume.error.missingValue, P","))^0)
 		
-		local let = Ct("LET", K"let" * statconst * s * letvarlist * (
+		local let = Ct("LET", K"let" * (statconst * s * letvarlist * (
 								  os * E(plume.error.letCompound, P"+"+"-"+"/"+"*")^-1 * P"=" * lbody
 								+ s  * C("FROM", K"from") * s * lbody
-							)^-1)
+							)^-1 + E(plume.error.emptyLet)))
 
 		local set = Ct("SET", K"set" * s * setvarlist * (
 					  os * compound^-1 * P"=" * lbody
@@ -477,9 +507,9 @@ return function (plume)
 				  		* (P"end"   + E(plume.error.missingEnd, -P(1))))
 
 		local with = Ct('WITH',
-		K"with" * os * (
+		K"with" * (os * (
 			Ct("PARAMLIST", inlinetable + eval)
-		) * body * _end)
+		) * body * _end + E(plume.error.emptyWith)))
 
 		-- Warning
 		local fakeAffectation = C("TEXT", (R"az"+R"AZ"+P"_") * (R"az"+R"AZ"+P"_"+R"09")^0 * os * S"+-/*"^-1 * "=") /
@@ -494,6 +524,37 @@ return function (plume)
 			return x
 		end
 
+		-- Foreign keywords that would be silently treated as text, with their Plume equivalent
+		local foreignKeywords = {
+			["local"]    = "`let`",
+			["function"] = "`macro`",
+			["return"]   = "`leave`",
+			def          = "`macro`",
+			try          = "`attempt`",
+			except       = "`attempt`",
+			elif         = "`elseif`",
+			class        = "a table with metafields",
+			lambda       = "an anonymous `macro`",
+			var          = "`let`",
+			echo         = "`$print`",
+			puts         = "`$print`",
+		}
+
+		local foreignKeywordPattern
+		for word in pairs(foreignKeywords) do
+			local p = K(word)
+			foreignKeywordPattern = foreignKeywordPattern and (foreignKeywordPattern + p) or p
+		end
+
+		local foreignKeyword = C("TEXT", foreignKeywordPattern * (s + P"(" + P":") * (P(1) - S"\n")^0) /
+		function(x)
+			local word = x.content:match("^([%a_]+)")
+			x.warning = string.format("`%s` is not a Plume keyword, this line is plain text.", word)
+			x.warningHint = string.format("Do you mean %s ?", foreignKeywords[word])
+			x.issues = {381, 1160}
+			return x
+		end
+
 		----------
 		-- main --
 		----------
@@ -505,15 +566,15 @@ return function (plume)
 			firstStatement = os * (-V"statementTerminator")
 								* (
 									  V"command"
-									+ Ct("RUN", K"run" * s * V"firstStatement")
-									+ Ct("RAISE", K"raise" * s * V"firstStatement")
-									+ V"invalid"^-1 * (fakeAffectation^-1 * V"text" + fakeAffectation)
+									+ Ct("RUN", K"run" * (s * V"firstStatement" + E(plume.error.emptyRun)))
+									+ Ct("RAISE", K"raise" * (s * V"firstStatement" + E(plume.error.emptyRaise)))
+									+ V"invalid"^-1 * (foreignKeyword + fakeAffectation^-1 * V"text" + fakeAffectation)
 								),
 			firstStatementNLB = os * (-V"statementTerminator")
 								* (
 									  V"commandStd"
-									+ Ct("RUN", K"run" * s * V"firstStatementNLB")
-									+ Ct("RAISE", K"raise" * s * V"firstStatementNLB")
+									+ Ct("RUN", K"run" * (s * V"firstStatementNLB" + E(plume.error.emptyRun)))
+									+ Ct("RAISE", K"raise" * (s * V"firstStatementNLB" + E(plume.error.emptyRaise)))
 									+ V"invalid"^-1 * V"text"
 								),
 			statement    = lt * V"firstStatement",

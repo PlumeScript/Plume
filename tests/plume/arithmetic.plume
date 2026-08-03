@@ -160,6 +160,35 @@ $t.value
 3
 /// End
 
+/// Test Concat
+let a = hello
+let b = world
+$(a .. b)
+/// Output
+helloworld
+/// End
+
+/// Test Concat number
+$(1 .. 2)
+/// Output
+12
+/// End
+
+/// Test Concat chain
+let a = hello
+$(a .. " " .. "world")
+/// Output
+hello world
+/// End
+
+/// Test Concat compound
+let s = foo
+set s ..= bar
+$s
+/// Output
+foobar
+/// End
+
 /// Test float
 $(0.1+0.5)
 /// Output

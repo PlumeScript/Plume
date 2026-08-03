@@ -57,6 +57,14 @@ OPTIONS
 		'never' disables them, and 'auto' detects if stdout is a TTY.
 		Default: auto
 
+	-w, --devWarnings
+		Enable a set of optional warnings (only for the executed file).
+		Same as typing `use #devWarnings` in file start.
+
+	-ww, --devWarnings-global
+		Enable a set of optional warnings (for the executed file and any imported file).
+		Same as typing `use #devWarnings(scope: global)` in file start.
+
 	-h, --help
 		Display this help message and terminate immediately.
 
@@ -79,12 +87,14 @@ LICENSE
 ]]
 
 local shortcut = {
-	["-i"]="--input",
-	["-o"]="--output",
-	["-h"]="--help",
-	["-v"]="--version",
-	["-s"]="--string",
-	["-p"]="--params"
+	["-i"]  = "--input",
+	["-o"]  = "--output",
+	["-h"]  = "--help",
+	["-v"]  = "--version",
+	["-s"]  = "--string",
+	["-p"]  = "--params",
+	["-w"]  = "--devWarnings",
+	["-ww"] = "--devWarnings-global"
 }
 
 local function checkTerminalCapabilities()
@@ -220,8 +230,13 @@ local function parseArgs()
 			end
 		elseif content == "--future-string" then
 			args.futureStringFlag = true
+		elseif content == "--devWarnings" then
+			args.devWarnings = true
+		elseif content == "--devWarnings-global" then
+			args.devWarnings = true
+			args.devWarningsGlobal = true
 		else
-			print("Unknown option '" .. content .. "'. Use plume -h to get help.")
+			print("Unknown option '" .. content .. "'. Run 'plume [--help, -h]' for full documentation.")
 			return
 		end
 
@@ -266,9 +281,7 @@ local function main()
 	             .. package.cpath
 	
 	local plume = require "plume-data/engine/init"
-	if args.showHelp then
-		print((help:gsub('!VERSION!', plume._VERSION)))
-	elseif args.showVersion then
+	if args.showVersion then
 		print("Plume🪶" .. plume.VERSION)
 	elseif args.inputFilename or args.inputString then
 		local success, result
@@ -299,6 +312,10 @@ local function main()
 		else
 			io.stderr:write(result .. "\n")
 		end
+	elseif args.showHelp then
+		print((help:gsub('!VERSION!', plume.VERSION)))
+	else
+		print("You must provide an input: either [--input, -i] or [--string, -s]. Run 'plume [--help, -h]' for full documentation.")
 	end
 end
 

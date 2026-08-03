@@ -92,15 +92,28 @@ return function (plume, context, nodeHandlerTable)
 			if context.scopes[#context.scopes][key] then
 				plume.error.useExistingVariable(pathNode, key, path)
 			end
+			if context.importedVariablesSource[key] then
+				plume.warning.throwWarning(
+					string.format(
+						"'%s' declares a variable named '%s', shadowing that one imported from `%s`.",
+						path,
+						key,
+						context.importedVariablesSource[key]
+					),
+					nil,
+					pathNode, {381, 583}
+				)
+			end
+
 			context.importedVariables[key] = result.table[key]
+			context.importedVariablesSource[key] = path
 		end
 
 		table.remove(plume.currentUseProcessing)
 		return result
 	end
 
-	local directivesHandler
-	directivesHandler = {
+	context.directivesHandler = {
 		warning = {
 			checkArgs = {
 				mode   = {"normal", "ignore", "strict"},
@@ -141,7 +154,7 @@ return function (plume, context, nodeHandlerTable)
 			method = function(node, args)
 				args.issues = "381"
 				args.mode = args.mode or "normal"
-				directivesHandler.warning.method(node, args)
+				context.directivesHandler.warning.method(node, args)
 			end
 		},
 
@@ -178,6 +191,7 @@ return function (plume, context, nodeHandlerTable)
 				newLeave             = {true},
 				unknownParamError    = {true},
 				positionnalFileParam = {true},
+				newEscape            = {true},
 				raven                = {true},
 				all                  = {true}
 			},
@@ -188,6 +202,10 @@ return function (plume, context, nodeHandlerTable)
 
 				if args.newLeave or args.raven or args.all then
 					context.futureFlagNewLeave = true
+				end
+
+				if args.newEscape or args.raven or args.all then
+					context.futureFlagNewEscape = true
 				end
 
 				if args.unknownParamError or args.raven or args.all then
@@ -202,7 +220,7 @@ return function (plume, context, nodeHandlerTable)
 		}
 	}
 
-	for _, handler in pairs(directivesHandler) do
+	for _, handler in pairs(context.directivesHandler) do
 		if handler.checkArgs then
 			for name, values in pairs(handler.checkArgs) do
 				if type(values) == "table" then
@@ -218,7 +236,7 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.USE_DIRECTIVE = function(node)
 		local directiveNameNode = plume.ast.get(node, "NAME")
 		local directiveName = directiveNameNode.content
-		local handler = directivesHandler[directiveName]
+		local handler = context.directivesHandler[directiveName]
 		if not handler then
 			plume.error.unknownDirective(directiveNameNode, directiveName)
 		end

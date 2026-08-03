@@ -93,6 +93,8 @@ return function (plume, context)
 		else
 			table.insert(current, instr)
 		end
+
+		context.emitQuoteWarning(node, op, arg1, arg2)
 	end
 
 	--- Return the last scope of context.scopes
@@ -238,6 +240,18 @@ return function (plume, context)
 		end
 		if leave then
 			context.registerOP(node, plume.ops.LEAVE_SCOPE)
+		end
+	end
+
+	function context.getNameNode(node, name)
+		if node then
+			local nodeNames = plume.ast.getAll(node, "NAME", 1, 2)
+			for _, nodeName in ipairs(nodeNames) do
+				if nodeName.content == name then
+					return nodeName
+				end
+			end
+			return node
 		end
 	end
 end

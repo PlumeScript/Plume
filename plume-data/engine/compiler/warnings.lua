@@ -17,38 +17,39 @@ return function (plume, context)
 	function context.emiVariablesUsageWarning(varList)
 		for name, var in pairs(varList) do
 			if not tonumber(name) and var.node then
+				local source = context.getNameNode(var.node, name)
 				if not var.used then
 					if var.isLoopVariable then
 						if name ~= "_" then
 							plume.warning.throwWarning(
 								"Never used loop variables.",
 								"Consider removing them or rename them '_'.",
-								var.node, {381, 473}
+								source, {381, 473}
 							)
 						end
 					elseif var.isMacro then
 						plume.warning.throwWarning(
 							"Never used macros.",
 							"Consider removing them.",
-							var.node, {381, 473}
+							source, {381, 473}
 						)
 					elseif var.isMacroParam then
 						plume.warning.throwWarning(
 							"Never used macros parameters.",
 							"Consider removing them.",
-							var.node, {381, 473}
+							source, {381, 473}
 						)
 					elseif var.isRef then
 						plume.warning.throwWarning(
 							"Never used reference.",
 							"Consider removing `ref`.",
-							var.node, {381, 473}
+							source, {381, 473}
 						)
 					else
 						plume.warning.throwWarning(
 							"Never used variables.",
 							"Consider removing them.",
-							var.node, {381, 473}
+							source, {381, 473}
 						)
 					end
 				elseif not var.isConst
@@ -59,7 +60,7 @@ return function (plume, context)
 					plume.warning.throwWarning(
 						"Non-constant variables that are never modified.",
 						"Consider making them constants.",
-						var.node, {381, 382}
+						source, {381, 382}
 					)
 				end
 			end
@@ -75,7 +76,7 @@ return function (plume, context)
 	end
 
 	function context.checkCallWarning(node)
-		local name  = plume.ast.get(node, "NAME")
+		local name  = plume.ast.get(node, "NAME") or plume.ast.get(node, "IDENTIFIER")
 		local index = plume.ast.get(node, "INDEX") or plume.ast.get(node, "DIRECT_INDEX")
 		local call  = plume.ast.get(node, "CALL")
 		local bcall = plume.ast.get(node, "BLOCK_CALL")
@@ -110,6 +111,30 @@ return function (plume, context)
 		if rec then
 			for _, child in ipairs(node.children or {}) do
 				context.checkForWarnings(child, false)
+			end
+		end
+	end
+
+	function context.emitQuoteWarning(node, op, arg1, arg2)
+		if op == plume.ops.LOAD_CONSTANT and node and node.name == "TEXT" then
+			local constant = context.constants[arg2]
+			if type(constant) == "string" then
+				if constant:sub(1, 1) == '"' and constant:sub(-1) == '"'
+				or constant:sub(1, 1) == "'" and constant:sub(-1) == "'" then
+					local delimiter = '"'
+					if constant:sub(1, 1) == '"' then
+						delimiter = "'"
+					end
+					plume.warning.throwWarning(
+						string.format(
+							"You just created the string %s, not %s.",
+							delimiter .. constant .. delimiter,
+							delimiter .. constant:sub(2, -2) .. delimiter
+						),
+						"Quotes are only needed inside an evaluation.",
+						node, {381, 1150}
+					)
+				end
 			end
 		end
 	end

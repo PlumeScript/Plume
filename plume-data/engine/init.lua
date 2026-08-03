@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b60 (Owl Edition)
+Plume🪶 b61 (Owl Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,7 +30,7 @@ else
 end
 
 local plume = {}
-plume.VERSION = "b60 (Owl Edition)"
+plume.VERSION = "b61 (Owl Edition)"
 
 require 'plume-data/engine/error/core'    (plume)
 require 'plume-data/engine/warning'       (plume)
@@ -71,9 +71,9 @@ function plume.run(runtime, chunk, fileParams)
 	return plume.safeRun(run, runtime.vm, chunk.offset)
 end
 
-function plume.execute(code, filename, chunk, runtime, fileParams, isMain)
+function plume.execute(code, filename, chunk, runtime, fileParams, isMain, args)
 	local success, result, ip
-	success, result = pcall(plume.compileFile, code, filename, chunk, runtime, isMain)
+	success, result = pcall(plume.compileFile, code, filename, chunk, runtime, isMain, args)
 	
 	if success then
 		success, result, ip = plume.run(runtime, chunk, fileParams)
@@ -101,7 +101,7 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 	runtime = runtime or plume.obj.runtime()
 	local chunk   = plume.obj.macro(filename, runtime)
 
-	local success, result = plume.execute(code, filename, chunk, runtime, fileParams, isMain)
+	local success, result = plume.execute(code, filename, chunk, runtime, fileParams, isMain, args)
 	if success and isMain then
 		plume.error.showWarnings()
 	end

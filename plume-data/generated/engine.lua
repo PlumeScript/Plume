@@ -265,13 +265,13 @@ return function (plume)
 									if op < 53 then
 										vm:OP_POW(arg1, arg2)
 									else
-										vm:OP_LT(arg1, arg2)
+										vm:OP_CONCAT(arg1, arg2)
 									end
 								else
 									if op < 55 then
-										vm:OP_EQ(arg1, arg2)
+										vm:OP_LT(arg1, arg2)
 									else
-										vm:OP_AND(arg1, arg2)
+										vm:OP_EQ(arg1, arg2)
 									end
 								end
 							end
@@ -279,29 +279,29 @@ return function (plume)
 							if op < 60 then
 								if op < 58 then
 									if op < 57 then
-										vm:OP_NOT(arg1, arg2)
+										vm:OP_AND(arg1, arg2)
 									else
-										vm:OP_OR(arg1, arg2)
+										vm:OP_NOT(arg1, arg2)
 									end
 								else
 									if op < 59 then
-										vm:DUPLICATE(arg1, arg2)
+										vm:OP_OR(arg1, arg2)
 									else
-										vm:SWITCH(arg1, arg2)
+										vm:DUPLICATE(arg1, arg2)
 									end
 								end
 							else
 								if op < 62 then
 									if op < 61 then
-										vm:RETURN(arg1, arg2)
+										vm:SWITCH(arg1, arg2)
 									else
-										vm:RETURN_FILE(arg1, arg2)
+										vm:RETURN(arg1, arg2)
 									end
 								else
 									if op < 63 then
-										vm:FILE_INIT_PARAMS(arg1, arg2)
+										vm:RETURN_FILE(arg1, arg2)
 									else
-										vm:PUSH_CONTEXT(arg1, arg2)
+										vm:FILE_INIT_PARAMS(arg1, arg2)
 									end
 								end
 							end
@@ -315,20 +315,22 @@ return function (plume)
 							if op < 68 then
 								if op < 66 then
 									if op < 65 then
-										vm:POP_CONTEXT(arg1, arg2)
+										vm:PUSH_CONTEXT(arg1, arg2)
 									else
-										vm:LOAD_CONTEXT(arg1, arg2)
+										vm:POP_CONTEXT(arg1, arg2)
 									end
 								else
 									if op < 67 then
-										vm:CREATE_CONTEXT(arg1, arg2)
+										vm:LOAD_CONTEXT(arg1, arg2)
 									else
-										vm:RAISE(arg1, arg2)
+										vm:CREATE_CONTEXT(arg1, arg2)
 									end
 								end
 							else
 								if op < 70 then
 									if op < 69 then
+										vm:RAISE(arg1, arg2)
+									else
 										goto END
 									end
 								end
