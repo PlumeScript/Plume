@@ -236,7 +236,7 @@ local function parseArgs()
 			args.devWarnings = true
 			args.devWarningsGlobal = true
 		else
-			print("Unknown option '" .. content .. "'. Use plume -h to get help.")
+			print("Unknown option '" .. content .. "'. Run 'plume [--help, -h]' for full documentation.")
 			return
 		end
 
@@ -281,9 +281,7 @@ local function main()
 	             .. package.cpath
 	
 	local plume = require "plume-data/engine/init"
-	if args.showHelp then
-		print((help:gsub('!VERSION!', plume.VERSION)))
-	elseif args.showVersion then
+	if args.showVersion then
 		print("Plume🪶" .. plume.VERSION)
 	elseif args.inputFilename or args.inputString then
 		local success, result
@@ -314,6 +312,10 @@ local function main()
 		else
 			io.stderr:write(result .. "\n")
 		end
+	elseif args.showHelp then
+		print((help:gsub('!VERSION!', plume.VERSION)))
+	else
+		print("You must provide an input: either [--input, -i] or [--string, -s]. Run 'plume [--help, -h]' for full documentation.")
 	end
 end
 
