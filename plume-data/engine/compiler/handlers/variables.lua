@@ -223,6 +223,7 @@ return function (plume, context, nodeHandlerTable)
 				else
 					context.nodeHandler(var.ref)
 				end
+				context.registerOP(var.ref, plume.ops.FORCE_FRAGMENT)
 				context.scope(context.accBlock())(body)
 				context.registerOP(var.ref, plume.ops["OP_" .. compound.children[1].name])
 			end
