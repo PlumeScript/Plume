@@ -3,6 +3,11 @@
 ## Add an error when using non-escaped `$` #900
 Escape all non-eval `$`: `\$`
 
+## Restrict escape sequences to a fixed set #1157
+Only `\n`, `\t`, `\r`, `\s`, `\$`, `\(`, `\:`, `\,`, `\\` and `\0` are valid escapes. Any other `\X` is an error.
+- Escaping an ordinary letter (`\a`) is no longer allowed: write `\0a` instead.
+- `\0` produces empty text and prevents keyword recognition: write `\0set` instead of `\set`.
+
 ## Leave affect only the current accumulation block instead of the whole macro #916
 
 ## Add an error when using undefined files params #981

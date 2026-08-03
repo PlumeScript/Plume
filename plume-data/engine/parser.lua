@@ -154,6 +154,9 @@ return function (plume)
 					if key == "lineEval" or key == "all" or key == "raven" then
 						dynamicParseData.futureFlagLineEval = true
 					end
+					if key == "newEscape" or key == "all" or key == "raven" then
+						dynamicParseData.futureFlagNewEscape = true
+					end
 				end
 			end
 			return pos, node
@@ -178,11 +181,38 @@ return function (plume)
 				  + C("FALSE", K"false") * -idns
 				  + C("EMPTY", K"empty") * -idns
 				  + idns
-		local escaped =  C("SPECIAL_TEXT", P"\\s")
-					  +  C("SPECIAL_TEXT", P"\\t")
-					  +  C("SPECIAL_TEXT", P"\\n")
-					  +  C("SPECIAL_TEXT", P"\\r")
-					  +  P"\\"*C("TEXT", P(1))
+		local function unknownEscape(node)
+			local s = node.content:sub(2, 2)
+			plume.error.unknownEscapeSequence(node, s)
+		end
+
+		-- Restricted escape set, enabled by `use #future(newEscape)`
+		local escapedNew =  C("SPECIAL_TEXT", P"\\s")
+						+  C("SPECIAL_TEXT", P"\\t")
+						+  C("SPECIAL_TEXT", P"\\n")
+						+  C("SPECIAL_TEXT", P"\\r")
+						+  C("SPECIAL_TEXT", P"\\$")
+						+  C("SPECIAL_TEXT", P"\\(")
+						+  C("SPECIAL_TEXT", P"\\)")
+						+  C("SPECIAL_TEXT", P"\\:")
+						+  C("SPECIAL_TEXT", P"\\,")
+						+  C("SPECIAL_TEXT", P"\\\\")
+						+  C("SPECIAL_TEXT", P"\\0")
+						+  E(unknownEscape, P"\\" * P(1))
+		local escapedOld =  C("SPECIAL_TEXT", P"\\s")
+						+  C("SPECIAL_TEXT", P"\\t")
+						+  C("SPECIAL_TEXT", P"\\n")
+						+  C("SPECIAL_TEXT", P"\\r")
+						+  P"\\"*C("TEXT", P(1)) / function(x)
+							if x.content:match("^[a-zA-Z]$") then
+								x.warning = "From Raven edition, escaping an ordinary letter will be an error; only a fixed set of escapes will be valid."
+								x.warningHint = "Use `\\0` to write a keyword as literal text (e.g. `\\0set`)."
+								x.issues = {886, 1157}
+							end
+							return x
+						end
+		local escaped = P(function() return dynamicParseData.futureFlagNewEscape end) * escapedNew
+					  + escapedOld
 		
 
 		---------------------------

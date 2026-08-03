@@ -303,3 +303,40 @@ a
 $empty.replace(a, b)
 /// Output
 /// End
+
+/// Test Escape ordinary letter (Owl)
+\ahello
+/// Output
+ahello
+/// End
+
+/// Test newEscape null escape prevents keyword recognition
+use #future(newEscape)
+\0raise
+\0set
+\0run
+/// Output
+raisesetrun
+/// End
+
+/// Test newEscape restricted escapes
+use #future(newEscape)
+\s\$\:\,\\\0
+/// Output
+ $:,\
+/// End
+
+/// Test newEscape parenthesis escapes
+use #future(newEscape)
+\(hello\)
+/// Output
+(hello)
+/// End
+
+/// Test newEscape null escape with interpolation
+use #future(newEscape)
+let a = world
+\0$a
+/// Output
+world
+/// End
