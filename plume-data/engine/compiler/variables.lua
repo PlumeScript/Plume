@@ -293,6 +293,15 @@ return function (plume, context)
 			end
 		end
 
+		if (name == "plume" and context.runtime.plume) or plume.std[name] then
+			local source = context.getNameNode(node, name)
+			plume.warning.throwWarning(
+				string.format("Shadowing `%s` from the std.", name),
+				"Consider using a different name.",
+				source, {381, 726}
+			)
+		end
+
 		return scope[name]
 	end
 

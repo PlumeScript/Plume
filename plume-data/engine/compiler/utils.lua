@@ -240,4 +240,16 @@ return function (plume, context)
 			context.registerOP(node, plume.ops.LEAVE_SCOPE)
 		end
 	end
+
+	function context.getNameNode(node, name)
+		if node then
+			local nodeNames = plume.ast.getAll(node, "NAME", 1, 2)
+			for _, nodeName in ipairs(nodeNames) do
+				if nodeName.content == name then
+					return nodeName
+				end
+			end
+			return node
+		end
+	end
 end
