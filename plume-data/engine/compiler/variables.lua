@@ -41,13 +41,14 @@ return function (plume, context)
 	--- @param ref string
 	--- @return table upvalueInfo Metadata for the upvalue
 	function context.registerUpvalue(
-		name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref
+		source, name, variableOffset, scopeDepth, currentScopeIndex, relativeScopeOffset, ref
 	)
 		-- First macro inside the scope will capture upvalue
 		local macro = context.getLast("macros", scopeDepth - 1)
 		if not macro.upvalueMap[name] then
 			if ref then
 				table.insert(macro.upvalues, {
+					source = source,
 					offset = #macro.upvalues+1,
 					key = ref,
 					scopeOffset = relativeScopeOffset,
@@ -57,6 +58,7 @@ return function (plume, context)
 				})
 			else
 				table.insert(macro.upvalues, {
+					source = source,
 					offset = #macro.upvalues+1,
 					localOffset = variableOffset, -- local offset to capture the variable
 					scopeOffset = relativeScopeOffset, -- in which scope get the variable
@@ -168,6 +170,7 @@ return function (plume, context)
 				if scopeDepth > 0 then
 					if variable.isRef then
 						return context.registerUpvalue(
+							variable,
 							name,
 							nil,
 							scopeDepth,
@@ -177,6 +180,7 @@ return function (plume, context)
 						)
 					else
 						return context.registerUpvalue(
+							variable,
 							name,
 							variable.offset,
 							scopeDepth,
