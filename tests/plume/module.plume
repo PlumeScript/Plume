@@ -137,6 +137,16 @@ $(result == lib.result)
 true
 /// End
 
+/// Test import cache 3 (via os.Path().import())
+use #future(importCache)
+let p = $os.Path(tests/plume/toimport/object)
+let a = $p.import()
+let b = $p.import()
+$(a.result == b.result)
+/// Output
+true
+/// End
+
 /// Test unknown param 1
 $import(tests/plume/toimport/param, y:5)
 /// Error

@@ -78,6 +78,9 @@ return function(vm)
 	                    if paramMutableWarning then
 	                        self.plume.warning.runtimeWarning(string.format("Import call skipped (cached).\nAny modifications of the mutable parameter `%s` will be ignored.", paramMutableWarning), nil, self.runtime, self.ip, {890})
 	                    end
+						-- The file is not run, so RETURN_FILE never pops the callstack
+						-- entry pushed by CONCAT_CALL. Pop it here, like RETURN_FILE does.
+						self:_POP_CALLSTACK()
 	                else
 	                    chunk.cacheId = cacheId
 	                    

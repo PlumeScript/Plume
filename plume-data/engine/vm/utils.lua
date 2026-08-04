@@ -19,6 +19,13 @@ return function(vm)
 		return _type == "macro" or _type == "closure" or _type == "luaMacro" or _type == "stdMacro" or (_type == "table" and x.meta and x.meta.table.call) or x == self.plume.std.Table or x == self.plume.std.String or x == self.plume.std.attempt
 	end
 
+	--- @param ip number
+	--- @return boolean True if ip is a virtual (sops) offset, i.e. a safe-run boundary
+	--! inline
+	function vm:_IS_SOPS_IP(ip)
+	    return ip <= #self.plume.sops_config
+	end
+
 	--- Throw an error
 	--- @param msg string
 	--- @return nil
@@ -135,7 +142,7 @@ return function(vm)
 
 	    -- During a recursive run, ip points to an engine opcode, not a file.
 	    -- Recover the real caller ip from the recursiveStack.
-	    if ip <= #self.plume.sops_config then
+	    if self:_IS_SOPS_IP(ip) then
 	        --! to-remove-begin
 	        if self.recursiveStack.pointer == 0 then
 	            error("[VM] _GET_CURRENT_FILE: fake offset with no recursive caller.")

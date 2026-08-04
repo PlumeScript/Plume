@@ -13,7 +13,7 @@ return function(vm)
 			-- An ip in the virtual bytecode (<= #sops_config) means we return
 			-- to a safe-run boundary (e.g. `attempt`): the outer run must
 			-- terminate too, so propagate the end jump instead of resetting it.
-			if self.ip <= #self.plume.sops_config then
+			if self:_IS_SOPS_IP(self.ip) then
 				self:_JUMP_END()
 			else
 				self:_RESET_JUMP()
