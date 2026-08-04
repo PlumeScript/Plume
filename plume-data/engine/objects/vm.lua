@@ -50,6 +50,9 @@ return function(plume)
 		vm.macroStack         = table.new(2^8, 0)
 		vm.macroStack.pointer = 0
 
+		-- Return ips for nested `_run` calls (reentrant dispatch). May contain
+		-- virtual bytecode offsets (<= #sops_config) marking safe-run boundaries
+		-- (e.g. `attempt`); `_RUN_END` propagates the end jump when it pops one.
 		vm.recursiveStack         = table.new(64, 0)
 		vm.recursiveStack.pointer = 0
 

@@ -10,7 +10,14 @@ return function(vm)
 	function vm:_RUN_END()
 		if self:_STACK_POS(self.recursiveStack) > 0 then
 			self.ip = self:_STACK_POP(self.recursiveStack)
-			self:_RESET_JUMP()
+			-- An ip in the virtual bytecode (<= #sops_config) means we return
+			-- to a safe-run boundary (e.g. `attempt`): the outer run must
+			-- terminate too, so propagate the end jump instead of resetting it.
+			if self.ip <= #self.plume.sops_config then
+				self:_JUMP_END()
+			else
+				self:_RESET_JUMP()
+			end
 		end
 		self:_SAVE_SCALAR()
 	end

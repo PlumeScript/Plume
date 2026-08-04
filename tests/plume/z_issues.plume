@@ -1755,3 +1755,9 @@ $(1+empty)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1183, #1184
+$attempt($import, tests/plume/toimport/lib)
+/// Output
+(success: true, result: (nib: quill))
+/// End

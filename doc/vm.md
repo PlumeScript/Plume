@@ -111,9 +111,12 @@ STORE_LOCAL 0 new_var  -- Pops value from Value Stack and stores it in `new_var`
 
 #### Bytecode Layout Convention
 
-By convention, **the first element of any compiled bytecode unit (index 1) is always a `CONCAT_CALL` opcode**. This is used to launch a macro via a recursive call: you push the macro onto the stack, then call `run` starting at `ip = 1`. The `CONCAT_CALL` at position 1 will then invoke that macro.
+The first two elements of any compiled bytecode unit form the **virtual bytecode**: engine-level opcodes that belong to no compiled file, used to launch a call through a recursive `run`:
 
-The VM does not hardcode this convention. Instead, it reads `vm.plume.sops.CONCAT_CALL` to discover the opcode address at runtime.
+- **index 1 — `CONCAT_CALL`**: launches a normal call. Push the callable onto the stack, then call `run` starting at `ip = 1`; the `CONCAT_CALL` at position 1 invokes it.
+- **index 2 — `CONCAT_CALL_SAFE`**: the same opcode with the safe flag (`arg2 = 1`), used by `attempt` to run a callable and catch errors.
+
+The VM does not hardcode this convention. Instead, it reads `vm.plume.sops.CONCAT_CALL` and `vm.plume.sops.CONCAT_CALL_SAFE` to discover the opcode addresses at runtime.
 
 #### Standard Invocation
 

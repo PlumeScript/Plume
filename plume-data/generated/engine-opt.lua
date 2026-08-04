@@ -8860,7 +8860,14 @@ return function (plume)
                     _ret797 = value
                 end
                 ip = _ret797
-                jump = 0
+                if ip <= #plume.sops_config then
+                    if jump > 0 and vmerr then
+                    else
+                        jump = #bytecode
+                    end
+                else
+                    jump = 0
+                end
             end
             vmstate.ip = ip
             vmstate.tic = tic
