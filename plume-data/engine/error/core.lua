@@ -57,6 +57,7 @@ return function(plume)
 	function plume.error.vmCrashHandler(err)
 		local msg = unexpectedHeading
 
+
 		msg = msg .. "\n\nLua error message:\n\t".. err
 		msg = msg .. "\n"..debug.traceback("", 2)
 
@@ -72,7 +73,7 @@ return function(plume)
                 local name, value = debug.getlocal(level, i)
                 if not name then break end
 				
-				if name == "vm" then
+				if name == "vm" and value then
 					name = "ip"
 					value = value.ip
 				end
