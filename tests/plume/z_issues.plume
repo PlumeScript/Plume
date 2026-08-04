@@ -1769,6 +1769,21 @@ macro wing
     Some infos
 /// End
 
+/// Test #1180
+$((empty or empty) / 2)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot do comparison or arithmetic with a boolean value.                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$((empty or empty) / 2)                                                  │
+│      │   ^^^^^^^^^^^^^^^^^^^                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test #1183, #1184
 $attempt($import, tests/plume/toimport/lib)
 /// Output

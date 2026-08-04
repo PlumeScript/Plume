@@ -7,8 +7,8 @@ Licensed under the MIT License — see LICENSE for details.
 
 return function(vm)
 	--! inline
-	function safeGetMetaItem(t, name)
-		return t.getMetaItem and t:getMetaItem(name)
+	function vm:_GET_META_ITEM_SAFE(t, name)
+		return type(t) == "table" and t.getMetaItem and t:getMetaItem(name)
 	end
 
 	--- Try to convert any value into number.
@@ -24,7 +24,7 @@ return function(vm)
 	        end
 	        x = tonumber(x)
 	    elseif tx  ~= "number" then
-	        local mtonumber = safeGetMetaItem(x, "tonumber")
+	        local mtonumber = self:_GET_META_ITEM_SAFE(x, "tonumber")
 	        if tx  == "table" and mtonumber then
 	            local meta = mtonumber
 	            local params = {}
@@ -48,10 +48,10 @@ return function(vm)
 	    local tleft  = self:_GET_TYPE(left)
 	    local tright = self:_GET_TYPE(right)
 
-	    local leftmetar  = tleft == "table" and safeGetMetaItem(left, name.."r")
-	    local rightmetal = tright == "table" and safeGetMetaItem(right, name.."l")
-	    local leftmeta   = tleft == "table" and safeGetMetaItem(left, name)
-	    local rightmeta  = tright == "table"and safeGetMetaItem(right, name)
+	    local leftmetar  = tleft == "table" and self:_GET_META_ITEM_SAFE(left, name.."r")
+	    local rightmetal = tright == "table" and self:_GET_META_ITEM_SAFE(right, name.."l")
+	    local leftmeta   = tleft == "table" and self:_GET_META_ITEM_SAFE(left, name)
+	    local rightmeta  = tright == "table"and self:_GET_META_ITEM_SAFE(right, name)
 
 	    if leftmetar then
 	        meta = leftmetar
@@ -96,7 +96,7 @@ return function(vm)
 	--! inline
 	function vm:_HANDLE_META_UN(x, name)
 	    local meta, paramself
-	    meta = self:_GET_TYPE(x) == "table" and safeGetMetaItem(x, name)
+	    meta = self:_GET_TYPE(x) == "table" and self:_GET_META_ITEM_SAFE(x, name)
 
 	    if meta then
 	        self:BEGIN_ACC(0, 0)
