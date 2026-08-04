@@ -1769,6 +1769,12 @@ macro wing
     Some infos
 /// End
 
+/// Test #1179
+$String.replace(ab, a,)
+/// Output
+b
+/// End
+
 /// Test #1180
 $((empty or empty) / 2)
 /// Error

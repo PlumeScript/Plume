@@ -3062,7 +3062,7 @@ return function(plume)
 		if expected == "callable" and vm:_IS_CALLABLE(arg) then
 			return true, nil, arg
 		end
-	
+		
 		if given == "string" and expected == "number" then
 			if tonumber(arg) then
 				arg = tonumber(arg)
@@ -3070,6 +3070,9 @@ return function(plume)
 			end
 		elseif given == "number" and expected == "string" then
 			arg = tostring(arg)
+			given = "string"
+		elseif given == "empty" and expected == "string" then
+			arg = ""
 			given = "string"
 		end
 	
