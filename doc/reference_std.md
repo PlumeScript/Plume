@@ -184,11 +184,14 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 *   `Path.move(dest)`: Moves or renames a file/directory from source to destination. Return the new path.
 *   `Path.read()`: If `Path` is a file, return it's content.
 *   `Path.write(?append, ...content)`: If `Path` is a file or don't exists, write it. Create parent directories.
+*   `Path.import()`: Import the file at this path (like `$import`), returning the module result.
 *   `Path.walk`: Return a table of all childs.
 
 **Manipulation**
 *   `Path.getParent()`: Return the parent directory
 *   `Path.getName()`: Return the last path component as string.
+*   `Path.getStem()`: Return the last path component without its extension.
+*   `Path.getExtension()`: Return the extension of the last path component, without the leading dot.
 *   `String(Path)`: Get path as string
 
 #### Environment and commands

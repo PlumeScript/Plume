@@ -239,7 +239,7 @@ local function process(f)
 	f = f:gsub('%-%-!override%-self%-(%S+)', 'if args.table.self and args.table.self ~= %1 then table.insert(args.table, 1, args.table.self) end')
 
 	local breakline = "\n\t\t\t\t"
-	f = f:gsub('%-%-!vmcall%s*([^=]*)%s*=%s(%w+)%s*%(([^\n]+)%)', function(vars, macro, args)
+	f = f:gsub('%-%-!vmcall%s*([^=]*)%s*=%s([%w%.]+)%s*%(([^\n]+)%)', function(vars, macro, args)
 		local push_args = {}
 
 

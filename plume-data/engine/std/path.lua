@@ -50,6 +50,14 @@ local function rmdir(path)
 	return lfs.rmdir(path)
 end
 
+-- Split the last path component into its stem and extension.
+-- A leading dot (hidden file) is not treated as an extension.
+local function splitName(p)
+	local name = p:match('[^/\\]*$')
+	local stem, ext = name:match('^(.+)%.([^%.]+)$')
+	return name, stem, ext
+end
+
 local function makePath(path)
 	if not lfsLoaded then
 		return false, "Cannot load lfs"
@@ -149,12 +157,30 @@ local function makePath(path)
 			end
 		end),
 		getName = plume.obj.luaMacro ("getName", function(args)
-			--!signature 
+			--!signature
 			return true, path:match('[^/\\]*$')
 		end),
+		getStem = plume.obj.luaMacro ("getStem", function(args)
+			--!signature
+			local name, stem = splitName(path)
+			return true, stem or name
+		end),
+		getExtension = plume.obj.luaMacro ("getExtension", function(args)
+			--!signature
+			local _, _, ext = splitName(path)
+			return true, ext and ext or ""
+		end),
 		read = plume.obj.luaMacro ("read", function(args)
-			--!signature 
+			--!signature
 			return plume.stdio.read(path)
+		end),
+		import = plume.obj.luaMacro ("import", function(args, vm)
+			--!signature
+			local name, stem = splitName(path)
+			local importPath = stem and (path:sub(1, #path - #name) .. stem) or path
+			--!vmcall
+			success, result, callvmerrip = plume.std.import(importPath)
+			return success, result
 		end),
 		write = plume.obj.luaMacro ("write", function(args)
 			--!signature ?append, (string ...items)

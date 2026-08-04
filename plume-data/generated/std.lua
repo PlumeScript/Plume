@@ -938,6 +938,14 @@ return function(plume)
 		return lfs.rmdir(path)
 	end
 	
+	-- Split the last path component into its stem and extension.
+	-- A leading dot (hidden file) is not treated as an extension.
+	local function splitName(p)
+		local name = p:match('[^/\\]*$')
+		local stem, ext = name:match('^(.+)%.([^%.]+)$')
+		return name, stem, ext
+	end
+	
 	local function makePath(path)
 		if not lfsLoaded then
 			return false, "Cannot load lfs"
@@ -1079,26 +1087,46 @@ return function(plume)
 				end
 			end),
 			getName = plume.obj.luaMacro ("getName", function (args, vm, currentFile)
-				local __name      = "getName"
-				local __signature = "`$getName()`"
-				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
-				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-				if not __s then return false, __e end
-				------------
+				--!signature
 				return true, path:match('[^/\\]*$')
 			end),
-			read = plume.obj.luaMacro ("read", function (args, vm, currentFile)
-				local __name      = "read"
-				local __signature = "`$read()`"
-				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
-				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-				if not __s then return false, __e end
-				------------
+			getStem = plume.obj.luaMacro ("getStem", function(args)
+				--!signature
+				local name, stem = splitName(path)
+				return true, stem or name
+			end),
+			getExtension = plume.obj.luaMacro ("getExtension", function(args)
+				--!signature
+				local _, _, ext = splitName(path)
+				return true, ext and ("." .. ext) or ""
+			end),
+			read = plume.obj.luaMacro ("read", function(args)
+				--!signature
 				return plume.stdio.read(path)
 			end),
-			write = plume.obj.luaMacro ("write", function (args, vm, currentFile)
-				local __name      = "write"
-				local __signature = "`$write(?append, string ...items)`"
+			import = plume.obj.luaMacro ("import", function(args, vm)
+				--!signature
+				local name, stem = splitName(path)
+				local importPath = stem and (path:sub(1, #path - #name) .. stem) or path
+				vm:BEGIN_ACC()
+					vm:_STACK_PUSH(vm.mainStack, importPath)
+					
+					vm:_STACK_PUSH(vm.mainStack, plume.std.import)
+					local __success, __result, __callervmip = vm:_CONCAT_CALL_REC()
+					if __success then
+						vm:_STACK_POP(vm.mainStack)
+					end
+	
+					__callervmip = __callervmip or
+						(plume.std.import.offset or plume.std.import.macro and plume.std.import.macro.offset or 2) -- dirty fix ; waiting for #1126
+						- 1
+	
+					success, result, callvmerrip  = __success, __result, __callervmip
+				return success, result
+			end),
+			write = plume.obj.luaMacro ("write", function(args)
+				local __name      = "getName"
+				local __signature = "`$getName(?append, string ...items)`"
 				local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
 				local append
 				if __s then __s, __e, self, append = plume.stdUnpackNamed(args, {"self", "append"}, __name, __signature) end
