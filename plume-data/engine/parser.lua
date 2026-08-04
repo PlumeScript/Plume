@@ -547,7 +547,7 @@ return function (plume)
 			foreignKeywordPattern = foreignKeywordPattern and (foreignKeywordPattern + p) or p
 		end
 
-		local foreignKeyword = C("TEXT", foreignKeywordPattern * (s + P"(" + P":") * (P(1) - S"\n")^0) /
+		local foreignKeyword = C("TEXT", foreignKeywordPattern * os) /
 		function(x)
 			local word = x.content:match("^([%a_]+)")
 			x.warning = string.format("`%s` is not a Plume keyword, this line is plain text.", word)
@@ -569,7 +569,12 @@ return function (plume)
 									  V"command"
 									+ Ct("RUN", K"run" * (s * V"firstStatement" + E(plume.error.emptyRun)))
 									+ Ct("RAISE", K"raise" * (s * V"firstStatement" + E(plume.error.emptyRaise)))
-									+ V"invalid"^-1 * (foreignKeyword + fakeAffectation^-1 * V"text" + fakeAffectation)
+									+ V"invalid"^-1 * (
+										  foreignKeyword * V"text"
+										+ foreignKeyword
+										+ fakeAffectation^-1 * V"text"
+										+ fakeAffectation
+									)
 								),
 			firstStatementNLB = os * (-V"statementTerminator")
 								* (
