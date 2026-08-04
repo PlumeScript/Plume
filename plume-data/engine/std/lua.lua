@@ -184,7 +184,7 @@ plume.std.lua:setItem("eval", plume.obj.luaMacro("eval", function(args, vm)
 		success, result = pcall(success)
 		if success then
 			local t = type(result)
-			if t == nil then
+			if t == "nil" then
 				result = plume.obj.empty
 			elseif t ~= "string" and t ~= "number" then
 				return false, string.format("The lua code returned  a '%s' object, that cannot be converted into Plume object.\n(i) For now, only `string`, `number` and `nil` return are supported.", t)
