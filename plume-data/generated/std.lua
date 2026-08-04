@@ -45,7 +45,11 @@ return function(plume)
 		------------
 		local result = {}
 		for _, x in ipairs(args.table) do
-			table.insert(result, plume.repr(x, nil, args.table.pretty))
+			local success, _, value = plume.stdCheckType(vm, x, "string", "", "", "")
+			if not success then
+				value = plume.repr(x, nil, args.table.pretty)
+			end
+			table.insert(result, x)
 		end
 		print(table.unpack(result))
 		return true
