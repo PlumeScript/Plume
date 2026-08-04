@@ -87,7 +87,7 @@ return function (plume, context, nodeHandlerTable)
 		context.nodeHandler(node.children[1]) -- Load the "root" value
 		context.toggleConcatPop()
 
-		if #node.children < 2 or not node.children[2].name:match('INDEX') then
+		if #node.children > 1 and not node.children[2].name:match('INDEX') or (#node.children == 1 and context.checkIfCanConcat()) then
 			context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 		end
 
