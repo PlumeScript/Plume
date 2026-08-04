@@ -92,6 +92,7 @@ plume.std.Random = plume.obj.luaMacro("Random", function (args)
 	}
 	random.meta = plume.obj.quickTable{
 		call = plume.obj.luaMacro ("call", function(args, vm)
+			--!signature [any start], [any stop]
 			if #args.table == 0 then
 				return true, _random()
 			elseif #args.table == 1 then

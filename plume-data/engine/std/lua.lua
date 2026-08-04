@@ -6,6 +6,7 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 	
 plume.std.print = plume.obj.luaMacro("print", function(args)
+	--!signature ...args
 	local result = {}
 	for _, x in ipairs(args.table) do
 		table.insert(result, plume.repr(x, nil, args.table.pretty))
@@ -163,11 +164,12 @@ plume.std.Map.meta = plume.obj.quickTable{
 plume.std.lua = plume.obj.table(0, 0)
 
 plume.std.lua:setItem("require", plume.obj.luaMacro("require", function(args, vm, currentFile)
+	--!signature string filename
 	local runtime = vm.runtime
 	local firstFilename = runtime.files[1].name
 	local lastFilename  = runtime.files[currentFile].name
 
-	local filename, searchPaths = plume.getFilenameFromPath(args.table[1], true, runtime, firstFilename, lastFilename)
+	local filename, searchPaths = plume.getFilenameFromPath(filename, true, runtime, firstFilename, lastFilename)
 	if filename then
 		return true, dofile(filename)(plume) 
 	else
@@ -205,7 +207,8 @@ end))
 plume.std.attempt = plume.obj.table(0, 0)
 
 plume.std.Context = plume.obj.luaMacro("Context", function(args)
-	return true, plume.obj.context(args.table[1])
+	--!signature [any x]
+	return true, plume.obj.context(x)
 end)
 
 -- Basic implementation, prone to memory leaks

@@ -135,7 +135,7 @@ plume.std.Number:setMetaItem('readonly', true)
 
 plume.std.Number.meta = plume.obj.quickTable {
 	call = plume.obj.luaMacro("Number", function(args, vm)
-		local x = args.table[1]
+		--!signature any x
 		if x == plume.obj.empty then
 			return false, "Cannot convert empty into number"
 		elseif type(x) == "number" then

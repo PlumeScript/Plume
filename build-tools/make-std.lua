@@ -34,10 +34,16 @@ local function makeSignature(name, signature, options)
 	end
 end
 
-local function process(f)
+local function process(filename, f)
 	f = f:gsub('%-%-%[%[.-%]%]', '') -- remove license
 
-	f = f:gsub('%"([^"]+)%",%s*function%s*%(([^)]+)%)\n(%s*)(.-)%-%-!signature ([^\n]*)', function(name, args, indent, left, signature)
+	for name, start in f:gmatch('%"([^"]+)%",%s*function%s*%([^)]+%)\n%s*(...)') do
+		if start ~= "--!" then
+			print(string.format("Warning: function %s/%s hasn't signature. Unexpected '%s'", (filename:match('^(.-)%.lua$')), name, start))
+		end
+	end
+
+	f = f:gsub('%"([^"]+)%",%s*function%s*%(([^)]+)%)\n(%s*)(.-)%-%-!signature ?([^\n]*)', function(name, args, indent, left, signature)
 		args = "args, vm, currentFile"
 
 		local options = {}
@@ -280,7 +286,7 @@ for filename in lfs.dir("plume-data/engine/std") do
 		local content = file:read("*a")
 		file:close()
 
-		table.insert(result, process(content))
+		table.insert(result, process(filename, content))
 	end
 end
 
