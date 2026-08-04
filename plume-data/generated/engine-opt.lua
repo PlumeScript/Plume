@@ -3120,7 +3120,7 @@ return function (plume)
                                                             local stringValue = _ret254
                                                             local _ret255 = type (stringValue) == "table" and (stringValue == plumeObjEmpty and "empty" or stringValue.type) or (type (stringValue) == "cdata" and stringValue.type) or type (stringValue)
                                                             local stringValueType = _ret255
-                                                            if stringValueType ~= "string" and stringValueType ~= "empty" then
+                                                            if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" then
                                                                 do
                                                                     local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
                                                                     table.insert (runtimeCallstack, callinfos)
@@ -3927,7 +3927,7 @@ return function (plume)
                                                     local stringValue = _ret354
                                                     local _ret355 = type (stringValue) == "table" and (stringValue == plumeObjEmpty and "empty" or stringValue.type) or (type (stringValue) == "cdata" and stringValue.type) or type (stringValue)
                                                     local stringValueType = _ret355
-                                                    if stringValueType ~= "string" and stringValueType ~= "empty" then
+                                                    if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" then
                                                         do
                                                             local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
                                                             table.insert (runtimeCallstack, callinfos)
@@ -5948,7 +5948,7 @@ return function (plume)
                                                                     local stringValue = _ret509
                                                                     local _ret510 = type (stringValue) == "table" and (stringValue == plumeObjEmpty and "empty" or stringValue.type) or (type (stringValue) == "cdata" and stringValue.type) or type (stringValue)
                                                                     local stringValueType = _ret510
-                                                                    if stringValueType ~= "string" and stringValueType ~= "empty" then
+                                                                    if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" then
                                                                         do
                                                                             local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
                                                                             table.insert (runtimeCallstack, callinfos)

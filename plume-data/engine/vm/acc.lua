@@ -326,7 +326,15 @@ return function(vm)
 	           	local stringValue = self:_STACK_GET(self.mainStack)
 	            local stringValueType = self:_GET_TYPE(stringValue)
 	            
-	            if stringValueType ~= "string" and stringValueType ~= "empty" then
+	            if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" then
+	            	--! to-remove-begin
+				    if type(tostringMeta) ~= "table" then
+				        error(string.format("[VM] tostringMeta is %s instead of table.", type(tostringMeta)))
+				    end
+				    if not tostringMeta.offset then
+				        error("[VM] tostringMeta hasn't offset field.")
+				    end
+				    --! to-remove-end
 					self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
 	            	self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))
 	            end
