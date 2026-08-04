@@ -16,17 +16,15 @@ If not, see <https://www.gnu.org/licenses/>.
 return function (plume, context)
 	function context.emiVariablesUsageWarning(varList)
 		for name, var in pairs(varList) do
-			if not tonumber(name) and var.node then
+			if not tonumber(name) and var.node and name ~= "_" then
 				local source = context.getNameNode(var.node, name)
 				if not var.used then
 					if var.isLoopVariable then
-						if name ~= "_" then
-							plume.warning.throwWarning(
-								"Never used loop variables.",
-								"Consider removing them or rename them '_'.",
-								source, {381, 473}
-							)
-						end
+						plume.warning.throwWarning(
+							"Never used loop variables.",
+							"Consider removing them or rename them '_'.",
+							source, {381, 473}
+						)
 					elseif var.isMacro then
 						plume.warning.throwWarning(
 							"Never used macros.",
