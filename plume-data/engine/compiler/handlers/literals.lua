@@ -52,6 +52,7 @@ return function (plume, context, nodeHandlerTable)
 		["\\:"] = ":",
 		["\\,"] = ",",
 		["\\\\"] = "\\",
+		["\\/"] = "/",
 		["\\0"] = ""
 	}
 	function context.getSpecialText(node)

@@ -333,6 +333,13 @@ use #future(newEscape)
 (hello)
 /// End
 
+/// Test newEscape slash escape
+use #future(newEscape)
+\/\/ \/*
+/// Output
+// /*
+/// End
+
 /// Test newEscape null escape with interpolation
 use #future(newEscape)
 let a = world
