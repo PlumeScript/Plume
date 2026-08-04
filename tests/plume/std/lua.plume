@@ -2,8 +2,9 @@
 $lua.eval(return 1)
 $lua.eval(return "1")
 $lua.eval(return nil)
+$lua.eval(return true)
 /// Output
-11
+11true
 /// End
 
 /// Test lua invalid return
@@ -13,7 +14,8 @@ $lua.eval(return {})
 │ RUNTIME ERROR:                                                                 │
 │ → The lua code returned  a 'table' object, that cannot be converted into       │
 │   Plume object.                                                                │
-│   (i) For now, only `string`, `number` and `nil` return are supported.         │
+│   (i) For now, only `string`, `number`, `boolean` and `nil` return are         │
+│   supported.                                                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │

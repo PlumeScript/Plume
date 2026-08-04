@@ -118,7 +118,7 @@ return function(plume)
 	plume.std.help.doc = [[`help(x)`: A shortcut for `print(plume.doc(x))`]]
 	plume.std.items.doc = [[`items(table, ?named)`: Returns an iterator yielding `(key, value)` pairs for all entries in the table (only non-numeric entries if `?named` flag is on).]]
 	plume.std.len.doc = [[`len(table)`: Returns the number of items in a table.]]
-	plume.std.lua.table.eval.doc = [[`lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers and empty are supported).]]
+	plume.std.lua.table.eval.doc = [[`lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers, boolean and nil are supported).]]
 	plume.std.lua.table.require.doc = [[`lua.require(path)` (used to load Lua modules, use same Path resolution as `import`). Required file must return a function.]]
 	plume.std.max.doc = [[`max(...numbers)`]]
 	plume.std.min.doc = [[`min(...numbers)`]]

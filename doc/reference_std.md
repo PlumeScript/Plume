@@ -269,7 +269,7 @@ Assume `let time = $Time()`
 ### Lua Integration
 
 * `lua.require(path)` (used to load Lua modules, use same Path resolution as `import`). Required file must return a function.
-* `lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers and empty are supported).
+* `lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers, boolean and nil are supported).
 
 ### Others
 *   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.

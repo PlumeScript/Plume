@@ -209,7 +209,8 @@ $lua.eval(return function()end)
 │ RUNTIME ERROR:                                                                 │
 │ → The lua code returned  a 'function' object, that cannot be converted         │
 │   into Plume object.                                                           │
-│   (i) For now, only `string`, `number` and `nil` return are supported.         │
+│   (i) For now, only `string`, `number`, `boolean` and `nil` return are         │
+│   supported.                                                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
