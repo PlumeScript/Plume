@@ -375,7 +375,7 @@ return function (plume)
 		--------------
 		-- common
 		local condition = s * Ct("CONDITION", expr) + E(plume.error.missingCondition)
-		local body      = Ct("BODY", V"statement"^0)
+		local body      = (os * V"comment")^-1 * Ct("BODY", V"statement"^0)
 		local _end      = lt * K"end" + E(plume.error.missingEnd)
 
 		-- if/elseif/else
