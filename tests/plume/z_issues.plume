@@ -1756,6 +1756,19 @@ $(1+empty)
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test #1178
+let t = do
+    // Some infos
+    wing: macro()
+    end
+end
+
+$plume.doc($t.wing)
+/// Output
+macro wing
+    Some infos
+/// End
+
 /// Test #1183, #1184
 $attempt($import, tests/plume/toimport/lib)
 /// Output

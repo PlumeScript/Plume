@@ -198,7 +198,11 @@ return function (plume, context)
 		end
 
 		if #result == 0 then
-			if parent.name == "DO" or parent.name == "BODY" or parent.name == "LET" then
+			if parent.name == "DO"
+			or parent.name == "BODY"
+			or parent.name == "LET"
+			or parent.name == "HASH_ITEM"
+			or parent.name == "LIST_ITEM" then
 				return context.collectComments(parent)
 			end
 		end
