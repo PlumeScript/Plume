@@ -49,7 +49,7 @@ return function(plume)
 			if not success then
 				value = plume.repr(x, nil, args.table.pretty)
 			end
-			table.insert(result, x)
+			table.insert(result, value)
 		end
 		print(table.unpack(result))
 		return true
