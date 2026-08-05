@@ -906,7 +906,7 @@ return function (plume)
                                                             end
                                                             ::_inline_end162::
                                                             local value = _ret79
-                                                            if value then
+                                                            if value ~= nil then
                                                                 local _ret88
                                                                 do
                                                                     mainStackPointer = mainStackPointer - 1
@@ -2847,7 +2847,7 @@ return function (plume)
                                                         end
                                                         ::_inline_end431::
                                                         local value = _ret222
-                                                        if value then
+                                                        if value ~= nil then
                                                             local _ret231
                                                             do
                                                                 mainStackPointer = mainStackPointer - 1
@@ -4212,7 +4212,7 @@ return function (plume)
                                                 end
                                                 ::_inline_end744::
                                                 local value = _ret376
-                                                if value then
+                                                if value ~= nil then
                                                     local _ret385
                                                     do
                                                         mainStackPointer = mainStackPointer - 1
@@ -5675,7 +5675,7 @@ return function (plume)
                                                                 end
                                                                 ::_inline_end958::
                                                                 local value = _ret477
-                                                                if value then
+                                                                if value ~= nil then
                                                                     local _ret486
                                                                     do
                                                                         mainStackPointer = mainStackPointer - 1

@@ -168,7 +168,7 @@ return function(vm)
 				self:_STACK_PUSH(self.mainStack, table.concat(result))
 			elseif t == "table" then
 				local value = self:_FORCE_FRAGMENT_META(fragment)
-				if value then
+				if value ~= nil then
 					self:_STACK_POP(self.mainStack)
 					self:_STACK_PUSH(self.mainStack, value)
 				else
