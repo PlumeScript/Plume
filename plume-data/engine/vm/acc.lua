@@ -64,6 +64,11 @@ return function(vm)
 	                directConcat = false
 	                break
 	            else
+	            	--! to-remove-begin
+	            	if type(item) ~= "string" then
+	            		error(string.format("[VM] Wrong type '%s' inside concat.", item))
+	            	end
+	            	--! to-remove-end
 	                length = length + #item
 	            end
 	        end
