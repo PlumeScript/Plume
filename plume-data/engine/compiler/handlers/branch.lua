@@ -19,11 +19,12 @@ return function (plume, context, nodeHandlerTable)
 
 		--------------------------------------------
 		-- Special case:
-		-- create an ELSE branch to emit LOAD_EMPTY	
+		-- create an ELSE branch to emit LOAD_EMPTY
 		local specialValueMode = (
 			node.parent.isUnic
 			and node.type ~= "TABLE"
 			and node.type ~= "EMPTY"
+			and node.type ~= "RETURN"
 		)
 
 		local _else_body

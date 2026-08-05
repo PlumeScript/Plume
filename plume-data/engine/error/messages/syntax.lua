@@ -60,6 +60,21 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.cannotUseReturnInsideRaise(node)
+		local message = "Cannot use return keyword inside a `raise` block."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseReturnInsideLetset(node)
+		local message = "Cannot use return keyword inside an affectation."
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.cannotUseReturnInsideCall(node)
+		local message = "Cannot use return keyword inside a call."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.missingIterator(node)
 		local message = "Missing for iterator."
 		node.errlpos = 3 

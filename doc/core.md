@@ -455,6 +455,7 @@ end
 $praise(quill)\n
 $praise(nib, adjective: splendid)\n
 $praise(ink, adjective: dark, ?loud)\n
+let wing = wing
 $(praise(wing))
 // →
 The quill is great.

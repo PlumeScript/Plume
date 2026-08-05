@@ -138,12 +138,24 @@ return function (plume, context)
                 f(node)
                 context.toggleConcatPop()
 
-                if label then  
-                    context.registerLabel(node, label)  
+                if label then
+                    context.registerLabel(node, label)
                 end
                 local parentName = node.parent and node.parent.name
                 if parentName ~= "WITH" and parentName ~= "DO" then -- not the cleanest workaround
                     context.registerOP(node, plume.ops.LOAD_EMPTY, 0, 0)
+                end
+            -- A macro whose body is a `return` block: no accumulation.
+            -- Emit LOAD_EMPTY so that a macro whose return was never reached
+            -- still yields an empty value, then anchor the end label after it
+            -- so an executed `return` (which jumps to the label) skips it.
+            elseif node.type == "RETURN" then
+                context.toggleConcatOff()
+                f(node)
+                context.toggleConcatPop()
+                context.registerOP(node, plume.ops.LOAD_EMPTY, 0, 0)
+                if label then
+                    context.registerLabel(node, label)
                 end
             end
         end          

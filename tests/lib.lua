@@ -209,7 +209,7 @@ local function parseDocFile(content)
                         isError = true
                     end
                 else
-                    local code, out = line:match("^(.-)// → (.*)$")
+                    local code, out = line:match("^(.-)// →%s?(.*)$")
                     if code then
                         if code == "" then
                             -- Full-line marker: everything after is the output.

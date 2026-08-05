@@ -80,6 +80,7 @@ return function (plume)
 		TABLE       = {"LIST_ITEM", "HASH_ITEM", "EXPAND", "EMPTY_REF", "INLINE_TABLE"},
 		TEXT        = {"TEXT", "SPECIAL_TEXT", "RAW", "EVAL", "BLOCK", "NUMBER", "IDENTIFIER", "QUOTE", "ADD", "SUB", "MUL", "DIV", "NEG", "POW", "MOD", "EQ", "NEQ", "LT", "GT", "LTE", "GTE", "AND", "NOT", "OR", "FALSE", "TRUE", "EMPTY", "CONCAT"},
 		MACRO       = {"ANONYMOUS_MACRO"},
+		RETURN      = {"RETURN"},
 		INHERIT     = {"FOR", "WHILE", "IF", "ELSEIF", "ELSE", "BODY", "DO", "WITH"}
 	}
 

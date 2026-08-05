@@ -157,6 +157,9 @@ return function (plume)
 					if key == "newEscape" or key == "all" or key == "raven" then
 						dynamicParseData.futureFlagNewEscape = true
 					end
+					if key == "return" or key == "all" or key == "raven" then
+						dynamicParseData.futureFlagReturn = true
+					end
 				end
 			end
 			return pos, node
@@ -438,6 +441,8 @@ return function (plume)
 						)
 		local block = blockStart * Ct("NULL", _end)
 		local leave     = C("LEAVE", K"leave")
+		local _return   = Ct("RETURN", K"return" * (s * V"firstStatement")^-1)
+		_return = _return * P(function() return dynamicParseData.futureFlagReturn end)
 
 		-- affectations
 		local lbody    = Ct("BODY", V"firstStatement")
@@ -550,9 +555,15 @@ return function (plume)
 		local foreignKeyword = C("TEXT", foreignKeywordPattern * os) /
 		function(x)
 			local word = x.content:match("^([%a_]+)")
-			x.warning = string.format("`%s` is not a Plume keyword, this line is plain text.", word)
-			x.warningHint = string.format("Do you mean %s ?", foreignKeywords[word])
-			x.issues = {381, 1160}
+			if word == "return" then
+				x.warning = "`return` is a future keyword, this line is plain text."
+				x.warningHint = "Add `use #future(return)` to enable it."
+				x.issues = {1160}
+			else
+				x.warning = string.format("`%s` is not a Plume keyword, this line is plain text.", word)
+				x.warningHint = string.format("Do you mean %s ?", foreignKeywords[word])
+				x.issues = {381, 1160}
+			end
 			return x
 		end
 
@@ -586,7 +597,7 @@ return function (plume)
 			statement    = lt * V"firstStatement",
 
 			commandStd =  _if + _while + _for + _break + continue + macro
-						  + _do + block + let + set + leave + inlinetable
+						  + _do + block + let + set + leave + _return + inlinetable
 						  + expand + use + raw + with + lineeval,
 			-- Only at line start
 			commandLB = listitem + hashitem,
@@ -653,7 +664,7 @@ return function (plume)
 			end
 
 			if node.name == "NAME" then
-				plume.checkIdentifier(node, node.content)
+				plume.checkIdentifier(node, node.content, dynamicParseData.futureFlagReturn)
 			end
 
 			if node.epos and node.epos > pos then

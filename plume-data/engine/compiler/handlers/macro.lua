@@ -233,4 +233,28 @@ return function (plume, context, nodeHandlerTable)
 		local uid = parent and parent.uid
 		context.registerGoto(node, parent.endLabel)
 	end
+
+	nodeHandlerTable.RETURN = function(node)
+		local parent = context.getLast "macros"
+
+		if parent.insideRaise>0 then
+			plume.error.cannotUseReturnInsideRaise(node)
+		end
+		if parent.insideLetset>0 then
+			plume.error.cannotUseReturnInsideLetset(node)
+		end
+		if parent.insideCall>0 then
+			plume.error.cannotUseReturnInsideCall(node)
+		end
+
+		-- Evaluate the returned value (or nothing) on the stack
+		context.accBlock(function(node)
+			context.childrenHandler(node)
+		end)(node)
+
+		parent.scopeToClose = #context.scopes - parent.scopeDeep
+		context.safeClose(node, parent)
+
+		context.registerGoto(node, parent.endLabel)
+	end
 end

@@ -321,6 +321,32 @@ end
 *   On success, `success` is `true` and `result` holds the macro's return value; otherwise `success` is `false` and `result` holds the error message.
 *   Errors are caught at any call depth; output accumulated before the call and contextual state are preserved.
 
+## Returning Values: `return`
+
+A macro normally returns whatever its body accumulates. The `return` keyword — enabled with `use #future(return)` — makes a macro return a single value and stop immediately:
+
+```plume
+use #future(return)
+
+macro wing(x)
+    if x>5
+        return yes
+    else
+        return no
+    end
+end
+$wing(10)\n
+$wing(2)
+// →
+yes
+no
+```
+
+*   `return <value>` evaluates the value, then exits the macro and returns it.
+*   `return` with no value returns `empty`.
+*   If no `return` is reached, the macro returns `empty`.
+*   A `return` block is incompatible with text or table accumulation in the same block — mixing them is a compile-time error.
+
 ## Modules: `import`
 
 `import(path, ...params)` is the default modularity mechanism: it executes a file **at runtime** and returns the value that file accumulates — usually a table.
@@ -334,7 +360,7 @@ double: macro (x) $(2 * x)
 ```plume
 // main.plume
 let geometry = $import(tests/plume/toimport/geometry)
-$(geometry.pi)
+$(geometry.pi)\n
 $geometry.double(21)
 // →
 3.14159

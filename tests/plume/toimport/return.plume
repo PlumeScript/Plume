@@ -1,0 +1,2 @@
+use #future(return)
+return 5

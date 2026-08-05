@@ -88,11 +88,14 @@ return function (plume)
 
 	
 
-	function plume.checkIdentifier(node, identifier)
+	function plume.checkIdentifier(node, identifier, futureFlagReturn)
 		for kw in ('if elseif else while for do macro let set const param use raw run ref with raise'):gmatch('%S+') do
 			if identifier == kw then
 				plume.error.wrongIdentifier(node, identifier)
 			end
+		end
+		if futureFlagReturn and identifier == "return" then
+			plume.error.wrongIdentifier(node, identifier)
 		end
 	end
 

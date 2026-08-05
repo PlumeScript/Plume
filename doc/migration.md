@@ -1,5 +1,8 @@
 # Owl -> Raven
 
+## `return` becomes a keyword #41
+`return` is now a keyword, enabled with `use #future(return)`. It returns a value from a macro. With the flag active, `return` can no longer be used as an identifier.
+
 ## Add an error when using non-escaped `$` #900
 Escape all non-eval `$`: `\$`
 

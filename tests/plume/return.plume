@@ -1,0 +1,244 @@
+/// Test simple return
+use #future(return)
+
+macro wing()
+	return nib
+end
+$wing()
+/// Output
+nib
+/// End
+
+/// Test eval in return
+use #future(return)
+
+macro wing()
+	let nib = 6
+	return $nib
+end
+$wing()
+/// Output
+6
+/// End
+
+/// Test multiple return
+use #future(return)
+
+macro wing(x)
+	if x>5
+		return yes
+	else
+		return no
+	end
+end
+$wing(10)\n
+$wing(2)
+/// Output
+yes
+no
+/// End
+
+/// Test return in for
+use #future(return)
+
+macro wing()
+	for i in seq(4)
+		if i==3
+			return $i
+		end
+	end
+end
+
+$wing()
+/// Output
+3
+/// End
+
+/// Test unbalanced return emit empty
+use #future(return)
+
+macro wing()
+	if false
+		return 5
+	end
+end
+
+$type($wing())
+/// Output
+empty
+/// End
+
+/// Test return in lib
+use #future(return)
+
+$import(tests/plume/toimport/return)
+/// Output
+5
+/// End
+
+/// Test return in text block
+use #future(return)
+
+macro wing(x)
+	Hello!
+	return 4
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'RETURN' content in a 'TEXT' block.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    3 │macro wing(x)                                                            │
+│    4 │ Hello!                                                                  │
+│      │ ^^^^^^                                                                  │
+│                                                                                │
+│    But you try to add a 'RETURN' element.                                      │
+│    5 │return 4                                                                 │
+│      │^^^^^^^^                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test return no value
+use #future(return)
+
+macro wing()
+	return
+end
+
+$type($wing())
+/// Output
+empty
+/// End
+
+/// Test return in table block
+use #future(return)
+
+macro wing(x)
+	- Hello!
+	return 4
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'RETURN' content in a 'TABLE' block.                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TABLE'.                 │
+│    3 │macro wing(x)                                                            │
+│    4 │ - Hello!                                                                │
+│      │ ^^^^^^^^                                                                │
+│                                                                                │
+│    But you try to add a 'RETURN' element.                                      │
+│    5 │return 4                                                                 │
+│      │^^^^^^^^                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+
+/// Test return in nested text block 1
+use #future(return)
+
+macro wing(x)
+	run do
+		Hello!
+		return 4
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'RETURN' content in a 'TEXT' block.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    3 │macro wing(x)                                                            │
+│    4 │ run do                                                                  │
+│    5 │  Hello!                                                                 │
+│      │  ^^^^^^                                                                 │
+│                                                                                │
+│    But you try to add a 'RETURN' element.                                      │
+│    6 │return 4                                                                 │
+│      │^^^^^^^^                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test return in nested text block 2
+use #future(return)
+
+macro wing(x)
+	Hello!
+	do
+		let x = 5
+		return 4
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'RETURN' content in a 'TEXT' block.                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    3 │macro wing(x)                                                            │
+│    4 │ Hello!                                                                  │
+│      │ ^^^^^^                                                                  │
+│    5 │ do                                                                      │
+│                                                                                │
+│    But you try to add a 'RETURN' element.                                      │
+│    7 │return 4                                                                 │
+│      │^^^^^^^^                                                                 │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test return in raise
+use #future(return)
+
+macro wing(x)
+	raise do
+		return 4
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Raise block must be 'TEXT', not 'RETURN'                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │macro wing(x)                                                            │
+│    4 │ raise do                                                                │
+│      │ ^^^^^^^^                                                                │
+│    5 │  return 4                                                               │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test return during a call
+use #future(return)
+
+macro wing(x)
+	@print
+		return 4
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use return keyword inside a call.                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │macro wing(x)                                                            │
+│    4 │ @print                                                                  │
+│    5 │  return 4                                                               │
+│      │  ^^^^^^^^                                                               │
+│    6 │ end                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
