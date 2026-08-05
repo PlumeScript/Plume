@@ -121,6 +121,10 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	nodeHandlerTable.RAISE = function(node)
+		if node.type ~= "TEXT" then
+			plume.error.raiseMustBeTEXT(node, node.type)
+		end
+
 		local macro = context.getLast "macros"
 		local loop  = context.getLast "loops"
 

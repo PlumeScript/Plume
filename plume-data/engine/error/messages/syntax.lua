@@ -132,6 +132,11 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
+	function plume.error.raiseMustBeTEXT(node, t)
+		local message = string.format("Raise block must be 'TEXT', not '%s'", t)
+		plume.error.throwCompilationError(node, message)
+	end
+
 	-- Build the "write as text" hint. A keyword whose first letter is a special
 	-- escape (r/t/n/s) cannot be written as `\keyword` (e.g. `\r` is a carriage
 	-- return); escape that first letter as a string instead: `$("r")aise`.

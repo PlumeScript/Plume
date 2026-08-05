@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">889 passed out of 889 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">890 passed out of 890 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -39220,7 +39220,7 @@ let param ...leftover2
 </code></pre>
 </div>
 </details>
-<h2>plume/z_issues: <span style="font-weight: normal;">142 passed out of 142 tests</span></h2>
+<h2>plume/z_issues: <span style="font-weight: normal;">143 passed out of 143 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -39903,6 +39903,42 @@ end
 <h4>Output</h4>
 <pre><code>
 
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1060 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+raise do
+    - 5
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="no-bytecode">Bytecode not generated or unavailable.</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Raise block must be &#39;TEXT&#39;, not &#39;TABLE&#39;                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raise do                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │    - 5                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
 </details>
