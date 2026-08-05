@@ -1801,23 +1801,3 @@ $attempt($import, tests/plume/toimport/lib)
 /// Output
 (success: true, result: (nib: quill))
 /// End
-
-/// Test #1199
-let x = 1
-
-let t = do
-    meta fragment: macro()
-        $x
-    end
-end
-
-macro wing(t)
-    set x += 1
-    $t
-end
-
-
-$wing($t)
-/// Output
-2
-/// End

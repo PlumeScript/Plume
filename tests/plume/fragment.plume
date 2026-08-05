@@ -204,3 +204,85 @@ end
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1199-1 fragment as macro argument (lazy)
+let x = 1
+
+let t = do
+    meta fragment: macro()
+        $x
+    end
+end
+
+macro wing(t)
+    set x += 1
+    $t
+end
+
+
+$wing($t)
+/// Output
+2
+/// End
+
+/// Test #1199-2 fragment in if condition (forced)
+let t = do
+    meta fragment: macro()
+        $false
+    end
+end
+if t
+    yes
+else
+    no
+end
+/// Output
+no
+/// End
+
+/// Test #1199-3 fragment in while condition (forced)
+let t = do
+    meta fragment: macro()
+        $false
+    end
+end
+let n = 0
+while t
+    set n += 1
+    if n > 3
+        break
+    end
+end
+$n
+/// Output
+0
+/// End
+
+/// Test fragment call (forced)
+let t = do
+    meta fragment: macro()
+        macro()
+            wing
+        end
+    end
+end
+$t()
+/// Output
+wing
+/// End
+
+/// Test fragment as table value (lazy)
+let x = 1
+let t = do
+    meta fragment: macro()
+        $x
+    end
+end
+let arr = do
+    - $t
+end
+set x = 2
+$arr[1]
+/// Output
+2
+/// End
