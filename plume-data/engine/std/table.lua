@@ -203,10 +203,12 @@ plume.std.Table = plume.obj.quickTable{
 	sort = plume.obj.luaMacro("sort", function(args, vm)
 		--!signature table t, callable compare:
 
-		for i, x in ipairs(t.table) do
-			local _type = type(x) == "table" and x.type or type(x)
-			if _type ~= "number" or not tonumber(x) then
-				return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+		if not compare then
+			for i, x in ipairs(t.table) do
+				local _type = type(x) == "table" and x.type or type(x)
+				if _type ~= "number" or not tonumber(x) then
+					return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+				end
 			end
 		end
 

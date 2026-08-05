@@ -2265,10 +2265,12 @@ return function(plume)
 			if not __s then return false, __e end
 			------------
 	
-			for i, x in ipairs(t.table) do
-				local _type = type(x) == "table" and x.type or type(x)
-				if _type ~= "number" or not tonumber(x) then
-					return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+			if not compare then
+				for i, x in ipairs(t.table) do
+					local _type = type(x) == "table" and x.type or type(x)
+					if _type ~= "number" or not tonumber(x) then
+						return false, string.format("Table element #%i type is '%s' instead of 'number',\nand therefore cannot be sorted.", i, _type)
+					end
 				end
 			end
 	

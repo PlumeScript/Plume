@@ -1830,3 +1830,20 @@ run $nib()
 /// Output
 (nib: macro<???>)
 /// End
+
+/// Test #1209
+let  t = do
+    - (10, 2)
+    - (2, 1)
+end
+
+run @Table.sort($t)
+    compare: macro(x, y)
+        return $(x[1]<y[1])
+    end
+end
+
+$t
+/// Output
+((2, 1), (10, 2))
+/// End
