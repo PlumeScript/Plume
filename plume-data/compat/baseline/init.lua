@@ -10,3 +10,4 @@ lpeg = require "lpeg"
 
 require "table.new"
 require "plume-data/compat/baseline/fileutf8"
+require "plume-data/compat/baseline/filesystem"
