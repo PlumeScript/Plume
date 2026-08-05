@@ -6,6 +6,16 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume, context, nodeHandlerTable)
+
+	function context.shouldForceFragmentRoot(node)
+		if #node.children == 1 then
+			local parentName = node.parent.name
+			return context.checkIfCanConcat() or parentName == "DYNAMIC_KEY"
+		else
+			return not node.children[2].name:match('INDEX')
+		end
+	end
+
 	--- Handle structure like
 	--- @wing(argList)
 	--- 	... // body
@@ -87,7 +97,7 @@ return function (plume, context, nodeHandlerTable)
 		context.nodeHandler(node.children[1]) -- Load the "root" value
 		context.toggleConcatPop()
 
-		if #node.children > 1 and not node.children[2].name:match('INDEX') or (#node.children == 1 and context.checkIfCanConcat()) then
+		if context.shouldForceFragmentRoot(node) then
 			context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 		end
 
