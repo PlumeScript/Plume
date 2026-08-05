@@ -17,6 +17,7 @@ return function (plume, context, nodeHandlerTable)
 		context.toggleConcatOff()
 		context.childrenHandler(condition)
 		context.toggleConcatPop()
+		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 		context.registerGoto(node, "while_end_"..uid, "JUMP_IF_NOT")
 
 		-- Informations used by break/continue

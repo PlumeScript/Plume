@@ -59,6 +59,7 @@ return function (plume, context, nodeHandlerTable)
 				context.toggleConcatOff()
 				context.childrenHandler(altcondition)
 				context.toggleConcatPop()
+				context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 				context.registerGoto(node, "branch_"..(i+2).."_"..uid, "JUMP_IF_NOT")
 			end
 			if body.type == "TEXT" then
