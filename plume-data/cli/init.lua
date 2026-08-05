@@ -37,7 +37,6 @@ OPTIONS
 		Inject values into `let param` variables declared in the
 		script. Tokens follow standard CLI conventions:
 			--key=value    Sets param `key` to `value`
-			--key value    Equivalent to --key=value
 			--flag         Sets param `flag` to true
 			value          Collected as a positional argument, in
 			               order of appearance
