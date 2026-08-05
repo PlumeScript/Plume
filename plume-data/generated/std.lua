@@ -1182,11 +1182,13 @@ return function(plume)
 			end),
 			write = plume.obj.luaMacro ("write", function (args, vm, currentFile)
 				local __name      = "write"
-				local __signature = "`$write(?append, string ...items)`"
-				local __s, __e, self = plume.stdUnpackPositional(args, 0, math.huge, __name, __signature)
+				local __signature = "`$write(?append, string content)`"
+				local __s, __e, self, content
+				__s, __e, content = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
 				local append
 				if __s then __s, __e, self, append = plume.stdUnpackNamed(args, {"self", "append"}, __name, __signature) end
 				append = append or false
+				if __s and content then __s, __e, content = plume.stdCheckType(vm, content, "string", "1", __name, __signature) end
 				if not __s then return false, __e end
 				------------
 				local success, result = mkdirs(path, true)
@@ -1194,7 +1196,7 @@ return function(plume)
 					return false, result
 				end
 	
-				return plume.stdio.write(path, table.concat(args.table), append)
+				return plume.stdio.write(path, content, append)
 			end),
 			touch = plume.obj.luaMacro ("touch", function (args, vm, currentFile)
 				local __name      = "touch"

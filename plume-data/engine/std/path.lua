@@ -183,13 +183,13 @@ local function makePath(path)
 			return success, result
 		end),
 		write = plume.obj.luaMacro ("write", function(args)
-			--!signature ?append, (string ...items)
+			--!signature ?append, string content
 			local success, result = mkdirs(path, true)
 			if not success then
 				return false, result
 			end
 
-			return plume.stdio.write(path, table.concat(args.table), append)
+			return plume.stdio.write(path, content, append)
 		end),
 		touch = plume.obj.luaMacro ("touch", function(args)
 			--!signature 
