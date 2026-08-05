@@ -111,17 +111,11 @@ return function (plume)
 		return result
 	end
 
-	function plume.normalizePath(path)
-		if path:match("^/") or path:match("^[A-Za-z]:[/\\]") then 
-			return path:gsub("\\", "/")
-		end
-		
-		local cwd = plume.debugForcedRoot or lfs.currentdir()
-		
-		local result = cwd:gsub("\\", "/") .. "/" .. path:gsub("\\", "/")
-		
+	local function normalizePathParts(path)
+		-- path uses forward slashes
+		local leadingSlash = path:match("^/")
 		local parts = {}
-		for part in string.gmatch(result, "[^/]+") do
+		for part in string.gmatch(path, "[^/]+") do
 			if part == ".." then
 				if #parts > 0 and parts[#parts] ~= "" then
 					table.remove(parts)
@@ -132,17 +126,33 @@ return function (plume)
 		end
 
 		local normalized = table.concat(parts, "/")
-		
+
 		if parts[1] and string.match(parts[1], "^[A-Za-z]:$") then
 			local drive = table.remove(parts, 1)
 			normalized = drive .. "/" .. table.concat(parts, "/")
+		elseif leadingSlash then
+			normalized = "/" .. normalized
 		end
-		
-		while string.match(normalized, "//+") do 
-			normalized = string.gsub(normalized, "//+", "/") 
+
+		while string.match(normalized, "//+") do
+			normalized = string.gsub(normalized, "//+", "/")
 		end
-		
+
 		return normalized:gsub("/$", "")
+	end
+
+	function plume.normalizePath(path)
+		path = path:gsub("\\", "/")
+
+		if path:match("^/") or path:match("^[A-Za-z]:/") then
+			return normalizePathParts(path)
+		end
+
+		local cwd = (plume.debugForcedRoot or lfs.currentdir()):gsub("\\", "/")
+		if cwd == "" then
+			return normalizePathParts(path)
+		end
+		return normalizePathParts(cwd .. "/" .. path)
 	end
 
 	local pathTemplates = {
