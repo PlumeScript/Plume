@@ -244,6 +244,13 @@ $Table.entry($t, 2)
 (a, b)
 /// End
 
+/// Test entry, negative index
+let t = (1, a: b)
+$Table.entry($t, -1)
+/// Output
+(a, b)
+/// End
+
 /// Test join 1
 $Table.join(1, 2, 3)
 /// Output

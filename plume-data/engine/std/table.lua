@@ -190,7 +190,8 @@ plume.std.Table = plume.obj.quickTable{
 		end
 	end),
 	entry = plume.obj.luaMacro("entry", function(args)
-		--!signature table t, any index
+		--!signature table t, number index
+		index = handleNegativeIndex(index, #t.keys)
 		local key = t.keys[index]
 		local result = plume.obj.table(2, 0)
 		result:addItem(key)

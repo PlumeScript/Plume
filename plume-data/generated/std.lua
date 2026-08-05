@@ -2235,13 +2235,15 @@ return function(plume)
 		end),
 		entry = plume.obj.luaMacro("entry", function (args, vm, currentFile)
 			local __name      = "entry"
-			local __signature = "`$entry(table t, any index)`"
+			local __signature = "`$entry(table t, number index)`"
 			local __s, __e, self, t, index
 			__s, __e, t, index = plume.stdUnpackPositional(args, 2, 2,  __name, __signature)
 			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 			if __s and t then __s, __e, t = plume.stdCheckType(vm, t, "table", "1", __name, __signature) end
+			if __s and index then __s, __e, index = plume.stdCheckType(vm, index, "number", "2", __name, __signature) end
 			if not __s then return false, __e end
 			------------
+			index = handleNegativeIndex(index, #t.keys)
 			local key = t.keys[index]
 			local result = plume.obj.table(2, 0)
 			result:addItem(key)
