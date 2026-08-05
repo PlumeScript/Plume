@@ -30,7 +30,7 @@ else
 end
 
 local plume = {}
-plume.VERSION = "b61 (Owl Edition)"
+plume.VERSION = "b62 (Owl Edition)"
 
 require 'plume-data/engine/error/core'    (plume)
 require 'plume-data/engine/warning'       (plume)
