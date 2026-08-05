@@ -1819,3 +1819,14 @@ $attempt($import, tests/plume/toimport/lib)
 /// Output
 (success: true, result: (nib: quill))
 /// End
+
+/// Test #1205
+ref nib: macro()
+	ref wing: a
+	config: $wing
+end
+
+run $nib()
+/// Output
+(nib: macro<???>)
+/// End

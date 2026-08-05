@@ -53,6 +53,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.blockToClose   = {}
 		macroObj.scopeDeep = #context.scopes+1
 		macroObj.accDeep = context.accBlockDeep
+		macroObj.accBlockDeep = context.accBlockDeep + 1
 		macroObj.endLabel = endLabel
 		context.append("macros", macroObj)
 		context.append("accBlock", macroObj)
