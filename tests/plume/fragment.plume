@@ -313,3 +313,15 @@ end
 /// Output
 1
 /// End
+
+/// Test fragment as key
+let key = do
+    meta fragment: macro()
+        key
+    end
+end
+let t = (key: wing)
+$t[key]
+/// Output
+wing
+/// End
