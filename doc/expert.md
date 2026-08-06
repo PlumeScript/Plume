@@ -102,7 +102,17 @@ The $wing is ready.
 
 ## Lazy Rendering: `fragment`
 
-When the VM needs a concrete value from a table — for arithmetic, comparison or final text output — it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
+When the VM needs a concrete value from a table, it calls `FORCE_FRAGMENT`. If the table has a `fragment` metafield, that macro runs first, replacing the table with its return value. The result is **cached**: the meta macro runs at most once per table instance.
+
+`fragment` fires whenever the table is consumed as a concrete value:
+
+*   arithmetic and comparison operators (`$(t + 8)`)
+*   conditions (`if t`, `while t`)
+*   calling the table (`$t()`)
+*   final text output and text interpolation (`prefix-$t-suffix`)
+*   the **key** of an indexation (`$t[a]` forces `a`, not `t`)
+*   a macro argument whose declared type is `string` or `number` (automatic coercion)
+*   compound assignment (`set t += 1`)
 
 The real payoff is nested rendering. Because `fragment` fires at the last possible moment, the deepest fragments run first — so a nested structure renders with intuitive, correct nesting:
 
@@ -157,7 +167,14 @@ Constraints: the metafield value must be a macro. Because `fragment` intercepts 
 *   Arithmetic operators (`add`, `sub`, `mul`, `div`, `mod`, `pow` and their `r`/`l` variants, `minus`) — the table is rendered before the operation, so the operator metamacro would never fire.
 *   Comparison operators (`eq`, `lt`) — the table is rendered before the comparison, for the same reason.
 
-The `fragment` metafield does **not** fire on table operations that access structure rather than rendering — iteration (`for x in t`), indexing (`t.field`), or table expansion (`...t`) leave the table untouched. Only the explicit need for a concrete value triggers it.
+The `fragment` metafield does **not** fire when the table is consumed as structure rather than as a concrete value:
+
+*   iteration (`for x in t`)
+*   the **table** of an indexation (`$t[a]` leaves `t` untouched)
+*   table expansion (`...t`)
+*   a macro argument whose declared type is `table` or `any`
+*   a table value (`- $t` inside a table)
+*   introspection (`$type($t)`, `$repr($t)`) — these report the table as it currently is, without rendering it
 
 To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
 
