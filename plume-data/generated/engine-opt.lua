@@ -1049,7 +1049,7 @@ return function (plume)
                                                                 end
                                                             end
                                                         else
-                                                            vmerr = plume.error.unregisteredKey (t, key)
+                                                            vmerr = plume.error.unregisteredKey (t, plume.repr (key))
                                                             customerrip = nil
                                                             goto ERROR
                                                         end
