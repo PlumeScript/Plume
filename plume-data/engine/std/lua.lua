@@ -210,8 +210,11 @@ end))
 
 plume.std.attempt = plume.obj.table(0, 0)
 
-plume.std.Context = plume.obj.luaMacro("Context", function(args)
+plume.std.Context = plume.obj.luaMacro("Context", function(args, vm)
 	--!signature [any x]
+	if x then
+		x = plume.callForceFragment(vm, x)
+	end
 	return true, plume.obj.context(x)
 end)
 

@@ -403,6 +403,9 @@ return function(plume)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		if x then
+			x = plume.callForceFragment(vm, x)
+		end
 		return true, plume.obj.context(x)
 	end)
 	

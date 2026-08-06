@@ -22,6 +22,10 @@ return function(vm)
 	        if type(var) ~= "table" or var.type ~= "context" then
 	            self:_ERROR(self.plume.error.wrongContextType(var))
 	        else
+	        	self:_STACK_PUSH(self.mainStack, value)
+	        	self:FORCE_FRAGMENT(self.mainStack)
+	        	value = self:_STACK_POP(self.mainStack)
+
 	            var:push(value)
 	            table.insert(cache, var)
 	        end
