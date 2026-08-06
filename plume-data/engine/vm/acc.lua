@@ -65,11 +65,11 @@ return function(vm)
 	                break
 	            else
 	            	--! to-remove-begin
-	            	if type(item) ~= "string" then
+	            	if type(item) ~= "string" and type(item) ~= "number" then
 	            		error(string.format("[VM] Wrong type '%s' inside concat.", item))
 	            	end
 	            	--! to-remove-end
-	                length = length + #item
+	                length = length + #tostring(item)
 	            end
 	        end
 	        directConcat = directConcat and length <= CONCAT_LENGTH_LIMIT

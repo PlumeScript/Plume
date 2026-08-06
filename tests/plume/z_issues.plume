@@ -1847,3 +1847,9 @@ $t
 /// Output
 ((2, 1), (10, 2))
 /// End
+
+/// Test #1211
+let key = 1
+let a = $Context(1$key)
+/// Output
+/// End

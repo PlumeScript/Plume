@@ -1543,7 +1543,7 @@ return function (plume)
                                                         directConcat = false
                                                         break
                                                     else
-                                                        length = length + #item
+                                                        length = length + #tostring (item)
                                                     end
                                                 end
                                                 directConcat = directConcat and length <= CONCAT_LENGTH_LIMIT
