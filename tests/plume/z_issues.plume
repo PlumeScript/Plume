@@ -1865,3 +1865,31 @@ a$wing
 /// Output
 aa2
 /// End
+
+/// Test #1217-1
+let wing = do
+    meta tostring: macro()
+        meta fragment: macro()
+            nib
+        end
+    end
+end
+
+a$wing
+/// Output
+anib
+/// End
+
+/// Test #1217-2
+let wing = do
+    meta tostring: macro()
+        meta tostring: macro()
+            nib
+        end
+    end
+end
+
+a$wing
+/// Output
+anib
+/// End
