@@ -1853,3 +1853,15 @@ let key = 1
 let a = $Context(1$key)
 /// Output
 /// End
+
+/// Test #1216
+let wing = do
+    meta tostring: macro()
+        a$(1+1)
+    end
+end
+
+a$wing
+/// Output
+aa2
+/// End

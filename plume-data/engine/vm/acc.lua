@@ -330,6 +330,11 @@ return function(vm)
 
 	           	local stringValue = self:_STACK_GET(self.mainStack)
 	            local stringValueType = self:_GET_TYPE(stringValue)
+	            while stringValueType == "fragment" and not self.err do
+	            	self:FORCE_FRAGMENT()
+	            	stringValue = self:_STACK_GET(self.mainStack)
+	            	stringValueType = self:_GET_TYPE(stringValue)
+	            end
 	            
 	            if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" then
 	            	--! to-remove-begin
