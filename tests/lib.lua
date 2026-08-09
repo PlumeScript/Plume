@@ -318,7 +318,7 @@ function lib.executeTests(allTests, plumeEngine)
                         os.remove(tmpout)
                         os.remove(tmperr)
 
-                        if #stderr > 0 then
+                        if #stderr > 0 and #stdout==0 then
                             error = true
                             result = stderr:gsub("[A-Z]:.-/([^/]-')", "%1") -- anonymize windows paths
                         else

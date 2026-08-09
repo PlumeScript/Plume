@@ -313,6 +313,7 @@ local function main()
 					end
 					file:write(result)
 				file:close()
+				print("Execution completed without errors.")
 			else
 				print(result)
 			end

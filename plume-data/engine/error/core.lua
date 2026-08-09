@@ -49,7 +49,7 @@ return function(plume)
 	end
 
 	function plume.error.showWarnings()
-		print(plume.error.formatError({}))
+		io.stderr:write((plume.error.formatError({}) or "") .. "\n")
 	end
 
 	local unexpectedHeading = "Unexpected internal error. Please report it at https://github.com/PlumeScript/Plume."
