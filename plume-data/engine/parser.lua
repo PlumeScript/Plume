@@ -497,7 +497,7 @@ return function (plume)
 		local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (name + Ct("DYNAMIC_KEY", eval)) * P":" * (os * lbodynlb + #lt))
 						+ Ct("HASH_ITEM", Ct("REF", K"ref"*s) * ref * P":" *  os * lbodynlb)
 						+ Ct("EMPTY_REF", Ct("REF", K"ref"*s) * ref) * (os * P"," * os * Ct("EMPTY_REF", ref))^0
-		local expand   = Ct("EXPAND", P"..." * evalBase) 
+		local expand   = Ct("EXPAND", P"..." * (block + evalBase)) 
 
 		local _do = Ct("DO", os * K"do" * body * _end)
 
