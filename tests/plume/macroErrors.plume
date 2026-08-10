@@ -485,6 +485,7 @@ end
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
 │ → Cannot use variable 'idontexit', it isn't defined in the current scope.      │
+│   Perhaps you mean 'Context'?                                                  │
 │   Only visibles variables can be used as validator.                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
