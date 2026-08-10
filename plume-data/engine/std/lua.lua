@@ -26,13 +26,15 @@ plume.std.help = plume.obj.luaMacro("help", function (args)
 end)
 
 -- io
-plume.std.write = plume.obj.luaMacro("write", function(args)
+plume.std.write = plume.obj.luaMacro("write", function(args, vm, currentFile)
 	--!signature string filename, string content, ?append
+	filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 	return plume.stdio.write(filename, content, append)
 end)
 
-plume.std.read = plume.obj.luaMacro("read", function(args)
+plume.std.read = plume.obj.luaMacro("read", function(args, vm, currentFile)
 	--!signature string filename
+	filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 	return plume.stdio.read(filename)
 end)
 

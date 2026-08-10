@@ -86,6 +86,7 @@ return function(plume)
 		if __s and content then __s, __e, content = plume.stdCheckType(vm, content, "string", "2", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 		return plume.stdio.write(filename, content, append)
 	end)
 	
@@ -98,6 +99,7 @@ return function(plume)
 		if __s and filename then __s, __e, filename = plume.stdCheckType(vm, filename, "string", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 		return plume.stdio.read(filename)
 	end)
 	
@@ -1336,6 +1338,9 @@ return function(plume)
 		if __s and path then __s, __e, path = plume.stdCheckType(vm, path, "string", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		if path then
+			path = plume.resolveRelativePath(path, vm:_GET_CURRENT_FILE().name)
+		end
 		return makePath(path)
 	end)
 	
