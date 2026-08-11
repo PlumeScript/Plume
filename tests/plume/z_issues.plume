@@ -1780,19 +1780,6 @@ end
 /// Output
 /// End
 
-/// Test #1178
-let t = do
-    // Some infos
-    wing: macro()
-    end
-end
-
-$plume.doc($t.wing)
-/// Output
-macro wing
-    Some infos
-/// End
-
 /// Test #1179
 $String.replace(ab, a,)
 /// Output

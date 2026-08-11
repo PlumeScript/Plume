@@ -1353,7 +1353,19 @@ return function(plume)
 	
 	function plume.makedoc(m)
 		m = m.macro or m
-		return m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
+	
+		local mtype = m.type
+		local mname = (m.debugMacroName or m.name or "???")
+	
+		local signatureRef = m.signatureRef
+		local msignature = ""
+		if signatureRef and signatureRef.bpos then
+			msignature = signatureRef.code:sub(signatureRef.bpos, signatureRef.epos)
+		end
+	
+		local mdoc  = (m.doc or ""):gsub('\n', '\n    ')
+	
+		return string.format("%s %s%s\n    %s", mtype, mname, msignature, mdoc)
 	end
 	
 	plume.std.plume = plume.obj.quickTable {

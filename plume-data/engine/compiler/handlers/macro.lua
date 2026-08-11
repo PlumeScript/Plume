@@ -55,6 +55,7 @@ return function (plume, context, nodeHandlerTable)
 		macroObj.accDeep = context.accBlockDeep
 		macroObj.accBlockDeep = context.accBlockDeep + 1
 		macroObj.endLabel = endLabel
+		macroObj.signatureRef = paramList
 		context.append("macros", macroObj)
 		context.append("accBlock", macroObj)
 
