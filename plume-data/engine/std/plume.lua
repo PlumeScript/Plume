@@ -22,7 +22,19 @@ function plume.makedoc(m)
 
 	local mdoc  = (m.doc or ""):gsub('\n', '\n    ')
 
-	return string.format("%s %s%s\n    %s", mtype, mname, msignature, mdoc)
+	local renderedDoc = string.format("%s %s%s\n    %s", mtype, mname, msignature, mdoc)
+
+	local result = plume.obj.quickTable {
+		type      = mtype,
+		name      = mname,
+		signature = msignature,
+		doc       = mdoc
+	}
+	result:setMetaItem("tostring", plume.obj.luaMacro("tostring", function()
+		return true, renderedDoc
+	end))
+
+	return result
 end
 
 plume.std.plume = plume.obj.quickTable {

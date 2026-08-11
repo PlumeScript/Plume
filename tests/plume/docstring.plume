@@ -3,7 +3,7 @@
 macro double(x)
 	$(2*x)
 end
-$(plume.doc(double))
+$(String(plume.doc(double)))
 /// Output
 macro double(x)
     double the number
@@ -15,7 +15,7 @@ macro double(x)
 macro double(x)
 	$(2*x)
 end
-$(plume.doc(double))
+$(String(plume.doc(double)))
 /// Output
 macro double(x)
     double the number
@@ -30,7 +30,7 @@ macro double(x)
 macro double(x)
 	$(2*x)
 end
-$(plume.doc(double))
+$(String(plume.doc(double)))
 /// Output
 macro double(x)
     double the number
@@ -42,7 +42,7 @@ macro double(x)
 let t = do
     - 1
 end
-$(plume.doc(t))
+$(String(plume.doc(t)))
 /// Output
 table t
     This is a table
@@ -59,7 +59,7 @@ table tests/plume/toimport/filedoc.plume
 
 /// Test std
 // This is a table
-$plume.doc($String.lines)
+$String($plume.doc($String.lines))
 /// Output
 luaMacro lines
     `lines(s)`: Splits the string into a slice of individual lines.
@@ -69,7 +69,7 @@ luaMacro lines
 macro wing()
 end
 
-$plume.doc($wing)
+$String($plume.doc($wing))
 /// Output
 macro wing()
 /// End
@@ -81,7 +81,7 @@ macro wing()
     $x
 end
 
-$plume.doc($wing)
+$String($plume.doc($wing))
 /// Output
 macro wing()
 /// End
@@ -91,7 +91,7 @@ macro wing()
 let wing = macro ()
 end
 
-$plume.doc($wing)
+$String($plume.doc($wing))
 /// Output
 macro wing()
     a macro that fly
@@ -104,7 +104,7 @@ let t = do
     end
 end
 
-$plume.doc($t.wing)
+$String($plume.doc($t.wing))
 /// Output
 macro wing()
     a macro that fly
@@ -117,7 +117,7 @@ let t = do
     end
 end
 
-$plume.doc($t.wing)
+$String($plume.doc($t.wing))
 /// Output
 macro wing()
     a macro that fly
@@ -128,7 +128,7 @@ macro wing()
 macro double(x)
     $(2*x)
 end
-$(plume.doc(double))
+$(String(plume.doc(double)))
 /// Output
 macro double(x)
     double the number
@@ -140,7 +140,7 @@ macro double(x)
 macro double(x)
     $(2*x)
 end
-$(plume.doc(double))
+$(String(plume.doc(double)))
 /// Output
 macro double(x)
     double the number
@@ -155,7 +155,7 @@ macro double(x)
 macro double(x)
     $(2*x)
 end
-$(plume.doc(double))
+$(String(plume.doc(double)))
 /// Output
 macro double(x)
     double the number
@@ -167,7 +167,7 @@ macro double(x)
 let t = do
     - 1
 end
-$(plume.doc(t))
+$(String(plume.doc(t)))
 /// Output
 table t
     This is a table
@@ -176,7 +176,7 @@ table t
 /// Test File
 // This is a table
 let lib = $import(tests/plume/toimport/filedoc)
-$plume.doc($lib)
+$String($plume.doc($lib))
 /// Output
 table tests/plume/toimport/filedoc.plume
     This file do somethings
@@ -184,7 +184,7 @@ table tests/plume/toimport/filedoc.plume
 
 /// Test std
 // This is a table
-$plume.doc($String.lines)
+$String($plume.doc($String.lines))
 /// Output
 luaMacro lines
     `lines(s)`: Splits the string into a slice of individual lines.
