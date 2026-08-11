@@ -19,6 +19,18 @@ macro wing
     a macro that fly
 /// End
 
+/// Test closure
+let x
+macro wing()
+	$x
+end
+
+$plume.doc($wing)
+/// Output
+macro wing
+/// End
+
+
 /// Test macro as value
 // a macro that fly
 let wing = macro ()

@@ -1352,6 +1352,7 @@ return function(plume)
 	-- but copied at runtime creation
 	
 	function plume.makedoc(m)
+		m = m.macro or m
 		return m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
 	end
 	
