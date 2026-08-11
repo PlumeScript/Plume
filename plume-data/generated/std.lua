@@ -184,7 +184,11 @@ return function(plume)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 		if not __s then return false, __e end
 		------------
-		return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+		local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+		if result == "closure" then
+			result = "macro"
+		end
+		return true, result
 	end)
 	
 	plume.std.seq = plume.obj.luaMacro("seq", function (args, vm, currentFile)

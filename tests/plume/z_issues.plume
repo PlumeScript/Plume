@@ -1893,3 +1893,14 @@ a$wing
 /// Output
 anib
 /// End
+
+/// Test #1225
+let x
+macro wing()
+    $x
+end
+
+$type($wing)
+/// Output
+macro
+/// End
