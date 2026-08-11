@@ -80,21 +80,21 @@ return function(vm)
 	    end
 
 	    -- Macro
-	    if t == "macro"  then
+	    if t == "macro" or t=="closure" then
 	        if self_param then
 				self:_PUSH_SELF(self_param)
 	        end
 
-			self:_CALL_MACRO(tocall, arg1==1, arg2==1)
-			self:_STACK_PUSH(self.closureStack, {})
+			self:_CALL_MACRO((tocall.macro or tocall), arg1==1, arg2==1)
+			self:_STACK_PUSH(self.closureStack, (tocall.upvalues or {}))
 
-	    elseif t == "closure" then
-	        if self_param then
-				self:_PUSH_SELF(self_param)
-	        end
+	    -- elseif t == "closure" then
+	    --     if self_param then
+		-- 		self:_PUSH_SELF(self_param)
+	    --     end
 
-			self:_CALL_MACRO(tocall.macro, arg1==1, arg2==1)
-			self:_STACK_PUSH(self.closureStack, tocall.upvalues)
+		-- 	self:_CALL_MACRO(tocall.macro, arg1==1, arg2==1)
+		-- 	self:_STACK_PUSH(self.closureStack, tocall.upvalues)
 
 	    -- Std functions defined in lua or user lua functions
 	    elseif t == "luaMacro" then

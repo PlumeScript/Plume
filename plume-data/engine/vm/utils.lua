@@ -10,7 +10,7 @@ return function(vm)
 	--- @return string Type of x
 	--! inline
 	function vm:_GET_TYPE(x)
-	    return type(x) == "table" and (x == self.plume.obj.empty and "empty" or x.type) or (type(x) == "cdata" and x.type) or type(x)
+	    return type(x) == "table" and (x == self.plume.obj.empty and "empty" or (x.type == "closure" and "macro") or x.type) or (type(x) == "cdata" and x.type) or type(x)
 	end
 
 	--! inline

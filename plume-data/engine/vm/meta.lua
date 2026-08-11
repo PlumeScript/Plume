@@ -44,7 +44,7 @@ return function(vm)
 		if expectedParamCount then
 			local t = self:_GET_TYPE(obj)
 			local metaValue = obj
-			if t == "closure" then
+			if t == "macro" and obj.macro then
 				metaValue = obj.macro
 				t = "macro"
 			end
