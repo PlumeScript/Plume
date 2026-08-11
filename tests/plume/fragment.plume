@@ -286,3 +286,42 @@ $arr[1]
 /// Output
 2
 /// End
+
+/// Test fragment given to context init
+let t = do
+    meta fragment: macro()
+        x
+    end
+end
+$repr($Context($t))
+/// Output
+Context<x>
+/// End
+
+/// Test fragment given to context push
+let a = $Context()
+let x = 1
+let t = do
+    meta fragment: macro()
+        $x
+    end
+end
+with ($a: $t)
+    set x  += 1
+    $a()
+end
+/// Output
+1
+/// End
+
+/// Test fragment as key
+let key = do
+    meta fragment: macro()
+        key
+    end
+end
+let t = (key: wing)
+$t[key]
+/// Output
+wing
+/// End

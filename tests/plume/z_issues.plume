@@ -731,7 +731,7 @@ end
 run $quill()
 
 /// Output
-(wing: macro<???>, quill: macro<???>)
+(wing: macro<wing>, quill: macro<quill>)
 /// End
 
 /// Test #597-1
@@ -1545,7 +1545,7 @@ for i in seq(6)
     end
 end
 /// Output
-(wing: macro<???>, H1: macro<???>, H2: macro<???>, H3: macro<???>, H4: macro<???>, H5: macro<???>, H6: macro<???>)
+(wing: macro<wing>, H1: macro<???>, H2: macro<???>, H3: macro<???>, H4: macro<???>, H5: macro<???>, H6: macro<???>)
 /// End
 
 /// Test #1022-2
@@ -1557,7 +1557,7 @@ nib: macro
    $wing()$wing()
 end
 /// Output
-(wing: macro<???>, nib: macro<nib>)
+(wing: macro<wing>, nib: macro<nib>)
 /// End
 
 /// Test #1057
@@ -1780,19 +1780,6 @@ end
 /// Output
 /// End
 
-/// Test #1178
-let t = do
-    // Some infos
-    wing: macro()
-    end
-end
-
-$plume.doc($t.wing)
-/// Output
-macro wing
-    Some infos
-/// End
-
 /// Test #1179
 $String.replace(ab, a,)
 /// Output
@@ -1828,7 +1815,7 @@ end
 
 run $nib()
 /// Output
-(nib: macro<???>)
+(nib: macro<nib>)
 /// End
 
 /// Test #1209
@@ -1846,4 +1833,90 @@ end
 $t
 /// Output
 ((2, 1), (10, 2))
+/// End
+
+/// Test #1211
+let key = 1
+let a = $Context(1$key)
+/// Output
+/// End
+
+/// Test #1216
+let wing = do
+    meta tostring: macro()
+        a$(1+1)
+    end
+end
+
+a$wing
+/// Output
+aa2
+/// End
+
+/// Test #1217-1
+let wing = do
+    meta tostring: macro()
+        meta fragment: macro()
+            nib
+        end
+    end
+end
+
+a$wing
+/// Output
+anib
+/// End
+
+/// Test #1217-2
+let wing = do
+    meta tostring: macro()
+        meta tostring: macro()
+            nib
+        end
+    end
+end
+
+a$wing
+/// Output
+anib
+/// End
+
+/// Test #1223
+use #future(all)
+
+a $ 1+1
+/// Output
+a 2
+/// End
+
+/// Test #1225
+let x
+macro wing()
+    $x
+end
+
+$type($wing)
+/// Output
+macro
+/// End
+
+/// Test #1231
+let x
+macro wing()
+    $x
+end
+
+a$wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot concat a 'macro' value.                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │end                                                                      │
+│    6 │a$wing                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

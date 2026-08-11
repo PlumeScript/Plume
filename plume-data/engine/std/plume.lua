@@ -9,7 +9,32 @@ Licensed under the MIT License — see LICENSE for details.
 -- but copied at runtime creation
 
 function plume.makedoc(m)
-	return m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
+	m = m.macro or m
+
+	local mtype = m.type
+	local mname = (m.debugMacroName or m.name or "???")
+
+	local signatureRef = m.signatureRef
+	local msignature = ""
+	if signatureRef and signatureRef.bpos then
+		msignature = signatureRef.code:sub(signatureRef.bpos, signatureRef.epos)
+	end
+
+	local mdoc  = (m.doc or ""):gsub('\n', '\n    ')
+
+	local renderedDoc = string.format("%s %s%s\n    %s", mtype, mname, msignature, mdoc)
+
+	local result = plume.obj.quickTable {
+		type      = mtype,
+		name      = mname,
+		signature = msignature,
+		doc       = mdoc
+	}
+	result:setMetaItem("tostring", plume.obj.luaMacro("tostring", function()
+		return true, renderedDoc
+	end))
+
+	return result
 end
 
 plume.std.plume = plume.obj.quickTable {

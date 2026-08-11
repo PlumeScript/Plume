@@ -26,13 +26,15 @@ plume.std.help = plume.obj.luaMacro("help", function (args)
 end)
 
 -- io
-plume.std.write = plume.obj.luaMacro("write", function(args)
+plume.std.write = plume.obj.luaMacro("write", function(args, vm, currentFile)
 	--!signature string filename, string content, ?append
+	filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 	return plume.stdio.write(filename, content, append)
 end)
 
-plume.std.read = plume.obj.luaMacro("read", function(args)
+plume.std.read = plume.obj.luaMacro("read", function(args, vm, currentFile)
 	--!signature string filename
+	filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 	return plume.stdio.read(filename)
 end)
 
@@ -65,9 +67,15 @@ plume.std.len = plume.obj.luaMacro("len", function(args)
 	return true, type(x) == "table" and #x.table or #x
 end)
 
-plume.std.type = plume.obj.luaMacro("type", function(args)
+plume.std.type = plume.obj.luaMacro("type", function(args, vm)
 	--!signature any x
-	return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+	x = plume.callForceFragment(vm, x)
+
+	local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+	if result == "closure" then
+		result = "macro"
+	end
+	return true, result
 end)
 
 plume.std.seq = plume.obj.luaMacro("seq", function(args, vm)
@@ -210,8 +218,11 @@ end))
 
 plume.std.attempt = plume.obj.table(0, 0)
 
-plume.std.Context = plume.obj.luaMacro("Context", function(args)
+plume.std.Context = plume.obj.luaMacro("Context", function(args, vm)
 	--!signature [any x]
+	if x then
+		x = plume.callForceFragment(vm, x)
+	end
 	return true, plume.obj.context(x)
 end)
 

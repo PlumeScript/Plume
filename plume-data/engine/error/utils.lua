@@ -22,7 +22,7 @@ return function(plume)
 			end
 		end
 
-		local related = plume.error.suggestIdentifiers(name, variablesNames, 2, 3)
+		local related = plume.error.suggestIdentifiers(name, variablesNames, 3)
 
 		if #related == 0 then
 			return ""
@@ -47,7 +47,7 @@ return function(plume)
 				table.insert(keys, rawKey)
 			end
 		end
-		local related = plume.error.suggestIdentifiers(key, keys, 2, 3)
+		local related = plume.error.suggestIdentifiers(key, keys, 3)
 
 		if #related == 0 then
 			return ""

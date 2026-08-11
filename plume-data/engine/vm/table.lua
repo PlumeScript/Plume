@@ -127,7 +127,7 @@ return function(vm)
 	                    self:_CONCAT_CALL_REC()
 						self:TABLE_INDEX_CHECK_IS_NIL()
 	                else
-	                    self:_ERROR(self.plume.error.unregisteredKey(t, key))
+	                    self:_ERROR(self.plume.error.unregisteredKey(t, self.plume.repr(key)))
 	                end
 	            end
 	        end

@@ -64,6 +64,9 @@ OPTIONS
 		Enable a set of optional warnings (for the executed file and any imported file).
 		Same as typing `use #devWarnings(scope: global)` in file start.
 
+	-d, --devmode
+		Set flag runDevFlag to true 
+
 	-h, --help
 		Display this help message and terminate immediately.
 
@@ -93,7 +96,8 @@ local shortcut = {
 	["-s"]  = "--string",
 	["-p"]  = "--params",
 	["-w"]  = "--devWarnings",
-	["-ww"] = "--devWarnings-global"
+	["-ww"] = "--devWarnings-global",
+	["-d"]  = "--dev",
 }
 
 local function checkTerminalCapabilities()
@@ -234,6 +238,8 @@ local function parseArgs()
 		elseif content == "--devWarnings-global" then
 			args.devWarnings = true
 			args.devWarningsGlobal = true
+		elseif content == "--dev" then
+			args.devmode = true
 		else
 			print("Unknown option '" .. content .. "'. Run 'plume [--help, -h]' for full documentation.")
 			return
@@ -283,6 +289,8 @@ local function main()
 	if args.showVersion then
 		print("Plume🪶" .. plume.VERSION)
 	elseif args.inputFilename or args.inputString then
+		plume.runDevFlag = args.devmode
+
 		local success, result
 
 		if args.inputFilename then
@@ -305,6 +313,7 @@ local function main()
 					end
 					file:write(result)
 				file:close()
+				print("Execution completed without errors.")
 			else
 				print(result)
 			end

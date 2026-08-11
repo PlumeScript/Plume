@@ -86,6 +86,7 @@ return function(plume)
 		if __s and content then __s, __e, content = plume.stdCheckType(vm, content, "string", "2", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 		return plume.stdio.write(filename, content, append)
 	end)
 	
@@ -98,6 +99,7 @@ return function(plume)
 		if __s and filename then __s, __e, filename = plume.stdCheckType(vm, filename, "string", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		filename = plume.resolveRelativePath(filename, vm:_GET_CURRENT_FILE().name)
 		return plume.stdio.read(filename)
 	end)
 	
@@ -182,7 +184,13 @@ return function(plume)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 		if not __s then return false, __e end
 		------------
-		return true, type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+		x = plume.callForceFragment(vm, x)
+	
+		local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
+		if result == "closure" then
+			result = "macro"
+		end
+		return true, result
 	end)
 	
 	plume.std.seq = plume.obj.luaMacro("seq", function (args, vm, currentFile)
@@ -403,6 +411,9 @@ return function(plume)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		if x then
+			x = plume.callForceFragment(vm, x)
+		end
 		return true, plume.obj.context(x)
 	end)
 	
@@ -1333,6 +1344,9 @@ return function(plume)
 		if __s and path then __s, __e, path = plume.stdCheckType(vm, path, "string", "1", __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		if path then
+			path = plume.resolveRelativePath(path, vm:_GET_CURRENT_FILE().name)
+		end
 		return makePath(path)
 	end)
 	
@@ -1340,7 +1354,32 @@ return function(plume)
 	-- but copied at runtime creation
 	
 	function plume.makedoc(m)
-		return m.type .. " " .. (m.debugMacroName or m.name or "???") .. "\n    " .. (m.doc or ""):gsub('\n', '\n    ')
+		m = m.macro or m
+	
+		local mtype = m.type
+		local mname = (m.debugMacroName or m.name or "???")
+	
+		local signatureRef = m.signatureRef
+		local msignature = ""
+		if signatureRef and signatureRef.bpos then
+			msignature = signatureRef.code:sub(signatureRef.bpos, signatureRef.epos)
+		end
+	
+		local mdoc  = (m.doc or ""):gsub('\n', '\n    ')
+	
+		local renderedDoc = string.format("%s %s%s\n    %s", mtype, mname, msignature, mdoc)
+	
+		local result = plume.obj.quickTable {
+			type      = mtype,
+			name      = mname,
+			signature = msignature,
+			doc       = mdoc
+		}
+		result:setMetaItem("tostring", plume.obj.luaMacro("tostring", function()
+			return true, renderedDoc
+		end))
+	
+		return result
 	end
 	
 	plume.std.plume = plume.obj.quickTable {

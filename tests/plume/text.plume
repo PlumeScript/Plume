@@ -165,6 +165,26 @@ Raw:
     end
 /// End
 
+/// Test raw 5
+raw[[
+raw[
+]end
+]]end
+/// Output
+raw[
+]end
+/// End
+
+/// Test raw 6
+raw[[[
+raw[[
+]]end
+]]]end
+/// Output
+raw[[
+]]end
+/// End
+
 /// Test oneline comment
 // A comment
 /// Output

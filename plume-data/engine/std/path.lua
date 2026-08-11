@@ -279,7 +279,10 @@ local function makePath(path)
 end
 
 table.insert(plume.std.os.keys, "Path")
-plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args)
+plume.std.os.table.Path = plume.obj.luaMacro("Path", function (args, vm, currentFile)
 	--!signature [string path]
+	if path then
+		path = plume.resolveRelativePath(path, vm:_GET_CURRENT_FILE().name)
+	end
 	return makePath(path)
 end)

@@ -65,11 +65,11 @@ return function(vm)
 	                break
 	            else
 	            	--! to-remove-begin
-	            	if type(item) ~= "string" then
+	            	if type(item) ~= "string" and type(item) ~= "number" then
 	            		error(string.format("[VM] Wrong type '%s' inside concat.", item))
 	            	end
 	            	--! to-remove-end
-	                length = length + #item
+	                length = length + #tostring(item)
 	            end
 	        end
 	        directConcat = directConcat and length <= CONCAT_LENGTH_LIMIT
@@ -277,80 +277,95 @@ return function(vm)
 	--- to convert it, else throw an error.
 	--! inline
 	function vm:CHECK_IS_TEXT(arg1, arg2)
-	    local value = self:_STACK_GET(self.mainStack)
-	    local t     = self:_GET_TYPE(value)
+	    while not self.err do
+	        local value = self:_STACK_GET(self.mainStack)
+	        local t     = self:_GET_TYPE(value)
 
-	    if value == self.plume.obj.empty then
-	        self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), "")
-	    elseif t == "number" then
-	        local plumeTable =self.runtime.plume.table
-	        local locale = plumeTable.locale:get()
-	        local file = self:_GET_CURRENT_FILE()
+	        if value == self.plume.obj.empty then
+	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), "")
+	            break
+	        elseif t == "number" then
+	            local plumeTable = self.runtime.plume.table
+	            local locale = plumeTable.locale:get()
+	            local file = self:_GET_CURRENT_FILE()
 
-	        if locale ~= self.plume.obj.empty and locale ~= "none" and not file.flagRawNumbers then
-	            local success, result = self.plume.formatNumber(
-	                value,
-	                plumeTable.localeNumberFormat:get(),
-	                locale,
-	                plumeTable.localeThousandsSeparator:get(),
-	                plumeTable.localeDecimalSeparator:get(),
-	                plumeTable.localeThousandthsSeparator:get()
-	            )
+	            if locale ~= self.plume.obj.empty and locale ~= "none" and not file.flagRawNumbers then
+	                local success, result = self.plume.formatNumber(
+	                    value,
+	                    plumeTable.localeNumberFormat:get(),
+	                    locale,
+	                    plumeTable.localeThousandsSeparator:get(),
+	                    plumeTable.localeDecimalSeparator:get(),
+	                    plumeTable.localeThousandthsSeparator:get()
+	                )
 
-	            if success then
-	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), result)
+	                if success then
+	                    self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), result)
+	                else
+	                    self:_ERROR(result)
+	                end
 	            else
-	                self:_ERROR(result)
+	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	            end
+	            break
+	        elseif t == "string" or t == "fragment" then
+	            break
 	        else
-	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
-	        end
-	    elseif t ~= "string" and t ~= "fragment" then
-	        local tostringMeta, fragmentValue
-	        if t == "table" then
-	        	tostringMeta = value:getMetaItem("tostring")
-	        	if not tostringMeta then
-		        	fragmentValue = self:_FORCE_FRAGMENT_META(value)
-		        end
-	        end
-
-	        if tostringMeta then
-	        	local tostringMetaType = self:_GET_TYPE(tostringMeta)
-	        	local stringValue
-
-	        	self:_STACK_POP(self.mainStack)
-	        	if self:_IS_CALLABLE(tostringMeta) then
-		            self:BEGIN_ACC(0, 0)
-		            self:_PUSH_SELF(value)
-		            self:_STACK_PUSH(self.mainStack, tostringMeta)
-		            self:_CONCAT_CALL_REC()
-		        else
-		        	self:_STACK_PUSH(self.mainStack, tostringMeta)
-	           	end
-
-	           	local stringValue = self:_STACK_GET(self.mainStack)
-	            local stringValueType = self:_GET_TYPE(stringValue)
-	            
-	            if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" then
-	            	--! to-remove-begin
-				    if type(tostringMeta) ~= "table" then
-				        error(string.format("[VM] tostringMeta is %s instead of table.", type(tostringMeta)))
-				    end
-				    if not tostringMeta.offset then
-				        error("[VM] tostringMeta hasn't offset field.")
-				    end
-				    --! to-remove-end
-					self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
-	            	self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))
+	            local tostringMeta, fragmentValue
+	            if t == "table" then
+	                tostringMeta = value:getMetaItem("tostring")
+	                if not tostringMeta then
+	                    fragmentValue = self:_FORCE_FRAGMENT_META(value)
+	                end
 	            end
 
-	        elseif fragmentValue then
-	        	self:_STACK_POP(self.mainStack)
-	        	self:_STACK_PUSH(self.mainStack, fragmentValue)
-	        elseif t == "boolean" then
-	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
-	        else
-	            self:_ERROR(self.plume.error.cannotConcatValue(t))
+	            if tostringMeta then
+	                local tostringMetaType = self:_GET_TYPE(tostringMeta)
+	                self:_STACK_POP(self.mainStack)
+	                if self:_IS_CALLABLE(tostringMeta) then
+	                    self:BEGIN_ACC(0, 0)
+	                    self:_PUSH_SELF(value)
+	                    self:_STACK_PUSH(self.mainStack, tostringMeta)
+	                    self:_CONCAT_CALL_REC()
+	                else
+	                    self:_STACK_PUSH(self.mainStack, tostringMeta)
+	                end
+
+	                -- Force fragments returned by tostring
+	                local stringValue = self:_STACK_GET(self.mainStack)
+	                local stringValueType = self:_GET_TYPE(stringValue)
+	                while stringValueType == "fragment" and not self.err do
+	                    self:FORCE_FRAGMENT()
+	                    stringValue = self:_STACK_GET(self.mainStack)
+	                    stringValueType = self:_GET_TYPE(stringValue)
+	                end
+
+	                if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number"
+	                   and stringValueType ~= "fragment"
+	                   and not (stringValueType == "table" and (stringValue:getMetaItem("tostring") or stringValue:getMetaItem("fragment"))) then
+	                    --! to-remove-begin
+	                    if type(tostringMeta) ~= "table" then
+	                        error(string.format("[VM] tostringMeta is %s instead of table.", type(tostringMeta)))
+	                    end
+	                    if not tostringMeta.offset then
+	                        error("[VM] tostringMeta hasn't offset field.")
+	                    end
+	                    --! to-remove-end
+	                    self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
+	                    self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))
+	                end
+	                -- loop continues to re-process the result
+	            elseif fragmentValue then
+	                self:_STACK_POP(self.mainStack)
+	                self:_STACK_PUSH(self.mainStack, fragmentValue)
+	                -- loop continues to re-process the result
+	            elseif t == "boolean" then
+	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
+	                break
+	            else
+	                self:_ERROR(self.plume.error.cannotConcatValue(t))
+	                break
+	            end
 	        end
 	    end
 	end

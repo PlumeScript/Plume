@@ -158,6 +158,18 @@ return function (plume)
 		return normalizePathParts(cwd .. "/" .. path)
 	end
 
+	-- Resolve a path starting with "./" or "../" relative to the current file
+	-- (the file being executed/imported), mirroring the import resolution.
+	-- Other paths are returned unchanged (kept relative to the cwd).
+	function plume.resolveRelativePath(path, currentFilename)
+		path = path:gsub('\\', '/')
+		if path:match('^%.+/') or path == "." then
+			local dir = formatDirFromFilename(currentFilename)
+			return normalizePathParts(dir .. path)
+		end
+		return path
+	end
+
 	local pathTemplates = {
 		"%base%%path%.%ext%",
 		"%base%%path%/init.%ext%",

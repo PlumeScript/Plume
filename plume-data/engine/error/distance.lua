@@ -131,11 +131,19 @@ return function(plume)
 		return math.min(dChar, dSnake, dCamel)
 	end
 
-	function plume.error.suggestIdentifiers(input, candidates, threshold, maxResult)
+	function plume.error.suggestIdentifiers(input, candidates, maxResult)
 		local matches = {}
 		  
 		for _, candidate in ipairs(candidates) do
 			local dist = semanticDistance(input, candidate)
+			local threshold
+			if #input <= 4 then
+				threshold = 1
+			elseif #input <= 8 then
+				threshold = 2
+			else
+				threshold = 3
+			end
 			if dist <= threshold then
 				table.insert(matches, {
 					text = candidate,

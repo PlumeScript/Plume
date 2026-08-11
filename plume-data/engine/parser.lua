@@ -497,20 +497,38 @@ return function (plume)
 		local hashitem = Ct("HASH_ITEM",  Ct("META", K"meta"*s)^-1 * (name + Ct("DYNAMIC_KEY", eval)) * P":" * (os * lbodynlb + #lt))
 						+ Ct("HASH_ITEM", Ct("REF", K"ref"*s) * ref * P":" *  os * lbodynlb)
 						+ Ct("EMPTY_REF", Ct("REF", K"ref"*s) * ref) * (os * P"," * os * Ct("EMPTY_REF", ref))^0
-		local expand   = Ct("EXPAND", P"..." * evalBase) 
+		local expand   = Ct("EXPAND", P"..." * (block + evalBase)) 
 
 		local _do = Ct("DO", os * K"do" * body * _end)
 
 		local inlinetable = Ct("INLINE_TABLE", os * P"(" * (arg * (P"," * os * arg)^1 + namedArg) * P")")
 
-		-- Deepness 0, 1 and 2 hardcoded.
-		-- Should handle more case (#401)
-		local raw = Ct("RAW", os * K"raw[[" *  C("TEXT", (P"\n"+-1) * (P(1)-P"]]end")^0)
-						* (P"]]end" + E(plume.error.missingEnd, -P(1))))
-				  + Ct("RAW", os * K"raw["  *  C("TEXT", (P"\n"+-1) * (P(1)-P"]end")^0)
-				  		* (P"]end"  + E(plume.error.missingEnd, -P(1))))
-				  + Ct("RAW", os * K"raw"   *  C("TEXT", (P"\n"+-1) * (P(1)-P"end")^0)
-				  		* (P"end"   + E(plume.error.missingEnd, -P(1))))
+		-- General raw block: `raw` + n brackets + content + n brackets + `end`
+		local raw = Ct("RAW", os * Cmt(K"raw" * lpeg.C(P"["^0), function(subject, pos, brackets)
+			local n = #brackets
+			local closing = P"]"^n * P"end"
+			local content = (P"\n" + -1) * (P(1) - closing)^0
+			local contentEnd = lpeg.match(content, subject, pos)
+			if not contentEnd then
+				return false
+			end
+			local p = lpeg.match(closing, subject, contentEnd)
+			if p then
+				return p, {
+					name = "TEXT",
+					bpos = pos,
+					epos = contentEnd - 1,
+					content = subject:sub(pos, contentEnd - 1)
+				}
+			end
+			return #subject + 1, {
+				name = "Error",
+				bpos = #subject + 1,
+				epos = #subject,
+				content = "",
+				error = plume.error.missingEnd
+			}
+		end))
 
 		local with = Ct('WITH',
 		K"with" * (os * (
@@ -598,13 +616,13 @@ return function (plume)
 
 			commandStd =  _if + _while + _for + _break + continue + macro
 						  + _do + block + let + set + leave + _return + inlinetable
-						  + expand + use + raw + with + lineeval,
+						  + expand + use + raw + with,
 			-- Only at line start
 			commandLB = listitem + hashitem,
 
 			command = V"commandStd" + V"commandLB",
 
-			text   = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
+			text   = (escaped + lineeval + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
 			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
 			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
 			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
