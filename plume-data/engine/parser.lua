@@ -616,13 +616,13 @@ return function (plume)
 
 			commandStd =  _if + _while + _for + _break + continue + macro
 						  + _do + block + let + set + leave + _return + inlinetable
-						  + expand + use + raw + with + lineeval,
+						  + expand + use + raw + with,
 			-- Only at line start
 			commandLB = listitem + hashitem,
 
 			command = V"commandStd" + V"commandLB",
 
-			text   = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
+			text   = (escaped + lineeval + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
 			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
 			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
 			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
