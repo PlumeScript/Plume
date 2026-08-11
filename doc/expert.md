@@ -174,7 +174,9 @@ The `fragment` metafield does **not** fire when the table is consumed as structu
 *   table expansion (`...t`)
 *   a macro argument whose declared type is `table` or `any`
 *   a table value (`- $t` inside a table)
-*   introspection (`$type($t)`, `$repr($t)`) — these report the table as it currently is, without rendering it
+*   `$repr($t)` — reports the table as it currently is, without rendering it
+
+`$type($t)` is the exception: it forces the fragment on the object passed as parameter, so it reports the object's real value. A library that must tell a `table` from a `string` can rely on `$type` — a fragment passed as a `table`/`any` argument stays a fragment, but `$type` resolves it to its real type, with no ambiguity.
 
 To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
 
