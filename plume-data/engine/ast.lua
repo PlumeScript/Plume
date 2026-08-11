@@ -261,13 +261,25 @@ return function (plume)
 
 	function plume.ast.labelMacro(ast)
 		plume.ast.browse(ast, function(node)
-			if node.name == "HASH_ITEM" and node.children[1].name == "NAME"  then
-				if node.children[2] then -- HAST_ITEM value should be empty
-					local value = node.children[2]
+			local parent = node.name == "HASH_ITEM"
+			local targetName, targetMacro
+
+			if parent then
+				targetName  = node.children[1]
+				targetMacro = node.children[2]
+				if targetName.name == "REF" then
+					targetName  = node.children[2]
+					targetMacro = node.children[3]
+				end
+			end
+
+			if targetName and targetName.name == "NAME"  then
+				if targetMacro then -- HAST_ITEM value should be empty
+					local value = targetMacro
 					if value.name == "BODY"
 					and #value.children == 1
 					and (value.children[1].name == "MACRO" or value.children[1].name == "ANONYMOUS_MACRO") then
-						value.children[1].label = node.children[1].content
+						value.children[1].label = targetName.content
 					end
 				end
 			end

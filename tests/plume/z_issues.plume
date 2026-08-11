@@ -731,7 +731,7 @@ end
 run $quill()
 
 /// Output
-(wing: macro<???>, quill: macro<???>)
+(wing: macro<wing>, quill: macro<quill>)
 /// End
 
 /// Test #597-1
@@ -1545,7 +1545,7 @@ for i in seq(6)
     end
 end
 /// Output
-(wing: macro<???>, H1: macro<???>, H2: macro<???>, H3: macro<???>, H4: macro<???>, H5: macro<???>, H6: macro<???>)
+(wing: macro<wing>, H1: macro<???>, H2: macro<???>, H3: macro<???>, H4: macro<???>, H5: macro<???>, H6: macro<???>)
 /// End
 
 /// Test #1022-2
@@ -1557,7 +1557,7 @@ nib: macro
    $wing()$wing()
 end
 /// Output
-(wing: macro<???>, nib: macro<nib>)
+(wing: macro<wing>, nib: macro<nib>)
 /// End
 
 /// Test #1057
@@ -1828,7 +1828,7 @@ end
 
 run $nib()
 /// Output
-(nib: macro<???>)
+(nib: macro<nib>)
 /// End
 
 /// Test #1209
