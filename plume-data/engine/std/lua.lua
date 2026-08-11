@@ -67,8 +67,10 @@ plume.std.len = plume.obj.luaMacro("len", function(args)
 	return true, type(x) == "table" and #x.table or #x
 end)
 
-plume.std.type = plume.obj.luaMacro("type", function(args)
+plume.std.type = plume.obj.luaMacro("type", function(args, vm)
 	--!signature any x
+	x = plume.callForceFragment(vm, x)
+
 	local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
 	if result == "closure" then
 		result = "macro"

@@ -184,6 +184,8 @@ return function(plume)
 		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 		if not __s then return false, __e end
 		------------
+		x = plume.callForceFragment(vm, x)
+	
 		local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
 		if result == "closure" then
 			result = "macro"
