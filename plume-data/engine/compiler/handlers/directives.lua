@@ -113,6 +113,11 @@ return function (plume, context, nodeHandlerTable)
 		return result
 	end
 
+	local oldFlags = {
+		Raven={"raven", "newEscape", "importCache", "return"}
+	}
+	local _oldFlags = {}
+	
 	context.directivesHandler = {
 		warning = {
 			checkArgs = {
@@ -194,6 +199,17 @@ return function (plume, context, nodeHandlerTable)
 				all                  = {true}
 			},
 			method = function(node, args)
+				for flag, _ in pairs(args) do
+					if _oldFlags[flag] then
+						plume.warning.throwWarning(
+							string.format(
+								"`%s` is a legacy flag and has had no effect since version `%s`.",
+								flag, _oldFlags[flag]
+							),
+							"Consider removing it.", node, {988}
+						)
+					end
+				end
 
 				if args.newLeave or args.raven or args.all then
 					context.futureFlagNewLeave = true
@@ -209,6 +225,13 @@ return function (plume, context, nodeHandlerTable)
 			end
 		}
 	}
+
+	for edition, flags in pairs(oldFlags) do
+		for _, flag in ipairs(flags) do
+			_oldFlags[flag] = edition
+			context.directivesHandler.future.checkArgs[flag] = {true}
+		end
+	end
 
 	for _, handler in pairs(context.directivesHandler) do
 		if handler.checkArgs then
