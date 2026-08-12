@@ -152,7 +152,7 @@ The `import` statement follows a specific lookup order to locate files:
 #### Module Lifecycle and Performance
 Plume balances performance and safety through its loading strategy:
 1.  **Parsing/Compilation:** Occurs only once per file path. The resulting bytecode is cached.
-2.  **Execution (Chunking):** Occurs every time `import` or `use` is invoked. A new environment is initialized for each call.
+2.  **Execution (Caching):** The result of `import` / `use` is cached per file + parameters combination, so re-importing the same file with the same parameters reuses the cached result instead of re-executing it.
 
 ### System and I/O
 

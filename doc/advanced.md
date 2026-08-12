@@ -323,11 +323,9 @@ end
 
 ## Returning Values: `return`
 
-A macro normally returns whatever its body accumulates. The `return` keyword — enabled with `use #future(return)` — makes a macro return a single value and stop immediately:
+A macro normally returns whatever its body accumulates. The `return` keyword makes a macro return a single value and stop immediately:
 
 ```plume
-use #future(return)
-
 macro wing(x)
     if x>5
         return yes
@@ -370,7 +368,7 @@ $geometry.double(21)
 *   **Dynamic paths:** the path is an ordinary expression, so `$import(./themes/$themeName)` works.
 *   **Resolution:** a path starting with `./` or `../` is relative to the current file. Otherwise Plume searches the root file's directory, then each directory of `plume.path` (seeded from the `PLUME_PATH` environment variable, semicolon-separated; it is a regular table you can edit). For each directory, Plume tries `<path>.plume`, `<path>/init.plume`, and the `.🪶` extension variants.
 *   **Parameters:** extra arguments feed the target file's `let param` declarations — see *File Parameters*.
-*   **Lifecycle:** a file is compiled once per path, but **executed on every call**, in a fresh environment. (Result caching per file + parameters arrives with the next edition; it can be enabled now with `use #future(importCache)` — see [expert.md](expert.md).)
+*   **Lifecycle:** a file is compiled once per path, and its result is **cached** per file + parameters combination — re-importing the same file with the same parameters reuses the cached result instead of re-executing it. Passing a mutable object as a parameter can lead to unexpected behavior and triggers a dedicated warning.
 
 Since the result is an ordinary value, it can be destructured on the spot:
 
@@ -445,7 +443,8 @@ Hello, wing!
 *   A `param` variable is implicitly `const`. Without a caller-provided value, it takes its default — or `empty` when no default is declared.
 *   `let param ...leftover` collects every otherwise-unmatched named parameter into a table.
 *   From the command line: `plume -i main.plume --params --name=wing --verbose` — named values as `--key=value`, flags as `--flag`, positionals as bare words.
-*   Two related opt-in behaviors — rejecting unknown parameters, and binding parameters positionally — are available through `use #future(...)`; see [expert.md](expert.md).
+*   Passing an undeclared parameter raises an error listing the valid ones.
+*   `let param x` binds positional arguments passed to `import` / `use`, in declaration order.
 
 ## Warnings and Development Directives
 
@@ -472,6 +471,5 @@ Beyond the basic `-i`, `-o`, `-s`, `-h` and `-v` (see [core.md](core.md)):
 *   `--params ...` — file parameters (see *File Parameters*).
 *   `--color auto|always|never` — colored error output.
 *   `--error-style auto|fancy|plain` — rich or plain-text error layout.
-*   `--future-string` — enables the next edition's output formatting right away.
 
 Next: [expert.md](expert.md)

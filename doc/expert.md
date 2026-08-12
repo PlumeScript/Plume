@@ -346,19 +346,14 @@ use #context(locale: none)
 `use #future(name)` enables today a behavior that will become the default in a future edition:
 
 ```plume
-use #future(newLeave)
-use #future(all)        // every feature of the next edition
+use #future(featureName)
 use #future(raven)      // every feature of a named edition
+use #future(all)        // every futur feature
 ```
 
 Currently available features:
 
-*   `newLeave` — `leave` exits the **current accumulation block** instead of the whole macro or file.
-*   `lineEval` — `$ ` (a dollar followed by a space) evaluates the rest of the line: `let x = $ 1 + 1`. A non-escaped `$` then becomes an error.
-*   `newEscape` — restricts text escape sequences to a fixed set (`\n`, `\t`, `\r`, `\s`, `\$`, `\(`, `\:`, `\,`, `\\`, `\/`, `\0`) and adds the null escape `\0` (empty text that prevents keyword recognition). Any other `\X` becomes an error instead of yielding the literal letter.
-*   `importCache` — `import` and `use` results are cached per file + parameters combination instead of being re-executed. Passing a mutable object as parameter triggers a dedicated warning.
-*   `unknownParamError` — enabled **in a module**, it turns passing an undeclared file parameter into an error listing the valid ones.
-*   `positionnalFileParam` — `let param x` binds positional arguments passed to `import` / `use`, in declaration order.
+* _(none)_
 
 ## Dynamic Code: `eval` and `lua.eval`
 

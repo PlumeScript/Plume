@@ -59,10 +59,16 @@ As a consequence, **consecutive text lines concatenate with no separator**. To i
 | `\t`     | Tab              |
 | `\s`     | Space            |
 | `\r`     | Carriage return  |
+| `\$`     | Literal `$`      |
+| `\(`     | Literal `(`      |
+| `\)`     | Literal `)`      |
+| `\:`     | Literal `:`      |
+| `\,`     | Literal `,`      |
+| `\\`     | Literal `\`      |
+| `\/`     | Literal `/`      |
+| `\0`     | Empty text (prevents keyword recognition) |
 
-A backslash before any other character makes it literal. This is how you write characters that would otherwise start a language construct, such as `\$`, `\:`, `\,` or `\\` itself. Escaping an ordinary letter simply yields that letter (`\F` is `F`).
-
-A future edition will restrict escapes to a fixed set and add a null escape `\0` (empty text that prevents keyword recognition); that behavior is already available via `use #future(newEscape)` — see [expert.md](expert.md).
+Escapes are restricted to this fixed set: any other `\X` is an error — escaping an ordinary letter (`\a`) is no longer allowed. `\0` produces empty text and prevents keyword recognition: write `\0set` instead of `\set`.
 
 ```plume
 wing
@@ -138,7 +144,7 @@ wing + nib = 7
 11
 ```
 
-If you need a literal `$` character, escape it: `\$`. A bare `$` that starts no valid evaluation is currently treated as text, but this tolerance is scheduled to become an error in a future edition — always escape intended literal `$`.
+If you need a literal `$` character, escape it: `\$`. A bare `$` that starts no valid evaluation is an error — always escape intended literal `$`. A `$` followed by a space evaluates the rest of the line: `let x = $ 1 + 1`.
 
 ## Accumulation Blocks
 
@@ -496,14 +502,14 @@ Inline arguments and block content can also be mixed, and block calls chained on
 
 ## Early Exit: `leave`
 
-`leave` exits the current macro (or file) immediately, returning the value accumulated so far — Plume's equivalent of an early `return`. Inside nested loops, it terminates the whole macro, not just the loop.
+`leave` exits the current accumulation block immediately, returning the value accumulated so far — Plume's equivalent of an early `return`. Inside a loop, it terminates the loop's block, not the whole macro.
 
 ```plume
 macro collect (limit)
     - for i in seq(1, 100)
         if i > limit
             leave
-            // exits collect with the items gathered so far
+            // exits the loop with the items gathered so far
         end
         - $(i * 10)
     end
@@ -515,8 +521,6 @@ $collect(3)
 *   `leave` must appear on its own line.
 *   In a TABLE block it returns the table accumulated so far (empty if none); otherwise it returns the accumulated text (or `empty`).
 *   It is forbidden inside a VALUE block, an assignment, a block call or a `raise` — these are compile-time errors.
-
-A future edition will make `leave` exit only the current accumulation block; that behavior is already available via `use #future(newLeave)` — see [expert.md](expert.md).
 
 ## Building Tables
 
@@ -609,11 +613,11 @@ Additional options (file parameters, error styling, colors) are covered in [adva
 
 ## Editions and Versioning
 
-Plume versions follow an **Edition–Build** scheme, e.g. `Plume Owl 59`:
+Plume versions follow an **Edition–Build** scheme, e.g. `Plume Raven 64`:
 
 *   An **edition** (`Lark`, `Sparrow`, `Owl`...) is a named release line. Within an edition, code keeps running unchanged.
 *   A **build** is a monotonically increasing number; higher is newer, always compatible within the same edition.
 
-A new edition may introduce breaking changes: see [migration.md](migration.md) and the changelog when upgrading. Behavior scheduled for the next edition can be enabled early with `use #future(...)` — see [expert.md](expert.md). This documentation describes the **Owl** edition.
+A new edition may introduce breaking changes: see [migration.md](migration.md) and the changelog when upgrading. Behavior scheduled for the next edition can be enabled early with `use #future(...)` — see [expert.md](expert.md). This documentation describes the **Raven** edition.
 
 Next: [advanced.md](advanced.md)
