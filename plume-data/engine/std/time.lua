@@ -5,7 +5,7 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
-local createDate, createDuration
+-- local createDate, createDuration -- moved to path.lua
 
 local function getType(x)
 	return type(x) == "table" and x.table.type or type(x)

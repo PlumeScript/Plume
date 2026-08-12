@@ -4,6 +4,7 @@ This file is part of Plume🪶
 Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
+local createDate, createDuration -- to be used by path methods
 
 local lfsLoaded, lfs = pcall(require, "lfs")
 
@@ -169,6 +170,16 @@ local function makePath(path)
 			--!signature
 			local _, _, ext = splitName(path)
 			return true, ext and ext or ""
+		end),
+		getModification = plume.obj.luaMacro ("getName", function(args)
+			--!signature
+			local attr = lfs.attributes(path)
+
+			if not attr then
+				return false, "File '" .. path .. "' doesn't exists"
+			end
+
+			return createDate({timestamp=attr.modification})
 		end),
 		read = plume.obj.luaMacro ("read", function(args)
 			--!signature

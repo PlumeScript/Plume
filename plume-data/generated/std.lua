@@ -934,6 +934,7 @@ return function(plume)
 	
 	plume.std.os.name = "os"
 	plume.std.os:setMetaItem('readonly', true)
+	local createDate, createDuration -- to be used by path methods
 	
 	local lfsLoaded, lfs = pcall(require, "lfs")
 	
@@ -1156,6 +1157,21 @@ return function(plume)
 				------------
 				local _, _, ext = splitName(path)
 				return true, ext and ext or ""
+			end),
+			getModification = plume.obj.luaMacro ("getName", function (args, vm, currentFile)
+				local __name      = "getName"
+				local __signature = "`$getName()`"
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				local attr = lfs.attributes(path)
+	
+				if not attr then
+					return false, "File '" .. path .. "' doesn't exists"
+				end
+	
+				return createDate({timestamp=attr.modification})
 			end),
 			read = plume.obj.luaMacro ("read", function (args, vm, currentFile)
 				local __name      = "read"
@@ -2571,7 +2587,7 @@ return function(plume)
 	plume.std.Table.name = "Table"
 	plume.std.Table:setMetaItem('readonly', true)
 	
-	local createDate, createDuration
+	-- local createDate, createDuration -- moved to path.lua
 	
 	local function getType(x)
 		return type(x) == "table" and x.table.type or type(x)
