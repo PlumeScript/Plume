@@ -181,6 +181,16 @@ local function makePath(path)
 
 			return createDate({timestamp=attr.modification})
 		end),
+		getSize = plume.obj.luaMacro ("getSize", function(args)
+			--!signature
+			local attr = lfs.attributes(path)
+
+			if not attr then
+				return false, "File '" .. path .. "' doesn't exists"
+			end
+
+			return true, attr.size
+		end),
 		read = plume.obj.luaMacro ("read", function(args)
 			--!signature
 			return plume.stdio.read(path)

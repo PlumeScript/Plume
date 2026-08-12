@@ -1173,6 +1173,21 @@ return function(plume)
 	
 				return createDate({timestamp=attr.modification})
 			end),
+			getSize = plume.obj.luaMacro ("getSize", function (args, vm, currentFile)
+				local __name      = "getSize"
+				local __signature = "`$getSize()`"
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				local attr = lfs.attributes(path)
+	
+				if not attr then
+					return false, "File '" .. path .. "' doesn't exists"
+				end
+	
+				return true, attr.size
+			end),
 			read = plume.obj.luaMacro ("read", function (args, vm, currentFile)
 				local __name      = "read"
 				local __signature = "`$read()`"

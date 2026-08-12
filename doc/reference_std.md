@@ -193,6 +193,7 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 *   `Path.getStem()`: Return the last path component without its extension.
 *   `Path.getExtension()`: Return the extension of the last path component, without the leading dot.
 *   `Path.getModification()`: Return the last time file was modified, as a `Date` object.
+*   `Path.getSize()`: Return the file size in bytes.
 *   `String(Path)`: Get path as string
 
 #### Environment and commands
