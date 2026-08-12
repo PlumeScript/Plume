@@ -40,7 +40,7 @@ let counters = $Table()
 macro List(...items)
     meta fragment: macro()
         $Table.append($counters, 0)
-        let top = $len($counters)
+        let top = $ len(counters)
         \n
         for i, x in enumerate(items)
             set counters[top] += 1
@@ -122,7 +122,7 @@ let t = do
         42
     end
 end
-$(t + 8)
+$ t + 8
 /// Output
 50
 /// End
@@ -220,7 +220,7 @@ macro wing(t)
 end
 
 
-$wing($t)
+$ wing(t)
 /// Output
 2
 /// End
@@ -293,7 +293,7 @@ let t = do
         x
     end
 end
-$repr($Context($t))
+$ repr(Context(t))
 /// Output
 Context<x>
 /// End

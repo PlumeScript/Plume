@@ -137,7 +137,7 @@ $(wing * nib) and $wing\n
 macro double (x)
     $(2 * x)
 end
-$(double(wing) + 1)
+$ double(wing) + 1
 // →
 wing + nib = 7
 10 and 5
@@ -167,7 +167,7 @@ Every executable block in Plume — the program itself, a macro body, a `do` blo
 
 *   **VALUE block** — the block contains **exactly one** expression. It returns that value *unchanged*, without any string conversion. This is how a macro can return a table, a number or another macro.
     ```plume
-    macro getWing ()
+    macro getWing
         $baseWing
     end
     // getWing returns the value of baseWing itself — if it is
@@ -234,7 +234,7 @@ quill	ink
 
 ```plume
 let color = red // bare word: the string "red"
-$(color == "red")
+$ color == "red"
 // → true
 ```
 
@@ -242,10 +242,10 @@ $(color == "red")
 
 ```plume
 let wing = 1
-$type($wing)\n
-set wing = $String($wing)
-$type($wing)\n
-$(wing + 1)
+$ type(wing)\n
+set wing = $ String(wing)
+$ type(wing)\n
+$ wing + 1
 // no error: "1" is converted back to a number
 // →
 number
@@ -255,7 +255,7 @@ string
 
 ```plume
 let wing = 1
-$(wing + "abc")
+$ wing + "abc"
 // → RUNTIME ERROR: Cannot convert the string value 'abc' to a number. (i) Consider using the `..` concat operator.
 ```
 
@@ -462,7 +462,7 @@ $praise(quill)\n
 $praise(nib, adjective: splendid)\n
 $praise(ink, adjective: dark, ?loud)\n
 let wing = wing
-$(praise(wing))
+$ praise(wing)
 // →
 The quill is great.
 The nib is splendid.
@@ -575,12 +575,12 @@ let wing = do
     - green
     nib: sharp
 end
-$(wing[1])\n     // → red
-$(wing.nib)\n    // → sharp
+$ wing[1]\n     // → red
+$ wing.nib\n    // → sharp
 set wing[2] = blue
 set wing.ink = dark
-$(wing[2])\n     // → blue
-$(wing.ink)\n    // → dark
+$ wing[2]\n     // → blue
+$ wing.ink\n    // → dark
 ```
 
 When a missing key should yield `empty` instead of an error, use the safe accessors `t.key?` / `t["key"]?` — see [advanced.md](advanced.md).

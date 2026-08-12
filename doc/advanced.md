@@ -126,9 +126,9 @@ $wing($field: blue)   // passes the named argument color: blue
 **Safe indexing.** Appending `?` to an index or member access returns `empty` instead of raising an error when the key is missing:
 
 ```plume
-$(t.nib?)          // empty if nib is absent
-$(t["nib"]?)       // same, with brackets
-$(t.nib? or 1)     // handy for defaults
+$ t.nib?          // empty if nib is absent
+$ t["nib"]?       // same, with brackets
+$ t.nib? or 1     // handy for defaults
 ```
 
 ## String Concatenation: `..`
@@ -138,7 +138,7 @@ Inside an evaluation context, the `..` operator concatenates two values as text:
 ```plume
 let a = hello
 let b = world
-$(a .. b)
+$ a .. b
 // → helloworld
 ```
 
@@ -168,7 +168,7 @@ $t["item_"..n]
 A macro captures the variables of its enclosing scopes at the point of definition. The capture is a *live binding*: the macro and its birth scope share the same variable, and mutations are visible on both sides. The capture survives the end of the enclosing scope, which enables factory patterns:
 
 ```plume
-macro makeCounter ()
+macro makeCounter
     let count = 0
     macro ()
         set count += 1
@@ -358,7 +358,7 @@ double: macro (x) $(2 * x)
 ```plume
 // main.plume
 let geometry = $import(tests/plume/toimport/geometry)
-$(geometry.pi)\n
+$ geometry.pi\n
 $geometry.double(21)
 // →
 3.14159
@@ -382,7 +382,7 @@ let pi, double from $import(./geometry)
 
 ```plume
 use geometry        // literal path — no quotes, no extension
-$(pi)
+$ pi
 $double(21)
 ```
 

@@ -1,6 +1,6 @@
 /// Test Number convert
 $Number(42)\n
-$Number($String(3.5))
+$ Number(String(3.5))
 /// Output
 42
 3.5

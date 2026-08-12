@@ -122,7 +122,7 @@ blue quill
 /// Test import cache 1
 let lib1 = $import(tests/plume/toimport/object)
 let lib2 = $import(tests/plume/toimport/object)
-$(lib1.result == lib2.result)
+$ lib1.result == lib2.result
 /// Output
 true
 /// End
@@ -130,7 +130,7 @@ true
 /// Test import cache 2
 use tests/plume/toimport/object
 let lib = $import(tests/plume/toimport/object)
-$(result == lib.result)
+$ result == lib.result
 /// Output
 true
 /// End
@@ -139,7 +139,7 @@ true
 let p = $os.Path(tests/plume/toimport/object)
 let a = $p.import()
 let b = $p.import()
-$(a.result == b.result)
+$ a.result == b.result
 /// Output
 true
 /// End
@@ -213,7 +213,7 @@ blue quill
 
 /// Test import macro
 let lib = $import(tests/plume/toimport/text)
-macro Document()
+macro Document
 end
 /// Output
 /// End

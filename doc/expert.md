@@ -17,7 +17,7 @@ let ink = do
     end
 end
 
-$(ink + 5)
+$ ink + 5
 // → 15
 ```
 
@@ -63,7 +63,7 @@ let config = do
     end
 end
 
-$(config.port)
+$ config.port
 // → Unknown setting 'port'.
 ```
 
@@ -154,7 +154,7 @@ let counter = do
     end
 end
 
-$(counter + 8)
+$ counter + 8
 // → 50
 ```
 
@@ -174,9 +174,9 @@ The `fragment` metafield does **not** fire when the table is consumed as structu
 *   table expansion (`...t`)
 *   a macro argument whose declared type is `table` or `any`
 *   a table value (`- $t` inside a table)
-*   `$repr($t)` — reports the table as it currently is, without rendering it
+*   `$(repr(t))` — reports the table as it currently is, without rendering it
 
-`$type($t)` is the exception: it forces the fragment on the object passed as parameter, so it reports the object's real value. A library that must tell a `table` from a `string` can rely on `$type` — a fragment passed as a `table`/`any` argument stays a fragment, but `$type` resolves it to its real type, with no ambiguity.
+`$(type(t))` is the exception: it forces the fragment on the object passed as parameter, so it reports the object's real value. A library that must tell a `table` from a `string` can rely on `$type` — a fragment passed as a `table`/`any` argument stays a fragment, but `$type` resolves it to its real type, with no ambiguity.
 
 To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
 
@@ -238,11 +238,11 @@ Prefixing a parameter with an identifier applies a **validator** at call time:
 
 ```plume
 macro wing (Number size)
-    $type($size)
+    $ type(size)
 end
 
 let x = $String(1)
-$wing($x)
+$ wing(x)
 // the argument was converted to a number before entering the body
 // → number
 ```
@@ -290,7 +290,7 @@ Contextual variables pass implicit parameters through nested calls — a scoped,
 ```plume
 let ink = $Context(blue)   // declared with a default value
 
-macro paint ()
+macro paint
     Painted in $ink().\n   // read by calling the variable
 end
 

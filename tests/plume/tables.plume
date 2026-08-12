@@ -108,7 +108,7 @@ mark
 /// Test safe index 1
 let t = $Table(a:b)
 $t.a?
-$(t.a?)
+$ t.a?
 /// Output
 bb
 /// End
@@ -116,7 +116,7 @@ bb
 /// Test safe index 2
 let t = $Table(a:b)
 $t.b?
-$(t.b? or 1)
+$ t.b? or 1
 /// Output
 1
 /// End
@@ -124,7 +124,7 @@ $(t.b? or 1)
 /// Test safe index 3
 let t = $Table(a:b)
 $t["a"]?
-$(t["a"]?)
+$ t["a"]?
 /// Output
 bb
 /// End
@@ -132,7 +132,7 @@ bb
 /// Test safe index 4
 let t = $Table(a:b)
 $t["b"]?
-$(t["b"]? or 1)
+$ t["b"]? or 1
 /// Output
 1
 /// End
@@ -291,28 +291,28 @@ $len((1, 2, 3))
 /// End
 
 /// Test inline Table in call - eval
-$(len((1, 2, 3)))
+$ len((1, 2, 3))
 /// Output
 3
 /// End
 
 /// Test inline Table as inline Table value 1
 let t = (1, a:(1, 2))
-$repr($t)
+$ repr(t)
 /// Output
 (1, a: (1, 2))
 /// End
 
 /// Test inline Table as inline Table value 2
 let t = (a:(1, 2))
-$repr($t)
+$ repr(t)
 /// Output
 (a: (1, 2))
 /// End
 
 /// Test inline Table as inline Table value 3
 let t = $((1, a:(1, 2)))
-$repr($t)
+$ repr(t)
 /// Output
 (1, a: (1, 2))
 /// End
@@ -409,7 +409,7 @@ let t = do
   end
 end
 
-$len($t)
+$ len(t)
 /// Output
 1
 /// End
@@ -478,7 +478,7 @@ $x: (5, 2, 3)
 /// Test table sort compare
 let x = 5
 macro comp(a, b)
-    $(x>a)
+    $ x>a
 end
 
 let t = (1, 2, 3)

@@ -114,7 +114,7 @@ $wing((x), ((y)))
 
 /// Test Braces are paired 4
 macro wing(x)
-    $len($x)
+    $ len(x)
 end
 
 $wing((x,y))
@@ -277,7 +277,7 @@ $ 1+1
 /// Test Line eval 2
 use #future(lineEval)
 let x = 1
-macro wing()
+macro wing
     set x += 1
 end
 

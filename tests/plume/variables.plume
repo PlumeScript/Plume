@@ -67,7 +67,7 @@ $_write
 let x = 0
 @Table.join
 	let y=0
-	$(x+y)
+	$ x+y
 end
 /// Output
 0
@@ -79,7 +79,7 @@ let x = 0
 	let y=0
 	@Table.join
 		let z=0
-		$(x+y+z)
+		$ x+y+z
 	end
 end
 /// Output
@@ -244,7 +244,7 @@ let param ...leftover2
 
 /// Test simple variable
 let notwing = 1
-$(notwing)
+$ notwing
 /// Output
 1
 /// End

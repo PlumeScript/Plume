@@ -248,7 +248,7 @@ let x += 1
 /// End
 
 /// Test Missing closing bracket 1
-macro wing()
+macro wing
 end
 
 $wing(
@@ -267,7 +267,7 @@ $wing(
 /// End
 
 /// Test Missing closing bracket 2
-macro wing()
+macro wing
 end
 
 $wing(a, b, c:d

@@ -1,8 +1,8 @@
-macro wing()
+macro wing
 	wing
 end
 
-macro nib()
+macro nib
 	nib
 end
 

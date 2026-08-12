@@ -244,7 +244,7 @@ $mark()
 /// End
 
 /// Test overwrite self
-macro wing()
+macro wing
   let self
 end
 /// Error
@@ -255,7 +255,7 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │macro wing()                                                             │
+│    1 │macro wing                                                               │
 │    2 │  let self                                                               │
 │      │  ^^^^^^^^                                                               │
 │    3 │end                                                                      │

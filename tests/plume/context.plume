@@ -52,7 +52,7 @@ fr
 
 /// Test context & closure
 use #context(locale: fr)
-macro Wing()
+macro Wing
   $plume.locale()
 end
 $Wing()
@@ -68,7 +68,7 @@ let t = do
     item 2
   end
 end
-$repr($t)
+$ repr(t)
 /// Output
 (item 1, item 2)
 /// End
@@ -134,7 +134,7 @@ end
 /// Test context value in macro
 let var = $Context(1)
 
-macro Wing()
+macro Wing
     $var()
 end
 
@@ -169,13 +169,13 @@ $Table()
 /// Test context raise attempt
 let a = $Context(a)
 
-macro wing()
+macro wing
     with ($a: b)
         raise Error!
     end
 end
 
-let result = $attempt($wing)
+let result = $ attempt(wing)
 $a()
 /// Output
 a

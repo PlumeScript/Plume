@@ -18,7 +18,7 @@ end
 /// End
 
 /// Test bad validator 2
-macro valid()
+macro valid
 end
 
 macro double(valid x)
@@ -70,7 +70,7 @@ $double(a)
 
 /// Test custom validator crash
 macro valid(x)
-  $(x+1)
+  $ x+1
 end
 
 macro double(valid x)
@@ -87,7 +87,7 @@ $double(a)
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    1 │macro valid(x)                                                           │
-│    2 │  $(x+1)                                                                 │
+│    2 │  $ x+1                                                                  │
 │      │    ^^^                                                                  │
 │    3 │end                                                                      │
 │                                                                                │
@@ -106,7 +106,7 @@ $double(a)
 
 /// Test Table validator fail
 macro wing(Table x)
-  $len($x)
+  $ len(x)
 end
 
 $wing(5)
@@ -120,7 +120,7 @@ $wing(5)
 │  ↳ test.plume                                                                  │
 │    1 │macro wing(Table x)                                                      │
 │      │           ^^^^^^^                                                       │
-│    2 │  $len($x)                                                               │
+│    2 │  $ len(x)                                                               │
 │                                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │

@@ -89,7 +89,7 @@ $t[2]
 let x = if false
   Wing
 end
-$(x == empty)
+$ x == empty
 /// Output
 true
 /// End
@@ -98,8 +98,8 @@ true
 let x = if false
   - Wing
 end
-$(type(x))\n
-$(len(x))
+$ type(x)\n
+$ len(x)
 /// Output
 table
 0
@@ -448,7 +448,7 @@ wing nib
 let x = if true
 end
 
-$(x==empty)
+$ x==empty
 /// Output
 true
 /// End
@@ -508,7 +508,7 @@ end
 /// Test run side effect
 let x = 1
 
-macro incX()
+macro incX
   set x += 1
   $x
 end

@@ -1,5 +1,5 @@
 /// Test simple return
-macro wing()
+macro wing
 	return nib
 end
 $wing()
@@ -8,7 +8,7 @@ nib
 /// End
 
 /// Test eval in return
-macro wing()
+macro wing
 	let nib = 6
 	return $nib
 end
@@ -33,7 +33,7 @@ no
 /// End
 
 /// Test return in for
-macro wing()
+macro wing
 	for i in seq(4)
 		if i==3
 			return $i
@@ -47,13 +47,13 @@ $wing()
 /// End
 
 /// Test unbalanced return emit empty
-macro wing()
+macro wing
 	if false
 		return 5
 	end
 end
 
-$type($wing())
+$ type(wing())
 /// Output
 empty
 /// End
@@ -88,11 +88,11 @@ end
 /// End
 
 /// Test return no value
-macro wing()
+macro wing
 	return
 end
 
-$type($wing())
+$ type(wing())
 /// Output
 empty
 /// End

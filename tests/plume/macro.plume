@@ -1,5 +1,5 @@
 /// Test simple macro & call
-macro quill()
+macro quill
   mark
 end
 $quill()
@@ -59,7 +59,7 @@ mark
 
 /// Test macro scope
 let _write = 5
-macro f()
+macro f
   let _write = 3
   $_write
 end
@@ -145,7 +145,7 @@ Search...
 /// End
 
 /// Test Leave macro (Table)
-macro t()
+macro t
   content: wing
   leave
   content: nib
@@ -175,7 +175,7 @@ abc
 
 /// Test Validator 1
 macro wing(Number x)
-  $(type(x))
+  $ type(x)
 end
 
 $wing(1)
@@ -185,12 +185,12 @@ number
 
 /// Test Validator 2
 macro wing(Number x)
-  $(type(x))
+  $ type(x)
 end
 
 let x = $(String(1))
-$(type(x))\n
-$(wing(x))
+$ type(x)\n
+$ wing(x)
 /// Output
 string
 number
@@ -198,12 +198,12 @@ number
 
 /// Test Validator 3
 macro wing(Number x: 0)
-  $(type(x))
+  $ type(x)
 end
 
 let x = $(String(1))
-$(type(x))\n
-$(wing(x: x))
+$ type(x)\n
+$ wing(x: x)
 /// Output
 string
 number
@@ -211,7 +211,7 @@ number
 
 /// Test Validator 4
 macro wing(Number x: $String(0))
-  $(type(x))
+  $ type(x)
 end
 
 $wing()
@@ -221,7 +221,7 @@ number
 
 /// Test Validator custom
 macro double(x)
-  $(2*x)
+  $ 2*x
 end
 
 macro wing(double x)
@@ -251,7 +251,7 @@ $wing(5)
 
 /// Test Table validator
 macro wing(Table x)
-  $len($x)
+  $ len(x)
 end
 
 $wing((5, 6, 7))
@@ -324,7 +324,7 @@ macro wing(body)
     $body
 end
 
-$(wing("a"))
+$ wing("a")
 /// Output
 a
 /// End
@@ -349,7 +349,7 @@ end
 macro wing(x)
 end
 
-$(wing(false))
+$ wing(false)
 /// Output
 
 /// End
@@ -372,7 +372,7 @@ true
 /// Test default param arithmetic
 macro quill(song: 0)
     let mark = $(5%5)
-    $(mark==0)
+    $ mark==0
 end
 
 $quill()
@@ -384,7 +384,7 @@ true
 macro quill(?flag)
 end
 
-$(quill(?flag))
+$ quill(?flag)
 /// Output
 
 /// End
@@ -393,7 +393,7 @@ $(quill(?flag))
 macro wing(a)
 end
 
-$(wing(-5))
+$ wing(-5)
 /// Output
 /// End
 
@@ -410,16 +410,16 @@ end
 
 let a, b, d
 
-$(Wing(a, b, c: d))
+$ Wing(a, b, c: d)
 /// Output
 /// End
 
 /// Test nested macros items
-macro Wing()
+macro Wing
 end
 
 macro Nib(...args)
-  macro Quill()
+  macro Quill
       for k, v in items(args)
         $Wing()
       end
@@ -444,7 +444,7 @@ macro<???>
 ref wing: macro()
 end
 
-macro nib()
+macro nib
 end
 ref quill: macro()
    $nib()
@@ -480,13 +480,13 @@ a
 /// End
 
 /// Test leave nested macro
-macro wing()
+macro wing
     for i in seq(5)
         leave
     end
 end
 
-macro nib()
+macro nib
     $wing()
 end
 
@@ -506,7 +506,7 @@ a$(1+1)
 /// End
 
 /// Test leave in for if
-macro wing()
+macro wing
     a
     for i in seq(4)
         if true
@@ -526,7 +526,7 @@ do
     a
     do
         a
-        $(1+1)
+        $ 1+1
         leave
         c
     end
@@ -595,7 +595,7 @@ $wing(b,,c)
 macro wing(a, b, c)
 end
 
-$(wing(1,,3))
+$ wing(1,,3)
 /// Output
 /// End
 
@@ -624,28 +624,28 @@ run $nib()
 
 /// Test type of macro
 let x
-macro wing()
+macro wing
     $x
 end
 
-$type($wing)
+$ type(wing)
 /// Output
 macro
 /// End
 
 /// Test success
 macro double(x)
-  $(x*2)
+  $ x*2
 end
 
-$attempt($double, 2)
+$ attempt(double, 2)
 /// Output
 (success: true, result: 4)
 /// End
 
 /// Test fail
 macro double(x)
-  $(x*2)
+  $ x*2
 end
 
 $attempt($double, a)
@@ -655,18 +655,18 @@ $attempt($double, a)
 
 /// Test fail - long callstack
 macro double(x)
-  $(x*2)
+  $ x*2
 end
 
-macro nib()
+macro nib
   $double(a)
 end
 
-macro wing()
+macro wing
   $nib()
 end
 
-$attempt($wing)
+$ attempt(wing)
 /// Output
 (success: false, result: Cannot convert the string value 'a' to a number.)
 /// End

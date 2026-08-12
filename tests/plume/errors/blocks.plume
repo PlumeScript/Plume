@@ -193,8 +193,8 @@ end
 
 /// Test break outside loop
 for i in seq(3)
-    macro wing()
-        macro nib()
+    macro wing
+        macro nib
         end
         break
     end
@@ -206,7 +206,7 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    2 │macro wing()                                                             │
+│    2 │macro wing                                                               │
 │    4 │    end                                                                  │
 │    5 │    break                                                                │
 │      │    ^^^^^                                                                │

@@ -198,7 +198,7 @@ end
 /// Test for with interpolation
 let x = 1
 for y in seq(1, 10)
-    $(x+y)
+    $ x+y
 end
 /// Output
 234567891011
@@ -290,9 +290,9 @@ let t = do
 end
 
 for nib, quill in enumerate(t)
-    $type($quill)\n
-    $wing($quill.color)
-    $type($quill)
+    $ type(quill)\n
+    $ wing(quill.color)
+    $ type(quill)
 end
 /// Output
 table

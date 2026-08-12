@@ -56,7 +56,7 @@ $Number(a)
 /// End
 
 /// Test String
-$type($String(1))
+$ type(String(1))
 /// Output
 string
 /// End
@@ -77,7 +77,7 @@ raise Error!
 /// End
 
 /// Test raise 2
-macro wing()
+macro wing
 	raise Error!
 end
 $wing()
@@ -88,7 +88,7 @@ $wing()
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │macro wing()                                                             │
+│    1 │macro wing                                                               │
 │    2 │ raise Error!                                                            │
 │      │ ^^^^^^^^^^^^                                                            │
 │    3 │end                                                                      │
@@ -103,19 +103,19 @@ $wing()
 /// End
 
 /// Test attempt 1
-macro wing()
+macro wing
 	raise Error!
 end
-$attempt($wing)
+$ attempt(wing)
 /// Output
 (success: false, result: Error!)
 /// End
 
 /// Test attempt 2
-macro wing()
+macro wing
 	No error!
 end
-$attempt($wing)
+$ attempt(wing)
 /// Output
 (success: true, result: No error!)
 /// End

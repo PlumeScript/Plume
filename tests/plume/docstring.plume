@@ -1,9 +1,9 @@
 /// Test simple doc
 // double the number
 macro double(x)
-	$(2*x)
+	$ 2*x
 end
-$(String(plume.doc(double)))
+$ String(plume.doc(double))
 /// Output
 macro double(x)
     double the number
@@ -13,9 +13,9 @@ macro double(x)
 // double the number
 // @param x number the number to double
 macro double(x)
-	$(2*x)
+	$ 2*x
 end
-$(String(plume.doc(double)))
+$ String(plume.doc(double))
 /// Output
 macro double(x)
     double the number
@@ -28,9 +28,9 @@ macro double(x)
 // double the number
 // @param x number the number to double
 macro double(x)
-	$(2*x)
+	$ 2*x
 end
-$(String(plume.doc(double)))
+$ String(plume.doc(double))
 /// Output
 macro double(x)
     double the number
@@ -42,7 +42,7 @@ macro double(x)
 let t = do
     - 1
 end
-$(String(plume.doc(t)))
+$ String(plume.doc(t))
 /// Output
 table t
     This is a table
@@ -66,24 +66,24 @@ luaMacro lines
 /// End
 
 /// Test nodoc
-macro wing()
+macro wing
 end
 
 $String($plume.doc($wing))
 /// Output
-macro wing()
+macro wing
 /// End
 
 
 /// Test closure
 let x
-macro wing()
+macro wing
     $x
 end
 
 $String($plume.doc($wing))
 /// Output
-macro wing()
+macro wing
 /// End
 
 /// Test macro as value

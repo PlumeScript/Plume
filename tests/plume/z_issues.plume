@@ -15,12 +15,12 @@ $len(t)
 macro wing(x)
     set x.y = $Table()
 end
-macro nib()
+macro nib
     y: $empty
 
     meta call: macro()
         if not self.y
-            $(wing(self))
+            $ wing(self)
         end
 
         a

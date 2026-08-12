@@ -82,9 +82,9 @@ let x = Nib
 /// End
 
 /// Test define macro twice
-macro wings()
+macro wings
 end
-macro wings()
+macro wings
 end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
@@ -94,8 +94,8 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    2 │end                                                                      │
-│    3 │macro wings()                                                            │
-│      │^^^^^^^^^^^^^                                                            │
+│    3 │macro wings                                                              │
+│      │^^^^^^^^^^^                                                              │
 │    4 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
@@ -321,14 +321,14 @@ end
 /// End
 
 /// Test callstack
-macro paint()
+macro paint
 end
 
-macro sing()
+macro sing
     $paint(1)
 end
 
-macro wing()
+macro wing
     $sing()
 end
 
@@ -337,11 +337,10 @@ $wing()
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
 │ → Wrong number of positional arguments for macro 'paint', 1 instead of 0.      │
-│   Usage: $paint()                                                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    4  │macro sing()                                                            │
+│    4  │macro sing                                                              │
 │    5  │    $paint(1)                                                           │
 │       │     ^^^^^^^^                                                           │
 │    6  │end                                                                     │
@@ -350,7 +349,7 @@ $wing()
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    8  │macro wing()                                                            │
+│    8  │macro wing                                                              │
 │    9  │    $sing()                                                             │
 │       │     ^^^^^^                                                             │
 │                                                                                │
@@ -440,11 +439,11 @@ raise Program fail.
 /// End
 
 /// Test custom error with traceback
-macro Wing()
+macro Wing
 	raise Program fail.
 end
 
-macro Nib()
+macro Nib
 	$Wing()
 end
 
@@ -456,7 +455,7 @@ $Nib()
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │macro Wing()                                                             │
+│    1 │macro Wing                                                               │
 │    2 │ raise Program fail.                                                     │
 │      │ ^^^^^^^^^^^^^^^^^^^                                                     │
 │    3 │end                                                                      │
@@ -465,7 +464,7 @@ $Nib()
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    5 │macro Nib()                                                              │
+│    5 │macro Nib                                                                │
 │    6 │ $Wing()                                                                 │
 │      │  ^^^^^^                                                                 │
 │                                                                                │
@@ -478,7 +477,7 @@ $Nib()
 /// Test use unknown variable const
 let const x = 5
 
-$(x+a)
+$ x+a
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
@@ -487,7 +486,7 @@ $(x+a)
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    1 │let const x = 5                                                          │
-│    3 │$(x+a)                                                                   │
+│    3 │$ x+a                                                                    │
 │      │    ^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
