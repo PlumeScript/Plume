@@ -87,7 +87,7 @@ return function(plume)
 
 			if initFileParams then
 				for _, key in ipairs(initFileParams.keys) do
-					if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
+					if key ~= 1 then
 						local value = initFileParams.table[key]
 						local varKey
 						if tonumber(key) then
