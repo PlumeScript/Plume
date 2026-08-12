@@ -114,7 +114,7 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	local oldFlags = {
-		Raven={"raven", "newEscape", "importCache", "return", "positionnalFileParam"}
+		Raven={"raven", "newEscape", "importCache", "return", "positionnalFileParam", "unknownParamError"}
 	}
 	local _oldFlags = {}
 	
@@ -212,10 +212,6 @@ return function (plume, context, nodeHandlerTable)
 
 				if args.newLeave or args.raven or args.all then
 					context.futureFlagNewLeave = true
-				end
-
-				if args.unknownParamError or args.raven or args.all then
-					context.chunk.futureFlagUnknownParamError = true
 				end
 			end
 		}
