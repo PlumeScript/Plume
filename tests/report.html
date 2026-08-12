@@ -23880,7 +23880,7 @@ $eval(\$(1+a), ?safe)
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ &lt;string&gt;                                                                    │
-│    1 │$(1+a)                                                                   │
+│    1 │\$(1+a)                                                                   │
 │      │    ^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯)
@@ -42577,7 +42577,7 @@ $attempt($Math.sin, a)
 <h4>Output</h4>
 <pre><code>
 (success: false, result: Wrong type &#39;string&#39; for parameter &#39;1&#39; of macro &#39;sin&#39;. Expected: &#39;number&#39;.
-Usage: `$sin(number x, ?deg, ?rad)`)
+Usage: `\$sin(number x, ?deg, ?rad)`)
 </code></pre>
 </div>
 </details>
@@ -46360,7 +46360,7 @@ $t
 </div>
 <h4>Output</h4>
 <pre><code>
-(b, empty)
+(b, )
 </code></pre>
 </div>
 </details>
@@ -46406,7 +46406,7 @@ $t
 </div>
 <h4>Output</h4>
 <pre><code>
-(a: empty, c: a)
+(a: , c: a)
 </code></pre>
 </div>
 </details>

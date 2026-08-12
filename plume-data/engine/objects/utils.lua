@@ -72,7 +72,7 @@ return function(plume)
 
 		if pretty then
 			local template
-			if plume.futureStringFlag and indent == 0 then
+			if indent == 0 then
 				template = "%s%s\n%s"
 			else
 				template = "do\n%s%s\n%send"
@@ -95,11 +95,10 @@ return function(plume)
 
 	local function reprObj(obj, pretty, indent)
 		indent = indent or 0
-		if plume.futureStringFlag then
-			if type(obj) == "string" then
-				obj = obj:gsub('\\', '\\\\')
-				obj = obj:gsub('%$', '\\$')
-			end
+		
+		if type(obj) == "string" then
+			obj = obj:gsub('\\', '\\\\')
+			obj = obj:gsub('%$', '\\$')
 		end
 
 		if type(obj) == "string" and pretty and #obj > 80 then
@@ -132,16 +131,12 @@ return function(plume)
 
 		local t = obj.type or "???"
 		if t == "empty" then
-			if plume.futureStringFlag then
-				if indent == 0 then
-					return "$empty"
-				else
-					return ""
-				end
+			if indent == 0 then
+				return "$empty"
 			else
-				return "empty"
+				return ""
 			end
-		elseif t == "boolean" and plume.futureStringFlag then
+		elseif t == "boolean" then
 			return "$" .. tostring(obj)
 		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
 			return t .. "<" .. obj.name .. ">"
