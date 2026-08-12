@@ -50,16 +50,6 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
-	function plume.error.cannotUseLeaveInsideLetset(node)
-		local message = "Cannot use leave keyword inside an affectation."
-		plume.error.throwCompilationError(node, message)
-	end
-
-	function plume.error.cannotUseLeaveInsideCall(node)
-		local message = "Cannot use leave keyword inside a call."
-		plume.error.throwCompilationError(node, message)
-	end
-
 	function plume.error.cannotUseReturnInsideRaise(node)
 		local message = "Cannot use return keyword inside a `raise` block."
 		plume.error.throwCompilationError(node, message)
@@ -110,13 +100,6 @@ return function(plume)
 		plume.error.throwSyntaxError(node, message)
 	end
 
-	function plume.error.evalAlone(node)
-		local message = "'$' must be followed by a variable name or an expression in parentheses.\n"
-					  .."If you want to write the '$' character, write '\\$'."
-		node.errorbpos = node.bpos-1
-		plume.error.throwSyntaxError(node, message)
-	end
-
 	function plume.error.missingClosingBracket(node)
 		local message = "Missing ')' to close evaluation."
 		node.errlpos = 1
@@ -126,11 +109,6 @@ return function(plume)
 	function plume.error.missingClosingBracketArgList(node)
 		local message = "Missing ')' to close arguments list."
 		node.errlpos = 1
-		plume.error.throwSyntaxError(node, message)
-	end
-
-	function plume.error.missingLoopIdentifier(node)
-		local message = "Missing loop identifier."
 		plume.error.throwSyntaxError(node, message)
 	end
 
@@ -314,10 +292,6 @@ return function(plume)
 				message, libName, libName, libName, paramName, paramValue
 			)
 		end
-		plume.error.throwSyntaxError(node, message)
-	end
-	function plume.error.useDoesNotAcceptPositionalArgs(node)
-		local message = "'use' does not accept positional arguments."
 		plume.error.throwSyntaxError(node, message)
 	end
 
