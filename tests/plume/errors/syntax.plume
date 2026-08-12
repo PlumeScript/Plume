@@ -471,3 +471,298 @@ $double(ref y, x: 5)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test table in text block
+a
+ref x
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │a                                                                        │
+│      │^                                                                        │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    2 │ref x                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test dollar outside evaluation
+$
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → `$` outside evaluation must be escaped.                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$                                                                        │
+│      │^                                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test if branch type mismatch 1
+if "a"
+    \s
+elseif "big"
+    \s
+else
+    wing: nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │else                                                                     │
+│    6 │    wing: nib                                                            │
+│      │    ^^^^^^^^^                                                            │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test if branch type mismatch 2
+if "a"
+    \s
+elseif "big"
+    wing: nib
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this       │
+│   elseif body is of type TABLE.                                                │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    wing: nib                                                            │
+│      │    ^^^^^^^^^                                                            │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test if branch type mismatch 3
+if "a"
+    wing: nib
+elseif "big"
+    a
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    a                                                                    │
+│      │    ^                                                                    │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test if branch type mismatch 4
+if "a"
+    \s
+elseif "big"
+    \s
+else
+    with (a: 5)
+        - wing
+    end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+│   The previous branches of this if statement were of type TEXT, but this else  │
+│   body is of type TABLE.                                                       │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    6 │with (a: 5)                                                              │
+│    7 │    - wing                                                               │
+│      │    ^^^^^^                                                               │
+│    8 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test text in macro block
+macro ()
+end
+
+a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'MACRO' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'MACRO'.                 │
+│    1 │macro ()                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │end                                                                      │
+│                                                                                │
+│    But you try to add a 'TEXT' element.                                        │
+│    4 │a                                                                        │
+│      │^                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test if branch type mismatch 5
+if "a"
+    wing: nib
+elseif "big"
+    \s
+else
+    \s
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+│   The previous branches of this if statement were of type TABLE, but this      │
+│   elseif body is of type TEXT.                                                 │
+│   All branches of an if statement must be of the same type.                    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │elseif "big"                                                             │
+│    4 │    \s                                                                   │
+│      │    ^^                                                                   │
+│    5 │else                                                                     │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test raise must be followed by message
+if false
+   raise
+end
+$Table()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The keyword `raise` must be followed by a message.                           │
+│   If you want to write the word 'raise' as text, write '$("r")aise'.           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │if false                                                                 │
+│    2 │   raise                                                                 │
+│      │   ^^^^^                                                                 │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test let must be followed by name
+if false
+   let
+end
+$Table()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The keyword `let` must be followed by a variable name.                       │
+│   If you want to write the word 'let' as text, write '\let'.                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │if false                                                                 │
+│    2 │   let                                                                   │
+│      │   ^^^                                                                   │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test with must be followed by table
+if false
+   with
+end
+$Table()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The keyword `with` must be followed by a table.                              │
+│   If you want to write the word 'with' as text, write '\with'.                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │if false                                                                 │
+│    2 │   with                                                                  │
+│      │   ^^^^                                                                  │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test use must be followed by library
+if false
+   use
+end
+$Table()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The keyword `use` must be followed by a library name.                        │
+│   If you want to write the word 'use' as text, write '\use'.                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │if false                                                                 │
+│    2 │   use                                                                   │
+│      │   ^^^                                                                   │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test run must be followed by statement
+if false
+   run
+end
+$Table()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → The keyword `run` must be followed by a statement.                           │
+│   If you want to write the word 'run' as text, write '$("r")un'.               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │if false                                                                 │
+│    2 │   run                                                                   │
+│      │   ^^^                                                                   │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

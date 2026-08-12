@@ -1,0 +1,298 @@
+/// Test MixedBlockError 1
+- Wing
+Nib
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TABLE'.                 │
+│    1 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+│                                                                                │
+│    But you try to add a 'TEXT' element.                                        │
+│    2 │Nib                                                                      │
+│      │^^^                                                                      │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 2
+Nib
+- Wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Nib                                                                      │
+│      │^^^                                                                      │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    2 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 3
+Wing
+for i in seq(1, 10)
+    - Nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
+│    2 │for i in seq(1, 10)                                                      │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    3 │- Nib                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 4
+Wing
+if true
+    - nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
+│    2 │if true                                                                  │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    3 │- nib                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 6
+Wing
+if true
+    quill
+elseif true
+    paint
+else
+    song
+    - nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    6 │else                                                                     │
+│    7 │    song                                                                 │
+│      │    ^^^^                                                                 │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    8 │- nib                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Test MixedBlockError 7
+(1, 2, 3)
+a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Inline tables must be the only elements in their block.                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │(1, 2, 3)                                                                │
+│      │^^^^^^^^^                                                                │
+│    2 │a                                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test no MixedBlockError 1
+let t = do
+    x: for i in seq(1, 10)
+        - $i
+    end
+end
+/// Output
+
+/// End
+
+/// Test no MixedBlockError 2
+let t = do
+    x: for i in seq(1, 10)
+        y: $i
+    end
+end
+/// Output
+
+/// End
+
+/// Test leave inside raise
+raise do
+	Fail!
+	leave
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use leave keyword inside a `raise` block.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │ Fail!                                                                   │
+│    3 │ leave                                                                   │
+│      │ ^^^^^                                                                   │
+│    4 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test break inside raise
+for i in seq(2)
+	raise do
+		Fail!
+		break
+	end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword inside a `raise` block.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │ Fail!                                                                   │
+│    4 │ break                                                                   │
+│      │ ^^^^^                                                                   │
+│    5 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test break outside loop
+for i in seq(3)
+    macro wing()
+        macro nib()
+        end
+        break
+    end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword outside a loop.                                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │macro wing()                                                             │
+│    4 │    end                                                                  │
+│    5 │    break                                                                │
+│      │    ^^^^^                                                                │
+│    6 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test continue in affectation
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  let var2 = do
+    a
+    continue
+  end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside an affectation.                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    5 │  a                                                                      │
+│    6 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    7 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test continue in do block
+for var1 in seq(4)
+  do
+    continue
+    a
+  end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside a `do` block.                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │do                                                                       │
+│    3 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    4 │  a                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test raise table block
+raise do
+    - 5
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Raise block must be 'TEXT', not 'TABLE'                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raise do                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │    - 5                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test raise long text
+raise do
+    a$1a$1a$1a$1a$1a$1a$1a$1a$1a$1
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → a1a1a1a1a1a1a1a1a1a1                                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raise do                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │    a$1a$1a$1a$1a$1a$1a$1a$1a$1a$1                                       │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

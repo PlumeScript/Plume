@@ -360,3 +360,29 @@ let a = world
 /// Output
 world
 /// End
+
+/// Test interpolation spaces
+let r = 5
+$r 0 $r
+/// Output
+5 0 5
+/// End
+
+/// Test ellipsis
+...
+/// Output
+...
+/// End
+
+/// Test do comment
+do //e
+end
+/// Output
+/// End
+
+/// Test dollar space eval
+
+a $ 1+1
+/// Output
+a 2
+/// End

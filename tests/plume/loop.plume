@@ -68,7 +68,7 @@ end
 13
 /// End
 
-/// Test break while
+/// Test continue while
 let i = 0
 while i<3
   set i += 1
@@ -193,4 +193,251 @@ for i in first5
 end
 /// Output
 12345
+/// End
+
+/// Test for with interpolation
+let x = 1
+for y in seq(1, 10)
+    $(x+y)
+end
+/// Output
+234567891011
+/// End
+
+/// Test nested for
+for i in seq(1, 2)
+    for j in seq(1, 2)
+        for k in seq(1, 2)
+            $i
+        end
+    end
+end
+/// Output
+11112222
+/// End
+
+/// Test for with counter
+let nex = 0
+for j in seq(1, 2)
+    set nex += 1
+end
+$nex
+/// Output
+2
+/// End
+
+/// Test for float bound
+for i in seq(1, 1.5)
+    $i
+end
+/// Output
+1
+/// End
+
+/// Test for float bound variable
+let x = 1.5
+for i in seq(1, x)
+    $i
+end
+/// Output
+1
+/// End
+
+/// Test for variable bound
+let x = 1
+for i in seq(x, 2)
+    $i
+end
+/// Output
+12
+/// End
+
+/// Test nested for break
+for i in seq(1)
+    for i in seq(1)
+        break
+    end
+end
+/// Output
+/// End
+
+/// Test while infinite break
+while true
+    break
+end
+a
+/// Output
+a
+/// End
+
+/// Test for destructuration
+for i in seq(1)
+    let a, b
+    $b
+end
+/// Output
+
+/// End
+
+/// Test enumerate nested tables
+macro wing(x)
+end
+let t = do
+    - do
+        color: a
+        taste: b
+    end
+end
+
+for nib, quill in enumerate(t)
+    $type($quill)\n
+    $wing($quill.color)
+    $type($quill)
+end
+/// Output
+table
+table
+/// End
+
+/// Test for string bound
+for i in seq(1, String(2))
+    $i
+end
+/// Output
+12
+/// End
+
+/// Test while break with local
+let i = 5
+
+while i < 10
+    let j = 70
+    set i += 1
+    break
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test break nested if 1
+let a = 5
+
+for i in seq(5)
+    if true
+        let j = 70
+        set a += 1
+        break
+    end
+end
+
+$a
+/// Output
+6
+/// End
+
+/// Test break nested if 2
+let i = 5
+
+while true
+    if true
+        let j = 70
+        set i += 1
+        break
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test break nested if 3
+let i = 5
+
+while true
+    if true
+        if true
+            let j = 70
+            set i += 1
+            break
+        end
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test break nested if 4
+let i = 5
+
+while true
+    if true
+        if false
+        else
+            let j = 70
+            set i += 1
+            break
+        end
+    end
+end
+
+$i
+/// Output
+6
+/// End
+
+/// Test while nested do if
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  do
+    if true
+      let var2 = 1
+      
+    else
+      if false
+        a
+      end
+      
+    end
+    
+  end
+end
+/// Output
+/// End
+
+/// Test while continue
+let var2 = 0
+while var2 < 4
+    set var2 += 1
+    if true
+      a
+      continue
+    end
+end
+/// Output
+aaaa
+/// End
+
+/// Test do then for
+do
+    let var1 = 1 
+end
+for var2 in seq(4)
+    a 
+end
+/// Output
+aaaa
+/// End
+
+/// Test for break before body
+for var1 in seq(4)
+  break
+  a
+end
+/// Output
 /// End

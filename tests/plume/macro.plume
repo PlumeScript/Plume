@@ -280,3 +280,423 @@ $double(5)
 /// Output
 (1, 2, macro<???>, 3)
 /// End
+
+/// Test empty macro body
+macro css(selector, ...style)
+	for item in items(style)
+	end
+end
+
+macro Document(body)
+	@css(a)
+		margin: 0
+	end
+end
+
+@Document
+	aaaaaaaaaaaaa
+end
+/// Output
+/// End
+
+/// Test variadic counter
+macro List(...items)
+    let count = 0
+    for item in items
+        set count += 1
+        $count)$item\n
+    end
+end
+
+@List
+    - mark
+    - paint
+    - sing
+end
+/// Output
+1)mark
+2)paint
+3)sing
+/// End
+
+/// Test macro call in eval
+macro wing(body)
+    $body
+end
+
+$(wing("a"))
+/// Output
+a
+/// End
+
+/// Test macro block local
+macro Wing(body)
+    $body
+end
+
+@Wing()
+    let nex = 0
+    for k in seq(1, 1)
+        $nex
+    end
+end
+
+/// Output
+0
+/// End
+
+/// Test macro false arg
+macro wing(x)
+end
+
+$(wing(false))
+/// Output
+
+/// End
+
+/// Test flag variadic
+macro Wing(?optn, ...s)
+    if optn
+       true 
+    else
+       false
+    end
+end
+$Wing(?optn)\n
+$Wing( ?optn)
+/// Output
+true
+true
+/// End
+
+/// Test default param arithmetic
+macro quill(song: 0)
+    let mark = $(5%5)
+    $(mark==0)
+end
+
+$quill()
+/// Output
+true
+/// End
+
+/// Test flag call
+macro quill(?flag)
+end
+
+$(quill(?flag))
+/// Output
+
+/// End
+
+/// Test macro negative arg
+macro wing(a)
+end
+
+$(wing(-5))
+/// Output
+/// End
+
+/// Test flag trailing space
+macro Wing(?deg)
+end
+$Wing(?deg )
+/// Output
+/// End
+
+/// Test named params
+macro Wing(a, b, c: d)
+end
+
+let a, b, d
+
+$(Wing(a, b, c: d))
+/// Output
+/// End
+
+/// Test nested macros items
+macro Wing()
+end
+
+macro Nib(...args)
+  macro Quill()
+      for k, v in items(args)
+        $Wing()
+      end
+  end
+  $Quill()
+end
+
+a
+$Nib(a:b)
+/// Output
+a
+/// End
+
+/// Test anonymous macro repr
+macro()
+end
+/// Output
+macro<???>
+/// End
+
+/// Test ref macros
+ref wing: macro()
+end
+
+macro nib()
+end
+ref quill: macro()
+   $nib()
+end
+
+run $quill()
+
+/// Output
+(wing: macro<wing>, quill: macro<quill>)
+/// End
+
+/// Test macro do block
+macro wing
+   do
+   end
+end
+
+$wing()
+a
+/// Output
+a
+/// End
+
+/// Test macro in do block
+let nib = macro ()
+end
+do
+  $nib()
+end
+a
+/// Output
+a
+/// End
+
+/// Test leave nested macro
+macro wing()
+    for i in seq(5)
+        leave
+    end
+end
+
+macro nib()
+    $wing()
+end
+
+$nib()
+/// Output
+/// End
+
+/// Test leave top-level
+leave
+/// Output
+/// End
+
+/// Test leave with text
+leave
+a$(1+1)
+/// Output
+/// End
+
+/// Test leave in for if
+macro wing()
+    a
+    for i in seq(4)
+        if true
+            b
+            leave
+        end
+    end
+end
+
+$wing()
+/// Output
+ab
+/// End
+
+/// Test leave nested do
+do
+    a
+    do
+        a
+        $(1+1)
+        leave
+        c
+    end
+    d
+end
+/// Output
+aa2d
+/// End
+
+/// Test leave in do if
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  do
+    if false
+      a
+    end
+    leave
+  end
+end
+/// Output
+/// End
+
+/// Test leave macro in loop
+macro var5(x)
+  leave
+end
+for var4 in seq(4)
+  do
+    if true
+      $var5(x)
+    end
+    if true
+      leave
+    end
+  end
+end
+/// Output
+/// End
+
+/// Test empty positional arg 1
+macro wing(a, b)
+end
+
+$wing(,b)
+/// Output
+/// End
+
+/// Test empty positional arg 2
+macro wing(a, b)
+end
+
+$wing(b,)
+/// Output
+/// End
+
+/// Test empty positional arg 3
+macro wing(a, b, c)
+end
+
+$wing(b,,c)
+/// Output
+/// End
+
+/// Test empty positional arg 4
+macro wing(a, b, c)
+end
+
+$(wing(1,,3))
+/// Output
+/// End
+
+/// Test ref macro call
+ref wing: macro
+   Wing!
+end
+
+nib: macro
+   $wing()$wing()
+end
+/// Output
+(wing: macro<wing>, nib: macro<nib>)
+/// End
+
+/// Test ref macro config
+ref nib: macro()
+	ref wing: a
+	config: $wing
+end
+
+run $nib()
+/// Output
+(nib: macro<nib>)
+/// End
+
+/// Test type of macro
+let x
+macro wing()
+    $x
+end
+
+$type($wing)
+/// Output
+macro
+/// End
+
+/// Test success
+macro double(x)
+  $(x*2)
+end
+
+$attempt($double, 2)
+/// Output
+(success: true, result: 4)
+/// End
+
+/// Test fail
+macro double(x)
+  $(x*2)
+end
+
+$attempt($double, a)
+/// Output
+(success: false, result: Cannot convert the string value 'a' to a number.)
+/// End
+
+/// Test fail - long callstack
+macro double(x)
+  $(x*2)
+end
+
+macro nib()
+  $double(a)
+end
+
+macro wing()
+  $nib()
+end
+
+$attempt($wing)
+/// Output
+(success: false, result: Cannot convert the string value 'a' to a number.)
+/// End
+
+/// Test attempt macro raise
+macro wing(a)
+    raise Error!
+end
+
+a
+let result = $attempt($wing, a)
+/// Output
+a
+/// End
+
+/// Test attempt String
+$attempt($String, a)
+/// Output
+(success: true, result: a)
+/// End
+
+/// Test attempt Math.sin
+$attempt($Math.sin, a)
+/// Output
+(success: false, result: Wrong type 'string' for parameter '1' of macro 'sin'. Expected: 'number'.
+Usage: `\$sin(number x, ?deg, ?rad)`)
+/// End
+
+/// Test attempt import
+$attempt($import, tests/plume/toimport/lib)
+/// Output
+(success: true, result: (nib: quill))
+/// End

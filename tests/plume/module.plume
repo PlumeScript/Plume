@@ -210,3 +210,53 @@ $import(tests/plume/toimport/lib2).wing()
 blue bigquill
 blue quill
 /// End
+
+/// Test import macro
+let lib = $import(tests/plume/toimport/text)
+macro Document()
+end
+/// Output
+/// End
+
+/// Test use call
+use tests/plume/toimport/touse
+$nib()
+/// Output
+nib
+/// End
+
+/// Test import single
+let nib from $import(tests/plume/toimport/touse)
+$nib()
+$nib()
+/// Output
+nibnib
+/// End
+
+/// Test import multiple
+let wing, nib from $import(tests/plume/toimport/touse)
+$nib()
+$nib()
+/// Output
+nibnib
+/// End
+
+/// Test use imported macro
+use tests/plume/toimport/733
+
+$Wing()
+/// Output
+1
+/// End
+
+/// Test import two files
+let wing from $import(tests/plume/toimport/1017-1)
+$import(tests/plume/toimport/1017-2)
+$wing()
+/// Output
+/// End
+
+/// Test os path string
+let x = $(String(os.Path()))
+/// Output
+/// End

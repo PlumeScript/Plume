@@ -1,277 +1,177 @@
-/// Test simple affectation
-let _write = quill
-/// Output
-/// End
-
-/// Test simple affectation and eval
-let _write = quill
-$_write
-/// Output
-quill
-/// End
-
-/// Test shadowing
-let _write = 1
-if 1==1
-	let _write = 2
-end
-$_write
-/// Output
-1
-/// End
-
-/// Test not shadowing
-let _write = 1
-if 1==1
-	set _write = 2
-end
-$_write
-/// Output
-2
-/// End
-
-/// Test block capture: if 1
-let _write = if 1==1
-	5
-else
-	3
-end
-$_write
-/// Output
-5
-/// End
-
-/// Test block capture: if 2
-let _write = if 1==2
-	5
-else
-	3
-end
-$_write
-/// Output
-3
-/// End
-
-/// Test block capture: while
-let i = 0
-let _write = while i<5
-	$i
-	set i = $(i+1)
-end
-$_write
-/// Output
-01234
-/// End
-
-/// Test lexical offset 1
-let x = 0
-@Table.join
-	let y=0
-	$(x+y)
-end
-/// Output
-0
-/// End
-
-/// Test lexical offset 2
-let x = 0
-@Table.join
-	let y=0
-	@Table.join
-		let z=0
-		$(x+y+z)
-	end
-end
-/// Output
-0
-/// End
-
-/// Test use 1
-use tests/plume/toimport/lib
-$nib
-/// Output
-quill
-/// End
-
-/// Test use 2
-use tests/plume/toimport/lib, tests/plume/toimport/lib2
-$nib\n
-$wing()
-/// Output
-quill
-blue quill
-/// End
-
-/// Test wrong indentifier
-let if = 5
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Cannot use 'if' as an identifier.                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let if = 5                                                               │
-│      │    ^^                                                                   │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test unknown use
-use idontexists
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot open 'idontexists'.                                                   │
-│   Paths tried:                                                                 │
-│     main/idontexists.plume                                                     │
-│     main/idontexists/init.plume                                                │
-│     idontexists.plume                                                          │
-│     idontexists/init.plume                                                     │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │use idontexists                                                          │
-│      │    ^^^^^^^^^^^                                                          │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test use crash
-use tests/plume/toimport/badlib
+/// Test Add string
+let x = Wings
+$(x+1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Cannot convert the string value 'a' to a number.                             │
+│ → Cannot convert the string value 'Wings' to a number.                         │
 │   (i) Consider using the `..` concat operator.                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ tests/plume/toimport/badlib.plume                                           │
-│    1 │let x = 0                                                                │
-│    2 │set x += a                                                               │
+│  ↳ test.plume                                                                  │
+│    1 │let x = Wings                                                            │
+│    2 │$(x+1)                                                                   │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Add Table
+let x = $Table()
+$(x+1)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot do comparison or arithmetic with a table value.                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let x = $Table()                                                         │
+│    2 │$(x+1)                                                                   │
+│      │  ^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Iterate over non Table
+for x in 1
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot iterate over a non-table 'number' value.                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │for x in 1                                                               │
+│      │^^^^^^^^^^                                                               │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test macro wrong arg count
+let x = macro()
+end
+
+$x(1)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'x', 1 instead of 0.          │
+│   Usage: $x()                                                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │$x(1)                                                                    │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Table.join wrong type
+$Table.join($Table())
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'table' for parameter '1' of macro 'join'.                        │
+│   Did you write `Table.join($t)` instead of `Table.join(...t)`?                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$Table.join($Table())                                                    │
+│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test replace macro wrong arg
+let x = x
+macro rep()
+    $x
+end
+
+$("aaa").replace(a, $rep)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '0'.      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │end                                                                      │
+│    6 │$("aaa").replace(a, $rep)                                                │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test string to number
+let x = a$1
+set x += 1
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot convert the string value 'a1' to a number.                            │
+│   (i) Consider using the `..` concat operator.                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let x = a$1                                                              │
+│    2 │set x += 1                                                               │
 │      │    ^                                                                    │
 │                                                                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ Traceback (most recent call first):                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ test.plume                                                                  │
-│    1 │use tests/plume/toimport/badlib                                          │
-│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test use not a Table
-use tests/plume/toimport/text
+/// Test arithmetic with empty
+$(1+empty)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → To be used, 'tests/plume/toimport/text' must return a table. Currently,      │
-│   it returns a string.                                                         │
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot do comparison or arithmetic with a empty value.                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │use tests/plume/toimport/text                                            │
-│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^                                            │
+│    1 │$(1+empty)                                                               │
+│      │  ^^^^^^^                                                                │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test already exists
-let nib
-use tests/plume/toimport/lib
+/// Test arithmetic with boolean
+$((empty or empty) / 2)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot define variable 'nib' from lib 'tests/plume/toimport/lib', it         │
-│   already exists in the current file scope.                                    │
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot do comparison or arithmetic with a boolean value.                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let nib                                                                  │
-│    2 │use tests/plume/toimport/lib                                             │
-│      │    ^^^^^^^^^^^^^^^^^^^^^^^^                                             │
+│    1 │$((empty or empty) / 2)                                                  │
+│      │   ^^^^^^^^^^^^^^^^^^^                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-
-/// Test wrong variadic params 1
-let ...leftover
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Varadic declarations are reserved to `param` variables.                      │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let ...leftover                                                          │
-│      │    ^^^^^^^^^^^                                                          │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test wrong variadic params 2
-let param ...leftover = 5
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot set default value of a variadic param.                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let param ...leftover = 5                                                │
-│      │                       ^^                                                │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test wrong variadic params 3
-let param ...leftover
-let param ...leftover2
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot declare multiple variadic params.                                     │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let param ...leftover                                                    │
-│    2 │let param ...leftover2                                                   │
-│      │^^^^^^^^^^^^^^^^^^^^^^                                                   │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test simple variable
-let notwing = 1
-$(notwing)
-/// Output
-1
-/// End
-
-/// Test let only
-let trues = 1
-/// Output
-/// End
-
-/// Test two do scopes
-do
-    let x = 0
+/// Test concat macro
+let x
+macro wing()
+    $x
 end
-do
-    let x = 0
-end
-/// Output
 
-/// End
-
-/// Test do set table
-let result
-
-do
-    set result = $Table()
-end
-$result
-/// Output
-$Table()
+a$wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot concat a 'macro' value.                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    4 │end                                                                      │
+│    6 │a$wing                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

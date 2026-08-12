@@ -101,58 +101,6 @@ end
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test Add string
-let x = Wings
-$(x+1)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot convert the string value 'Wings' to a number.                         │
-│   (i) Consider using the `..` concat operator.                                 │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let x = Wings                                                            │
-│    2 │$(x+1)                                                                   │
-│      │  ^^^                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test Add Table
-let x = $Table()
-$(x+1)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot do comparison or arithmetic with a table value.                       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let x = $Table()                                                         │
-│    2 │$(x+1)                                                                   │
-│      │  ^^^                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test Iterate over non Table
-for x in 1
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot iterate over a non-table 'number' value.                              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │for x in 1                                                               │
-│      │^^^^^^^^^^                                                               │
-│    2 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
 /// Test Empty key
 let t = $Table()
 $t[empty]
@@ -372,157 +320,6 @@ end
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test MixedBlockError 1
-- Wing
-Nib
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    Reading this line, Plume assumes the block type is 'TABLE'.                 │
-│    1 │- Wing                                                                   │
-│      │^^^^^^                                                                   │
-│                                                                                │
-│    But you try to add a 'TEXT' element.                                        │
-│    2 │Nib                                                                      │
-│      │^^^                                                                      │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test MixedBlockError 2
-Nib
-- Wing
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    1 │Nib                                                                      │
-│      │^^^                                                                      │
-│                                                                                │
-│    But you try to add a 'TABLE' element.                                       │
-│    2 │- Wing                                                                   │
-│      │^^^^^^                                                                   │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test MixedBlockError 3
-Wing
-for i in seq(1, 10)
-    - Nib
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    1 │Wing                                                                     │
-│      │^^^^                                                                     │
-│    2 │for i in seq(1, 10)                                                      │
-│                                                                                │
-│    But you try to add a 'TABLE' element.                                       │
-│    3 │- Nib                                                                    │
-│      │^^^^^                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test MixedBlockError 4
-Wing
-if true
-    - nib
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    1 │Wing                                                                     │
-│      │^^^^                                                                     │
-│    2 │if true                                                                  │
-│                                                                                │
-│    But you try to add a 'TABLE' element.                                       │
-│    3 │- nib                                                                    │
-│      │^^^^^                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test MixedBlockError 6
-Wing
-if true
-    quill
-elseif true
-    paint
-else
-    song
-    - nib
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    6 │else                                                                     │
-│    7 │    song                                                                 │
-│      │    ^^^^                                                                 │
-│                                                                                │
-│    But you try to add a 'TABLE' element.                                       │
-│    8 │- nib                                                                    │
-│      │^^^^^                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test Test MixedBlockError 7
-(1, 2, 3)
-a
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ SYNTAX ERROR:                                                                  │
-│ → Inline tables must be the only elements in their block.                      │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │(1, 2, 3)                                                                │
-│      │^^^^^^^^^                                                                │
-│    2 │a                                                                        │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test no MixedBlockError 1
-let t = do
-    x: for i in seq(1, 10)
-        - $i
-    end
-end
-/// Output
-
-/// End
-
-/// Test no MixedBlockError 2
-let t = do
-    x: for i in seq(1, 10)
-        y: $i
-    end
-end
-/// Output
-
-/// End
-
 /// Test callstack
 macro paint()
 end
@@ -678,44 +475,41 @@ $Nib()
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test leave inside raise
-raise do
-	Fail!
-	leave
-end
+/// Test use unknown variable const
+let const x = 5
+
+$(x+a)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ → Cannot use leave keyword inside a `raise` block.                             │
+│ → Cannot use variable 'a', it isn't defined in the current scope.              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    2 │ Fail!                                                                   │
-│    3 │ leave                                                                   │
-│      │ ^^^^^                                                                   │
-│    4 │end                                                                      │
+│    1 │let const x = 5                                                          │
+│    3 │$(x+a)                                                                   │
+│      │    ^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test break inside raise
-for i in seq(2)
-	raise do
-		Fail!
-		break
-	end
-end
+/// Test set reference
+ref x
+
+set x = 5
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ COMPILATION ERROR:                                                             │
-│ → Cannot use break keyword inside a `raise` block.                             │
+│ → Cannot set variable 'x', it is a reference.                                  │
+│    Use `x: 5` instead.                                                         │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    3 │ Fail!                                                                   │
-│    4 │ break                                                                   │
-│      │ ^^^^^                                                                   │
-│    5 │end                                                                      │
+│    3 │set x = 5                                                                │
+│      │^^^^^^^^^                                                                │
 │                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │ref x                                                                    │
+│      │^^^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

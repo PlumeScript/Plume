@@ -51,7 +51,7 @@ table t
 /// Test File
 // This is a table
 let lib = $import(tests/plume/toimport/filedoc)
-$plume.doc($lib)
+$String($plume.doc($lib))
 /// Output
 table tests/plume/toimport/filedoc.plume
     This file do somethings
@@ -123,69 +123,3 @@ macro wing()
     a macro that fly
 /// End
 
-/// Test simple doc
-// double the number
-macro double(x)
-    $(2*x)
-end
-$(String(plume.doc(double)))
-/// Output
-macro double(x)
-    double the number
-/// End
-
-/// Test multiple line
-// double the number
-// @param x number the number to double
-macro double(x)
-    $(2*x)
-end
-$(String(plume.doc(double)))
-/// Output
-macro double(x)
-    double the number
-    @param x number the number to double
-/// End
-
-/// Test blank line
-// This is a test file
-
-// double the number
-// @param x number the number to double
-macro double(x)
-    $(2*x)
-end
-$(String(plume.doc(double)))
-/// Output
-macro double(x)
-    double the number
-    @param x number the number to double
-/// End
-
-/// Test Table
-// This is a table
-let t = do
-    - 1
-end
-$(String(plume.doc(t)))
-/// Output
-table t
-    This is a table
-/// End
-
-/// Test File
-// This is a table
-let lib = $import(tests/plume/toimport/filedoc)
-$String($plume.doc($lib))
-/// Output
-table tests/plume/toimport/filedoc.plume
-    This file do somethings
-/// End
-
-/// Test std
-// This is a table
-$String($plume.doc($String.lines))
-/// Output
-luaMacro lines
-    `lines(s)`: Splits the string into a slice of individual lines.
-/// End

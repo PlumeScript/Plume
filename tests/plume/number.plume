@@ -156,3 +156,11 @@ $1.5.find(5)
 /// Output
 5
 /// End
+
+/// Test ceil
+let stop = 1
+let start = 0.5
+$((stop - start).ceil())
+/// Output
+1
+/// End
