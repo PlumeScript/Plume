@@ -171,7 +171,7 @@ local function makePath(path)
 			local _, _, ext = splitName(path)
 			return true, ext and ext or ""
 		end),
-		getModification = plume.obj.luaMacro ("getName", function(args)
+		getModification = plume.obj.luaMacro ("getModification", function(args)
 			--!signature
 			local attr = lfs.attributes(path)
 

@@ -1158,9 +1158,9 @@ return function(plume)
 				local _, _, ext = splitName(path)
 				return true, ext and ext or ""
 			end),
-			getModification = plume.obj.luaMacro ("getName", function (args, vm, currentFile)
-				local __name      = "getName"
-				local __signature = "`$getName()`"
+			getModification = plume.obj.luaMacro ("getModification", function (args, vm, currentFile)
+				local __name      = "getModification"
+				local __signature = "`$getModification()`"
 				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
 				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
 				if not __s then return false, __e end
