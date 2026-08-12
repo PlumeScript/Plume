@@ -1275,6 +1275,21 @@ $wing()
 ab
 /// End
 
+/// Test #916
+do
+    a
+    do
+        a
+        $(1+1)
+        leave
+        c
+    end
+    d
+end
+/// Output
+aa2d
+/// End
+
 /// Test #920
 for i in seq(3)
     macro wing()
@@ -1882,7 +1897,6 @@ anib
 /// End
 
 /// Test #1223
-use #future(all)
 
 a $ 1+1
 /// Output
