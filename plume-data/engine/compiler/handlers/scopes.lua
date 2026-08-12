@@ -63,6 +63,7 @@ return function (plume, context, nodeHandlerTable)
 		context.scope(function()
 			if body.type == "TABLE" or body.isUnic then
 				context.childrenHandler(body)
+				context.registerLabel(node, label)
 			else
 				context.accBlock()(body, nil, label)
 			end
@@ -125,8 +126,8 @@ return function (plume, context, nodeHandlerTable)
 			plume.error.raiseMustBeTEXT(node, node.type)
 		end
 
-		local macro = context.getLast "macros"
-		local loop  = context.getLast "loops"
+		local macro  = context.getLast "macros"
+		local loop   = context.getLast "loops"
 
 		if loop then
 			loop.insideRaise = loop.insideRaise+1
