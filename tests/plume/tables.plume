@@ -213,7 +213,7 @@ $t.y
 let t = do
 	ref x: 1
 	y: @Table.join
-		a$x\aaa
+		a$x\0aaa
 	end
 end
 $t.y
@@ -255,7 +255,7 @@ $t.x
 let t = do
 	ref x as z: 1
 	y: @Table.join
-		a$z\aaa
+		a$z\0aaa
 	end
 end
 $t.y

@@ -96,7 +96,7 @@ macro write(...args)
   Named args:\s
   @Table.join(sep:\,\s)
     for key, value in items(args, ?named)
-      - $key\=$value
+      - $key\0=$value
     end
   end
 end

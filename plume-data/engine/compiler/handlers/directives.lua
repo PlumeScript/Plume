@@ -190,7 +190,6 @@ return function (plume, context, nodeHandlerTable)
 				newLeave             = {true},
 				unknownParamError    = {true},
 				positionnalFileParam = {true},
-				newEscape            = {true},
 				raven                = {true},
 				all                  = {true}
 			},
@@ -198,10 +197,6 @@ return function (plume, context, nodeHandlerTable)
 
 				if args.newLeave or args.raven or args.all then
 					context.futureFlagNewLeave = true
-				end
-
-				if args.newEscape or args.raven or args.all then
-					context.futureFlagNewEscape = true
 				end
 
 				if args.unknownParamError or args.raven or args.all then
