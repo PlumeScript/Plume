@@ -1711,7 +1711,7 @@ macro collect (limit)
     - for i in seq(1, 100)
         if i &gt; limit
             leave
-            // exits collect with the items gathered so far
+            // exits the loop with the items gathered so far
         end
         - $(i * 10)
     end
@@ -20493,7 +20493,6 @@ Plume support `.🪶` extension.
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-use #future(importCache)
 let lib1 = $import(tests/plume/toimport/object)
 let lib2 = $import(tests/plume/toimport/object)
 $(lib1.result == lib2.result)
@@ -20529,7 +20528,7 @@ $(lib1.result == lib2.result)
 <span class="bc-line-num">025</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .result</span>
 <span class="bc-line-num">026</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; lib2.result</span>
 <span class="bc-line-num">027</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; lib1.result == lib2.result</span>
-<span class="bc-line-num">028</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
 <span class="bc-line-num">029</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">030</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">031</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
@@ -20565,7 +20564,6 @@ true
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-use #future(importCache)
 use tests/plume/toimport/object
 let lib = $import(tests/plume/toimport/object)
 $(result == lib.result)
@@ -20628,7 +20626,6 @@ true
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-use #future(importCache)
 let p = $os.Path(tests/plume/toimport/object)
 let a = $p.import()
 let b = $p.import()
@@ -20681,7 +20678,7 @@ $(a.result == b.result)
 <span class="bc-line-num">041</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .result</span>
 <span class="bc-line-num">042</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; b.result</span>
 <span class="bc-line-num">043</span> <span class="bc-opcode">OP_EQ           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; a.result == b.result</span>
-<span class="bc-line-num">044</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; u</span>
+<span class="bc-line-num">044</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
 <span class="bc-line-num">045</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">046</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span>
 <span class="bc-line-num">047</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
@@ -21179,19 +21176,19 @@ $inc()\n
 <span class="bc-line-num">042</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">043</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; \n</span>
 <span class="bc-line-num">044</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
-<span class="bc-line-num">045</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">; inc</span>
+<span class="bc-line-num">045</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; inc</span>
 <span class="bc-line-num">046</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">047</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">048</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">049</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; \n</span>
 <span class="bc-line-num">050</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
-<span class="bc-line-num">051</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">; inc</span>
+<span class="bc-line-num">051</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; inc</span>
 <span class="bc-line-num">052</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">053</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">054</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">055</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 10</span> <span class="bc-info">; \n</span>
 <span class="bc-line-num">056</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
-<span class="bc-line-num">057</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 11</span> <span class="bc-info">; inc</span>
+<span class="bc-line-num">057</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 9</span> <span class="bc-info">; inc</span>
 <span class="bc-line-num">058</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">059</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
 <span class="bc-line-num">060</span> <span class="bc-opcode">CHECK_IS_TEXT   </span> <span class="bc-arg">0 0</span> <span class="bc-info">; inc()</span>
@@ -21206,9 +21203,9 @@ $inc()\n
 <pre><code>
 1
 2
-1
-2
 3
+4
+5
 </code></pre>
 </div>
 </details>

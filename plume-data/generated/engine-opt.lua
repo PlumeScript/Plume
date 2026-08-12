@@ -3654,7 +3654,7 @@ return function (plume)
                                                                 end
                                                                 local cacheId, paramMutableWarning = plume.getModuleCacheId (filename, fileParams)
                                                                 local result = runtimeCache.results[cacheId]
-                                                                if result and currentFile.futureFlagImportCache then
+                                                                if result then
                                                                     mainStackPointer = mainStackPointer + 1
                                                                     mainStack[mainStackPointer] = result
                                                                     if paramMutableWarning then
@@ -6865,7 +6865,7 @@ return function (plume)
                                                                         end
                                                                         local cacheId, paramMutableWarning = plume.getModuleCacheId (filename, fileParams)
                                                                         local result = runtimeCache.results[cacheId]
-                                                                        if result and currentFile.futureFlagImportCache then
+                                                                        if result then
                                                                             mainStackPointer = mainStackPointer + 1
                                                                             mainStack[mainStackPointer] = result
                                                                             if paramMutableWarning then

@@ -71,7 +71,7 @@ return function (plume, context, nodeHandlerTable)
 		
 		local cacheId = plume.getModuleCacheId(filename, fileParamsForCache)
         local result  = context.runtime.cache.results[cacheId]
-        if not result or not context.chunk.futureFlagImportCache then
+        if not result then
 			local success
 			success, result = plume.executeFile(filename, context.runtime, fileParams)
 			if not success then
@@ -186,7 +186,6 @@ return function (plume, context, nodeHandlerTable)
 
 		future = {
 			checkArgs = {
-				importCache          = {true},
 				lineEval             = {true},
 				newLeave             = {true},
 				unknownParamError    = {true},
@@ -197,9 +196,6 @@ return function (plume, context, nodeHandlerTable)
 				all                  = {true}
 			},
 			method = function(node, args)
-				if args.importCache or args.raven or args.all then
-					context.chunk.futureFlagImportCache = true
-				end
 
 				if args.newLeave or args.raven or args.all then
 					context.futureFlagNewLeave = true

@@ -78,9 +78,9 @@ $inc()\n
 /// Output
 1
 2
-1
-2
 3
+4
+5
 /// End
 
 /// Test cycle in use
@@ -120,7 +120,6 @@ blue quill
 /// End
 
 /// Test import cache 1
-use #future(importCache)
 let lib1 = $import(tests/plume/toimport/object)
 let lib2 = $import(tests/plume/toimport/object)
 $(lib1.result == lib2.result)
@@ -129,7 +128,6 @@ true
 /// End
 
 /// Test import cache 2
-use #future(importCache)
 use tests/plume/toimport/object
 let lib = $import(tests/plume/toimport/object)
 $(result == lib.result)
@@ -138,7 +136,6 @@ true
 /// End
 
 /// Test import cache 3 (via os.Path().import())
-use #future(importCache)
 let p = $os.Path(tests/plume/toimport/object)
 let a = $p.import()
 let b = $p.import()
