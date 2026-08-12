@@ -1,6 +1,4 @@
 /// Test simple return
-use #future(return)
-
 macro wing()
 	return nib
 end
@@ -10,8 +8,6 @@ nib
 /// End
 
 /// Test eval in return
-use #future(return)
-
 macro wing()
 	let nib = 6
 	return $nib
@@ -22,8 +18,6 @@ $wing()
 /// End
 
 /// Test multiple return
-use #future(return)
-
 macro wing(x)
 	if x>5
 		return yes
@@ -39,8 +33,6 @@ no
 /// End
 
 /// Test return in for
-use #future(return)
-
 macro wing()
 	for i in seq(4)
 		if i==3
@@ -55,8 +47,6 @@ $wing()
 /// End
 
 /// Test unbalanced return emit empty
-use #future(return)
-
 macro wing()
 	if false
 		return 5
@@ -69,16 +59,12 @@ empty
 /// End
 
 /// Test return in lib
-use #future(return)
-
 $import(tests/plume/toimport/return)
 /// Output
 5
 /// End
 
 /// Test return in text block
-use #future(return)
-
 macro wing(x)
 	Hello!
 	return 4
@@ -91,19 +77,17 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    3 │macro wing(x)                                                            │
-│    4 │ Hello!                                                                  │
+│    1 │macro wing(x)                                                            │
+│    2 │ Hello!                                                                  │
 │      │ ^^^^^^                                                                  │
 │                                                                                │
 │    But you try to add a 'RETURN' element.                                      │
-│    5 │return 4                                                                 │
+│    3 │return 4                                                                 │
 │      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test return no value
-use #future(return)
-
 macro wing()
 	return
 end
@@ -114,8 +98,6 @@ empty
 /// End
 
 /// Test return in table block
-use #future(return)
-
 macro wing(x)
 	- Hello!
 	return 4
@@ -128,20 +110,18 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    Reading this line, Plume assumes the block type is 'TABLE'.                 │
-│    3 │macro wing(x)                                                            │
-│    4 │ - Hello!                                                                │
+│    1 │macro wing(x)                                                            │
+│    2 │ - Hello!                                                                │
 │      │ ^^^^^^^^                                                                │
 │                                                                                │
 │    But you try to add a 'RETURN' element.                                      │
-│    5 │return 4                                                                 │
+│    3 │return 4                                                                 │
 │      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 
 /// Test return in nested text block 1
-use #future(return)
-
 macro wing(x)
 	run do
 		Hello!
@@ -156,20 +136,18 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    3 │macro wing(x)                                                            │
-│    4 │ run do                                                                  │
-│    5 │  Hello!                                                                 │
+│    1 │macro wing(x)                                                            │
+│    2 │ run do                                                                  │
+│    3 │  Hello!                                                                 │
 │      │  ^^^^^^                                                                 │
 │                                                                                │
 │    But you try to add a 'RETURN' element.                                      │
-│    6 │return 4                                                                 │
+│    4 │return 4                                                                 │
 │      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test return in nested text block 2
-use #future(return)
-
 macro wing(x)
 	Hello!
 	do
@@ -185,20 +163,18 @@ end
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    Reading this line, Plume assumes the block type is 'TEXT'.                  │
-│    3 │macro wing(x)                                                            │
-│    4 │ Hello!                                                                  │
+│    1 │macro wing(x)                                                            │
+│    2 │ Hello!                                                                  │
 │      │ ^^^^^^                                                                  │
-│    5 │ do                                                                      │
+│    3 │ do                                                                      │
 │                                                                                │
 │    But you try to add a 'RETURN' element.                                      │
-│    7 │return 4                                                                 │
+│    5 │return 4                                                                 │
 │      │^^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test return in raise
-use #future(return)
-
 macro wing(x)
 	raise do
 		return 4
@@ -211,17 +187,15 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    3 │macro wing(x)                                                            │
-│    4 │ raise do                                                                │
+│    1 │macro wing(x)                                                            │
+│    2 │ raise do                                                                │
 │      │ ^^^^^^^^                                                                │
-│    5 │  return 4                                                               │
+│    3 │  return 4                                                               │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test return during a call
-use #future(return)
-
 macro wing(x)
 	@print
 		return 4
@@ -234,11 +208,11 @@ end
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    3 │macro wing(x)                                                            │
-│    4 │ @print                                                                  │
-│    5 │  return 4                                                               │
+│    1 │macro wing(x)                                                            │
+│    2 │ @print                                                                  │
+│    3 │  return 4                                                               │
 │      │  ^^^^^^^^                                                               │
-│    6 │ end                                                                     │
+│    4 │ end                                                                     │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

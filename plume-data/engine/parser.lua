@@ -157,9 +157,6 @@ return function (plume)
 					if key == "newEscape" or key == "all" or key == "raven" then
 						dynamicParseData.futureFlagNewEscape = true
 					end
-					if key == "return" or key == "all" or key == "raven" then
-						dynamicParseData.futureFlagReturn = true
-					end
 				end
 			end
 			return pos, node
@@ -442,7 +439,6 @@ return function (plume)
 		local block = blockStart * Ct("NULL", _end)
 		local leave     = C("LEAVE", K"leave")
 		local _return   = Ct("RETURN", K"return" * (s * V"firstStatement")^-1)
-		_return = _return * P(function() return dynamicParseData.futureFlagReturn end)
 
 		-- affectations
 		local lbody    = Ct("BODY", V"firstStatement")
@@ -682,7 +678,7 @@ return function (plume)
 			end
 
 			if node.name == "NAME" then
-				plume.checkIdentifier(node, node.content, dynamicParseData.futureFlagReturn)
+				plume.checkIdentifier(node, node.content)
 			end
 
 			if node.epos and node.epos > pos then

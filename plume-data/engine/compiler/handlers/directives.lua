@@ -191,7 +191,6 @@ return function (plume, context, nodeHandlerTable)
 				unknownParamError    = {true},
 				positionnalFileParam = {true},
 				newEscape            = {true},
-				["return"]           = {true},
 				raven                = {true},
 				all                  = {true}
 			},
@@ -212,11 +211,6 @@ return function (plume, context, nodeHandlerTable)
 				if args.positionnalFileParam or args.raven or args.all then
 					context.chunk.futureFlagPositionnalFileParam = true
 				end
-
-				if args["return"] or args.raven or args.all then
-					context.futureFlagReturn = true
-				end
-
 			end
 		}
 	}
