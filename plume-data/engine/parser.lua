@@ -151,9 +151,9 @@ return function (plume)
 				local keyNode = plume.ast.get(option, "KEY")
 				local key = keyNode and keyNode.content
 				if directiveName == "future" then
-					if key == "lineEval" or key == "all" or key == "raven" then
-						dynamicParseData.futureFlagLineEval = true
-					end
+					-- if key == NAME or key == "all" or key == EDITION then
+					-- 	dynamicParseData.FLAG = true
+					-- end
 				end
 			end
 			return pos, node
@@ -345,9 +345,6 @@ return function (plume)
 
 		local eval = P"$" * evalBase
 		local lineeval = P"$ " * Ct("EVAL", expr)
-		lineeval = lineeval * P(function()
-			return dynamicParseData.futureFlagLineEval
-		end)
 		local index = Ct("SAFE_INDEX", P"[" * expr * P"]" * P"?") + Ct("INDEX", P"[" * expr * P"]")
 		local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
@@ -651,11 +648,7 @@ return function (plume)
 		local pos = 0
 		plume.ast.browse(ast, function (node)
 			if node.error then
-				if node.error == plume.error.nonEscapedEvalMark and not dynamicParseData.futureFlagLineEval then
-					node.name = "TEXT"
-				else
-					node.error(node)
-				end
+				node.error(node)
 			end
 
 			if node.name == "NAME" then
