@@ -158,7 +158,7 @@ $ counter + 8
 // → 50
 ```
 
-A fragment-table is best understood as a **lazy value**: its render is deferred until a concrete value is needed. The table's other fields are generation parameters for that deferred render — they stay inspectable (indexing, iteration) even after rendering, and `Table.materialize` (below) processes them as data.
+A fragment-table is best understood as a **lazy value**: its render is deferred until a concrete value is needed. The table's other fields are generation parameters for that deferred render — they stay inspectable (indexing, iteration) even after rendering, and `plume.materialize` (below) processes them as data.
 
 Constraints: the metafield value must be a macro. Because `fragment` intercepts the very triggers these other metafields rely on, defining it alongside any of them is an error:
 
@@ -178,7 +178,7 @@ The `fragment` metafield does **not** fire when the table is consumed as structu
 
 `$(type(t))` is the exception: it forces the fragment on the object passed as parameter, so it reports the object's real value. A library that must tell a `table` from a `string` can rely on `$type` — a fragment passed as a `table`/`any` argument stays a fragment, but `$type` resolves it to its real type, with no ambiguity.
 
-To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
+To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `plume.materialize(x)`:
 
 ```plume
 let deep = do
@@ -190,12 +190,12 @@ let deep = do
     - plain
 end
 
-let m = $Table.materialize($deep)
+let m = $plume.materialize($deep)
 // m is a table whose first item is the string "inner-rendered"
 // and second item is the string "plain"
 ```
 
-`Table.materialize` returns a **new** table; the original is never mutated. Non-table values pass through unchanged.
+`plume.materialize` returns a **new** table; the original is never mutated. Non-table values pass through unchanged.
 
 ## Custom Iterators: `next` and `iter`
 

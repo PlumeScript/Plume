@@ -42,8 +42,6 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.getMeta(t)`
     *   `Table.deepMerge(t1, t2, ?concatNumeric)`: Recursively merges `t2` into `t1`. If a key exists in both and both values are tables, it merges them recursively; otherwise, `t2` overwrites `t1`. Use `?concatNumeric` to skip numeric keys, concatening `t1` and `t2`'s array items.
     *   `Table.flatten(t, ?deep)`: Concatenates the array elements of a table of tables into a single flat array. Use `?deep` to recursively flatten arbitrarily nested structures.
-    *   `Table.materialize(x)`: Returns a fully rendered copy of `x`. If `x` is a table with a `fragment` metafield, the meta macro runs and its result replaces `x`. If `x` is a table without `fragment`, a new table is produced with `Table.materialize` applied to every child. Non-table values pass through unchanged. The original table is never mutated. See [expert.md](expert.md) § Lazy Rendering.
-
 
 ### String manipulation
 
@@ -277,4 +275,5 @@ Assume `let time = $Time()`
 * `lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers, boolean and nil are supported).
 
 ### Others
-*   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
+*   `plume.doc(m)`: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
+*   `plume.materialize(x)`: Returns a fully rendered copy of `x`. If `x` is a table with a `fragment` metafield, the meta macro runs and its result replaces `x`. If `x` is a table without `fragment`, a new table is produced with `plume.materialize` applied to every child. Non-table values pass through unchanged. The original table is never mutated. See [expert.md](expert.md) § Lazy Rendering.

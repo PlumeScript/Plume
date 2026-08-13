@@ -234,3 +234,34 @@ set Math.sin = $Math.cos
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test plume.materialize
+let t = do
+	meta fragment: macro
+		- 1
+		- 2
+		- 3
+	end
+end
+$plume.materialize($t)
+/// Output
+(1, 2, 3)
+/// End
+
+/// Test plume.materialize rec
+let x = 5
+let t = do
+	meta fragment: macro
+		- 1$(x)1$(x)
+		- 2
+		- do
+			meta fragment: macro
+				7
+			end
+		end
+	end
+end
+$plume.materialize($t)
+/// Output
+(1515, 2, 7)
+/// End

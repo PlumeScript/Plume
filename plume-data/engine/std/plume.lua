@@ -43,5 +43,23 @@ plume.std.plume = plume.obj.quickTable {
 		return true, plume.makedoc(m)
 	end)
 }
+
+plume.std.materialize = plume.obj.luaMacro("materialize", function(args, vm)
+	--!signature any t
+	if type(t) ~= "table" or t.type ~= "table" then
+		return true, t
+	end
+	
+	local result = plume.callForceFragment(vm, t)
+
+	if type(result) == "table" and result.type == "table" then
+		for _, key in ipairs(result.keys) do
+			result.table[key] = plume.callForceFragment(vm, result.table[key])
+		end
+	end
+
+	return true, result
+end)
+
 plume.std.plume.name = "plume"
 plume.std.plume:setMetaItem('readonly', true)

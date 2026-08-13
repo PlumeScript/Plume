@@ -418,34 +418,3 @@ $Table.flatten($t, ?deep)
 /// Output
 (1, 2, 3, 4)
 /// End
-
-/// Test Table.materialize
-let t = do
-	meta fragment: macro
-		- 1
-		- 2
-		- 3
-	end
-end
-$Table.materialize($t)
-/// Output
-(1, 2, 3)
-/// End
-
-/// Test Table.materialize rec
-let x = 5
-let t = do
-	meta fragment: macro
-		- 1$(x)1$(x)
-		- 2
-		- do
-			meta fragment: macro
-				7
-			end
-		end
-	end
-end
-$Table.materialize($t)
-/// Output
-(1515, 2, 7)
-/// End
