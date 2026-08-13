@@ -125,7 +125,7 @@ macro List(...items)
         <$depth>
         for x in items
             set item_count += 1
-            $item_count$x
+            $item_count$ plume.materialize(x)
         end
         </$depth>
         set depth -= 1
@@ -142,6 +142,8 @@ end
 end
 // → <1>1a2<2>3b4c</2>5d</1>
 ```
+
+`plume.materialize(x)` forces the item to render immediately, while `depth` still holds the value we want. Without it, the content would accumulate and only be executed after `set depth -= 1`, breaking the macro's purpose.
 
 With a plain macro (eager), the inner `List` would render while `depth` is still `1`, producing wrong nesting (`<1>...<1>...</1>...</1>`). Here the inner fragment runs to completion first, so the tags nest correctly.
 

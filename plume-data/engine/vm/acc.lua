@@ -99,7 +99,6 @@ return function(vm)
 	function vm:_FORCE_FRAGMENT_META(fragment)
 		local meta = fragment:getMetaItem("fragment")
 		local tmeta = self:_GET_TYPE(meta)
-
 		if tmeta == "macro" or tmeta == "closure" then
 			if not fragment.isRendering then -- detect infinite loop
 				fragment.isRendering = true
@@ -135,14 +134,14 @@ return function(vm)
 		        local stackIndex    = {}
 		        local depth         = 0
 
-		        while #stackFragment > 0 do
+		        while #stackFragment > 0 and not self.err do
 		            depth = #stackFragment
 		            local top = table.remove(stackFragment)
 		            local quickExit = false
 		            for i=(stackIndex[depth] or 1), #top do
 		                local item = top[i]
 		                
-		                while true do
+		                while not self.err do
 			                local titem = self:_GET_TYPE(item)
 			                if titem == "fragment" then
 			                    stackIndex[depth] = i+1
@@ -289,7 +288,6 @@ return function(vm)
 	    while not self.err do
 	        local value = self:_STACK_GET(self.mainStack)
 	        local t     = self:_GET_TYPE(value)
-
 	        if value == self.plume.obj.empty then
 	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), "")
 	            break
@@ -317,8 +315,14 @@ return function(vm)
 	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	            end
 	            break
-	        elseif t == "string" or t == "fragment" or (t == "table" and value:getMetaItem("fragment")) then
+	        elseif t == "string" or t == "fragment" then
 	            break
+	        elseif (t == "table" and value:getMetaItem("fragment")) then
+	        	if value.isRendering then
+		        	self:_ERROR(self.plume.error.tryToUseFragmentInsideItSelf(value))
+		        else
+		        	break
+		       	end
 	        else
 	            local tostringMeta, fragmentValue
 	            if t == "table" then

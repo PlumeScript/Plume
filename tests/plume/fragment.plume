@@ -44,7 +44,7 @@ macro List(...items)
         \n
         for i, x in enumerate(items)
             set counters[top] += 1
-            $Table.join(sep: ., ...counters) $x\n
+            $Table.join(sep: ., ...counters) $plume.materialize($x)\n
         end
         run $Table.remove($counters)
     end
@@ -96,7 +96,7 @@ end
 $t$t$t
 $count
 /// Output
-1111
+1110
 /// End
 
 /// Test fragment returning another fragment
@@ -151,7 +151,7 @@ $t.value
 42
 /// End
 
-/// Test fragment overflow
+/// Test fragment overflow 1
 let t = do
     value: 42
     meta fragment: macro()
@@ -176,8 +176,38 @@ a$t
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    7 │a$t                                                                      │
-│      │  ^                                                                      │
+│    1 │let t = do                                                               │
+│      │^                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test fragment overflow 2
+let t = do
+    value: 42
+    meta fragment: macro()
+       // $ plume.materialize(t)
+    end
+end
+a$t
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Circular fragment reference: The table `(value: 42)` references itself       │
+│   within its meta-macro fragment.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │meta fragment: macro()                                                   │
+│    4 │   $ plume.materialize(t)                                                │
+│      │     ^^^^^^^^^^^^^^^^^^^^                                                │
+│    5 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    1 │let t = do                                                               │
+│      │^                                                                        │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
