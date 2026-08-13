@@ -325,3 +325,50 @@ $t[key]
 /// Output
 wing
 /// End
+
+/// Test fragment not triggered by concat
+let x = 0
+let t = do
+    meta fragment: macro()
+        $x
+    end
+end
+set x += 1
+$t
+set x+= 1
+a
+/// Output
+2a
+/// End
+
+/// Test fragment value not triggered by concat
+let x = 0
+macro t
+    meta fragment: macro()
+        $x
+    end
+end
+set x += 1
+$t()
+set x+= 1
+a
+/// Output
+2a
+/// End
+
+/// Test fragment tostring value not triggered by concat
+let x = 0
+let t = do
+    meta tostring: macro()
+        meta fragment: macro()
+            $x
+        end
+    end
+end
+set x += 1
+$t
+set x+= 1
+a
+/// Output
+2a
+/// End

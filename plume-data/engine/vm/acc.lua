@@ -48,7 +48,7 @@ return function(vm)
 
 	    --! to-remove-begin
 	    -- No optimisation in debug mode
-	    CONCAT_COUNT_LIMIT = 0
+	    CONCAT_COUNT_LIMIT = 7
 	    --! to-remove-end
 
 	    if count == 0 then
@@ -60,9 +60,18 @@ return function(vm)
 	        local length = 0
 	        for i = start, stop do
 	            local item = self:_STACK_GET(self.mainStack, i)
-	            if self:_GET_TYPE(item) == "fragment" then
+	            local t = self:_GET_TYPE(item)
+	            if t == "fragment" then
 	                directConcat = false
 	                break
+	            elseif t == "table" then
+	            	directConcat = false
+	            	--! to-remove-begin
+	            	if not item:getMetaItem("fragment") then
+	            		error("[VM] Non-fragment table inside concat.")
+	            	end
+	            	--! to-remove-end
+	            	break
 	            else
 	            	--! to-remove-begin
 	            	if type(item) ~= "string" and type(item) ~= "number" then
@@ -308,15 +317,12 @@ return function(vm)
 	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	            end
 	            break
-	        elseif t == "string" or t == "fragment" then
+	        elseif t == "string" or t == "fragment" or (t == "table" and value:getMetaItem("fragment")) then
 	            break
 	        else
 	            local tostringMeta, fragmentValue
 	            if t == "table" then
 	                tostringMeta = value:getMetaItem("tostring")
-	                if not tostringMeta then
-	                    fragmentValue = self:_FORCE_FRAGMENT_META(value)
-	                end
 	            end
 
 	            if tostringMeta then
@@ -334,11 +340,6 @@ return function(vm)
 	                -- Force fragments returned by tostring
 	                local stringValue = self:_STACK_GET(self.mainStack)
 	                local stringValueType = self:_GET_TYPE(stringValue)
-	                while stringValueType == "fragment" and not self.err do
-	                    self:FORCE_FRAGMENT()
-	                    stringValue = self:_STACK_GET(self.mainStack)
-	                    stringValueType = self:_GET_TYPE(stringValue)
-	                end
 
 	                if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number"
 	                   and stringValueType ~= "fragment"
