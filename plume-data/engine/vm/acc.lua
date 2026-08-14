@@ -364,6 +364,12 @@ return function(vm)
 	                self:_STACK_POP(self.mainStack)
 	                self:_STACK_PUSH(self.mainStack, fragmentValue)
 	                -- loop continues to re-process the result
+	            elseif t == "macro" then
+	                self:_STACK_POP(self.mainStack)
+	                self:BEGIN_ACC(0, 0)
+	                self:_STACK_PUSH(self.mainStack, value)
+	                self:_CONCAT_CALL_REC()
+	                -- loop continues to re-process the result
 	            elseif t == "boolean" then
 	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
 	                break

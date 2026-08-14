@@ -470,6 +470,17 @@ The ink is dark.
 The wing is great.
 ```
 
+**Implicit call in text** — when a macro is used in the middle of a text and takes no argument, the parentheses are optional: `$name` is equivalent to `$name()`. The macro is called automatically and its result is concatenated:
+
+```plume
+macro wing
+    wing
+end
+This is a $wing.
+// →
+This is a wing.
+```
+
 **Block call** — `@name ... end`: the block supplies the last missings parameters. This is the foundation of Plume's DSL style:
 
 ```plume
