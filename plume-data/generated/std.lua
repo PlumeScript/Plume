@@ -185,6 +185,9 @@ return function(plume)
 		if not __s then return false, __e end
 		------------
 		x = plume.callForceFragment(vm, x)
+		if vm.err then
+			return false, vm.err
+		end
 	
 		local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
 		if result == "closure" then
@@ -1445,10 +1448,16 @@ return function(plume)
 		end
 		
 		local result = plume.callForceFragment(vm, t)
+		if vm.err then
+			return false, vm.err
+		end
 	
 		if type(result) == "table" and result.type == "table" then
 			for _, key in ipairs(result.keys) do
 				result.table[key] = plume.callForceFragment(vm, result.table[key])
+				if vm.err then
+					return false, vm.err
+				end
 			end
 		end
 	
@@ -1705,6 +1714,9 @@ return function(plume)
 						local t = type(result) == "table" and result.type or type(result)
 						if t == "fragment" then
 							result = plume.callForceFragment(vm, result)
+							if vm.err then
+								return false, vm.err
+							end
 						elseif t ~= "string" and t ~= "number" and t ~= "empty" then
 							success = false
 							result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
@@ -2221,6 +2233,9 @@ return function(plume)
 			for i, value in ipairs(args) do
 				if type(value) == "table" and (value.type == "fragment" or value.meta.table.fragment) then
 					args[i] = plume.callForceFragment(vm, value)
+					if vm.err then
+						return false, vm.err
+					end
 				elseif type(value) ~= "number" and type(value) ~= "string" then
 					return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
 				end
@@ -3126,7 +3141,7 @@ return function(plume)
 	function plume.callForceFragment(vm, s)
 		vm:_STACK_PUSH(vm.mainStack, s)
 		vm:FORCE_FRAGMENT()
-		return vm:_STACK_POP(vm.mainStack)
+		return not vm.err and vm:_STACK_POP(vm.mainStack)
 	end
 	
 	function plume.stdCheckType(vm, arg, expected, argName, name, signature)
@@ -3135,6 +3150,9 @@ return function(plume)
 			if arg.type == "fragment" then
 				given = "string"
 				arg = plume.callForceFragment(vm, arg)
+				if vm.err then
+					return false, vm.err, arg
+				end
 			elseif expected ~= "table" and arg.subtype then
 				given = arg.subtype
 			elseif expected ~= "table" and arg.table and arg.table.type then

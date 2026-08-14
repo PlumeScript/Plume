@@ -44,7 +44,7 @@ end
 function plume.callForceFragment(vm, s)
 	vm:_STACK_PUSH(vm.mainStack, s)
 	vm:FORCE_FRAGMENT()
-	return vm:_STACK_POP(vm.mainStack)
+	return not vm.err and vm:_STACK_POP(vm.mainStack)
 end
 
 function plume.stdCheckType(vm, arg, expected, argName, name, signature)
@@ -53,6 +53,9 @@ function plume.stdCheckType(vm, arg, expected, argName, name, signature)
 		if arg.type == "fragment" then
 			given = "string"
 			arg = plume.callForceFragment(vm, arg)
+			if vm.err then
+				return false, vm.err, arg
+			end
 		elseif expected ~= "table" and arg.subtype then
 			given = arg.subtype
 		elseif expected ~= "table" and arg.table and arg.table.type then

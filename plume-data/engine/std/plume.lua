@@ -51,10 +51,16 @@ plume.std.materialize = plume.obj.luaMacro("materialize", function(args, vm)
 	end
 	
 	local result = plume.callForceFragment(vm, t)
+	if vm.err then
+		return false, vm.err
+	end
 
 	if type(result) == "table" and result.type == "table" then
 		for _, key in ipairs(result.keys) do
 			result.table[key] = plume.callForceFragment(vm, result.table[key])
+			if vm.err then
+				return false, vm.err
+			end
 		end
 	end
 
