@@ -213,3 +213,134 @@ $nib()
 /// Output
 Wing!Wing!
 /// End
+
+/// Test Sibling upvalue capture
+macro helper
+   H
+end
+
+let t = do
+   ref box: macro
+      a: macro
+         $ helper()
+         $ box()
+      end
+      b: macro
+         $ helper()
+      end
+   end
+end
+$t.box().b()
+/// Output
+H
+/// End
+
+/// Test Sibling upvalue capture 2
+macro helper1
+   1
+end
+macro helper2
+   2
+end
+
+let t = do
+   ref box: macro
+      a: macro
+         $ helper1()
+         $ helper2()
+         $ box()
+      end
+      b: macro
+         $ helper2()
+      end
+   end
+end
+$t.box().b()
+/// Output
+2
+/// End
+
+/// Test Sibling upvalue capture nested
+macro helper
+   H
+end
+
+let t = do
+   ref outer: macro
+      mid: macro
+         a: macro
+            $ helper()
+            $ outer()
+         end
+         b: macro
+            $ helper()
+         end
+      end
+   end
+end
+$t.outer().mid().b()
+/// Output
+H
+/// End
+
+/// Test Sibling ref upvalue capture
+macro helper
+   H
+end
+
+let t = do
+   ref box: macro
+      val: 42
+      a: macro
+         $ box()
+         $ helper()
+      end
+      b: macro
+         $box().val
+      end
+   end
+end
+$t.box().b()
+/// Output
+42
+/// End
+
+/// Test Sibling upvalue mutation
+let t = do
+   let count = 0
+   ref box: macro
+      a: macro()
+         $ count
+         $ box()
+      end
+      b: macro()
+         set count += 1
+         $ count
+      end
+   end
+end
+$t.box().b()
+$t.box().b()
+/// Output
+12
+/// End
+
+/// Test Sibling upvalue capture last
+macro helper
+   H
+end
+
+let t = do
+   ref box: macro
+      a: macro
+         $ box()
+      end
+      b: macro
+         $ helper()
+      end
+   end
+end
+$t.box().b()
+/// Output
+H
+/// End

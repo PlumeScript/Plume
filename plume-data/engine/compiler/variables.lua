@@ -94,7 +94,7 @@ return function (plume, context)
 			if not childMacro.upvalueMap[name] then
 				table.insert(childMacro.upvalues, {
 					offset = #childMacro.upvalues+1,
-					parentOffset = #macro.upvalues,
+					parentOffset = context.getLast("macros", i).upvalueMap[name].offset,
 					isUpvalue = true
 				})
 				childMacro.upvalueMap[name] = childMacro.upvalues[#childMacro.upvalues]
