@@ -540,3 +540,35 @@ run nothing
 /// Output
 
 /// End
+
+/// Test inline block call - simple
+macro double(x)
+  $x $x
+end
+
+ @double wing
+/// Output
+wing wing
+/// End
+
+/// Test inline block call - chained
+macro double(x)
+  $x $x
+end
+
+ @double @double wing
+/// Output
+wing wing wing wing
+/// End
+
+/// Test inline block call - with args
+macro rep(x, count: 2)
+  for i in seq(count)
+    $x
+  end
+end
+
+ @rep(count: 6) wing
+/// Output
+wingwingwingwingwingwing
+/// End
