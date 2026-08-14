@@ -414,6 +414,11 @@ return function (plume)
 							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
 						)
 		local block = blockStart * Ct("NULL", _end)
+		-- Inline block call: `@call <rest of line>` — the whole line is the body,
+		-- so commas and unbalanced parens don't need escaping.
+		local inlineBlockStart = Ct("EVAL", P"@" * blockName * os
+							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"texticb")))
+						)
 		local leave     = C("LEAVE", K"leave")
 		local _return   = Ct("RETURN", K"return" * (s * V"firstStatement")^-1)
 
@@ -588,7 +593,7 @@ return function (plume)
 			statement    = lt * V"firstStatement",
 
 			commandStd =  _if + _while + _for + _break + continue + macro
-						  + _do + block + let + set + leave + _return + inlinetable
+						  + _do + inlineBlockStart + block + let + set + leave + _return + inlinetable
 						  + expand + use + raw + with,
 			-- Only at line start
 			commandLB = listitem + hashitem,
@@ -602,6 +607,10 @@ return function (plume)
 			textic = asMacroic + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
 						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic" 
 					)^1,
+			-- Inline block call body: the rest of the line, may chain inline block calls.
+			texticb = inlineBlockStart + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+						+ V"rawtexticb"
+					)^1,
 
 			comment  = os * (
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)
@@ -612,12 +621,16 @@ return function (plume)
 			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"//" + P"/*" + s)^1),
 			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"//" + P"/*")^1),
 			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//" + P"/*")^1),
+			-- Stops at a chained inline block call (`@name` followed by space/newline
+			-- or an argument list) so a nested block form isn't swallowed as raw text.
+			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * _idns * (os * S"\n" + s + P"("))^1),
 
 			invalid = E(plume.error.emptySet, K"set"),
 			evalOpperator = call + index + directindex,
 
 			inlinetable= inlinetable,
-			blockStart = blockStart
+			blockStart = blockStart,
+			inlineBlockStart = inlineBlockStart
 		}
 
 		return lpeg.Ct(rules)

@@ -235,6 +235,32 @@ end
 //   end
 ```
 
+**Inline block calls.** A `@` call can also take the rest of its line as its body, without `end`:
+
+```plume
+macro bold(x)
+    <strong>$x</strong>
+end
+
+@bold This whole line is the argument of bold.
+// → <strong>This whole line is the argument of bold.</strong>
+```
+
+The whole line is read as the body, so commas and unbalanced parentheses no longer need escaping:
+
+```plume
+@call(a, b) A line with, commas and (unbalanced) parens
+```
+
+Inline calls chain like block calls, and can take arguments:
+
+```plume
+@bold @italic Mon texte
+@style(fontWeight: bold) Mon texte
+```
+
+Prefer the block form as soon as the content grows beyond a single line — it keeps the body readable and lets it span several lines.
+
 **Empty arguments.** An empty slot between commas is read as `$empty`: `$wing(,,)` ≡ `$wing($empty, $empty, $empty)`.
 
 **Macros stored in tables: methods.** Calling a macro through a table — `$t.method()` or `$t[1]()` — binds the implicit variable `self` to that table:
