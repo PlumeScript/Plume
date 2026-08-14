@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">939 passed out of 939 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">940 passed out of 940 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -50482,7 +50482,7 @@ let param ...leftover2
 </code></pre>
 </div>
 </details>
-<h2>plume/z_issues: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
+<h2>plume/z_issues: <span style="font-weight: normal;">7 passed out of 7 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -50570,6 +50570,77 @@ end
 <h4>Output</h4>
 <pre><code>
 (wing: macro&lt;wing&gt;, H1: macro&lt;???&gt;, H2: macro&lt;???&gt;, H3: macro&lt;???&gt;, H4: macro&lt;???&gt;, H5: macro&lt;???&gt;, H6: macro&lt;???&gt;)
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1245 <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+let t = $Time.now()
+while t - Time.now() &lt; 5
+end
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; now</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Time</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .now</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .now</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">STORE_LOCAL     </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">LOAD_LOCAL      </span> <span class="bc-arg">0 1</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">BEGIN_ACC       </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; now</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">019</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; Time</span>
+<span class="bc-line-num">020</span> <span class="bc-opcode">CALL_INDEX_REGISTER_SELF</span> <span class="bc-arg">0 0</span> <span class="bc-info">; .now</span>
+<span class="bc-line-num">021</span> <span class="bc-opcode">TABLE_INDEX     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; .now</span>
+<span class="bc-line-num">022</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">023</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">024</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; Time.now()</span>
+<span class="bc-line-num">025</span> <span class="bc-opcode">OP_SUB          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t - Time.now()</span>
+<span class="bc-line-num">026</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t - Time.now()</span>
+<span class="bc-line-num">027</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">028</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">029</span> <span class="bc-opcode">OP_LT           </span> <span class="bc-arg">0 0</span> <span class="bc-info">; t - Time.now() &lt; 5</span>
+<span class="bc-line-num">030</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; while t - Time.now() &lt; 5[...]</span>
+<span class="bc-line-num">031</span> <span class="bc-opcode">JUMP_IF_NOT     </span> <span class="bc-arg">0 33</span>
+<span class="bc-line-num">032</span> <span class="bc-opcode">JUMP            </span> <span class="bc-arg">0 14</span>
+<span class="bc-line-num">033</span> <span class="bc-opcode">LOAD_EMPTY      </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">034</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; l</span>
+<span class="bc-line-num">035</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">036</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Error</h4>
+<pre><code>
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot compare &#39;Date&#39; and &#39;number&#39;                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = $Time.now()                                                      │
+│      │         ^^^^^^^^^^                                                      │
+│    2 │while t - Time.now() &lt; 5                                                 │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
 </div>
 </details>

@@ -170,7 +170,7 @@ function createDate (args)
 	time:setItem("type", "Date")
 
 	local success, result = true
-	if args.timestamp and args.timestamp ~= 0 then
+	if args.timestamp ~= nil then
 		time:setItem("timestamp", args.timestamp)
 	else
 		success, result = time:updateTimestamp(args)
