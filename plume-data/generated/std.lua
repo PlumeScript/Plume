@@ -2704,7 +2704,9 @@ return function(plume)
 	
 		local result = vx - vy
 	
-		if tx ~= "Date" and ty ~= "Date" then
+		if tx == "Date" and ty == "Date" then
+			return createDuration(result)
+		elseif tx ~= "Date" and ty ~= "Date" then
 			return createDuration(result)
 		else
 			return createDate({timestamp=result})
