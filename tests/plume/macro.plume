@@ -700,3 +700,49 @@ $attempt($import, tests/plume/toimport/lib)
 /// Output
 (success: true, result: (nib: quill))
 /// End
+
+/// Test implicit concat
+macro wing
+	wing
+end
+
+This is a $wing.
+/// Output
+This is a wing.
+/// End
+
+/// Test implicit concat with error
+macro double(x)
+	$x $x
+end
+
+This is a $double.
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'double', 0 instead of 1.     │
+│   Usage: $double(x)                                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro double(x)                                                          │
+│      │^                                                                        │
+│    2 │ $x $x                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test macro by value
+macro wing
+	wing
+end
+
+let call = $wing()
+let copy = $wing
+
+$ type(call)\n
+$ type(copy)
+/// Output
+string
+macro
+/// End
