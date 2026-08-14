@@ -101,4 +101,10 @@ return function(plume)
 		local message = "Cannot declare multiple variadic params."
 		plume.error.throwCompilationError(node, message)
 	end
+
+	function plume.error.variableDefiningItSelf(node, name, variableNode)
+		local message = string.format("Cannot use the value of `%s` to define `%s` itself.", name, name)
+		plume.error.addContext(node, variableNode)
+		plume.error.throwCompilationError(node, message)
+	end
 end

@@ -347,6 +347,44 @@ end
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test ref define itself
+ref x: do
+	$x
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use the value of `x` to define `x` itself.                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │ $x                                                                      │
+│      │  ^                                                                      │
+│    3 │end                                                                      │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │ref x: do                                                                │
+│      │^^^^^^^^^                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test ref use itself
+ref x: macro()
+	$x
+end
+/// Output
+(x: macro<x>)
+/// End
+
+/// Test ref use same name
+ref x: do
+	let x
+	$x
+end
+/// Output
+(x: )
+/// End
+
 /// Test block expand
 macro wing(x)
 	- a

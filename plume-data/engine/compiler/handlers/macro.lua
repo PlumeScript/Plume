@@ -86,6 +86,10 @@ return function (plume, context, nodeHandlerTable)
 			if lastLoop then
 				lastLoop.insideMacro = lastLoop.insideMacro+1
 			end
+			local lasRef = context.getLast "ref"
+			if lasRef then
+				lasRef.insideMacro = lasRef.insideMacro+1
+			end
 
 			-------------------------------------------------------------
 			--- Count arguments, save variadic offset
@@ -165,7 +169,7 @@ return function (plume, context, nodeHandlerTable)
 			-- If the macro is called as a table field, `self`
 			-- is a reference to this table.
 			-- Else is empty
-			if not context.getVariable("self", true) then
+			if not context.getVariable(node, "self", true) then
 				local param = context.registerVariable(nil, "self", {isSelf=true})
 				macroObj.namedParamCount = macroObj.namedParamCount+1
 				macroObj.namedParamOffset.self = param.offset
@@ -179,6 +183,10 @@ return function (plume, context, nodeHandlerTable)
 
 			if lastLoop then
 				lastLoop.insideMacro = lastLoop.insideMacro-1
+			end
+			local lasRef = context.getLast "ref"
+			if lasRef then
+				lasRef.insideMacro = lasRef.insideMacro-1
 			end
 			
 		end) ()
