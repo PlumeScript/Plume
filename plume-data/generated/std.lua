@@ -1464,6 +1464,29 @@ return function(plume)
 		return true, result
 	end)
 	
+	plume.std.warning = plume.obj.luaMacro("warning", function (args, vm, currentFile)
+		local __name      = "warning"
+		local __signature = "`$warning(string msg, string help:, ...issues)`"
+		local __s, __e, self, msg
+		__s, __e, msg = plume.stdUnpackPositional(args, 1, math.huge,  __name, __signature)
+		local help
+		if __s then __s, __e, self, help = plume.stdUnpackNamed(args, {"self", "help"}, __name, __signature) end
+		help = help or nil
+		if __s and msg then __s, __e, msg = plume.stdCheckType(vm, msg, "string", "1", __name, __signature) end
+		if __s and help then __s, __e, help = plume.stdCheckType(vm, help, "string", "help", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		local issues = {}
+		for i = 2, #args.table do
+			table.insert(issues, args.table[i])
+		end
+		if #issues == 0 then
+			issues = {1248}
+		end
+		plume.warning.runtimeWarning(msg, help, vm.runtime, vm.ip, issues)
+		return true, plume.obj.empty
+	end)
+	
 	plume.std.plume.name = "plume"
 	plume.std.plume:setMetaItem('readonly', true)
 	

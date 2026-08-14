@@ -277,3 +277,4 @@ Assume `let time = $Time()`
 ### Others
 *   `plume.doc(m)`: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
 *   `plume.materialize(x)`: Returns a fully rendered copy of `x`. If `x` is a table with a `fragment` metafield, the meta macro runs and its result replaces `x`. If `x` is a table without `fragment`, a new table is produced with `plume.materialize` applied to every child. Non-table values pass through unchanged. The original table is never mutated. See [expert.md](expert.md) § Lazy Rendering.
+*   `plume.warning(msg, help:, ...issues)`: Emits a warning at the call site, for use by libraries. `msg` is the warning text, `?help` an optional detailed hint, and `...issues` the GitHub issue numbers to reference (defaults to `1248`). The warning is subject to the usual `use #warning(...)` modes and deduplication. No newline at end of file

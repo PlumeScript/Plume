@@ -67,5 +67,11 @@ plume.std.materialize = plume.obj.luaMacro("materialize", function(args, vm)
 	return true, result
 end)
 
+plume.std.warning = plume.obj.luaMacro("warning", function(args, vm)
+	--!signature string msg, string help:
+	plume.warning.runtimeWarning(msg, help, vm.runtime, vm.ip, {1248})
+	return true, plume.obj.empty
+end)
+
 plume.std.plume.name = "plume"
 plume.std.plume:setMetaItem('readonly', true)
