@@ -146,8 +146,9 @@ return function (plume, context, nodeHandlerTable)
 			macro.insideRaise = macro.insideRaise-1
 		end
 		
-		context.safeClose(node, macro)
-		context.safeClose(node, loop, loop and loop.leave)
+		-- Signature: context.safeClose(node, obj, leave, raise)
+		context.safeClose(node, macro, nil, true) 
+		context.safeClose(node, loop, loop and loop.leave, true)
 		
 		context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 		context.registerOP(node, plume.ops.CHECK_IS_TEXT)
