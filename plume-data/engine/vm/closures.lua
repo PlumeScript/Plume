@@ -126,6 +126,13 @@ return function(vm)
 						upvalue.emptyRef  = nil
 						upvalue.reference = self.mainStack
 						upvalue.offset    = self:_GET_REF_POS(upvalueInfos.key, upvalueInfos.blockPosition)
+						if not upvalue.offset then
+							-- The offset cannot be found.
+							-- Assume this is because CLOSURE is called just before
+							-- the target object is added to the table.
+							-- So  target the next position
+							upvalue.offset = vm:_GET_REF_FRAME_TOP(upvalueInfos.blockPosition)+1
+						end
 					end
 				else
 					local offset = self:_UPVALUE_OFFSET(upvalueInfos.localOffset, upvalueInfos.scopeOffset)
