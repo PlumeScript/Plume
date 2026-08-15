@@ -157,7 +157,11 @@ return function (plume, context, nodeHandlerTable)
 		},
 
 		context = {
-			method = function(node, args)	
+			method = function(node, args)
+				if node.parent.name ~= "FILE" then
+					plume.error.useContextMustBeAtFileRoot(node)
+				end
+
 				context.contextVariableToClose = context.contextVariableToClose + 1
 				context.registerOP(node, plume.ops.BEGIN_ACC)
 

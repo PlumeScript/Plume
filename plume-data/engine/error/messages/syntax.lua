@@ -65,6 +65,11 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.useContextMustBeAtFileRoot(node)
+		local message = "`use #context` must be at file root."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.missingIterator(node)
 		local message = "Missing for iterator."
 		node.errlpos = 3 
