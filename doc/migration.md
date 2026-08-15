@@ -1,14 +1,14 @@
 # Owl -> Raven
 
 ## `return` becomes a keyword #41
-`return` is now a keyword, enabled with `use #future(return)`. It returns a value from a macro. With the flag active, `return` can no longer be used as an identifier.
+`return` is now a keyword. It returns a value from a macro. `return` can no longer be used as an identifier.
 
 ## Add an error when using non-escaped `$` #900
 Escape all non-eval `$`: `\$`
 
 ## Restrict escape sequences to a fixed set #1157
-Only `\n`, `\t`, `\r`, `\s`, `\$`, `\(`, `\:`, `\,`, `\\`, `\/` and `\0` are valid escapes. Any other `\X` is an error.
-- Escaping an ordinary letter (`\a`) is no longer allowed: write `\0a` instead.
+Only `\n`, `\t`, `\r`, `\s`, `\$`, `\(`, `\)`, `\:`, `\,`, `\\`, `\/` and `\0` are valid escapes. Any other `\X` is an error.
+- Escaping an ordinary letter (`\a`) is no longer allowed.
 - `\0` produces empty text and prevents keyword recognition: write `\0set` instead of `\set`.
 
 ## Leave affect only the current accumulation block instead of the whole macro #916
@@ -69,4 +69,4 @@ Check if the key exists before calling `Table.removeKey`.
 *	Write `with ($x: 5)` instead of `with x: 5`.
 *	Write `with ($plume.locale: fr)` instead of `with locale: fr`
 *	Write `let x = $Context();...;$x()` instead of `let context x;...;$x`
-*	`use #context` only works for `plume.*` context variables.
+*	`use #context(locale: fr)` is sugar for `use #context($plume.locale: fr)` — string keys are interpolated to `plume[key]`.

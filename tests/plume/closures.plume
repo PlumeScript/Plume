@@ -1,6 +1,6 @@
 /// Test Capture "global"
 let value = 5
-macro Wing()
+macro Wing
   $value
 end
 $Wing()
@@ -9,7 +9,7 @@ $Wing()
 /// End
 
 /// Test Capture inside macro
-macro makeClosure()
+macro makeClosure
    let a = 10
    let b = 20
    macro ()
@@ -24,7 +24,7 @@ $f()
 
 
 /// Test Capture nested scopes 1
-macro makeClosure()
+macro makeClosure
    let a = 10
 
    if true
@@ -41,7 +41,7 @@ $f()
 /// End
 
 /// Test Capture nested scopes 2
-macro makeClosure()
+macro makeClosure
    let a = 10
    let b = 20
    macro ()
@@ -57,17 +57,17 @@ $f()
 /// End
 
 /// Test Chained closures
-macro A()
+macro A
 end
 
-macro B()
+macro B
     $A()
 end
 
-macro C()
+macro C
 end
 
-macro D()
+macro D
     $B()
     $C()
 end
@@ -79,7 +79,7 @@ $D()
 
 
 /// Test Mutation
-macro makeCounter()
+macro makeCounter
   let count = 0
   macro()
     set count += 1
@@ -95,9 +95,9 @@ $counter()
 /// End
 
 /// Test Nested Macros 1
-macro grandPa()
+macro grandPa
   let secret = GP
-  
+
   macro()
     macro()
       $secret
@@ -112,9 +112,9 @@ GP
 /// End
 
 /// Test Nested Macros 2
-macro grandPa()
+macro grandPa
   let secret = GP
-  
+
   macro()
     macro()
       macro()
@@ -131,7 +131,7 @@ GP
 /// End
 
 /// Test Setter getter
-macro createBox()
+macro createBox
   let value = 0
   _set: macro(v)
     set value = $v
@@ -152,13 +152,12 @@ $box._get()
 macro rec(n)
    if n==0
       macro(x)
-         $x
+         return $x
       end
    else
-      let f_rec = $rec($(n-1))
+      let f_rec = $ rec(n-1)
       macro(x)
-         run $(print(x))
-         $(n * f_rec(x))
+         return $ n * f_rec(x)
       end
    end
 end
@@ -213,4 +212,135 @@ let nib from $import(tests/plume/toimport/lib3)
 $nib()
 /// Output
 Wing!Wing!
+/// End
+
+/// Test Sibling upvalue capture
+macro helper
+   H
+end
+
+let t = do
+   ref box: macro
+      a: macro
+         $ helper()
+         $ box()
+      end
+      b: macro
+         $ helper()
+      end
+   end
+end
+$t.box().b()
+/// Output
+H
+/// End
+
+/// Test Sibling upvalue capture 2
+macro helper1
+   1
+end
+macro helper2
+   2
+end
+
+let t = do
+   ref box: macro
+      a: macro
+         $ helper1()
+         $ helper2()
+         $ box()
+      end
+      b: macro
+         $ helper2()
+      end
+   end
+end
+$t.box().b()
+/// Output
+2
+/// End
+
+/// Test Sibling upvalue capture nested
+macro helper
+   H
+end
+
+let t = do
+   ref outer: macro
+      mid: macro
+         a: macro
+            $ helper()
+            $ outer()
+         end
+         b: macro
+            $ helper()
+         end
+      end
+   end
+end
+$t.outer().mid().b()
+/// Output
+H
+/// End
+
+/// Test Sibling ref upvalue capture
+macro helper
+   H
+end
+
+let t = do
+   ref box: macro
+      val: 42
+      a: macro
+         $ box()
+         $ helper()
+      end
+      b: macro
+         $box().val
+      end
+   end
+end
+$t.box().b()
+/// Output
+42
+/// End
+
+/// Test Sibling upvalue mutation
+let t = do
+   let count = 0
+   ref box: macro
+      a: macro()
+         $ count
+         $ box()
+      end
+      b: macro()
+         set count += 1
+         $ count
+      end
+   end
+end
+$t.box().b()
+$t.box().b()
+/// Output
+12
+/// End
+
+/// Test Sibling upvalue capture last
+macro helper
+   H
+end
+
+let t = do
+   ref box: macro
+      a: macro
+         $ box()
+      end
+      b: macro
+         $ helper()
+      end
+   end
+end
+$t.box().b()
+/// Output
+H
 /// End

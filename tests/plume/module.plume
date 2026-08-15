@@ -78,9 +78,9 @@ $inc()\n
 /// Output
 1
 2
-1
-2
 3
+4
+5
 /// End
 
 /// Test cycle in use
@@ -120,29 +120,26 @@ blue quill
 /// End
 
 /// Test import cache 1
-use #future(importCache)
 let lib1 = $import(tests/plume/toimport/object)
 let lib2 = $import(tests/plume/toimport/object)
-$(lib1.result == lib2.result)
+$ lib1.result == lib2.result
 /// Output
 true
 /// End
 
 /// Test import cache 2
-use #future(importCache)
 use tests/plume/toimport/object
 let lib = $import(tests/plume/toimport/object)
-$(result == lib.result)
+$ result == lib.result
 /// Output
 true
 /// End
 
 /// Test import cache 3 (via os.Path().import())
-use #future(importCache)
 let p = $os.Path(tests/plume/toimport/object)
 let a = $p.import()
 let b = $p.import()
-$(a.result == b.result)
+$ a.result == b.result
 /// Output
 true
 /// End
@@ -189,4 +186,77 @@ use tests/plume/toimport/filedoc(x:5)
 $import(tests/plume/toimport/fun)
 /// Output
 Plume support `.🪶` extension.
+/// End
+
+/// Test double import
+run $import(tests/plume/toimport/lib)
+run $import(tests/plume/toimport/lib)
+/// Output
+
+/// End
+
+/// Test double import with macros 1
+$import(tests/plume/toimport/lib2).wing()\n
+$import(tests/plume/toimport/lib2).wing()
+/// Output
+blue quill
+blue quill
+/// End
+
+/// Test double import with macros 2
+$import(tests/plume/toimport/lib2, info2: big).wing()\n
+$import(tests/plume/toimport/lib2).wing()
+/// Output
+blue bigquill
+blue quill
+/// End
+
+/// Test import macro
+let lib = $import(tests/plume/toimport/text)
+macro Document
+end
+/// Output
+/// End
+
+/// Test use call
+use tests/plume/toimport/touse
+$nib()
+/// Output
+nib
+/// End
+
+/// Test import single
+let nib from $import(tests/plume/toimport/touse)
+$nib()
+$nib()
+/// Output
+nibnib
+/// End
+
+/// Test import multiple
+let wing, nib from $import(tests/plume/toimport/touse)
+$nib()
+$nib()
+/// Output
+nibnib
+/// End
+
+/// Test use imported macro
+use tests/plume/toimport/733
+
+$Wing()
+/// Output
+1
+/// End
+
+/// Test import two files
+let wing from $import(tests/plume/toimport/1017-1)
+$import(tests/plume/toimport/1017-2)
+$wing()
+/// Output
+/// End
+
+/// Test os path string
+let x = $(String(os.Path()))
+/// Output
 /// End

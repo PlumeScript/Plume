@@ -93,27 +93,34 @@ return function(vm)
 	    return x
 	end
 
+	--! inline
+	function vm:_GET_REF_FRAME_BOTTOM(offset)
+		local doffset = offset-1 -- frames start at 0
+	    if doffset == 0 then
+	        return 1
+	    else
+	        return self:_STACK_GET(self.mainStack.frames, doffset)
+	    end
+	end
+
+	--! inline
+	function vm:_GET_REF_FRAME_TOP(offset)
+		local doffset = offset-1 -- frames start at 0
+		if doffset == self:_STACK_POS(self.mainStack.frames)-1 or doffset==0 then
+	        return self:_STACK_POS(self.mainStack)+1
+	    else
+	        return self:_STACK_GET(self.mainStack.frames, doffset+1)
+	    end
+	end
+
 	--- Find offset corresponding to a key in the current building table
 	--- @param key string
 	--- @param offset number
 	--! inline
 	function vm:_GET_REF_POS(key, offset)
-	    offset = offset-1 -- frames start at 0
-
-	    local frameBottom
-	    if offset == 0 then
-	        frameBottom = 1
-	    else
-	        frameBottom = self:_STACK_GET(self.mainStack.frames, offset)
-	    end
-
-	    local frameTop
-	    if offset == self:_STACK_POS(self.mainStack.frames)-1 or offset==0 then
-	        frameTop = self:_STACK_POS(self.mainStack)+1
-	    else
-	        frameTop = self:_STACK_GET(self.mainStack.frames, offset+1)
-	    end
-
+	    local frameBottom = vm:_GET_REF_FRAME_BOTTOM(offset)
+	    local frameTop    = vm:_GET_REF_FRAME_TOP(offset)
+	    
 	    --! to-remove-begin
 	    if not frameTop or frameTop <= 0 then
 	        error("[VM] Wrong frameTop, cannot find current ref.")

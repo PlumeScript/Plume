@@ -10,7 +10,7 @@ return function (plume, context, nodeHandlerTable)
 	function context.shouldForceFragmentRoot(node)
 		if #node.children == 1 then
 			local parentName = node.parent.name
-			return context.checkIfCanConcat() or parentName == "DYNAMIC_KEY"
+			return parentName == "DYNAMIC_KEY"
 		else
 			return not node.children[2].name:match('INDEX')
 		end

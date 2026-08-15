@@ -1,275 +1,298 @@
-/// Test meta wrong parameter number 1
-let t = do
-  meta add: macro()
-    $true
-  end
-end
-
-$(t+1)
+/// Test MixedBlockError 1
+- Wing
+Nib
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional parameters for meta-macro 'add', 0 instead of 2.  │
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TEXT' content in a 'TABLE' block.                                   │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta add: macro()                                                      │
-│      │  ^^^^^^^^^^^^^^^^^                                                      │
-│    3 │    $true                                                                │
+│    Reading this line, Plume assumes the block type is 'TABLE'.                 │
+│    1 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+│                                                                                │
+│    But you try to add a 'TEXT' element.                                        │
+│    2 │Nib                                                                      │
+│      │^^^                                                                      │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 2
+Nib
+- Wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Nib                                                                      │
+│      │^^^                                                                      │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    2 │- Wing                                                                   │
+│      │^^^^^^                                                                   │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 3
+Wing
+for i in seq(1, 10)
+    - Nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
+│    2 │for i in seq(1, 10)                                                      │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    3 │- Nib                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 4
+Wing
+if true
+    - nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    1 │Wing                                                                     │
+│      │^^^^                                                                     │
+│    2 │if true                                                                  │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    3 │- nib                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test MixedBlockError 6
+Wing
+if true
+    quill
+elseif true
+    paint
+else
+    song
+    - nib
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Invalid 'TABLE' content in a 'TEXT' block.                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    Reading this line, Plume assumes the block type is 'TEXT'.                  │
+│    6 │else                                                                     │
+│    7 │    song                                                                 │
+│      │    ^^^^                                                                 │
+│                                                                                │
+│    But you try to add a 'TABLE' element.                                       │
+│    8 │- nib                                                                    │
+│      │^^^^^                                                                    │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Test MixedBlockError 7
+(1, 2, 3)
+a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Inline tables must be the only elements in their block.                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │(1, 2, 3)                                                                │
+│      │^^^^^^^^^                                                                │
+│    2 │a                                                                        │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test meta wrong parameter number 2
+/// Test no MixedBlockError 1
 let t = do
-  meta add: macro(x, y, z)
-    $true
-  end
+    x: for i in seq(1, 10)
+        - $i
+    end
 end
+/// Output
 
-$(t+1)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional parameters for meta-macro 'add', 3 instead of 2.  │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta add: macro(x, y, z)                                               │
-│      │  ^^^^^^^^^^^^^^^^^^^^^^^^                                               │
-│    3 │    $true                                                                │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test meta wrong parameter number 3
+/// Test no MixedBlockError 2
 let t = do
-  meta add: macro(x, y, z: quill)
-    $true
-  end
+    x: for i in seq(1, 10)
+        y: $i
+    end
 end
+/// Output
 
-$(t+1)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Meta-macro 'add' dont support named parameters.                              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta add: macro(x, y, z: quill)                                        │
-│      │  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                        │
-│    3 │    $true                                                                │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test meta wrong parameter number 4
-let t = do
-  meta call: macro(x, y, z: quill)
-    $true
-  end
-end
-
-$t(1)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong number of positional arguments for macro '???', 1 instead of 2.        │
-│   Usage: $<macro>(x, y, z: quill)                                              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    5 │end                                                                      │
-│    7 │$t(1)                                                                    │
-│      │ ^^^^                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test unknown meta
-let t = do
-  meta mymacro: macro()
-  end
+/// Test leave inside raise
+raise do
+	Fail!
+	leave
 end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → 'mymacro' isn't a valid meta-macro name.                                     │
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use leave keyword inside a `raise` block.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta mymacro: macro()                                                  │
-│      │  ^^^^^^^^^^^^^^^^^^^^^                                                  │
-│    3 │  end                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test stack overflow
-let t = do
-  meta addr: macro(x)
-    $(self+1)
-  end
-end
-
-$(t+1)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Stack overflow                                                               │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    2 │meta addr: macro(x)                                                      │
-│    3 │  $(self+1)                                                              │
-│      │    ^^^^^^                                                               │
+│    2 │ Fail!                                                                   │
+│    3 │ leave                                                                   │
+│      │ ^^^^^                                                                   │
 │    4 │end                                                                      │
 │                                                                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ Traceback (most recent call first):                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ (same file)                                                                 │
-│    2 │meta addr: macro(x)                                                      │
-│    3 │  $(self+1)                                                              │
-│      │    ^^^^^^                                                               │
-│                                                                                │
-│  ↳...                                                                          │
-│  ↳(previous block is repeated 18 more times)                                   │
-│  ↳...                                                                          │
-│                                                                                │
-│  ↳ (same file)                                                                 │
-│    7 │$(t+1)                                                                   │
-│      │  ^^^                                                                    │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test readonly
-let t = do
-  meta readonly: $true
-  wing: red
-end
-
-set t.wing = blue
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot set index of a readonly table.                                        │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    4 │end                                                                      │
-│    6 │set t.wing = blue                                                        │
-│      │^^^^^^^^^^^^^^^^^                                                        │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test meta type 1
-let t = do
-  meta add: wing
+/// Test break inside raise
+for i in seq(2)
+	raise do
+		Fail!
+		break
+	end
 end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'string' for meta field 'add'. Expected 'callable'.               │
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword inside a `raise` block.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta add: wing                                                         │
-│      │  ^^^^^^^^^^^^^^                                                         │
-│    3 │end                                                                      │
+│    3 │ Fail!                                                                   │
+│    4 │ break                                                                   │
+│      │ ^^^^^                                                                   │
+│    5 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test meta type 2
-let t = do
-  meta call: wing
+/// Test break outside loop
+for i in seq(3)
+    macro wing
+        macro nib
+        end
+        break
+    end
 end
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'string' for meta field 'call'. Expected 'callable'.              │
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use break keyword outside a loop.                                     │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta call: wing                                                        │
-│      │  ^^^^^^^^^^^^^^^                                                        │
-│    3 │end                                                                      │
+│    2 │macro wing                                                               │
+│    4 │    end                                                                  │
+│    5 │    break                                                                │
+│      │    ^^^^^                                                                │
+│    6 │end                                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test meta type 3
-let t = do
-  meta fragment: $Table()
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for meta field 'fragment'. Expected 'callable'.           │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta fragment: $Table()                                                │
-│      │  ^^^^^^^^^^^^^^^^^^^^^^^                                                │
-│    3 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test meta type 4
-let t = do
-  meta tostring: $Table()
-end
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Wrong type 'table' for meta field 'tostring'. Expected 'callable or          │
-│   string'.                                                                     │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │let t = do                                                               │
-│    2 │  meta tostring: $Table()                                                │
-│      │  ^^^^^^^^^^^^^^^^^^^^^^^                                                │
-│    3 │end                                                                      │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test wrong tostring type return
-let t = do
-  meta tostring: macro
-    $Table()
+/// Test continue in affectation
+let var1 = 0
+while var1 < 4
+  set var1 += 1
+  let var2 = do
+    a
+    continue
   end
 end
-
-a$t
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → `tostring` metamacro returning `table` instead of `string`.                  │
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside an affectation.                           │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    5 │end                                                                      │
-│    7 │a$t                                                                      │
-│      │  ^                                                                      │
+│    5 │  a                                                                      │
+│    6 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    7 │end                                                                      │
 │                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test continue in do block
+for var1 in seq(4)
+  do
+    continue
+    a
+  end
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use continue keyword inside a `do` block.                             │
 ├────────────────────────────────────────────────────────────────────────────────┤
-│ Traceback (most recent call first):                                            │
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │do                                                                       │
+│    3 │  continue                                                               │
+│      │  ^^^^^^^^                                                               │
+│    4 │  a                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test raise table block
+raise do
+    - 5
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Raise block must be 'TEXT', not 'TABLE'                                      │
 ├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ (same file)                                                                 │
-│    2 │meta tostring: macro                                                     │
-│      │               ^^^^^                                                     │
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raise do                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │    - 5                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test raise long text
+raise do
+    a$1a$1a$1a$1a$1a$1a$1a$1a$1a$1
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → a1a1a1a1a1a1a1a1a1a1                                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │raise do                                                                 │
+│      │^^^^^^^^                                                                 │
+│    2 │    a$1a$1a$1a$1a$1a$1a$1a$1a$1a$1                                       │
+│                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

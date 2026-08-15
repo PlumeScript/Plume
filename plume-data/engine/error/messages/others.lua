@@ -89,4 +89,16 @@ return function(plume)
 			"Unable to create a table with both '%s' and '%s' metafields.\n(i) Check 'doc/expert.md' for more information.",
 			a, b)
 	end
+
+	function plume.error.cannotUseReferenceDuringConstruction(vm, name, source)
+		local node = plume.error.getNode(vm.runtime, vm.ip)
+
+		if node and source then
+			source.errorLabel = "But this table field does not yet exist."
+			node.errorLabel = string.format("You try to read the value of '%s'", name)
+			plume.error.addContext(node, source)
+		end
+
+		return "Cannot use a reference during its construction."
+	end
 end

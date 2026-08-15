@@ -73,7 +73,7 @@ return function(vm)
 	                local cacheId, paramMutableWarning = self.plume.getModuleCacheId(filename, self.fileParams)
 	                local result = self.runtime.cache.results[cacheId]
 
-	                if result and currentFile.futureFlagImportCache then
+	                if result then
 						self:_STACK_PUSH(self.mainStack, result)
 	                    if paramMutableWarning then
 	                        self.plume.warning.runtimeWarning(string.format("Import call skipped (cached).\nAny modifications of the mutable parameter `%s` will be ignored.", paramMutableWarning), nil, self.runtime, self.ip, {890})

@@ -42,8 +42,6 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
     *   `Table.getMeta(t)`
     *   `Table.deepMerge(t1, t2, ?concatNumeric)`: Recursively merges `t2` into `t1`. If a key exists in both and both values are tables, it merges them recursively; otherwise, `t2` overwrites `t1`. Use `?concatNumeric` to skip numeric keys, concatening `t1` and `t2`'s array items.
     *   `Table.flatten(t, ?deep)`: Concatenates the array elements of a table of tables into a single flat array. Use `?deep` to recursively flatten arbitrarily nested structures.
-    *   `Table.materialize(x)`: Returns a fully rendered copy of `x`. If `x` is a table with a `fragment` metafield, the meta macro runs and its result replaces `x`. If `x` is a table without `fragment`, a new table is produced with `Table.materialize` applied to every child. Non-table values pass through unchanged. The original table is never mutated. See [expert.md](expert.md) § Lazy Rendering.
-
 
 ### String manipulation
 
@@ -152,7 +150,7 @@ The `import` statement follows a specific lookup order to locate files:
 #### Module Lifecycle and Performance
 Plume balances performance and safety through its loading strategy:
 1.  **Parsing/Compilation:** Occurs only once per file path. The resulting bytecode is cached.
-2.  **Execution (Chunking):** Occurs every time `import` or `use` is invoked. A new environment is initialized for each call.
+2.  **Execution (Caching):** The result of `import` / `use` is cached per file + parameters combination, so re-importing the same file with the same parameters reuses the cached result instead of re-executing it.
 
 ### System and I/O
 
@@ -192,6 +190,8 @@ Unlike `import`, the following functions do not use the `plume.path` resolution 
 *   `Path.getName()`: Return the last path component as string.
 *   `Path.getStem()`: Return the last path component without its extension.
 *   `Path.getExtension()`: Return the extension of the last path component, without the leading dot.
+*   `Path.getModification()`: Return the last time file was modified, as a `Date` object.
+*   `Path.getSize()`: Return the file size in bytes.
 *   `String(Path)`: Get path as string
 
 #### Environment and commands
@@ -275,4 +275,6 @@ Assume `let time = $Time()`
 * `lua.eval(code[, filename], ?safe)`: execute the given lua code. If `?safe` flag is provided, return a table `(success:<true|false>, result:<result|error message>)`. Else return the code result or raise an error. Raise an error if fail to convert result into usuable plume object (for the moment, only strings, numbers, boolean and nil are supported).
 
 ### Others
-*   **plume.doc(m)**: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
+*   `plume.doc(m)`: Return the documentation for a macro, generated from all comments — without blank lines — located immediately before the macro declaration.
+*   `plume.materialize(x)`: Returns a fully rendered copy of `x`. If `x` is a table with a `fragment` metafield, the meta macro runs and its result replaces `x`. If `x` is a table without `fragment`, a new table is produced with `plume.materialize` applied to every child. Non-table values pass through unchanged. The original table is never mutated. See [expert.md](expert.md) § Lazy Rendering.
+*   `plume.warning(msg, help:, ...issues)`: Emits a warning at the call site, for use by libraries. `msg` is the warning text, `?help` an optional detailed hint, and `...issues` the GitHub issue numbers to reference (defaults to `1248`). The warning is subject to the usual `use #warning(...)` modes and deduplication. No newline at end of file

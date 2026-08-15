@@ -60,9 +60,18 @@ return function(vm)
 	        local length = 0
 	        for i = start, stop do
 	            local item = self:_STACK_GET(self.mainStack, i)
-	            if self:_GET_TYPE(item) == "fragment" then
+	            local t = self:_GET_TYPE(item)
+	            if t == "fragment" then
 	                directConcat = false
 	                break
+	            elseif t == "table" then
+	            	directConcat = false
+	            	--! to-remove-begin
+	            	if not item:getMetaItem("fragment") then
+	            		error("[VM] Non-fragment table inside concat.")
+	            	end
+	            	--! to-remove-end
+	            	break
 	            else
 	            	--! to-remove-begin
 	            	if type(item) ~= "string" and type(item) ~= "number" then
@@ -90,7 +99,6 @@ return function(vm)
 	function vm:_FORCE_FRAGMENT_META(fragment)
 		local meta = fragment:getMetaItem("fragment")
 		local tmeta = self:_GET_TYPE(meta)
-
 		if tmeta == "macro" or tmeta == "closure" then
 			if not fragment.isRendering then -- detect infinite loop
 				fragment.isRendering = true
@@ -126,14 +134,14 @@ return function(vm)
 		        local stackIndex    = {}
 		        local depth         = 0
 
-		        while #stackFragment > 0 do
+		        while #stackFragment > 0 and not self.err do
 		            depth = #stackFragment
 		            local top = table.remove(stackFragment)
 		            local quickExit = false
 		            for i=(stackIndex[depth] or 1), #top do
 		                local item = top[i]
 		                
-		                while true do
+		                while not self.err do
 			                local titem = self:_GET_TYPE(item)
 			                if titem == "fragment" then
 			                    stackIndex[depth] = i+1
@@ -280,7 +288,6 @@ return function(vm)
 	    while not self.err do
 	        local value = self:_STACK_GET(self.mainStack)
 	        local t     = self:_GET_TYPE(value)
-
 	        if value == self.plume.obj.empty then
 	            self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), "")
 	            break
@@ -310,13 +317,16 @@ return function(vm)
 	            break
 	        elseif t == "string" or t == "fragment" then
 	            break
+	        elseif (t == "table" and value:getMetaItem("fragment")) then
+	        	if value.isRendering then
+		        	self:_ERROR(self.plume.error.tryToUseFragmentInsideItSelf(value))
+		        else
+		        	break
+		       	end
 	        else
 	            local tostringMeta, fragmentValue
 	            if t == "table" then
 	                tostringMeta = value:getMetaItem("tostring")
-	                if not tostringMeta then
-	                    fragmentValue = self:_FORCE_FRAGMENT_META(value)
-	                end
 	            end
 
 	            if tostringMeta then
@@ -334,11 +344,6 @@ return function(vm)
 	                -- Force fragments returned by tostring
 	                local stringValue = self:_STACK_GET(self.mainStack)
 	                local stringValueType = self:_GET_TYPE(stringValue)
-	                while stringValueType == "fragment" and not self.err do
-	                    self:FORCE_FRAGMENT()
-	                    stringValue = self:_STACK_GET(self.mainStack)
-	                    stringValueType = self:_GET_TYPE(stringValue)
-	                end
 
 	                if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number"
 	                   and stringValueType ~= "fragment"
@@ -358,6 +363,12 @@ return function(vm)
 	            elseif fragmentValue then
 	                self:_STACK_POP(self.mainStack)
 	                self:_STACK_PUSH(self.mainStack, fragmentValue)
+	                -- loop continues to re-process the result
+	            elseif t == "macro" then
+	                self:_STACK_POP(self.mainStack)
+	                self:BEGIN_ACC(0, 0)
+	                self:_STACK_PUSH(self.mainStack, value)
+	                self:_CONCAT_CALL_REC()
 	                -- loop continues to re-process the result
 	            elseif t == "boolean" then
 	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))

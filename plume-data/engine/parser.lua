@@ -151,15 +151,9 @@ return function (plume)
 				local keyNode = plume.ast.get(option, "KEY")
 				local key = keyNode and keyNode.content
 				if directiveName == "future" then
-					if key == "lineEval" or key == "all" or key == "raven" then
-						dynamicParseData.futureFlagLineEval = true
-					end
-					if key == "newEscape" or key == "all" or key == "raven" then
-						dynamicParseData.futureFlagNewEscape = true
-					end
-					if key == "return" or key == "all" or key == "raven" then
-						dynamicParseData.futureFlagReturn = true
-					end
+					-- if key == NAME or key == "all" or key == EDITION then
+					-- 	dynamicParseData.FLAG = true
+					-- end
 				end
 			end
 			return pos, node
@@ -189,8 +183,7 @@ return function (plume)
 			plume.error.unknownEscapeSequence(node, s)
 		end
 
-		-- Restricted escape set, enabled by `use #future(newEscape)`
-		local escapedNew =  C("SPECIAL_TEXT", P"\\s")
+		local escaped =  C("SPECIAL_TEXT", P"\\s")
 						+  C("SPECIAL_TEXT", P"\\t")
 						+  C("SPECIAL_TEXT", P"\\n")
 						+  C("SPECIAL_TEXT", P"\\r")
@@ -203,39 +196,6 @@ return function (plume)
 						+  C("SPECIAL_TEXT", P"\\/")
 						+  C("SPECIAL_TEXT", P"\\0")
 						+  E(unknownEscape, P"\\" * P(1))
-		local escapedOld =  C("SPECIAL_TEXT", P"\\s")
-						+  C("SPECIAL_TEXT", P"\\t")
-						+  C("SPECIAL_TEXT", P"\\n")
-						+  C("SPECIAL_TEXT", P"\\r")
-						+  P"\\"*C("TEXT", P(1)) / function(x)
-							if x.content:match("^[a-zA-Z]$") then
-								x.warning = "From Raven edition, escaping an ordinary letter will be an error; only a fixed set of escapes will be valid."
-								x.warningHint = "Use `\\0` to write a keyword as literal text (e.g. `\\0set`)."
-								x.issues = {886, 1157}
-							end
-							return x
-						end
-		local escaped = P(function() return dynamicParseData.futureFlagNewEscape end) * escapedNew
-					  + escapedOld
-		
-
-		---------------------------
-		-- compilation directive --
-		---------------------------
-		local libidn = (P(1)-S",\n():")^0
-		local libparam = Ct("USE_OPTION",
-			(C("KEY", libidn) * os * ":") * os * Ct("VALUE", V"textic")
-			+ Ct("VALUE", V"textic")
-		)
-		local nameposLibparam = Ct("USE_OPTION",
-			C("KEY", libidn) * (os * ":" * os * Ct("VALUE", V"textic"))^-1
-		)
-		local libparamlist = os * (P"("*P")" + P"(" * os * libparam * os * (P"," * os * libparam)^0 * os * ")")^-1
-		local nameposLibparamlist = os * (P"("*P")" + P"(" * os * nameposLibparam * os * (P"," * os * libparam)^0 * os * ")")^-1
-
-		local libname = Cmt(Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist), applyDirective)
-					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
-		local use = K"use" * (s * libname * (os*P","*os*libname)^0 + E(plume.error.emptyUse))
 
 		----------
 		-- eval --
@@ -361,15 +321,11 @@ return function (plume)
 				* (P")" + E(plume.error.missingClosingBracket))
 				+ idn
 				+ num
-				-- + E(plume.error.evalAlone)
 			) * V"evalOpperator"^0
 		)
 
 		local eval = P"$" * evalBase
 		local lineeval = P"$ " * Ct("EVAL", expr)
-		lineeval = lineeval * P(function()
-			return dynamicParseData.futureFlagLineEval
-		end)
 		local index = Ct("SAFE_INDEX", P"[" * expr * P"]" * P"?") + Ct("INDEX", P"[" * expr * P"]")
 		local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
@@ -440,9 +396,13 @@ return function (plume)
 							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
 						)
 		local block = blockStart * Ct("NULL", _end)
+		-- Inline block call: `@call <rest of line>` — the whole line is the body,
+		-- so commas and unbalanced parens don't need escaping.
+		local inlineBlockStart = Ct("EVAL", P"@" * blockName * os
+							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"texticb")))
+						)
 		local leave     = C("LEAVE", K"leave")
 		local _return   = Ct("RETURN", K"return" * (s * V"firstStatement")^-1)
-		_return = _return * P(function() return dynamicParseData.futureFlagReturn end)
 
 		-- affectations
 		local lbody    = Ct("BODY", V"firstStatement")
@@ -585,6 +545,14 @@ return function (plume)
 			return x
 		end
 
+		---------------------------
+		-- compilation directive --
+		---------------------------
+		local uselibname = C("LIB_NAME", P"#"^-1 * (P(1)-S",\n():")^0)
+		local uselibcall = P"(" * P")" + P"(" * os * arg * (os * P"," * os * arg)^0 * closingPar
+		local uselib = Ct("USE", uselibname * uselibcall^-1)
+		local use = K"use" * os * uselib * (os * P"," * os * uselib)^0
+
 		----------
 		-- main --
 		----------
@@ -615,7 +583,7 @@ return function (plume)
 			statement    = lt * V"firstStatement",
 
 			commandStd =  _if + _while + _for + _break + continue + macro
-						  + _do + block + let + set + leave + _return + inlinetable
+						  + _do + inlineBlockStart + block + let + set + leave + _return + inlinetable
 						  + expand + use + raw + with,
 			-- Only at line start
 			commandLB = listitem + hashitem,
@@ -629,6 +597,10 @@ return function (plume)
 			textic = asMacroic + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
 						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic" 
 					)^1,
+			-- Inline block call body: the rest of the line, may chain inline block calls.
+			texticb = inlineBlockStart + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+						+ V"rawtexticb"
+					)^1,
 
 			comment  = os * (
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)
@@ -639,12 +611,16 @@ return function (plume)
 			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"//" + P"/*" + s)^1),
 			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"//" + P"/*")^1),
 			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//" + P"/*")^1),
+			-- Stops at a chained inline block call (`@name` followed by space/newline
+			-- or an argument list) so a nested block form isn't swallowed as raw text.
+			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * _idns * (os * S"\n" + s + P"("))^1),
 
 			invalid = E(plume.error.emptySet, K"set"),
 			evalOpperator = call + index + directindex,
 
 			inlinetable= inlinetable,
-			blockStart = blockStart
+			blockStart = blockStart,
+			inlineBlockStart = inlineBlockStart
 		}
 
 		return lpeg.Ct(rules)
@@ -674,15 +650,11 @@ return function (plume)
 		local pos = 0
 		plume.ast.browse(ast, function (node)
 			if node.error then
-				if node.error == plume.error.nonEscapedEvalMark and not dynamicParseData.futureFlagLineEval then
-					node.name = "TEXT"
-				else
-					node.error(node)
-				end
+				node.error(node)
 			end
 
 			if node.name == "NAME" then
-				plume.checkIdentifier(node, node.content, dynamicParseData.futureFlagReturn)
+				plume.checkIdentifier(node, node.content)
 			end
 
 			if node.epos and node.epos > pos then

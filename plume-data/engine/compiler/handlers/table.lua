@@ -20,6 +20,7 @@ return function (plume, context, nodeHandlerTable)
 			if not context.registerVariable(node, varName,{isRef=true, ref=identifier.content}) then
 				plume.error.letExistingVariable(node, varName)
 			end
+			return true
 		end
 	end
 
@@ -35,9 +36,11 @@ return function (plume, context, nodeHandlerTable)
 		local body       = plume.ast.get(node, "BODY")
 		local meta       = plume.ast.get(node, "META")
 
-		handleRef(node)
+		local isref = handleRef(node)
 
-		if eval then
+		if isref then
+			context.append("ref", {name=identifier.content, insideMacro=0})
+		elseif eval then
 			context.nodeHandler(eval) 
 		end
 
@@ -58,6 +61,10 @@ return function (plume, context, nodeHandlerTable)
 			context.registerOP(node, plume.ops.TAG_META_KEY, 0, 0)
 		else
 			context.registerOP(node, plume.ops.TAG_KEY, 0, 0)
+		end
+
+		if isref then
+			context.remove("ref")
 		end
 	end
 

@@ -126,9 +126,9 @@ $wing($field: blue)   // passes the named argument color: blue
 **Safe indexing.** Appending `?` to an index or member access returns `empty` instead of raising an error when the key is missing:
 
 ```plume
-$(t.nib?)          // empty if nib is absent
-$(t["nib"]?)       // same, with brackets
-$(t.nib? or 1)     // handy for defaults
+$ t.nib?          // empty if nib is absent
+$ t["nib"]?       // same, with brackets
+$ t.nib? or 1     // handy for defaults
 ```
 
 ## String Concatenation: `..`
@@ -138,7 +138,7 @@ Inside an evaluation context, the `..` operator concatenates two values as text:
 ```plume
 let a = hello
 let b = world
-$(a .. b)
+$ a .. b
 // → helloworld
 ```
 
@@ -168,7 +168,7 @@ $t["item_"..n]
 A macro captures the variables of its enclosing scopes at the point of definition. The capture is a *live binding*: the macro and its birth scope share the same variable, and mutations are visible on both sides. The capture survives the end of the enclosing scope, which enables factory patterns:
 
 ```plume
-macro makeCounter ()
+macro makeCounter
     let count = 0
     macro ()
         set count += 1
@@ -234,6 +234,32 @@ end
 //       end
 //   end
 ```
+
+**Inline block calls.** A `@` call can also take the rest of its line as its body, without `end`:
+
+```plume
+macro bold(x)
+    <strong>$x</strong>
+end
+
+@bold This whole line is the argument of bold.
+// → <strong>This whole line is the argument of bold.</strong>
+```
+
+The whole line is read as the body, so commas and unbalanced parentheses no longer need escaping:
+
+```plume
+@call(a, b) A line with, commas and (unbalanced) parens
+```
+
+Inline calls chain like block calls, and can take arguments:
+
+```plume
+@bold @italic Mon texte
+@style(fontWeight: bold) Mon texte
+```
+
+Prefer the block form as soon as the content grows beyond a single line — it keeps the body readable and lets it span several lines.
 
 **Empty arguments.** An empty slot between commas is read as `$empty`: `$wing(,,)` ≡ `$wing($empty, $empty, $empty)`.
 
@@ -323,11 +349,9 @@ end
 
 ## Returning Values: `return`
 
-A macro normally returns whatever its body accumulates. The `return` keyword — enabled with `use #future(return)` — makes a macro return a single value and stop immediately:
+A macro normally returns whatever its body accumulates. The `return` keyword makes a macro return a single value and stop immediately:
 
 ```plume
-use #future(return)
-
 macro wing(x)
     if x>5
         return yes
@@ -360,7 +384,7 @@ double: macro (x) $(2 * x)
 ```plume
 // main.plume
 let geometry = $import(tests/plume/toimport/geometry)
-$(geometry.pi)\n
+$ geometry.pi\n
 $geometry.double(21)
 // →
 3.14159
@@ -370,7 +394,7 @@ $geometry.double(21)
 *   **Dynamic paths:** the path is an ordinary expression, so `$import(./themes/$themeName)` works.
 *   **Resolution:** a path starting with `./` or `../` is relative to the current file. Otherwise Plume searches the root file's directory, then each directory of `plume.path` (seeded from the `PLUME_PATH` environment variable, semicolon-separated; it is a regular table you can edit). For each directory, Plume tries `<path>.plume`, `<path>/init.plume`, and the `.🪶` extension variants.
 *   **Parameters:** extra arguments feed the target file's `let param` declarations — see *File Parameters*.
-*   **Lifecycle:** a file is compiled once per path, but **executed on every call**, in a fresh environment. (Result caching per file + parameters arrives with the next edition; it can be enabled now with `use #future(importCache)` — see [expert.md](expert.md).)
+*   **Lifecycle:** a file is compiled once per path, and its result is **cached** per file + parameters combination — re-importing the same file with the same parameters reuses the cached result instead of re-executing it. Passing a mutable object as a parameter can lead to unexpected behavior and triggers a dedicated warning.
 
 Since the result is an ordinary value, it can be destructured on the spot:
 
@@ -384,7 +408,7 @@ let pi, double from $import(./geometry)
 
 ```plume
 use geometry        // literal path — no quotes, no extension
-$(pi)
+$ pi
 $double(21)
 ```
 
@@ -445,7 +469,8 @@ Hello, wing!
 *   A `param` variable is implicitly `const`. Without a caller-provided value, it takes its default — or `empty` when no default is declared.
 *   `let param ...leftover` collects every otherwise-unmatched named parameter into a table.
 *   From the command line: `plume -i main.plume --params --name=wing --verbose` — named values as `--key=value`, flags as `--flag`, positionals as bare words.
-*   Two related opt-in behaviors — rejecting unknown parameters, and binding parameters positionally — are available through `use #future(...)`; see [expert.md](expert.md).
+*   Passing an undeclared parameter raises an error listing the valid ones.
+*   `let param x` binds positional arguments passed to `import` / `use`, in declaration order.
 
 ## Warnings and Development Directives
 
@@ -472,6 +497,5 @@ Beyond the basic `-i`, `-o`, `-s`, `-h` and `-v` (see [core.md](core.md)):
 *   `--params ...` — file parameters (see *File Parameters*).
 *   `--color auto|always|never` — colored error output.
 *   `--error-style auto|fancy|plain` — rich or plain-text error layout.
-*   `--future-string` — enables the next edition's output formatting right away.
 
 Next: [expert.md](expert.md)

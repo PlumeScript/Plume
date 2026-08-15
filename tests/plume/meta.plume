@@ -1,10 +1,10 @@
 /// Test addr
 let t = do
   meta addr: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(t+1)
+$ t+1
 /// Output
 2
 /// End
@@ -12,10 +12,10 @@ $(t+1)
 /// Test addl
 let t = do
   meta addl: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(1+t)
+$ 1+t
 /// Output
 2
 /// End
@@ -23,10 +23,10 @@ $(1+t)
 /// Test add fallback 1
 let t = do
   meta add: macro(x, y)
-    $(y+1)
+    $ y+1
   end
 end
-$(t+1)
+$ t+1
 /// Output
 2
 /// End
@@ -34,10 +34,10 @@ $(t+1)
 /// Test add fallback 2
 let t = do
   meta add: macro(x, y)
-    $(x+1)
+    $ x+1
   end
 end
-$(1+t)
+$ 1+t
 /// Output
 2
 /// End
@@ -46,10 +46,10 @@ $(1+t)
 let t = do
   value: 10
   meta add: macro(x, y)
-    $(self.value+y)
+    $ self.value+y
   end
 end
-$(t+1)
+$ t+1
 /// Output
 11
 /// End
@@ -57,10 +57,10 @@ $(t+1)
 /// Test mul
 let t = do
   meta mulr: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(t*2)
+$ t*2
 /// Output
 3
 /// End
@@ -68,10 +68,10 @@ $(t*2)
 /// Test sub
 let t = do
   meta subr: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(t-2)
+$ t-2
 /// Output
 3
 /// End
@@ -79,10 +79,10 @@ $(t-2)
 /// Test div
 let t = do
   meta divr: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(t/2)
+$ t/2
 /// Output
 3
 /// End
@@ -90,10 +90,10 @@ $(t/2)
 /// Test pow
 let t = do
   meta powr: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(t^2)
+$ t^2
 /// Output
 3
 /// End
@@ -101,10 +101,10 @@ $(t^2)
 /// Test mod
 let t = do
   meta modr: macro(x)
-    $(x+1)
+    $ x+1
   end
 end
-$(t%2)
+$ t%2
 /// Output
 3
 /// End
@@ -112,10 +112,10 @@ $(t%2)
 /// Test minus
 let t = do
   meta minus: macro()
-    $(-1)
+    $ -1
   end
 end
-$(-t)
+$ -t
 /// Output
 -1
 /// End
@@ -152,7 +152,7 @@ let t = do
   end
 end
 
-$(t==6)
+$ t==6
 /// Output
 true
 /// End
@@ -164,7 +164,7 @@ let t = do
   end
 end
 
-$(t!=6)
+$ t!=6
 /// Output
 false
 /// End
@@ -176,7 +176,7 @@ let t = do
   end
 end
 
-$(t<6)
+$ t<6
 /// Output
 true
 /// End
@@ -188,7 +188,7 @@ let t = do
   end
 end
 
-$(t>6)
+$ t>6
 /// Output
 true
 /// End
@@ -200,7 +200,7 @@ let t = do
   end
 end
 
-$(t>=6)
+$ t>=6
 /// Output
 false
 /// End
@@ -224,7 +224,7 @@ let t = do
   end
 end
 
-$(String(t))
+$ String(t)
 /// Output
 I'm a table
 /// End
@@ -304,7 +304,88 @@ let t = do
   meta tostring: I'm a table.
 end
 
-$String($t)
+$ String(t)
 /// Output
 I'm a table.
+/// End
+
+/// Test tostring
+let t = do
+    x: x
+    meta tostring: macro()
+        $self.x
+    end
+end
+
+$ String(t)
+/// Output
+x
+/// End
+
+/// Test meta add
+macro Vect(x, y)
+    x: $x
+    y: $y
+    meta add: macro(_, v)
+        @Vect
+            - $(self.x + v.x)
+            - $(self.y + v.y)
+        end
+    end
+end
+    
+with ($plume.locale: none)
+    let A = $Vect(1, 0.5) 
+    let B = $Vect(7, 0.5)
+    $ A+B
+end
+/// Output
+(x: 8, y: 1)
+/// End
+
+/// Test tostring String
+let t = do
+    meta tostring: $String
+end
+/// Output
+/// End
+
+/// Test tostring interpolation
+let wing = do
+    meta tostring: macro()
+        a$(1+1)
+    end
+end
+
+a$wing
+/// Output
+aa2
+/// End
+
+/// Test tostring fragment
+let wing = do
+    meta tostring: macro()
+        meta fragment: macro()
+            nib
+        end
+    end
+end
+
+a$wing
+/// Output
+anib
+/// End
+
+/// Test nested tostring
+let wing = do
+    meta tostring: macro()
+        meta tostring: macro()
+            nib
+        end
+    end
+end
+
+a$wing
+/// Output
+anib
 /// End

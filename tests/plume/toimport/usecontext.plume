@@ -1,0 +1,6 @@
+let c = $Context(5)
+
+use #context($c:7)
+
+c: $c
+x: $c()

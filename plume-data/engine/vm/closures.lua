@@ -91,7 +91,25 @@ return function(vm)
 	--! inline
 	function vm:LOAD_UPVALUE(arg1, arg2)
 		local upvalue = self:_STACK_GET(self.closureStack)[arg2]
-		self:_STACK_PUSH(self.mainStack, upvalue.reference[upvalue.offset])
+		if upvalue.future and not upvalue.offset then
+			-- try again to found key
+			upvalue.offset = self:_GET_REF_POS(upvalue.key, upvalue.blockPosition)
+
+			if not upvalue.offset then
+				-- Need more context than other errors, quite messy
+				self:_SAVE_SCALAR()
+				self:_ERROR(self.plume.error.cannotUseReferenceDuringConstruction(self, upvalue.key, upvalue.source))
+				--! to-remove-begin
+				return
+				--! to-remove-end
+			end
+		end
+
+		if upvalue.offset then
+			self:_STACK_PUSH(self.mainStack, upvalue.reference[upvalue.offset])
+		else
+			error("[VM] nil upvalue offset")
+		end
 	end
 
 	--- @opcode
@@ -126,6 +144,15 @@ return function(vm)
 						upvalue.emptyRef  = nil
 						upvalue.reference = self.mainStack
 						upvalue.offset    = self:_GET_REF_POS(upvalueInfos.key, upvalueInfos.blockPosition)
+
+						if not upvalue.offset then
+							-- The upvalue points to a key that is not yet on the stack.
+							-- Mark it as unreachable to retry or to raise an error later
+							upvalue.future = true
+							upvalue.key    = upvalueInfos.key
+							upvalue.source = upvalueInfos.source.node
+							upvalue.blockPosition = upvalueInfos.blockPosition
+						end
 					end
 				else
 					local offset = self:_UPVALUE_OFFSET(upvalueInfos.localOffset, upvalueInfos.scopeOffset)

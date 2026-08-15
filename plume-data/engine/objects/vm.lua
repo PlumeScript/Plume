@@ -87,7 +87,7 @@ return function(plume)
 
 			if initFileParams then
 				for _, key in ipairs(initFileParams.keys) do
-					if key ~= 1 and (currentFile.futureFlagPositionnalFileParam or not tonumber(key)) then
+					if key ~= 1 then
 						local value = initFileParams.table[key]
 						local varKey
 						if tonumber(key) then
@@ -103,10 +103,8 @@ return function(plume)
 						elseif chunk.variadicParam then
 							local variadic = self.fileParams[1].value
 							variadic:setItem(key, value)
-						elseif currentFile.futureFlagUnknownParamError then
-							return false, self.plume.error.unknownParamError(varKey, chunk.namedParamOffset), 1
 						else
-							 self.plume.warning.runtimeWarning(string.format("Unknown parameter `%s` for this file.\nFrom edition `raven`, this will lead to an error.", varKey), nil, self.runtime, self.ip, {886, 981})
+							return false, self.plume.error.unknownParamError(varKey, chunk.namedParamOffset), 1
 						end
 					end
 				end

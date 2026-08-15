@@ -26,7 +26,7 @@ let x = \s\s\sx\s\s\s
 /// End
 
 /// Test indent
-let x = \if true then\n\tdo something\nend
+let x = \0if true then\n\tdo something\nend
 ```\n
 $x.indent()\n
 ```
@@ -39,7 +39,7 @@ $x.indent()\n
 /// End
 
 /// Test dedent
-let x = \t\if true then\n\t\tdo something\n\tend
+let x = \t\0if true then\n\t\tdo something\n\tend
 ```\n
 $x.dedent()\n
 ```

@@ -40,11 +40,11 @@ let counters = $Table()
 macro List(...items)
     meta fragment: macro()
         $Table.append($counters, 0)
-        let top = $len($counters)
+        let top = $ len(counters)
         \n
         for i, x in enumerate(items)
             set counters[top] += 1
-            $Table.join(sep: ., ...counters) $x\n
+            $Table.join(sep: ., ...counters) $plume.materialize($x)\n
         end
         run $Table.remove($counters)
     end
@@ -96,7 +96,7 @@ end
 $t$t$t
 $count
 /// Output
-1111
+1110
 /// End
 
 /// Test fragment returning another fragment
@@ -122,7 +122,7 @@ let t = do
         42
     end
 end
-$(t + 8)
+$ t + 8
 /// Output
 50
 /// End
@@ -151,7 +151,7 @@ $t.value
 42
 /// End
 
-/// Test fragment overflow
+/// Test fragment overflow 1
 let t = do
     value: 42
     meta fragment: macro()
@@ -176,8 +176,43 @@ a$t
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    7 │a$t                                                                      │
-│      │  ^                                                                      │
+│    1 │let t = do                                                               │
+│      │^                                                                        │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test fragment overflow 2
+let t = do
+    value: 42
+    meta fragment: macro()
+       $ plume.materialize(t)
+    end
+end
+a$t
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Circular fragment reference: The table `(value: 42)` references itself       │
+│   within its meta-macro fragment.                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │meta fragment: macro()                                                   │
+│    4 │   $ plume.materialize(t)                                                │
+│      │     ^^^^^^^^^^^^^^^^^^^^                                                │
+│    5 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    3 │meta fragment: macro()                                                   │
+│    4 │   $ plume.materialize(t)                                                │
+│      │     ^^^^^^^^^^^^^^^^^^^^                                                │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let t = do                                                               │
+│      │^                                                                        │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
@@ -220,7 +255,7 @@ macro wing(t)
 end
 
 
-$wing($t)
+$ wing(t)
 /// Output
 2
 /// End
@@ -293,7 +328,7 @@ let t = do
         x
     end
 end
-$repr($Context($t))
+$ repr(Context(t))
 /// Output
 Context<x>
 /// End
@@ -324,4 +359,51 @@ let t = (key: wing)
 $t[key]
 /// Output
 wing
+/// End
+
+/// Test fragment not triggered by concat
+let x = 0
+let t = do
+    meta fragment: macro()
+        $x
+    end
+end
+set x += 1
+$t
+set x+= 1
+a
+/// Output
+2a
+/// End
+
+/// Test fragment value not triggered by concat
+let x = 0
+macro t
+    meta fragment: macro()
+        $x
+    end
+end
+set x += 1
+$t()
+set x+= 1
+a
+/// Output
+2a
+/// End
+
+/// Test fragment tostring value not triggered by concat
+let x = 0
+let t = do
+    meta tostring: macro()
+        meta fragment: macro()
+            $x
+        end
+    end
+end
+set x += 1
+$t
+set x+= 1
+a
+/// Output
+2a
 /// End

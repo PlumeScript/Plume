@@ -11,7 +11,7 @@ return function (plume, context, nodeHandlerTable)
 	--- @param node table The current AST node
 	nodeHandlerTable.IDENTIFIER = function(node)
 		local varName = node.content
-		local var = context.getVariable(varName)
+		local var = context.getVariable(node, varName)
 		if not var then
 			plume.error.useUnknownVariable(node, varName, context.getAllVisiblesVariables(), node.name == "VALIDATOR")
 		end
@@ -99,7 +99,7 @@ return function (plume, context, nodeHandlerTable)
 					end
 				end
 			else
-				rvar = context.getVariable(name)
+				rvar = context.getVariable(node, name)
 				if not rvar then
 					plume.error.setUnknownVariable(node, name, context.getAllVisiblesVariables())
 				elseif rvar.isConst or rvar.isStd then

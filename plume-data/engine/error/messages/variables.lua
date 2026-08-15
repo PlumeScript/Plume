@@ -101,4 +101,38 @@ return function(plume)
 		local message = "Cannot declare multiple variadic params."
 		plume.error.throwCompilationError(node, message)
 	end
+
+	function plume.error.variableDefiningItSelf(node, name, variableNode)
+		local message = string.format("Cannot use the value of `%s` to define `%s` itself.", name, name)
+		plume.error.addContext(node, variableNode)
+		plume.error.throwCompilationError(node, message)
+	end
+
+	function plume.error.unknownContextVariable(node, name, plumetable, visiblesVariables)
+		local plumeNames = {}
+		for k, v in pairs(plumetable) do
+			if (type(v) == "table" and v.type) == "context" then
+				table.insert(plumeNames, k)
+			end
+		end
+
+		local visiblesVariableHint = plume.error.makeVisibleVariablesHint(node, name, visiblesVariables, true)
+		visiblesVariableHint = visiblesVariableHint:gsub("'(%w)", "'$%1")
+
+		local plumeRelated = string.format("erhaps you mean '%s'?",
+			table.concat(plume.error.suggestIdentifiers(name, plumeNames, 3), "', '"):gsub(', ([^,]-)$', ' or %1')
+		)
+
+		if #visiblesVariableHint == 0 then
+			visiblesVariableHint = "\nP" .. plumeRelated
+		else
+			visiblesVariableHint = visiblesVariableHint .. "\nOr p" .. plumeRelated
+		end
+		
+		
+		local message = string.format("Unknown predefined contextual variable '%s'.%s",
+			name, visiblesVariableHint
+		)
+		plume.error.throwCompilationError(node, message)
+	end
 end

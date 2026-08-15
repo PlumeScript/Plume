@@ -14,7 +14,7 @@ end
 let t = $Table(5, 2, 3)
 
 macro compare(a, b)
-	$(a<b)
+	$ a<b
 end
 
 run $Table.sort($t, compare: $compare)
@@ -27,7 +27,7 @@ $t
 let t = $Table(5, 2, 3)
 
 macro compare(a, b)
-	$(a>b)
+	$ a>b
 end
 
 run $Table.sort($t, compare: $compare)

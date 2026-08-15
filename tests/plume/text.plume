@@ -69,14 +69,17 @@ $(1+1)
 
 /// Test Escape 4
 \F
-/// Output
-F
-/// End
-
-/// Test Escape 5
-a\F
-/// Output
-aF
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Unknown escape sequence '\F'.                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │\F                                                                       │
+│      │^^                                                                       │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
 /// Test Braces are paired 1
@@ -111,7 +114,7 @@ $wing((x), ((y)))
 
 /// Test Braces are paired 4
 macro wing(x)
-    $len($x)
+    $ len(x)
 end
 
 $wing((x,y))
@@ -274,7 +277,7 @@ $ 1+1
 /// Test Line eval 2
 use #future(lineEval)
 let x = 1
-macro wing()
+macro wing
     set x += 1
 end
 
@@ -324,14 +327,8 @@ $empty.replace(a, b)
 /// Output
 /// End
 
-/// Test Escape ordinary letter (Owl)
-\ahello
-/// Output
-ahello
-/// End
 
-/// Test newEscape null escape prevents keyword recognition
-use #future(newEscape)
+/// Test null escape prevents keyword recognition
 \0raise
 \0set
 \0run
@@ -339,31 +336,53 @@ use #future(newEscape)
 raisesetrun
 /// End
 
-/// Test newEscape restricted escapes
-use #future(newEscape)
+/// Test restricted escapes
 \s\$\:\,\\\0
 /// Output
  $:,\
 /// End
 
-/// Test newEscape parenthesis escapes
-use #future(newEscape)
+/// Test parenthesis escapes
 \(hello\)
 /// Output
 (hello)
 /// End
 
-/// Test newEscape slash escape
-use #future(newEscape)
+/// Test slash escape
 \/\/ \/*
 /// Output
 // /*
 /// End
 
-/// Test newEscape null escape with interpolation
-use #future(newEscape)
+/// Test null escape with interpolation
 let a = world
 \0$a
 /// Output
 world
+/// End
+
+/// Test interpolation spaces
+let r = 5
+$r 0 $r
+/// Output
+5 0 5
+/// End
+
+/// Test ellipsis
+...
+/// Output
+...
+/// End
+
+/// Test do comment
+do //e
+end
+/// Output
+/// End
+
+/// Test dollar space eval
+
+a $ 1+1
+/// Output
+a 2
 /// End

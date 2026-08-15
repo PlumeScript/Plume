@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b63 (Owl Edition)
+Plume🪶 b64 (Raven Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,7 +30,7 @@ else
 end
 
 local plume = {}
-plume.VERSION = "b63 (Owl Edition)"
+plume.VERSION = "b64 (Raven Edition)"
 
 require 'plume-data/engine/error/core'    (plume)
 require 'plume-data/engine/warning'       (plume)
@@ -95,7 +95,6 @@ function plume.executeString(code, filename, runtime, fileParams, args, isMain)
 		plume.config = plume.config or {}
 		plume.config.errorStyle = args.errorStyle
 		plume.config.color = args.color
-		plume.futureStringFlag = args.futureStringFlag
 	end
 
 	runtime = runtime or plume.obj.runtime()

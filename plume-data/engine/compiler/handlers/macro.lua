@@ -86,6 +86,10 @@ return function (plume, context, nodeHandlerTable)
 			if lastLoop then
 				lastLoop.insideMacro = lastLoop.insideMacro+1
 			end
+			local lasRef = context.getLast "ref"
+			if lasRef then
+				lasRef.insideMacro = lasRef.insideMacro+1
+			end
 
 			-------------------------------------------------------------
 			--- Count arguments, save variadic offset
@@ -165,7 +169,7 @@ return function (plume, context, nodeHandlerTable)
 			-- If the macro is called as a table field, `self`
 			-- is a reference to this table.
 			-- Else is empty
-			if not context.getVariable("self", true) then
+			if not context.getVariable(node, "self", true) then
 				local param = context.registerVariable(nil, "self", {isSelf=true})
 				macroObj.namedParamCount = macroObj.namedParamCount+1
 				macroObj.namedParamOffset.self = param.offset
@@ -179,6 +183,10 @@ return function (plume, context, nodeHandlerTable)
 
 			if lastLoop then
 				lastLoop.insideMacro = lastLoop.insideMacro-1
+			end
+			local lasRef = context.getLast "ref"
+			if lasRef then
+				lasRef.insideMacro = lasRef.insideMacro-1
 			end
 			
 		end) ()
@@ -195,37 +203,19 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.ANONYMOUS_MACRO = nodeHandlerTable.MACRO
 
 	nodeHandlerTable.LEAVE = function(node)
-		local parent
-		if context.futureFlagNewLeave then
-			parent = context.getLast "accBlock"
-		else
-			parent = context.getLast "macros"
-
-			if parent ~= context.getLast "accBlock" then
-				plume.warning.throwWarning("From raven edition, this `leave` will only stop current accumulation block (parent `do`) instead of whole macro.", nil, node, {886, 916})
-			end
-		end
+		local parent = context.getLast "accBlock"
+		local macro  = context.getLast "macros"
 
 		if parent.body and parent.body.isUnic then
 			plume.error.leaveInValueBlock(node)
+		end
+		if macro.insideRaise>0 then
+			plume.error.cannotUseLeaveInsideRaise(node)
 		end
 		
 		-- Messy: `do` doesn't provide node field, but handle itself this case...
 		if parent.node and parent.node.type == "TEXT" then
 			context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(""))
-		end
-
-		if context.futureFlagNewLeave then
-		else
-			if parent.insideRaise>0 then
-				plume.error.cannotUseLeaveInsideRaise(node)
-			end
-			if parent.insideLetset>0 then
-				plume.error.cannotUseLeaveInsideLetset(node)
-			end
-			if parent.insideCall>0 then
-				plume.error.cannotUseLeaveInsideCall(node)
-			end
 		end
 
 		parent.scopeToClose = #context.scopes - parent.scopeDeep

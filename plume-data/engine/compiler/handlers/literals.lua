@@ -38,13 +38,6 @@ return function (plume, context, nodeHandlerTable)
 		["\\s"] = " ",
 		["\\t"] = "\t",
 		["\\n"] = "\n",
-		["\\r"] = "\r"
-	}
-	-- Restricted escape set, enabled by `use #future(newEscape)`
-	local newCharTable = {
-		["\\s"] = " ",
-		["\\t"] = "\t",
-		["\\n"] = "\n",
 		["\\r"] = "\r",
 		["\\$"] = "$",
 		["\\("] = "(",
@@ -55,11 +48,11 @@ return function (plume, context, nodeHandlerTable)
 		["\\/"] = "/",
 		["\\0"] = ""
 	}
+
 	function context.getSpecialText(node)
-		local value = node.content
-		local table = context.futureFlagNewEscape and newCharTable or charTable
-		return table[value]
+		return charTable[node.content]
 	end
+
 	nodeHandlerTable.SPECIAL_TEXT = function(node)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(context.getSpecialText(node)))
 	end

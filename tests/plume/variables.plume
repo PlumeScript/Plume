@@ -67,7 +67,7 @@ $_write
 let x = 0
 @Table.join
 	let y=0
-	$(x+y)
+	$ x+y
 end
 /// Output
 0
@@ -79,7 +79,7 @@ let x = 0
 	let y=0
 	@Table.join
 		let z=0
-		$(x+y+z)
+		$ x+y+z
 	end
 end
 /// Output
@@ -240,4 +240,38 @@ let param ...leftover2
 │      │^^^^^^^^^^^^^^^^^^^^^^                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test simple variable
+let notwing = 1
+$ notwing
+/// Output
+1
+/// End
+
+/// Test let only
+let trues = 1
+/// Output
+/// End
+
+/// Test two do scopes
+do
+    let x = 0
+end
+do
+    let x = 0
+end
+/// Output
+
+/// End
+
+/// Test do set table
+let result
+
+do
+    set result = $Table()
+end
+$result
+/// Output
+$Table()
 /// End

@@ -1,267 +1,186 @@
-/// Test type 1
-$type((1, 2))
-/// Output
-table
-/// End
-
-/// Test type 2
-$type(a)
-/// Output
-string
-/// End
-
-/// Test type 3
-$type(4)
-/// Output
-number
-/// End
-
-/// Test len
-$len((1, 2, a: b))
-/// Output
-2
-/// End
-
-/// Test repr 1
-$repr((1, 2, a: b))
-/// Output
-(1, 2, a: b)
-/// End
-
-/// Test repr 2
-$repr((1, 2, a: (b, c, d)))
-/// Output
-(1, 2, a: (b, c, d))
-/// End
-
-/// Test Number 1
-$Number(1)
-/// Output
-1
-/// End
-
-/// Test Number 2
-$Number(a)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot convert string into number                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │$Number(a)                                                               │
-│      │ ^^^^^^^^^                                                               │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test String
-$ type(String(1))
-/// Output
-string
-/// End
-
-/// Test raise 1
-raise Error!
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Error!                                                                       │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │raise Error!                                                             │
-│      │^^^^^^^^^^^^                                                             │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test raise 2
-macro wing
-	raise Error!
+/// Test bad validator 1
+macro wing(idontexit x)
 end
-$wing()
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Error!                                                                       │
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'idontexit', it isn't defined in the current scope.      │
+│   Perhaps you mean 'Context'?                                                  │
+│   Only visibles variables can be used as validator.                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │macro wing                                                               │
-│    2 │ raise Error!                                                            │
-│      │ ^^^^^^^^^^^^                                                            │
+│    1 │macro wing(idontexit x)                                                  │
+│      │           ^^^^^^^^^                                                     │
+│    2 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test bad validator 2
+macro valid
+end
+
+macro double(valid x)
+end
+
+$double(a)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'valid' failed:                                                    │
+│   Macro 'valid' cannot be used as validator: it take '0' positional parameter  │
+│   instead of '1'.                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │macro double(valid x)                                                    │
+│      │             ^^^^^^^                                                     │
+│    5 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test validator fail
+macro double(Number x)
+end
+
+$double(a)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'Number' failed:                                                   │
+│   Cannot convert string into number                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro double(Number x)                                                   │
+│      │             ^^^^^^^^                                                    │
+│    2 │end                                                                      │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    4 │$double(a)                                                               │
+│      │ ^^^^^^^^^                                                               │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test custom validator crash
+macro valid(x)
+  $ x+1
+end
+
+macro double(valid x)
+end
+
+$double(a)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'valid' failed:                                                    │
+│   Cannot convert the string value 'a' to a number.                             │
+│   (i) Consider using the `..` concat operator.                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro valid(x)                                                           │
+│    2 │  $ x+1                                                                  │
+│      │    ^^^                                                                  │
 │    3 │end                                                                      │
 │                                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │  ↳ (same file)                                                                 │
-│    4 │$wing()                                                                  │
-│      │ ^^^^^^                                                                  │
+│    5 │macro double(valid x)                                                    │
+│      │             ^^^^^^^                                                     │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    8 │$double(a)                                                               │
+│      │ ^^^^^^^^^                                                               │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test attempt 1
-macro wing
-	raise Error!
+/// Test Table validator fail
+macro wing(Table x)
+  $ len(x)
 end
-$ attempt(wing)
-/// Output
-(success: false, result: Error!)
-/// End
 
-/// Test attempt 2
-macro wing
-	No error!
-end
-$ attempt(wing)
-/// Output
-(success: true, result: No error!)
-/// End
-
-/// Test eval 1
-$eval(1+1)
-/// Output
-1+1
-/// End
-
-/// Test eval 2
-$eval(\$(1+1))
-/// Output
-2
-/// End
-
-/// Test eval error 1
-$eval(\$(1+a))
+$wing(5)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot use variable 'a', it isn't defined in the current scope.              │
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'Table' failed:                                                    │
+│   Cannot convert 'number' to a table.                                          │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
-│  ↳ <string>                                                                    │
-│    1 │$(1+a)                                                                   │
-│      │    ^                                                                    │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(Table x)                                                      │
+│      │           ^^^^^^^                                                       │
+│    2 │  $ len(x)                                                               │
 │                                                                                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │ Traceback (most recent call first):                                            │
 ├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ test.plume                                                                  │
-│    1 │$eval(\$(1+a))                                                           │
-│      │ ^^^^^^^^^^^^^                                                           │
+│  ↳ (same file)                                                                 │
+│    5 │$wing(5)                                                                 │
+│      │ ^^^^^^^                                                                 │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test eval error 2
-$eval(\$(1+a), ?safe)
-/// Output
-(success: false, result: ╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot use variable 'a', it isn't defined in the current scope.              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ <string>                                                                    │
-│    1 │\$(1+a)                                                                   │
-│      │    ^                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯)
-/// End
-
-/// Test lua.eval 1
-$lua.eval(return 1)
-/// Output
-1
-/// End
-
-/// Test lua.eval 2
-$lua.eval(return 1+1)
-/// Output
-2
-/// End
-
-/// Test lua.eval error 1
-$lua.eval(return 1+a)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a      │
-│   nil value)                                                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │$lua.eval(return 1+a)                                                    │
-│      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test lua.eval error 2
-$lua.eval(return 1+a, ?safe)
-/// Output
-(success: false, result: [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a nil value))
-/// End
-
-/// Test lua.eval exotic
-$lua.eval(return function()end)
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → The lua code returned  a 'function' object, that cannot be converted         │
-│   into Plume object.                                                           │
-│   (i) For now, only `string`, `number`, `boolean` and `nil` return are         │
-│   supported.                                                                   │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │$lua.eval(return function()end)                                          │
-│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test std are readonly
-set Math.sin = $Math.cos
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ RUNTIME ERROR:                                                                 │
-│ → Cannot set index of a readonly table.                                        │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ test.plume                                                                  │
-│    1 │set Math.sin = $Math.cos                                                 │
-│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test plume.materialize
-let t = do
-	meta fragment: macro
-		- 1
-		- 2
-		- 3
-	end
+/// Test List validator
+macro wing(List ...x)
+  $x
 end
-$plume.materialize($t)
-/// Output
-(1, 2, 3)
+
+$wing(a, b, c, d:e)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'List' failed:                                                     │
+│   Received extra named argument 'd', but extra arguments must be positional.   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(List ...x)                                                    │
+│      │           ^^^^^^^^^                                                     │
+│    2 │  $x                                                                     │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │$wing(a, b, c, d:e)                                                      │
+│      │ ^^^^^^^^^^^^^^^^^^                                                      │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test plume.materialize rec
-let x = 5
-let t = do
-	meta fragment: macro
-		- 1$(x)1$(x)
-		- 2
-		- do
-			meta fragment: macro
-				7
-			end
-		end
-	end
+/// Test Map validator
+macro wing(Map ...x)
+  $x
 end
-$plume.materialize($t)
-/// Output
-(1515, 2, 7)
+
+$wing(a, b, c, d:e)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Validator 'Map' failed:                                                      │
+│   Received an extra positional argument, but extra arguments must be named.    │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro wing(Map ...x)                                                     │
+│      │           ^^^^^^^^                                                      │
+│    2 │  $x                                                                     │
+│                                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │$wing(a, b, c, d:e)                                                      │
+│      │ ^^^^^^^^^^^^^^^^^^                                                      │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

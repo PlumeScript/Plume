@@ -1,267 +1,174 @@
-/// Test type 1
-$type((1, 2))
-/// Output
-table
-/// End
-
-/// Test type 2
-$type(a)
-/// Output
-string
-/// End
-
-/// Test type 3
-$type(4)
-/// Output
-number
-/// End
-
-/// Test len
-$len((1, 2, a: b))
-/// Output
-2
-/// End
-
-/// Test repr 1
-$repr((1, 2, a: b))
-/// Output
-(1, 2, a: b)
-/// End
-
-/// Test repr 2
-$repr((1, 2, a: (b, c, d)))
-/// Output
-(1, 2, a: (b, c, d))
-/// End
-
-/// Test Number 1
-$Number(1)
-/// Output
-1
-/// End
-
-/// Test Number 2
-$Number(a)
+/// Test Add string
+let x = Wings
+$ x+1
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Cannot convert string into number                                            │
+│ → Cannot convert the string value 'Wings' to a number.                         │
+│   (i) Consider using the `..` concat operator.                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$Number(a)                                                               │
-│      │ ^^^^^^^^^                                                               │
+│    1 │let x = Wings                                                            │
+│    2 │$ x+1                                                                    │
+│      │  ^^^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test String
-$ type(String(1))
-/// Output
-string
-/// End
-
-/// Test raise 1
-raise Error!
+/// Test Add Table
+let x = $Table()
+$ x+1
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Error!                                                                       │
+│ → Cannot do comparison or arithmetic with a table value.                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │raise Error!                                                             │
-│      │^^^^^^^^^^^^                                                             │
+│    1 │let x = $Table()                                                         │
+│    2 │$ x+1                                                                    │
+│      │  ^^^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test raise 2
-macro wing
-	raise Error!
+/// Test Iterate over non Table
+for x in 1
 end
-$wing()
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Error!                                                                       │
+│ → Cannot iterate over a non-table 'number' value.                              │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │macro wing                                                               │
-│    2 │ raise Error!                                                            │
-│      │ ^^^^^^^^^^^^                                                            │
-│    3 │end                                                                      │
+│    1 │for x in 1                                                               │
+│      │^^^^^^^^^^                                                               │
+│    2 │end                                                                      │
 │                                                                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ Traceback (most recent call first):                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ (same file)                                                                 │
-│    4 │$wing()                                                                  │
-│      │ ^^^^^^                                                                  │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test attempt 1
-macro wing
-	raise Error!
+/// Test macro wrong arg count
+let x = macro()
 end
-$ attempt(wing)
-/// Output
-(success: false, result: Error!)
-/// End
 
-/// Test attempt 2
-macro wing
-	No error!
-end
-$ attempt(wing)
-/// Output
-(success: true, result: No error!)
-/// End
-
-/// Test eval 1
-$eval(1+1)
-/// Output
-1+1
-/// End
-
-/// Test eval 2
-$eval(\$(1+1))
-/// Output
-2
-/// End
-
-/// Test eval error 1
-$eval(\$(1+a))
-/// Error
-╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot use variable 'a', it isn't defined in the current scope.              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ <string>                                                                    │
-│    1 │$(1+a)                                                                   │
-│      │    ^                                                                    │
-│                                                                                │
-├────────────────────────────────────────────────────────────────────────────────┤
-│ Traceback (most recent call first):                                            │
-├────────────────────────────────────────────────────────────────────────────────┤
-│  ↳ test.plume                                                                  │
-│    1 │$eval(\$(1+a))                                                           │
-│      │ ^^^^^^^^^^^^^                                                           │
-╰────────────────────────────────────────────────────────────────────────────────╯
-/// End
-
-/// Test eval error 2
-$eval(\$(1+a), ?safe)
-/// Output
-(success: false, result: ╭────────────────────────────────────────────────────────────────────────────────╮
-│ COMPILATION ERROR:                                                             │
-│ → Cannot use variable 'a', it isn't defined in the current scope.              │
-├────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                │
-│  ↳ <string>                                                                    │
-│    1 │\$(1+a)                                                                   │
-│      │    ^                                                                    │
-│                                                                                │
-╰────────────────────────────────────────────────────────────────────────────────╯)
-/// End
-
-/// Test lua.eval 1
-$lua.eval(return 1)
-/// Output
-1
-/// End
-
-/// Test lua.eval 2
-$lua.eval(return 1+1)
-/// Output
-2
-/// End
-
-/// Test lua.eval error 1
-$lua.eval(return 1+a)
+$x(1)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a      │
-│   nil value)                                                                   │
+│ → Wrong number of positional arguments for macro 'x', 1 instead of 0.          │
+│   Usage: $x()                                                                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$lua.eval(return 1+a)                                                    │
+│    2 │end                                                                      │
+│    4 │$x(1)                                                                    │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test Table.join wrong type
+$Table.join($Table())
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong type 'table' for parameter '1' of macro 'join'.                        │
+│   Did you write `Table.join($t)` instead of `Table.join(...t)`?                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$Table.join($Table())                                                    │
 │      │ ^^^^^^^^^^^^^^^^^^^^                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test lua.eval error 2
-$lua.eval(return 1+a, ?safe)
-/// Output
-(success: false, result: [string "return 1+a"]:1: attempt to perform arithmetic on global 'a' (a nil value))
-/// End
+/// Test replace macro wrong arg
+let x = x
+macro rep
+    $x
+end
 
-/// Test lua.eval exotic
-$lua.eval(return function()end)
+$("aaa").replace(a, $rep)
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → The lua code returned  a 'function' object, that cannot be converted         │
-│   into Plume object.                                                           │
-│   (i) For now, only `string`, `number`, `boolean` and `nil` return are         │
-│   supported.                                                                   │
+│ → Macro sub for `String.replace` must take exactly '1' argument, not '0'.      │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │$lua.eval(return function()end)                                          │
-│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                          │
+│    4 │end                                                                      │
+│    6 │$("aaa").replace(a, $rep)                                                │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^                                                │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test std are readonly
-set Math.sin = $Math.cos
+/// Test string to number
+let x = a$1
+set x += 1
 /// Error
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ RUNTIME ERROR:                                                                 │
-│ → Cannot set index of a readonly table.                                        │
+│ → Cannot convert the string value 'a1' to a number.                            │
+│   (i) Consider using the `..` concat operator.                                 │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │set Math.sin = $Math.cos                                                 │
-│      │^^^^^^^^^^^^^^^^^^^^^^^^                                                 │
+│    1 │let x = a$1                                                              │
+│    2 │set x += 1                                                               │
+│      │    ^                                                                    │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test plume.materialize
-let t = do
-	meta fragment: macro
-		- 1
-		- 2
-		- 3
-	end
-end
-$plume.materialize($t)
-/// Output
-(1, 2, 3)
+/// Test arithmetic with empty
+$ 1+empty
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot do comparison or arithmetic with a empty value.                       │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$ 1+empty                                                                │
+│      │  ^^^^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
-/// Test plume.materialize rec
-let x = 5
-let t = do
-	meta fragment: macro
-		- 1$(x)1$(x)
-		- 2
-		- do
-			meta fragment: macro
-				7
-			end
-		end
-	end
-end
-$plume.materialize($t)
-/// Output
-(1515, 2, 7)
+/// Test arithmetic with boolean
+$ (empty or empty) / 2
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot do comparison or arithmetic with a boolean value.                     │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$ (empty or empty) / 2                                                   │
+│      │   ^^^^^^^^^^^^^^^^^^^                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test concat table
+let t = (1, 2, 3)
+
+a$t
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot concat a 'table' value.                                               │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = (1, 2, 3)                                                        │
+│    3 │a$t                                                                      │
+│      │  ^                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

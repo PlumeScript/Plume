@@ -284,3 +284,33 @@ $("abcd").sub(2, -1)
 /// Output
 bcd
 /// End
+
+/// Test empty string
+let blank = $("")
+/// Output
+
+/// End
+
+/// Test replace macro
+let x = x
+macro rep(a)
+    $x
+end
+
+$("aaa").replace(a, $rep)
+/// Output
+xxx
+/// End
+
+/// Test replace String
+let x = a
+$x.replace(a, $String)
+/// Output
+a
+/// End
+
+/// Test replace empty
+$String.replace(ab, a,)
+/// Output
+b
+/// End

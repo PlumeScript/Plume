@@ -108,7 +108,7 @@ mark
 /// Test safe index 1
 let t = $Table(a:b)
 $t.a?
-$(t.a?)
+$ t.a?
 /// Output
 bb
 /// End
@@ -116,7 +116,7 @@ bb
 /// Test safe index 2
 let t = $Table(a:b)
 $t.b?
-$(t.b? or 1)
+$ t.b? or 1
 /// Output
 1
 /// End
@@ -124,7 +124,7 @@ $(t.b? or 1)
 /// Test safe index 3
 let t = $Table(a:b)
 $t["a"]?
-$(t["a"]?)
+$ t["a"]?
 /// Output
 bb
 /// End
@@ -132,7 +132,7 @@ bb
 /// Test safe index 4
 let t = $Table(a:b)
 $t["b"]?
-$(t["b"]? or 1)
+$ t["b"]? or 1
 /// Output
 1
 /// End
@@ -213,7 +213,7 @@ $t.y
 let t = do
 	ref x: 1
 	y: @Table.join
-		a$x\aaa
+		a$x\0aaa
 	end
 end
 $t.y
@@ -255,7 +255,7 @@ $t.x
 let t = do
 	ref x as z: 1
 	y: @Table.join
-		a$z\aaa
+		a$z\0aaa
 	end
 end
 $t.y
@@ -291,28 +291,28 @@ $len((1, 2, 3))
 /// End
 
 /// Test inline Table in call - eval
-$(len((1, 2, 3)))
+$ len((1, 2, 3))
 /// Output
 3
 /// End
 
 /// Test inline Table as inline Table value 1
 let t = (1, a:(1, 2))
-$repr($t)
+$ repr(t)
 /// Output
 (1, a: (1, 2))
 /// End
 
 /// Test inline Table as inline Table value 2
 let t = (a:(1, 2))
-$repr($t)
+$ repr(t)
 /// Output
 (a: (1, 2))
 /// End
 
 /// Test inline Table as inline Table value 3
 let t = $((1, a:(1, 2)))
-$repr($t)
+$ repr(t)
 /// Output
 (1, a: (1, 2))
 /// End
@@ -347,6 +347,89 @@ end
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
 
+/// Test ref define itself
+ref x: do
+	$x
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use the value of `x` to define `x` itself.                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │ $x                                                                      │
+│      │  ^                                                                      │
+│    3 │end                                                                      │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │ref x: do                                                                │
+│      │^^^^^^^^^                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test ref use itself
+ref x: macro()
+	$x
+end
+/// Output
+(x: macro<x>)
+/// End
+
+/// Test ref use same name
+ref x: do
+	let x
+	$x
+end
+/// Output
+(x: )
+/// End
+
+/// Test ref call itself before end
+ref x: do
+	ref getSelf: macro
+		$x
+	end
+	run $getSelf()
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot use a reference during its construction.                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    You try to read the value of 'x'                                            │
+│    2 │ref getSelf: macro                                                       │
+│    3 │ $x                                                                      │
+│      │  ^                                                                      │
+│    4 │end                                                                      │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    But this table field does not yet exist.                                    │
+│    1 │ref x: do                                                                │
+│      │^^^^^^^^^                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │run $getSelf()                                                           │
+│      │     ^^^^^^^^^                                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test ref call itself after end
+ref x: do
+	value: 5
+	ref getSelf: macro
+		$x
+	end
+end
+value: $x.getSelf().value
+/// Output
+(x: (value: 5, getSelf: macro<getSelf>), value: 5)
+/// End
+
 /// Test block expand
 macro wing(x)
 	- a
@@ -359,4 +442,261 @@ end
 end
 /// Output
 (a, b, c)
+/// End
+
+/// Test table index
+let t = $Table(wing)
+let index = 1
+
+$t[index]
+/// Output
+wing
+/// End
+
+/// Test nested table set
+let t = do
+    - do
+        wing: blue
+    end
+end
+
+set t[1].wing = red
+/// Output
+
+/// End
+
+/// Test table in if branches
+let t = $Table()
+let t2 = if false
+    $t
+else
+    $t
+end
+/// Output
+
+/// End
+
+/// Test table comment
+// Space after "Table", but no comment
+let t = $Table() 
+a
+/// Output
+a
+/// End
+
+/// Test do if else item
+let t = do
+  if false
+  else
+    - item
+  end
+end
+
+$ len(t)
+/// Output
+1
+/// End
+
+/// Test table false value
+let t = $Table(x: $false)
+$t.x
+/// Output
+false
+/// End
+
+/// Test table remove iterate
+let t = $Table(wing, nib)
+run $Table.remove($t)
+
+for k, v in items(t)
+    $k → $v\n
+end
+/// Output
+1 → wing
+/// End
+
+/// Test table spread join
+let t1 = $Table(a, b, c)
+let t2 = $(Table(...t1))
+$Table.join(...t2)
+/// Output
+abc
+/// End
+
+/// Test table empty item
+let t = do
+    - b
+    -
+end
+$t
+/// Output
+(b, )
+/// End
+
+/// Test table empty value
+let t = do
+    a:
+    c: a
+end
+$t
+/// Output
+(a: , c: a)
+/// End
+
+/// Test ref multiple
+ref x, y, z
+/// Output
+$Table()
+/// End
+
+/// Test table value tuple
+let x = a
+
+$x: (5, 2, 3)
+
+/// Output
+(a: (5, 2, 3))
+/// End
+
+/// Test table sort compare
+let x = 5
+macro comp(a, b)
+    $ x>a
+end
+
+let t = (1, 2, 3)
+$Table.sort($t, compare: $comp)
+/// Output
+/// End
+
+/// Test table sort macro
+let w = (1, 3, 2)
+run $Table.sort($w, compare: macro (a, b) $(a < b))
+$w
+/// Output
+(1, 2, 3)
+/// End
+
+/// Test table sort nested
+let  t = do
+    - (10, 2)
+    - (2, 1)
+end
+
+run @Table.sort($t)
+    compare: macro(x, y)
+        return $(x[1]<y[1])
+    end
+end
+
+$t
+/// Output
+((2, 1), (10, 2))
+/// End
+
+/// Test macro key
+let t = do
+  quill: macro()
+    mark
+  end
+end
+$t.quill()
+/// Output
+mark
+/// End
+
+/// Test macro item
+let t = do
+  - macro()
+    mark
+  end
+end
+$t[1]()
+/// Output
+mark
+/// End
+
+/// Test self by key
+let t = do
+  mark: song
+  quill: macro()
+     $self.mark
+  end
+end
+
+$t.quill()
+/// Output
+song
+/// End
+
+/// Test self by index
+let t = do
+  mark: song
+  - macro()
+     $self.mark
+  end
+end
+
+$t[1]()
+/// Output
+song
+/// End
+
+/// Test self chained
+let obj = do
+  wings: quill
+  method1: macro()
+    $self.wings
+  end
+
+  method2: macro()
+    $self.method1()
+  end
+end
+
+$obj.wings
+
+/// Output
+quill
+/// End
+
+/// Test block form Table
+let t = do
+    wing: macro(body)
+        Write "$body"
+    end
+end
+
+@t.wing
+  paint the quill
+end
+
+/// Output
+Write "paint the quill"
+/// End
+
+/// Test table macro block
+let t = do
+  mark: song
+  quill: macro(write)
+    $write $self.mark
+  end
+end
+
+@t.quill
+    write
+end
+/// Output
+write song
+/// End
+
+/// Test table macro value
+let x = a
+
+$x: macro()
+    y
+end
+
+/// Output
+(a: macro<???>)
 /// End

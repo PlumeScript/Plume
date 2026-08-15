@@ -231,8 +231,6 @@ local function parseArgs()
 				end
 				args.fileParams[key] = value
 			end
-		elseif content == "--future-string" then
-			args.futureStringFlag = true
 		elseif content == "--devWarnings" then
 			args.devWarnings = true
 		elseif content == "--devWarnings-global" then
@@ -300,11 +298,7 @@ local function main()
 		end
 
 		if success then
-			if plume.futureStringFlag then
-				result = plume.reprOutput(result)
-			else
-				result = plume.repr(result)
-			end
+			result = plume.reprOutput(result)
 			if args.outputFilename then
 				local file = io.open(args.outputFilename, "w")
 					if not file then

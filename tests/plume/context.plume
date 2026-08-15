@@ -52,7 +52,7 @@ fr
 
 /// Test context & closure
 use #context(locale: fr)
-macro Wing()
+macro Wing
   $plume.locale()
 end
 $Wing()
@@ -68,7 +68,7 @@ let t = do
     item 2
   end
 end
-$repr($t)
+$ repr(t)
 /// Output
 (item 1, item 2)
 /// End
@@ -90,18 +90,191 @@ use #rawNumbers
 1005.5
 /// End
 
-/// Test raw numbers 2
-use #context(locale: fr)
-use #rawNumbers
-$import(tests/plume/toimport/numberlocal)
-/// Output
-x is 5 200,6!
-/// End
-
-/// Test raw numbers 2
+/// Test raw numbers via import
 use #context(locale: fr)
 let m = $import(tests/plume/toimport/numberraw)
 $m()
 /// Output
 x is 5200.6!
+/// End
+
+/// Test context locale random
+use #context(locale: fr)
+wing
+if Random()()>2
+end
+/// Output
+wing
+/// End
+
+/// Test context in macro
+let x = $Context()
+macro wing
+   with ($x: y)
+   end
+end
+
+$wing()
+a
+/// Output
+a
+/// End
+
+/// Test locale fr en
+with ($plume.locale: fr)
+    - $plume.locale()
+end
+with ($plume.locale: en)
+    - $plume.locale()
+end
+/// Output
+(fr, en)
+/// End
+
+/// Test context value in macro
+let var = $Context(1)
+
+macro Wing
+    $var()
+end
+
+$Wing()
+/// Output
+1
+/// End
+
+/// Test context with macro
+let wing = $Context()
+let nib = macro ()
+end
+with ($wing:5)
+  $nib()
+end
+a
+/// Output
+a
+/// End
+
+/// Test context set table
+let result
+let wing = $Context()
+with ($wing: 5)
+    set result = $Table()
+end
+$result
+/// Output
+$Table()
+/// End
+
+/// Test context raise attempt
+let a = $Context(a)
+
+macro wing
+    with ($a: b)
+        raise Error!
+    end
+end
+
+let result = $ attempt(wing)
+$a()
+/// Output
+a
+/// End
+
+/// Test locale number
+with ($plume.locale: 5)
+end
+a\n
+/// Output
+a
+/// End
+
+/// Test context dynamic key
+let key = 1
+let a = $Context(1$key)
+/// Output
+/// End
+
+/// Test use context dynamic key
+let c = $Context(6)
+
+use #context($c: 5)
+$c()
+/// Output
+5
+/// End
+
+
+/// Test use context dynamic key from import
+let x = $import(tests/plume/toimport/usecontext)
+
+$x.x$x.c()
+/// Output
+75
+/// End
+
+/// Test use context dynamic key from use
+use tests/plume/toimport/usecontext
+
+$x$c()
+/// Output
+75
+/// End
+
+/// Test use context not at root 1
+for i in seq(2)
+  use #context(locale: fr)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → `use #context` must be at file root.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │for i in seq(2)                                                          │
+│    2 │  use #context(locale: fr)                                               │
+│      │      ^^^^^^^^^^^^^^^^^^^^                                               │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test use context not at root 2
+let x = do
+  use #context(locale: fr)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → `use #context` must be at file root.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let x = do                                                               │
+│    2 │  use #context(locale: fr)                                               │
+│      │      ^^^^^^^^^^^^^^^^^^^^                                               │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+
+/// Test use context not at root 3
+macro win
+  use #context(locale: fr)
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → `use #context` must be at file root.                                         │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │macro win                                                                │
+│    2 │  use #context(locale: fr)                                               │
+│      │      ^^^^^^^^^^^^^^^^^^^^                                               │
+│    3 │end                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

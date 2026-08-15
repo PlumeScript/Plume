@@ -23,73 +23,73 @@ $Time.duration(90).day
 /// End
 
 /// Test Duration add
-$(String(Time.duration(10) + Time.duration(5)))
+$ String(Time.duration(10) + Time.duration(5))
 /// Output
 15
 /// End
 
 /// Test Duration sub
-$(String(Time.duration(10) - Time.duration(4)))
+$ String(Time.duration(10) - Time.duration(4))
 /// Output
 6
 /// End
 
 /// Test Duration mul
-$(String(Time.duration(10) * 3))
+$ String(Time.duration(10) * 3)
 /// Output
 30
 /// End
 
 /// Test Duration div
-$(String(Time.duration(10) / 2))
+$ String(Time.duration(10) / 2)
 /// Output
 5
 /// End
 
 /// Test Duration eq
-$(Time.duration(10) == Time.duration(10))
+$ Time.duration(10) == Time.duration(10)
 /// Output
 true
 /// End
 
 /// Test Duration lt
-$(Time.duration(10) < Time.duration(20))
+$ Time.duration(10) < Time.duration(20)
 /// Output
 true
 /// End
 
 /// Test Duration lt false
-$(Time.duration(20) < Time.duration(10))
+$ Time.duration(20) < Time.duration(10)
 /// Output
 false
 /// End
 
 /// Test Time.SECOND
-$String($Time.SECOND)
+$ String(Time.SECOND)
 /// Output
 1
 /// End
 
 /// Test Time.MINUTE
-$String($Time.MINUTE)
+$ String(Time.MINUTE)
 /// Output
 60
 /// End
 
 /// Test Time.HOUR
-$String($Time.HOUR)
+$ String(Time.HOUR)
 /// Output
 3600
 /// End
 
 /// Test Time.DAY
-$String($Time.DAY)
+$ String(Time.DAY)
 /// Output
 86400
 /// End
 
 /// Test Time.WEEK
-$String($Time.WEEK)
+$ String(Time.WEEK)
 /// Output
 604800
 /// End
@@ -131,13 +131,13 @@ $Time.date(year: 2020, month: 5, day: 15, hour: 10, minute: 30, second: 45).seco
 /// End
 
 /// Test Date add hour
-$(Time.date(year: 2020, month: 5, day: 15, hour: 10, minute: 30, second: 45) + Time.HOUR == Time.date(year: 2020, month: 5, day: 15, hour: 11, minute: 30, second: 45))
+$ Time.date(year: 2020, month: 5, day: 15, hour: 10, minute: 30, second: 45) + Time.HOUR == Time.date(year: 2020, month: 5, day: 15, hour: 11, minute: 30, second: 45)
 /// Output
 true
 /// End
 
 /// Test Date lt
-$(Time.date(year: 2020, month: 5, day: 15) < Time.date(year: 2020, month: 5, day: 16))
+$ Time.date(year: 2020, month: 5, day: 15) < Time.date(year: 2020, month: 5, day: 16)
 /// Output
 true
 /// End

@@ -59,10 +59,16 @@ As a consequence, **consecutive text lines concatenate with no separator**. To i
 | `\t`     | Tab              |
 | `\s`     | Space            |
 | `\r`     | Carriage return  |
+| `\$`     | Literal `$`      |
+| `\(`     | Literal `(`      |
+| `\)`     | Literal `)`      |
+| `\:`     | Literal `:`      |
+| `\,`     | Literal `,`      |
+| `\\`     | Literal `\`      |
+| `\/`     | Literal `/`      |
+| `\0`     | Empty text (prevents keyword recognition) |
 
-A backslash before any other character makes it literal. This is how you write characters that would otherwise start a language construct, such as `\$`, `\:`, `\,` or `\\` itself. Escaping an ordinary letter simply yields that letter (`\F` is `F`).
-
-A future edition will restrict escapes to a fixed set and add a null escape `\0` (empty text that prevents keyword recognition); that behavior is already available via `use #future(newEscape)` — see [expert.md](expert.md).
+Escapes are restricted to this fixed set: any other `\X` is an error — escaping an ordinary letter (`\a`) is no longer allowed. `\0` produces empty text and prevents keyword recognition: write `\0set` instead of `\set`.
 
 ```plume
 wing
@@ -131,14 +137,14 @@ $(wing * nib) and $wing\n
 macro double (x)
     $(2 * x)
 end
-$(double(wing) + 1)
+$ double(wing) + 1
 // →
 wing + nib = 7
 10 and 5
 11
 ```
 
-If you need a literal `$` character, escape it: `\$`. A bare `$` that starts no valid evaluation is currently treated as text, but this tolerance is scheduled to become an error in a future edition — always escape intended literal `$`.
+If you need a literal `$` character, escape it: `\$`. A bare `$` that starts no valid evaluation is an error — always escape intended literal `$`. A `$` followed by a space evaluates the rest of the line: `let x = $ 1 + 1`.
 
 ## Accumulation Blocks
 
@@ -161,7 +167,7 @@ Every executable block in Plume — the program itself, a macro body, a `do` blo
 
 *   **VALUE block** — the block contains **exactly one** expression. It returns that value *unchanged*, without any string conversion. This is how a macro can return a table, a number or another macro.
     ```plume
-    macro getWing ()
+    macro getWing
         $baseWing
     end
     // getWing returns the value of baseWing itself — if it is
@@ -228,7 +234,7 @@ quill	ink
 
 ```plume
 let color = red // bare word: the string "red"
-$(color == "red")
+$ color == "red"
 // → true
 ```
 
@@ -236,10 +242,10 @@ $(color == "red")
 
 ```plume
 let wing = 1
-$type($wing)\n
-set wing = $String($wing)
-$type($wing)\n
-$(wing + 1)
+$ type(wing)\n
+set wing = $ String(wing)
+$ type(wing)\n
+$ wing + 1
 // no error: "1" is converted back to a number
 // →
 number
@@ -249,7 +255,7 @@ string
 
 ```plume
 let wing = 1
-$(wing + "abc")
+$ wing + "abc"
 // → RUNTIME ERROR: Cannot convert the string value 'abc' to a number. (i) Consider using the `..` concat operator.
 ```
 
@@ -456,12 +462,23 @@ $praise(quill)\n
 $praise(nib, adjective: splendid)\n
 $praise(ink, adjective: dark, ?loud)\n
 let wing = wing
-$(praise(wing))
+$ praise(wing)
 // →
 The quill is great.
 The nib is splendid.
 The ink is dark.
 The wing is great.
+```
+
+**Implicit call in text** — when a macro is used in the middle of a text and takes no argument, the parentheses are optional: `$name` is equivalent to `$name()`. The macro is called automatically and its result is concatenated:
+
+```plume
+macro wing
+    wing
+end
+This is a $wing.
+// →
+This is a wing.
 ```
 
 **Block call** — `@name ... end`: the block supplies the last missings parameters. This is the foundation of Plume's DSL style:
@@ -496,14 +513,14 @@ Inline arguments and block content can also be mixed, and block calls chained on
 
 ## Early Exit: `leave`
 
-`leave` exits the current macro (or file) immediately, returning the value accumulated so far — Plume's equivalent of an early `return`. Inside nested loops, it terminates the whole macro, not just the loop.
+`leave` exits the current accumulation block immediately, returning the value accumulated so far — Plume's equivalent of an early `return`. Inside a loop, it terminates the loop's block, not the whole macro.
 
 ```plume
 macro collect (limit)
     - for i in seq(1, 100)
         if i > limit
             leave
-            // exits collect with the items gathered so far
+            // exits the loop with the items gathered so far
         end
         - $(i * 10)
     end
@@ -515,8 +532,6 @@ $collect(3)
 *   `leave` must appear on its own line.
 *   In a TABLE block it returns the table accumulated so far (empty if none); otherwise it returns the accumulated text (or `empty`).
 *   It is forbidden inside a VALUE block, an assignment, a block call or a `raise` — these are compile-time errors.
-
-A future edition will make `leave` exit only the current accumulation block; that behavior is already available via `use #future(newLeave)` — see [expert.md](expert.md).
 
 ## Building Tables
 
@@ -571,12 +586,12 @@ let wing = do
     - green
     nib: sharp
 end
-$(wing[1])\n     // → red
-$(wing.nib)\n    // → sharp
+$ wing[1]\n     // → red
+$ wing.nib\n    // → sharp
 set wing[2] = blue
 set wing.ink = dark
-$(wing[2])\n     // → blue
-$(wing.ink)\n    // → dark
+$ wing[2]\n     // → blue
+$ wing.ink\n    // → dark
 ```
 
 When a missing key should yield `empty` instead of an error, use the safe accessors `t.key?` / `t["key"]?` — see [advanced.md](advanced.md).
@@ -609,11 +624,11 @@ Additional options (file parameters, error styling, colors) are covered in [adva
 
 ## Editions and Versioning
 
-Plume versions follow an **Edition–Build** scheme, e.g. `Plume Owl 59`:
+Plume versions follow an **Edition–Build** scheme, e.g. `Plume Raven 64`:
 
 *   An **edition** (`Lark`, `Sparrow`, `Owl`...) is a named release line. Within an edition, code keeps running unchanged.
 *   A **build** is a monotonically increasing number; higher is newer, always compatible within the same edition.
 
-A new edition may introduce breaking changes: see [migration.md](migration.md) and the changelog when upgrading. Behavior scheduled for the next edition can be enabled early with `use #future(...)` — see [expert.md](expert.md). This documentation describes the **Owl** edition.
+A new edition may introduce breaking changes: see [migration.md](migration.md) and the changelog when upgrading. Behavior scheduled for the next edition can be enabled early with `use #future(...)` — see [expert.md](expert.md). This documentation describes the **Raven** edition.
 
 Next: [advanced.md](advanced.md)

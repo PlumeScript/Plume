@@ -185,6 +185,9 @@ return function(plume)
 		if not __s then return false, __e end
 		------------
 		x = plume.callForceFragment(vm, x)
+		if vm.err then
+			return false, vm.err
+		end
 	
 		local result = type(x) == "table" and x.type or (type(x) == "cdata" and x.type) or type(x)
 		if result == "closure" then
@@ -934,6 +937,7 @@ return function(plume)
 	
 	plume.std.os.name = "os"
 	plume.std.os:setMetaItem('readonly', true)
+	local createDate, createDuration -- to be used by path methods
 	
 	local lfsLoaded, lfs = pcall(require, "lfs")
 	
@@ -1156,6 +1160,36 @@ return function(plume)
 				------------
 				local _, _, ext = splitName(path)
 				return true, ext and ext or ""
+			end),
+			getModification = plume.obj.luaMacro ("getModification", function (args, vm, currentFile)
+				local __name      = "getModification"
+				local __signature = "`$getModification()`"
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				local attr = lfs.attributes(path)
+	
+				if not attr then
+					return false, "File '" .. path .. "' doesn't exists"
+				end
+	
+				return createDate({timestamp=attr.modification})
+			end),
+			getSize = plume.obj.luaMacro ("getSize", function (args, vm, currentFile)
+				local __name      = "getSize"
+				local __signature = "`$getSize()`"
+				local __s, __e, self = plume.stdUnpackPositional(args, 0, 0, __name, __signature)
+				if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+				if not __s then return false, __e end
+				------------
+				local attr = lfs.attributes(path)
+	
+				if not attr then
+					return false, "File '" .. path .. "' doesn't exists"
+				end
+	
+				return true, attr.size
 			end),
 			read = plume.obj.luaMacro ("read", function (args, vm, currentFile)
 				local __name      = "read"
@@ -1400,6 +1434,52 @@ return function(plume)
 			return true, plume.makedoc(m)
 		end)
 	}
+	
+	plume.std.materialize = plume.obj.luaMacro("materialize", function (args, vm, currentFile)
+		local __name      = "materialize"
+		local __signature = "`$materialize(any t)`"
+		local __s, __e, self, t
+		__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		if type(t) ~= "table" or t.type ~= "table" then
+			return true, t
+		end
+		
+		local result = plume.callForceFragment(vm, t)
+		if vm.err then
+			return false, vm.err
+		end
+	
+		if type(result) == "table" and result.type == "table" then
+			for _, key in ipairs(result.keys) do
+				result.table[key] = plume.callForceFragment(vm, result.table[key])
+				if vm.err then
+					return false, vm.err
+				end
+			end
+		end
+	
+		return true, result
+	end)
+	
+	plume.std.warning = plume.obj.luaMacro("warning", function (args, vm, currentFile)
+		local __name      = "warning"
+		local __signature = "`$warning(string msg, string help:)`"
+		local __s, __e, self, msg
+		__s, __e, msg = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
+		local help
+		if __s then __s, __e, self, help = plume.stdUnpackNamed(args, {"self", "help"}, __name, __signature) end
+		help = help or nil
+		if __s and msg then __s, __e, msg = plume.stdCheckType(vm, msg, "string", "1", __name, __signature) end
+		if __s and help then __s, __e, help = plume.stdCheckType(vm, help, "string", "help", __name, __signature) end
+		if not __s then return false, __e end
+		------------
+		plume.warning.runtimeWarning(msg, help, vm.runtime, vm.ip, {1248})
+		return true, plume.obj.empty
+	end)
+	
 	plume.std.plume.name = "plume"
 	plume.std.plume:setMetaItem('readonly', true)
 	
@@ -1650,6 +1730,9 @@ return function(plume)
 						local t = type(result) == "table" and result.type or type(result)
 						if t == "fragment" then
 							result = plume.callForceFragment(vm, result)
+							if vm.err then
+								return false, vm.err
+							end
 						elseif t ~= "string" and t ~= "number" and t ~= "empty" then
 							success = false
 							result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
@@ -2166,6 +2249,9 @@ return function(plume)
 			for i, value in ipairs(args) do
 				if type(value) == "table" and (value.type == "fragment" or value.meta.table.fragment) then
 					args[i] = plume.callForceFragment(vm, value)
+					if vm.err then
+						return false, vm.err
+					end
 				elseif type(value) ~= "number" and type(value) ~= "string" then
 					return false, plume.error.wrongArgTypeStd(i, "join", type(value), "string", "$table.join(string ...items)")
 				end
@@ -2527,26 +2613,6 @@ return function(plume)
 			end
 	
 			return true, result
-		end),
-	
-		materialize = plume.obj.luaMacro("materialize", function (args, vm, currentFile)
-			local __name      = "materialize"
-			local __signature = "`$materialize(table t)`"
-			local __s, __e, self, t
-			__s, __e, t = plume.stdUnpackPositional(args, 1, 1,  __name, __signature)
-			if __s then __s, __e, self = plume.stdUnpackNamed(args, {"self"}, __name, __signature) end
-			if __s and t then __s, __e, t = plume.stdCheckType(vm, t, "table", "1", __name, __signature) end
-			if not __s then return false, __e end
-			------------
-			local result = plume.callForceFragment(vm, t)
-	
-			if type(result) == "table" and result.type == "table" then
-				for _, key in ipairs(result.keys) do
-					result.table[key] = plume.callForceFragment(vm, result.table[key])
-				end
-			end
-	
-			return true, result
 		end)
 	}
 	
@@ -2571,7 +2637,7 @@ return function(plume)
 	plume.std.Table.name = "Table"
 	plume.std.Table:setMetaItem('readonly', true)
 	
-	local createDate, createDuration
+	-- local createDate, createDuration -- moved to path.lua
 	
 	local function getType(x)
 		return type(x) == "table" and x.table.type or type(x)
@@ -2654,7 +2720,9 @@ return function(plume)
 	
 		local result = vx - vy
 	
-		if tx ~= "Date" and ty ~= "Date" then
+		if tx == "Date" and ty == "Date" then
+			return createDuration(result)
+		elseif tx ~= "Date" and ty ~= "Date" then
 			return createDuration(result)
 		else
 			return createDate({timestamp=result})
@@ -2760,7 +2828,7 @@ return function(plume)
 		time:setItem("type", "Date")
 	
 		local success, result = true
-		if args.timestamp and args.timestamp ~= 0 then
+		if args.timestamp ~= nil then
 			time:setItem("timestamp", args.timestamp)
 		else
 			success, result = time:updateTimestamp(args)
@@ -3091,7 +3159,7 @@ return function(plume)
 	function plume.callForceFragment(vm, s)
 		vm:_STACK_PUSH(vm.mainStack, s)
 		vm:FORCE_FRAGMENT()
-		return vm:_STACK_POP(vm.mainStack)
+		return not vm.err and vm:_STACK_POP(vm.mainStack)
 	end
 	
 	function plume.stdCheckType(vm, arg, expected, argName, name, signature)
@@ -3100,6 +3168,9 @@ return function(plume)
 			if arg.type == "fragment" then
 				given = "string"
 				arg = plume.callForceFragment(vm, arg)
+				if vm.err then
+					return false, vm.err, arg
+				end
 			elseif expected ~= "table" and arg.subtype then
 				given = arg.subtype
 			elseif expected ~= "table" and arg.table and arg.table.type then

@@ -94,7 +94,7 @@ return function (plume, context)
 			if not childMacro.upvalueMap[name] then
 				table.insert(childMacro.upvalues, {
 					offset = #childMacro.upvalues+1,
-					parentOffset = #macro.upvalues,
+					parentOffset = context.getLast("macros", i).upvalueMap[name].offset,
 					isUpvalue = true
 				})
 				childMacro.upvalueMap[name] = childMacro.upvalues[#childMacro.upvalues]
@@ -148,7 +148,7 @@ return function (plume, context)
 	--- @param name string The name of the variable
 	--- @param strict bool Shouldn't check in outer scopes
 	--- @return table|nil {frameOffset?, offset, isConst}
-	function context.getVariable(name, strict)
+	function context.getVariable(node, name, strict)
 		local scopeDepth = 0
 		local relativeScopeOffset
 		for i=#context.scopes, 1, -1 do
@@ -166,6 +166,13 @@ return function (plume, context)
 			if current[name] then
 				local variable = current[name]
 				local result
+
+				if variable.isRef then
+					local lastRef = context.getLast("ref")
+					if lastRef and lastRef.name == name and lastRef.insideMacro == 0 then
+						plume.error.variableDefiningItSelf(node, name, variable.node)
+					end
+				end
 				
 				if scopeDepth > 0 then
 					if variable.isRef then

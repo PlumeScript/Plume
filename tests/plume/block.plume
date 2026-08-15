@@ -51,10 +51,10 @@ end
   Bar
 end
 /// Output
-quill Bar baz
+quill, Bar, baz
 /// End
 
-/// Test macro & block call (miwriteed params)
+/// Test macro & block call (named param in block)
 macro nib(write, paint, optn: value)
   $write $paint $optn
 end
@@ -89,7 +89,7 @@ $t[2]
 let x = if false
   Wing
 end
-$(x == empty)
+$ x == empty
 /// Output
 true
 /// End
@@ -98,8 +98,8 @@ true
 let x = if false
   - Wing
 end
-$(type(x))\n
-$(len(x))
+$ type(x)\n
+$ len(x)
 /// Output
 table
 0
@@ -278,4 +278,297 @@ end
 │    5 │else                                                                     │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test table
+let t = do
+	- Wing
+end
+$t[1]
+/// Output
+Wing
+/// End
+
+/// Test text
+let t = do
+	Wing\n
+	Nib
+end
+$t
+/// Output
+Wing
+Nib
+/// End
+
+/// Test nested - item
+let t = do
+	- do
+		- Wing
+	end
+end
+$t[1][1]
+/// Output
+Wing
+/// End
+
+/// Test nested - key
+let t = do
+	nib: do
+		- Wing
+	end
+end
+$t.nib[1]
+/// Output
+Wing
+/// End
+
+/// Test if true
+let a = 5
+if a > 2
+  quill
+end
+/// Output
+quill
+/// End
+
+/// Test if false
+let a = -1
+if a > 2
+  quill
+end
+/// Output
+/// End
+
+/// Test if-else true
+let a = 5
+if a > 2
+  quill
+else
+  mark
+end
+/// Output
+quill
+/// End
+
+/// Test if-else false
+let a = -1
+if a > 2
+  quill
+else
+  mark
+end
+/// Output
+mark
+/// End
+
+/// Test if-elseif-elseif-else 1
+let a = 0
+if a == 0
+  quill
+elseif a == 1
+  mark
+elseif a == 2
+  ink
+else
+  ???
+end
+/// Output
+quill
+/// End
+
+/// Test if-elseif-elseif-else 2
+let a = 1
+if a == 0
+  quill
+elseif a == 1
+  mark
+elseif a == 2
+  ink
+else
+  ???
+end
+/// Output
+mark
+/// End
+
+/// Test if-elseif-elseif-else 3
+let a = 2
+if a == 0
+  quill
+elseif a == 1
+  mark
+elseif a == 2
+  ink
+else
+  ???
+end
+/// Output
+ink
+/// End
+
+/// Test if-elseif-elseif-else 4
+let a = 3
+if a == 0
+  quill
+elseif a == 1
+  mark
+elseif a == 2
+  ink
+else
+  ???
+end
+/// Output
+???
+/// End
+
+/// Test if-else empty else
+let x = if false
+  a
+else
+end
+
+/// Output
+
+/// End
+
+/// Test if value text
+let a = wing
+let b = nib
+
+let c = if true
+    $a $b
+end
+
+$c
+/// Output
+wing nib
+/// End
+
+/// Test if empty value
+let x = if true
+end
+
+$ x==empty
+/// Output
+true
+/// End
+
+/// Test if tuple value
+if true
+    (1, 2, 3)
+else
+    (4, 5, 6)
+end
+/// Output
+(1, 2, 3)
+/// End
+
+/// Test if tuple value let
+if true
+    let x
+    (1, 2, 3)
+else
+    (4, 5, 6)
+end
+/// Output
+(1, 2, 3)
+/// End
+
+/// Test if else text
+if false
+    
+else
+    a
+    a
+end
+/// Output
+aa
+/// End
+
+/// Test if elseif
+if true
+  a
+elseif true
+end
+/// Output
+a
+/// End
+
+/// Test two if false
+if false
+    a
+end
+    
+if false
+    a
+end
+/// Output
+/// End
+
+/// Test run side effect
+let x = 1
+
+macro incX
+  set x += 1
+  $x
+end
+
+run $incX()
+$x
+
+/// Output
+2
+/// End
+
+
+/// Test run block
+let x = 1
+
+macro incX(body)
+  set x += 1
+  $x
+end
+
+run @incX()
+	Wings
+end
+/// Output
+/// End
+
+/// Test run nothing
+run nothing
+/// Output
+
+/// End
+
+/// Test inline block call - simple
+macro double(x)
+  $x $x
+end
+
+ @double wing
+/// Output
+wing wing
+/// End
+
+/// Test inline block call - chained
+macro double(x)
+  $x $x
+end
+
+ @double @double wing
+/// Output
+wing wing wing wing
+/// End
+
+/// Test inline block call - with args
+macro rep(x, count: 2)
+  for i in seq(count)
+    $x
+  end
+end
+
+ @rep(count: 6) wing
+/// Output
+wingwingwingwingwingwing
 /// End

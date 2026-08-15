@@ -17,7 +17,7 @@ let ink = do
     end
 end
 
-$(ink + 5)
+$ ink + 5
 // → 15
 ```
 
@@ -63,7 +63,7 @@ let config = do
     end
 end
 
-$(config.port)
+$ config.port
 // → Unknown setting 'port'.
 ```
 
@@ -125,7 +125,7 @@ macro List(...items)
         <$depth>
         for x in items
             set item_count += 1
-            $item_count$x
+            $item_count$ plume.materialize(x)
         end
         </$depth>
         set depth -= 1
@@ -143,6 +143,8 @@ end
 // → <1>1a2<2>3b4c</2>5d</1>
 ```
 
+`plume.materialize(x)` forces the item to render immediately, while `depth` still holds the value we want. Without it, the content would accumulate and only be executed after `set depth -= 1`, breaking the macro's purpose.
+
 With a plain macro (eager), the inner `List` would render while `depth` is still `1`, producing wrong nesting (`<1>...<1>...</1>...</1>`). Here the inner fragment runs to completion first, so the tags nest correctly.
 
 Unlike `tostring`, which renders the table eagerly at each text interpolation, `fragment` renders **lazily** — once, at the last possible moment — and may return any type: a number, a restructured table, `empty` — not just text.
@@ -154,11 +156,11 @@ let counter = do
     end
 end
 
-$(counter + 8)
+$ counter + 8
 // → 50
 ```
 
-A fragment-table is best understood as a **lazy value**: its render is deferred until a concrete value is needed. The table's other fields are generation parameters for that deferred render — they stay inspectable (indexing, iteration) even after rendering, and `Table.materialize` (below) processes them as data.
+A fragment-table is best understood as a **lazy value**: its render is deferred until a concrete value is needed. The table's other fields are generation parameters for that deferred render — they stay inspectable (indexing, iteration) even after rendering, and `plume.materialize` (below) processes them as data.
 
 Constraints: the metafield value must be a macro. Because `fragment` intercepts the very triggers these other metafields rely on, defining it alongside any of them is an error:
 
@@ -174,11 +176,11 @@ The `fragment` metafield does **not** fire when the table is consumed as structu
 *   table expansion (`...t`)
 *   a macro argument whose declared type is `table` or `any`
 *   a table value (`- $t` inside a table)
-*   `$repr($t)` — reports the table as it currently is, without rendering it
+*   `$(repr(t))` — reports the table as it currently is, without rendering it
 
-`$type($t)` is the exception: it forces the fragment on the object passed as parameter, so it reports the object's real value. A library that must tell a `table` from a `string` can rely on `$type` — a fragment passed as a `table`/`any` argument stays a fragment, but `$type` resolves it to its real type, with no ambiguity.
+`$(type(t))` is the exception: it forces the fragment on the object passed as parameter, so it reports the object's real value. A library that must tell a `table` from a `string` can rely on `$type` — a fragment passed as a `table`/`any` argument stays a fragment, but `$type` resolves it to its real type, with no ambiguity.
 
-To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `Table.materialize(x)`:
+To force rendering across an entire tree — flattening every `fragment` meta and lazy fragment in a table's children — use `plume.materialize(x)`:
 
 ```plume
 let deep = do
@@ -190,12 +192,12 @@ let deep = do
     - plain
 end
 
-let m = $Table.materialize($deep)
+let m = $plume.materialize($deep)
 // m is a table whose first item is the string "inner-rendered"
 // and second item is the string "plain"
 ```
 
-`Table.materialize` returns a **new** table; the original is never mutated. Non-table values pass through unchanged.
+`plume.materialize` returns a **new** table; the original is never mutated. Non-table values pass through unchanged.
 
 ## Custom Iterators: `next` and `iter`
 
@@ -238,11 +240,11 @@ Prefixing a parameter with an identifier applies a **validator** at call time:
 
 ```plume
 macro wing (Number size)
-    $type($size)
+    $ type(size)
 end
 
 let x = $String(1)
-$wing($x)
+$ wing(x)
 // the argument was converted to a number before entering the body
 // → number
 ```
@@ -290,7 +292,7 @@ Contextual variables pass implicit parameters through nested calls — a scoped,
 ```plume
 let ink = $Context(blue)   // declared with a default value
 
-macro paint ()
+macro paint
     Painted in $ink().\n   // read by calling the variable
 end
 
@@ -322,7 +324,7 @@ Use contextual variables sparingly: configuration that permeates many layers (lo
 
 ## Library Isolation: `#rawNumbers` and `#context`
 
-Two compile-time directives protect a library from its caller's environment.
+Two directives protect a library from its caller's environment.
 
 `use #rawNumbers` disables locale-based number formatting **for the current file only** — essential when generating formats where numbers must stay raw:
 
@@ -335,30 +337,40 @@ macro circle (x, y, r)
 end
 ```
 
-`use #context(key: value, ...)` wraps the whole file in a `with` block. Only built-in `plume.*` contexts are accepted:
+`use #context(key: value, ...)` wraps the whole file in a `with` block. It is sugar for a file-level `with`:
 
 ```plume
-use #context(locale: none)
+use myLib
+use #context($myLib.param1: 25, $myLib.param2: 75)
 ```
+
+is equivalent to:
+
+```plume
+use myLib
+
+with ($myLib.param1: 25, $myLib.param2: 75)
+    // all the file's code
+end
+```
+
+*   Unlike the other directives, `use #context` accepts dynamic keys and valu evaluated at runtime.
+*   String keys remain valid for built-in contexts and are interpolated to `plume[key]`: `use #context(locale: none)` is equivalent to `use #context($plume.locale: none)`.
+*   `use #context` is only allowed at the root of a file; using it anywhere else is an error.
 
 ## Opt-in Features: `#future`
 
 `use #future(name)` enables today a behavior that will become the default in a future edition:
 
 ```plume
-use #future(newLeave)
-use #future(all)        // every feature of the next edition
+use #future(featureName)
 use #future(raven)      // every feature of a named edition
+use #future(all)        // every futur feature
 ```
 
 Currently available features:
 
-*   `newLeave` — `leave` exits the **current accumulation block** instead of the whole macro or file.
-*   `lineEval` — `$ ` (a dollar followed by a space) evaluates the rest of the line: `let x = $ 1 + 1`. A non-escaped `$` then becomes an error.
-*   `newEscape` — restricts text escape sequences to a fixed set (`\n`, `\t`, `\r`, `\s`, `\$`, `\(`, `\:`, `\,`, `\\`, `\/`, `\0`) and adds the null escape `\0` (empty text that prevents keyword recognition). Any other `\X` becomes an error instead of yielding the literal letter.
-*   `importCache` — `import` and `use` results are cached per file + parameters combination instead of being re-executed. Passing a mutable object as parameter triggers a dedicated warning.
-*   `unknownParamError` — enabled **in a module**, it turns passing an undeclared file parameter into an error listing the valid ones.
-*   `positionnalFileParam` — `let param x` binds positional arguments passed to `import` / `use`, in declaration order.
+* _(none)_
 
 ## Dynamic Code: `eval` and `lua.eval`
 
