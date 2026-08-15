@@ -194,3 +194,29 @@ let key = 1
 let a = $Context(1$key)
 /// Output
 /// End
+
+/// Test use context dynamic key
+let c = $Context(6)
+
+use #context($c: 5)
+$c()
+/// Output
+5
+/// End
+
+
+/// Test use context dynamic key from import
+let x = $import(tests/plume/toimport/usecontext)
+
+$x.x$x.c()
+/// Output
+75
+/// End
+
+/// Test use context dynamic key from use
+use tests/plume/toimport/usecontext
+
+$x$c()
+/// Output
+75
+/// End

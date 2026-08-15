@@ -324,7 +324,7 @@ Use contextual variables sparingly: configuration that permeates many layers (lo
 
 ## Library Isolation: `#rawNumbers` and `#context`
 
-Two compile-time directives protect a library from its caller's environment.
+Two directives protect a library from its caller's environment.
 
 `use #rawNumbers` disables locale-based number formatting **for the current file only** — essential when generating formats where numbers must stay raw:
 
@@ -337,11 +337,26 @@ macro circle (x, y, r)
 end
 ```
 
-`use #context(key: value, ...)` wraps the whole file in a `with` block. Only built-in `plume.*` contexts are accepted:
+`use #context(key: value, ...)` wraps the whole file in a `with` block. It is sugar for a file-level `with`:
 
 ```plume
-use #context(locale: none)
+use myLib
+use #context($myLib.param1: 25, $myLib.param2: 75)
 ```
+
+is equivalent to:
+
+```plume
+use myLib
+
+with ($myLib.param1: 25, $myLib.param2: 75)
+    // all the file's code
+end
+```
+
+*   Unlike the other directives, `use #context` accepts dynamic keys and valu evaluated at runtime.
+*   String keys remain valid for built-in contexts and are interpolated to `plume[key]`: `use #context(locale: none)` is equivalent to `use #context($plume.locale: none)`.
+*   `use #context` is only allowed at the root of a file; using it anywhere else is an error.
 
 ## Opt-in Features: `#future`
 

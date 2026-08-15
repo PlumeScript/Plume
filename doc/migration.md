@@ -69,4 +69,4 @@ Check if the key exists before calling `Table.removeKey`.
 *	Write `with ($x: 5)` instead of `with x: 5`.
 *	Write `with ($plume.locale: fr)` instead of `with locale: fr`
 *	Write `let x = $Context();...;$x()` instead of `let context x;...;$x`
-*	`use #context` only works for `plume.*` context variables.
+*	`use #context(locale: fr)` is sugar for `use #context($plume.locale: fr)` — string keys are interpolated to `plume[key]`.

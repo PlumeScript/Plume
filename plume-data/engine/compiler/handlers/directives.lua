@@ -157,18 +157,25 @@ return function (plume, context, nodeHandlerTable)
 		},
 
 		context = {
-			method = function(node, args)
+			method = function(node, args)	
 				context.contextVariableToClose = context.contextVariableToClose + 1
-				local t = {}
+				context.registerOP(node, plume.ops.BEGIN_ACC)
+
 				for name, value in pairs(args) do
-					local var = context.runtime.plume.table[name]
-					if not var then
-						plume.error.wrongDirectiveArgs(node, "context", name)
+					context.accBlock()(value)
+					if type(name) == "table" then -- node
+						context.childrenHandler(name)
+					else -- key
+						local var = context.runtime.plume.table[name]
+						if not var then
+							plume.error.wrongDirectiveArgs(node, "context", name)
+						end
+						context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var))
 					end
-					t[var] = value
+					context.registerOP(node, plume.ops.TAG_KEY)
 				end
 
-				context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(plume.obj.quickTable(t)))
+				context.registerOP(node, plume.ops.CONCAT_TABLE)
 				context.registerOP(node, plume.ops.PUSH_CONTEXT)
 			end
 		},
@@ -260,7 +267,7 @@ return function (plume, context, nodeHandlerTable)
 		handler.method(node, options)
 	end
 
-	local dynamicWhiteList = {}
+	local dynamicWhiteList = {context=true}
 
 	nodeHandlerTable.USE = function(node)
 		local libnameNode = plume.ast.get(node, "LIB_NAME")
