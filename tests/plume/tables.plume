@@ -385,6 +385,51 @@ end
 (x: )
 /// End
 
+/// Test ref call itself before end
+ref x: do
+	ref getSelf: macro
+		$x
+	end
+	run $getSelf()
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot use a reference during its construction.                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    You try to read the value of 'x'                                            │
+│    2 │ref getSelf: macro                                                       │
+│    3 │ $x                                                                      │
+│      │  ^                                                                      │
+│    4 │end                                                                      │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    But this table field does not yet exist.                                    │
+│    1 │ref x: do                                                                │
+│      │^^^^^^^^^                                                                │
+├────────────────────────────────────────────────────────────────────────────────┤
+│ Traceback (most recent call first):                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│  ↳ (same file)                                                                 │
+│    5 │run $getSelf()                                                           │
+│      │     ^^^^^^^^^                                                           │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test ref call itself after end
+ref x: do
+	value: 5
+	ref getSelf: macro
+		$x
+	end
+end
+value: $x.getSelf().value
+/// Output
+(x: (value: 5, getSelf: macro<getSelf>), value: 5)
+/// End
+
 /// Test block expand
 macro wing(x)
 	- a
