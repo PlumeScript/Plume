@@ -140,7 +140,7 @@ return function(plume)
 		if first:match("[rtns]") then
 			hint = string.format("$(%q)%s", first, keyword:sub(2))
 		else
-			hint = "\\" .. keyword
+			hint = "\\0" .. keyword
 		end
 		message = message .. string.format("\nIf you want to write the word '%s' as text, write '%s'.", keyword, hint)
 		return message
