@@ -196,24 +196,6 @@ return function (plume)
 						+  C("SPECIAL_TEXT", P"\\/")
 						+  C("SPECIAL_TEXT", P"\\0")
 						+  E(unknownEscape, P"\\" * P(1))
-		
-		---------------------------
-		-- compilation directive --
-		---------------------------
-		local libidn = (P(1)-S",\n():")^0
-		local libparam = Ct("USE_OPTION",
-			(C("KEY", libidn) * os * ":") * os * Ct("VALUE", V"textic")
-			+ Ct("VALUE", V"textic")
-		)
-		local nameposLibparam = Ct("USE_OPTION",
-			C("KEY", libidn) * (os * ":" * os * Ct("VALUE", V"textic"))^-1
-		)
-		local libparamlist = os * (P"("*P")" + P"(" * os * libparam * os * (P"," * os * libparam)^0 * os * ")")^-1
-		local nameposLibparamlist = os * (P"("*P")" + P"(" * os * nameposLibparam * os * (P"," * os * libparam)^0 * os * ")")^-1
-
-		local libname = Cmt(Ct("USE_DIRECTIVE", P"#" * C("NAME", libidn) * nameposLibparamlist), applyDirective)
-					  + Ct("USE_LIB", C("NAME", libidn) * libparamlist)
-		local use = K"use" * (s * libname * (os*P","*os*libname)^0 + E(plume.error.emptyUse))
 
 		----------
 		-- eval --
@@ -562,6 +544,14 @@ return function (plume)
 			end
 			return x
 		end
+
+		---------------------------
+		-- compilation directive --
+		---------------------------
+		local uselibname = C("LIB_NAME", P"#"^-1 * (P(1)-S",\n():")^0)
+		local uselibcall = P"(" * P")" + P"(" * os * arg * (os * P"," * os * arg)^0 * closingPar
+		local uselib = Ct("USE", uselibname * uselibcall^-1)
+		local use = K"use" * os * uselib * (os * P"," * os * uselib)^0
 
 		----------
 		-- main --

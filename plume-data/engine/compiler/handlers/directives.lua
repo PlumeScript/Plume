@@ -22,27 +22,20 @@ return function (plume, context, nodeHandlerTable)
 
 	--- `use` directive execute a file that must return a table,
 	--- and load all keys as constants into the current file scope
-	nodeHandlerTable.USE_LIB = function(node)
-		local pathNode = plume.ast.get(node, "NAME")
-		local path = pathNode.content:gsub('^%s*', ''):gsub('%s*$', '')
+	local function useLib(node, pathNode, path, args)
+		path = path:gsub('^%s*', ''):gsub('%s*$', '')
 
 		local fileParams = {""} -- first slot always taken (why?)
 		local fileParamsForCache = {}
 		local posIndex = 1 -- 1 is for file path
-		for _, param in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
-			local keyNode = plume.ast.get(param, "KEY")
-			local valueNode = plume.ast.get(param, "VALUE")
-			local key
-			if keyNode then
-				key = keyNode.content
-			else
-				posIndex = posIndex + 1
-				key = posIndex
-			end
-
-			local value = getRawValue(valueNode, path, key, true)
+		for _, param in ipairs(args) do
+			local key   = param.name
+			local value = param.value
 
 			if key then
+				if tonumber(key) then
+					key = key + 1
+				end
 				fileParams[key] = value
 				table.insert(fileParamsForCache, {key=key, value=value})
 			end
@@ -233,35 +226,29 @@ return function (plume, context, nodeHandlerTable)
 	end
 
 	--- `use #name(...optns)`
-	nodeHandlerTable.USE_DIRECTIVE = function(node)
-		local directiveNameNode = plume.ast.get(node, "NAME")
-		local directiveName = directiveNameNode.content
+	local function useDirective(node, directiveNameNode, directiveName, args)
 		local handler = context.directivesHandler[directiveName]
 		if not handler then
 			plume.error.unknownDirective(directiveNameNode, directiveName)
 		end
 		
 		local options = {}
-		for _, option in ipairs(plume.ast.getAll(node, "USE_OPTION")) do
-			local keyNode = plume.ast.get(option, "KEY")
-			local valueNode = plume.ast.get(option, "VALUE")
-			local key = keyNode and keyNode.content
+		for _, option in ipairs(args) do
+			local key   = option.name
+			local value = option.value
 
-			local value
-			if valueNode then
-				value = getRawValue(valueNode)
-			else
+			if tonumber(key) then
+				key = value
 				value = true
 			end
 
 			if handler.checkArgs then
 				if not handler.checkArgs[key] then
-					plume.error.wrongDirectiveArgs(node, directiveName, key, handler.checkArgs)
+					plume.error.wrongDirectiveArgs(option.nameSource or option.valueSource, directiveName, key, handler.checkArgs)
 				elseif (handler.checkArgs[key] ~= "*" and not handler.checkArgs[key][value]) then
-					plume.error.wrongDirectiveArgsValue(node, directiveName, key, handler.checkArgs, value)
+					plume.error.wrongDirectiveArgsValue(option.valueSource, directiveName, key, handler.checkArgs, value)
 				end
 			end
-
 			
 			if key then
 				options[key] = value
@@ -271,5 +258,56 @@ return function (plume, context, nodeHandlerTable)
 		end
 		
 		handler.method(node, options)
+	end
+
+	local dynamicWhiteList = {}
+
+	nodeHandlerTable.USE = function(node)
+		local libnameNode = plume.ast.get(node, "LIB_NAME")
+		local libname     = libnameNode.content
+		local posItemList = plume.ast.getAll(node, "LIST_ITEM")
+		local nmdItemList = plume.ast.getAll(node, "HASH_ITEM")
+
+		if not libname or #libname == 0 then
+			plume.error.emptyUse(node)
+		end
+
+		local isDirective = false
+		if libname:sub(1, 1) == "#" then
+			isDirective = true
+			libname = libname:sub(2, -1)
+		end
+
+		local whiteListed = isDirective and dynamicWhiteList[libname]
+
+		local args = {}
+		local function handleArg(name, value, nameSource)
+			if type(name) ~= "string" and type(name) ~= "number" and not whiteListed then
+				plume.error.useDoesNotAcceptDynamicArgs(name)
+			end
+
+			local rawvalue = value
+			if not whiteListed then
+				rawvalue = getRawValue(value, libname, name, not isDirective)
+			end
+
+			table.insert(args, {name=name, value=rawvalue, valueSource=value, nameSource=nameSource})
+		end
+
+		for i, posItem in ipairs(posItemList) do
+			handleArg(i, posItem)
+		end
+		for i, nmdItem in ipairs(nmdItemList) do
+			local nameNode = plume.ast.get(nmdItem, "NAME")
+			local name  = nameNode and nameNode.content or plume.ast.get(nmdItem, "DYNAMIC_KEY")
+			local value = plume.ast.get(nmdItem, "BODY")
+			handleArg(name, value, nameNode)
+		end
+
+		if isDirective then
+			useDirective(node, libnameNode, libname, args)
+		else
+			useLib(node, libnameNode, libname, args)
+		end
 	end
 end

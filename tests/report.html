@@ -14076,7 +14076,7 @@ use #warning(explosion: 5)
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    1 │use #warning(explosion: 5)                                               │
-│      │    ^^^^^^^^^^^^^^^^^^^^^^                                               │
+│      │             ^^^^^^^^^                                                   │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -14110,7 +14110,7 @@ use #warning(scope: whole universe)
 │                                                                                │
 │  ↳ test.plume                                                                  │
 │    1 │use #warning(scope: whole universe)                                      │
-│      │    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                      │
+│      │                    ^^^^^^^^^^^^^^                                       │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -16707,7 +16707,7 @@ $Table()
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
 │ → The keyword `let` must be followed by a variable name.                       │
-│   If you want to write the word &#39;let&#39; as text, write &#39;\let&#39;.                   │
+│   If you want to write the word &#39;let&#39; as text, write &#39;\0let&#39;.                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17551,7 +17551,7 @@ $Table()
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
 │ → The keyword `use` must be followed by a library name.                        │
-│   If you want to write the word &#39;use&#39; as text, write &#39;\use&#39;.                   │
+│   If you want to write the word &#39;use&#39; as text, write &#39;\0use&#39;.                  │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
@@ -17573,7 +17573,7 @@ $Table()
 <div>
 <h4>Code</h4>
 <pre><code class="language-plume">
-use lib(param:$(1+1))
+use lib(name:$(1+1))
 
 </code></pre>
 </div>
@@ -17589,14 +17589,14 @@ use lib(param:$(1+1))
 │ → The arguments of &#39;use&#39; are read at compile time and must therefore be        │
 │   plain text.                                                                  │
 │   To import &#39;lib&#39; with dynamic parameters, use instead:                        │
-│       |let lib = $import(lib, param: $(1+1))                                   │
+│       |let lib = $import(lib, name: $(1+1))                                    │
 │       |...                                                                     │
 │       |$lib.someMethod()                                                       │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
-│    1 │use lib(param:$(1+1))                                                    │
-│      │               ^^^^^                                                     │
+│    1 │use lib(name:$(1+1))                                                     │
+│      │              ^^^^^                                                      │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 </code></pre>
@@ -17628,7 +17628,7 @@ $Table()
 ╭────────────────────────────────────────────────────────────────────────────────╮
 │ SYNTAX ERROR:                                                                  │
 │ → The keyword `with` must be followed by a table.                              │
-│   If you want to write the word &#39;with&#39; as text, write &#39;\with&#39;.                 │
+│   If you want to write the word &#39;with&#39; as text, write &#39;\0with&#39;.                │
 ├────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                │
 │  ↳ test.plume                                                                  │
