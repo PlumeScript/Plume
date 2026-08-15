@@ -157,7 +157,7 @@ return function (plume, context, nodeHandlerTable)
 		},
 
 		context = {
-			method = function(node, args)
+			method = function(node, _, args)
 				if node.parent.name ~= "FILE" then
 					plume.error.useContextMustBeAtFileRoot(node)
 				end
@@ -165,18 +165,20 @@ return function (plume, context, nodeHandlerTable)
 				context.contextVariableToClose = context.contextVariableToClose + 1
 				context.registerOP(node, plume.ops.BEGIN_ACC)
 
-				for name, value in pairs(args) do
-					context.accBlock()(value)
-					if type(name) == "table" then -- node
-						context.childrenHandler(name)
+				for _, infos in ipairs(args) do
+					context.accBlock()(infos.valueSource)
+					if type(infos.name) == "table" then -- node
+						context.childrenHandler(infos.name)
 					else -- key
-						local var = context.runtime.plume.table[name]
+						local var = context.runtime.plume.table[infos.name]
 						if not var then
-							plume.error.wrongDirectiveArgs(node, "context", name)
+							plume.error.unknownContextVariable(
+								infos.nameSource, infos.name, context.runtime.plume.table, context.getAllVisiblesVariables()
+							)
 						end
-						context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var))
+						context.registerOP(infos.nameSource, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(var))
 					end
-					context.registerOP(node, plume.ops.TAG_KEY)
+					context.registerOP(infos.nameSource, plume.ops.TAG_KEY)
 				end
 
 				context.registerOP(node, plume.ops.CONCAT_TABLE)
@@ -268,7 +270,7 @@ return function (plume, context, nodeHandlerTable)
 			end
 		end
 		
-		handler.method(node, options)
+		handler.method(node, options, args)
 	end
 
 	local dynamicWhiteList = {context=true}
