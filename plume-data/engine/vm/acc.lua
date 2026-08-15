@@ -48,7 +48,7 @@ return function(vm)
 
 	    --! to-remove-begin
 	    -- No optimisation in debug mode
-	    CONCAT_COUNT_LIMIT = 7
+	    CONCAT_COUNT_LIMIT = 0
 	    --! to-remove-end
 
 	    if count == 0 then
