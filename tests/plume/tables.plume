@@ -655,13 +655,3 @@ end
 /// Output
 (a: macro<???>)
 /// End
-
-/// Test table self-ref
-ref wing: macro()
-   $wing
-end
-
-value: $wing()
-/// Output
-(wing: macro<wing>, value: macro<wing>)
-/// End

@@ -104,13 +104,10 @@ return function(vm)
 
 	--! inline
 	function vm:_GET_REF_FRAME_TOP(offset)
-		local doffset = offset-1 -- frames start at 0
-		-- create a local variable to prevent inlining from... change a table field value.
-
-		if doffset == self:_STACK_POS(self.mainStack.frames)-1 or doffset==0 then
+		if offset == self:_STACK_POS(self.mainStack.frames)-1 or offset==0 then
 	        return self:_STACK_POS(self.mainStack)+1
 	    else
-	        return self:_STACK_GET(self.mainStack.frames, doffset+1)
+	        return self:_STACK_GET(self.mainStack.frames, offset+1)
 	    end
 	end
 
@@ -119,6 +116,8 @@ return function(vm)
 	--- @param offset number
 	--! inline
 	function vm:_GET_REF_POS(key, offset)
+	    offset = offset-1 -- frames start at 0
+
 	    local frameBottom = vm:_GET_REF_FRAME_BOTTOM(offset)
 	    local frameTop    = vm:_GET_REF_FRAME_TOP(offset)
 	    
@@ -132,6 +131,7 @@ return function(vm)
 	        return
 	    end
 	    --! to-remove-end
+
 	    for i = frameTop-1, frameBottom, -1 do
 	        if self.tagStack[i] == "key" then
 	            if self:_STACK_GET(self.mainStack, i) == key then
