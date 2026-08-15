@@ -229,12 +229,14 @@ return function (plume, context)
 		return table.concat(result, "\n")
 	end
 
-	function context.safeClose(node, obj, leave)
+	function context.safeClose(node, obj, leave, raise)
 		if not obj then
 			return
 		end
-		for _, op in ipairs(obj.blockToClose or {}) do
-			context.registerOP(node, op)
+		if not raise then
+			for _, op in ipairs(obj.blockToClose or {}) do
+				context.registerOP(node, op)
+			end
 		end
 		for _ = 1, obj.contextToClose or 0 do
 			context.registerOP(node, plume.ops.POP_CONTEXT)
