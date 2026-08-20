@@ -23,4 +23,8 @@ return function(plume)
 	function plume.error.cannotUseDegRadTogether()
 		return "Cannot use `?deg` and `?rad` flags together."
 	end
+
+	function plume.error.seqCannotUseNulStep()
+		return "Cannot set `step` to zero (will lead to an infinite loop)."
+	end
 end

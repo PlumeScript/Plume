@@ -6255,7 +6255,7 @@ return function (plume)
                                                 end
                                             elseif flag == ITER_SEQ then
                                                 state = state + obj.step
-                                                if state > obj.stop then
+                                                if obj.step > 0 and state > obj.stop or obj.step < 0 and state < obj.stop then
                                                     result = plumeObjEmpty
                                                 else
                                                     result = state

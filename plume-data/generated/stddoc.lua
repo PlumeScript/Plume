@@ -129,7 +129,7 @@ return function(plume)
 	plume.std.rawset.doc = [[`rawset(table, key, value)`: Sets the value of `key` in `table` to `value` without triggering any `setindex` metafield.]]
 	plume.std.read.doc = [[`read(path)`: Reads the content of the file at `path` and returns it as a string.]]
 	plume.std.repr.doc = [[`repr(x, ?pretty)`: Give a string representation of any object.]]
-	plume.std.seq.doc = [[`seq(start, stop)` or `seq(stop)`: Returns an inclusive iterator from `start` to `stop`. If only one argument is provided, `start` defaults to `1`.]]
+	plume.std.seq.doc = [[`seq(start, stop, step)` or  `seq(start, stop)`  or `seq(stop)`: Returns an inclusive iterator from `start` to `stop` by `step`. `start` and `step` defaults to `1`.]]
 	plume.std.type.doc = [[`type(x)`: Returns the type of `x` as a string: `empty`, `table`, `number`, or `string`.]]
 	plume.std.write.doc = [[`write(path, ?append, item)`: Writes `items` to the file at `path`.]]
 end

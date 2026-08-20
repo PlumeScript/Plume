@@ -217,6 +217,10 @@ return function(plume)
 			start = 1
 		end
 	
+		if step == 0 then
+			return false, plume.error.seqCannotUseNulStep()
+		end
+	
 		local result = {
 			type = "stdIterator",
 			start=start-step,

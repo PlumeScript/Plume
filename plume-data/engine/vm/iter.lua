@@ -92,7 +92,7 @@ return function(vm)
 	        end
 	    elseif flag == self.flag.ITER_SEQ then
 	        state = state + obj.step
-	        if state > obj.stop then
+	        if obj.step > 0 and state > obj.stop or obj.step < 0 and state < obj.stop then
 	            result = self.plume.obj.empty
 	        else
 	            result = state
