@@ -123,7 +123,7 @@ _All trigonometry functions works in radians, except if `?deg` flag is provided.
 
 ### Iterators
 
-*   `seq(start, stop)` or `seq(stop)`: Returns an inclusive iterator from `start` to `stop`. If only one argument is provided, `start` defaults to `1`.
+*   `seq(start, stop, step)` or  `seq(start, stop)`  or `seq(stop)`: Returns an inclusive iterator from `start` to `stop` by `step`. `start` and `step` defaults to `1`.
 *   `enumerate(table)`: Returns an iterator yielding pairs of `(index, value)` for each list item in the table.
 *   `items(table, ?named)`: Returns an iterator yielding `(key, value)` pairs for all entries in the table (only non-numeric entries if `?named` flag is on).
 
