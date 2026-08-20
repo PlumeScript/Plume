@@ -70,6 +70,11 @@ return function(plume)
 		plume.error.throwCompilationError(node, message)
 	end
 
+	function plume.error.useContextNotSupportPos(node)
+		local message = "`use #context` doesn't support positional arguments."
+		plume.error.throwCompilationError(node, message)
+	end
+
 	function plume.error.missingIterator(node)
 		local message = "Missing for iterator."
 		node.errlpos = 3 
