@@ -556,6 +556,7 @@ return function (plume)
 		----------
 		-- main --
 		----------
+		local texteval = eval + inlineBlockStart + P"@" + E(plume.error.nonEscapedEvalMark, P"$")
 		local rules = {
 			"program",
 			program = V"firstStatement"^-1 * V"statement"^0,
@@ -590,11 +591,11 @@ return function (plume)
 
 			command = V"commandStd" + V"commandLB",
 
-			text   = (escaped + lineeval + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
-			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
-			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
-			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
-			textic = asMacroic + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+			text   = (escaped + lineeval + texteval + V"comment" + V"rawtext")^1,
+			textns = (escaped + texteval + V"comment" + V"rawtextns")^1,
+			textnc = (escaped + texteval + V"comment" + V"rawtextnc")^1,
+			textnp = (escaped + texteval + V"comment" + V"rawtextnp")^1,
+			textic = asMacroic + (escaped + texteval + V"comment"
 						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic" 
 					)^1,
 			-- Inline block call body: the rest of the line, may chain inline block calls.
@@ -606,11 +607,11 @@ return function (plume)
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)
 				+ P"/*" * os * C("COMMENT", (P(1) - P("*/"))^0)  * C("NULL", P"*/")
 			),
-			rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*"))^1),
-			rawtextns = C("TEXT", NOT(S"$\n\\"   + P"//" + P"/*" + s)^1),
-			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"//" + P"/*" + s)^1),
-			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"//" + P"/*")^1),
-			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//" + P"/*")^1),
+			rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\"+ P"@" + os * (P"//" + P"/*"))^1),
+			rawtextns = C("TEXT", NOT(S"$\n\\"   + P"@" + P"//" + P"/*" + s)^1),
+			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"@" + P"//" + P"/*" + s)^1),
+			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"@" + P"//" + P"/*")^1),
+			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"@" + P"//" + P"/*")^1),
 			-- Stops at a chained inline block call (`@name` followed by space/newline
 			-- or an argument list) so a nested block form isn't swallowed as raw text.
 			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * _idns * (os * S"\n" + s + P"("))^1),

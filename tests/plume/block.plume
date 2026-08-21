@@ -572,3 +572,13 @@ end
 /// Output
 wingwingwingwingwingwing
 /// End
+
+/// Test inline block call - not at line start
+macro double(x)
+  $x$x
+end
+
+Double -> @double x
+/// Output
+Double -> xx
+/// End
