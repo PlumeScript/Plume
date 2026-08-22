@@ -67,6 +67,7 @@ As a consequence, **consecutive text lines concatenate with no separator**. To i
 | `\\`     | Literal `\`      |
 | `\/`     | Literal `/`      |
 | `\0`     | Empty text (prevents keyword recognition) |
+| `\@`     | Literal `@`      |
 
 Escapes are restricted to this fixed set: any other `\X` is an error — escaping an ordinary letter (`\a`) is no longer allowed. `\0` produces empty text and prevents keyword recognition: write `\0set` instead of `\set`.
 

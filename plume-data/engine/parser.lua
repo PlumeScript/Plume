@@ -195,6 +195,7 @@ return function (plume)
 						+  C("SPECIAL_TEXT", P"\\\\")
 						+  C("SPECIAL_TEXT", P"\\/")
 						+  C("SPECIAL_TEXT", P"\\0")
+						+  C("SPECIAL_TEXT", P"\\@")
 						+  E(unknownEscape, P"\\" * P(1))
 
 		----------
