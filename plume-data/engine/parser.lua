@@ -557,7 +557,7 @@ return function (plume)
 		----------
 		-- main --
 		----------
-		local texteval = eval + inlineBlockStart + P"@" + E(plume.error.nonEscapedEvalMark, P"$")
+		local texteval = eval + inlineBlockStart + E(plume.error.nonEscapedEvalMark, P"$")+ E(plume.error.nonEscapedBlockMark, P"@")
 		local rules = {
 			"program",
 			program = V"firstStatement"^-1 * V"statement"^0,
