@@ -128,6 +128,14 @@ Inside `$(...)`, the full expression syntax is available:
 *   Logic: `and`, `or`, `not` — with short-circuit evaluation. `and` and `or` return the value of the deciding operand, not necessarily a boolean: `$(true and 1)` is `1`.
 *   Parentheses, variable names, and macro calls — written **without** the `$` prefix inside an evaluation context.
 
+Unlike the rest of the language, the `$(...)` group may span several lines: inside the group, newlines are treated as spaces.
+
+```plume
+$(1 +
+2 + 3)
+// → 6
+```
+
 As a shortcut, `$` directly followed by a number literal evaluates that literal: `$100` is equivalent to `$(100)`.
 
 ```plume

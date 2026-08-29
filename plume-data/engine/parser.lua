@@ -168,6 +168,8 @@ return function (plume)
 
 		local s  = S" \t"^1
 		local os = S" \t"^0
+		-- whitespace that also swallows newlines; used inside the `$(...)` group
+		local osNL = S" \t\n"^0
 		local lt =  C("LINESTART", (os * S"\n")^1 * os) -- linestart
 		local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
 		-- strict identifier
@@ -256,7 +258,9 @@ return function (plume)
 			{{"NEG", "-"}, unary=true}
 		}
 
-		local function genALU()
+		-- `ws` selects the whitespace accepted inside the generated expression
+		-- (spaces/tabs for plain expressions, plus newlines for `$(...)`).
+		local function genALU(ws)
 			local rules = {"_layer1"}
 
 			for deep, opps in ipairs(opplist) do
@@ -280,9 +284,9 @@ return function (plume)
 				local current = "_layer" .. deep
 				local next    = "_layer" .. (deep+1)
 				if opps.unary then
-					rules[current] =  lpeg.Ct((rule * os)^0 * V(next)) / fold_un
+					rules[current] =  lpeg.Ct((rule * ws)^0 * V(next)) / fold_un
 				else
-					rules[current] = lpeg.Ct(V(next) * (os * rule * os * V(next))^0) / fold_bin
+					rules[current] = lpeg.Ct(V(next) * (ws * rule * ws * V(next))^0) / fold_bin
 				end
 			end
 
@@ -295,30 +299,32 @@ return function (plume)
 
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
-			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
-			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
+			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*ws*P":"*ws*Ct("BODY", V"_layer1"^-1))
+			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", ws *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
 			local arglist = Ct("CALL", 
 				  P"(" * P")"
-				+ P"(" * arg * (os * P"," * os * arg)^0 * P")"
+				+ P"(" * arg * (ws * P"," * ws * arg)^0 * P")"
 			)
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
 			local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
-			local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (os * P"," * os * arg)^1 + optnarg) * P")")
+			local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (ws * P"," * ws * arg)^1 + optnarg) * P")")
 
 			local evalOpperator = arglist + index + directindex
 			local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
 			local access = Ct("EVAL", primary * evalOpperator^1)
 
-			rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
+			rules["_layer" .. (#opplist+1)] = ws * (access + primary) * ws
 
 			return rules
 		end
 
-		local expr = Ct("EXPR", genALU())
+		local expr = Ct("EXPR", genALU(os))
+		-- Newline-tolerant ALU, only for the `$(...)` group: it may span lines.
+		local exprNL = Ct("EXPR", genALU(osNL))
 		local evalBase = Ct("EVAL", (
 				  P"("
-					* (expr + E(plume.error.emptyExpr))
+					* (exprNL + E(plume.error.emptyExpr))
 				* (P")" + E(plume.error.missingClosingBracket))
 				+ idn
 				+ num
