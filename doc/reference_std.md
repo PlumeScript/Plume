@@ -4,11 +4,11 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 ### Basic Functions
 
-*   `print(...items, ?pretty)`: A wrapper for the underlying lua `print` function.
+*   `print(...items, ?pretty)`: A debug tool, out of the text flow: writes the items directly to the host's raw stdout (through the underlying lua `print` function). The output is not part of the program result, is not written to `-o` output files, and is not captured by the test harness. Non-string items are formatted with `repr` (`?pretty` pretty-prints tables). The documented debug idiom is `run $print(...)` (see [core.md](core.md) § Side-Effect Calls).
 *   `type(x)`: Returns the type of `x` as a string: `empty`, `table`, `number`, or `string`.
 *   `len(table)`: Returns the number of items in a table.
 *   `repr(x, ?pretty)`: Give a string representation of any object.
-*   `help(x)`: A shortcut for `print(plume.doc(x))`
+*   `help(x)`: A shortcut for `print(plume.doc(x))`: prints the documentation of `x` to the host's raw stdout. Out of the text flow like `print`: not part of the program result, not written to `-o` output files, not captured by the test harness.
 *   `Number(x)`: Convert to a number. Raise an error if fail.
 *   `String(x)`: Convert to a string.
 *   `min(...numbers)`
