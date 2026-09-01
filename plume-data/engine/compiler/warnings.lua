@@ -79,6 +79,21 @@ return function (plume, context)
 		local call  = plume.ast.get(node, "CALL")
 		local bcall = plume.ast.get(node, "BLOCK_CALL")
 
+		-- Dynamic block call `@(expr)`: the direct child is an EXPR. Only a
+		-- literal `Table` (a single bare identifier) is statically the Table
+		-- macro; dynamic targets like `@(getCall())` or `@(t.Table)` wrap an
+		-- EVAL and are left alone.
+		local form
+		if not name and bcall then
+			local expr  = plume.ast.get(node, "EXPR")
+			local inner = expr and expr.children[1]
+			if expr and #expr.children == 1
+			and (inner.name == "NAME" or inner.name == "IDENTIFIER")
+			and inner.content == "Table" then
+				name, form = inner, "@(Table) ... end"
+			end
+		end
+
 		if name and name.content == "Table" then
 			if call then
 				if #call.children >= 2 then
@@ -93,7 +108,7 @@ return function (plume, context)
 				if not plume.ast.get(node, "LIST_ITEM") and not index then
 					plume.warning.throwWarning(
 						"Using the macro `@Table` for create a new table block, but a shorter alternative exists.",
-						"Consider writing `do ... end` instead of `@Table ... end`.",
+						string.format("Consider writing `do ... end` instead of `%s`.", form or "@Table ... end"),
 						node, {381, 608}
 					)
 				end
