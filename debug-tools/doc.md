@@ -22,13 +22,15 @@ require "debug-tools/core" (plume)   -- defines plume.debug.*
 plume-debug <action> <srcfile>
 ```
 
+The CLI runs with the system `luajit` from the PATH.
+
 | Action | Description |
 |--------|-------------|
 | `decomp <srcfile>` | Disassembles the bytecode (one instruction per line, with source mapping). |
 | `hotspots <srcfile>` | Runs the program and prints the source lines sorted by number of executed instructions (hotspots). |
 | `opusage1..X <srcfile>` | Runs the program in devmode and prints the most used opcode sequences, sorted by occurrence. `X` = sequence depth (e.g. `opusage3` = triplets). |
-| `profile-quick <srcfile>` | Statistical JIT profile: % of time in compiled code, top 5 hot lines, and JIT NYI aborts. **Requires the stock luajit** (the CLI switches to it automatically for this action — the custom `bin\luajit` crashes with `jit.profile`). |
-| `profile <srcfile>` | Full JIT profile: JIT health, all hot lines, and the JIT traces (from `jit.dump`, IR + machine code) sorted by hotness, each with status, abort reason, source snippet and full dump. Two passes (clean timing + trace capture). Also requires the stock luajit. |
+| `profile-quick <srcfile>` | Statistical JIT profile: % of time in compiled code, top 5 hot lines, and JIT NYI aborts. **Requires a LuaJIT build with a working `jit.profile`.** |
+| `profile <srcfile>` | Full JIT profile: JIT health, all hot lines, and the JIT traces (from `jit.dump`, IR + machine code) sorted by hotness, each with status, abort reason, source snippet and full dump. Two passes (clean timing + trace capture). Also requires a LuaJIT build with a working `jit.profile`. |
 
 ---
 

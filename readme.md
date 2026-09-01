@@ -129,6 +129,8 @@ Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking ch
 
 ## Dependencies and Thanks
 
+**Runtime requirement:** no runtime is bundled with the repo — a system **LuaJIT** must be resolvable as `luajit` on the PATH. The launchers (`plume.bat`, `plume-debug.bat`) and the test suite (`luajit tests\launchTests.lua` from the repo root) call it directly, and LPEG + LFS must be loadable by it (on Windows: `lpeg.dll` / `lfs.dll` next to `luajit.exe`).
+
 This project stands on great open-source work:
 
 - **LuaJIT** (Mike Pall) - The JIT compiler that powers the Plume🪶 runtime [website](https://luajit.org/)
