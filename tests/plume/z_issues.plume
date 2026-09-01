@@ -138,3 +138,38 @@ $ len(Table.append == 1)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1274-1
+macro M
+    ref r: 5
+    nested: macro()
+        $r
+    end
+end
+/// Output
+
+/// End
+
+/// Test #1274-2
+macro M
+    ref r: 5
+    nested: macro()
+        $r
+    end
+end
+$M().nested()
+/// Output
+5
+/// End
+
+/// Test #1274-3
+macro M
+    ref r: 5
+    nested: macro()
+        $r
+    end
+end
+$M().nested()$M().nested()$M().r
+/// Output
+555
+/// End

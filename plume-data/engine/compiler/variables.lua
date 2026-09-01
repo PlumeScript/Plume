@@ -80,7 +80,8 @@ return function (plume, context)
 
 			if not found then
 				if ref then
-					table.insert(scopeUp, {offset=ref, isRef=true, currentFile=context.getCurrentFile()})
+					table.insert(scopeUp, {offset=ref, isRef=true, currentFile=context.getCurrentFile(),
+						blockTableUID=source and source.blockTableUID})
 				else
 					table.insert(scopeUp, {offset=variableOffset})
 				end
@@ -132,8 +133,13 @@ return function (plume, context)
 		end
 		for _, infos in ipairs(upvalues) do
 			if infos.isRef then
-				local block = context.getLast("tableBlocks")
-				local label = block and "acc_table_" .. block.blockUID or infos.currentFile.endLabel
+				-- Anchor the close to the table block that declares the ref,
+				-- captured at declaration time: at its acc_table_ label the
+				-- freshly built table is on top of the stack, and for a macro
+				-- body scope the label sits inside the body, in the same frame
+				-- where the ref upvalue was opened.
+				local label = infos.blockTableUID and "acc_table_" .. infos.blockTableUID
+					or infos.currentFile.endLabel
 
 				context.registerOP(nil, plume.ops.LOAD_CONSTANT, 0, context.registerConstant(infos.offset), label)
 				context.registerOP(nil, plume.ops.CLOSE_REF_UPVALUE, 0, 0, label)
