@@ -307,7 +307,6 @@ return function (plume)
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = upvalue.reference[upvalue.offset]
                                             else
-                                                error ("[VM] nil upvalue offset")
                                             end
                                         end
                                     end
@@ -2974,9 +2973,14 @@ return function (plume)
                                                             local stringValueType = _ret265
                                                             if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" and stringValueType ~= "fragment" and not (stringValueType == "table" and (stringValue:getMetaItem ("tostring") or stringValue:getMetaItem ("fragment")
                                                             )) then
-                                                                do
-                                                                    local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
-                                                                    table.insert (runtimeCallstack, callinfos)
+                                                                if type (tostringMeta) == "table" and tostringMeta.type == "closure" then
+                                                                    tostringMeta = tostringMeta.macro
+                                                                end
+                                                                if type (tostringMeta) == "table" and tostringMeta.offset then
+                                                                    do
+                                                                        local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
+                                                                        table.insert (runtimeCallstack, callinfos)
+                                                                    end
                                                                 end
                                                                 vmerr = plume.error.wrongTostringReturnType (stringValueType)
                                                                 customerrip = nil
@@ -3762,9 +3766,14 @@ return function (plume)
                                                     local stringValueType = _ret346
                                                     if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" and stringValueType ~= "fragment" and not (stringValueType == "table" and (stringValue:getMetaItem ("tostring") or stringValue:getMetaItem ("fragment")
                                                     )) then
-                                                        do
-                                                            local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
-                                                            table.insert (runtimeCallstack, callinfos)
+                                                        if type (tostringMeta) == "table" and tostringMeta.type == "closure" then
+                                                            tostringMeta = tostringMeta.macro
+                                                        end
+                                                        if type (tostringMeta) == "table" and tostringMeta.offset then
+                                                            do
+                                                                local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
+                                                                table.insert (runtimeCallstack, callinfos)
+                                                            end
                                                         end
                                                         vmerr = plume.error.wrongTostringReturnType (stringValueType)
                                                         customerrip = nil
@@ -5579,9 +5588,14 @@ return function (plume)
                                                                     local stringValueType = _ret498
                                                                     if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number" and stringValueType ~= "fragment" and not (stringValueType == "table" and (stringValue:getMetaItem ("tostring") or stringValue:getMetaItem ("fragment")
                                                                     )) then
-                                                                        do
-                                                                            local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
-                                                                            table.insert (runtimeCallstack, callinfos)
+                                                                        if type (tostringMeta) == "table" and tostringMeta.type == "closure" then
+                                                                            tostringMeta = tostringMeta.macro
+                                                                        end
+                                                                        if type (tostringMeta) == "table" and tostringMeta.offset then
+                                                                            do
+                                                                                local callinfos = {runtime = runtime, macro = tostringMeta, ip = tostringMeta.offset - 1 or ip}
+                                                                                table.insert (runtimeCallstack, callinfos)
+                                                                            end
                                                                         end
                                                                         vmerr = plume.error.wrongTostringReturnType (stringValueType)
                                                                         customerrip = nil
@@ -6385,8 +6399,6 @@ return function (plume)
                                                     end
                                                 end
                                             else
-                                                error (string.format ("[VM] Unkonwn flag '%s'")
-                                                , flag)
                                             end
                                             if not call then
                                                 do

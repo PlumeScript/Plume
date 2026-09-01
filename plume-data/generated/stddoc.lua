@@ -103,7 +103,7 @@ return function(plume)
 	plume.std.Table.table.hasKey.doc = [[`Table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.]]
 	plume.std.Table.table.join.doc = [[`Table.join(sep:, ...items)`: Returns a string produced by concatenating `items`, separated by `sep` (default empty).]]
 	plume.std.Table.table.remove.doc = [[`Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.]]
-	plume.std.Table.table.removeKey.doc = [[`Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied. Raise an error if `table.key` doesn't exist.]]
+	plume.std.Table.table.removeKey.doc = [[`Table.removeKey(table, key)`: Removes a key from `table`. For a numeric key, the list part is compacted (following values are shifted and numeric keys renumbered, like `table.remove`). Raise an error if `table.key` doesn't exist.]]
 	plume.std.Table.table.setAt.doc = [[`Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.]]
 	plume.std.Table.table.setMeta.doc = [[`Table.setMeta(t, meta)`]]
 	plume.std.Table.table.sort.doc = [[`Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. ]]

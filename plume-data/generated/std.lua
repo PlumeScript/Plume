@@ -2318,8 +2318,20 @@ return function(plume)
 				return false, plume.error.cannotRemoveNotfoundKey(key)
 			end
 	
-			t.table[key] = nil
-			table.remove(t.keys, index)
+			if tonumber(key) then
+				-- Numeric key: compact the list part (shift the following values
+				-- and renumber the numeric keys) so no nil hole is left.
+				table.remove(t.keys, index)
+				for shiftedKeyIndex, shiftedKeyValue in ipairs(t.keys) do
+					if tonumber(shiftedKeyValue) and shiftedKeyValue > key then
+						t.keys[shiftedKeyIndex] = shiftedKeyValue-1
+					end
+				end
+				table.remove(t.table, key)
+			else
+				t.table[key] = nil
+				table.remove(t.keys, index)
+			end
 			return true
 		end),
 		hasKey = plume.obj.luaMacro("hasKey", function (args, vm, currentFile)

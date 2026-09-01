@@ -108,7 +108,9 @@ return function(vm)
 		if upvalue.offset then
 			self:_STACK_PUSH(self.mainStack, upvalue.reference[upvalue.offset])
 		else
+			--! to-remove-begin
 			error("[VM] nil upvalue offset")
+			--! to-remove-end
 		end
 	end
 

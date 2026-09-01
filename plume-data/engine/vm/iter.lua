@@ -140,7 +140,9 @@ return function(vm)
 
 	        end
 	    else
-	        error(string.format("[VM] Unkonwn flag '%s'"), flag)
+	        --! to-remove-begin
+	        error(string.format("[VM] Unknown flag '%s'.", flag))
+	        --! to-remove-end
 	    end
 
 	    if not call then
