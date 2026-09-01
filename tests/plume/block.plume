@@ -681,3 +681,125 @@ end
 /// Output
 (a, b)
 /// End
+
+/// Test block call - mid-line, text before
+macro block(content)
+  [BLOCK:$content]
+end
+
+Intro @block
+  body line
+end
+/// Output
+Intro [BLOCK:body line]
+/// End
+
+/// Test block call - mid-line, args on call line
+macro wrap (tag, content, class:)
+  <$tag class="$class">$content</$tag>
+end
+
+Intro @wrap(b, class: note)
+  Sharp nib
+end
+/// Output
+Intro <b class="note">Sharp nib</b>
+/// End
+
+/// Test block call - mid-line, table body
+macro wrap (tag, content, class:)
+  <$tag class="$class">$content</$tag>
+end
+
+Intro @wrap(class: note)
+  - b
+  - Sharp nib
+end
+/// Output
+Intro <b class="note">Sharp nib</b>
+/// End
+
+/// Test block call - mid-line, in let value
+macro block(content)
+  [B:$content]
+end
+
+let x = value @block
+  body
+end
+$x
+/// Output
+value [B:body]
+/// End
+
+/// Test block call - mid-line, escaped @ stays text
+a \@b
+/// Output
+a @b
+/// End
+
+/// Test block call - mid-line, in inline call body
+macro outer(x)
+  [O:$x]
+end
+macro inner(content)
+  [I:$content]
+end
+
+@outer intro @inner
+  corps
+end
+after
+/// Output
+[O:intro [I:corps]]after
+/// End
+
+/// Test block call - mid-line, in inline call body, last line
+macro outer(x)
+  [O:$x]
+end
+macro inner(content)
+  [I:$content]
+end
+
+@outer intro @inner
+  corps
+end
+/// Output
+[O:intro [I:corps]]
+/// End
+
+/// Test block call - mid-line, unknown macro
+intro @nope
+  corps
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'nope', it isn't defined in the current scope.           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │intro @nope                                                              │
+│      │       ^^^^                                                              │
+│    2 │  corps                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test block call - mid-line, missing end
+intro @nope
+  corps
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │intro @nope                                                              │
+│    2 │  corps                                                                  │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

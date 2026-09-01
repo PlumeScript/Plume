@@ -284,6 +284,21 @@ end
 
 Inline arguments can follow the expression — `@(bold)(class: note) ... end` is the block call of `bold` with the inline argument `class: note` — and dynamic calls chain with named ones on the same line, like every block call.
 
+The end-of-line form (see *Calling Macros* in [core.md](core.md)) may also start an inline body: an `@name` — optionally with inline arguments — at the end of the line opens a block call whose body spans the following lines up to `end`.
+
+```plume
+macro outer(x)
+    [O:$x]
+end
+macro inner(content)
+    [I:$content]
+end
+@outer intro @inner
+    corps
+end
+// → [O:intro [I:corps]]
+```
+
 **Empty arguments.** An empty slot between commas is read as `$empty`: `$wing(,,)` ≡ `$wing($empty, $empty, $empty)`.
 
 **Macros stored in tables: methods.** Calling a macro through a table — `$t.method()` or `$t[1]()` — binds the implicit variable `self` to that table:
