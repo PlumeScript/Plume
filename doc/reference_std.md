@@ -21,7 +21,7 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `List(table)`: return a table with only array part. If used as validator, raise an error if table contains a map element.
 *   `Map(table)`: return a table with only map part. If used as validator, raise an error if table contains a array element.
 *   **`Table`**:
-    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly. _Use this function specifically when creating empty tables (`Table()`) or tables with a single element._
+    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly. _Use this function specifically when creating empty tables (`Table()`) or tables with a single positional item._
     *   `Table.at(table, index)`: Table indexing, support negative index. Doesn't trigger `getindex`
     *   `Table.at(table, start, top)`: Table slicing (only numeric part), support negative index. Doesn't trigger `getindex`
     *   `Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.
