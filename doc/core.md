@@ -520,6 +520,38 @@ end
 
 Inline arguments and block content can also be mixed, and block calls chained on one line — see *Advanced Macro Calls* in [advanced.md](advanced.md).
 
+**Dynamic block call** — `@(expression) ... end`: the expression is evaluated in script mode (the same syntax as inside `$(...)`) and must return a macro. That macro is then called with the block as its last missing parameter, exactly like a regular block call:
+
+```plume
+macro getCall()
+    $Table
+end
+let a = @Table
+    - red
+end
+let b = @(getCall())
+    - red
+end
+$type($a)\n
+$len($a)\n
+$type($b)\n
+$len($b)
+// →
+table
+1
+table
+1
+```
+
+`@()` (an empty expression) and a missing closing parenthesis are parse errors, like in `$(...)`. If the expression does not return a callable value, the call fails at runtime, like any failed call:
+
+```plume
+@(1)
+    wing
+end
+// → RUNTIME ERROR: Cannot call a 'number' value.
+```
+
 ## Early Exit: `leave`
 
 `leave` exits the current accumulation block immediately, returning the value accumulated so far — Plume's equivalent of an early `return`. Inside a loop, it terminates the loop's block, not the whole macro.

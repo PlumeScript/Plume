@@ -582,3 +582,102 @@ Double -> @double x
 /// Output
 Double -> xx
 /// End
+
+/// Test @(...) block call
+macro double(x)
+  $x$x
+end
+macro getCall()
+  $double
+end
+
+@(getCall())
+  wing
+end
+/// Output
+wingwing
+/// End
+
+/// Test @(...) Table constructor equivalence
+let a = @Table
+  - x
+end
+let b = @(Table)
+  - x
+end
+$type($a)\n
+$len($a)\n
+$type($b)\n
+$len($b)
+/// Output
+table
+1
+table
+1
+/// End
+
+/// Test @(...) with inline args
+macro double(x, sep:)
+  $x$sep$x
+end
+
+@(double)(sep: -)
+  x
+end
+/// Output
+x-x
+/// End
+
+/// Test @(...) multi-line expression
+macro getCall()
+  $Table
+end
+
+let t = @(
+  getCall()
+)
+  - a
+  - b
+end
+$len($t)\n
+$t[1]
+/// Output
+2
+a
+/// End
+
+/// Test @(...) chained block call
+macro double(x)
+  $x$x
+end
+
+@(double) @(double)
+  x
+end
+/// Output
+xxxx
+/// End
+
+/// Test @(...) chained with indexed macro
+let t = @(Table) @Math.cos
+  0
+end
+$len($t)\n
+$t[1]
+/// Output
+1
+1
+/// End
+
+/// Test @(...) table expansion
+macro getCall()
+  $Table
+end
+
+...@(getCall())
+  - a
+  - b
+end
+/// Output
+(a, b)
+/// End

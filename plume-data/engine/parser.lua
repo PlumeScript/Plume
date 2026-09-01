@@ -401,7 +401,13 @@ return function (plume)
 		local blockName = idn * (index + directindex)^0
 		-- Capture-free mirror of `blockName`, for lookahead in raw text.
 		local blockNameRaw = _idns * (P"[" * expr * P"]" + P"." * _idns)^0
-		local blockStart = Ct("EVAL", P"@" * blockName * os
+		-- Dynamic block call target: `@(...)` — the expression is evaluated in
+		-- script mode (same grammar as the `$(...)` group) and the resulting
+		-- macro receives the block as its last missing parameter.
+		local blockTarget = blockName
+							+ P"(" * (exprNL + E(plume.error.emptyExpr))
+								* (P")" + E(plume.error.missingClosingBracket))
+		local blockStart = Ct("EVAL", P"@" * blockTarget * os
 							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
 						)
 		local block = blockStart * Ct("NULL", _end)

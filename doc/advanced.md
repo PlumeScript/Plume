@@ -270,6 +270,20 @@ Inline calls chain like block calls, and can take arguments:
 
 Prefer the block form as soon as the content grows beyond a single line — it keeps the body readable and lets it span several lines.
 
+**Dynamic block call.** Instead of a name, a block call can take an expression — `@(expression) ... end`. The expression is evaluated in script mode (the syntax of `$(...)`, newlines included) and its value is called with the block as its last missing parameter:
+
+```plume
+macro getCall()
+    $Table
+end
+@(getCall()) @Math.cos
+    0
+end
+// → $Table(1)
+```
+
+Inline arguments can follow the expression — `@(bold)(class: note) ... end` is the block call of `bold` with the inline argument `class: note` — and dynamic calls chain with named ones on the same line, like every block call.
+
 **Empty arguments.** An empty slot between commas is read as `$empty`: `$wing(,,)` ≡ `$wing($empty, $empty, $empty)`.
 
 **Macros stored in tables: methods.** Calling a macro through a table — `$t.method()` or `$t[1]()` — binds the implicit variable `self` to that table:
