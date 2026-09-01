@@ -30,6 +30,16 @@ $Number.floor(-1.2)
 -2
 /// End
 
+/// Test floor float noise (#1275)
+let x0 = 5.26
+let x = $ (x0 - x0.floor()) * 100
+$x\n
+$x.floor()
+/// Output
+26
+26
+/// End
+
 /// Test ceil
 $Number.ceil(12.981)\n
 $Number.ceil(12.981, digit: 2)
@@ -42,6 +52,15 @@ $Number.ceil(12.981, digit: 2)
 $Number.ceil(-1.2)
 /// Output
 -1
+/// End
+
+/// Test ceil float noise (#1275)
+let x = $ (0.1 + 0.2) * 10
+$x\n
+$x.ceil()
+/// Output
+3
+3
 /// End
 
 /// Test round
@@ -58,6 +77,15 @@ $Number.round(12.6)
 /// Output
 12
 13
+/// End
+
+/// Test round float noise (#1275)
+let x = $ 4.999999999999999 / 10
+$x\n
+$x.round()
+/// Output
+0.5
+1
 /// End
 
 /// Test clamp

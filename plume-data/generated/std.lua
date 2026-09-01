@@ -747,6 +747,21 @@ return function(plume)
 		return true, result
 	end
 	
+	-- Snap a number to its displayed value: the closest double to its
+	-- 14-significant-digit rendering (the one the language prints).
+	-- Exact integers and unformattable values (inf/nan) pass through,
+	-- so floor/ceil/round stay idempotent on integers.
+	local function snapToDisplay(x)
+		if x == math.floor(x) then
+			return x
+		end
+		local snapped = tonumber(string.format("%.14g", x))
+		if snapped then
+			return snapped
+		end
+		return x
+	end
+	
 	plume.std.Number = plume.obj.quickTable{
 		-- Manipulations
 		floor = plume.obj.luaMacro("floor", function (args, vm, currentFile)
@@ -762,7 +777,7 @@ return function(plume)
 			if __s and digit ~= nil then __s, __e, digit = plume.stdCheckType(vm, digit, "number", "digit", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.floor(x*10^digit)*10^-digit
+			return true, math.floor(snapToDisplay(x) * 10^digit) * 10^-digit
 		end),
 		ceil = plume.obj.luaMacro("ceil", function (args, vm, currentFile)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
@@ -777,7 +792,7 @@ return function(plume)
 			if __s and digit ~= nil then __s, __e, digit = plume.stdCheckType(vm, digit, "number", "digit", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.ceil(x*10^digit)*10^-digit
+			return true, math.ceil(snapToDisplay(x) * 10^digit) * 10^-digit
 		end),
 		round = plume.obj.luaMacro("round", function (args, vm, currentFile)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
@@ -792,7 +807,7 @@ return function(plume)
 			if __s and digit ~= nil then __s, __e, digit = plume.stdCheckType(vm, digit, "number", "digit", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			return true, math.floor(x*10^digit + 0.5)*10^-digit
+			return true, math.floor(snapToDisplay(x) * 10^digit + 0.5) * 10^-digit
 		end),
 		abs = plume.obj.luaMacro("abs", function (args, vm, currentFile)
 			if args.table.self and args.table.self ~= plume.std.Number then table.insert(args.table, 1, args.table.self) end
