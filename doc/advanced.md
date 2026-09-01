@@ -235,6 +235,15 @@ end
 //   end
 ```
 
+Table-qualified names chain the same way:
+
+```plume
+@Table @Math.sin
+    5
+end
+// → $Table(-0.95892427466314)
+```
+
 **Inline block calls.** A `@` call can also take the rest of its line as its body, without `end`:
 
 ```plume

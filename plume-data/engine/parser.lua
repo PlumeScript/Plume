@@ -399,6 +399,8 @@ return function (plume)
 							)
 
 		local blockName = idn * (index + directindex)^0
+		-- Capture-free mirror of `blockName`, for lookahead in raw text.
+		local blockNameRaw = _idns * (P"[" * expr * P"]" + P"." * _idns)^0
 		local blockStart = Ct("EVAL", P"@" * blockName * os
 							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
 						)
@@ -619,9 +621,10 @@ return function (plume)
 			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"@" + P"//" + P"/*" + s)^1),
 			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"@" + P"//" + P"/*")^1),
 			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"@" + P"//" + P"/*")^1),
-			-- Stops at a chained inline block call (`@name` followed by space/newline
-			-- or an argument list) so a nested block form isn't swallowed as raw text.
-			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * _idns * (os * S"\n" + s + P"("))^1),
+			-- Stops at a chained inline block call (`@name`, dotted or bracket-
+			-- indexed, followed by space/newline or an argument list) so a nested
+			-- block form isn't swallowed as raw text.
+			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * blockNameRaw * (os * S"\n" + s + P"("))^1),
 
 			invalid = E(plume.error.emptySet, K"set"),
 			evalOpperator = call + index + directindex,

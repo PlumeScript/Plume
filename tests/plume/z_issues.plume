@@ -173,3 +173,225 @@ $M().nested()$M().nested()$M().r
 /// Output
 555
 /// End
+
+/// Test #1277
+@Table 	@Math.sin
+	5
+end
+/// Output
+$Table(-0.95892427466314)
+/// End
+/// Test #1277-1 @a @b (block)
+macro echo(x)
+    $x
+end
+
+@echo @echo
+    wing
+end
+/// Output
+wing
+/// End
+
+/// Test #1277-2 @a @b.foo (block)
+macro echo(x)
+    $x
+end
+
+@echo @Table.join
+    wing
+end
+/// Output
+wing
+/// End
+
+/// Test #1277-3 @a.foo @b (block)
+macro echo(x)
+    $x
+end
+
+@Table.join @echo
+    wing
+end
+/// Output
+wing
+/// End
+
+/// Test #1277-4 @a.foo(...) @b (block)
+macro echo(x)
+    $x
+end
+
+@Table.join(sep: +) @echo
+    wing
+end
+/// Output
+wing
+/// End
+
+/// Test #1277-5 @a(...) @b.foo (block)
+macro nib(write, paint)
+    $write $paint
+end
+
+@nib(ink) @Table.join
+    quill
+end
+/// Output
+ink quill
+/// End
+
+/// Test #1277-6 @a(...) @b.foo(...) (block)
+macro nib(write, paint)
+    $write $paint
+end
+
+@nib(ink) @Table.join(sep: ~)
+    quill
+end
+/// Output
+ink quill
+/// End
+
+/// Test #1277-7 @a @b @c (block)
+macro echo(x)
+    $x
+end
+
+@echo @echo @echo
+    wing
+end
+/// Output
+wing
+/// End
+
+/// Test #1277-8 @a @b.foo @c (block)
+macro echo(x)
+    $x
+end
+
+@echo @Table.join @echo
+    wing
+end
+/// Output
+wing
+/// End
+
+/// Test #1277-9 @a.foo @b.foo (block)
+@Table @Math.sin
+    0
+end
+/// Output
+$Table(0)
+/// End
+
+/// Test #1277-10 @a(...) @b (block)
+macro echo(x)
+    $x
+end
+
+@Table(1) @echo
+    wing
+end
+/// Output
+(1, wing)
+/// End
+
+/// Test #1277-11 issue case, space separator (block)
+@Table @Math.sin
+	5
+end
+/// Output
+$Table(-0.95892427466314)
+/// End
+
+/// Test #1277-12 @a @b (inline)
+macro echo(x)
+    $x
+end
+
+@echo @echo wing
+/// Output
+wing
+/// End
+
+/// Test #1277-13 @a @b.foo (inline)
+macro echo(x)
+    $x
+end
+
+@echo @Table.join wing
+/// Output
+wing
+/// End
+
+/// Test #1277-14 @a.foo @b (inline)
+macro echo(x)
+    $x
+end
+
+@Table.join @echo wing
+/// Output
+wing
+/// End
+
+/// Test #1277-15 @a.foo(...) @b (inline)
+macro echo(x)
+    $x
+end
+
+@Table.join(sep: +) @echo wing
+/// Output
+wing
+/// End
+
+/// Test #1277-16 @a(...) @b.foo(...) (inline)
+macro nib(write, paint)
+    $write $paint
+end
+
+@nib(ink) @Table.join(sep: ~) quill
+/// Output
+ink quill
+/// End
+
+/// Test #1277-17 @a @b @c (inline)
+macro echo(x)
+    $x
+end
+
+@echo @echo @echo wing
+/// Output
+wing
+/// End
+
+/// Test #1277-18 @a @b.foo @c (inline)
+macro echo(x)
+    $x
+end
+
+@echo @Table.join @echo wing
+/// Output
+wing
+/// End
+
+/// Test #1277-19 inline text body is the arg (inline)
+@Table @Table.join wing
+/// Output
+$Table(wing)
+/// End
+
+/// Test #1277-20 inline text body is the arg (block)
+@Table @Table.join
+    wing
+end
+/// Output
+$Table(wing)
+/// End
+
+/// Test #1277-21 numeric text body (inline)
+@Table @Math.sin 5
+/// Output
+$Table(-0.95892427466314)
+/// End
+
