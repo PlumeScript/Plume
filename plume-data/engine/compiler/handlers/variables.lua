@@ -86,10 +86,13 @@ return function (plume, context, nodeHandlerTable)
 			-- Handle declaration (LET) or affectation (SET)
 			if isLet then
 				local definitionVar
+				-- File params are registered under their public name (first identifier),
+				-- which may differ from the local name when as is used.
 				rvar, definitionVar = context.registerVariable(node, name, {
 					isConst=isConst,
 					isParam=isParam,
-					isLoopVariable=isLoopVariable
+					isLoopVariable=isLoopVariable,
+					publicParamName = isParam and key or nil
 				})
 				if not rvar then
 					if definitionVar.isSelf then
@@ -151,13 +154,19 @@ return function (plume, context, nodeHandlerTable)
 			if body then
 				plume.error.variadicLetMustBeEmpty(body)
 			end
-			varNode = plume.ast.get(varNode, "NAME")
-			local name = varNode.content
+			local aliasNode = plume.ast.get(varNode, "ALIAS")
+			local nameNode  = aliasNode and plume.ast.get(aliasNode, "NAME") or plume.ast.get(varNode, "NAME")
+			local name      = nameNode.content
+			local publicName = aliasNode and plume.ast.get(varNode, "NAME").content or name
+			varNode = aliasNode or nameNode
 			local definitionVar
+			-- File params are registered under their public name (first identifier),
+			-- which may differ from the local name when as is used.
 			rvar, definitionVar = context.registerVariable(node, name, {
 				isConst=isConst,
 				isParam=isParam,
-				isVariadicParam=true
+				isVariadicParam=true,
+				publicParamName = publicName
 			})
 
 			if not rvar then

@@ -299,16 +299,17 @@ return function (plume, context)
 		end
 
 		if options.isParam then
-			-- Files parameters are always named.
+			-- Files parameters are always named. The registry is keyed by the public
+			-- name (first identifier), which may differ from the local name when as is used.
 			context.chunk.namedParamCount = context.chunk.namedParamCount+1
-			context.chunk.namedParamOffset[name] = #scope
+			context.chunk.namedParamOffset[options.publicParamName or name] = #scope
 
 			if options.isVariadicParam then
 				if context.chunk.variadicParam then
 					plume.error.cannotDeclareMultipleVariadicParam(node)
 				end
 
-				context.chunk.variadicParam = {offset=#scope, name=name}
+				context.chunk.variadicParam = {offset=#scope, name=options.publicParamName or name}
 			end
 		end
 

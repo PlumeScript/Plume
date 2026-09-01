@@ -505,10 +505,25 @@ Hello, wing!
 ```
 
 *   A `param` variable is implicitly `const`. Without a caller-provided value, it takes its default — or `empty` when no default is declared.
-*   `let param ...leftover` collects every otherwise-unmatched named parameter into a table.
+*   `let param x as y` declares the parameter `x` under the local name `y` — `x` is not a local variable, and the caller still passes `x`.
+*   `let param ...leftover` collects every otherwise-unmatched named parameter into a table. `let param ...leftover as rest` binds it to `rest` instead — `leftover` is then not a local variable.
 *   From the command line: `plume -i main.plume --params --name=wing --verbose` — named values as `--key=value`, flags as `--flag`, positionals as bare words.
 *   Passing an undeclared parameter raises an error listing the valid ones.
-*   `let param x` binds positional arguments passed to `import` / `use`, in declaration order.
+*   Positional arguments passed to `import` / `use` become the keys `arg1`, `arg2`, ..., and bind to parameters literally named `arg1`, `arg2`, ... — e.g. `let param arg1 as x` captures the first positional argument into `x`.
+
+Renaming is handy when the caller's vocabulary differs from the file's own:
+
+```plume
+// renamed.plume
+let param name as n = world
+Hello, $n!
+```
+
+```plume
+$import(tests/plume/toimport/renamed, name: wing)
+// →
+Hello, wing!
+```
 
 ## Warnings and Development Directives
 

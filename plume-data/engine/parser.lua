@@ -443,7 +443,8 @@ return function (plume)
 			+ Ct("ALIAS", name * os * K"as" * os * name)
 			+ Ct("DEFAULT", name * os * _letsetdefaut)
 			+ name
-			+ Ct("VARIADIC", P"..." * name)
+			-- `as` renames the variadic parameter (file params only, checked at compile)
+			+ Ct("VARIADIC", P"..." * name * (os * K"as" * os * Ct("ALIAS", name))^-1)
 		)
 
 		--- Specific identifiers

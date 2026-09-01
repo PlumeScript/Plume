@@ -260,3 +260,75 @@ $wing()
 let x = $(String(os.Path()))
 /// Output
 /// End
+
+/// Test param rename
+$import(tests/plume/toimport/renamed, name: wing)
+/// Output
+Hello, wing!
+/// End
+
+/// Test param rename default
+$import(tests/plume/toimport/renamed)
+/// Output
+Hello, world!
+/// End
+
+/// Test param rename use
+use tests/plume/toimport/renamedtbl(x: wing)
+$hello
+/// Output
+wing
+/// End
+
+/// Test param rename positionnal
+$import(tests/plume/toimport/renamedpos, 42)
+/// Output
+42
+/// End
+
+/// Test param rename leftover
+$import(tests/plume/toimport/renamedleftover, a: 1, b: 2)
+/// Output
+(a: 1, b: 2)
+/// End
+
+/// Test param rename no-op
+$import(tests/plume/toimport/renamednoop, x: 7)
+/// Output
+7
+/// End
+
+/// Test param rename unknown param
+$import(tests/plume/toimport/renamed, y: 5)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unknown parameter 'y' for this file.                                         │
+│   Valid parameters are: name                                                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$import(tests/plume/toimport/renamed, y: 5)                              │
+│      │ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test param rename redeclaration
+let param x as y
+let y = 1
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot define variable 'y', it already exists in the current scope.          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │let y = 1                                                                │
+│      │^^^^^^^^^                                                                │
+│                                                                                │
+│  ↳ (same file)                                                                 │
+│    1 │let param x as y                                                         │
+│      │^^^^^^^^^^^^^^^^                                                         │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
