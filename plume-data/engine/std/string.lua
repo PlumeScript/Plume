@@ -5,6 +5,14 @@ Copyright © Erwan Barbedor
 Licensed under the MIT License — see LICENSE for details.
 ]]
 
+local function stringSafeCall(m, ...)
+	local success, result = pcall(m, ...)
+	if success and result == nil then
+		result = plume.empty
+	end
+	return success, result
+end
+
 plume.std.String = plume.obj.quickTable {
 
 	-- Manipulation
@@ -30,7 +38,7 @@ plume.std.String = plume.obj.quickTable {
 		end
 
 		if type(sub) == "string" then
-			return true, (s:gsub(pattern, sub))
+			return stringSafeCall(string.gsub, s, pattern, sub)
 		else
 			-- In case of closure - we should have an api for that
 			local positionalParamCount = sub.positionalParamCount or (sub.macro and sub.macro.positionalParamCount)
@@ -42,39 +50,49 @@ plume.std.String = plume.obj.quickTable {
 				)
 			end
 
-			local success = true
-			local errmsg, result, callvmerrip
-			s = s:gsub(pattern, function (match)
-				if not success then
-					return
-				end
-
-				--!vmcall
-				success, result, callvmerrip = sub(match)
-
-				-- Type check
-				if success then
-					local t = type(result) == "table" and result.type or type(result)
-					if t == "fragment" then
-						result = plume.callForceFragment(vm, result)
-						if vm.err then
-							return false, vm.err
-						end
-					elseif t ~= "string" and t ~= "number" and t ~= "empty" then
-						success = false
-						result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
+			local ok, result = pcall(function ()
+				local success = true
+				local errmsg, result, callvmerrip
+				s = s:gsub(pattern, function (match)
+					if not success then
+						return
 					end
-				end
 
-				if success then
-					return result
-				else
-					vm.ip = callvmerrip
-					errmsg = result
+					--!vmcall
+					success, result, callvmerrip = sub(match)
+
+					-- Type check
+					if success then
+						local t = type(result) == "table" and result.type or type(result)
+						if t == "fragment" then
+							result = plume.callForceFragment(vm, result)
+							if vm.err then
+								return false, vm.err
+							end
+						elseif t ~= "string" and t ~= "number" and t ~= "empty" then
+							success = false
+							result = string.format("Macro sub for `String.replace` must return a 'string' or a 'number', not a '%s'.", t)
+						end
+					end
+
+					if success then
+						return result
+					else
+						vm.ip = callvmerrip
+						errmsg = result
+					end
+				end)
+
+				if not success then
+					error(errmsg, 0)
 				end
+				return s
 			end)
 
-			return success, errmsg or s
+			if not ok then
+				return false, result
+			end
+			return true, result
 		end
 	end),
 
@@ -130,7 +148,7 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		return true, (s:match(pattern) or plume.empty)
+		return stringSafeCall(string.match, s, pattern)
 	end),
 	contains = plume.obj.luaMacro("contains", function (args)
 		--!override-self-plume.std.String
@@ -139,11 +157,9 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		if s:match(pattern) then
-			return true, true
-		else
-			return true, false
-		end
+		return stringSafeCall(function ()
+			return s:match(pattern) and true or false
+		end)
 	end),
 	startsWith = plume.obj.luaMacro("startsWith", function (args)
 		--!override-self-plume.std.String
@@ -152,11 +168,9 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		if s:match("^"..pattern) then
-			return true, true
-		else
-			return true, false
-		end
+		return stringSafeCall(function ()
+			return s:match("^"..pattern) and true or false
+		end)
 	end),
 	endsWith = plume.obj.luaMacro("endsWith", function (args)
 		--!override-self-plume.std.String
@@ -165,11 +179,9 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		if s:match(pattern.."$") then
-			return true, true
-		else
-			return true, false
-		end
+		return stringSafeCall(function ()
+			return s:match(pattern.."$") and true or false
+		end)
 	end),
 	count = plume.obj.luaMacro("count", function (args)
 		--!override-self-plume.std.String
@@ -178,35 +190,37 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		local count = 0
-		for _ in s:gmatch(pattern) do
-			count = count + 1
-		end
-
-		return true, count
+		return stringSafeCall(function ()
+			local count = 0
+			for _ in s:gmatch(pattern) do
+				count = count + 1
+			end
+			return count
+		end)
 	end),
 
 	-- table making
 	split = plume.obj.luaMacro("split", function (args)
 		--!override-self-plume.std.String
 		--!signature string s, string sep:\s, ?rich
-		local t = plume.obj.table(0, 0)
-
 		if not rich then
 			sep = sep:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		local pos = 1
-		for sub, _sep in s:gmatch('(.-)('..sep..")") do
-			t:addItem(sub)
-			pos = pos + #sub + #_sep
-		end
+		return stringSafeCall(function ()
+			local t = plume.obj.table(0, 0)
+			local pos = 1
+			for sub, _sep in s:gmatch('(.-)('..sep..")") do
+				t:addItem(sub)
+				pos = pos + #sub + #_sep
+			end
 
-		if pos <= #s then
-			t:addItem(s:sub(pos, -1))
-		end
+			if pos <= #s then
+				t:addItem(s:sub(pos, -1))
+			end
 
-		return true, t
+			return t
+		end)
 	end),
 	lines = plume.obj.luaMacro("lines", function (args)
 		--!override-self-plume.std.String
@@ -233,13 +247,15 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		local t = plume.obj.table(0, 0)
+		return stringSafeCall(function ()
+			local t = plume.obj.table(0, 0)
 
-		for sub in s:gmatch(pattern) do
-			t:addItem(sub)
-		end
+			for sub in s:gmatch(pattern) do
+				t:addItem(sub)
+			end
 
-		return true, t
+			return t
+		end)
 	end),
 	partition = plume.obj.luaMacro("partition", function (args)
 		--!override-self-plume.std.String
@@ -248,8 +264,10 @@ plume.std.String = plume.obj.quickTable {
 			pattern = pattern:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
 		end
 
-		local t = plume.obj.quickTable({s:match("(.-)("..pattern..")(.+)")})
-		return true, t
+		return stringSafeCall(function ()
+			local t = plume.obj.quickTable({s:match("(.-)("..pattern..")(.+)")})
+			return t
+		end)
 	end),
 
 	rep = plume.obj.luaMacro("rep", function (args)

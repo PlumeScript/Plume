@@ -235,6 +235,15 @@ end
 //   end
 ```
 
+Table-qualified names chain the same way:
+
+```plume
+@Table @Math.sin
+    5
+end
+// → $Table(-0.95892427466314)
+```
+
 **Inline block calls.** A `@` call can also take the rest of its line as its body, without `end`:
 
 ```plume
@@ -260,6 +269,35 @@ Inline calls chain like block calls, and can take arguments:
 ```
 
 Prefer the block form as soon as the content grows beyond a single line — it keeps the body readable and lets it span several lines.
+
+**Dynamic block call.** Instead of a name, a block call can take an expression — `@(expression) ... end`. The expression is evaluated in script mode (the syntax of `$(...)`, newlines included) and its value is called with the block as its last missing parameter:
+
+```plume
+macro getCall()
+    $Table
+end
+@(getCall()) @Math.cos
+    0
+end
+// → $Table(1)
+```
+
+Inline arguments can follow the expression — `@(bold)(class: note) ... end` is the block call of `bold` with the inline argument `class: note` — and dynamic calls chain with named ones on the same line, like every block call.
+
+The end-of-line form (see *Calling Macros* in [core.md](core.md)) may also start an inline body: an `@name` — optionally with inline arguments — at the end of the line opens a block call whose body spans the following lines up to `end`.
+
+```plume
+macro outer(x)
+    [O:$x]
+end
+macro inner(content)
+    [I:$content]
+end
+@outer intro @inner
+    corps
+end
+// → [O:intro [I:corps]]
+```
 
 **Empty arguments.** An empty slot between commas is read as `$empty`: `$wing(,,)` ≡ `$wing($empty, $empty, $empty)`.
 
@@ -467,10 +505,25 @@ Hello, wing!
 ```
 
 *   A `param` variable is implicitly `const`. Without a caller-provided value, it takes its default — or `empty` when no default is declared.
-*   `let param ...leftover` collects every otherwise-unmatched named parameter into a table.
+*   `let param x as y` declares the parameter `x` under the local name `y` — `x` is not a local variable, and the caller still passes `x`.
+*   `let param ...leftover` collects every otherwise-unmatched named parameter into a table. `let param ...leftover as rest` binds it to `rest` instead — `leftover` is then not a local variable.
 *   From the command line: `plume -i main.plume --params --name=wing --verbose` — named values as `--key=value`, flags as `--flag`, positionals as bare words.
 *   Passing an undeclared parameter raises an error listing the valid ones.
-*   `let param x` binds positional arguments passed to `import` / `use`, in declaration order.
+*   Positional arguments passed to `import` / `use` become the keys `arg1`, `arg2`, ..., and bind to parameters literally named `arg1`, `arg2`, ... — e.g. `let param arg1 as x` captures the first positional argument into `x`.
+
+Renaming is handy when the caller's vocabulary differs from the file's own:
+
+```plume
+// renamed.plume
+let param name as n = world
+Hello, $n!
+```
+
+```plume
+$import(tests/plume/toimport/renamed, name: wing)
+// →
+Hello, wing!
+```
 
 ## Warnings and Development Directives
 

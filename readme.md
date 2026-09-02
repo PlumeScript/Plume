@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-Raven_64-blue.svg) ![Tests](https://img.shields.io/badge/tests-960%2F960%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
+![Version](https://img.shields.io/badge/version-Raven_65-blue.svg) ![Tests](https://img.shields.io/badge/tests-986%2F986%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
 
 ## Introduction
 
@@ -128,6 +128,8 @@ Upgrading across editions (e.g., `Lark` → `Sparrow`) may introduce breaking ch
 [Projet kaban](https://github.com/users/ErwanBarbedor/projects/2/views/1)
 
 ## Dependencies and Thanks
+
+**Runtime requirement:** no runtime is bundled with the repo — a system **LuaJIT** must be resolvable as `luajit` on the PATH. The launchers (`plume.bat`, `plume-debug.bat`) and the test suite (`luajit tests\launchTests.lua` from the repo root) call it directly, and LPEG + LFS must be loadable by it (on Windows: `lpeg.dll` / `lfs.dll` next to `luajit.exe`).
 
 This project stands on great open-source work:
 

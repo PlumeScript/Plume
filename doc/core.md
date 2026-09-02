@@ -67,6 +67,7 @@ As a consequence, **consecutive text lines concatenate with no separator**. To i
 | `\\`     | Literal `\`      |
 | `\/`     | Literal `/`      |
 | `\0`     | Empty text (prevents keyword recognition) |
+| `\@`     | Literal `@`      |
 
 Escapes are restricted to this fixed set: any other `\X` is an error — escaping an ordinary letter (`\a`) is no longer allowed. `\0` produces empty text and prevents keyword recognition: write `\0set` instead of `\set`.
 
@@ -126,6 +127,14 @@ Inside `$(...)`, the full expression syntax is available:
 *   Comparison: `==`, `!=`, `<`, `>`, `<=`, `>=`
 *   Logic: `and`, `or`, `not` — with short-circuit evaluation. `and` and `or` return the value of the deciding operand, not necessarily a boolean: `$(true and 1)` is `1`.
 *   Parentheses, variable names, and macro calls — written **without** the `$` prefix inside an evaluation context.
+
+Unlike the rest of the language, the `$(...)` group may span several lines: inside the group, newlines are treated as spaces.
+
+```plume
+$(1 +
+2 + 3)
+// → 6
+```
 
 As a shortcut, `$` directly followed by a number literal evaluates that literal: `$100` is equivalent to `$(100)`.
 
@@ -511,6 +520,52 @@ end
 
 Inline arguments and block content can also be mixed, and block calls chained on one line — see *Advanced Macro Calls* in [advanced.md](advanced.md).
 
+**Dynamic block call** — `@(expression) ... end`: the expression is evaluated in script mode (the same syntax as inside `$(...)`) and must return a macro. That macro is then called with the block as its last missing parameter, exactly like a regular block call:
+
+```plume
+macro getCall()
+    $Table
+end
+let a = @Table
+    - red
+end
+let b = @(getCall())
+    - red
+end
+$type($a)\n
+$len($a)\n
+$type($b)\n
+$len($b)
+// →
+table
+1
+table
+1
+```
+
+`@()` (an empty expression) and a missing closing parenthesis are parse errors, like in `$(...)`. If the expression does not return a callable value, the call fails at runtime, like any failed call:
+
+```plume
+@(1)
+    wing
+end
+// → RUNTIME ERROR: Cannot call a 'number' value.
+```
+**End-of-line block call.** A block call may also start at the end of a line, after text: the name — optionally followed by its inline arguments — must be the last thing on its line, and the body begins on the next line, up to `end`. The text before the `@` accumulates as usual, and the result of the call is inserted where the call begins:
+
+```plume
+macro note (content)
+    [note: $content]
+end
+
+This text, and the @note
+    of the call body
+end
+// → This text, and the [note: of the call body]
+```
+
+A literal `@` at the end of a line stays escaped text, as anywhere else: `\@`.
+
 ## Early Exit: `leave`
 
 `leave` exits the current accumulation block immediately, returning the value accumulated so far — Plume's equivalent of an early `return`. Inside a loop, it terminates the loop's block, not the whole macro.
@@ -561,7 +616,7 @@ let palette = do
 end
 ```
 
-**Inline tables.** `(item1, item2, key: value)` builds a table inside an expression. An inline table needs at least two items; for empty or single-item tables, use the standard constructor `$Table()`:
+**Inline tables.** `(item1, item2, key: value)` builds a table inside an expression. An inline table needs at least two items, or a single named item — a lone positional item is not a table: `(1)` is the literal string `"(1)"` outside an evaluation, and a parenthesized expression inside one. For empty tables or tables with a single positional item, use the standard constructor `$Table()`:
 
 ```plume
 let pair = (red, blue)

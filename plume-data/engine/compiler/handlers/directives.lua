@@ -166,6 +166,9 @@ return function (plume, context, nodeHandlerTable)
 				context.registerOP(node, plume.ops.BEGIN_ACC)
 
 				for _, infos in ipairs(args) do
+					if tonumber(infos.name) then
+						plume.error.useContextNotSupportPos(node)
+					end
 					context.accBlock()(infos.valueSource)
 					if type(infos.name) == "table" then -- node
 						context.childrenHandler(infos.name)

@@ -348,15 +348,23 @@ return function(vm)
 	                if stringValueType ~= "string" and stringValueType ~= "empty" and stringValueType ~= "number"
 	                   and stringValueType ~= "fragment"
 	                   and not (stringValueType == "table" and (stringValue:getMetaItem("tostring") or stringValue:getMetaItem("fragment"))) then
-	                    --! to-remove-begin
-	                    if type(tostringMeta) ~= "table" then
-	                        error(string.format("[VM] tostringMeta is %s instead of table.", type(tostringMeta)))
+	                    -- Closures wrap their compiled macro, which carries the source offset.
+	                    if type(tostringMeta) == "table" and tostringMeta.type == "closure" then
+	                        tostringMeta = tostringMeta.macro
 	                    end
-	                    if not tostringMeta.offset then
-	                        error("[VM] tostringMeta hasn't offset field.")
+	                    -- Only metas carrying a source offset (compiled macros) get the
+	                    -- callstack debug info; the clean error is raised in all cases.
+	                    if type(tostringMeta) == "table" and tostringMeta.offset then
+	                        --! to-remove-begin
+	                        if type(tostringMeta) ~= "table" then
+	                            error(string.format("[VM] tostringMeta is %s instead of table.", type(tostringMeta)))
+	                        end
+	                        if not tostringMeta.offset then
+	                            error("[VM] tostringMeta hasn't offset field.")
+	                        end
+	                        --! to-remove-end
+	                        self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
 	                    end
-	                    --! to-remove-end
-	                    self:_ADD_CALLSTACK_DEBUG_INFO(tostringMeta, tostringMeta.offset-1)
 	                    self:_ERROR(self.plume.error.wrongTostringReturnType(stringValueType))
 	                end
 	                -- loop continues to re-process the result

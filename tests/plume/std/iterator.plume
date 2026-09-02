@@ -1,0 +1,113 @@
+/// Test seq 1
+for x in seq(3)
+	$x
+end
+/// Output
+123
+/// End
+
+/// Test seq 2
+for x in seq(1, 3)
+	$x
+end
+/// Output
+123
+/// End
+
+/// Test seq 3
+for x in seq(2, 3)
+	$x
+end
+/// Output
+23
+/// End
+
+/// Test seq 4
+for x in seq(1, 6, 2)
+	$x
+end
+/// Output
+135
+/// End
+
+/// Test seq 5
+for x in seq(10, 100, 20)
+	$x
+end
+/// Output
+1030507090
+/// End
+
+/// Test seq 6
+for x in seq(3, 1)
+	$x
+end
+/// Output
+/// End
+
+/// Test seq 7
+for x in seq(3, 1, -1)
+	$x
+end
+/// Output
+321
+/// End
+
+/// Test seq 8
+for x in seq(1, 3, -1)
+	$x
+end
+/// Output
+/// End
+
+/// Test seq 9
+for x in seq(1, 3, 0)
+	$x
+end
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot set `step` to zero (will lead to an infinite loop).                   │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │for x in seq(1, 3, 0)                                                    │
+│      │         ^^^^^^^^^^^^                                                    │
+│    2 │ $x                                                                      │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test enumerate
+let t = (5, 2, 7, a: b)
+for i, x in enumerate(t)
+	$i-$x\n
+end
+/// Output
+1-5
+2-2
+3-7
+/// End
+
+/// Test items 1
+let t = (5, 2, 7, a: b, c: d)
+for i, x in items(t)
+	$i-$x\n
+end
+/// Output
+1-5
+2-2
+3-7
+a-b
+c-d
+/// End
+
+/// Test items 2
+let t = (5, 2, 7, a: b, c: d)
+for i, x in items(t, ?named)
+	$i-$x\n
+end
+/// Output
+a-b
+c-d
+/// End

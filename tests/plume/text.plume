@@ -122,6 +122,61 @@ $wing((x,y))
 2
 /// End
 
+/// Test Multi-line eval 1
+$(1+
+2
++3)
+/// Output
+6
+/// End
+
+/// Test Multi-line eval 2
+$(
+1 + 2
+)
+/// Output
+3
+/// End
+
+/// Test Multi-line eval 3
+a $(1+
+2) b
+c
+/// Output
+a 3 bc
+/// End
+
+/// Test Multi-line eval 4
+macro wing(x, y)
+    $(x + y)
+end
+$(wing(1,
+2))
+/// Output
+3
+/// End
+
+/// Test Multi-line eval 5
+$( (1,
+2) )
+/// Output
+(1, 2)
+/// End
+
+/// Test Multi-line eval 6
+a $(1 +
+	2)
+/// Output
+a 3
+/// End
+
+/// Test Multi-line eval, line eval unaffected
+a $ 1 +
+2
+/// Output
+a 1+2
+/// End
+
 /// Test raw 1
 Raw\:\n
 raw
@@ -385,4 +440,19 @@ end
 a $ 1+1
 /// Output
 a 2
+/// End
+
+/// Test @ inside text
+a@4a
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → `@` outside evaluation must be escaped.                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │a@4a                                                                     │
+│      │ ^                                                                       │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
 /// End

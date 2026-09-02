@@ -418,3 +418,61 @@ $Table.flatten($t, ?deep)
 /// Output
 (1, 2, 3, 4)
 /// End
+
+/// Test removeKey compact 1
+let t = (1, 2, 3, 4, 5)
+run $Table.removeKey($t, 2)\n
+Table\: $(repr(t))\n
+for x in t
+  $x\n
+end
+/// Output
+Table: (1, 3, 4, 5)
+1
+3
+4
+5
+/// End
+
+/// Test removeKey compact 2
+let t = (1, 2, 3, 4, 5)
+run $Table.removeKey($t, 3)\n
+Table\: $(repr(t))\n
+for x in t
+  $x\n
+end
+/// Output
+Table: (1, 2, 4, 5)
+1
+2
+4
+5
+/// End
+
+/// Test removeKey compact 3
+let t = (1, 2, 3, 4, 5)
+run $Table.removeKey($t, 1)\n
+Table\: $(repr(t))\n
+for x in t
+  $x\n
+end
+/// Output
+Table: (2, 3, 4, 5)
+2
+3
+4
+5
+/// End
+
+/// Test removeKey compact mixed
+let t = (1, 2, 3, a: b)
+run $Table.removeKey($t, 2)\n
+Table\: $(repr(t))\n
+for x in t
+  $x\n
+end
+/// Output
+Table: (1, 3, a: b)
+1
+3
+/// End

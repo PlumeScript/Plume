@@ -17,8 +17,17 @@ return function (plume, context, nodeHandlerTable)
 
 		if ref then
 			local varName = refalias and plume.ast.get(refalias, "NAME").content or identifier.content
-			if not context.registerVariable(node, varName,{isRef=true, ref=identifier.content}) then
+			local variable = context.registerVariable(node, varName,{isRef=true, ref=identifier.content})
+			if not variable then
 				plume.error.letExistingVariable(node, varName)
+			else
+				-- Remember the block accumulating this ref: used later to anchor
+				-- the CLOSE_REF_UPVALUE of captured ref upvalues to the table
+				-- that actually owns the ref field.
+				local block = context.getLast("tableBlocks")
+				if block then
+					variable.blockTableUID = block.blockUID
+				end
 			end
 			return true
 		end

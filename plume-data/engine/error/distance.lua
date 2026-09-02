@@ -117,6 +117,11 @@ return function(plume)
 	end
 
 	local function semanticDistance(s, t)
+		-- non-string input can never match (defense in depth)
+		if type(s) ~= "string" or type(t) ~= "string" then
+			return math.huge
+		end
+
 		if (#s == 2 and #t == 2) or #s==1 or #t==1 then
 			return math.huge
 		end

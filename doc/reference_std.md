@@ -4,11 +4,11 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 
 ### Basic Functions
 
-*   `print(...items, ?pretty)`: A wrapper for the underlying lua `print` function.
+*   `print(...items, ?pretty)`: A debug tool, out of the text flow: writes the items directly to the host's raw stdout (through the underlying lua `print` function). The output is not part of the program result, is not written to `-o` output files, and is not captured by the test harness. Non-string items are formatted with `repr` (`?pretty` pretty-prints tables). The documented debug idiom is `run $print(...)` (see [core.md](core.md) § Side-Effect Calls).
 *   `type(x)`: Returns the type of `x` as a string: `empty`, `table`, `number`, or `string`.
 *   `len(table)`: Returns the number of items in a table.
 *   `repr(x, ?pretty)`: Give a string representation of any object.
-*   `help(x)`: A shortcut for `print(plume.doc(x))`
+*   `help(x)`: A shortcut for `print(plume.doc(x))`: prints the documentation of `x` to the host's raw stdout. Out of the text flow like `print`: not part of the program result, not written to `-o` output files, not captured by the test harness.
 *   `Number(x)`: Convert to a number. Raise an error if fail.
 *   `String(x)`: Convert to a string.
 *   `min(...numbers)`
@@ -21,14 +21,14 @@ Plume provides a set of built-in macros to handle common tasks such as I/O, tabl
 *   `List(table)`: return a table with only array part. If used as validator, raise an error if table contains a map element.
 *   `Map(table)`: return a table with only map part. If used as validator, raise an error if table contains a array element.
 *   **`Table`**:
-    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly. _Use this function specifically when creating empty tables (`Table()`) or tables with a single element._
+    *   `Table(...items)`: Explicitly creates and returns a table containing the provided items. This function can be called directly. _Use this function specifically when creating empty tables (`Table()`) or tables with a single positional item._
     *   `Table.at(table, index)`: Table indexing, support negative index. Doesn't trigger `getindex`
     *   `Table.at(table, start, top)`: Table slicing (only numeric part), support negative index. Doesn't trigger `getindex`
     *   `Table.setAt(table, index, value)`: Set value of a Table, support negative index. Doesn't trigger `setindex`.
     *   `Table.sort(table, compare:)`: In place sort. Doesn't change keys order. Optional `compare` accept a `macro` that take two arguments and return `true` if `a<b`. 
     *   `Table.append(table, item)`: Adds `item` to the end of the specified `table`.
     *   `Table.remove(table, [index])`: Removes the `index`-th item of `table` (default: table length) and return it.
-    *   `Table.removeKey(table, key)`: Removes a key from `table`. Contrary to `table.remove`, no shift is applied. Raise an error if `table.key` doesn't exist.
+    *   `Table.removeKey(table, key)`: Removes a key from `table`. For a numeric key, the list part is compacted (following values are shifted and numeric keys renumbered, like `table.remove`). Raise an error if `table.key` doesn't exist.
     *   `Table.hasKey(table, key)`: Check if `table` as a field `key`. Behave exactly like `table.key?`, except if `table.key` exists but is `empty`.
     *   `Table.find(table, v)`: Search for a `k` such that `table[k] = v` and return the first found. Return `empty` if not found.
     *   `Table.findAll(table, v)`: Search for all `k` such that `table[k] = v`. Return a table.
@@ -88,12 +88,20 @@ All `String` methods are supported by `Number` with an implicit string conversio
 
 #### Manipulation
 * `abs(n)`
-* `floor(n, digit: 0)`: Rounds the number down to the nearest integer or to the specified number of decimal places.
-* `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places.
-* `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places.
+* `floor(n, digit: 0)`: Rounds the number down to the nearest integer or to the specified number of decimal places. The value is first snapped to its displayed value (14 significant digits), so the result is consistent with what the language prints.
+* `ceil(n, digit: 0)`: Rounds the number up to the nearest integer or to the specified number of decimal places. The value is first snapped to its displayed value (14 significant digits).
+* `round(n, digit: 0)`: Rounds the number to the nearest integer or to the specified number of decimal places. The value is first snapped to its displayed value (14 significant digits).
 * `clamp(n, min, max)`: Restricts the number to lie within the inclusive range [min, max].
 * `localize(n, local)`: Proxy to `format(n, %s, local: local)`
 * `format(n, format, locale:, thousandsSeparator:, decimalSeparator:., thousandthsSeparator:)`: Formats the number according to the specified format string (uses Lua `string.format`). `local` can be `empty` (1055.2 → 1055.2), `en` or `us` (1055.2 → 1,055.2) or `fr` (1055.2 → 1 055,2). `local` can also be set to `custom`, and `thousandsSeparator`, etc... will be used. This macro will be automatically called for any concatenation of a string and a number. Options used can be customised using the contextual variables `locale`, `localeNumberFormat`, `localeThousandsSeparator`, `localeDecimalSeparator`, and `localeThousandthsSeparator`.
+
+Floating-point arithmetic can leave a value a hair below (or above) the number it displays — `(5.26 - 5) * 100` displays `26` but is worth `25.999…`. `floor`, `ceil` and `round` operate on the displayed value:
+
+```plume
+let x = $ (5.26 - 5.26.floor()) * 100
+$x\n   // → 26
+$x.floor()   // → 26
+```
 
 #### Test
 * `sign(n)`: Return `1`, `-1` or `0` depending of `n` sign.
@@ -123,7 +131,7 @@ _All trigonometry functions works in radians, except if `?deg` flag is provided.
 
 ### Iterators
 
-*   `seq(start, stop)` or `seq(stop)`: Returns an inclusive iterator from `start` to `stop`. If only one argument is provided, `start` defaults to `1`.
+*   `seq(start, stop, step)` or  `seq(start, stop)`  or `seq(stop)`: Returns an inclusive iterator from `start` to `stop` by `step`. `start` and `step` defaults to `1`.
 *   `enumerate(table)`: Returns an iterator yielding pairs of `(index, value)` for each list item in the table.
 *   `items(table, ?named)`: Returns an iterator yielding `(key, value)` pairs for all entries in the table (only non-numeric entries if `?named` flag is on).
 

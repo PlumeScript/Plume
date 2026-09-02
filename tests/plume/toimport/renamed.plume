@@ -1,0 +1,2 @@
+let param name as n = world
+Hello, $n!

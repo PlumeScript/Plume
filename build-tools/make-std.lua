@@ -205,7 +205,8 @@ local function process(filename, f)
 
 					if expected:match('|') then
 						local first = true
-						table.insert(checks, string.format("if __s and %s then\n\t", checkArgVar))
+						-- `false` is a valid value: only nil means "absent"
+						table.insert(checks, string.format("if __s and %s ~= nil then\n\t", checkArgVar))
 						for m in expected:gmatch('[^|]+') do
 							if not first then
 								table.insert(checks, "\tif not __s then\n\t\t")
@@ -222,8 +223,9 @@ local function process(filename, f)
 						end
 						table.insert(checks, "end\n")
 					else
+						-- `false` is a valid value: only nil means "absent"
 						table.insert(checks, string.format(
-						'if __s and %s then __s, __e, %s = plume.stdCheckType(vm, %s, "%s", %s, __name, __signature) end\n',
+						'if __s and %s ~= nil then __s, __e, %s = plume.stdCheckType(vm, %s, "%s", %s, __name, __signature) end\n',
 							checkArgVar, checkArgVar, checkArgVar, expected, checkArgName
 						))
 					end

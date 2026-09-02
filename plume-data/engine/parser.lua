@@ -168,6 +168,8 @@ return function (plume)
 
 		local s  = S" \t"^1
 		local os = S" \t"^0
+		-- whitespace that also swallows newlines; used inside the `$(...)` group
+		local osNL = S" \t\n"^0
 		local lt =  C("LINESTART", (os * S"\n")^1 * os) -- linestart
 		local num = C("NUMBER", (R"09"^1 * P"." * R"09"^1) + R"09"^1)
 		-- strict identifier
@@ -195,6 +197,7 @@ return function (plume)
 						+  C("SPECIAL_TEXT", P"\\\\")
 						+  C("SPECIAL_TEXT", P"\\/")
 						+  C("SPECIAL_TEXT", P"\\0")
+						+  C("SPECIAL_TEXT", P"\\@")
 						+  E(unknownEscape, P"\\" * P(1))
 
 		----------
@@ -255,7 +258,9 @@ return function (plume)
 			{{"NEG", "-"}, unary=true}
 		}
 
-		local function genALU()
+		-- `ws` selects the whitespace accepted inside the generated expression
+		-- (spaces/tabs for plain expressions, plus newlines for `$(...)`).
+		local function genALU(ws)
 			local rules = {"_layer1"}
 
 			for deep, opps in ipairs(opplist) do
@@ -279,9 +284,9 @@ return function (plume)
 				local current = "_layer" .. deep
 				local next    = "_layer" .. (deep+1)
 				if opps.unary then
-					rules[current] =  lpeg.Ct((rule * os)^0 * V(next)) / fold_un
+					rules[current] =  lpeg.Ct((rule * ws)^0 * V(next)) / fold_un
 				else
-					rules[current] = lpeg.Ct(V(next) * (os * rule * os * V(next))^0) / fold_bin
+					rules[current] = lpeg.Ct(V(next) * (ws * rule * ws * V(next))^0) / fold_bin
 				end
 			end
 
@@ -294,30 +299,32 @@ return function (plume)
 
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
-			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*os*P":"*os*Ct("BODY", V"_layer1"^-1))
-			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", os *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
+			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*ws*P":"*ws*Ct("BODY", V"_layer1"^-1))
+			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", ws *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
 			local arglist = Ct("CALL", 
 				  P"(" * P")"
-				+ P"(" * arg * (os * P"," * os * arg)^0 * P")"
+				+ P"(" * arg * (ws * P"," * ws * arg)^0 * P")"
 			)
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
 			local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
-			local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (os * P"," * os * arg)^1 + optnarg) * P")")
+			local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (ws * P"," * ws * arg)^1 + optnarg) * P")")
 
 			local evalOpperator = arglist + index + directindex
 			local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
 			local access = Ct("EVAL", primary * evalOpperator^1)
 
-			rules["_layer" .. (#opplist+1)] = os * (access + primary) * os
+			rules["_layer" .. (#opplist+1)] = ws * (access + primary) * ws
 
 			return rules
 		end
 
-		local expr = Ct("EXPR", genALU())
+		local expr = Ct("EXPR", genALU(os))
+		-- Newline-tolerant ALU, only for the `$(...)` group: it may span lines.
+		local exprNL = Ct("EXPR", genALU(osNL))
 		local evalBase = Ct("EVAL", (
 				  P"("
-					* (expr + E(plume.error.emptyExpr))
+					* (exprNL + E(plume.error.emptyExpr))
 				* (P")" + E(plume.error.missingClosingBracket))
 				+ idn
 				+ num
@@ -392,7 +399,15 @@ return function (plume)
 							)
 
 		local blockName = idn * (index + directindex)^0
-		local blockStart = Ct("EVAL", P"@" * blockName * os
+		-- Capture-free mirror of `blockName`, for lookahead in raw text.
+		local blockNameRaw = _idns * (P"[" * expr * P"]" + P"." * _idns)^0
+		-- Dynamic block call target: `@(...)` — the expression is evaluated in
+		-- script mode (same grammar as the `$(...)` group) and the resulting
+		-- macro receives the block as its last missing parameter.
+		local blockTarget = blockName
+							+ P"(" * (exprNL + E(plume.error.emptyExpr))
+								* (P")" + E(plume.error.missingClosingBracket))
+		local blockStart = Ct("EVAL", P"@" * blockTarget * os
 							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"blockStart") + body))
 						)
 		local block = blockStart * Ct("NULL", _end)
@@ -400,6 +415,15 @@ return function (plume)
 		-- so commas and unbalanced parens don't need escaping.
 		local inlineBlockStart = Ct("EVAL", P"@" * blockName * os
 							* Ct("BLOCK_CALL", call^-1 * os * (Ct("BODY", V"texticb")))
+						)
+		-- End-of-line block call: `@name` (optionally with `(args)`) at the very
+		-- end of a line, after text — the body is the following lines, up to `end`.
+		-- The guard is a zero-width lookahead: the newline itself is left for the
+		-- body's `lt`, as in the line-start form. End of input is accepted because
+		-- trailing whitespace of the file is stripped before parsing (plume.parse).
+		local blockCallEOL = Ct("EVAL", P"@" * blockName * os
+							* Ct("BLOCK_CALL", call^-1 * os * (#(S"\n") + -P(1)) * (Ct("BODY", V"blockStart") + body))
+							* Ct("NULL", _end)
 						)
 		local leave     = C("LEAVE", K"leave")
 		local _return   = Ct("RETURN", K"return" * (s * V"firstStatement")^-1)
@@ -419,7 +443,8 @@ return function (plume)
 			+ Ct("ALIAS", name * os * K"as" * os * name)
 			+ Ct("DEFAULT", name * os * _letsetdefaut)
 			+ name
-			+ Ct("VARIADIC", P"..." * name)
+			-- `as` renames the variadic parameter (file params only, checked at compile)
+			+ Ct("VARIADIC", P"..." * name * (os * K"as" * os * Ct("ALIAS", name))^-1)
 		)
 
 		--- Specific identifiers
@@ -556,6 +581,7 @@ return function (plume)
 		----------
 		-- main --
 		----------
+		local texteval = eval + inlineBlockStart + blockCallEOL + E(plume.error.nonEscapedEvalMark, P"$")+ E(plume.error.nonEscapedBlockMark, P"@")
 		local rules = {
 			"program",
 			program = V"firstStatement"^-1 * V"statement"^0,
@@ -590,15 +616,18 @@ return function (plume)
 
 			command = V"commandStd" + V"commandLB",
 
-			text   = (escaped + lineeval + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtext")^1,
-			textns = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextns")^1,
-			textnc = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnc")^1,
-			textnp = (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment" + V"rawtextnp")^1,
-			textic = asMacroic + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+			text   = (escaped + lineeval + texteval + V"comment" + V"rawtext")^1,
+			textns = (escaped + texteval + V"comment" + V"rawtextns")^1,
+			textnc = (escaped + texteval + V"comment" + V"rawtextnc")^1,
+			textnp = (escaped + texteval + V"comment" + V"rawtextnp")^1,
+			textic = asMacroic + (escaped + texteval + V"comment"
 						+ C("TEXT", P"(") * V"textic"^-1 * C("TEXT", P")") + V"rawtextic" 
 					)^1,
-			-- Inline block call body: the rest of the line, may chain inline block calls.
+			-- Inline block call body: the rest of the line, may chain inline block
+			-- calls. An end-of-line block call may start the block; it ends at the
+			-- newline after its `end`, where the loop naturally stops.
 			texticb = inlineBlockStart + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
+						+ blockCallEOL
 						+ V"rawtexticb"
 					)^1,
 
@@ -606,14 +635,17 @@ return function (plume)
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)
 				+ P"/*" * os * C("COMMENT", (P(1) - P("*/"))^0)  * C("NULL", P"*/")
 			),
-			rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*"))^1),
-			rawtextns = C("TEXT", NOT(S"$\n\\"   + P"//" + P"/*" + s)^1),
-			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"//" + P"/*" + s)^1),
-			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"//" + P"/*")^1),
-			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"//" + P"/*")^1),
-			-- Stops at a chained inline block call (`@name` followed by space/newline
-			-- or an argument list) so a nested block form isn't swallowed as raw text.
-			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * _idns * (os * S"\n" + s + P"("))^1),
+			rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\"+ P"@" + os * (P"//" + P"/*"))^1),
+			rawtextns = C("TEXT", NOT(S"$\n\\"   + P"@" + P"//" + P"/*" + s)^1),
+			rawtextnc = C("TEXT", NOT(S"$\n,\\"  + P"@" + P"//" + P"/*" + s)^1),
+			rawtextnp = C("TEXT", NOT(S"$\n)\\"  + P"@" + P"//" + P"/*")^1),
+			rawtextic = C("TEXT", NOT(S"$\n,()\\"+ P"@" + P"//" + P"/*")^1),
+			-- Stops at a chained inline block call (`@name`, dotted or bracket-
+			-- indexed, followed by space/newline, end of line, or an argument
+			-- list) so a nested block form isn't swallowed as raw text.
+			-- The end-of-line branch routes `@name` at end of input to blockCallEOL,
+			-- which is tried before this rule in the texticb loop.
+			rawtexticb = C("TEXT", NOT(os * S"\n" + S"$\\" + os * (P"//" + P"/*") + P"@" * blockNameRaw * (os * S"\n" + -P(1) + s + P"("))^1),
 
 			invalid = E(plume.error.emptySet, K"set"),
 			evalOpperator = call + index + directindex,

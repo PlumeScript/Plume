@@ -214,7 +214,7 @@ return function (plume)
 
 	--- Quick statistical profile of a Plume program: % of time in compiled
 	--- code, top hot lines, and JIT NYI aborts. Requires a LuaJIT build with
-	--- a working jit.profile (the stock luajit, not the custom bin\luajit).
+	--- a working jit.profile.
 	--- @param srcfile string Path to the .plume file to profile
 	--- @return string The report
 	function plume.debug.profileQuick(srcfile)

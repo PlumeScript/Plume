@@ -43,7 +43,8 @@ return function(plume)
 	function plume.error.makeVisibleKeysHint(key, rawKeys)
 		local keys = {}
 		for _, rawKey in ipairs(rawKeys) do
-			if not tonumber(rawKey) then
+			-- only string keys are valid suggestion candidates
+			if type(rawKey) == "string" and not tonumber(rawKey) then
 				table.insert(keys, rawKey)
 			end
 		end
