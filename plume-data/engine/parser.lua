@@ -185,20 +185,14 @@ return function (plume)
 			plume.error.unknownEscapeSequence(node, s)
 		end
 
-		local escaped =  C("SPECIAL_TEXT", P"\\s")
-						+  C("SPECIAL_TEXT", P"\\t")
-						+  C("SPECIAL_TEXT", P"\\n")
-						+  C("SPECIAL_TEXT", P"\\r")
-						+  C("SPECIAL_TEXT", P"\\$")
-						+  C("SPECIAL_TEXT", P"\\(")
-						+  C("SPECIAL_TEXT", P"\\)")
-						+  C("SPECIAL_TEXT", P"\\:")
-						+  C("SPECIAL_TEXT", P"\\,")
-						+  C("SPECIAL_TEXT", P"\\\\")
-						+  C("SPECIAL_TEXT", P"\\/")
-						+  C("SPECIAL_TEXT", P"\\0")
-						+  C("SPECIAL_TEXT", P"\\@")
-						+  E(unknownEscape, P"\\" * P(1))
+		-- Escape sequences are defined once in engine/escapes.lua (single
+		-- source of truth, shared with the compiler: handlers/literals.lua)
+		local escaped
+		for i, entry in ipairs(plume.escapeList) do
+			local choice = C("SPECIAL_TEXT", P(entry[1]))
+			escaped = i == 1 and choice or escaped + choice
+		end
+		escaped = escaped + E(unknownEscape, P"\\" * P(1))
 
 		----------
 		-- eval --

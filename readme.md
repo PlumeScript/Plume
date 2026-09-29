@@ -74,7 +74,7 @@ end
 
 // Note: Plume will conserve only spaces between consecutives words.
 // To add spaces to output, use `\n`, `\s` and `\t`
-// By the way, `\` permit to escape any character
+// By the way, escapes are restricted to a fixed set: \s \t \n \r \$ \( \) \: \, \\ \/ \0 \@ (see doc/core.md)
 
 In plume, `\$(1+1)` will give `$(1+1)` // Return: "In plume, `$(1+1)` will give `2` "
 

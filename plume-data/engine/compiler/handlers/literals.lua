@@ -34,24 +34,10 @@ return function (plume, context, nodeHandlerTable)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)
 	end
 
-	local charTable = {
-		["\\s"] = " ",
-		["\\t"] = "\t",
-		["\\n"] = "\n",
-		["\\r"] = "\r",
-		["\\$"] = "$",
-		["\\("] = "(",
-		["\\)"] = ")",
-		["\\:"] = ":",
-		["\\,"] = ",",
-		["\\\\"] = "\\",
-		["\\/"] = "/",
-		["\\0"] = "",
-		["\\@"] = "@"
-	}
-
+	-- The escape table is defined once in engine/escapes.lua (single source
+	-- of truth, shared with the parser)
 	function context.getSpecialText(node)
-		return charTable[node.content]
+		return plume.escapes[node.content]
 	end
 
 	nodeHandlerTable.SPECIAL_TEXT = function(node)
