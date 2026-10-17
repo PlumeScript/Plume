@@ -294,7 +294,12 @@ return function (plume)
 			-- Eval & index
 			local posarg  = Ct("LIST_ITEM", V"_layer1")
 			local optnarg = Ct("HASH_ITEM", (name + Ct("DYNAMIC_KEY", Ct("EVAL", P"$" * V"_layer1")))*ws*P":"*ws*Ct("BODY", V"_layer1"^-1))
-			local arg = optnarg + posarg + sugarFlagCall(Ct("FLAG", ws *"?"*name)) + Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1")) + Ct("LIST_ITEM", Ct("EMPTY", P""))
+			local expandArg = Ct("EXPAND", Ct("EVAL", P"..."*V"_layer1"))
+			local arg = optnarg
+						+ posarg
+						+ sugarFlagCall(Ct("FLAG", ws *"?"*name))
+						+ expandArg
+						+ Ct("LIST_ITEM", Ct("EMPTY", P""))
 			local arglist = Ct("CALL", 
 				  P"(" * P")"
 				+ P"(" * arg * (ws * P"," * ws * arg)^0 * P")"
@@ -302,7 +307,9 @@ return function (plume)
 			local index = Ct("SAFE_INDEX", P"[" * V"_layer1" * P"]" * P"?") + Ct("INDEX", P"[" * V"_layer1" * P"]")
 			local directindex = Ct("SAFE_DIRECT_INDEX", P"." * idn * P"?") + Ct("DIRECT_INDEX", P"." * idn)
 
-			local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (ws * P"," * ws * arg)^1 + optnarg) * P")")
+			-- A lone expansion `(...t)` is an inline table: an expansion is not
+			-- a value, so it cannot be confused with a parenthesized expression.
+			local inlinetable = Ct("INLINE_TABLE", P"(" * (arg^-1 * (ws * P"," * ws * arg)^1 + optnarg + expandArg) * P")")
 
 			local evalOpperator = arglist + index + directindex
 			local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
@@ -383,10 +390,11 @@ return function (plume)
 							os * (name + Ct("DYNAMIC_KEY", eval)) * os * P":"
 							* os * Ct("BODY", (V"inlinetable" + V"textic")^-1)
 						)
+		local expandArg = Ct("EXPAND", P"..."*evalBase)
 		local arg       = namedArg	
 						+ E(plume.error.cannotUseRef, K"ref") * s * name
 						+ sugarFlagCall(Ct("FLAG", os *"?"*name))
-						+ Ct("EXPAND", P"..."*evalBase)
+						+ expandArg
 						+ Ct("LIST_ITEM", V"inlinetable")
 						+ Ct("LIST_ITEM", V"textic")
 						+ Ct("LIST_ITEM", Ct("EMPTY", os))
@@ -485,7 +493,7 @@ return function (plume)
 
 		local _do = Ct("DO", os * K"do" * body * _end)
 
-		local inlinetable = Ct("INLINE_TABLE", os * P"(" * (arg * (P"," * os * arg)^1 + namedArg) * P")")
+		local inlinetable = Ct("INLINE_TABLE", os * P"(" * (arg * (P"," * os * arg)^1 + namedArg + expandArg) * P")")
 
 		-- General raw block: `raw` + n brackets + content + n brackets + `end`
 		local raw = Ct("RAW", os * Cmt(K"raw" * lpeg.C(P"["^0), function(subject, pos, brackets)

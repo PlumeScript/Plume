@@ -625,12 +625,14 @@ let palette = do
 end
 ```
 
-**Inline tables.** `(item1, item2, key: value)` builds a table inside an expression. An inline table needs at least two items, or a single named item — a lone positional item is not a table: `(1)` is the literal string `"(1)"` outside an evaluation, and a parenthesized expression inside one. For empty tables or tables with a single positional item, use the standard constructor `$Table()`:
+**Inline tables.** `(item1, item2, key: value)` builds a table inside an expression. An inline table needs at least two items, a single named item, or a single expansion — a lone positional item is not a table: `(1)` is the literal string `"(1)"` outside an evaluation, and a parenthesized expression inside one. For empty tables or tables with a single positional item, use the standard constructor `$Table()`:
 
 ```plume
 let pair = (red, blue)
 let nothing = $Table()
 let one = $Table(wing)
+let copy = (...pair)
+$ len(copy)\n  // → 2
 ```
 
 **Empty content.** A `-` alone adds an `empty` item; a `key:` alone assigns `empty`.

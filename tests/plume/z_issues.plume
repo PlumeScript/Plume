@@ -395,6 +395,83 @@ $Table(wing)
 $Table(-0.95892427466314)
 /// End
 
+/// Test #1281-1 issue case
+let t1 = (1, 2, 3)
+let t2 = (...t1)
+$ type(t2)
+/// Output
+table
+/// End
+
+/// Test #1281-2 expanded content
+let t1 = (1, 2, 3)
+let t2 = (...t1)
+$(type(t2)) $(len(t2)) $(Table.join(...t2))
+/// Output
+table 3 123
+/// End
+
+/// Test #1281-3 named keys preserved
+let t1 = $Table(1, 2, k: 3)
+let t2 = (...t1)
+$(t2.k) $(len(t2))
+/// Output
+3 2
+/// End
+
+/// Test #1281-4 empty table expansion
+let e = $Table()
+let t2 = (...e)
+$(type(t2)) $(len(t2))
+/// Output
+table 0
+/// End
+
+/// Test #1281-5 eval context
+let t1 = (1, 2, 3)
+$(type((...t1))) $(len((...t1)))
+/// Output
+table 3
+/// End
+
+/// Test #1281-6 lone positional item is still text
+let x = (1)
+$(type(x)) $(x)
+/// Output
+string (1)
+/// End
+
+/// Test #1281-7 lone named item is still a table
+let x = (k: 1)
+$(type(x)) $(x.k)
+/// Output
+table 1
+/// End
+
+/// Test #1281-8 set
+let t1 = (1, 2)
+let t2
+set t2 = (...t1)
+$(type(t2)) $(len(t2))
+/// Output
+table 2
+/// End
+
+/// Test #1281-9 mixed items
+let t1 = (1, 2, 3)
+let t2 = (0, ...t1, 4)
+$(len(t2))
+/// Output
+5
+/// End
+
+/// Test #1281-10 eval context as call argument
+let t1 = (1, 2, 3)
+$(len(Table((...t1)))) $(len(Table(...t1)))
+/// Output
+1 3
+/// End
+
 /// Test #1268-1 index of a fragment table stays lazy
 let t = do
     - do

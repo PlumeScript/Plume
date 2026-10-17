@@ -106,6 +106,8 @@ end
 // config is (host: "prod", port: 8000)
 ```
 
+A lone expansion inside parentheses is an inline table, the shortest way to copy a table: `let copy = (...t)`.
+
 In every context, the expression after `...` must evaluate to a table.
 
 ## Dynamic Keys and Safe Indexing
