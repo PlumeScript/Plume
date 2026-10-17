@@ -395,3 +395,74 @@ $Table(wing)
 $Table(-0.95892427466314)
 /// End
 
+/// Test #1283-1 comment inside multiline eval (issue case)
+let a = 1
+$(a
++1
+// wing
+)
+/// Output
+2
+/// End
+
+/// Test #1283-2 consecutive and block comments
+let a = 1
+$(a
+// one
+// two
+/* three
+lines */
++1
+)
+/// Output
+2
+/// End
+
+/// Test #1283-3 comment after operator and before closing paren
+let a = 1
+$(a
++ // after plus
+1 // trailing
+)
+/// Output
+2
+/// End
+
+/// Test #1283-4 comment inside a call in eval
+let a = 1
+$(len((a,
+// between
+1)))
+/// Output
+2
+/// End
+
+/// Test #1283-5 comment inside dynamic block call
+let double = macro (x) $(2 * x)
+let b = @(double
+// target comment
+)
+    - 5
+end
+$b
+/// Output
+10
+/// End
+
+/// Test #1283-6 comment-only eval is an empty eval
+$(
+// only a comment
+)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Evaluation cannot be empty.                                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$(                                                                       │
+│      │ ^                                                                       │
+│    2 │// only a comment                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

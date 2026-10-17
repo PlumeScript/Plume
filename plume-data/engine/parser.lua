@@ -314,8 +314,13 @@ return function (plume)
 		end
 
 		local expr = Ct("EXPR", genALU(os))
-		-- Newline-tolerant ALU, only for the `$(...)` group: it may span lines.
-		local exprNL = Ct("EXPR", genALU(osNL))
+		-- Newline-tolerant ALU, only for the `$(...)` group: it may span lines,
+		-- with comments between its tokens (`//` ends at the newline, `/* */`
+		-- may span lines). Comments are matched without capture, so they stay
+		-- out of the folded expression.
+		local commentNL = P"//" * (P(1) - S"\n")^0
+			+ P"/*" * (P(1) - P"*/")^0 * P"*/"
+		local exprNL = Ct("EXPR", genALU(osNL * (commentNL * osNL)^0))
 		local evalBase = Ct("EVAL", (
 				  P"("
 					* (exprNL + E(plume.error.emptyExpr))
