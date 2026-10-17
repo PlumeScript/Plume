@@ -608,3 +608,75 @@ $(
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+/// Test #1284-1 implicit call of a macro with one positional parameter
+macro wing(a)
+end
+
+a$wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'wing', 0 instead of 1.       │
+│   The macro is called implicitly (without parentheses), so it receives no      │
+│   arguments.                                                                   │
+│   Usage: $wing(a)                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │a$wing                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1284-2 implicit call of a macro with two positional parameters
+macro wing(a, b)
+end
+
+a$wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'wing', 0 instead of 2.       │
+│   The macro is called implicitly (without parentheses), so it receives no      │
+│   arguments.                                                                   │
+│   Usage: $wing(a, b)                                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │a$wing                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1284-3 explicit call keeps the standard message
+macro wing(a)
+end
+$wing()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'wing', 0 instead of 1.       │
+│   Usage: $wing(a)                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$wing()                                                                  │
+│      │ ^^^^^^                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1284-4 implicit call of a macro without positional parameter still works
+macro wing(name: x)
+$name
+end
+a$wing
+/// Output
+ax
+/// End
+

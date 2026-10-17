@@ -80,6 +80,24 @@ return function(plume)
 		return message
 	end
 
+	-- An implicit call (a macro referenced in text, without parentheses)
+	-- passes no arguments, so a macro with positional parameters can never
+	-- be called this way. Make it explicit in the message.
+	function plume.error.implicitCallWrongArgsCount(macro, expectedArgsCount)
+		local message = string.format(
+			"Wrong number of positional arguments for macro '%s', 0 instead of %s.",
+			macro.name, expectedArgsCount
+		)
+		message = message .. "\nThe macro is called implicitly (without parentheses), so it receives no arguments."
+
+		local signature = plume.error.getMacroSignature(macro)
+		if signature then
+			message = string.format("%s\nUsage: %s", message, signature)
+		end
+
+		return message
+	end
+
 	function plume.error.wrongValidatorArgsCount(macro, argCount)
 		local message = string.format(
 			"Macro '%s' cannot be used as validator: it take '%s' positional parameter%s instead of '1'.",
