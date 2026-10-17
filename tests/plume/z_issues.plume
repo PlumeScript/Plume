@@ -395,6 +395,71 @@ $Table(wing)
 $Table(-0.95892427466314)
 /// End
 
+/// Test #1268-1 index of a fragment table stays lazy
+let t = do
+    - do
+        a: 0
+        meta fragment: macro()
+        end
+    end
+end
+$t[1].a
+/// Output
+0
+/// End
+
+/// Test #1268-2 fragment still rendered when used as a value
+let t = do
+    - do
+        a: 0
+        meta fragment: macro()
+            rendered
+        end
+    end
+end
+$t[1]
+/// Output
+rendered
+/// End
+
+/// Test #1268-3 fragment rendering a macro stays callable through index
+macro wing
+    nib
+end
+let f = do
+    meta fragment: macro()
+        $wing
+    end
+end
+let t = (f: $f)
+$t.f()
+/// Output
+nib
+/// End
+
+/// Test #1268-4 unregistered key on a fragment table errors cleanly
+let t = do
+    - do
+        a: 0
+        meta fragment: macro()
+        end
+    end
+end
+$t[1].sub
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unregistered key 'sub'.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    7 │end                                                                      │
+│    8 │$t[1].sub                                                                │
+│      │     ^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
 /// Test #1283-1 comment inside multiline eval (issue case)
 let a = 1
 $(a
