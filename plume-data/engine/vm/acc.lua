@@ -373,6 +373,11 @@ return function(vm)
 	                self:_STACK_PUSH(self.mainStack, fragmentValue)
 	                -- loop continues to re-process the result
 	            elseif t == "macro" then
+	                if value.positionalParamCount > 0 then
+	                    -- Implicit call (without parentheses) passes no arguments
+	                    self:_ERROR(self.plume.error.implicitCallWrongArgsCount(value, value.positionalParamCount))
+	                    break
+	                end
 	                self:_STACK_POP(self.mainStack)
 	                self:BEGIN_ACC(0, 0)
 	                self:_STACK_PUSH(self.mainStack, value)

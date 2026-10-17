@@ -1,5 +1,5 @@
 --[[
-Plume🪶 b65 (Raven Edition)
+Plume🪶 b66 (Raven Edition)
 
 Copyright © 2024-2026 Erwan Barbedor
 
@@ -30,12 +30,13 @@ else
 end
 
 local plume = {}
-plume.VERSION = "b65 (Raven Edition)"
+plume.VERSION = "b66 (Raven Edition)"
 
 require 'plume-data/engine/error/core'    (plume)
 require 'plume-data/engine/warning'       (plume)
 require 'plume-data/engine/utils'         (plume)
 require 'plume-data/engine/ast'           (plume)
+require 'plume-data/engine/escapes'       (plume)
 require 'plume-data/engine/objects/core'  (plume)
 require 'plume-data/engine/parser'        (plume)
 require 'plume-data/engine/compiler/core' (plume)

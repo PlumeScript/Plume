@@ -5,7 +5,7 @@
     A language where your code <b>is</b> your document
 </i></p>
 
-![Version](https://img.shields.io/badge/version-Raven_65-blue.svg) ![Tests](https://img.shields.io/badge/tests-986%2F986%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
+![Version](https://img.shields.io/badge/version-Raven_66-blue.svg) ![Tests](https://img.shields.io/badge/tests-1085%2F1085%20passed-brightgreen.svg)  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
 
 ## Introduction
 
@@ -74,7 +74,7 @@ end
 
 // Note: Plume will conserve only spaces between consecutives words.
 // To add spaces to output, use `\n`, `\s` and `\t`
-// By the way, `\` permit to escape any character
+// By the way, escapes are restricted to a fixed set: \s \t \n \r \$ \( \) \: \, \\ \/ \0 \@ (see doc/core.md)
 
 In plume, `\$(1+1)` will give `$(1+1)` // Return: "In plume, `$(1+1)` will give `2` "
 

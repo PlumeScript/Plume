@@ -313,6 +313,7 @@ local function main()
 			end
 		else
 			io.stderr:write(result .. "\n")
+			os.exit(1)
 		end
 	elseif args.showHelp then
 		print((help:gsub('!VERSION!', plume.VERSION)))

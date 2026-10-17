@@ -128,12 +128,21 @@ Inside `$(...)`, the full expression syntax is available:
 *   Logic: `and`, `or`, `not` — with short-circuit evaluation. `and` and `or` return the value of the deciding operand, not necessarily a boolean: `$(true and 1)` is `1`.
 *   Parentheses, variable names, and macro calls — written **without** the `$` prefix inside an evaluation context.
 
-Unlike the rest of the language, the `$(...)` group may span several lines: inside the group, newlines are treated as spaces.
+Unlike the rest of the language, the `$(...)` group may span several lines: inside the group, newlines are treated as spaces, and comments may sit between the tokens.
 
 ```plume
 $(1 +
 2 + 3)
 // → 6
+```
+
+```plume
+let wing = 1
+$(wing
++ 1
+// keep the score
+)
+// → 2
 ```
 
 As a shortcut, `$` directly followed by a number literal evaluates that literal: `$100` is equivalent to `$(100)`.
@@ -616,12 +625,14 @@ let palette = do
 end
 ```
 
-**Inline tables.** `(item1, item2, key: value)` builds a table inside an expression. An inline table needs at least two items, or a single named item — a lone positional item is not a table: `(1)` is the literal string `"(1)"` outside an evaluation, and a parenthesized expression inside one. For empty tables or tables with a single positional item, use the standard constructor `$Table()`:
+**Inline tables.** `(item1, item2, key: value)` builds a table inside an expression. An inline table needs at least two items, a single named item, or a single expansion — a lone positional item is not a table: `(1)` is the literal string `"(1)"` outside an evaluation, and a parenthesized expression inside one. For empty tables or tables with a single positional item, use the standard constructor `$Table()`:
 
 ```plume
 let pair = (red, blue)
 let nothing = $Table()
 let one = $Table(wing)
+let copy = (...pair)
+$ len(copy)\n  // → 2
 ```
 
 **Empty content.** A `-` alone adds an `empty` item; a `key:` alone assigns `empty`.

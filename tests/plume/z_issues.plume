@@ -395,3 +395,288 @@ $Table(wing)
 $Table(-0.95892427466314)
 /// End
 
+/// Test #1281-1 issue case
+let t1 = (1, 2, 3)
+let t2 = (...t1)
+$ type(t2)
+/// Output
+table
+/// End
+
+/// Test #1281-2 expanded content
+let t1 = (1, 2, 3)
+let t2 = (...t1)
+$(type(t2)) $(len(t2)) $(Table.join(...t2))
+/// Output
+table 3 123
+/// End
+
+/// Test #1281-3 named keys preserved
+let t1 = $Table(1, 2, k: 3)
+let t2 = (...t1)
+$(t2.k) $(len(t2))
+/// Output
+3 2
+/// End
+
+/// Test #1281-4 empty table expansion
+let e = $Table()
+let t2 = (...e)
+$(type(t2)) $(len(t2))
+/// Output
+table 0
+/// End
+
+/// Test #1281-5 eval context
+let t1 = (1, 2, 3)
+$(type((...t1))) $(len((...t1)))
+/// Output
+table 3
+/// End
+
+/// Test #1281-6 lone positional item is still text
+let x = (1)
+$(type(x)) $(x)
+/// Output
+string (1)
+/// End
+
+/// Test #1281-7 lone named item is still a table
+let x = (k: 1)
+$(type(x)) $(x.k)
+/// Output
+table 1
+/// End
+
+/// Test #1281-8 set
+let t1 = (1, 2)
+let t2
+set t2 = (...t1)
+$(type(t2)) $(len(t2))
+/// Output
+table 2
+/// End
+
+/// Test #1281-9 mixed items
+let t1 = (1, 2, 3)
+let t2 = (0, ...t1, 4)
+$(len(t2))
+/// Output
+5
+/// End
+
+/// Test #1281-10 eval context as call argument
+let t1 = (1, 2, 3)
+$(len(Table((...t1)))) $(len(Table(...t1)))
+/// Output
+1 3
+/// End
+
+/// Test #1268-1 index of a fragment table stays lazy
+let t = do
+    - do
+        a: 0
+        meta fragment: macro()
+        end
+    end
+end
+$t[1].a
+/// Output
+0
+/// End
+
+/// Test #1268-2 fragment still rendered when used as a value
+let t = do
+    - do
+        a: 0
+        meta fragment: macro()
+            rendered
+        end
+    end
+end
+$t[1]
+/// Output
+rendered
+/// End
+
+/// Test #1268-3 fragment rendering a macro stays callable through index
+macro wing
+    nib
+end
+let f = do
+    meta fragment: macro()
+        $wing
+    end
+end
+let t = (f: $f)
+$t.f()
+/// Output
+nib
+/// End
+
+/// Test #1268-4 unregistered key on a fragment table errors cleanly
+let t = do
+    - do
+        a: 0
+        meta fragment: macro()
+        end
+    end
+end
+$t[1].sub
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Unregistered key 'sub'.                                                      │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    7 │end                                                                      │
+│    8 │$t[1].sub                                                                │
+│      │     ^^^^                                                                │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1283-1 comment inside multiline eval (issue case)
+let a = 1
+$(a
++1
+// wing
+)
+/// Output
+2
+/// End
+
+/// Test #1283-2 consecutive and block comments
+let a = 1
+$(a
+// one
+// two
+/* three
+lines */
++1
+)
+/// Output
+2
+/// End
+
+/// Test #1283-3 comment after operator and before closing paren
+let a = 1
+$(a
++ // after plus
+1 // trailing
+)
+/// Output
+2
+/// End
+
+/// Test #1283-4 comment inside a call in eval
+let a = 1
+$(len((a,
+// between
+1)))
+/// Output
+2
+/// End
+
+/// Test #1283-5 comment inside dynamic block call
+let double = macro (x) $(2 * x)
+let b = @(double
+// target comment
+)
+    - 5
+end
+$b
+/// Output
+10
+/// End
+
+/// Test #1283-6 comment-only eval is an empty eval
+$(
+// only a comment
+)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Evaluation cannot be empty.                                                  │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$(                                                                       │
+│      │ ^                                                                       │
+│    2 │// only a comment                                                        │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+/// Test #1284-1 implicit call of a macro with one positional parameter
+macro wing(a)
+end
+
+a$wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'wing', 0 instead of 1.       │
+│   The macro is called implicitly (without parentheses), so it receives no      │
+│   arguments.                                                                   │
+│   Usage: $wing(a)                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │a$wing                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1284-2 implicit call of a macro with two positional parameters
+macro wing(a, b)
+end
+
+a$wing
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'wing', 0 instead of 2.       │
+│   The macro is called implicitly (without parentheses), so it receives no      │
+│   arguments.                                                                   │
+│   Usage: $wing(a, b)                                                           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │a$wing                                                                   │
+│      │  ^^^^                                                                   │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1284-3 explicit call keeps the standard message
+macro wing(a)
+end
+$wing()
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'wing', 0 instead of 1.       │
+│   Usage: $wing(a)                                                              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    3 │$wing()                                                                  │
+│      │ ^^^^^^                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1284-4 implicit call of a macro without positional parameter still works
+macro wing(name: x)
+$name
+end
+a$wing
+/// Output
+ax
+/// End
+

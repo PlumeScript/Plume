@@ -104,6 +104,8 @@ return function (plume, context, nodeHandlerTable)
 		-- Push all index and call opcodes in order
 		for i=2, #node.children do
 			local child = node.children[i]
+			local nextChild = node.children[i+1]
+			local nextChildIsCall = nextChild and (nextChild.name == "CALL" or nextChild.name == "BLOCK_CALL")
 			if child.name == "CALL" or child.name == "BLOCK_CALL" then
 				context.registerOP(node, plume.ops.CONCAT_CALL)
 				context.accBlockDeep = context.accBlockDeep - 1
@@ -115,9 +117,6 @@ return function (plume, context, nodeHandlerTable)
 				if child.name == "SAFE_INDEX" or child.name == "SAFE_DIRECT_INDEX" then
 					safeFlag = 1
 				end
-
-				local nextChild = node.children[i+1]
-				local nextChildIsCall = nextChild and (nextChild.name == "CALL" or nextChild.name == "BLOCK_CALL")
 				-- When call a table field, add the table in argument list as the value for the key `self`
 				-- Ex: `$wing.nib()` is treated like `$wing.nib(self: $wing)`
 				if nextChildIsCall then
@@ -125,7 +124,11 @@ return function (plume, context, nodeHandlerTable)
 				end
 				context.registerOP(child, plume.ops.TABLE_INDEX, safeFlag)
 			end
-			if i < #node.children then
+			-- The value must be forced only before a call: a fragment table
+			-- whose meta renders a macro needs its concrete value to be called.
+			-- Before an index it must stay lazy: indexing a fragment table
+			-- reads its fields without rendering it (#1268).
+			if nextChildIsCall then
 				context.registerOP(node, plume.ops.FORCE_FRAGMENT)
 			end
 		end
