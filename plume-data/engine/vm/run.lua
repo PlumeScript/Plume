@@ -30,12 +30,21 @@ return function(vm)
 			result  = self.plume.error.stackOverflow()
 			self:_ERROR(result)
 		else
+			local callerip = self.ip
 			self:_STACK_PUSH(self.recursiveStack, self.ip)
 			self:_SAVE_SCALAR()
 			success, result, callvmerrip = vm:_RUN(destip)
 			self:_UPDATE_SCALAR()
 			if not success then
-				self.ip = callvmerrip
+				-- An error raised at a virtual sop (implicit call) has its ip
+				-- pointing to the virtual opcode, which has no source mapping.
+				-- Re-point it to the real caller's ip so the stack trace shows
+				-- the call site instead of an unrelated instruction.
+				if self:_IS_SOPS_IP(callvmerrip) then
+					self.ip = callerip
+				else
+					self.ip = callvmerrip
+				end
 				self:_ERROR(result)
 				self:_JUMP_END() --! to-remove
 			end
