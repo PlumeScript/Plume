@@ -57,6 +57,12 @@ return function(plume)
 
 		runtime.contextCount = runtime.contextCount + 1
 
+		-- Freeze this context's own id. Label/block UIDs are prefixed with it
+		-- (see context.getUID): reading runtime.contextCount live at call
+		-- time would let nested compilations (use / $import) generate label
+		-- names that collide with those of other files.
+		context.contextId = runtime.contextCount
+
 		context.chunk = chunk
 		context.runtime = runtime
 		context.isMain = isMain

@@ -17,6 +17,11 @@ return function (plume)
 					offset = offset + 1
 					table.insert(runtime.instructions, offset, newInstr)
 				end
+				-- Consume the pending list: label names are unique per
+				-- runtime, so any leftover entry would be dead weight, and
+				-- re-inserting an already inserted list would duplicate
+				-- bytecode (see the nested compilation label collision bug).
+				runtime.insert[instr.label] = nil
 			end
 		end
 	end

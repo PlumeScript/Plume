@@ -67,12 +67,16 @@ return function (plume, context)
 	end
 
 	local uid = 0
-	--- Return each time a unique number
-	--- Used to name labels
+	--- Return a unique identifier (per runtime)
+	--- Used to name labels. The prefix is the context's own id, frozen at
+	--- context creation: the per-context counter `uid` restarts for every
+	--- compiled file, and nested compilations (use / $import) interleave
+	--- calls, so the live runtime.contextCount would let two different
+	--- files generate the same label name.
 	---@return string
 	function context.getUID()
 		uid = uid+1
-		return context.runtime.contextCount .. ":" .. uid
+		return context.contextId .. ":" .. uid
 	end
 
 	--- Register an opcode in the current chunk
