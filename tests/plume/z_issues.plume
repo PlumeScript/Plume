@@ -680,3 +680,21 @@ a$wing
 ax
 /// End
 
+/// Test #1289-1 block comment docstring (issue case)
+/*a*/
+macro A()
+end
+
+//a
+macro B()
+end
+
+$plume.doc($A)\n
+$plume.doc($B)
+/// Output
+macro A()
+    a
+macro B()
+    a
+/// End
+

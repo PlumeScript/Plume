@@ -123,3 +123,56 @@ macro wing()
     a macro that fly
 /// End
 
+/// Test block comment doc
+/* double the number */
+macro double(x)
+	$ 2*x
+end
+$ String(plume.doc(double))
+/// Output
+macro double(x)
+    double the number
+/// End
+
+/// Test block comment doc multiple line
+/* double the number
+@param x number the number to double */
+macro double(x)
+	$ 2*x
+end
+$ String(plume.doc(double))
+/// Output
+macro double(x)
+    double the number
+    @param x number the number to double
+/// End
+
+/// Test block comment doc table
+/* This is a table */
+let t = do
+    - 1
+end
+$ String(plume.doc(t))
+/// Output
+table t
+    This is a table
+/// End
+
+/// Test block comment separated by blank line
+/* not a doc */
+
+macro wing()
+end
+$ String(plume.doc(wing))
+/// Output
+macro wing()
+/// End
+
+/// Test File with block comment
+let lib = $import(tests/plume/toimport/filedoc_block)
+$String($plume.doc($lib))
+/// Output
+table tests/plume/toimport/filedoc_block.plume
+    This file do somethings
+/// End
+

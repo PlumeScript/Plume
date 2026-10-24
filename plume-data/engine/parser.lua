@@ -640,7 +640,18 @@ return function (plume)
 
 			comment  = os * (
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)
-				+ P"/*" * os * C("COMMENT", (P(1) - P("*/"))^0)  * C("NULL", P"*/")
+				+ (P"/*" * os * Cp() * lpeg.C((P(1) - P("*/"))^0) * P"*/" * Cp()) / function(bpos, content, epos)
+					-- One COMMENT node for the whole `/* ... */`: content is the text
+					-- between the delimiters, bpos/epos cover the delimiters too (the
+					-- trailing `*/` used to be a separate NULL node, which broke
+					-- docstring collection — issue #1289).
+					return {
+						name = "COMMENT",
+						bpos = bpos,
+						epos = epos - 1,
+						content = content
+					}
+				  end
 			),
 			rawtext   = C("TEXT", NOT(os * S"\n" + S"$\\"+ P"@" + os * (P"//" + P"/*"))^1),
 			rawtextns = C("TEXT", NOT(S"$\n\\"   + P"@" + P"//" + P"/*" + s)^1),
