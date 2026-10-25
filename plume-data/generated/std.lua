@@ -452,12 +452,19 @@ return function(plume)
 	
 		if success then
 			-- prepare stack
-			vm:_STACK_PUSH(vm.fileStack, chunk.fileID)
-			vm:_STACK_PUSH(vm.recursiveStack, vm.ip+1)
+			-- Return address for the nested run: the ip of the CONCAT_CALL currently
+			-- executing. _RUN_END (vm/run.lua) restores vm.ip to it, and the
+			-- dispatcher's next tick then advances to the following instruction —
+			-- pushing vm.ip+1 (as imports' _RUN_START does not) used to skip that
+			-- instruction (issue #1292: in `$String($eval(...))` the outer macro was
+			-- never loaded, and `let r = $eval(...)` lost its assignment).
+			-- plume.run pushes the fileID on the fileStack itself; pushing it here
+			-- too leaked one entry per eval (the inner RETURN_FILE pops only once).
+			vm:_STACK_PUSH(vm.recursiveStack, vm.ip)
 	
 			-- execute
 			success, result, errip = plume.run(runtime, chunk)
-			
+	
 			if success then
 				-- clean stack
 				vm:_STACK_POP(vm.mainStack)

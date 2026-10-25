@@ -742,3 +742,39 @@ $plume.eval(\$wing(), ?safe)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯)
 /// End
+
+/// Test #1292-1
+let bonjour = "bonjour"
+$String($eval(bonjour))
+/// Output
+bonjour
+/// End
+
+/// Test #1292-2
+let r = $eval(\$(1 + 1))
+$r
+/// Output
+2
+/// End
+
+/// Test #1292-3
+macro show(x)
+    got: $x
+end
+$show($eval(bonjour))
+/// Output
+(got: bonjour)
+/// End
+
+/// Test #1292-4
+$eval(\$(1))-$eval(\$(2))
+/// Output
+1-2
+/// End
+
+/// Test #1292-5
+let a = $eval(\$(5))
+$a$a
+/// Output
+55
+/// End
