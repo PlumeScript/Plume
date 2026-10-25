@@ -445,7 +445,10 @@ return function(plume)
 		local runtime = vm.runtime
 		-- local success, result = plume.executeString(code, filename or "<string>", runtime, nil, nil, false)
 		local chunk = plume.obj.macro(filename, runtime)
-		success, result = pcall(plume.compileFile, code, filename, chunk, runtime)
+		-- noCache: the chunk cache is keyed by filename (file imports assume the
+		-- same name implies the same source). Eval'd strings don't follow that —
+		-- every call must compile its own code, even with the default `<string>`.
+		success, result = pcall(plume.compileFile, code, filename, chunk, runtime, nil, {noCache = true})
 	
 		if success then
 			-- prepare stack

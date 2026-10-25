@@ -698,3 +698,47 @@ macro B()
     a
 /// End
 
+/// Test #1290-1
+$plume.eval(a)
+$plume.eval(b)
+$plume.eval(c)
+/// Output
+abc
+/// End
+
+/// Test #1290-2
+A$plume.eval(\$(1+1))
+B$plume.eval(\$(2+2))
+C$plume.eval(\$(3+3))
+D$plume.eval(\$(10*4))
+/// Output
+A2B4C6D40
+/// End
+
+/// Test #1290-3
+$plume.eval(\$(1), "x")
+$plume.eval(\$(2), "x")
+/// Output
+12
+/// End
+
+/// Test #1290-4
+$plume.eval(\$(5+5), ?safe)
+/// Output
+(success: true, result: 10)
+/// End
+
+/// Test #1290-5
+$plume.eval(\$wing(), ?safe)
+/// Output
+(success: false, result: ╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'wing', it isn't defined in the current scope.           │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ <string>                                                                    │
+│    1 │\$wing()                                                                  │
+│      │ ^^^^                                                                    │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯)
+/// End

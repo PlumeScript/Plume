@@ -13,7 +13,12 @@ return function(plume)
 	--- (bytecode, parameters names and number...)
 	--- @return nil (instructions are writted directly into the chunk)
 	function plume.compileFile(code, filename, chunk, runtime, isMain, args)
-		if runtime.cache.chunks[filename] then
+		-- `noCache` (via args) is for string code (plume.eval): the chunk cache
+		-- is keyed by filename and assumes the same name implies the same source
+		-- (file imports). Eval'd strings don't follow that — two different codes
+		-- can share the default name `<string>` — so they must always compile.
+		local noCache = args and args.noCache
+		if not noCache and runtime.cache.chunks[filename] then
 			plume.copyMacrosInfos(runtime.cache.chunks[filename], chunk)
 			return true
 		end
@@ -45,7 +50,11 @@ return function(plume)
 			context.savedInstructions = nil
 		end
 
-		runtime.cache.chunks[filename] = chunk
+		-- Don't pollute the file cache with string-code chunks: a later `use`
+		-- of a real file sharing the same name must not find eval bytecode.
+		if not noCache then
+			runtime.cache.chunks[filename] = chunk
+		end
 
 		return true
 	end
