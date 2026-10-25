@@ -424,7 +424,6 @@ return function(plume)
 		return true, plume.obj.context(x)
 	end)
 	
-	-- Basic implementation, prone to memory leaks
 	plume.std.eval = plume.obj.luaMacro("eval", function (args, vm, currentFile)
 		local __name      = "eval"
 		local __signature = "`$eval(string code, [string filename], ?safe)`"
@@ -452,14 +451,21 @@ return function(plume)
 	
 		if success then
 			-- prepare stack
-			-- Return address for the nested run: the ip of the CONCAT_CALL currently
-			-- executing. _RUN_END (vm/run.lua) restores vm.ip to it, and the
-			-- dispatcher's next tick then advances to the following instruction —
-			-- pushing vm.ip+1 (as imports' _RUN_START does not) used to skip that
-			-- instruction (issue #1292: in `$String($eval(...))` the outer macro was
-			-- never loaded, and `let r = $eval(...)` lost its assignment).
-			-- plume.run pushes the fileID on the fileStack itself; pushing it here
-			-- too leaked one entry per eval (the inner RETURN_FILE pops only once).
+			-- Return marker for the nested run's _RUN_END: must be vm.ip, exactly
+			-- like _RUN_START does. _RUN_END (vm/run.lua) pops it and sets
+			-- self.ip to it, and the caller's loop resumes one instruction after —
+			-- so when eval is called from a safe-run boundary (e.g. `attempt`),
+			-- vm.ip is the sops ip and the end jump propagates, terminating the
+			-- safe run once the eval'd code returns (instead of resuming right
+			-- after the sops header and re-executing the file, which overflowed
+			-- the stack — issue #1291).
+			-- A `+1` here was wrong in both cases: it skipped the caller's
+			-- STORE_LOCAL after `let x = $eval(...)` (value never assigned, and
+			-- in `$String($eval(...))` the outer macro was never loaded — issue
+			-- #1292) and failed the dev-mode end-of-file final check.
+			-- The fileStack entry is pushed by plume.run and popped by the eval'd
+			-- chunk's RETURN_FILE: pushing it here as well leaked one entry per
+			-- eval and corrupted `currentFile` for later read/write/import.
 			vm:_STACK_PUSH(vm.recursiveStack, vm.ip)
 	
 			-- execute

@@ -742,6 +742,51 @@ $plume.eval(\$wing(), ?safe)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯)
 /// End
+/// Test #1291-1
+$attempt($eval, bonjour)
+/// Output
+(success: true, result: bonjour)
+/// End
+
+/// Test #1291-2
+$attempt($eval, \$(1 + 1))
+/// Output
+(success: true, result: 2)
+/// End
+
+/// Test #1291-3
+$attempt($eval, \$(1 + a))
+/// Output
+(success: false, result: ╭────────────────────────────────────────────────────────────────────────────────╮
+│ COMPILATION ERROR:                                                             │
+│ → Cannot use variable 'a', it isn't defined in the current scope.              │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ <string>                                                                    │
+│    1 │\$(1 + a)                                                                 │
+│      │      ^                                                                  │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯)
+/// End
+
+/// Test #1291-4
+$attempt($eval, \$(2 * 3), "myfile")
+/// Output
+(success: true, result: 6)
+/// End
+
+/// Test #1291-5
+$attempt($eval, $read(tests/plume/toimport/attempteval.plume))
+/// Output
+(success: true, result: (success: true, result: inner))
+/// End
+
+/// Test #1291-6
+let r = $eval(1, "somedir/x")
+$import(./tests/plume/toimport/touse)
+/// Output
+(wing: macro<wing>, nib: macro<nib>)
+/// End
 
 /// Test #1292-1
 let bonjour = "bonjour"
