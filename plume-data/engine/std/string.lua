@@ -100,7 +100,7 @@ plume.std.String = plume.obj.quickTable {
 	isNumber = plume.obj.luaMacro("isNumber", function (args)
 		--!override-self-plume.std.String
 		--!signature string s
-		if tonumber(s) then
+		if plume.toNumber(s) then
 			return true, true
 		else
 			return true, false

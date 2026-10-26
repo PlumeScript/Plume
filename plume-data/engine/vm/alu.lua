@@ -19,10 +19,13 @@ return function(vm)
 	function vm:_CHECK_NUMBER_META(x)
 	    local tx = self:_GET_TYPE(x)
 	    if tx  == "string" then
-	        if not tonumber(x) then
+	        -- plume.toNumber, not tonumber: strings like "inf" or "infinity"
+	        -- are not plume numbers and must not be converted (issue #1293)
+	        local nx = self.plume.toNumber(x)
+	        if not nx then
 	            return x, self.plume.error.cannotConvertToString(x)
 	        end
-	        x = tonumber(x)
+	        x = nx
 	    elseif tx  ~= "number" then
 	        local mtonumber = self:_GET_META_ITEM_SAFE(x, "tonumber")
 	        if tx  == "table" and mtonumber then
@@ -144,8 +147,8 @@ return function(vm)
 		local right = self:_STACK_POP(self.mainStack)
 		local left  = self:_STACK_POP(self.mainStack)
 
-		local rightNumber = tonumber(right)
-		local leftNumber = tonumber(left)
+		local rightNumber = self.plume.toNumber(right)
+		local leftNumber = self.plume.toNumber(left)
 
 		-- Only number
 		if rightNumber and leftNumber then
@@ -353,8 +356,9 @@ return function(vm)
 		local meta  = self:_HANDLE_META_BIN(left, right, "eq")
 
 		if not meta then
+		    local nl = self.plume.toNumber(left)
 		    -- `(false)` instead of `false` preventing make-engine-opt optimization
-		    local result = left == right or tonumber(left) and tonumber(left) == tonumber(right) or (false)
+		    local result = left == right or nl and nl == self.plume.toNumber(right) or (false)
 			self:_STACK_PUSH(self.mainStack, result)
 		end
 

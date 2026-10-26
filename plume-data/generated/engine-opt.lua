@@ -6582,8 +6582,8 @@ return function (plume)
                                                 _ret601 = value
                                             end
                                             local left = _ret601
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret602 = leftNumber + rightNumber
                                                 local result = _ret602
@@ -6596,12 +6596,12 @@ return function (plume)
                                                     local _ret624 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret624
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret622, _ret623 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1194
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret625 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret625
@@ -6624,12 +6624,12 @@ return function (plume)
                                                     local _ret620 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret620
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret618, _ret619 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1191
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret621 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret621
@@ -6799,8 +6799,8 @@ return function (plume)
                                                 _ret627 = value
                                             end
                                             local left = _ret627
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret628 = leftNumber * rightNumber
                                                 local result = _ret628
@@ -6813,12 +6813,12 @@ return function (plume)
                                                     local _ret650 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret650
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret648, _ret649 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1235
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret651 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret651
@@ -6841,12 +6841,12 @@ return function (plume)
                                                     local _ret646 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret646
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret644, _ret645 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1232
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret647 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret647
@@ -7019,8 +7019,8 @@ return function (plume)
                                                 _ret653 = value
                                             end
                                             local left = _ret653
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret654 = leftNumber - rightNumber
                                                 local result = _ret654
@@ -7033,12 +7033,12 @@ return function (plume)
                                                     local _ret676 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret676
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret674, _ret675 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1276
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret677 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret677
@@ -7061,12 +7061,12 @@ return function (plume)
                                                     local _ret672 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret672
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret670, _ret671 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1273
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret673 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret673
@@ -7231,8 +7231,8 @@ return function (plume)
                                                 _ret679 = value
                                             end
                                             local left = _ret679
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret680 = leftNumber / rightNumber
                                                 local result = _ret680
@@ -7245,12 +7245,12 @@ return function (plume)
                                                     local _ret702 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret702
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret700, _ret701 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1317
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret703 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret703
@@ -7273,12 +7273,12 @@ return function (plume)
                                                     local _ret698 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret698
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret696, _ret697 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1314
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret699 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret699
@@ -7444,12 +7444,12 @@ return function (plume)
                                                 local _ret707 = type (x) == "table" and (x == plumeObjEmpty and "empty" or (x.type == "closure" and "macro") or x.type) or (type (x) == "cdata" and x.type) or type (x)
                                                 local tx = _ret707
                                                 if tx == "string" then
-                                                    if not tonumber (x)
-                                                     then
+                                                    local nx = plume.toNumber (x)
+                                                    if not nx then
                                                         _ret705, _ret706 = x, plume.error.cannotConvertToString (x)
                                                         goto _inline_end1323
                                                     end
-                                                    x = tonumber (x)
+                                                    x = nx
                                                 elseif tx ~= "number" then
                                                     local _ret708 = type (x) == "table" and x.getMetaItem and x:getMetaItem ("tonumber")
                                                     local mtonumber = _ret708
@@ -7578,8 +7578,8 @@ return function (plume)
                                                 _ret721 = value
                                             end
                                             local left = _ret721
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret722 = leftNumber % rightNumber
                                                 local result = _ret722
@@ -7592,12 +7592,12 @@ return function (plume)
                                                     local _ret744 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret744
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret742, _ret743 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1387
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret745 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret745
@@ -7620,12 +7620,12 @@ return function (plume)
                                                     local _ret740 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret740
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret738, _ret739 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1384
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret741 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret741
@@ -7794,8 +7794,8 @@ return function (plume)
                                                 _ret747 = value
                                             end
                                             local left = _ret747
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret748 = leftNumber ^ rightNumber
                                                 local result = _ret748
@@ -7808,12 +7808,12 @@ return function (plume)
                                                     local _ret770 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret770
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret768, _ret769 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1428
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret771 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret771
@@ -7836,12 +7836,12 @@ return function (plume)
                                                     local _ret766 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret766
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret764, _ret765 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1425
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret767 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret767
@@ -8027,8 +8027,8 @@ return function (plume)
                                                 _ret775 = value
                                             end
                                             local left = _ret775
-                                            local rightNumber = tonumber (right)
-                                            local leftNumber = tonumber (left)
+                                            local rightNumber = plume.toNumber (right)
+                                            local leftNumber = plume.toNumber (left)
                                             if rightNumber and leftNumber then
                                                 local _ret776 = leftNumber < rightNumber
                                                 local result = _ret776
@@ -8041,12 +8041,12 @@ return function (plume)
                                                     local _ret798 = type (right) == "table" and (right == plumeObjEmpty and "empty" or (right.type == "closure" and "macro") or right.type) or (type (right) == "cdata" and right.type) or type (right)
                                                     local tx = _ret798
                                                     if tx == "string" then
-                                                        if not tonumber (right)
-                                                         then
+                                                        local nx = plume.toNumber (right)
+                                                        if not nx then
                                                             _ret796, _ret797 = right, plume.error.cannotConvertToString (right)
                                                             goto _inline_end1473
                                                         end
-                                                        right = tonumber (right)
+                                                        right = nx
                                                     elseif tx ~= "number" then
                                                         local _ret799 = type (right) == "table" and right.getMetaItem and right:getMetaItem ("tonumber")
                                                         local mtonumber = _ret799
@@ -8069,12 +8069,12 @@ return function (plume)
                                                     local _ret794 = type (left) == "table" and (left == plumeObjEmpty and "empty" or (left.type == "closure" and "macro") or left.type) or (type (left) == "cdata" and left.type) or type (left)
                                                     local tx = _ret794
                                                     if tx == "string" then
-                                                        if not tonumber (left)
-                                                         then
+                                                        local nx = plume.toNumber (left)
+                                                        if not nx then
                                                             _ret792, _ret793 = left, plume.error.cannotConvertToString (left)
                                                             goto _inline_end1470
                                                         end
-                                                        left = tonumber (left)
+                                                        left = nx
                                                     elseif tx ~= "number" then
                                                         local _ret795 = type (left) == "table" and left.getMetaItem and left:getMetaItem ("tonumber")
                                                         local mtonumber = _ret795
@@ -8357,7 +8357,8 @@ return function (plume)
                                             end
                                             local meta = _ret802
                                             if not meta then
-                                                local result = left == right or tonumber (left) and tonumber (left) == tonumber (right) or (false)
+                                                local nl = plume.toNumber (left)
+                                                local result = left == right or nl and nl == plume.toNumber (right) or (false)
                                                 mainStackPointer = mainStackPointer + 1
                                                 mainStack[mainStackPointer] = result
                                             end

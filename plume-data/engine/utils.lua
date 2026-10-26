@@ -88,6 +88,24 @@ return function (plume)
 
 	
 
+	--- Convert a value to a number, like `tonumber`, with plume semantics:
+	--- the special values `inf`, `infinity` and `nan` (in any case, with an
+	--- optional sign and surrounding spaces), which some runtimes such as
+	--- LuaJIT additionally accept, are not plume numbers and yield `nil`,
+	--- so such words stay strings (issue #1293).
+	--- @param x any
+	--- @return number|nil
+	function plume.toNumber(x)
+		local n = tonumber(x)
+		-- A string that `tonumber` converts to a number and that starts
+		-- with a letter can only be one of the special values above
+		-- (decimal and hexadecimal literals all start with a digit).
+		if n ~= nil and type(x) == "string" and x:match("^%s*[+-]?%s*[%a]") then
+			return nil
+		end
+		return n
+	end
+
 	function plume.checkIdentifier(node, identifier)
 		for kw in ('if elseif else while for do macro let set const param use raw run ref with raise return'):gmatch('%S+') do
 			if identifier == kw then

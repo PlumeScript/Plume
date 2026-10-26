@@ -155,10 +155,12 @@ plume.std.Number.meta = plume.obj.quickTable {
 			return false, "Cannot convert empty into number"
 		elseif type(x) == "number" then
 			return true, x
-		elseif tonumber(x) then
-			return true, tonumber(x)
 		else
-		   return false, string.format("Cannot convert %s into number", type(x))
+			local n = plume.toNumber(x)
+			if n then
+				return true, n
+			end
+			return false, string.format("Cannot convert %s into number", type(x))
 		end
 	end)
 }

@@ -28,7 +28,9 @@ return function (plume, context, nodeHandlerTable)
 	nodeHandlerTable.TEXT = function(node)
 		local value = node.content
 		if not context.checkIfCanConcat() then
-			value = tonumber(value) or value
+			-- plume.toNumber, not tonumber: bare words like `inf` or
+			-- `infinity` must stay strings, not numbers (issue #1293)
+			value = plume.toNumber(value) or value
 		end
 		local offset = context.registerConstant(value)
 		context.registerOP(node, plume.ops.LOAD_CONSTANT, 0, offset)

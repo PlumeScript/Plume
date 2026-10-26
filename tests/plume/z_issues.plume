@@ -823,3 +823,98 @@ $a$a
 /// Output
 55
 /// End
+
+/// Test #1293-1
+infinity
+/// Output
+infinity
+/// End
+
+/// Test #1293-2
+inf
+/// Output
+inf
+/// End
+
+/// Test #1293-3
+nan
+/// Output
+nan
+/// End
+
+/// Test #1293-4
+Infinity
+/// Output
+Infinity
+/// End
+
+/// Test #1293-5
+let x = infinity
+$x
+/// Output
+infinity
+/// End
+
+/// Test #1293-6
+$(1/0)
+/// Output
+inf
+/// End
+
+/// Test #1293-7
+$( "inf" == 1/0 )
+/// Output
+false
+/// End
+
+/// Test #1293-8
+$( "inf" + 1 )
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot convert the string value 'inf' to a number.                           │
+│   (i) Consider using the `..` concat operator.                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │$( "inf" + 1 )                                                           │
+│      │    ^^^^^^^^                                                             │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1293-9
+let s = $( "inf" )
+$Number($(s))
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot convert string into number                                            │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let s = $( "inf" )                                                       │
+│    2 │$Number($(s))                                                            │
+│      │ ^^^^^^^^^^^^                                                            │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1293-10
+let s = $(String(42))
+$Number($(s))
+/// Output
+42
+/// End
+
+/// Test #1293-11
+$( "inf" ).isNumber()
+/// Output
+false
+/// End
+
+/// Test #1293-12
+$( "5" ).isNumber()
+/// Output
+true
+/// End

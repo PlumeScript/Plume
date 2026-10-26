@@ -926,10 +926,12 @@ return function(plume)
 				return false, "Cannot convert empty into number"
 			elseif type(x) == "number" then
 				return true, x
-			elseif tonumber(x) then
-				return true, tonumber(x)
 			else
-			   return false, string.format("Cannot convert %s into number", type(x))
+				local n = plume.toNumber(x)
+				if n then
+					return true, n
+				end
+				return false, string.format("Cannot convert %s into number", type(x))
 			end
 		end)
 	}
@@ -1815,7 +1817,7 @@ return function(plume)
 			if __s and s ~= nil then __s, __e, s = plume.stdCheckType(vm, s, "string", "1", __name, __signature) end
 			if not __s then return false, __e end
 			------------
-			if tonumber(s) then
+			if plume.toNumber(s) then
 				return true, true
 			else
 				return true, false
