@@ -9046,6 +9046,7 @@ return function (plume)
                     local call = runtimeCallstack[i]
                     if call.safe then
                         safeCallIndex = i
+                        break
                     end
                 end
                 if safeCallIndex then

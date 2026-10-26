@@ -918,3 +918,72 @@ $( "5" ).isNumber()
 /// Output
 true
 /// End
+
+/// Test #1087-1
+macro fail(x)
+  $(x*2)
+end
+
+macro inner()
+  let r = $attempt($fail, a)
+  after-inner
+end
+
+$attempt($inner)
+/// Output
+(success: true, result: after-inner)
+/// End
+
+/// Test #1087-2
+macro fail(x)
+  $(x*2)
+end
+
+macro inner()
+  let r = $attempt($fail, a)
+  $r
+end
+
+$attempt($inner)
+/// Output
+(success: true, result: (success: false, result: Cannot convert the string value 'a' to a number.))
+/// End
+
+/// Test #1087-3
+macro fail(x)
+  $(x*2)
+end
+
+macro mid()
+  let r = $attempt($fail, a)
+  mid-done
+end
+
+macro outer()
+  $mid()
+end
+
+$attempt($outer)
+/// Output
+(success: true, result: mid-done)
+/// End
+
+/// Test #1087-4
+macro fail(x)
+  $(x*2)
+end
+
+macro ok(x)
+  $(x*2)
+end
+
+macro inner()
+  let r = $attempt($fail, a)
+  let s = $attempt($ok, 21)
+  $(s.result)
+end
+
+$attempt($inner)
+/// Output
+(success: true, result: 42)
+/// End

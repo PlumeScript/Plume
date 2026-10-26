@@ -40,10 +40,14 @@ return function(vm)
 	--! inline
 	function vm:_HANDLE_ERROR(customerrip)
 	    local safeCallIndex
+	    -- Stop at the FIRST (topmost) safe call: an error must be caught by the
+	    -- nearest attempt boundary (innermost), not by the outermost one.
+	    -- Scanning to the bottom would unwind nested attempt frames (#1087).
 	    for i = #self.runtime.callstack, 1, -1 do
 	        local call = self.runtime.callstack[i]
 	        if call.safe then
 	            safeCallIndex = i
+	            break
 	        end
 	    end
 

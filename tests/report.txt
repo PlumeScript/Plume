@@ -1,5 +1,5 @@
 # Plume Test Report
 
-Summary: 1120 passed, 0 failed / 1120 total
+Summary: 1124 passed, 0 failed / 1124 total
 
 All tests passed.
