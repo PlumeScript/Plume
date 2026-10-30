@@ -139,7 +139,7 @@ return function(plume)
 		elseif t == "boolean" then
 			return "$" .. tostring(obj)
 		elseif t == "luaMacro" or t == "stdMacro" or t == "macro" then
-			return t .. "<" .. obj.name .. ">"
+			return t .. "<" .. (obj.name or "???") .. ">"
 		elseif t == "closure" then
 			return "macro<" .. (obj.macro.name or "???") .. ">"
 		elseif t == "table" then
@@ -157,7 +157,7 @@ return function(plume)
 		elseif t == "fragment" then
 			return reprFragment(obj)
 		else
-			return t .. "Obj<" .. (t.name or "???") .. ">"
+			return t .. "Obj<" .. (obj.name or "???") .. ">"
 		end
 	end
 

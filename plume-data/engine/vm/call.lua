@@ -52,6 +52,24 @@ return function(vm)
 	end
 
 	--- @opcode
+	--- A field-access call ($wing.nib()) is compiled as if the indexed table
+	--- were passed as a `self` named argument: CALL_INDEX_REGISTER_SELF appends
+	--- the pair (table, "self") at the end of the argument frame. For macros
+	--- that pair is a regular (implicit) named argument, but the special std
+	--- values that consume the frame themselves (std.Table, std.String,
+	--- std.attempt) must first discard it, otherwise they leak it into the
+	--- result or pass it to the called macro.
+	--! inline
+	function vm:_DISCARD_INJECTED_SELF()
+		local pos = self:_STACK_POS(self.mainStack)
+		if self.tagStack[pos] == "key" and self:_STACK_GET(self.mainStack, pos) == "self" then
+			self.tagStack[pos] = nil -- avoid a stale tag on the freed slot
+			self:_STACK_POP(self.mainStack) -- the "self" key
+			self:_STACK_POP(self.mainStack) -- the table it refers to
+		end
+	end
+
+	--- @opcode
 	--- @param arg1 Flag, 1 for a validator flag
 	--- @param arg2 Flag, 1 for the safe mode
 	--- Take the stack top to call, with all elements of the current frame as parameters.
@@ -128,12 +146,14 @@ return function(vm)
 	    -- @table ... end just return the accumulated table
 	    elseif tocall == self.plume.std.Table then
 	    	self:_PUSH_CALLSTACK(tocall, arg2==1)
+	    	self:_DISCARD_INJECTED_SELF()
 	        self:CONCAT_TABLE()
 	        self:_POP_CALLSTACK()
 
 	    -- FORCE_FRAGMENT do exactly the same thing as tostring
 	    elseif tocall == self.plume.std.String then
 	    	self:_PUSH_CALLSTACK(tocall, arg2==1)
+	    	self:_DISCARD_INJECTED_SELF()
 
 	        local value = self:_STACK_POP(self.mainStack)
 			self:_STACK_POP_FRAME(self.mainStack)
@@ -145,6 +165,7 @@ return function(vm)
 			self:_POP_CALLSTACK()
 
 	    elseif tocall == self.plume.std.attempt then
+	    	self:_DISCARD_INJECTED_SELF()
 	        local macro = self:_STACK_GET_FRAMED(self.mainStack, 0)
 	        local tmacro = self:_GET_TYPE(macro)
 	        

@@ -1102,3 +1102,55 @@ end
 /// Output
 <b class="note">Sharp nib</b>
 /// End
+
+/// Test #1296-1 issue case, Table() stored as a table value
+let nib = (quill: $plume.Table())
+$nib.quill
+/// Output
+$Table()
+/// End
+
+/// Test #1296-2 Table() called as a field of plume in text
+$(plume.Table())
+/// Output
+$Table()
+/// End
+
+/// Test #1296-3 Table() field call with positional and named arguments
+$(repr(plume.Table(1, x: 2)))
+/// Output
+(1, x: 2)
+/// End
+
+/// Test #1296-4 direct Table() call is unchanged
+let t = $Table(1, x: 2)
+$(repr(t))
+/// Output
+(1, x: 2)
+/// End
+
+/// Test #1296-5 String() called as a field of plume
+$(plume.String(123))
+/// Output
+123
+/// End
+
+/// Test #1296-6 attempt called as a field of plume
+let f = macro (x) $(x + 1)
+$(repr(plume.attempt(f, 1)))
+/// Output
+(success: true, result: 2)
+/// End
+
+/// Test #1296-7 field call of a user macro still passes self
+let t = (nib: macro (x) $(x + 1))
+$(t.nib(1))
+/// Output
+2
+/// End
+
+/// Test #1296-8 repr of a nameless std macro does not crash
+$(repr(plume.import))
+/// Output
+stdMacro<???>
+/// End

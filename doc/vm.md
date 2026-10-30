@@ -291,6 +291,9 @@ The VM decodes instructions via bit operations and dispatches through a generate
 
 ### vm/call.lua
 
+#### _DISCARD_INJECTED_SELF
+<br>A field-access call ($wing.nib()) is compiled as if the indexed table were passed as a `self` named argument: CALL_INDEX_REGISTER_SELF appends the pair (table, "self") at the end of the argument frame. For macros that pair is a regular (implicit) named argument, but the special std values that consume the frame themselves (std.Table, std.String, std.attempt) must first discard it, otherwise they leak it into the result or pass it to the called macro. 
+
 #### CONCAT_CALL
 <br>Take the stack top to call, with all elements of the current frame as parameters. <br>Stack the call result (or empty if nil) <br>Handle macros and luaMacro 
 
