@@ -987,3 +987,118 @@ $attempt($inner)
 /// Output
 (success: true, result: 42)
 /// End
+/// Test #1295-1 comment after a block start (issue case)
+macro quill(x)
+end
+
+@quill // nib
+  mark
+end
+/// Output
+
+/// End
+
+/// Test #1295-2 comment after a block start, body content
+macro quill(x)
+  [Q:$x]
+end
+
+@quill // nib
+  mark
+end
+/// Output
+[Q:mark]
+/// End
+
+/// Test #1295-3 block comment after a block start
+macro quill(x)
+  [Q:$x]
+end
+
+@quill /* nib */
+  mark
+end
+/// Output
+[Q:mark]
+/// End
+
+/// Test #1295-4 comment after a block start with call args
+macro wrap(tag, content, class:)
+  <$tag class="$class">$content</$tag>
+end
+
+@wrap(b, class: note) // note
+  Sharp nib
+end
+/// Output
+<b class="note">Sharp nib</b>
+/// End
+
+/// Test #1295-5 comment after an end-of-line block call
+macro note(content)
+  [note: $content]
+end
+
+This text, and the @note // trailing
+    of the call body
+end
+/// Output
+This text, and the [note: of the call body]
+/// End
+
+/// Test #1295-6 comment after a chained block call in an inline body
+macro outer(x)
+  [O:$x]
+end
+macro inner(c)
+  [I:$c]
+end
+
+@outer intro @inner // note
+  corps
+end
+/// Output
+[O:intro [I:corps]]
+/// End
+
+/// Test #1295-7 inline block with content keeps its trailing comment
+macro double(x)
+  $x $x
+end
+
+@double wing // trailing comment
+/// Output
+wing wing
+/// End
+
+/// Test #1295-8 comment after a block start without end is a missing end
+macro quill(x)
+end
+
+@quill // nib
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ SYNTAX ERROR:                                                                  │
+│ → Missing end.                                                                 │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    2 │end                                                                      │
+│    4 │@quill // nib                                                            │
+│      │                                                                         │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1295-9 comment after a block start, list-item body
+macro wrap(tag, content, class:)
+  <$tag class="$class">$content</$tag>
+end
+
+@wrap(class: note) // note
+  - b
+  - Sharp nib
+end
+/// Output
+<b class="note">Sharp nib</b>
+/// End

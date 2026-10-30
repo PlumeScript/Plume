@@ -263,6 +263,8 @@ The whole line is read as the body, so commas and unbalanced parentheses no long
 @call(a, b) A line with, commas and (unbalanced) parens
 ```
 
+The exception is a comment-only rest of line: `@call // c` is not an inline call — the comment closes the line, and the body begins on the following lines, up to `end` (the multi-line form).
+
 Inline calls chain like block calls, and can take arguments:
 
 ```plume

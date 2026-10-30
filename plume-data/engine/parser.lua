@@ -428,10 +428,23 @@ return function (plume)
 		-- The guard is a zero-width lookahead: the newline itself is left for the
 		-- body's `lt`, as in the line-start form. End of input is accepted because
 		-- trailing whitespace of the file is stripped before parsing (plume.parse).
+		-- A comment after the name is accepted too: it is consumed by the body's
+		-- leading comment, so `@name // c` opens the block like the line-start form
+		-- (issue #1295).
 		local blockCallEOL = Ct("EVAL", P"@" * blockName * os
-							* Ct("BLOCK_CALL", call^-1 * os * (#(S"\n") + -P(1)) * (Ct("BODY", V"blockStart") + body))
+							* Ct("BLOCK_CALL", call^-1 * os * (#(S"\n") + -P(1) + #(os * (P"//" + P"/*"))) * (Ct("BODY", V"blockStart") + body))
 							* Ct("NULL", _end)
 						)
+		-- One element of an inline block call body: a chained inline block, an
+		-- escape, an eval, an end-of-line block call, or a run of raw text.
+		-- Comments are matched separately around/between these elements, but the
+		-- body must contain at least one of them: a comment-only rest of line
+		-- after `@name` belongs to the multi-line form (its body starts on the
+		-- following lines), so the inline form steps aside (issue #1295).
+		local texticbContent = inlineBlockStart
+							+ escaped + eval + E(plume.error.nonEscapedEvalMark, P"$")
+							+ blockCallEOL
+							+ V"rawtexticb"
 		local leave     = C("LEAVE", K"leave")
 		local _return   = Ct("RETURN", K"return" * (s * V"firstStatement")^-1)
 
@@ -633,10 +646,12 @@ return function (plume)
 			-- Inline block call body: the rest of the line, may chain inline block
 			-- calls. An end-of-line block call may start the block; it ends at the
 			-- newline after its `end`, where the loop naturally stops.
-			texticb = inlineBlockStart + (escaped + eval + E(plume.error.nonEscapedEvalMark, P"$") + V"comment"
-						+ blockCallEOL
-						+ V"rawtexticb"
-					)^1,
+			-- Comments may surround the elements, but at least one element is
+			-- required: a comment-only body would swallow `@name // comment` and
+			-- prevent the multi-line block form from opening it (issue #1295).
+			texticb = (V"comment")^0 * texticbContent
+						* ((V"comment")^0 * texticbContent)^0
+						* (V"comment")^0,
 
 			comment  = os * (
 				  P"//" * os * C("COMMENT", NOT(S"\n")^0)

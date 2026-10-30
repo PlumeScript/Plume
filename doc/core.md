@@ -560,7 +560,7 @@ table
 end
 // → RUNTIME ERROR: Cannot call a 'number' value.
 ```
-**End-of-line block call.** A block call may also start at the end of a line, after text: the name — optionally followed by its inline arguments — must be the last thing on its line, and the body begins on the next line, up to `end`. The text before the `@` accumulates as usual, and the result of the call is inserted where the call begins:
+**End-of-line block call.** A block call may also start at the end of a line, after text: the name — optionally followed by its inline arguments — must be the last thing on its line, apart from a trailing comment, and the body begins on the next line, up to `end`. The text before the `@` accumulates as usual, and the result of the call is inserted where the call begins:
 
 ```plume
 macro note (content)
@@ -574,6 +574,19 @@ end
 ```
 
 A literal `@` at the end of a line stays escaped text, as anywhere else: `\@`.
+
+A trailing comment after the name — or after its inline arguments — does not close the call: it is skipped, and the body still begins on the next line.
+
+```plume
+macro note (content)
+    [note: $content]
+end
+
+This text, and the @note // trailing comment
+    of the call body
+end
+// → This text, and the [note: of the call body]
+```
 
 ## Early Exit: `leave`
 
