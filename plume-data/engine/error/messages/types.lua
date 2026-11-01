@@ -11,6 +11,8 @@ return function(plume)
 
 		if t == "context" then
 			hint = "\n(i) Use `$varname()` instead of `$varname`"
+		elseif t == "table" then
+			hint = "\nUse `repr` if you want to serialize it."
 		end
 
 		return string.format("Cannot concat a '%s' value.%s", t, hint)
