@@ -95,7 +95,11 @@ return function(plume)
 
 	local function reprObj(obj, pretty, indent)
 		indent = indent or 0
-		
+
+		if type(obj) == "number" then
+			return plume.numberToText(obj)
+		end
+
 		if type(obj) == "string" then
 			obj = obj:gsub('\\', '\\\\')
 			obj = obj:gsub('%$', '\\$')
@@ -165,7 +169,9 @@ return function(plume)
 		local t = type(obj) == "table" and obj.type or type(obj)
 		if t == "string" then
 			return obj
-		elseif t == "number" or t == "bool" then
+		elseif t == "number" then
+			return plume.numberToText(obj)
+		elseif t == "bool" then
 			return tostring(obj)
 		elseif t == "empty" then
 			return ""

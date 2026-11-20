@@ -707,6 +707,17 @@ return function(plume)
 			format = "%s"
 		end
 	
+		-- Two 5.1 -> 5.4 string.format behaviors to replicate:
+		--  * "%d" requires an integer representation (5.1 truncates floats);
+		--  * the float 1.0 prints "1.0" with "%s" (5.1 prints "1").
+		-- Normalizing integer-valued floats to integers covers the display, and
+		-- truncating the rest covers "%d".
+		if type(x) == "number" and x % 1 == 0 then
+			x = math.floor(x)
+		elseif type(x) == "number" and format:find("%%.-[di]") then
+			x = math.floor(x)
+		end
+	
 		local result = string.format(format, x)
 		if locale and locale ~= plume.obj.empty then
 			local integerPart, decimalPart
@@ -733,12 +744,13 @@ return function(plume)
 			end
 	
 			if thousandsSeparator then
-				thousandsSeparator = thousandsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-				integerPart = integerPart:gsub("(.)(...)$", "%1"..thousandsSeparator.."%2")
+				local sepPattern = thousandsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+				local sepReplace = thousandsSeparator:gsub("%%", "%%%%")
+				integerPart = integerPart:gsub("(.)(...)$", "%1"..sepReplace.."%2")
 				for _=1, #integerPart do
 					integerPart = integerPart:gsub(
-						"([0-9])([0-9][0-9][0-9])"..thousandsSeparator,
-						"%1"..thousandsSeparator.."%2"..thousandsSeparator
+						"([0-9])([0-9][0-9][0-9])"..sepPattern,
+						"%1"..sepReplace.."%2"..sepReplace
 					)
 				end
 			end
@@ -746,12 +758,13 @@ return function(plume)
 	
 			if decimalPart then
 				if thousandthsSeparator then
-					thousandthsSeparator = thousandthsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
-					decimalPart = decimalPart:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..thousandthsSeparator.."%2")
+					local sepPattern = thousandthsSeparator:gsub("[%(%)%.%%%+%-%*%?%[%]%^%$]", "%%%1")
+					local sepReplace = thousandthsSeparator:gsub("%%", "%%%%")
+					decimalPart = decimalPart:gsub("^([0-9][0-9][0-9])([0-9])", "%1"..sepReplace.."%2")
 					for _=1, #integerPart do
 						decimalPart = decimalPart:gsub(
-							thousandthsSeparator.."([0-9][0-9][0-9])([0-9])",
-							"%1"..thousandthsSeparator.."%2"..thousandthsSeparator
+							sepPattern.."([0-9][0-9][0-9])([0-9])",
+							"%1"..sepReplace.."%2"..sepReplace
 						)
 					end
 				end

@@ -2942,7 +2942,7 @@ return function (plume)
                                                             end
                                                         else
                                                             local _ret269 = mainStackPointer
-                                                            mainStack[_ret269] = tostring (value)
+                                                            mainStack[_ret269] = plume.numberToText (value)
                                                         end
                                                         break
                                                     elseif t == "string" or t == "fragment" then
@@ -3789,7 +3789,7 @@ return function (plume)
                                                     end
                                                 else
                                                     local _ret356 = mainStackPointer
-                                                    mainStack[_ret356] = tostring (value)
+                                                    mainStack[_ret356] = plume.numberToText (value)
                                                 end
                                                 break
                                             elseif t == "string" or t == "fragment" then
@@ -5701,7 +5701,7 @@ return function (plume)
                                                                     end
                                                                 else
                                                                     local _ret524 = mainStackPointer
-                                                                    mainStack[_ret524] = tostring (value)
+                                                                    mainStack[_ret524] = plume.numberToText (value)
                                                                 end
                                                                 break
                                                             elseif t == "string" or t == "fragment" then

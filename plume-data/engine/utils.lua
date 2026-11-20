@@ -106,6 +106,19 @@ return function (plume)
 		return n
 	end
 
+	--- Convert a number to text the way plume displays it on every runtime:
+	--- integer-valued floats print without the trailing ".0" (LuaJIT 5.1's
+	--- `tostring` does this implicitly; strict Lua 5.4 prints "1.0" for the
+	--- float 1.0).
+	--- @param x number
+	--- @return string
+	function plume.numberToText(x)
+		if x % 1 == 0 then
+			return tostring(math.floor(x))
+		end
+		return tostring(x)
+	end
+
 	function plume.checkIdentifier(node, identifier)
 		for kw in ('if elseif else while for do macro let set const param use raw run ref with raise return'):gmatch('%S+') do
 			if identifier == kw then

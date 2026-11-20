@@ -312,7 +312,7 @@ return function(vm)
 	                    self:_ERROR(result)
 	                end
 	            else
-	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), tostring(value))
+	                self:_STACK_SET(self.mainStack, self:_STACK_POS(self.mainStack), self.plume.numberToText(value))
 	            end
 	            break
 	        elseif t == "string" or t == "fragment" then
