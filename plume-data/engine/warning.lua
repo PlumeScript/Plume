@@ -6,7 +6,20 @@ Licensed under the MIT License — see LICENSE for details.
 ]]
 
 return function (plume)
-	plume.warning = {}
+	-- Initialize the warning state up front: it is also reset when a runtime
+	-- is created (see plume.obj.runtime), but the error formatter and the
+	-- warning helpers run at parse time, before any runtime exists. Leaving
+	-- the fields nil made `ipairs(plume.warning.cache)` an out-of-bounds read
+	-- in the C API (lua_rawgeti on a nil upvalue) — an undefined-behavior
+	-- crash on syntax errors reported by a fresh engine.
+	plume.warning = {
+		any = false,
+		cache = {},
+		mode = {
+			default = {global = "normal"},
+			["381"] = {global = "ignore"}
+		}
+	}
 
 	--- Emits a warning with deduplication.
 	--- Displays the warning once per unique message globally, and once per specific

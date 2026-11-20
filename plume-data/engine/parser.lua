@@ -570,7 +570,15 @@ return function (plume)
 		}
 
 		local foreignKeywordPattern
+		-- Iterate in a stable (sorted) order: `pairs` order depends on the
+		-- per-state hash seed, and the resulting choice pattern must be
+		-- built identically on every engine instance (deterministic grammar).
+		local foreignKeywordList = {}
 		for word in pairs(foreignKeywords) do
+			foreignKeywordList[#foreignKeywordList+1] = word
+		end
+		table.sort(foreignKeywordList)
+		for _, word in ipairs(foreignKeywordList) do
 			local p = K(word)
 			foreignKeywordPattern = foreignKeywordPattern and (foreignKeywordPattern + p) or p
 		end
@@ -699,6 +707,13 @@ return function (plume)
 		-- parse will fail if empty line at programm end.
 		-- dirty quick fix
 		code = code:gsub('%s*$', '')
+
+		-- LuLPeg (Lua 5.4/wasm) compiles the grammar in a way that depends on the
+		-- GC history (weak-valued pattern interning) — a full collection before the
+		-- match makes the parse deterministic. Native LPeg is unaffected.
+		if _VERSION == "Lua 5.4" then
+			collectgarbage("collect")
+		end
 
 		local ast = {
 			name="FILE",
