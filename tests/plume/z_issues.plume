@@ -1207,3 +1207,45 @@ $Math.floor(5.5)
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1299-1 issue case
+$(-5^2)
+/// Output
+-25
+/// End
+
+/// Test #1299-2 unary minus binds looser than power
+$(-2^2)
+/// Output
+-4
+/// End
+
+/// Test #1299-3 negative exponent unchanged
+$(2^-3)
+/// Output
+0.125
+/// End
+
+/// Test #1299-4 right-associative power under unary minus
+$(-5^2^3)
+/// Output
+-390625
+/// End
+
+/// Test #1299-5 explicit parentheses keep the grouping
+$((-5)^2)
+/// Output
+25
+/// End
+
+/// Test #1299-6 unary minus at the start of an eval
+$( -5^2 )
+/// Output
+-25
+/// End
+
+/// Test #1299-7 mixed with other operators
+$(10 - -2^3)
+/// Output
+18
+/// End

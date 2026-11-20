@@ -98,7 +98,7 @@
 <body>
 <div class="container">
     
-<h1>Global: <span style="font-weight: normal;">1148 passed out of 1148 tests</span></h1>
+<h1>Global: <span style="font-weight: normal;">1155 passed out of 1155 tests</span></h1>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <h2>cli/base.lua: <span style="font-weight: normal;">6 passed out of 6 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
@@ -56268,7 +56268,7 @@ let param ...leftover2
 </code></pre>
 </div>
 </details>
-<h2>plume/z_issues: <span style="font-weight: normal;">112 passed out of 112 tests</span></h2>
+<h2>plume/z_issues: <span style="font-weight: normal;">119 passed out of 119 tests</span></h2>
 <div class="progress-bar"><div class="progress-success" style="width: 100.00%"></div><div class="progress-fail" style="width: 0.00%"></div></div>
 <details>
 <summary>
@@ -62141,6 +62141,273 @@ $Math.floor(5.5)
 │      │     ^^^^^^                                                              │
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-1 issue case <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(-5^2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5^2</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5^2</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -5^2</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+-25
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-2 unary minus binds looser than power <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(-2^2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^2</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^2</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -2^2</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+-4
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-3 negative exponent unchanged <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(2^-3)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -3</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -3</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^-3</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+0.125
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-4 right-associative power under unary minus <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(-5^2^3)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^3</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^3</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5^2^3</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5^2^3</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -5^2^3</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+-390625
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-5 explicit parentheses keep the grouping <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$((-5)^2)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -5</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -5</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -5)^2</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+25
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-6 unary minus at the start of an eval <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$( -5^2 )
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5^2</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 5^2</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -5^2</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+-25
+</code></pre>
+</div>
+</details>
+<details>
+<summary>
+<span class="status-icon status-pass">✓</span> #1299-7 mixed with other operators <em style='font-weight: normal'></em>
+</summary>
+<div class="test-content">
+<div class="code-grid">
+<div>
+<h4>Code</h4>
+<pre><code class="language-plume">
+$(10 - -2^3)
+
+</code></pre>
+</div>
+<div>
+<h4>Bytecode</h4>
+<pre><code class="language-bytecode"><span class="bc-line-num">001</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">002</span> <span class="bc-opcode">CONCAT_CALL     </span> <span class="bc-arg">0 1</span>
+<span class="bc-line-num">003</span> <span class="bc-opcode">ENTER_SCOPE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">004</span> <span class="bc-opcode">FILE_INIT_PARAMS</span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">005</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 1</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">006</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 10</span>
+<span class="bc-line-num">007</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 2</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">008</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2</span>
+<span class="bc-line-num">009</span> <span class="bc-opcode">LOAD_CONSTANT   </span> <span class="bc-arg">0 3</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">010</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 3</span>
+<span class="bc-line-num">011</span> <span class="bc-opcode">OP_POW          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^3</span>
+<span class="bc-line-num">012</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 2^3</span>
+<span class="bc-line-num">013</span> <span class="bc-opcode">OP_NEG          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -2^3</span>
+<span class="bc-line-num">014</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; -2^3</span>
+<span class="bc-line-num">015</span> <span class="bc-opcode">OP_SUB          </span> <span class="bc-arg">0 0</span> <span class="bc-info">; 10 - -2^3</span>
+<span class="bc-line-num">016</span> <span class="bc-opcode">FORCE_FRAGMENT  </span> <span class="bc-arg">0 0</span> <span class="bc-info">; $</span>
+<span class="bc-line-num">017</span> <span class="bc-opcode">RETURN_FILE     </span> <span class="bc-arg">0 0</span>
+<span class="bc-line-num">018</span> <span class="bc-opcode">END             </span> <span class="bc-arg">0 0</span></code></pre>
+</div>
+</div>
+<h4>Output</h4>
+<pre><code>
+18
 </code></pre>
 </div>
 </details>

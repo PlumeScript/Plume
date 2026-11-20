@@ -241,6 +241,12 @@ return function (plume)
 		local quote = P'"' * Ct("QUOTE", (doublequoteText + quoteEscape)^0) * P'"'
 					+ P"'" * Ct("QUOTE", (singlequoteText + quoteEscape)^0) * P"'"
 
+		-- Precedence levels, top (loosest binding) to bottom (tightest).
+		-- The unary minus sits ABOVE the power level, as in mathematics:
+		-- `-5^2` is `-(5^2)`, not `(-5)^2` (issue #1299). The power level
+		-- is the bottom one, which `genALU` handles specially: its base is a
+		-- primary while its exponent keeps the unary level (`2^-3` is
+		-- `2^(-3)`).
 		local opplist = {
 			{{"OR",  "or"}},
 			{{"AND", "and"}},
@@ -248,41 +254,14 @@ return function (plume)
 			{{"EQ", "=="}, {"NEQ", "!="}, {"LTE", "<="}, {"GTE", ">="}, {"LT", "<"}, {"GT", ">"}},
 			{{"ADD", "+"}, {"SUB", "-"}, {"CONCAT", ".."}},
 			{{"MUL", "*"}, {"DIV", "/"}, {"MOD", "%"}},
-			{{"POW", "^"}},
-			{{"NEG", "-"}, unary=true}
+			{{"NEG", "-"}, unary=true},
+			{{"POW", "^"}}
 		}
 
 		-- `ws` selects the whitespace accepted inside the generated expression
 		-- (spaces/tabs for plain expressions, plus newlines for `$(...)`).
 		local function genALU(ws)
 			local rules = {"_layer1"}
-
-			for deep, opps in ipairs(opplist) do
-				local rule
-				for i, opp in ipairs(opps) do
-					local name, pattern = opp[1], opp[2]
-
-					local opprule
-					if pattern:match('^[a-z]+$') then
-						opprule = C(name, P(pattern)) * -idn
-					else
-						opprule = C(name, P(pattern))
-					end
-	  
-					if i==1 then
-						rule = opprule
-					else
-						rule = rule + opprule
-					end
-				end
-				local current = "_layer" .. deep
-				local next    = "_layer" .. (deep+1)
-				if opps.unary then
-					rules[current] =  lpeg.Ct((rule * ws)^0 * V(next)) / fold_un
-				else
-					rules[current] = lpeg.Ct(V(next) * (ws * rule * ws * V(next))^0) / fold_bin
-				end
-			end
 
 			local safeidn = W(
 				P"$",
@@ -315,7 +294,40 @@ return function (plume)
 			local primary = num + safeidn + quote + inlinetable + P"(" * V"_layer1" * P")"
 			local access = Ct("EVAL", primary * evalOpperator^1)
 
-			rules["_layer" .. (#opplist+1)] = ws * (access + primary) * ws
+			for deep, opps in ipairs(opplist) do
+				local rule
+				for i, opp in ipairs(opps) do
+					local name, pattern = opp[1], opp[2]
+
+					local opprule
+					if pattern:match('^[a-z]+$') then
+						opprule = C(name, P(pattern)) * -idn
+					else
+						opprule = C(name, P(pattern))
+					end
+	  
+					if i==1 then
+						rule = opprule
+					else
+						rule = rule + opprule
+					end
+				end
+				local current = "_layer" .. deep
+				local next    = "_layer" .. (deep+1)
+				if opps.unary then
+					-- Leading ws is allowed so a unary op can start the
+					-- expression (`$( -5)`), not only follow an operand.
+					rules[current] = lpeg.Ct(ws * (rule * ws)^0 * V(next)) / fold_un
+				elseif deep < #opplist then
+					rules[current] = lpeg.Ct(V(next) * (ws * rule * ws * V(next))^0) / fold_bin
+				else
+					-- Bottom level (`^`): the base is a primary, NOT the
+					-- unary-minus level, so `-5^2` is `-(5^2)` (issue #1299);
+					-- the exponent keeps the unary level (`2^-3` is `2^(-3)`).
+					local operand = ws * (access + primary) * ws
+					rules[current] = lpeg.Ct(operand * (ws * rule * ws * V("_layer" .. (deep-1)))^0) / fold_bin
+				end
+			end
 
 			return rules
 		end
