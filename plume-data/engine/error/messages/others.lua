@@ -55,6 +55,20 @@ return function(plume)
 			return string.format("Invalid index '%s'%s.\n%s",  key, tableHint, hint)
 		else
 			local hint = plume.error.makeVisibleKeysHint(key, t.keys)
+			if t == plume.std.Math then
+				-- Math and Number look alike: if the key (or a close
+				-- spelling of it) exists on Number, suggest it.
+				local numberKeys = {}
+				for _, rawKey in ipairs(plume.std.Number.keys) do
+					if type(rawKey) == "string" then
+						table.insert(numberKeys, rawKey)
+					end
+				end
+				local related = plume.error.suggestIdentifiers(key, numberKeys, 1)
+				if related[1] then
+					hint = hint .. string.format("\nDid you mean 'Number.%s'?", related[1])
+				end
+			end
 			return string.format("Unregistered key '%s'%s.%s",  key, tableHint, hint)
 		end
 	end
