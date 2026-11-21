@@ -164,3 +164,10 @@ $((stop - start).ceil())
 /// Output
 1
 /// End
+
+/// Test big factorial stays float (5.4 int64 overflow)
+let x = $(21*20*19*18*17*16*15*14*13*12*11*10*9*8*7*6*5*4*3*2*1)
+$x
+/// Output
+5.1090942171709e+19
+/// End

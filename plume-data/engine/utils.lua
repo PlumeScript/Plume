@@ -103,6 +103,13 @@ return function (plume)
 		if n ~= nil and type(x) == "string" and x:match("^%s*[+-]?%s*[%a]") then
 			return nil
 		end
+		-- Lua 5.3+ has a 64-bit integer subtype: plume numbers are always
+		-- floats (5.1 semantics), so that big values (e.g. 21! > 2^63)
+		-- don't silently overflow int64 (wasm/embedded runtimes).
+		-- No-op on 5.1/LuaJIT (no math.type).
+		if n ~= nil and math.type and math.type(n) == "integer" then
+			n = n + 0.0
+		end
 		return n
 	end
 
