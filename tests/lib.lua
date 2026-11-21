@@ -2,7 +2,6 @@
 -- @module testLoader
 
 local lfs = require("lfs")
-local lpeg = require("lpeg")
 local os = require("os")
 local debug = require("debug")
 
@@ -30,69 +29,72 @@ end
 -- @param content The string content of the test file.
 -- @return A table of tests indexed by their names, or nil if parsing fails.
 local function parseTestFile(content)
-    local p = lpeg.P
-    local R = lpeg.R
-    local S = lpeg.S
-    local C = lpeg.C
-    local Ct = lpeg.Ct
-
-    -- Basic patterns
-    local ws = S(" \t")^0
-    local nl = p("\r\n") + p("\n")
-    local space = S(" \t\r\n")^0
-
-    -- Capture the test name from the header
-    local name = C((1 - nl)^1)
-    local testHeader = p("/// Test ") * ws * name * nl
-
-    -- Markers
-    local outputMarker = p("/// Output") * nl
-    local errorMarker = p("/// Error") * nl
-    local endMarker = p("/// End")
-
-    -- Capture the code block
-    local codeContent = C((1 - (outputMarker + errorMarker))^0)
-
-    -- Capture the expected result block
-    local expectedContent = C((1 - endMarker)^0)
-
-    -- A section representing expected output
-    local outputSection = (outputMarker * expectedContent) / function(out)
-        return { output = normalizeOutput(out), error = false }
+    -- Line-based parser (pure Lua).
+    -- A test file is a sequence of blocks :
+    --   /// Test <name>
+    --   <code, up to the /// Output or /// Error marker>
+    --   /// Output | /// Error
+    --   <expected, up to the /// End marker>
+    --   /// End
+    local lines = {}
+    for line in (content .. "\n"):gmatch("([^\r\n]*)\r?\n") do
+        lines[#lines + 1] = line
     end
 
-    -- A section representing an expected error
-    local errorSection = (errorMarker * expectedContent) / function(err)
-        return { output = normalizeOutput(err), error = true }
-    end
-
-    -- A complete test block
-    local testBlock = (testHeader * codeContent * (outputSection + errorSection)) /
-        function(testName, input, expectedData)
-            return {
-                key = testName,
+    local blocks = {}
+    local name, section = nil, nil
+    local codeLines, expLines = {}, {}
+    local function flush()
+        if name and section then
+            blocks[#blocks + 1] = {
+                key = name,
                 value = {
-                    input = input,
-                    expected = expectedData,
+                    input = table.concat(codeLines, "\n"),
+                    expected = {
+                        output = normalizeOutput(table.concat(expLines, "\n")),
+                        error = section == "error",
+                    },
                     obtained = {},
                 },
             }
         end
-
-    -- Grammar for an entire file
-    local fileGrammar = space * Ct((testBlock * space * endMarker * space)^0)
-    local parsed = fileGrammar:match(content)
-
-    if not parsed then
-        return nil
+        name, section, codeLines, expLines = nil, nil, {}, {}
     end
 
-    -- Convert the array of {key, value} tables into a dictionary
+    for _, line in ipairs(lines) do
+        if section == nil then
+            if name == nil then
+                local rest = line:match("^/// Test (.*)$")
+                if rest then
+                    local tname = rest:gsub("^[ \t]+", "")
+                    if tname == "" then return nil end
+                    name = tname
+                elseif not line:match("^%s*$") then
+                    return nil
+                end
+            else
+                if line:match("^%s*/// Output%s*$") then
+                    section = "output"
+                elseif line:match("^%s*/// Error%s*$") then
+                    section = "error"
+                else
+                    codeLines[#codeLines + 1] = line
+                end
+            end
+        else
+            if line:match("^%s*///%s*End%s*$") then
+                flush()
+            else
+                expLines[#expLines + 1] = line
+            end
+        end
+    end
+    if name or section then return nil end  -- unterminated block
+
     local testsByName = {}
-    for _, entry in ipairs(parsed) do
-        testsByName[entry.key] = entry.value
+    for _, block in ipairs(blocks) do
+        testsByName[block.key] = block.value
     end
-
     return testsByName
 end
 
