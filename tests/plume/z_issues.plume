@@ -1249,3 +1249,65 @@ $(10 - -2^3)
 /// Output
 18
 /// End
+
+/// Test #1303-1 issue case: space before the comma
+let t = $Table()
+$repr($t , 1)
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Wrong number of positional arguments for macro 'repr', 2 instead of 1.       │
+│   Usage: `$repr(any obj, ?pretty)`                                             │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    1 │let t = $Table()                                                         │
+│    2 │$repr($t , 1)                                                            │
+│      │ ^^^^^^^^^^^^                                                            │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End
+
+/// Test #1303-2 trailing space before the closing paren
+let t = $Table()
+$repr($t )
+/// Output
+$Table()
+/// End
+
+/// Test #1303-3 eval arg with trailing space keeps its value
+let t = $Table()
+macro g(a, b)
+return $a
+end
+$repr($g($t , b))
+/// Output
+$Table()
+/// End
+
+/// Test #1303-4 trailing space of a text arg is trimmed
+macro g(a, b)
+return $a
+end
+$String([$g(word , x)])
+/// Output
+[word]
+/// End
+
+/// Test #1303-5 trailing space of a named arg is trimmed
+macro g(?a, ?b)
+return $b
+end
+$String([$g(a: 1, b: two )])
+/// Output
+[two]
+/// End
+
+/// Test #1303-6 inner whitespace of a text arg is content
+macro g(a, b)
+return $a
+end
+$String([$g(hello world, x)])
+/// Output
+[hello world]
+/// End

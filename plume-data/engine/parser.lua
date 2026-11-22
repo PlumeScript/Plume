@@ -872,6 +872,46 @@ return function (plume)
 			return { nodeCt("CALL", bpos, pos - 1, children) }
 		end
 
+		-- Trim the whitespace-only boundary TEXT nodes of an argument textic:
+		-- around an argument value, surrounding whitespace is syntax (after
+		-- `(` / `,`, before `,` / `)`), not content (#1303). Without it, a
+		-- trailing space after a bare eval (`$f($t , b)`) turns the argument
+		-- into a text block and CHECK_IS_TEXT crashes on non-text values.
+		-- Inner whitespace (between children) is content and stays.
+		local function trimArgTextic(kids)
+			if not kids or #kids == 0 then return kids end
+			local function trimStart(node)
+				local t = node.content:gsub("^%s+", "")
+				if t == "" then return false end
+				node.content = t
+				node.epos = node.bpos + #t - 1
+				return true
+			end
+			local function trimEnd(node)
+				local t = node.content:gsub("%s+$", "")
+				if t == "" then return false end
+				node.content = t
+				node.epos = node.bpos + #t - 1
+				return true
+			end
+			if #kids == 1 then
+				local node = kids[1]
+				if node.name == "TEXT" and (not trimStart(node) or not trimEnd(node)) then
+					kids[1] = nil
+				end
+			else
+				local first = kids[1]
+				if first.name == "TEXT" and not trimStart(first) then
+					table.remove(kids, 1)
+				end
+				local last = kids[#kids]
+				if last.name == "TEXT" and not trimEnd(last) then
+					table.remove(kids, #kids)
+				end
+			end
+			return kids
+		end
+
 		r_namedArg = function()
 			local save = pos
 			local bpos = pos
@@ -903,7 +943,7 @@ return function (plume)
 			skipOS()
 			local bbody = pos
 			local v = try(r_mainInlinetable)
-			if not v then v = r_textic() end
+			if not v then v = trimArgTextic(r_textic()) end
 			local epos = pos - 1
 			for i = 1, #key do kids[#kids + 1] = key[i] end
 			kids[#kids + 1] = nodeCt("BODY", bbody, epos, v or {})
@@ -919,7 +959,7 @@ return function (plume)
 			if b0 >= 48 and b0 <= 57 then
 				local bpos = pos
 				local v2 = r_textic()
-				if v2 then return { nodeCt("LIST_ITEM", bpos, pos - 1, v2) } end
+				if v2 then return { nodeCt("LIST_ITEM", bpos, pos - 1, trimArgTextic(v2)) } end
 			end
 			-- E(cannotUseRef, K"ref") * s * name
 			if kw("ref") then
@@ -959,7 +999,7 @@ return function (plume)
 			-- Ct("LIST_ITEM", V"textic")
 			bpos = pos
 			v = r_textic()
-			if v then return { nodeCt("LIST_ITEM", bpos, pos - 1, v) } end
+			if v then return { nodeCt("LIST_ITEM", bpos, pos - 1, trimArgTextic(v)) } end
 			-- Ct("LIST_ITEM", Ct("EMPTY", os))
 			bpos = pos
 			skipOS()
@@ -1743,7 +1783,7 @@ r_if = function()
 			skipOS()
 			local bbody = pos
 			local v = try(r_mainInlinetable)
-			if not v then v = r_textic() end
+			if not v then v = trimArgTextic(r_textic()) end
 			local kids = v or {}
 			local epos = pos - 1
 			if #kids == 0 then
