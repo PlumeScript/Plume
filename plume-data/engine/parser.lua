@@ -1186,7 +1186,7 @@ return function (plume)
 		-- _end : lt * K"end" + E(missingEnd) — if the keyword is missing the
 		-- whole first alternative backtracks (the LINESTART is not consumed)
 		-- and the E node sits at the choice position.
-r_end = function()
+r_end = function(kind)
 			local save = pos
 			local v = r_lt()
 			if v and kw("end") then
@@ -1195,7 +1195,9 @@ r_end = function()
 			end
 			pos = save
 			local content, epos, i = restOfLine()
-			return { nodeE(plume.error.missingEnd, pos, epos, content) }
+			local e = nodeE(plume.error.missingEnd, pos, epos, content)
+			e.expectedKind = kind
+			return { e }
 		end
 
 		-- block : blockStart * Ct("NULL", _end)
@@ -1204,7 +1206,7 @@ r_end = function()
 			if v == nil then return nil end
 			local kids = { v[1] }
 			local bnull = pos
-			local e = r_end()
+			local e = r_end("block call")
 			kids[#kids + 1] = nodeCt("NULL", bnull, pos - 1, e)
 			return kids
 		end
@@ -1281,7 +1283,7 @@ r_end = function()
 			local epos = pos - 1
 			for i = 1, #bodyKids do bcallKids[#bcallKids + 1] = bodyKids[i] end
 			kids[#kids + 1] = nodeCt("BLOCK_CALL", bcall, epos, bcallKids)
-			local v3 = r_end()
+			local v3 = r_end("block call")
 			kids[#kids + 1] = nodeCt("NULL", epos + 1, pos - 1, v3)
 			return { nodeCt("EVAL", bpos, pos - 1, kids) }
 		end
@@ -1769,7 +1771,7 @@ r_if = function()
 			end
 			local v = try(r_else)
 			if v then kids[#kids + 1] = v[1] end
-			local e = r_end()
+			local e = r_end("if")
 			kids[#kids + 1] = e[1]
 			return { nodeCt("IF", bpos, pos - 1, kids) }
 		end
@@ -1934,7 +1936,7 @@ r_if = function()
 		-- sMacroBodyic = Ct("BODY", V"textic")
 		local function r_lMacroBody()
 			local b = r_body()
-			local e = r_end()
+			local e = r_end("macro")
 			return { b[1], e[1] }
 		end
 		local function r_sMacroBody()
@@ -2430,7 +2432,7 @@ r_while = function()
 			kids[#kids + 1] = c[1]
 			local b = r_body()
 			kids[#kids + 1] = b[1]
-			local e = r_end()
+			local e = r_end("while")
 			kids[#kids + 1] = e[1]
 			return { nodeCt("WHILE", bpos, pos - 1, kids) }
 		end
@@ -2445,7 +2447,7 @@ r_for = function()
 			for i = 1, #it do kids[#kids + 1] = it[i] end
 			local b = r_body()
 			kids[#kids + 1] = b[1]
-			local e = r_end()
+			local e = r_end("for")
 			kids[#kids + 1] = e[1]
 			return { nodeCt("FOR", bpos, pos - 1, kids) }
 		end
@@ -2661,7 +2663,7 @@ r_do = function()
 			local kids = {}
 			local b = r_body()
 			kids[#kids + 1] = b[1]
-			local e = r_end()
+			local e = r_end("do")
 			kids[#kids + 1] = e[1]
 			return { nodeCt("DO", bpos, pos - 1, kids) }
 		end
@@ -2771,7 +2773,9 @@ r_do = function()
 			local cp = pos
 			local c = cb(cp)
 			local missingEndNode = function()
-				return { nodeCt("RAW", bpos, n, { nodeE(plume.error.missingEnd, n + 1, n, "") }) }
+				local e = nodeE(plume.error.missingEnd, n + 1, n, "")
+			e.expectedKind = "raw"
+			return { nodeCt("RAW", bpos, n, { e }) }
 			end
 			if c ~= 10 then
 				if cp > n then
@@ -2827,7 +2831,7 @@ r_do = function()
 				kids[#kids + 1] = nodeCt("PARAMLIST", bpl, pos - 1, v)
 				local b = r_body()
 				kids[#kids + 1] = b[1]
-				local e = r_end()
+				local e = r_end("with")
 				kids[#kids + 1] = e[1]
 				ok = true
 			end
@@ -3203,7 +3207,7 @@ local function r_program()
 				plume.checkIdentifier(node, node.content)
 			end
 
-			if node.epos and node.epos > pos then
+			if node.name ~= "FILE" and node.epos and node.epos > pos then
 				pos = node.epos
 			end
 		end)

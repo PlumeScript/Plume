@@ -95,7 +95,15 @@ return function(plume)
 	end
 
 	function plume.error.missingEnd(node)
-		local message = "Missing end."
+		local kind = node.expectedKind
+		local message
+		if kind == "block call" then
+			message = "Expected `end` to close the block call."
+		elseif kind then
+			message = string.format("Expected `end` to close the `%s` block.", kind)
+		else
+			message = "Expected `end`."
+		end
 		plume.error.throwSyntaxError(node, message)
 	end
 
@@ -202,7 +210,55 @@ return function(plume)
 	end
 
 	function plume.error.malformedCode(node)
-		local message = "Malformed code."
+		-- The parser stopped here, with a remainder it could not read as a
+		-- statement or as text. Sniff the remainder (and what was just
+		-- consumed) to say what was expected, instead of "Malformed code.".
+		local rest = node.code:sub(node.bpos + 1)
+		local lead = #rest:match("^%s*")
+		-- first non-empty line of the remainder (skip blank leading lines)
+		local line = rest:match("^%s*([^\r\n]*)") or ""
+		-- highlight the unconsumed remainder, from its first non-blank character
+		node.errorbpos = node.bpos + 1 + lead
+		local message
+		-- a lone end/else/elseif (the rest of the line being blank) means a
+		-- block terminator used where no block is open. (No pattern alternation
+		-- here: `|` inside patterns is unreliable on some LuaJIT builds.)
+		local function terminatorKeyword(l)
+			if l == "end" or l:match("^end%s") then return "end" end
+			if l == "elseif" or l:match("^elseif%s") then return "elseif" end
+			if l == "else" or l:match("^else%s") then return "else" end
+		end
+		local kw = terminatorKeyword(line)
+		if kw then
+			message = string.format(
+				"Expected a statement, found `%s` (no matching block is open).", kw
+			)
+		elseif line:match("^/%*") and not node.code:find("*/", node.bpos, true) then
+			message = "Expected `*/` to close the block comment."
+		elseif line:match("^=%s*$") or line:match("^%S+%s*=%s*$") then
+			message = "Expected a value."
+		end
+		if not message then
+			local before = node.code:sub(1, node.bpos)
+			local pre, name = before:match("^(.-)macro%s+(%S+)%s*%(.*$")
+			if pre then
+				local tail = before:sub(#pre + 1)
+				local _, open = tail:gsub("%(", "")
+				local _, close = tail:gsub("%)", "")
+				if open > close then
+					message = string.format(
+						"Expected `)` to close the parameter list of `macro %s`.", name
+					)
+				end
+			end
+		end
+		if not message then
+			local tok = line:match("^(%S+)") or ""
+			if #tok > 20 then
+				tok = tok:sub(1, 20) .. "…"
+			end
+			message = string.format("Expected a statement, found `%s`.", tok)
+		end
 		plume.error.throwSyntaxError(node, message)
 	end
 
