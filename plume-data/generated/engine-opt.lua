@@ -696,6 +696,7 @@ return function (plume)
                                                                 local callerip = ip
                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                jump = 0
                                                                 vmstate.ip = ip
                                                                 vmstate.tic = tic
                                                                 vmstate.jump = jump
@@ -851,6 +852,7 @@ return function (plume)
                                                                                                     local callerip = ip
                                                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                                                    jump = 0
                                                                                                     vmstate.ip = ip
                                                                                                     vmstate.tic = tic
                                                                                                     vmstate.jump = jump
@@ -983,6 +985,7 @@ return function (plume)
                                                                                     local callerip = ip
                                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                                    jump = 0
                                                                                     vmstate.ip = ip
                                                                                     vmstate.tic = tic
                                                                                     vmstate.jump = jump
@@ -1140,6 +1143,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -2671,6 +2675,7 @@ return function (plume)
                                                                                                 local callerip = ip
                                                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                                                jump = 0
                                                                                                 vmstate.ip = ip
                                                                                                 vmstate.tic = tic
                                                                                                 vmstate.jump = jump
@@ -2803,6 +2808,7 @@ return function (plume)
                                                                                 local callerip = ip
                                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                                jump = 0
                                                                                 vmstate.ip = ip
                                                                                 vmstate.tic = tic
                                                                                 vmstate.jump = jump
@@ -3006,6 +3012,7 @@ return function (plume)
                                                                             local callerip = ip
                                                                             recursiveStackPointer = recursiveStackPointer + 1
                                                                             recursiveStack[recursiveStackPointer] = ip
+                                                                            jump = 0
                                                                             vmstate.ip = ip
                                                                             vmstate.tic = tic
                                                                             vmstate.jump = jump
@@ -3118,6 +3125,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -3297,6 +3305,7 @@ return function (plume)
                                                                 local callerip = ip
                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                jump = 0
                                                                 vmstate.ip = ip
                                                                 vmstate.tic = tic
                                                                 vmstate.jump = jump
@@ -3670,6 +3679,7 @@ return function (plume)
                                                                             local callerip = ip
                                                                             recursiveStackPointer = recursiveStackPointer + 1
                                                                             recursiveStack[recursiveStackPointer] = ip
+                                                                            jump = 0
                                                                             vmstate.ip = ip
                                                                             vmstate.tic = tic
                                                                             vmstate.jump = jump
@@ -3853,6 +3863,7 @@ return function (plume)
                                                                     local callerip = ip
                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                    jump = 0
                                                                     vmstate.ip = ip
                                                                     vmstate.tic = tic
                                                                     vmstate.jump = jump
@@ -3965,6 +3976,7 @@ return function (plume)
                                                                 local callerip = ip
                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                jump = 0
                                                                 vmstate.ip = ip
                                                                 vmstate.tic = tic
                                                                 vmstate.jump = jump
@@ -4092,6 +4104,7 @@ return function (plume)
                                                                                         local callerip = ip
                                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                                        jump = 0
                                                                                         vmstate.ip = ip
                                                                                         vmstate.tic = tic
                                                                                         vmstate.jump = jump
@@ -4224,6 +4237,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -5430,6 +5444,7 @@ return function (plume)
                                                                                                         local callerip = ip
                                                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                                                        jump = 0
                                                                                                         vmstate.ip = ip
                                                                                                         vmstate.tic = tic
                                                                                                         vmstate.jump = jump
@@ -5562,6 +5577,7 @@ return function (plume)
                                                                                         local callerip = ip
                                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                                        jump = 0
                                                                                         vmstate.ip = ip
                                                                                         vmstate.tic = tic
                                                                                         vmstate.jump = jump
@@ -5765,6 +5781,7 @@ return function (plume)
                                                                                     local callerip = ip
                                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                                    jump = 0
                                                                                     vmstate.ip = ip
                                                                                     vmstate.tic = tic
                                                                                     vmstate.jump = jump
@@ -5877,6 +5894,7 @@ return function (plume)
                                                                                 local callerip = ip
                                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                                jump = 0
                                                                                 vmstate.ip = ip
                                                                                 vmstate.tic = tic
                                                                                 vmstate.jump = jump
@@ -6056,6 +6074,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -6429,6 +6448,7 @@ return function (plume)
                                                                                     local callerip = ip
                                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                                    jump = 0
                                                                                     vmstate.ip = ip
                                                                                     vmstate.tic = tic
                                                                                     vmstate.jump = jump
@@ -6615,6 +6635,7 @@ return function (plume)
                                                                 local callerip = ip
                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                jump = 0
                                                                 vmstate.ip = ip
                                                                 vmstate.tic = tic
                                                                 vmstate.jump = jump
@@ -6862,6 +6883,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -7079,6 +7101,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -7299,6 +7322,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -7511,6 +7535,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -7648,6 +7673,7 @@ return function (plume)
                                                                     local callerip = ip
                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                    jump = 0
                                                                     vmstate.ip = ip
                                                                     vmstate.tic = tic
                                                                     vmstate.jump = jump
@@ -7858,6 +7884,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -8074,6 +8101,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -8307,6 +8335,7 @@ return function (plume)
                                                                         local callerip = ip
                                                                         recursiveStackPointer = recursiveStackPointer + 1
                                                                         recursiveStack[recursiveStackPointer] = ip
+                                                                        jump = 0
                                                                         vmstate.ip = ip
                                                                         vmstate.tic = tic
                                                                         vmstate.jump = jump
@@ -8453,6 +8482,7 @@ return function (plume)
                                                                 local callerip = ip
                                                                 recursiveStackPointer = recursiveStackPointer + 1
                                                                 recursiveStack[recursiveStackPointer] = ip
+                                                                jump = 0
                                                                 vmstate.ip = ip
                                                                 vmstate.tic = tic
                                                                 vmstate.jump = jump
@@ -8911,6 +8941,7 @@ return function (plume)
                                                                                                     local callerip = ip
                                                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                                                    jump = 0
                                                                                                     vmstate.ip = ip
                                                                                                     vmstate.tic = tic
                                                                                                     vmstate.jump = jump
@@ -9043,6 +9074,7 @@ return function (plume)
                                                                                     local callerip = ip
                                                                                     recursiveStackPointer = recursiveStackPointer + 1
                                                                                     recursiveStack[recursiveStackPointer] = ip
+                                                                                    jump = 0
                                                                                     vmstate.ip = ip
                                                                                     vmstate.tic = tic
                                                                                     vmstate.jump = jump

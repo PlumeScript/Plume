@@ -9,6 +9,12 @@ return function(vm)
 	--! inline
 	function vm:_RUN_END()
 		if self:_STACK_POS(self.recursiveStack) > 0 then
+			-- The top of the recursiveStack is the caller ip pushed by the
+			-- run's launcher (_RUN_START for a macro call, plume.run for a
+			-- direct run nested in an ongoing run, the `eval` std for a
+			-- top-level eval). A nested direct run owns this entry, so this
+			-- pop never steals the caller entry of the enclosing _RUN_START
+			-- (see the nested `use` crash, issue #1304).
 			self.ip = self:_STACK_POP(self.recursiveStack)
 			-- An ip in the virtual bytecode (<= #sops_config) means we return
 			-- to a safe-run boundary (e.g. `attempt`): the outer run must
@@ -32,6 +38,10 @@ return function(vm)
 		else
 			local callerip = self.ip
 			self:_STACK_PUSH(self.recursiveStack, self.ip)
+			-- A fresh run always starts with a clean jump (a pending
+			-- end-jump belongs to a previous run's termination — see
+			-- plume.run and issue #1304).
+			self.jump = 0
 			self:_SAVE_SCALAR()
 			success, result, callvmerrip = vm:_RUN(destip)
 			self:_UPDATE_SCALAR()

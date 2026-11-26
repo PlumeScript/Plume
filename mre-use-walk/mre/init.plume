@@ -1,0 +1,7 @@
+let g = $Table()
+for folder in os.Path("./g").walk()
+	if folder.isDirectory()
+		...folder.import()
+	end
+end
+set g.x = 1

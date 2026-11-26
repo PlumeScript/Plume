@@ -67,9 +67,64 @@ function plume.run(runtime, chunk, fileParams)
 		return false, result, errip
 	end
 
-	runtime.vm:_STACK_PUSH(runtime.vm.fileStack, chunk.fileID)
-	
-	return plume.safeRun(run, runtime.vm, chunk.offset)
+	local vm = runtime.vm
+	vm:_STACK_PUSH(vm.fileStack, chunk.fileID)
+
+	-- A direct run nested in an ongoing run (a `use`/`eval` inside an import
+	-- or a macro call) is not launched by _RUN_START, so it owns no entry of
+	-- its own on the recursiveStack and the callstack. Without its own
+	-- entries, its END would pop the caller entry of the enclosing
+	-- _RUN_START and its RETURN_FILE would pop the enclosing run's callinfo,
+	-- desyncing the enclosing run (the nested `use` crash, issue #1304).
+	-- Push the caller ip (vm.ip), exactly like _RUN_START and the `eval` std
+	-- do, so its END restores it — including the sops-ip end-jump
+	-- propagation when the run is a safe-run boundary (issue #1291) — and
+	-- push a callinfo for RETURN_FILE to pop. A top-level direct run owns
+	-- the VM exclusively: it pushes nothing, exactly like before.
+	local nested = vm:_STACK_POS(vm.recursiveStack) > 0
+	local savedIp, savedJump
+	if nested then
+		vm:_STACK_PUSH(vm.recursiveStack, vm.ip)
+		table.insert(vm.runtime.callstack, {
+			runtime = runtime,
+			macro   = chunk,
+			ip      = chunk.offset,
+			safe    = false,
+			directRun = true
+		})
+		savedIp = vm.ip
+		savedJump = vm.jump
+	end
+
+	-- A fresh run always starts with a clean jump: a pending end-jump is the
+	-- termination signal of a previous run (a nested direct run whose END
+	-- propagated it through a sops caller ip), and _VM_TICK would consume it
+	-- on this run's first instruction, dispatching to the wrong opcode
+	-- (see the nested `use` crash, issue #1304).
+	vm.jump = 0
+
+	local runSuccess, runResult, runIp = plume.safeRun(run, vm, chunk.offset)
+
+	if nested and not runSuccess then
+		-- Defensive cleanup: on a hard VM crash, END and RETURN_FILE never
+		-- ran, so pop the entries pushed above to leave the enclosing run
+		-- as we found it. On success, END and RETURN_FILE already popped
+		-- them, and _RUN_END restored the ip/jump the way the caller
+		-- expects, so do nothing. (The mainStack is not restored: the run
+		-- deliberately leaves its result there, consumed by the caller.)
+		if vm.recursiveStack.pointer > 0
+			and vm.recursiveStack[vm.recursiveStack.pointer] == savedIp then
+			vm.recursiveStack.pointer = vm.recursiveStack.pointer - 1
+		end
+		local callstack = vm.runtime.callstack
+		if callstack[#callstack] and callstack[#callstack].directRun then
+			table.remove(callstack)
+		end
+		vm.ip = savedIp
+		vm.jump = savedJump
+	end
+
+	return runSuccess, runResult, runIp
 end
 
 function plume.execute(code, filename, chunk, runtime, fileParams, isMain, args)

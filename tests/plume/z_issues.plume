@@ -1311,3 +1311,22 @@ $String([$g(hello world, x)])
 /// Output
 [hello world]
 /// End
+
+/// Test #1304-1 nested use in a walked import, set after the loop
+// A `use` nested in a file imported by a `walk` used to desync the
+// enclosing run: the direct run of the `use`d file left the vm ip where it
+// ended, so the enclosing dispatch resumed from the wrong instruction and
+// read a stale local (a raw table) at the `set` after the loop.
+use tests/plume/toimport/walkuse
+$result.x
+/// Output
+1
+/// End
+
+/// Test #1304-2 the walked tree exports are reachable through the result
+use tests/plume/toimport/walkuse
+let r = $result.x
+$ r + 1
+/// Output
+2
+/// End

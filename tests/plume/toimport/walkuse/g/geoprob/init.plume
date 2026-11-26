@@ -1,0 +1,5 @@
+for folder in os.Path(".").walk()
+	if folder.isDirectory()
+		...folder.import()
+	end
+end
