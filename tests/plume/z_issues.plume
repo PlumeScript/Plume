@@ -1357,6 +1357,57 @@ ok
 "1"ok
 /// End
 
+/// Test #1305-3 (the parser #1305) a variadic macro called with one space in the empty parens
+// r_arglist (the `$`/`$(...)` expression parser) restored `pos` before the ws
+// after the last arg, then checked the closing paren without skipping it:
+// `m( )` dropped the whole call, the expression degenerated into an
+// identifier + text and the VM crashed in the arity check (nil field on
+// the closure wrapper) - an internal error, RC 1. (The #1305-1/2 tests
+// above are the nested direct run fix: a #1304 family commit mislabeled
+// #1305.)
+macro m(...args)
+return $(Table.count(args))
+end
+$ m( )
+/// Output
+1
+/// End
+
+/// Test #1305-4 two spaces before the closing paren
+macro m(...args)
+return $(Table.count(args))
+end
+$ m(  )
+/// Output
+1
+/// End
+
+/// Test #1305-5 no-space call: no arg
+macro m(...args)
+return $(Table.count(args))
+end
+$ m()
+/// Output
+0
+/// End
+
+/// Test #1305-6 trailing space after an arg
+macro m(...args)
+return $(Table.count(args))
+end
+$ m(1 )
+/// Output
+1
+/// End
+
+/// Test #1305-7 EMPTY after a trailing comma
+macro m(...args)
+return $(Table.count(args))
+end
+$ m(1, )
+/// Output
+2
+/// End
 
 /// Test #1306-1 set on a non-table value raises a clean error
 // TABLE_SET used to call getMetaItem on any value: setting an index on a

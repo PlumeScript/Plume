@@ -437,6 +437,9 @@ return function (plume)
 						break
 					end
 				end
+				-- closing paren is checked after the ws (mirror of r_call): `f( )`
+				-- and `f(1 )` must not drop the call (#1305)
+				skipWS()
 				if cb(pos) ~= 41 then return nil end
 				pos = pos + 1
 				return { nodeCt("CALL", bpos, pos - 1, children) }
