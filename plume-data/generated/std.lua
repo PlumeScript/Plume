@@ -450,24 +450,14 @@ return function(plume)
 		success, result = pcall(plume.compileFile, code, filename, chunk, runtime, nil, {noCache = true})
 	
 		if success then
-			-- prepare stack
-			-- Return marker for the nested run's _RUN_END: must be vm.ip, exactly
-			-- like _RUN_START does. _RUN_END (vm/run.lua) pops it and sets
-			-- self.ip to it, and the caller's loop resumes one instruction after —
-			-- so when eval is called from a safe-run boundary (e.g. `attempt`),
-			-- vm.ip is the sops ip and the end jump propagates, terminating the
-			-- safe run once the eval'd code returns (instead of resuming right
-			-- after the sops header and re-executing the file, which overflowed
-			-- the stack — issue #1291).
-			-- A `+1` here was wrong in both cases: it skipped the caller's
-			-- STORE_LOCAL after `let x = $eval(...)` (value never assigned, and
-			-- in `$String($eval(...))` the outer macro was never loaded — issue
-			-- #1292) and failed the dev-mode end-of-file final check.
-			-- The fileStack entry is pushed by plume.run and popped by the eval'd
-			-- chunk's RETURN_FILE: pushing it here as well leaked one entry per
-			-- eval and corrupted `currentFile` for later read/write/import.
-			vm:_STACK_PUSH(vm.recursiveStack, vm.ip)
-	
+			-- plume.run pushes the caller ip (vm.ip) on the recursiveStack when
+			-- the run is nested in an ongoing run, so the nested run's _RUN_END
+			-- pops it and restores self.ip to it (the caller's loop then resumes
+			-- one instruction after). This is what makes eval work from a
+			-- safe-run boundary (e.g. `attempt`): vm.ip is the sops ip and the
+			-- end jump propagates, terminating the safe run once the eval'd code
+			-- returns (issue #1291). The fileStack entry is pushed by plume.run
+			-- and popped by the eval'd chunk's RETURN_FILE.
 			-- execute
 			success, result, errip = plume.run(runtime, chunk)
 	

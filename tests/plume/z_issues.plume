@@ -1330,3 +1330,30 @@ $ r + 1
 /// Output
 2
 /// End
+
+/// Test #1305-1 30 nested evals then a safe call: no stack overflow, no ip desync
+// A nested direct run (a `use`/`eval` launched from inside an ongoing run)
+// used to be detected as top-level when the enclosing run itself was a direct
+// run: it pushed no caller ip on the recursiveStack, so its END left the vm
+// ip at the end of the nested chunk and the enclosing dispatch resumed from
+// the wrong instruction. With the stale generated/std.lua it also leaked one
+// recursiveStack entry per eval, overflowing at the next _RUN_START.
+let double = macro(x)
+	$(x * 2)
+end
+
+- for i in seq(30)
+	- $eval("1")
+end
+- $attempt($double, 21)
+/// Output
+(("1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"), (success: true, result: 42))
+/// End
+
+/// Test #1305-2 a single nested eval then a following statement
+$eval("1")
+ok
+/// Output
+"1"ok
+/// End
+

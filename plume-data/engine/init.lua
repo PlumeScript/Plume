@@ -81,7 +81,10 @@ function plume.run(runtime, chunk, fileParams)
 	-- propagation when the run is a safe-run boundary (issue #1291) — and
 	-- push a callinfo for RETURN_FILE to pop. A top-level direct run owns
 	-- the VM exclusively: it pushes nothing, exactly like before.
-	local nested = vm:_STACK_POS(vm.recursiveStack) > 0
+	-- The enclosing run may itself be a top-level direct run, which never
+	-- pushes on the recursiveStack — the reliable "a run is in progress"
+	-- flag is vm.running, set for the whole run below (issue #1305).
+	local nested = vm.running or vm:_STACK_POS(vm.recursiveStack) > 0
 	local savedIp, savedJump
 	if nested then
 		vm:_STACK_PUSH(vm.recursiveStack, vm.ip)
@@ -103,7 +106,10 @@ function plume.run(runtime, chunk, fileParams)
 	-- (see the nested `use` crash, issue #1304).
 	vm.jump = 0
 
+	local wasRunning = vm.running
+	vm.running = true
 	local runSuccess, runResult, runIp = plume.safeRun(run, vm, chunk.offset)
+	vm.running = wasRunning
 
 	if nested and not runSuccess then
 		-- Defensive cleanup: on a hard VM crash, END and RETURN_FILE never
