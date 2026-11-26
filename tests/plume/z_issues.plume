@@ -1357,3 +1357,22 @@ ok
 "1"ok
 /// End
 
+
+/// Test #1306-1 set on a non-table value raises a clean error
+// TABLE_SET used to call getMetaItem on any value: setting an index on a
+// string/fragment/number crashed the engine with an internal error.
+let t = "hello"
+set t.a = 1
+/// Error
+╭────────────────────────────────────────────────────────────────────────────────╮
+│ RUNTIME ERROR:                                                                 │
+│ → Cannot set the index of a non-table 'string' value.                          │
+├────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                │
+│  ↳ test.plume                                                                  │
+│    3 │let t = "hello"                                                          │
+│    4 │set t.a = 1                                                              │
+│      │^^^^^^^^^^^                                                              │
+│                                                                                │
+╰────────────────────────────────────────────────────────────────────────────────╯
+/// End

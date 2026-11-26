@@ -182,29 +182,43 @@ return function(vm)
 	    key   = self:_STACK_POP(self.mainStack)
 	    value = self:_STACK_POP(self.mainStack)
 
-	    local mreadonly = t:getMetaItem("readonly")
-	    local msetindex
-	    key = tonumber(key) or key
-
-	    if mreadonly then
-	        self:_ERROR(self.plume.error.cannotSetIndexReadonlyTable())
-	    elseif not t.table[key] then
-	        msetindex = t:getMetaItem("setindex")
-	        if msetindex then
-	            -- value
-	            self:BEGIN_ACC(0, 0)
-				self:_STACK_PUSH(self.mainStack, key)
-				self:_STACK_PUSH(self.mainStack, value)
-				self:_PUSH_SELF(t)
-				self:_STACK_PUSH(self.mainStack, msetindex)
-	            self:_CONCAT_CALL_REC()
-
-	            value = self:_STACK_POP(self.mainStack)
-	        end
+	    local tt = self:_GET_TYPE(t)
+	    if tt == "fragment" then
+	        self:_STACK_PUSH(self.mainStack, t)
+	        self:FORCE_FRAGMENT()
+	        t  = self:_STACK_POP(self.mainStack)
+	        tt = self:_GET_TYPE(t)
 	    end
 
-	    if not msetindex and not mreadonly then
-	        t:setItem(key, value)
+	    if tt ~= "table" then
+	        -- No std redirection here (unlike TABLE_INDEX): `set x.k = v`
+	        -- must not be silently turned into a mutation of a std value.
+	        self:_ERROR(self.plume.error.cannotSetIndexValue(tt))
+	    else
+	        local mreadonly = t:getMetaItem("readonly")
+	        local msetindex
+	        key = tonumber(key) or key
+
+	        if mreadonly then
+	            self:_ERROR(self.plume.error.cannotSetIndexReadonlyTable())
+	        elseif not t.table[key] then
+	            msetindex = t:getMetaItem("setindex")
+	            if msetindex then
+	                -- value
+	                self:BEGIN_ACC(0, 0)
+					self:_STACK_PUSH(self.mainStack, key)
+					self:_STACK_PUSH(self.mainStack, value)
+					self:_PUSH_SELF(t)
+					self:_STACK_PUSH(self.mainStack, msetindex)
+	                self:_CONCAT_CALL_REC()
+
+	                value = self:_STACK_POP(self.mainStack)
+	            end
+	        end
+
+	        if not msetindex and not mreadonly then
+	            t:setItem(key, value)
+	        end
 	    end
 	end
 

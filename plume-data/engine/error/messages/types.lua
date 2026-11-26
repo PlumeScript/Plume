@@ -35,6 +35,15 @@ return function(plume)
 		return string.format("Cannot index a non-table '%s' value.%s", t, hint)
 	end
 
+	function plume.error.cannotSetIndexValue(t)
+		local hint = ""
+		if t == "context" then
+			hint = "\n(i) Use `with ($varname: value)` to set it."
+		end
+
+		return string.format("Cannot set the index of a non-table '%s' value.%s", t, hint)
+	end
+
 	function plume.error.cannotExpandValue(t)
 		return string.format("Cannot expand a non-table '%s' value.", t)
 	end
