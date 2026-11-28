@@ -1427,3 +1427,38 @@ set t.a = 1
 │                                                                                │
 ╰────────────────────────────────────────────────────────────────────────────────╯
 /// End
+
+/// Test #1306-2 inline table value with a trailing line comment
+// The trailing `// comment` after an inline-table value used to be left
+// unconsumed : the statement ended at the closing paren, and the parser
+// raised "Expected a statement, found `//`". The comment is now swallowed
+// as part of the statement.
+let a = (0, 0) // com
+$(type(a)) $(len(a))
+/// Output
+table 2
+/// End
+
+/// Test #1306-3 trailing block comment after an inline table value
+let a = (1, 2, 3) /* note */
+$(len(a))
+/// Output
+3
+/// End
+
+/// Test #1306-4 trailing comment after an inline table in a set
+let t
+set t = (9, 8) // com
+$(len(t))
+/// Output
+2
+/// End
+
+/// Test #1306-5 trailing comment after an inline table list item
+let r = do
+- (1, 2) // com
+end
+$(len(r[1]))
+/// Output
+2
+/// End

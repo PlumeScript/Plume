@@ -3013,6 +3013,8 @@ r_command = function()
 		--   + Ct("RAISE", K"raise" * (s * V"firstStatement" + E(emptyRaise)))
 		--   + V"invalid"^-1 * (foreignKeyword * V"text" + foreignKeyword
 		--    + fakeAffectation^-1 * V"text" + fakeAffectation))
+		-- The command alternative also swallows an optional same-line comment
+		-- that follows it (issue #1306) : `let a = (0, 0) // note`.
 		local function runRaise(kwText, handler)
 			if not kw(kwText) then return nil end
 			local bpos = pos
@@ -3037,7 +3039,14 @@ r_firstStatement = function()
 			if isTerminator() then return nil end
 			-- V"command"
 			local v = r_command()
-			if v then return v end
+			if v then
+				-- an optional same-line comment may follow a command (issue #1306)
+				local c = try(r_comment)
+				if c then
+					for i = 1, #c do v[#v + 1] = c[i] end
+				end
+				return v
+			end
 			-- RUN
 			local v2 = runRaise("run", plume.error.emptyRun)
 			if v2 then return v2 end
@@ -3114,6 +3123,8 @@ r_firstStatement = function()
 		--   + Ct("RUN", K"run" * (s * V"firstStatementNLB" + E(emptyRun)))
 		--   + Ct("RAISE", K"raise" * (s * V"firstStatementNLB" + E(emptyRaise)))
 		--   + V"invalid"^-1 * V"text")
+		-- As in firstStatement, the command swallows an optional same-line
+		-- comment that follows it (issue #1306).
 		local function runRaiseNLB(kwText, handler)
 			if not kw(kwText) then return nil end
 			local bpos = pos
@@ -3137,7 +3148,14 @@ r_firstStatementNLB = function()
 			skipOS()
 			if isTerminator() then return nil end
 			local v = r_commandStd()
-			if v then return v end
+			if v then
+				-- an optional same-line comment may follow a command (issue #1306)
+				local c = try(r_comment)
+				if c then
+					for i = 1, #c do v[#v + 1] = c[i] end
+				end
+				return v
+			end
 			local v2 = runRaiseNLB("run", plume.error.emptyRun)
 			if v2 then return v2 end
 			v2 = runRaiseNLB("raise", plume.error.emptyRaise)
